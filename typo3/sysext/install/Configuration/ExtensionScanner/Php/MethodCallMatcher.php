@@ -4859,6 +4859,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94394-ExtbaseRequestSetDispatchedAndIsDispatched.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Request->isDispatched' => [
@@ -4866,6 +4867,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94394-ExtbaseRequestSetDispatchedAndIsDispatched.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->stdWrap_editIcons' => [

@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Exception\InvalidFileException;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
@@ -83,9 +82,8 @@ class UploadExtensionFileController extends AbstractController
      * Extract an uploaded file and install the matching extension
      *
      * @param bool $overwrite Overwrite existing extension if TRUE
-     * @throws StopActionException @deprecated since v11, will be removed in v12
      */
-    public function extractAction($overwrite = false)
+    public function extractAction($overwrite = false): ResponseInterface
     {
         if (Environment::isComposerMode()) {
             throw new ExtensionManagerException(
@@ -130,21 +128,16 @@ class UploadExtensionFileController extends AbstractController
                         FlashMessage::OK
                     );
                 } else {
-                    // @deprecated since v11, change to return $this->redirect()
-                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
+                    return $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
-        } catch (StopActionException $exception) {
-            // @deprecated since v11, will be removed in v12: redirect() will no longer throw in v12, drop this catch block
-            throw $exception;
         } catch (InvalidFileException $exception) {
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         } catch (\Exception $exception) {
             $this->removeExtensionAndRestoreFromBackup($fileName);
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         }
-        // @deprecated since v11, change to return $this->redirect()
-        $this->redirect('index', 'List', null, [
+        return $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
             self::TRIGGER_RefreshTopbar => true,
         ]);

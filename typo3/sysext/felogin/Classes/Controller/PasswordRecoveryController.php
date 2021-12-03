@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
@@ -70,13 +69,10 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * Shows the recovery form. If $userIdentifier is set an email will be sent, if the corresponding user exists
      *
      * @param string|null $userIdentifier
-     *
-     * @return ResponseInterface|void
-     *
-     * @throws StopActionException
+     * @return ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function recoveryAction(string $userIdentifier = null)
+    public function recoveryAction(string $userIdentifier = null): ResponseInterface
     {
         if (empty($userIdentifier)) {
             return $this->htmlResponse();
@@ -101,20 +97,20 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
         }
 
-        $this->redirect('login', 'Login', 'felogin');
+        return $this->redirect('login', 'Login', 'felogin');
     }
 
     /**
      * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
      * to recoveryAction() is made, without further information.
      */
-    protected function validateIfHashHasExpired()
+    protected function validateIfHashHasExpired(): ?ResponseInterface
     {
         $hash = $this->request->hasArgument('hash') ? $this->request->getArgument('hash') : '';
         $hash = is_string($hash) ? $hash : '';
 
         if (!$this->hasValidHash($hash)) {
-            $this->redirect('recovery', 'PasswordRecovery', 'felogin');
+            return $this->redirect('recovery', 'PasswordRecovery', 'felogin');
         }
 
         $timestamp = (int)GeneralUtility::trimExplode('|', $hash)[0];
@@ -131,6 +127,8 @@ class PasswordRecoveryController extends AbstractLoginFormController
                 ->withExtensionName('felogin')
                 ->withArgumentsValidationResult($result);
         }
+
+        return null;
     }
 
     /**
@@ -158,7 +156,6 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * Used validators are configured via TypoScript settings.
      *
      * @throws NoSuchArgumentException
-     * @throws StopActionException
      * @todo: Refactor all password checks to validators
      */
     public function validateHashAndPasswords()
@@ -205,14 +202,10 @@ class PasswordRecoveryController extends AbstractLoginFormController
      *
      * @param string $newPass
      * @param string $hash
-     *
-     * @return ResponseInterface|string|ForwardResponse|null
-     *
-     * @throws StopActionException
      * @throws AspectNotFoundException
      * @throws InvalidPasswordHashException
      */
-    public function changePasswordAction(string $newPass, string $hash)
+    public function changePasswordAction(string $newPass, string $hash): ResponseInterface
     {
         if (($response = $this->validateHashAndPasswords()) instanceof ResponseInterface) {
             return $response;
@@ -234,7 +227,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
 
-        $this->redirect('login', 'Login', 'felogin');
+        return $this->redirect('login', 'Login', 'felogin');
     }
 
     /**

@@ -187,7 +187,7 @@ class DownloadController extends AbstractController
      *
      * @param Extension $extension
      */
-    public function installDistributionAction(Extension $extension)
+    public function installDistributionAction(Extension $extension): ResponseInterface
     {
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return (new ForwardResponse('distributions'))->withControllerName('List');
@@ -210,29 +210,28 @@ class DownloadController extends AbstractController
             }
 
             // Redirect back to distributions list action
-            $this->redirect(
+            return $this->redirect(
                 'distributions',
                 'List'
             );
-        } else {
-            // FlashMessage that extension is installed
-            $this->addFlashMessage(
-                LocalizationUtility::translate(
-                    'distribution.welcome.message',
-                    'extensionmanager',
-                    [$extension->getExtensionKey()]
-                ) ?? '',
-                LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager') ?? ''
-            );
-
-            // Redirect to show action
-            $this->redirect(
-                'show',
-                'Distribution',
-                null,
-                ['extension' => $extension]
-            );
         }
+        // FlashMessage that extension is installed
+        $this->addFlashMessage(
+            LocalizationUtility::translate(
+                'distribution.welcome.message',
+                'extensionmanager',
+                [$extension->getExtensionKey()]
+            ) ?? '',
+            LocalizationUtility::translate('distribution.welcome.headline', 'extensionmanager') ?? ''
+        );
+
+        // Redirect to show action
+        return $this->redirect(
+            'show',
+            'Distribution',
+            null,
+            ['extension' => $extension]
+        );
     }
 
     /**

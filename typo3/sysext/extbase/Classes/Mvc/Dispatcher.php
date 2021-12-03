@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
@@ -26,7 +25,6 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 /**
  * Dispatches requests to the controller which was specified by the request and
@@ -75,34 +73,27 @@ class Dispatcher implements SingletonInterface
     {
         $dispatchLoopCount = 0;
         $isDispatched = false;
-        // @deprecated since v11, will be changed in v12 to: while (!$isDispatched) {
-        while (!$isDispatched || !$request->isDispatched()) {
+        while (!$isDispatched) {
             if ($dispatchLoopCount++ > 99) {
-                throw new InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @' . IgnoreValidation::class . ' annotation is missing on re-displaying a form with validation errors.', 1217839467);
+                throw new InfiniteLoopException(
+                    'Could not ultimately dispatch the request after ' . $dispatchLoopCount
+                    . ' iterations. Most probably, a @' . IgnoreValidation::class
+                    . ' annotation is missing on re-displaying a form with validation errors.',
+                    1217839467
+                );
             }
             $controller = $this->resolveController($request);
-            try {
-                $response = $controller->processRequest($request);
-                if ($response instanceof ForwardResponse) {
-                    // The controller action returned an extbase internal Forward response:
-                    // Another action should be dispatched.
-                    $request = static::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                } elseif ($response instanceof RedirectResponse) {
-                    // The controller action returned a core HTTP redirect response.
-                    // Dispatching ends here and response is sent to client.
-                    $isDispatched = true;
-                } else {
-                    // Some casual response returned by action.
-                    // Dispatching ends here and response is sent to client.
-                    $isDispatched = true;
-                }
-            } catch (StopActionException $ignoredException) {
-                // @deprecated since v11, will be removed in v12
+            $response = $controller->processRequest($request);
+            if ($response instanceof ForwardResponse) {
+                // The controller action returned an extbase internal Forward response:
+                // Another action should be dispatched.
+                $request = static::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+            } else {
+                // The controller action returned a casual or a HTTP redirect response.
+                // Dispatching ends here and response is sent to client.
                 $isDispatched = true;
-                $response = $ignoredException->getResponse();
             }
         }
-
         $this->eventDispatcher->dispatch(new AfterRequestDispatchedEvent($request, $response));
         return $response;
     }
@@ -137,8 +128,6 @@ class Dispatcher implements SingletonInterface
         $extbaseAttribute = clone $currentRequest->getAttribute('extbase');
         $request = $currentRequest->withAttribute('extbase', $extbaseAttribute);
 
-        // @deprecated since v11, will be removed in v12.
-        $request->setDispatched(false);
         $request->setControllerActionName($forwardResponse->getActionName());
 
         if ($forwardResponse->getControllerName() !== null) {

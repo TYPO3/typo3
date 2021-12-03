@@ -89,7 +89,7 @@ class ExtensionComposerStatusController extends AbstractModuleController
     public function detailAction(string $extensionKey): ResponseInterface
     {
         if ($extensionKey === '') {
-            $this->redirect('list');
+            return $this->redirect('list');
         }
 
         $deficit = $this->composerDeficitDetector->checkExtensionComposerDeficit($extensionKey);

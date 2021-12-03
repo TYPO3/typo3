@@ -81,12 +81,6 @@ class ExtbaseRequestParameters
     protected $format = 'html';
 
     /**
-     * @var bool If this request has been changed and needs to be dispatched again
-     * @deprecated since v11, will be removed in v12.
-     */
-    protected $dispatched = false;
-
-    /**
      * If this request is a forward because of an error, the original request gets filled.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Request|null
@@ -99,32 +93,6 @@ class ExtbaseRequestParameters
      * @var \TYPO3\CMS\Extbase\Error\Result|null
      */
     protected $originalRequestMappingResults;
-
-    /**
-     * Sets the dispatched flag
-     *
-     * @param bool $flag If this request has been dispatched
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function setDispatched($flag)
-    {
-        $this->dispatched = (bool)$flag;
-    }
-
-    /**
-     * If this request has been dispatched and addressed by the responsible
-     * controller and the response is ready to be sent.
-     *
-     * The dispatcher will try to dispatch the request again if it has not been
-     * addressed yet.
-     *
-     * @return bool TRUE if this request has been dispatched successfully
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function isDispatched()
-    {
-        return $this->dispatched;
-    }
 
     /**
      * @param string $controllerClassName

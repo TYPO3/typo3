@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
@@ -279,7 +278,7 @@ class BackendUserController extends ActionController
     {
         $compareUserList = $this->moduleData->getCompareUserList();
         if (empty($compareUserList)) {
-            $this->redirect('index');
+            return $this->redirect('index');
         }
 
         $compareData = [];
@@ -361,26 +360,24 @@ class BackendUserController extends ActionController
      * @param int $uid
      * @param int $redirectToCompare
      */
-    public function removeFromCompareListAction($uid, int $redirectToCompare = 0): void
+    public function removeFromCompareListAction($uid, int $redirectToCompare = 0): ResponseInterface
     {
         $this->moduleData->detachUidCompareUser($uid);
         $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
         if ($redirectToCompare) {
-            $this->redirect('compare');
-        } else {
-            $this->redirect('index');
+            return $this->redirect('compare');
         }
+        return $this->redirect('index');
     }
 
     /**
      * Removes all backend users from the compare list
-     * @throws StopActionException
      */
-    public function removeAllFromCompareListAction(): void
+    public function removeAllFromCompareListAction(): ResponseInterface
     {
         $this->moduleData->resetCompareUserList();
         $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
-        $this->redirect('index');
+        return $this->redirect('index');
     }
 
     /**
@@ -455,7 +452,7 @@ class BackendUserController extends ActionController
             }
         }
         if (empty($compareData)) {
-            $this->redirect('groups');
+            return $this->redirect('groups');
         }
 
         $this->view->assign('compareGroupList', $compareData);
@@ -482,14 +479,14 @@ class BackendUserController extends ActionController
      *
      * @param int $uid
      */
-    public function addGroupToCompareListAction(int $uid): void
+    public function addGroupToCompareListAction(int $uid): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
         $list[$uid] = true;
         $backendUser->uc['beuser']['compareGroupUidList'] = $list;
         $backendUser->writeUC();
-        $this->redirect('groups');
+        return $this->redirect('groups');
     }
 
     /**
@@ -498,7 +495,7 @@ class BackendUserController extends ActionController
      * @param int $uid
      * @param int $redirectToCompare
      */
-    public function removeGroupFromCompareListAction(int $uid, int $redirectToCompare = 0): void
+    public function removeGroupFromCompareListAction(int $uid, int $redirectToCompare = 0): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
@@ -507,21 +504,20 @@ class BackendUserController extends ActionController
         $backendUser->writeUC();
 
         if ($redirectToCompare) {
-            $this->redirect('compareGroups');
-        } else {
-            $this->redirect('groups');
+            return $this->redirect('compareGroups');
         }
+        return $this->redirect('groups');
     }
 
     /**
      * Removes all backend user groups from the compare list
      */
-    public function removeAllGroupsFromCompareListAction(): void
+    public function removeAllGroupsFromCompareListAction(): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
         $backendUser->uc['beuser']['compareGroupUidList'] = [];
         $backendUser->writeUC();
-        $this->redirect('groups');
+        return $this->redirect('groups');
     }
 
     /**

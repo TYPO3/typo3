@@ -424,22 +424,6 @@ class Request implements ServerRequestInterface, RequestInterface
      */
 
     /**
-     * @deprecated since v11, will be removed in v12. Violates immutability.
-     */
-    public function setDispatched($flag)
-    {
-        $this->getExtbaseAttribute()->setDispatched($flag);
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function isDispatched()
-    {
-        return $this->getExtbaseAttribute()->isDispatched();
-    }
-
-    /**
      * @deprecated since v11, will be removed in v12.
      */
     public function getRequestUri()

@@ -148,7 +148,9 @@ class LoginController extends AbstractLoginFormController
         if (($forwardResponse = $this->handleLoginForwards()) !== null) {
             return $forwardResponse;
         }
-        $this->handleRedirect();
+        if (($redirectResponse = $this->handleRedirect()) !== null) {
+            return $redirectResponse;
+        }
 
         $this->eventDispatcher->dispatch(new ModifyLoginFormViewEvent($this->view));
 
@@ -181,7 +183,9 @@ class LoginController extends AbstractLoginFormController
         }
 
         $this->eventDispatcher->dispatch(new LoginConfirmedEvent($this, $this->view));
-        $this->handleRedirect();
+        if (($redirectResponse = $this->handleRedirect()) !== null) {
+            return $redirectResponse;
+        }
 
         $this->view->assignMultiple(
             [
@@ -201,7 +205,9 @@ class LoginController extends AbstractLoginFormController
      */
     public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
     {
-        $this->handleRedirect();
+        if (($redirectResponse = $this->handleRedirect()) !== null) {
+            return $this->handleRedirect();
+        }
 
         $this->view->assignMultiple(
             [
@@ -219,12 +225,13 @@ class LoginController extends AbstractLoginFormController
     /**
      * Handles the redirect when $this->redirectUrl is not empty
      */
-    protected function handleRedirect(): void
+    protected function handleRedirect(): ?ResponseInterface
     {
         if ($this->redirectUrl !== '') {
             $this->eventDispatcher->dispatch(new BeforeRedirectEvent($this->loginType, $this->redirectUrl));
-            $this->redirectToUri($this->redirectUrl);
+            return $this->redirectToUri($this->redirectUrl);
         }
+        return null;
     }
 
     /**

@@ -54,7 +54,7 @@ class ActionController extends AbstractController
      *
      * @param string $extensionKey
      */
-    protected function toggleExtensionInstallationStateAction($extensionKey)
+    protected function toggleExtensionInstallationStateAction($extensionKey): ResponseInterface
     {
         try {
             if (Environment::isComposerMode()) {
@@ -73,13 +73,13 @@ class ActionController extends AbstractController
                     $this->installUtility->enrichExtensionWithDetails($extensionKey, false)
                 );
                 if ($this->managementService->installExtension($extension) === false) {
-                    $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
+                    return $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
         } catch (ExtensionManagerException|PackageStatesFileNotWritableException $e) {
             $this->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
         }
-        $this->redirect('index', 'List', null, [
+        return $this->redirect('index', 'List', null, [
             self::TRIGGER_RefreshModuleMenu => true,
             self::TRIGGER_RefreshTopbar => true,
         ]);
@@ -162,7 +162,7 @@ class ActionController extends AbstractController
      *
      * @param string $extension
      */
-    protected function reloadExtensionDataAction($extension)
+    protected function reloadExtensionDataAction($extension): ResponseInterface
     {
         $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
         $registryKey = PathUtility::stripPathSitePrefix($extension['packagePath']) . 'ext_tables_static+adt.sql';
@@ -172,7 +172,7 @@ class ActionController extends AbstractController
 
         $this->installUtility->processExtensionSetup($extension['key']);
 
-        $this->redirect('index', 'List');
+        return $this->redirect('index', 'List');
     }
 
     /**

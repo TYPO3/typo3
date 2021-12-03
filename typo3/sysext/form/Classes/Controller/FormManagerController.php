@@ -311,7 +311,7 @@ class FormManagerController extends AbstractBackendController
      * @throws PersistenceManagerException
      * @internal
      */
-    public function deleteAction(string $formPersistenceIdentifier)
+    public function deleteAction(string $formPersistenceIdentifier): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
@@ -341,7 +341,7 @@ class FormManagerController extends AbstractBackendController
                 true
             );
         }
-        $this->redirect('index');
+        return $this->redirect('index');
     }
 
     /**

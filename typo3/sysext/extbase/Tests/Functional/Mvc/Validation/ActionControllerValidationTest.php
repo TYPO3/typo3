@@ -25,7 +25,6 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -92,15 +91,15 @@ class ActionControllerValidationTest extends FunctionalTestCase
         );
 
         $titleMappingResults = new Result();
-        while (!$request->isDispatched()) {
-            try {
-                $blogController = $this->getContainer()->get(BlogController::class);
-                $response = $blogController->processRequest($request);
-                if ($response instanceof ForwardResponse) {
-                    $titleMappingResults = $response->getArgumentsValidationResult()->forProperty('blogPost.title');
-                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                }
-            } catch (StopActionException $e) {
+        $isDispatched = false;
+        while (!$isDispatched) {
+            $blogController = $this->getContainer()->get(BlogController::class);
+            $response = $blogController->processRequest($request);
+            if ($response instanceof ForwardResponse) {
+                $titleMappingResults = $response->getArgumentsValidationResult()->forProperty('blogPost.title');
+                $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+            } else {
+                $isDispatched = true;
             }
         }
 
@@ -158,23 +157,23 @@ class ActionControllerValidationTest extends FunctionalTestCase
             ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
 
-        while (!$request->isDispatched()) {
-            try {
-                $blogController = $this->getContainer()->get(BlogController::class);
-                $response = $blogController->processRequest($request);
-                if ($response instanceof ForwardResponse) {
+        $isDispatched = false;
+        while (!$isDispatched) {
+            $blogController = $this->getContainer()->get(BlogController::class);
+            $response = $blogController->processRequest($request);
+            if ($response instanceof ForwardResponse) {
 
-                    /** @var Result $validationResult */
-                    $validationResult = $response->getArgumentsValidationResult();
+                /** @var Result $validationResult */
+                $validationResult = $response->getArgumentsValidationResult();
 
-                    self::assertInstanceOf(ForwardResponse::class, $response);
-                    self::assertCount(1, $validationResult->forProperty('blog.title')->getErrors());
-                    self::assertCount(1, $validationResult->forProperty('blog.description')->getErrors());
-                    self::assertCount(1, $validationResult->forProperty('blogPost.title')->getErrors());
+                self::assertInstanceOf(ForwardResponse::class, $response);
+                self::assertCount(1, $validationResult->forProperty('blog.title')->getErrors());
+                self::assertCount(1, $validationResult->forProperty('blog.description')->getErrors());
+                self::assertCount(1, $validationResult->forProperty('blogPost.title')->getErrors());
 
-                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                }
-            } catch (StopActionException $e) {
+                $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+            } else {
+                $isDispatched = true;
             }
         }
 
@@ -225,15 +224,15 @@ class ActionControllerValidationTest extends FunctionalTestCase
         );
 
         $originalArguments = $request->getArguments();
-        while (!$request->isDispatched()) {
-            try {
-                $blogController = $this->getContainer()->get(BlogController::class);
-                $response = $blogController->processRequest($request);
-                if ($response instanceof ForwardResponse) {
-                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                    self::assertEquals($originalArguments, $request->getOriginalRequest()->getAttribute('extbase')->getArguments());
-                }
-            } catch (StopActionException $e) {
+        $isDispatched = false;
+        while (!$isDispatched) {
+            $blogController = $this->getContainer()->get(BlogController::class);
+            $response = $blogController->processRequest($request);
+            if ($response instanceof ForwardResponse) {
+                $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
+                self::assertEquals($originalArguments, $request->getOriginalRequest()->getAttribute('extbase')->getArguments());
+            } else {
+                $isDispatched = true;
             }
         }
 

@@ -30,6 +30,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
 - :php:`\TYPO3\CMS\Extbase\Object\Container\Container`
@@ -91,6 +92,9 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->setRootUid()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forward()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Request->isDispatched()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Request->setDispatched()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setAddQueryStringMethod()`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext()`

@@ -199,17 +199,6 @@ class RequestTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain(): void
-    {
-        $request = new Request();
-        self::assertFalse($request->isDispatched());
-        $request->setDispatched(true);
-        self::assertTrue($request->isDispatched());
-    }
-
-    /**
      * DataProvider for explodeObjectControllerName
      *
      * @return array

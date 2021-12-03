@@ -183,15 +183,10 @@ class SearchController extends ActionController
      * @param array $searchData The incoming search parameters
      * @return array Search parameters
      */
-    public function initialize($searchData = [])
+    protected function initialize($searchData = [])
     {
         if (!is_array($searchData)) {
             $searchData = [];
-        }
-
-        // check if TypoScript is loaded
-        if (!isset($this->settings['results'])) {
-            $this->redirect('noTypoScript');
         }
 
         // Sets availableResultsNumbers - has to be called before request settings are read to avoid DoS attack
@@ -266,6 +261,11 @@ class SearchController extends ActionController
      */
     public function searchAction($search = []): ResponseInterface
     {
+        // check if TypoScript is loaded
+        if (!isset($this->settings['results'])) {
+            return $this->redirect('noTypoScript');
+        }
+
         $searchData = $this->initialize($search);
         // Find free index uid:
         $freeIndexUid = $searchData['freeIndexUid'];
@@ -985,6 +985,11 @@ class SearchController extends ActionController
      */
     public function formAction($search = []): ResponseInterface
     {
+        // check if TypoScript is loaded
+        if (!isset($this->settings['results'])) {
+            return $this->redirect('noTypoScript');
+        }
+
         $searchData = $this->initialize($search);
         // Adding search field value
         $this->view->assign('sword', $this->getSword());

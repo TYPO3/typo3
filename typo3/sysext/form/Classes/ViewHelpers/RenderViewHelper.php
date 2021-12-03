@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Form\Domain\Factory\ArrayFormFactory;
 use TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
@@ -103,20 +102,6 @@ class RenderViewHelper extends AbstractViewHelper
         $formDefinition = $factory->build($overrideConfiguration, $prototypeName);
         $form = $formDefinition->bind($renderingContext->getRequest());
 
-        // If the controller context does not contain a response object, this viewhelper is used in a
-        // fluid template rendered by the FluidTemplateContentObject. Handle the StopActionException
-        // as there is no extbase dispatcher involved that catches that. */
-        try {
-            return $form->render();
-        } catch (StopActionException $exception) {
-            // @deprecated since v11, will be removed in v12: StopActionException is deprecated, drop this catch block.
-            // RedirectFinisher for throws a PropagateResponseException instead which bubbles up into Middleware.
-            trigger_error(
-                'Throwing StopActionException is deprecated. If really needed, throw a (internal) PropagateResponseException'
-                . ' instead, for now. Note this is subject to change.',
-                E_USER_DEPRECATED
-            );
-            return $exception->getResponse()->getBody()->getContents();
-        }
+        return $form->render();
     }
 }

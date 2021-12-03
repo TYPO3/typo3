@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -123,20 +122,16 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function dispatch(ArgumentTestController $controller, RequestInterface $request): ResponseInterface
     {
-        while (!$request->isDispatched()) {
-            try {
-                $response = $controller->processRequest($request);
-                if ($response instanceof ForwardResponse) {
-                    $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
-                    $controller = $this->buildController();
-                    return $controller->processRequest($request);
-                }
-            } catch (StopActionException $exception) {
-                // simulate Dispatcher::resolveController() using a new controller instance
+        $isDispatched = false;
+        while (!$isDispatched) {
+            $response = $controller->processRequest($request);
+            if ($response instanceof ForwardResponse) {
+                $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
                 $controller = $this->buildController();
+                return $controller->processRequest($request);
             }
+            $isDispatched = true;
         }
-
         return $response;
     }
 

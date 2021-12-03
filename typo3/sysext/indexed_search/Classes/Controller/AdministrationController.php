@@ -282,7 +282,7 @@ class AdministrationController extends ActionController
             ->fetchAssociative();
 
         if (!is_array($pageHashRow)) {
-            $this->redirect('statistic');
+            return $this->redirect('statistic');
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_debug');
@@ -439,7 +439,7 @@ class AdministrationController extends ActionController
      * @param array $stopwords
      * @param array $keywords
      */
-    public function saveStopwordsKeywordsAction($pageHash, $pageId, $stopwords = [], $keywords = [])
+    public function saveStopwordsKeywordsAction($pageHash, $pageId, $stopwords = [], $keywords = []): ResponseInterface
     {
         if ($this->getBackendUserAuthentication()->isAdmin()) {
             if (is_array($stopwords) && !empty($stopwords)) {
@@ -450,7 +450,7 @@ class AdministrationController extends ActionController
             }
         }
 
-        $this->redirect('statisticDetails', null, null, ['pageHash' => $pageHash]);
+        return $this->redirect('statisticDetails', null, null, ['pageHash' => $pageHash]);
     }
 
     /**
@@ -535,10 +535,10 @@ class AdministrationController extends ActionController
      * @param int $depth
      * @param string $mode
      */
-    public function deleteIndexedItemAction($id, $depth = 1, $mode = 'overview')
+    public function deleteIndexedItemAction($id, $depth = 1, $mode = 'overview'): ResponseInterface
     {
         $this->administrationRepository->removeIndexedPhashRow($id, $this->pageUid, $depth);
-        $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
+        return $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
     }
 
     /**

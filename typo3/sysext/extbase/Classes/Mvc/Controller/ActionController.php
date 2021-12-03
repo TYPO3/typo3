@@ -22,7 +22,6 @@ use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -37,7 +36,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
@@ -406,8 +404,6 @@ abstract class ActionController implements ControllerInterface
     {
         /** @var Request $request */
         $this->request = $request;
-        // @deprecated since v11, will be removed in v12.
-        $this->request->setDispatched(true);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->uriBuilder->setRequest($request);
         $this->actionMethodName = $this->resolveActionMethodName();
@@ -517,34 +513,14 @@ abstract class ActionController implements ControllerInterface
         if ($actionResult instanceof ResponseInterface) {
             return $actionResult;
         }
-
-        trigger_error(
+        throw new \RuntimeException(
             sprintf(
-                'Controller action %s does not return an instance of %s which is deprecated.',
+                'Controller action %s did not return an instance of %s.',
                 static::class . '::' . $this->actionMethodName,
                 ResponseInterface::class
             ),
-            E_USER_DEPRECATED
+            1638554283
         );
-
-        $response = new Response();
-        $body = new Stream('php://temp', 'rw');
-        if ($actionResult === null && $this->view instanceof ViewInterface) {
-            if ($this->view instanceof JsonView) {
-                // This is just a fallback solution until v12, when Extbase requires PSR-7 responses to be
-                // returned in their controller actions. The header, added below, may gets overwritten in
-                // the Extbase bootstrap, depending on the context (FE/BE) and TypoScript configuration.
-                $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
-            }
-            $body->write($this->view->render());
-        } elseif (is_string($actionResult) && $actionResult !== '') {
-            $body->write($actionResult);
-        } elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
-            $body->write((string)$actionResult);
-        }
-
-        $body->rewind();
-        return $response->withBody($body);
     }
 
     /**
@@ -811,44 +787,6 @@ abstract class ActionController implements ControllerInterface
     }
 
     /**
-     * Forwards the request to another action and / or controller.
-     *
-     * Request is directly transferred to the other action / controller
-     * without the need for a new request.
-     *
-     * @param string $actionName Name of the action to forward to
-     * @param string|null $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
-     * @param string|null $extensionName Name of the extension containing the controller to forward to. If not specified, the current extension is assumed.
-     * @param array|null $arguments Arguments to pass to the target action
-     * @throws StopActionException
-     * @see redirect()
-     * @deprecated since TYPO3 11.0, will be removed in 12.0
-     */
-    public function forward($actionName, $controllerName = null, $extensionName = null, array $arguments = null)
-    {
-        trigger_error(
-            sprintf('Method %s is deprecated. To forward to another action, return a %s instead.', __METHOD__, ForwardResponse::class),
-            E_USER_DEPRECATED
-        );
-
-        $this->request->setDispatched(false);
-        $this->request->setControllerActionName($actionName);
-
-        if ($controllerName !== null) {
-            $this->request->setControllerName($controllerName);
-        }
-
-        if ($extensionName !== null) {
-            $this->request->setControllerExtensionName($extensionName);
-        }
-
-        if ($arguments !== null) {
-            $this->request->setArguments($arguments);
-        }
-        throw new StopActionException('forward', 1476045801);
-    }
-
-    /**
      * Redirects the request to another action and / or controller.
      *
      * Redirect will be sent to the client which then performs another request to the new URI.
@@ -860,10 +798,8 @@ abstract class ActionController implements ControllerInterface
      * @param int|null $pageUid Target page uid. If NULL, the current page uid is used
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @throws StopActionException deprecated since TYPO3 11.0, method will RETURN a Core\Http\RedirectResponse instead of throwing in v12
-     * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
-    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): void
+    protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $_ = null, $statusCode = 303): ResponseInterface
     {
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
@@ -876,7 +812,7 @@ abstract class ActionController implements ControllerInterface
             $this->uriBuilder->setAbsoluteUriScheme('https');
         }
         $uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
-        $this->redirectToUri($uri, null, $statusCode);
+        return $this->redirectToUri($uri, null, $statusCode);
     }
 
     /**
@@ -885,15 +821,11 @@ abstract class ActionController implements ControllerInterface
      * @param mixed $uri A string representation of a URI
      * @param null $_ (optional) Unused
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
-     * @throws StopActionException deprecated since TYPO3 11.0, will be removed in 12.0
-     * @todo: ': ResponseInterface' (without ?) in v12 as method return type together with redirectToUri() cleanup
      */
-    protected function redirectToUri($uri, $_ = null, $statusCode = 303): void
+    protected function redirectToUri($uri, $_ = null, $statusCode = 303): ResponseInterface
     {
         $uri = $this->addBaseUriIfNecessary($uri);
-        $response = new RedirectResponse($uri, $statusCode);
-        // @deprecated since v11, will be removed in v12. RETURN the response instead. See Dispatcher class, too.
-        throw new StopActionException('redirectToUri', 1476045828, null, $response);
+        return new RedirectResponse($uri, $statusCode);
     }
 
     /**

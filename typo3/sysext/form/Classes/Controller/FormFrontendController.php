@@ -86,7 +86,7 @@ class FormFrontendController extends ActionController
      *
      * @internal
      */
-    public function performAction()
+    public function performAction(): ResponseInterface
     {
         return new ForwardResponse('render');
     }
