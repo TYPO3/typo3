@@ -474,6 +474,15 @@ class ExtensionXmlParser implements \SplSubject
     }
 
     /**
+     * Whether the current version number is valid
+     */
+    public function isValidVersionNumber(): bool
+    {
+        // Validate the version number, see `isValidVersionNumber` in TER API
+        return (bool)preg_match('/^(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})$/', $this->version);
+    }
+
+    /**
      * Returns documentation link.
      */
     public function getDocumentationLink(): string

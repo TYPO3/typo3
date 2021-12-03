@@ -213,6 +213,10 @@ class BulkExtensionRepositoryWriter implements \SplObserver
                 );
             $this->arrRows = [];
         }
+        if (!$subject->isValidVersionNumber()) {
+            // Skip in case extension version is not valid
+            return;
+        }
         $versionRepresentations = VersionNumberUtility::convertVersionStringToArray($subject->getVersion());
         // order must match that of self::$fieldNames!
         $this->arrRows[] = [
