@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -32,7 +33,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValu
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 
 /**
  * Test case for build URLs with TypoLink via Frontend Request.
@@ -537,9 +537,8 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     /**
      * @param string $parameter
      * @param AbstractInstruction ...$instructions
-     * @return InternalResponse
      */
-    private function invokeTypoLink(string $parameter, AbstractInstruction ...$instructions): InternalResponse
+    private function invokeTypoLink(string $parameter, AbstractInstruction ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;
         $targetPageId = 1200;

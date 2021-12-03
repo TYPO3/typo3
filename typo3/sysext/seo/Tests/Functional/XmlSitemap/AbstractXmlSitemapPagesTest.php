@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 
 abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
 {
@@ -60,7 +60,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
         );
     }
 
-    protected function getResponse(string $uri = 'http://localhost/'): InternalResponse
+    protected function getResponse(string $uri = 'http://localhost/'): ResponseInterface
     {
         return $this->executeFrontendSubRequest(
             (new InternalRequest($uri))->withQueryParameters([

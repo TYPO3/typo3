@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\FluidStyledContent\Tests\Functional\Rendering;
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -24,7 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractI
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class SecureHtmlRenderingTest extends FunctionalTestCase
@@ -261,9 +261,8 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 
     /**
      * @param AbstractInstruction ...$instructions
-     * @return InternalResponse
      */
-    private function invokeFrontendRendering(AbstractInstruction ...$instructions): InternalResponse
+    private function invokeFrontendRendering(AbstractInstruction ...$instructions): ResponseInterface
     {
         $sourcePageId = 1100;
 
