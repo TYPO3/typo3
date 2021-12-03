@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-belog",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Log - View log (sys_log table) in the TYPO3 backend module System>Log and Web>Info/Log.",
+	"description": "TYPO3 CMS Log - View logs from the sys_log table in the TYPO3 backend modules System>Log and Web>Info>Log.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

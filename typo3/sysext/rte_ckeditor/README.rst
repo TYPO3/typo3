@@ -3,10 +3,10 @@
 `Help & Support <https://typo3.org/help>`__ \|
 
 ===============================================
-TYPO3 CMS RTE CKeditor (typo3/cms-rte-ckeditor)
+TYPO3 CMS RTE CKEditor (typo3/cms-rte-ckeditor)
 ===============================================
 
-Integration of CKEditor as Rich Text Editor for the TYPO3 backend.
+Integration of CKEditor as a Rich Text Editor for the TYPO3 backend.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

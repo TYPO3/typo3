@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-indexed-search",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Indexed Search - Index and search for TYPO3 content (and files) within the site.",
+	"description": "TYPO3 CMS Indexed Search - Provides indexing functionality for TYPO3 pages and records as well as files including PDF, Word, HTML and plain text.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

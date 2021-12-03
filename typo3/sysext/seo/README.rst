@@ -6,7 +6,7 @@
 TYPO3 CMS SEO (typo3/cms-seo)
 =============================
 
-SEO features for TYPO3 including sitemaps.
+SEO features including specific fields for SEO purposes, rendering of HTML meta tags and sitemaps.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

@@ -6,7 +6,7 @@
 TYPO3 CMS TypoScript Template (typo3/cms-tstemplate)
 ====================================================
 
-Web>Template TYPO3 backend module for management of TypoScript template records
+TYPO3 backend module for the management of TypoScript template records
 for the CMS frontend.
 
 :Repository: https://github.com/typo3/typo3

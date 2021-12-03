@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-form",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Form - Flexible TYPO3 frontend form framework with TYPO3 backend editor.",
+	"description": "TYPO3 CMS Form - Flexible TYPO3 frontend form framework that comes with a backend editor interface.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

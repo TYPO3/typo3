@@ -6,10 +6,10 @@
 TYPO3 CMS Install Tool (typo3/cms-install)
 ==========================================
 
-Install Tool (Admin Tools) for installation, upgrade, system administration and
-setup.
+The Install Tool is used for installation, upgrade, system administration and
+setup tasks.
 
-Is displayed as module "Admin Tools" in the backend or reachable via a
+It can be accessed via the Admin Tools module in the backend or through a
 dedicated URL (typo3/install.php). The functionality (via the browser) is only
 available for system maintainers.
 

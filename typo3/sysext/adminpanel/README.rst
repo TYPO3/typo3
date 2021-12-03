@@ -6,8 +6,8 @@
 TYPO3 CMS Admin Panel (typo3/cms-adminpanel)
 ============================================
 
-Panel with additional functionality in the frontend (Debugging, Caching,
-Preview...).
+The Admin Panel displays information about your site in the frontend and contains a range
+of metrics including debug and caching information.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

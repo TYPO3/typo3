@@ -6,10 +6,10 @@
 TYPO3 CMS Filelist (typo3/cms-filelist)
 =======================================
 
-TYPO3 backend module File>Filelist for managing files.
+TYPO3 backend module (File>Filelist) used for managing files.
 
 Makes files in the defined storages available in the backend (upload, delete,
-copy etc.). Default storage is fileadmin.
+copy etc.). The default storage is fileadmin.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

@@ -6,10 +6,9 @@
 TYPO3 CMS Indexed Search (typo3/cms-indexed-search)
 ===================================================
 
-Provides indexing functionality for TYPO3 pages and records as well as files like
+Provides indexing functionality for TYPO3 pages and records as well as files including
 PDF, Word, HTML and plain text.
-A backend module for statistics of the indexer and a frontend plugin is part of
-the extension.
+It also features a backend module for statistics of the indexer and a frontend plugin.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

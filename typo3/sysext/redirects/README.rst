@@ -6,7 +6,7 @@
 TYPO3 CMS Redirects (typo3/cms-redirects)
 =========================================
 
-Create redirects manually, list existing redirects and automatically create
+Create manual redirects, list existing redirects and automatically create
 redirects on slug changes.
 
 :Repository: https://github.com/typo3/typo3

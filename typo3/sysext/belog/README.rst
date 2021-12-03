@@ -6,11 +6,10 @@
 TYPO3 CMS Log (typo3/cms-belog)
 ===============================
 
-View log (sys_log table) in the TYPO3 backend module System>Log and
-Web>Info/Log.
+View logs from the sys_log table in the TYPO3 backend modules System>Log and Web>Info>Log.
 
-The TYPO3 backend module System > Log provides a system wide overview and
-Web>Info/Log shows logs related to specific pages.
+The TYPO3 backend module System>Log provides a system wide overview and
+Web>Info>Log shows logs related to specific pages.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

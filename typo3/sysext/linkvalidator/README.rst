@@ -6,7 +6,7 @@
 TYPO3 CMS LinkValidator (typo3/cms-linkvalidator)
 =================================================
 
-Checks for broken links and displays results in Info>Linkvalidator backend
+Checks for broken links and displays results in the (Info>LinkValidator) backend
 module.
 
 It can validate all kinds of links: internal, external and file links. The

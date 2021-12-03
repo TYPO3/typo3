@@ -6,7 +6,7 @@
 TYPO3 CMS Frontend Login (typo3/cms-felogin)
 ============================================
 
-A template-based plugin to log in website users in the TYPO3 frontend.
+A template-based plugin used to log in website users in the TYPO3 frontend.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

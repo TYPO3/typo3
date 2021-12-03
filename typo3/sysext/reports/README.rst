@@ -6,7 +6,7 @@
 TYPO3 CMS Reports (typo3/cms-reports)
 =====================================
 
-Show status reports and installed services in System>Reports backend module.
+Show status reports and installed services in the (System>Reports) backend module.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

@@ -6,8 +6,8 @@
 TYPO3 CMS Setup (typo3/cms-setup)
 =================================
 
-Allows users to edit a limited set of options for their user profile, e.g.
-preferred language and their name and email address.
+Allows users to edit a limited set of options for their user profile, including
+preferred language, their name and email address.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

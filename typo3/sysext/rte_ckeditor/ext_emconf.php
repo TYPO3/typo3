@@ -1,8 +1,8 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'TYPO3 CMS RTE CKeditor',
-    'description' => 'Integration of CKEditor as Rich Text Editor for the TYPO3 backend.',
+    'title' => 'TYPO3 CMS RTE CKEditor',
+    'description' => 'Integration of CKEditor as a Rich Text Editor for the TYPO3 backend.',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

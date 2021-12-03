@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Admin Panel',
-    'description' => 'Panel with additional functionality in the frontend (Debugging, Caching, Preview...).',
+    'description' => 'The Admin Panel displays information about your site in the frontend and contains a range of metrics including debug and caching information.',
     'category' => 'fe',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,

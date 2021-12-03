@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Import/Export',
-    'description' => 'Tool for importing and exporting records using XML or the custom serialized format T3D.',
+    'description' => 'Tool for importing and exporting records using XML or the custom T3D format.',
     'category' => 'be',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

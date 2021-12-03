@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-info",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Info - TYPO3 backend module for displaying information, such as a pagetree overview or a localization overview.",
+	"description": "TYPO3 CMS Info - TYPO3 backend module for displaying information, such as a pagetree overview and localization information.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

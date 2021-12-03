@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-linkvalidator",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS LinkValidator - Checks for broken links and displays results in Info>Linkvalidator backend module.",
+	"description": "TYPO3 CMS LinkValidator - Checks for broken links and displays results in the (Info>LinkValidator) backend module.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

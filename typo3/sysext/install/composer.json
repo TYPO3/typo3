@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-install",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Install Tool - Install Tool (Admin Tools) for installation, upgrade, system administration and setup.",
+	"description": "TYPO3 CMS Install Tool - The Install Tool is used for installation, upgrade, system administration and setup tasks.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-beuser",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Backend User - TYPO3 backend module (System/Backend Users) for managing backend users and groups.",
+	"description": "TYPO3 CMS Backend User - TYPO3 backend module System>Backend Users for managing backend users and groups.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

@@ -6,8 +6,8 @@
 TYPO3 CMS Viewpage (typo3/cms-viewpage)
 =======================================
 
-Web>View TYPO3 backend module to show the frontend webpage inside the TYPO3
-backend frameset.
+Use the (Web>View) backend module to view a frontend page inside the TYPO3
+backend.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

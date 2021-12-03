@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Filelist',
-    'description' => 'TYPO3 backend module File>Filelist for managing files.',
+    'description' => 'TYPO3 backend module (File>Filelist) used for managing files.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

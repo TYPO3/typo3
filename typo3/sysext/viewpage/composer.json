@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-viewpage",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Viewpage - Web>View TYPO3 backend module to show the frontend webpage inside the TYPO3 backend frameset.",
+	"description": "TYPO3 CMS Viewpage - Use the (Web>View) backend module to view a frontend page inside the TYPO3 backend.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

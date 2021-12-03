@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Info',
-    'description' => 'TYPO3 backend module for displaying information, such as a pagetree overview or a localization overview.',
+    'description' => 'TYPO3 backend module for displaying information, such as a pagetree overview and localization information.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

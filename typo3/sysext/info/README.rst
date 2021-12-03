@@ -6,8 +6,8 @@
 TYPO3 CMS Info (typo3/cms-info)
 ===============================
 
-TYPO3 backend module for displaying information, such as a pagetree overview or
-a localization overview.
+TYPO3 backend module for displaying information, such as a pagetree overview and
+localization information.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

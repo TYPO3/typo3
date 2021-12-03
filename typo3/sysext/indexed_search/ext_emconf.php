@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Indexed Search',
-    'description' => 'Index and search for TYPO3 content (and files) within the site.',
+    'description' => 'Provides indexing functionality for TYPO3 pages and records as well as files including PDF, Word, HTML and plain text.',
     'category' => 'plugin',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

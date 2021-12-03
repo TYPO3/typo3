@@ -6,7 +6,7 @@
 TYPO3 CMS Recordlist (typo3/cms-recordlist)
 ===========================================
 
-List of database records in the TYPO3 backend module Web>List.
+Lists database records in the TYPO3 backend module (Web>List).
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

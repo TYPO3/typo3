@@ -6,7 +6,7 @@
 TYPO3 CMS Form (typo3/cms-form)
 ===============================
 
-Flexible TYPO3 frontend form framework with TYPO3 backend editor.
+Flexible TYPO3 frontend form framework that comes with a backend editor interface.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

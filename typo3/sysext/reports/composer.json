@@ -1,7 +1,7 @@
 {
 	"name": "typo3/cms-reports",
 	"type": "typo3-cms-framework",
-	"description": "TYPO3 CMS Reports - Show status reports and installed services in System>Reports backend module.",
+	"description": "TYPO3 CMS Reports - Show status reports and installed services in the (System>Reports) backend module.",
 	"homepage": "https://typo3.org",
 	"license": ["GPL-2.0-or-later"],
 	"authors": [{

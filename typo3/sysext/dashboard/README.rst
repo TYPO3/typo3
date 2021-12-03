@@ -6,7 +6,7 @@
 TYPO3 CMS Dashboard (typo3/cms-dashboard)
 =========================================
 
-TYPO3 backend module for configurable dashboards with widgets.
+TYPO3 backend module used to configure and create backend widgets.
 
 :Repository: https://github.com/typo3/typo3
 :Issues: https://forge.typo3.org/

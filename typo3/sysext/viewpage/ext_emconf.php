@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Viewpage',
-    'description' => 'Web>View TYPO3 backend module to show the frontend webpage inside the TYPO3 backend frameset.',
+    'description' => 'Use the (Web>View) backend module to view a frontend page inside the TYPO3 backend.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

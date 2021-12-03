@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Setup',
-    'description' => 'Allows users to edit a limited set of options for their user profile, e.g. preferred language and their name and email address.',
+    'description' => 'Allows users to edit a limited set of options for their user profile, including preferred language, their name and email address.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Install Tool',
-    'description' => 'Install Tool (Admin Tools) for installation, upgrade, system administration and setup.',
+    'description' => 'The Install Tool is used for installation, upgrade, system administration and setup tasks.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,

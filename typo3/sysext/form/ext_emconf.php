@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Form',
-    'description' => 'Flexible TYPO3 frontend form framework with TYPO3 backend editor.',
+    'description' => 'Flexible TYPO3 frontend form framework that comes with a backend editor interface.',
     'category' => 'misc',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,
