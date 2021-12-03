@@ -167,6 +167,7 @@ The following class properties have been removed:
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext`
 - :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->controllerContext`
 - :php:`\TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj`
