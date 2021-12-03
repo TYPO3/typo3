@@ -117,7 +117,7 @@ Manual repair suggestions:
                 );
 
             $countQueryBuilder = clone $queryBuilder;
-            $rowCount = $countQueryBuilder->count('uid')->execute()->fetchColumn();
+            $rowCount = $countQueryBuilder->count('uid')->execute()->fetchOne();
             if ($rowCount) {
                 $queryBuilder->select('uid')->orderBy('uid');
                 $result = $queryBuilder->execute();

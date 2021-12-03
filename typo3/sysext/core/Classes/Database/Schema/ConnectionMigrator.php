@@ -300,8 +300,7 @@ class ConnectionMigrator
             // columns, indexes and foreign_keys. Order of definitions is based on
             // extension load order.
             $currentTableDefinition = $tablesForConnection[$tableName];
-            $tablesForConnection[$tableName] = GeneralUtility::makeInstance(
-                Table::class,
+            $tablesForConnection[$tableName] = new Table(
                 $tableName,
                 array_merge($currentTableDefinition->getColumns(), $table->getColumns()),
                 array_merge($currentTableDefinition->getIndexes(), $table->getIndexes()),
@@ -453,8 +452,7 @@ class ConnectionMigrator
             }
 
             $tableOptions = $tableDiff->getTableOptions();
-            $tableOptionsDiff = GeneralUtility::makeInstance(
-                TableDiff::class,
+            $tableOptionsDiff = new TableDiff(
                 $tableDiff->name,
                 [],
                 [],
@@ -1171,8 +1169,7 @@ class ConnectionMigrator
                 );
             }
 
-            $table = GeneralUtility::makeInstance(
-                Table::class,
+            $table = new Table(
                 $table->getQuotedName($connection->getDatabasePlatform()),
                 $table->getColumns(),
                 $indexes,
@@ -1257,8 +1254,7 @@ class ConnectionMigrator
     {
         $databasePlatform = $this->connection->getDatabasePlatform();
 
-        return GeneralUtility::makeInstance(
-            Table::class,
+        return new Table(
             $databasePlatform->quoteIdentifier($table->getName()),
             $table->getColumns(),
             $table->getIndexes(),

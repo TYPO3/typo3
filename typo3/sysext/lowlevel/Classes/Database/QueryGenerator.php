@@ -455,7 +455,7 @@ class QueryGenerator
                     $markup[] = htmlspecialchars($this->getLanguageService()->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
                     $markup[] = '  <table class="table table-striped table-hover">';
-                    $markup[] = $this->resultRowTitles($lastRow, $conf);
+                    $markup[] = $this->resultRowTitles((array)$lastRow, $conf);
                     $markup[] = implode(LF, $rowArr);
                     $markup[] = '  </table>';
                     $markup[] = '</div>';
@@ -789,7 +789,7 @@ class QueryGenerator
                 if (!empty($rowArr)) {
                     $cPR['header'] = 'Result';
                     $out .= '<table class="table table-striped table-hover">'
-                        . $this->resultRowTitles($dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr)
+                        . $this->resultRowTitles((array)$dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr)
                         . '</table>';
                 } else {
                     $this->renderNoResultsFoundMessage();

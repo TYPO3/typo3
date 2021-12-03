@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Storage;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
@@ -106,7 +106,7 @@ class Typo3DbBackendTest extends UnitTestCase
 
         $expressionBuilderProphet = $this->prophesize(ExpressionBuilder::class);
         $expressionBuilderProphet->eq(Argument::cetera())->willReturn('1 = 1');
-        $queryResultProphet = $this->prophesize(Statement::class);
+        $queryResultProphet = $this->prophesize(Result::class);
         $queryResultProphet->fetchOne(Argument::cetera())->willReturn($expectedUid);
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $queryBuilderProphet->execute()->willReturn($queryResultProphet->reveal());

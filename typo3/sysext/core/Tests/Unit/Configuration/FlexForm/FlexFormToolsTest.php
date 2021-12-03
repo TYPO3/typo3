@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -574,7 +574,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
@@ -635,7 +635,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -704,7 +704,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -846,7 +846,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -909,7 +909,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -971,7 +971,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -1055,7 +1055,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         // Two queries are done, so we need two instances
@@ -1254,7 +1254,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryRestrictionContainerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryRestrictionContainerRevelation = $queryRestrictionContainerProphecy->reveal();
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         // Register connection pool revelation in framework, this is the entry point used by system under test
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());

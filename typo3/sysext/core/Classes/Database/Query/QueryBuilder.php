@@ -17,15 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
-use Doctrine\DBAL\Driver\ResultStatement;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\ForwardCompatibility\Result;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -206,24 +205,80 @@ class QueryBuilder
     /**
      * Executes this query using the bound parameters and their types.
      *
-     * @return Statement|Result|ResultStatement|int
+     * doctrine/dbal decided to split execute() into executeQuery() and
+     * executeStatement() for doctrine/dbal:^3.0, like it was done on
+     * connection level already, thus these methods are added to this
+     * decorator class also as preparation for extension authors, that
+     * they are able to write code which is compatible across two core
+     * versions and avoid deprecation warning. Additional this will ease
+     * backport without the need to switch if execute() is not used anymore.
+     *
+     * It is recommended to use directly executeQuery() for 'SELECT' and
+     * executeStatement() for 'INSERT', 'UPDATE' and 'DELETE' queries.
+     *
+     * @return Result|int
+     * @throws DBALException
+     * @todo Deprecate in v12 along with raise to min doctrine/dbal:^3.2 to align with doctrine/dbal deprecation.
      */
     public function execute()
     {
         if ($this->getType() !== \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
-            return $this->concreteQueryBuilder->execute();
+            return $this->executeStatement();
         }
 
+        return $this->executeQuery();
+    }
+
+    /**
+     * Executes an SQL query (SELECT) and returns a Result.
+     *
+     * doctrine/dbal decided to split execute() into executeQuery() and
+     * executeStatement() for doctrine/dbal:^3.0, like it was done on
+     * connection level already, thus these methods are added to this
+     * decorator class also as preparation for extension authors, that
+     * they are able to write code which is compatible across two core
+     * versions and avoid deprecation warning. Additional this will ease
+     * backport without the need to switch if execute() is not used anymore.
+     *
+     * @throws DBALException
+     */
+    public function executeQuery(): Result
+    {
         // Set additional query restrictions
         $originalWhereConditions = $this->addAdditionalWhereConditions();
 
-        $result = $this->concreteQueryBuilder->execute();
+        // @todo Call $this->concreteQueryBuilder->executeQuery()
+        //        directly with doctrine/dbal:^3.2 raise in v12.
+        $return = $this->concreteQueryBuilder->execute();
 
         // Restore the original query conditions in case the user keeps
         // on modifying the state.
         $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
 
-        return $result;
+        return $return;
+    }
+
+    /**
+     * Executes an SQL statement (INSERT, UPDATE and DELETE) and returns
+     * the number of affected rows.
+     *
+     * doctrine/dbal decided to split execute() into executeQuery() and
+     * executeStatement() for doctrine/dbal:^3.0, like it was done on
+     * connection level already, thus these methods are added to this
+     * decorator class also as preparation for extension authors, that
+     * they are able to write code which is compatible across two core
+     * versions and avoid deprecation warning. Additional this will ease
+     * backport without the need to switch if execute() is not used anymore.
+     *
+     * @return int The number of affected rows.
+     *
+     * @throws DBALException
+     */
+    public function executeStatement(): int
+    {
+        // @todo Call $this->concreteQueryBuilder->executeStatement()
+        //        directly with doctrine/dbal:^3.2 raise in v12.
+        return $this->concreteQueryBuilder->execute();
     }
 
     /**
@@ -693,6 +748,12 @@ class QueryBuilder
      */
     public function where(...$predicates): QueryBuilder
     {
+        // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
+        // such as PageRepository->$where_hid_del which could be empty
+        $predicates = array_filter($predicates);
+        if (empty($predicates)) {
+            return $this;
+        }
         $this->concreteQueryBuilder->where(...$predicates);
 
         return $this;
@@ -710,6 +771,12 @@ class QueryBuilder
      */
     public function andWhere(...$where): QueryBuilder
     {
+        // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
+        // such as PageRepository->$where_hid_del which could be empty
+        $where = array_filter($where);
+        if (empty($where)) {
+            return $this;
+        }
         $this->concreteQueryBuilder->andWhere(...$where);
 
         return $this;
@@ -727,6 +794,12 @@ class QueryBuilder
      */
     public function orWhere(...$where): QueryBuilder
     {
+        // Doctrine DBAL 3.x requires a non-empty $predicate, however TYPO3 uses static values
+        // such as PageRepository->$where_hid_del which could be empty
+        $where = array_filter($where);
+        if (empty($where)) {
+            return $this;
+        }
         $this->concreteQueryBuilder->orWhere(...$where);
 
         return $this;

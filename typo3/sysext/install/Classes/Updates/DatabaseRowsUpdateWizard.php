@@ -204,7 +204,8 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
             }
             $statement = $queryBuilder->execute();
             $rowCountWithoutUpdate = 0;
-            while ($row = $rowBefore = $statement->fetchAssociative()) {
+            while ($row = $statement->fetchAssociative()) {
+                $rowBefore = $row;
                 foreach ($updaters as $updater) {
                     $row = $updater->updateTableRow($table, $row);
                 }

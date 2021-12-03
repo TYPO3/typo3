@@ -115,12 +115,7 @@ class ConnectionMigratorTest extends UnitTestCase
     protected function getTable(): Table
     {
         $tableName = 'table_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
-        $table = GeneralUtility::makeInstance(
-            Table::class,
-            $tableName
-        );
-
-        return $table;
+        return new Table($tableName);
     }
 
     /**
@@ -132,12 +127,9 @@ class ConnectionMigratorTest extends UnitTestCase
     protected function getColumn(): Column
     {
         $columnName = 'column_name_that_is_ridiculously_long_' . bin2hex(random_bytes(100));
-        $column = GeneralUtility::makeInstance(
-            Column::class,
+        return new Column(
             $columnName,
             Type::getType('string')
         );
-
-        return $column;
     }
 }

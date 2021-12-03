@@ -219,7 +219,7 @@ class PostgreSql extends AbstractPlatform
 
     protected function checkDatabaseName(Connection $connection): void
     {
-        if (static::isValidDatabaseName($connection->getDatabase())) {
+        if (static::isValidDatabaseName((string)$connection->getDatabase())) {
             return;
         }
 

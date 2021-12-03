@@ -888,7 +888,7 @@ class DataMapProcessor
             ->execute();
 
         $translationValues = [];
-        foreach ($statement as $record) {
+        while ($record = $statement->fetchAssociative()) {
             $translationValues[$record['uid']] = $record;
         }
         return $translationValues;
@@ -1141,7 +1141,7 @@ class DataMapProcessor
             ->execute();
 
         $dependentElements = [];
-        foreach ($statement as $record) {
+        while ($record = $statement->fetchAssociative()) {
             $dependentElements[] = $record;
         }
         return $dependentElements;

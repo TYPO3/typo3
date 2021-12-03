@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
@@ -78,7 +78,7 @@ class AbstractRepositoryTest extends UnitTestCase
      */
     public function findByUidAcceptsNumericUidInString(): void
     {
-        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalled()->willReturn(['uid' => 123]);
 
         $queryBuilderProphet = $this->createDatabaseMock();

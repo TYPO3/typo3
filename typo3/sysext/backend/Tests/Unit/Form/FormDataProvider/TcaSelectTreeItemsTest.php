@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -67,8 +67,8 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             return '`' . $arguments[0] . '`';
         });
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalled();
 
         $restrictionProphet = $this->prophesize(DefaultRestrictionContainer::class);

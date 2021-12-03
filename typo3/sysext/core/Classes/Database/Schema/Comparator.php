@@ -55,7 +55,7 @@ class Comparator extends \Doctrine\DBAL\Schema\Comparator
      *
      * @param \Doctrine\DBAL\Schema\Table $fromTable
      * @param \Doctrine\DBAL\Schema\Table $toTable
-     * @return bool|\Doctrine\DBAL\Schema\TableDiff|\TYPO3\CMS\Core\Database\Schema\TableDiff
+     * @return false|\Doctrine\DBAL\Schema\TableDiff|\TYPO3\CMS\Core\Database\Schema\TableDiff
      * @throws \InvalidArgumentException
      */
     public function diffTable(Table $fromTable, Table $toTable)

@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -176,7 +176,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexReturnsOverlaidRowBasedOnTheLanguageOfTheGivenPage(): void
     {
-        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalledTimes(2)->willReturn(['uid' => 0, 'header' => 'NOT_OVERLAID'], false);
 
         $this->prepareSectionIndexTest();
@@ -250,7 +250,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexFilters(int $expectedAmount, array $dataRow): void
     {
-        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->willReturn($dataRow, false);
 
         $this->prepareSectionIndexTest();
@@ -319,7 +319,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      */
     public function sectionIndexQueriesWithDifferentColPos(array $configuration, string $colPosFromStdWrapValue, string $whereClausePrefix): void
     {
-        $statementProphet = $this->prophesize(Statement::class);
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->willReturn([]);
 
         $this->prepareSectionIndexTest();

@@ -650,7 +650,7 @@ class QueryView
                     $markup[] = htmlspecialchars($this->languageService->sL($conf['ctrl']['title'])) . ' (' . $count . ')';
                     $markup[] = '  </div>';
                     $markup[] = '  <table class="table table-striped table-hover">';
-                    $markup[] = $this->resultRowTitles($lastRow, $conf);
+                    $markup[] = $this->resultRowTitles((array)$lastRow, $conf);
                     $markup[] = implode(LF, $rowArr);
                     $markup[] = '  </table>';
                     $markup[] = '</div>';

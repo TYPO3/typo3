@@ -605,8 +605,11 @@ class InstallerController
                     // utf-8 as default for non mysql
                     $connectionParams['charset'] = 'utf-8';
                 }
-                DriverManager::getConnection($connectionParams)->ping();
-                $success = true;
+                $connection = DriverManager::getConnection($connectionParams);
+                if ($connection->getWrappedConnection() !== null) {
+                    $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
+                    $success = true;
+                }
             } catch (DBALException $e) {
                 $messages[] = new FlashMessage(
                     'Connecting to the database with given settings failed: ' . $e->getMessage(),
@@ -642,9 +645,12 @@ class InstallerController
             || (string)($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]['path'] ?? '') !== ''
         ) {
             try {
-                $success = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-                    ->ping();
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+                if ($connection->getWrappedConnection() !== null) {
+                    $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
+                    $success = true;
+                }
             } catch (DBALException $e) {
             }
         }
@@ -1148,13 +1154,15 @@ For each website you need a TypoScript template on the main page of your website
     protected function isDatabaseConnectSuccessful(): bool
     {
         try {
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-                ->ping();
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+            if ($connection->getWrappedConnection() !== null) {
+                $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
+                return true;
+            }
         } catch (DBALException $e) {
-            return false;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -1239,8 +1247,11 @@ For each website you need a TypoScript template on the main page of your website
             $connectionParams['wrapperClass'] = Connection::class;
             $connectionParams['charset'] = 'utf-8';
             try {
-                DriverManager::getConnection($connectionParams)->ping();
-                return $envCredentials;
+                $connection = DriverManager::getConnection($connectionParams);
+                if ($connection->getWrappedConnection() !== null) {
+                    $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
+                    return $envCredentials;
+                }
             } catch (DBALException $e) {
                 return [];
             }

@@ -17,8 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Domain\Repository\Localization;
 
-use Doctrine\DBAL\ForwardCompatibility\Result;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -181,7 +180,7 @@ class LocalizationRepository
      * @param int $destLanguageId
      * @param int $languageId
      * @param string $fields
-     * @return Statement|Result
+     * @return Result
      */
     public function getRecordsToCopyDatabaseResult(int $pageId, int $destLanguageId, int $languageId, string $fields = '*')
     {
