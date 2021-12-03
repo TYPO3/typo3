@@ -184,6 +184,8 @@ The following class properties have been removed:
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sWordRegex` (internal, but public)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sWordList` (internal, but public)
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj`
 
 The following class methods visibility have been changed to protected:
@@ -223,10 +225,15 @@ The following ViewHelpers have been changed or removed:
 
 The following TypoScript options have been removed or adapted:
 
+- `config.sword_standAlone`
+- `config.sword_noMixedCase`
+- `_parseFunc.sword`
 - `EDITPANEL` content object
 - `mod.linkvalidator.linkhandler.reportHiddenRecords`
 - `page.includeCSS.myfile*.import`
 - `page.includeCSSLibs.myfile*.import`
+- `plugin.tx_indexedsearch.settings.forwardSearchWordsInResultLink`
+- `plugin.tx_indexedsearch.settings.forwardSearchWordsInResultLink.no_cache`
 - `stdWrap.editPanel`
 - `stdWrap.editPanel.`
 - `stdWrap.editIcons`

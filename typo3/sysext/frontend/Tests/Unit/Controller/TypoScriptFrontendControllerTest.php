@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
@@ -252,64 +251,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     }
 
     /**
-     * @return array
-     */
-    public function initializeSearchWordDataBuildsCorrectRegexDataProvider(): array
-    {
-        return [
-            'one simple search word' => [
-                ['test'],
-                false,
-                'test',
-            ],
-            'one simple search word with standalone words' => [
-                ['test'],
-                true,
-                '[[:space:]]test[[:space:]]',
-            ],
-            'two simple search words' => [
-                ['test', 'test2'],
-                false,
-                'test|test2',
-            ],
-            'two simple search words with standalone words' => [
-                ['test', 'test2'],
-                true,
-                '[[:space:]]test[[:space:]]|[[:space:]]test2[[:space:]]',
-            ],
-            'word with regex chars' => [
-                ['A \\ word with / a bunch of [] regex () chars .*'],
-                false,
-                'A \\\\ word with \\/ a bunch of \\[\\] regex \\(\\) chars \\.\\*',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider initializeSearchWordDataBuildsCorrectRegexDataProvider
-     *
-     * @param array $searchWordGetParameters The values that should be loaded in the sword_list GET parameter.
-     * @param bool $enableStandaloneSearchWords If TRUE the sword_standAlone option will be enabled.
-     * @param string $expectedRegex The expected regex after processing the search words.
-     */
-    public function initializeSearchWordDataBuildsCorrectRegex(array $searchWordGetParameters, bool $enableStandaloneSearchWords, string $expectedRegex): void
-    {
-        $_GET['sword_list'] = $searchWordGetParameters;
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_SERVER['SCRIPT_NAME'] = '/index.php';
-
-        $this->subject->page = [];
-        if ($enableStandaloneSearchWords) {
-            $this->subject->config = ['config' => ['sword_standAlone' => 1]];
-        }
-
-        $request = ServerRequestFactory::fromGlobals();
-        $this->subject->preparePageContentGeneration($request);
-        self::assertEquals($this->subject->sWordRegEx, $expectedRegex);
-    }
-
-    /**
      * @test
      * @dataProvider splitLinkVarsDataProvider
      *
@@ -479,62 +420,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                 '&bar[foo]=1',
             ],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function initializeSearchWordDataDoesNothingWithNullValue(): void
-    {
-        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
-        $subject->_call('initializeSearchWordData', null);
-        self::assertEquals('', $subject->sWordRegEx);
-        self::assertEquals('', $subject->sWordList);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeSearchWordDataDoesNothingWithEmptyStringValue(): void
-    {
-        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
-        $subject->_call('initializeSearchWordData', '');
-        self::assertEquals('', $subject->sWordRegEx);
-        self::assertEquals('', $subject->sWordList);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeSearchWordDataDoesNothingWithEmptyArrayValue(): void
-    {
-        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
-        $subject->_call('initializeSearchWordData', []);
-        self::assertEquals('', $subject->sWordRegEx);
-        self::assertEquals([], $subject->sWordList);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeSearchWordDataFillsProperRegexpWithArray(): void
-    {
-        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
-        $subject->_call('initializeSearchWordData', ['stop', 'word']);
-        self::assertEquals('stop|word', $subject->sWordRegEx);
-        self::assertEquals(['stop', 'word'], $subject->sWordList);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeSearchWordDataFillsProperRegexpWithArrayAndStandaloneOption(): void
-    {
-        $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
-        $subject->config['config']['sword_standAlone'] = 1;
-        $subject->_call('initializeSearchWordData', ['stop', 'word']);
-        self::assertEquals('[[:space:]]stop[[:space:]]|[[:space:]]word[[:space:]]', $subject->sWordRegEx);
-        self::assertEquals(['stop', 'word'], $subject->sWordList);
     }
 
     /**

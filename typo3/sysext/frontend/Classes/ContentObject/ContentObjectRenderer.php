@@ -3567,42 +3567,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $data = $this->http_makelinks($data, $conf['makelinks.']['http.']);
                             $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                         }
-                        // Search Words:
-                        // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0.
-                        if (($tsfe->no_cache ?? false) && ($conf['sword'] ?? false) && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
-                            if ($conf['sword'] !== '<span class="ce-sword">|</span>') {
-                                trigger_error('Enabling lib.parseFunc.sword will stop working in TYPO3 v12.0. Consider creating your own parser logic in a custom extension (which ideally also works with active caching.', E_USER_DEPRECATED);
-                            }
-                            $newstring = '';
-                            do {
-                                $pregSplitMode = 'i';
-                                // @deprecated
-                                // @todo: ensure these options are removed from the TypoScript reference in TYPO3 v12.0.
-                                if (isset($tsfe->config['config']['sword_noMixedCase']) && !empty($tsfe->config['config']['sword_noMixedCase'])) {
-                                    $pregSplitMode = '';
-                                }
-                                $pieces = preg_split('/' . $tsfe->sWordRegEx . '/' . $pregSplitMode, $data, 2);
-                                $newstring .= $pieces[0];
-                                $match_len = strlen($data) - (strlen($pieces[0]) + strlen($pieces[1]));
-                                $inTag = false;
-                                if (str_contains($pieces[0], '<') || str_contains($pieces[0], '>')) {
-                                    // Returns TRUE, if a '<' is closer to the string-end than '>'.
-                                    // This is the case if we're INSIDE a tag (that could have been
-                                    // made by makelinks...) and we must secure, that the inside of a tag is
-                                    // not marked up.
-                                    $inTag = strrpos($pieces[0], '<') > strrpos($pieces[0], '>');
-                                }
-                                // The searchword:
-                                $match = substr($data, strlen($pieces[0]), $match_len);
-                                if (trim($match) && strlen($match) > 1 && !$inTag) {
-                                    $match = $this->wrap($match, $conf['sword'] ?? '');
-                                }
-                                // Concatenate the Search Word again.
-                                $newstring .= $match;
-                                $data = $pieces[1];
-                            } while ($pieces[1]);
-                            $data = $newstring;
-                        }
                     }
                     // Search for tags to process in current data and
                     // call this method recursively if found

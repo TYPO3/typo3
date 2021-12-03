@@ -676,18 +676,6 @@ The big advantage of this method is that it doesn't need any JavaScript!]]></des
 Example: (dot)]]></description>
 			<default><![CDATA[Default: . ( <= just a simple dot)]]></default>
 		</property>
-		<property name="sword_noMixedCase" type="boolean">
-			<description><![CDATA[Used by the parseFunc-substitution of search Words (sword):
-If set, the words MUST be the exact same case as the search word was.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="sword_standAlone" type="boolean">
-			<description><![CDATA[Used by the parseFunc-substitution of search Words (sword):
-If set, the words MUST be surrounded by whitespace in order to be marked up.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="typolinkLinkAccessRestrictedPages" type="string">
 			<description><![CDATA[integer (page id) / keyword "NONE"
 			If set, typolinks pointing to access restricted pages will still link to the page even though the page cannot be accessed. If the value of this setting is an integer it will be interpreted as a page id to which the link will be directed.
@@ -4936,11 +4924,6 @@ short {
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="sword" type="wrap">
-			<description><![CDATA[Marks up any words from the GET-method send array sword_list[] in the text. The word MUST be at least two characters long!
-NOTE: works only with $GLOBALS["TSFE"]->no_cache==1]]></description>
-			<default><![CDATA[<font color="red">|</font>]]></default>
-		</property>
 		<property name="tags" type="tags">
 			<description><![CDATA[Here you can define custom tags that will parse the content to something.]]></description>
 			<default><![CDATA[
@@ -5843,11 +5826,6 @@ status=1,menubar=1,scrollbars=1,resizable=1,location=1,directories=1,toolbar=1]]
 
 Example:
 '&print=1'
-'&sword_list[]=word1&sword_list[]=word2'
-
-Applications:
-This is very useful when linking to pages from a searchresult. The searchwords are stored in the register-key SWORD_PARAMS and can be insert directly like this:
-.additionalParams.data = register:SWORD_PARAMS
 
 NOTE: This is only active for internal links!]]></description>
 			<default><![CDATA[

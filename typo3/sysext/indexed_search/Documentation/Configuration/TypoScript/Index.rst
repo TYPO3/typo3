@@ -586,24 +586,5 @@ results.pathExcludeDoktypes
          "/About-Us(254)/Company(4)/Germany(1)" -> "/Germany".
 
 
-
-.. _forwardSearchWordsInResultLink:
-
-forwardSearchWordsInResultLink.no_cache
-"""""""""""""""""""""""""""""""""""""""
-
-.. container:: table-row
-
-   Property
-         forwardSearchWordsInResultLink.no_cache
-
-   Data type
-         boolean
-
-   Description
-         Toggles whether result links add the no_cache parameter.
-         It is evaluated only if :typoscript:`forwardSearchWordsInResultLink = 1` is also set.
-
-
 [tsref:plugin.tx\_indexedsearch]
 

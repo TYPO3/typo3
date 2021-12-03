@@ -503,21 +503,10 @@ class SearchController extends ActionController
                 );
             }
         } else {
-            // Else the page:
-            // Prepare search words for markup in content:
-            $markUpSwParams = [];
-            if ($this->settings['forwardSearchWordsInResultLink']['_typoScriptNodeValue']) {
-                // @deprecated: this feature will have no effect anymore in TYPO3 v12, and will be disabled
-                if ($this->settings['forwardSearchWordsInResultLink']['no_cache']) {
-                    $markUpSwParams = ['no_cache' => 1];
-                }
-                foreach ($this->searchWords as $d) {
-                    $markUpSwParams['sword_list'][] = $d['sword'];
-                }
-            }
+            // Else the page
             $title = $this->linkPageATagWrap(
                 $title,
-                $this->linkPage($row['data_page_id'], $row, $markUpSwParams)
+                $this->linkPage($row['data_page_id'], $row)
             );
         }
         $resultData['title'] = $title;
@@ -1325,10 +1314,9 @@ class SearchController extends ActionController
      *
      * @param int $pageUid Page id
      * @param array $row Result row
-     * @param array $markUpSwParams Additional parameters for marking up search words
      * @return array
      */
-    protected function linkPage($pageUid, $row = [], $markUpSwParams = [])
+    protected function linkPage($pageUid, $row = [])
     {
         $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
         // Parameters for link
@@ -1343,8 +1331,6 @@ class SearchController extends ActionController
         if (($pageLanguage === 0 && $row['sys_language_uid'] > 0) || $pageLanguage > 0) {
             $urlParameters['L'] = (int)$row['sys_language_uid'];
         }
-        // markup-GET vars:
-        $urlParameters = array_merge($urlParameters, $markUpSwParams);
         // This will make sure that the path is retrieved if it hasn't been
         // already. Used only for the sake of the domain_record thing.
         $this->getPathFromPageId($pageUid);

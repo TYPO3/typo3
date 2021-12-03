@@ -32,8 +32,6 @@ lib.parseFunc {
     }
     allowTags = {$styles.content.allowTags}
     denyTags = *
-    # deprecated - will be removed in TYPO3 v12
-    sword = <span class="ce-sword">|</span>
     constants = 1
     nonTypoTagStdWrap {
         HTMLparser = 1

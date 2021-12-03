@@ -33,8 +33,6 @@ plugin.tx_indexedsearch {
 		defaultFreeIndexUidList =
 		searchSkipExtendToSubpagesChecking = 0
 		exactCount = 0
-		forwardSearchWordsInResultLink = 0
-		forwardSearchWordsInResultLink.no_cache = 1
 
 		# various crop/offset settings for single result items
 		results {

@@ -369,23 +369,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $absRefPrefix = '';
 
     /**
-     * Search word regex, calculated if there has been search-words send. This is
-     * used to mark up the found search words on a page when jumped to from a link
-     * in a search-result.
-     * @var string
-     * @internal
-     */
-    public $sWordRegEx = '';
-
-    /**
-     * Is set to the incoming array sword_list in case of a page-view jumped to from
-     * a search-result.
-     * @var string
-     * @internal
-     */
-    public $sWordList = '';
-
-    /**
      * A string prepared for insertion in all links on the page as url-parameters.
      * Based on configuration in TypoScript where you defined which GET_VARS you
      * would like to pass on.
@@ -2465,7 +2448,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->absRefPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
             }
         }
-        $this->initializeSearchWordData($request->getParsedBody()['sword_list'] ?? $request->getQueryParams()['sword_list'] ?? null);
         // linkVars
         $this->calculateLinkVars($request->getQueryParams());
         // Setting XHTML-doctype from doctype
@@ -2499,30 +2481,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Global content object
         $this->newCObj($request);
         $this->getTimeTracker()->pull();
-    }
-
-    /**
-     * Fills the sWordList property and builds the regular expression in TSFE that can be used to split
-     * strings by the submitted search words.
-     *
-     * @param mixed $searchWords - usually an array, but we can't be sure (yet)
-     * @see sWordList
-     * @see sWordRegEx
-     */
-    protected function initializeSearchWordData($searchWords)
-    {
-        $this->sWordRegEx = '';
-        $this->sWordList = $searchWords ?? '';
-        if (is_array($this->sWordList)) {
-            $space = !empty($this->config['config']['sword_standAlone'] ?? null) ? '[[:space:]]' : '';
-            $regexpParts = [];
-            foreach ($this->sWordList as $val) {
-                if (trim($val) !== '') {
-                    $regexpParts[] = $space . preg_quote($val, '/') . $space;
-                }
-            }
-            $this->sWordRegEx = implode('|', $regexpParts);
-        }
     }
 
     /**
