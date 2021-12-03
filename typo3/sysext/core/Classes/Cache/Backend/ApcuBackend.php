@@ -95,20 +95,8 @@ class ApcuBackend extends AbstractBackend implements TaggableBackendInterface
     public function setCache(FrontendInterface $cache)
     {
         parent::setCache($cache);
-        $processUser = $this->getCurrentUserData();
-        $pathHash = md5(Environment::getProjectPath() . $processUser['name'] . $this->context . $cache->getIdentifier());
+        $pathHash = md5(Environment::getProjectPath() . $this->context . $cache->getIdentifier());
         $this->setIdentifierPrefix('TYPO3_' . $pathHash);
-    }
-
-    /**
-     * Returns the current user data with posix_getpwuid or a default structure when
-     * posix_getpwuid is not available.
-     *
-     * @return array
-     */
-    protected function getCurrentUserData()
-    {
-        return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : ['name' => 'default'];
     }
 
     /**
