@@ -67,6 +67,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools->setArrayValueByPath()`
 - :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->disableRuntimeCache()`
 - :php:`\TYPO3\CMS\Core\Database\ReferenceIndex->enableRuntimeCache()`
+- :php:`\TYPO3\CMS\Core\Database\RelationHandler->setUpdateReferenceIndex()`
+- :php:`\TYPO3\CMS\Core\Database\RelationHandler->remapMM()`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepository->fixVersioningPid()`
 - :php:`\TYPO3\CMS\Core\Resource\Event\GeneratePublicUrlForResourceEvent->isRelativeToCurrentScript()`
 - :php:`\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider->getRootUid()`
@@ -120,6 +122,7 @@ The following PHP static class methods that have previously been marked as depre
 The following PHP class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
+- :php:`\TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()` (argument 4 removed)
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl()` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\File->getPublicUrl()` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\FileInterface->getPublicUrl()` (argument 1 is removed)

@@ -158,14 +158,6 @@ class RelationHandler
     protected $MM_oppositeUsage;
 
     /**
-     * If false, reference index is not updated.
-     *
-     * @var bool
-     * @deprecated since v11, will be removed in v12
-     */
-    protected $updateReferenceIndex = true;
-
-    /**
      * @var ReferenceIndexUpdater|null
      */
     protected $referenceIndexUpdater;
@@ -344,21 +336,6 @@ class RelationHandler
     public function setFetchAllFields($allFields)
     {
         $this->fetchAllFields = (bool)$allFields;
-    }
-
-    /**
-     * Sets whether the reference index shall be updated.
-     *
-     * @param bool $updateReferenceIndex Whether the reference index shall be updated
-     * @deprecated since v11, will be removed in v12
-     */
-    public function setUpdateReferenceIndex($updateReferenceIndex)
-    {
-        trigger_error(
-            'Calling RelationHandler->setUpdateReferenceIndex() is deprecated. Use setReferenceIndexUpdater() instead.',
-            E_USER_DEPRECATED
-        );
-        $this->updateReferenceIndex = (bool)$updateReferenceIndex;
     }
 
     /**
@@ -849,67 +826,6 @@ class RelationHandler
     }
 
     /**
-     * Remaps MM table elements from one local uid to another
-     * Does NOT update the reference index for you, must be called subsequently to do that!
-     *
-     * @param string $MM_tableName MM table name
-     * @param int $uid Local, current UID
-     * @param int $newUid Local, new UID
-     * @param bool $prependTableName If set, then table names will always be written.
-     * @deprecated since v11, will be removed with v12.
-     */
-    public function remapMM($MM_tableName, $uid, $newUid, $prependTableName = false)
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . ' of class ' . __CLASS__ . ' is deprecated since v11 and will be removed in v12.',
-            E_USER_DEPRECATED
-        );
-
-        // In case of a reverse relation
-        if ($this->MM_is_foreign) {
-            $uidLocal_field = 'uid_foreign';
-        } else {
-            // default
-            $uidLocal_field = 'uid_local';
-        }
-        // If there are tables...
-        $tableC = count($this->tableArray);
-        if ($tableC) {
-            $queryBuilder = $this->getConnectionForTableName($MM_tableName)
-                ->createQueryBuilder();
-            $queryBuilder->update($MM_tableName)
-                ->set($uidLocal_field, (int)$newUid)
-                ->where($queryBuilder->expr()->eq(
-                    $uidLocal_field,
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                ));
-            // Boolean: does the field "tablename" need to be filled?
-            $prep = $tableC > 1 || $prependTableName || $this->MM_isMultiTableRelationship;
-            if ($this->MM_is_foreign && $prep) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        'tablenames',
-                        $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
-                    )
-                );
-            }
-            // Add WHERE clause if configured
-            if ($this->MM_table_where) {
-                $queryBuilder->andWhere(
-                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where))
-                );
-            }
-            // Select, update or delete only those relations that match the configured fields
-            foreach ($this->MM_match_fields as $field => $value) {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR))
-                );
-            }
-            $queryBuilder->execute();
-        }
-    }
-
-    /**
      * Reads items from a foreign_table, that has a foreign_field (uid of the parent record) and
      * stores the parts in the internal array itemArray and tableArray.
      *
@@ -1051,19 +967,9 @@ class RelationHandler
      * @param array $conf TCA configuration for current field
      * @param int $parentUid The uid of the parent record
      * @param int $updateToUid If this is larger than zero it will be used as foreign UID instead of the given $parentUid (on Copy)
-     * @param bool $skipSorting @deprecated since v11, will be dropped with v12. Simplify the if below when removing argument.
      */
-    public function writeForeignField($conf, $parentUid, $updateToUid = 0, $skipSorting = null)
+    public function writeForeignField($conf, $parentUid, $updateToUid = 0)
     {
-        // @deprecated since v11, will be removed with v12.
-        if ($skipSorting !== null) {
-            trigger_error(
-                'Calling ' . __METHOD__ . ' with 4th argument $skipSorting is deprecated and will be removed in v12.',
-                E_USER_DEPRECATED
-            );
-        }
-        $skipSorting = (bool)$skipSorting;
-
         if ($this->useLiveParentIds) {
             $parentUid = $this->getLiveDefaultId($this->currentTable, $parentUid);
             if (!empty($updateToUid)) {
@@ -1132,37 +1038,33 @@ class RelationHandler
                     if ($foreign_table_field && $this->currentTable) {
                         $updateValues[$foreign_table_field] = $this->currentTable;
                     }
-                    // Update sorting columns if not to be skipped.
-                    // @deprecated since v11, will be removed with v12. Drop if() below, assume $skipSorting false, keep body.
-                    if (!$skipSorting) {
-                        // Get the correct sorting field
-                        // Specific manual sortby for data handled by this field
-                        $sortby = '';
-                        if ($conf['foreign_sortby'] ?? false) {
-                            $sortby = $conf['foreign_sortby'];
-                        } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'] ?? false) {
-                            // manual sortby for all table records
-                            $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
-                        }
-                        // Apply sorting on the symmetric side
-                        // (it depends on who created the relation, so what uid is in the symmetric_field):
-                        if ($isOnSymmetricSide && isset($conf['symmetric_sortby']) && $conf['symmetric_sortby']) {
-                            $sortby = $conf['symmetric_sortby'];
-                        } else {
-                            $tempSortBy = [];
-                            foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
-                                [$fieldName, $order] = $orderPair;
-                                if ($order !== null) {
-                                    $tempSortBy[] = implode(' ', $orderPair);
-                                } else {
-                                    $tempSortBy[] = $fieldName;
-                                }
+                    // Get the correct sorting field
+                    // Specific manual sortby for data handled by this field
+                    $sortby = '';
+                    if ($conf['foreign_sortby'] ?? false) {
+                        $sortby = $conf['foreign_sortby'];
+                    } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'] ?? false) {
+                        // manual sortby for all table records
+                        $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
+                    }
+                    // Apply sorting on the symmetric side
+                    // (it depends on who created the relation, so what uid is in the symmetric_field):
+                    if ($isOnSymmetricSide && isset($conf['symmetric_sortby']) && $conf['symmetric_sortby']) {
+                        $sortby = $conf['symmetric_sortby'];
+                    } else {
+                        $tempSortBy = [];
+                        foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
+                            [$fieldName, $order] = $orderPair;
+                            if ($order !== null) {
+                                $tempSortBy[] = implode(' ', $orderPair);
+                            } else {
+                                $tempSortBy[] = $fieldName;
                             }
-                            $sortby = implode(',', $tempSortBy);
                         }
-                        if ($sortby) {
-                            $updateValues[$sortby] = ++$c;
-                        }
+                        $sortby = implode(',', $tempSortBy);
+                    }
+                    if ($sortby) {
+                        $updateValues[$sortby] = ++$c;
                     }
                 } else {
                     if ($isOnSymmetricSide) {
@@ -1306,27 +1208,15 @@ class RelationHandler
      *
      * @param string $table Table name
      * @param int $uid Record uid
-     * @return array Result from ReferenceIndex->updateRefIndexTable() updated directly, else empty array
+     * @return array Empty array
      */
     protected function updateRefIndex($table, $uid): array
     {
-        if (!$this->updateReferenceIndex) {
-            return [];
-        }
         if ($this->referenceIndexUpdater) {
             // Add to update registry if given
             $this->referenceIndexUpdater->registerForUpdate((string)$table, (int)$uid, $this->getWorkspaceId());
-            $statisticsArray = [];
-        } else {
-            // @deprecated else branch can be dropped when setUpdateReferenceIndex() is dropped.
-            // Update reference index directly if enabled
-            $referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
-            if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $referenceIndex->setWorkspaceId($this->getWorkspaceId());
-            }
-            $statisticsArray = $referenceIndex->updateRefIndexTable($table, $uid);
         }
-        return $statisticsArray;
+        return [];
     }
 
     /**
