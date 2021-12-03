@@ -42,7 +42,7 @@ render-types, ...) that provide inline JavaScript using `fieldChangeFunc`.
 Migration
 =========
 
-:ref:`Previews deprecation ChangeLog documentation <Deprecation-91787-DeprecateInlineJavaScriptInFieldChangeFunc>`
+:ref:`Previous deprecation ChangeLog documentation <Deprecation-91787-DeprecateInlineJavaScriptInFieldChangeFunc>`
 provided migration details already. A complete and installable example is available with
 `ext:demo_91787 <https://github.com/ohader/demo_91787>`__ as well.
 

@@ -90,7 +90,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
      * is identical for *all* nodes. Parent will merge the return of a child with its
      * own stuff and in itself return an array of the same structure.
      *
-     * @return array
+     * @return array{string: list<string>, requireJsModules: list<\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction>}
      */
     protected function initializeResultArray(): array
     {
@@ -100,9 +100,7 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
-            // can hold strings or arrays,
-            // string = requireJS module,
-            // array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
+            // holds list of `JavaScriptModuleInstruction` instances
             'requireJsModules' => [],
             'inlineData' => [],
             'html' => '',

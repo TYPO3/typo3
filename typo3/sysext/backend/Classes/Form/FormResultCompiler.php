@@ -75,7 +75,7 @@ class FormResultCompiler
      * Array with requireJS modules, use module name as key, the value could be callback code.
      * Use NULL as value if no callback is used.
      *
-     * @var array
+     * @var list<JavaScriptModuleInstruction>
      */
     protected $requireJsModules = [];
 
@@ -97,40 +97,19 @@ class FormResultCompiler
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
             $this->additionalJavaScriptPost[] = $element;
         }
-        if (!empty($resultArray['requireJsModules'])) {
-            foreach ($resultArray['requireJsModules'] as $module) {
-                if ($module instanceof JavaScriptModuleInstruction) {
-                    $this->requireJsModules[] = $module;
-                    continue;
-                }
-                // @deprecated Using requireJsModules via arrays is deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.
-                trigger_error('Using requireJsModules via arrays is deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.', E_USER_DEPRECATED);
-                $moduleName = null;
-                $callback = null;
-                if (is_string($module)) {
-                    // if $module is a string, no callback
-                    $moduleName = $module;
-                    $callback = null;
-                } elseif (is_array($module)) {
-                    // if $module is an array, callback is possible
-                    $callback = reset($module);
-                    $moduleName = key($module);
-                }
-                if ($moduleName !== null) {
-                    if (!empty($this->requireJsModules[$moduleName]) && $callback !== null) {
-                        $existingValue = $this->requireJsModules[$moduleName];
-                        if (!is_array($existingValue)) {
-                            $existingValue = [$existingValue];
-                        }
-                        $existingValue[] = $callback;
-                        $this->requireJsModules[$moduleName] = $existingValue;
-                    } else {
-                        $this->requireJsModules[$moduleName] = $callback;
-                    }
-                }
+        foreach ($resultArray['requireJsModules'] ?? [] as $module) {
+            if (!$module instanceof JavaScriptModuleInstruction) {
+                throw new \LogicException(
+                    sprintf(
+                        'Module must be a %s, type "%s" given',
+                        JavaScriptModuleInstruction::class,
+                        gettype($module)
+                    ),
+                    1638264590
+                );
             }
+            $this->requireJsModules[] = $module;
         }
-
         foreach ($resultArray['additionalHiddenFields'] as $element) {
             $this->hiddenFieldAccum[] = $element;
         }
@@ -206,23 +185,8 @@ class FormResultCompiler
                 );
         $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineReview');
 
-        foreach ($this->requireJsModules as $moduleName => $callbacks) {
-            if ($callbacks instanceof JavaScriptModuleInstruction) {
-                $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($callbacks);
-                continue;
-            }
-
-            // legacy handling, in case callbacks for `TYPO3/CMS/Backend/FormEngine` were assigned already,
-            // previously the structure was like `[moduleName => [ callback-A, callback-B, ... ]]`
-            // @deprecated Using requireJsModules callbacks are deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.
-            trigger_error('Using requireJsModules callbacks are deprecated and will be removed in TYPO3 v12.0. Use JavaScriptModuleInstruction instead.', E_USER_DEPRECATED);
-
-            if (!is_array($callbacks)) {
-                $callbacks = [$callbacks];
-            }
-            foreach ($callbacks as $callback) {
-                $pageRenderer->loadRequireJsModule($moduleName, $callback);
-            }
+        foreach ($this->requireJsModules as $module) {
+            $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
         }
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
