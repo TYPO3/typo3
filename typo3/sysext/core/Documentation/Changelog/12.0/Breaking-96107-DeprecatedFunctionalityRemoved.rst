@@ -296,6 +296,7 @@ The following JavaScript methods bahaviour has changed:
 
 The following JavaScript modules have been removed:
 
+- :js:`TYPO3/CMS/Backend/SplitButtons`
 - :js:`TYPO3/CMS/Core/Ajax/ResponseError`
 - :js:`TYPO3/CMS/T3editor/T3editor`
 
