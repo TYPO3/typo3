@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ================================================================
-Breaking: #96149 - EXT:from EmailFinisher always uses FluidEmail
+Breaking: #96149 - EXT:form EmailFinisher always uses FluidEmail
 ================================================================
 
 See :issue:`96149`
@@ -9,7 +9,7 @@ See :issue:`96149`
 Description
 ===========
 
-In recent versions, the :php:`EmailFinisher` of EXT:from allowed sending
+In recent versions, the :php:`EmailFinisher` of EXT:form allowed sending
 emails with either :php:`StandaloneView` or via :php:`FluidEmail`, which
 has been introduced in TYPO3 v10. The :php:`StandaloneView` option has
 therefore now been removed together with the :file:`Html.html` and
@@ -18,7 +18,7 @@ therefore now been removed together with the :file:`Html.html` and
 Impact
 ======
 
-Since the EXT:from :php:`EmailFinisher` is now always using :php:`FluidEmail`
+Since the EXT:form :php:`EmailFinisher` is now always using :php:`FluidEmail`
 for sending emails, the :yaml:`templatePathAndFilename` is not evaluated
 anymore. For forms, which still define custom templates with this option,
 a fallback kicks in, sending the emails with the default EXT:form
