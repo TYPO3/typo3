@@ -64,7 +64,7 @@ class FlashMessageQueue extends \SplQueue implements \JsonSerializable
     {
         if (!($message instanceof FlashMessage)) {
             throw new Exception(
-                'FlashMessageQueue::enqueue() expects an object of type \TYPO3\CMS\Core\Messaging\FlashMessage but got type "' . (is_object($message) ? get_class($message) : gettype($message)) . '"',
+                'FlashMessageQueue::enqueue() expects an object of type \TYPO3\CMS\Core\Messaging\FlashMessage but got type "' . get_debug_type($message) . '"',
                 1376833554
             );
         }

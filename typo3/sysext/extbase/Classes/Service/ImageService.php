@@ -125,7 +125,7 @@ class ImageService implements SingletonInterface
         if ($image !== null) {
             // Some value is given for $image, but it's not a valid type
             throw new \UnexpectedValueException(
-                'Supplied file must be File or FileReference, ' . (($type = gettype($image)) === 'object' ? get_class($image) : $type) . ' given.',
+                'Supplied file must be File or FileReference, ' . get_debug_type($image) . ' given.',
                 1625585157
             );
         }

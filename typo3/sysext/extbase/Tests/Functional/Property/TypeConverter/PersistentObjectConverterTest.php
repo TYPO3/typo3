@@ -179,7 +179,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "integer" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
+        $this->expectExceptionMessage('Exception while property mapping at property path "": Property "uid" having a value of type "int" could not be set in target object of type "TYPO3\CMS\Beuser\Domain\Model\BackendUser"');
 
         $this->getContainer()->get(PropertyMapper::class)->convert(['uid' => 7], BackendUser::class);
     }

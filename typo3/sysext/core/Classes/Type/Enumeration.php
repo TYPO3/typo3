@@ -98,7 +98,7 @@ abstract class Enumeration implements TypeInterface
                         'Constant value "%s" of enumeration "%s" must be of type integer or string, got "%s" instead',
                         $constant,
                         $class,
-                        is_object($value) ? get_class($value) : gettype($value)
+                        get_debug_type($value)
                     ),
                     1381512797
                 );

@@ -278,7 +278,7 @@ class ArrayUtility
             // Extract parts of the path
             $path = str_getcsv($path, $delimiter);
         } elseif (!is_array($path) && !$path instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException('setValueByPath() expects $path to be string, array or an object implementing \\ArrayAccess, "' . (is_object($path) ? get_class($path) : gettype($path)) . '" given.', 1478781081);
+            throw new \InvalidArgumentException('setValueByPath() expects $path to be string, array or an object implementing \\ArrayAccess, "' . get_debug_type($path) . '" given.', 1478781081);
         }
         // Point to the root of the array
         $pointer = &$array;

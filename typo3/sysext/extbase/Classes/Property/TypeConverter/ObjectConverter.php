@@ -182,7 +182,7 @@ class ObjectConverter extends AbstractTypeConverter
                 $exceptionMessage = sprintf(
                     'Property "%s" having a value of type "%s" could not be set in target object of type "%s". Make sure that the property is accessible properly, for example via an appropriate setter method.',
                     $propertyName,
-                    (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue)),
+                    get_debug_type($propertyValue),
                     $targetType
                 );
                 throw new InvalidTargetException($exceptionMessage, 1304538165);

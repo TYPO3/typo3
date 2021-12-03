@@ -262,8 +262,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
     public function findAllByOriginalFile(FileInterface $file)
     {
         if (!$file instanceof File) {
-            throw new \InvalidArgumentException('Parameter is no File object but got type "'
-                . (is_object($file) ? get_class($file) : gettype($file)) . '"', 1382006142);
+            throw new \InvalidArgumentException('Parameter is no File object but got type "' . get_debug_type($file) . '"', 1382006142);
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);

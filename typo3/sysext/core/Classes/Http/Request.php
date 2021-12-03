@@ -361,7 +361,7 @@ class Request extends Message implements RequestInterface
     {
         if ($method !== null) {
             if (!is_string($method)) {
-                $methodAsString = is_object($method) ? get_class($method) : gettype($method);
+                $methodAsString = get_debug_type($method);
                 throw new \InvalidArgumentException('Unsupported HTTP method "' . $methodAsString . '".', 1436717274);
             }
             $method = strtoupper($method);

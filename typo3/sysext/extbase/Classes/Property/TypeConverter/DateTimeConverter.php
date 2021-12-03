@@ -206,7 +206,7 @@ class DateTimeConverter extends AbstractTypeConverter
             return self::DEFAULT_DATE_FORMAT;
         }
         if ($dateFormat !== null && !is_string($dateFormat)) {
-            throw new InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat)) . '" given', 1307719569);
+            throw new InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . get_debug_type($dateFormat) . '" given', 1307719569);
         }
         return $dateFormat;
     }

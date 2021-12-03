@@ -243,7 +243,7 @@ class SelectViewHelper extends AbstractFormFieldViewHelper
                         if (method_exists($key, '__toString')) {
                             $key = (string)$key;
                         } else {
-                            throw new Exception('Identifying value for object of class "' . (is_object($value) ? get_class($value) : gettype($value)) . '" was an object.', 1247827428);
+                            throw new Exception('Identifying value for object of class "' . get_debug_type($value) . '" was an object.', 1247827428);
                         }
                     }
                 } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {

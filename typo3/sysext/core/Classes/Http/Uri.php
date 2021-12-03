@@ -104,7 +104,7 @@ class Uri implements UriInterface
     public function __construct($uri = '')
     {
         if (!is_string($uri)) {
-            $argumentType = is_object($uri) ? get_class($uri) : gettype($uri);
+            $argumentType = get_debug_type($uri);
             throw new \InvalidArgumentException('URI passed must be a string, but is of type "' . $argumentType . '"', 1436717320);
         }
         if (!empty($uri)) {
@@ -438,7 +438,7 @@ class Uri implements UriInterface
     {
         if ($port !== null) {
             if (MathUtility::canBeInterpretedAsInteger($port) === false) {
-                $argumentType = is_object($port) ? get_class($port) : gettype($port);
+                $argumentType = get_debug_type($port);
                 throw new \InvalidArgumentException('Invalid port "' . $argumentType . '" specified, must be an integer.', 1436717324);
             }
 

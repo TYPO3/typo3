@@ -38,8 +38,7 @@ class RedirectResponse extends Response
     {
         if (!is_string($uri) && !($uri instanceof UriInterface)) {
             throw new \InvalidArgumentException(
-                'The given uri be a string or UriInterface - '
-                . (is_object($uri) ? get_class($uri) : gettype($uri)) . ' given',
+                'The given uri be a string or UriInterface - ' . get_debug_type($uri) . ' given',
                 1504814459
             );
         }
