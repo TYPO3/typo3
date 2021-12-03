@@ -29,7 +29,7 @@ class ImageResourceContentObject extends AbstractContentObject
      */
     public function render($conf = [])
     {
-        $GLOBALS['TSFE']->lastImgResourceInfo = $this->cObj->getImgResource($conf['file'], $conf['file.']);
+        $GLOBALS['TSFE']->lastImgResourceInfo = $this->cObj->getImgResource($conf['file'], $conf['file.'] ?? []);
         if ($GLOBALS['TSFE']->lastImgResourceInfo) {
             $imageResource = $GLOBALS['TSFE']->lastImgResourceInfo[3];
             $theValue = isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
