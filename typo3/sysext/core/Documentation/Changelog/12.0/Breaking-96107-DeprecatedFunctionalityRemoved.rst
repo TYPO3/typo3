@@ -287,7 +287,7 @@ The following JavaScript methods bahaviour has changed:
 
 The following JavaScript modules have been removed:
 
-- :js:`module.name`
+- :js:`TYPO3/CMS/Core/Ajax/ResponseError`
 
 The following module configuration have been removed:
 
