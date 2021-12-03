@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -309,7 +309,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $queryBuilderFeUserProphecy->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $expressionBuilderFeUserProphecy->eq(Argument::cetera())->willReturn('1=1');
         $queryBuilderFeUserProphecy->where(Argument::cetera())->shouldBeCalled()->willReturn($queryBuilderFeUserProphecyRevelation);
-        $statementFeUserProphecy = $this->prophesize(Statement::class);
+        $statementFeUserProphecy = $this->prophesize(Result::class);
         $queryBuilderFeUserProphecy->execute()->shouldBeCalled()->willReturn($statementFeUserProphecy->reveal());
         $statementFeUserProphecy->fetchAssociative()->willReturn(
             [

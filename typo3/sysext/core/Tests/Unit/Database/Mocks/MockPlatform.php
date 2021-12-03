@@ -167,6 +167,7 @@ class MockPlatform extends AbstractPlatform
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed): ?string
     {
+        return '';
     }
 
     /**
@@ -179,5 +180,10 @@ class MockPlatform extends AbstractPlatform
     protected function getReservedKeywordsClass(): string
     {
         return MockKeywordList::class;
+    }
+
+    public function getCurrentDatabaseExpression(): string
+    {
+        return "''";
     }
 }

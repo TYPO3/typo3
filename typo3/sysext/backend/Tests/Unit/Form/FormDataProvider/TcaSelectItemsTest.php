@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -130,8 +130,8 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('foreignTable');
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalled();
 
         $queryBuilderProphet->select('foreignTable.uid')
@@ -1008,8 +1008,8 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1105,8 +1105,8 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1213,8 +1213,8 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1374,8 +1374,8 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_file_storage');
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('sys_file_storage.uid', 'sys_file_storage.labelField')
             ->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1469,8 +1469,8 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Statement|ObjectProphecy $statementProphet */
-        $statementProphet = $this->prophesize(Statement::class);
+        /** @var Result|ObjectProphecy $statementProphet */
+        $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid', 'fTable.icon')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());

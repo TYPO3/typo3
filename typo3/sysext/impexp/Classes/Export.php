@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp;
 
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -441,7 +441,7 @@ class Export extends ImportExport
      *
      * @param int $pid Page ID to select from
      * @param string $table Table to select from
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int Query statement
+     * @return Result|int Query statement
      */
     protected function execListQueryPid(int $pid, string $table)
     {

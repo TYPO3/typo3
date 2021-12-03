@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Plugin;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -726,7 +726,7 @@ class AbstractPlugin
      * $this->pi_list_row() is used for rendering each row
      * Notice that these two functions are typically ALWAYS defined in the extension class of the plugin since they are directly concerned with the specific layout for that plugins purpose.
      *
-     * @param Statement $statement Result pointer to a SQL result which can be traversed.
+     * @param Result $statement Result pointer to a SQL result which can be traversed.
      * @param string $tableParams Attributes for the table tag which is wrapped around the table rows containing the list
      * @return string Output HTML, wrapped in <div>-tags with a class attribute
      * @see pi_list_row()
@@ -970,7 +970,7 @@ class AbstractPlugin
      * @param string $groupBy If set, this is added as a " GROUP BY ...." part of the query.
      * @param string $orderBy If set, this is added as a " ORDER BY ...." part of the query. The default is that an ORDER BY clause is made based on $this->internal['orderBy'] and $this->internal['descFlag'] where the orderBy field must be found in $this->internal['orderByList']
      * @param string $query If set, this is taken as the first part of the query instead of what is created internally. Basically this should be a query starting with "FROM [table] WHERE ... AND ...". The $addWhere clauses and all the other stuff is still added. Only the tables and PID selecting clauses are bypassed. May be deprecated in the future!
-     * @return Statement
+     * @return Result
      */
     public function pi_exec_query($table, $count = false, $addWhere = '', $mm_cat = '', $groupBy = '', $orderBy = '', $query = '')
     {

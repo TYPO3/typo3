@@ -256,8 +256,7 @@ class TableBuilder
                 $index->addFlag('spatial');
             }
 
-            $this->table = GeneralUtility::makeInstance(
-                Table::class,
+            $this->table = new Table(
                 $this->table->getQuotedName($this->platform),
                 $this->table->getColumns(),
                 array_merge($this->table->getIndexes(), [strtolower($indexName) => $index]),

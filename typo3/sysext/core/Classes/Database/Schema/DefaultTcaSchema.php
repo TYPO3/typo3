@@ -598,7 +598,7 @@ class DefaultTcaSchema
                             'string',
                             [
                                 'default' => '',
-                                'size' => 255,
+                                'length' => 255,
                                 'notnull' => true,
                             ]
                         );
@@ -609,7 +609,7 @@ class DefaultTcaSchema
                             'string',
                             [
                                 'default' => '',
-                                'size' => 255,
+                                'length' => 255,
                                 'notnull' => true,
                             ]
                         );

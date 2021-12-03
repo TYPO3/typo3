@@ -8699,7 +8699,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->expr()->eq('t3ver_oid', 0)
                 )
                 ->execute()
-                ->fetchColumn();
+                ->fetchOne();
             if ($count === 0) {
                 $clearCacheEnabled = false;
             }

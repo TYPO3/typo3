@@ -69,7 +69,7 @@ abstract class AbstractPlatform implements PlatformCheckInterface
 
     protected function checkDatabaseName(Connection $connection): void
     {
-        if (static::isValidDatabaseName($connection->getDatabase())) {
+        if (static::isValidDatabaseName((string)$connection->getDatabase())) {
             return;
         }
 

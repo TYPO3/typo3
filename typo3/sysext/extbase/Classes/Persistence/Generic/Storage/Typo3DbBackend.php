@@ -273,13 +273,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721, $e);
             }
             $rows = $result->fetchAllAssociative();
+        // Prepared Doctrine DBAL statement
         } elseif ($realStatement instanceof \Doctrine\DBAL\Statement) {
             try {
-                $realStatement->execute($parameters);
+                $result = $realStatement->executeQuery($parameters);
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1481281404, $e);
             }
-            $rows = $realStatement->fetchAllAssociative();
+            $rows = $result->fetchAllAssociative();
         } else {
             // Do a real raw query. This is very stupid, as it does not allow to use DBAL's real power if
             // several tables are on different databases, so this is used with caution and could be removed

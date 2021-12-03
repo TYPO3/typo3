@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 
-use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -297,7 +296,7 @@ class IndexSearchRepository
      *
      * @param array $searchWords Search words
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int|bool
+     * @return \Doctrine\DBAL\Result|int|bool
      */
     protected function getResultRows_SQLpointer($searchWords, $freeIndexUid = -1)
     {
@@ -322,7 +321,7 @@ class IndexSearchRepository
      *
      * @param array $searchWordsArray Search words
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int|bool DBAL result statement
+     * @return \Doctrine\DBAL\Result|int|bool DBAL result statement
      */
     protected function getResultRows_SQLpointerMysqlFulltext($searchWordsArray, $freeIndexUid = -1)
     {
@@ -433,7 +432,7 @@ class IndexSearchRepository
      *
      * @param array $searchData Array with search string, boolean indicator, and fulltext index reference
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function execFinalQuery_fulltext($searchData, $freeIndexUid = -1)
     {
@@ -652,7 +651,7 @@ class IndexSearchRepository
      *
      * @param string $wordSel WHERE clause selecting the word from phash
      * @param string $additionalWhereClause Additional AND clause in the end of the query.
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function execPHashListQuery($wordSel, $additionalWhereClause = '')
     {
@@ -678,7 +677,7 @@ class IndexSearchRepository
      *
      * @param string $sWord the search word
      * @param int $wildcard Bit-field of Utility\LikeWildcard
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function searchWord($sWord, $wildcard)
     {
@@ -696,7 +695,7 @@ class IndexSearchRepository
      * Search for one distinct word
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function searchDistinct($sWord)
     {
@@ -712,7 +711,7 @@ class IndexSearchRepository
      * Search for a sentence
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function searchSentence($sWord)
     {
@@ -741,7 +740,7 @@ class IndexSearchRepository
      * Search for a metaphone word
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function searchMetaphone($sWord)
     {
@@ -950,7 +949,7 @@ class IndexSearchRepository
      *
      * @param string $list List of phash integers which match the search.
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Driver\ResultStatement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function execFinalQuery($list, $freeIndexUid = -1)
     {

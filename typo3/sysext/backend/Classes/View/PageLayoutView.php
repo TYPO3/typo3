@@ -15,8 +15,7 @@
 
 namespace TYPO3\CMS\Backend\View;
 
-use Doctrine\DBAL\ForwardCompatibility\Result;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
@@ -861,7 +860,7 @@ class PageLayoutView implements LoggerAwareInterface
         );
 
         // Traverse any selected elements and render their display code:
-        /** @var Statement $result */
+        /** @var Result $result */
         $result = $queryBuilder->execute();
         $results = $this->getResult($result);
         $unused = [];
@@ -1552,7 +1551,7 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
-     * @param Statement|Result $result DBAL Statement or Result
+     * @param Result $result DBAL Result
      * @return array The selected rows returned in this array.
      */
     public function getResult($result): array

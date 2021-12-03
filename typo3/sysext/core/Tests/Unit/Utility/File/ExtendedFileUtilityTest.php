@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -82,7 +82,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
         $expressionBuilderProphet->eq(Argument::cetera())->willReturn('1 = 1');
         $expressionBuilderProphet->neq(Argument::cetera())->willReturn('1 != 1');
         $expressionBuilderProphet->in(Argument::cetera())->willReturn('uid IN (1)');
-        $databaseStatementProphet = $this->prophesize(Statement::class);
+        $databaseStatementProphet = $this->prophesize(Result::class);
         $databaseStatementProphet->fetchOne(Argument::cetera())->willReturn(1);
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $queryBuilderProphet->getRestrictions()->willReturn(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));

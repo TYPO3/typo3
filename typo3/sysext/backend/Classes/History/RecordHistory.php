@@ -222,7 +222,7 @@ class RecordHistory
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tablename);
                 $queryBuilder->getRestrictions()->removeAll();
 
-                $rows = $queryBuilder
+                $result = $queryBuilder
                     ->select('uid')
                     ->from($tablename)
                     ->where(
@@ -232,11 +232,7 @@ class RecordHistory
                         )
                     )
                     ->execute();
-                $rowCount = (int)$queryBuilder->count('uid')->execute()->fetchOne();
-                if ($rowCount === 0) {
-                    continue;
-                }
-                foreach ($rows as $row) {
+                while ($row = $result->fetchAssociative()) {
                     // if there is history data available, merge it into changelog
                     $newChangeLog = $this->getHistoryDataForRecord($tablename, $row['uid'], $lastHistoryEntry);
                     if (is_array($newChangeLog) && !empty($newChangeLog)) {

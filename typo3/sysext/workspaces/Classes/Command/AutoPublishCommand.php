@@ -103,7 +103,7 @@ class AutoPublishCommand extends Command
 
     /**
      * Fetch all sys_workspace records which could fit
-     * @return \Doctrine\DBAL\Driver\Statement|int
+     * @return \Doctrine\DBAL\Result|int
      */
     protected function getAffectedWorkspacesToPublish()
     {

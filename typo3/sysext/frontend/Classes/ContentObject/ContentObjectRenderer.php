@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -5721,7 +5721,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $table The table name
      * @param array $conf The TypoScript configuration properties
-     * @return Statement
+     * @return Result
      * @see getQuery()
      */
     public function exec_getQuery($table, $conf)

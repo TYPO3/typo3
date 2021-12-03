@@ -20,11 +20,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Mysqli\Driver;
 use Doctrine\DBAL\Driver\Mysqli\MysqliConnection;
-use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -441,7 +440,7 @@ class ConnectionTest extends UnitTestCase
      */
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
-        $resultStatement = $this->createMock(Statement::class);
+        $resultStatement = $this->createMock(Result::class);
 
         $this->connection->expects(self::once())
             ->method('executeQuery')
@@ -491,11 +490,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
-        $resultStatement = $this->createMock(ResultStatement::class);
+        $resultStatement = $this->createMock(Result::class);
 
         $resultStatement->expects(self::once())
-            ->method('fetch')
-            ->with(\PDO::FETCH_NUM)
+            ->method('fetchOne')
             ->willReturn(false);
         $this->connection->expects(self::once())
             ->method('executeQuery')

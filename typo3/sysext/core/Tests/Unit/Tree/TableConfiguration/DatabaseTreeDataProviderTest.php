@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
 
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -69,7 +69,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $queryRestrictionProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
-        $statementProphecy = $this->prophesize(Statement::class);
+        $statementProphecy = $this->prophesize(Result::class);
 
         $expressionBuilderProphecy->eq(Argument::cetera())->willReturn('1=1');
 
