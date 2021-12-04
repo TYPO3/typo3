@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Error\Result;
 
@@ -417,36 +415,6 @@ class Request implements ServerRequestInterface, RequestInterface
     public function getInternalArgument($argumentName)
     {
         return $this->getExtbaseAttribute()->getInternalArgument($argumentName);
-    }
-
-    /**
-     * Deprecated methods of extbase Request for v11 compat.
-     */
-
-    /**
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function getRequestUri()
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
-        /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $this->getAttribute('normalizedParams');
-        return $normalizedParams->getRequestUrl();
-    }
-
-    /**
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function getBaseUri()
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0', E_USER_DEPRECATED);
-        /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $this->getAttribute('normalizedParams');
-        $baseUri = $normalizedParams->getSiteUrl();
-        if (ApplicationType::fromRequest($this)->isBackend()) {
-            $baseUri .= TYPO3_mainDir;
-        }
-        return $baseUri;
     }
 
     /**

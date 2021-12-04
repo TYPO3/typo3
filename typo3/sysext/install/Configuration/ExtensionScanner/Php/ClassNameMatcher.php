@@ -1667,6 +1667,7 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException' => [
         'restFiles' => [
             'Deprecation-94231-DeprecateExtbaseInvalidRequestMethodException.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Service\AbstractService' => [
@@ -1678,6 +1679,7 @@ return [
     'TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest' => [
         'restFiles' => [
             'Deprecation-94367-ExtbaseReferringRequest.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectManager' => [

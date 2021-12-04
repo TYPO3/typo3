@@ -4837,6 +4837,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94223-ExtbaseRequest-getBaseUri.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Mvc\Request->getRequestUri' => [
@@ -4844,6 +4845,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-94228-DeprecateExtbaseRequestGetRequestUri.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Object\ObjectManager->getEmptyObject' => [

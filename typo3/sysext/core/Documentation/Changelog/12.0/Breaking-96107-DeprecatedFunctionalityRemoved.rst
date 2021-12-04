@@ -30,9 +30,11 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository`
 - :php:`\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\AbstractView`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\EmptyView`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest`
 - :php:`\TYPO3\CMS\Extbase\Object\Container\Container`
 - :php:`\TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException`
 - :php:`\TYPO3\CMS\Extbase\Object\Exception`
@@ -93,6 +95,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->buildControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->getControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->forward()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Request->getBaseUri()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Request->getRequestUri()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Request->isDispatched()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Request->setDispatched()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
