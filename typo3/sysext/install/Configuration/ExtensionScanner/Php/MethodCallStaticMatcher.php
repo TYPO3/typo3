@@ -1099,6 +1099,7 @@ return [
         'maximumNumberOfArguments' => 2,
         'restFiles' => [
             'Deprecation-94684-GeneralUtilityShortMD5.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\HttpUtility::redirect' => [

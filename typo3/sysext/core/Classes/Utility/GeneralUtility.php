@@ -563,20 +563,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns the first 10 positions of the MD5-hash		(changed from 6 to 10 recently)
-     *
-     * @param string $input Input string to be md5-hashed
-     * @param int $len The string-length of the output
-     * @return string Substring of the resulting md5-hash, being $len chars long (from beginning)
-     * @deprecated since v11, will be removed in v12.
-     */
-    public static function shortMD5($input, $len = 10)
-    {
-        trigger_error(__METHOD__ . ' will be removed in TYPO3 v12, use md5() instead.', E_USER_DEPRECATED);
-        return substr(md5($input), 0, $len);
-    }
-
-    /**
      * Returns a proper HMAC on a given input string and secret TYPO3 encryption key.
      *
      * @param string $input Input string to create HMAC from
