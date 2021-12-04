@@ -484,7 +484,7 @@
 		<hotels>0</hotels>
         <sorting>256</sorting>
 	</tx_irretutorial_mnattr_offer>
-	<tx_irretutorial_mnmmasym_hotel>
+	<tx_testirremm_hotel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -497,8 +497,8 @@
 		<title>Hotel 1 (m:n (MM) ASym)</title>
 		<offers>2</offers>
         <sorting>128</sorting>
-	</tx_irretutorial_mnmmasym_hotel>
-	<tx_irretutorial_mnmmasym_hotel>
+	</tx_testirremm_hotel>
+	<tx_testirremm_hotel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -511,29 +511,29 @@
 		<title>Hotel 2 (m:n (MM) ASym)</title>
 		<offers>1</offers>
         <sorting>256</sorting>
-	</tx_irretutorial_mnmmasym_hotel>
-	<tx_irretutorial_mnmmasym_hotel_offer_rel>
+	</tx_testirremm_hotel>
+	<tx_testirremm_hotel_offer_rel>
 		<uid>1</uid>
 		<uid_local>1</uid_local>
 		<uid_foreign>1</uid_foreign>
 		<sorting>1</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_hotel_offer_rel>
-	<tx_irretutorial_mnmmasym_hotel_offer_rel>
+	</tx_testirremm_hotel_offer_rel>
+	<tx_testirremm_hotel_offer_rel>
 		<uid>2</uid>
 		<uid_local>1</uid_local>
 		<uid_foreign>2</uid_foreign>
 		<sorting>2</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_hotel_offer_rel>
-	<tx_irretutorial_mnmmasym_hotel_offer_rel>
+	</tx_testirremm_hotel_offer_rel>
+	<tx_testirremm_hotel_offer_rel>
 		<uid>3</uid>
 		<uid_local>2</uid_local>
 		<uid_foreign>3</uid_foreign>
 		<sorting>1</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_hotel_offer_rel>
-	<tx_irretutorial_mnmmasym_offer>
+	</tx_testirremm_hotel_offer_rel>
+	<tx_testirremm_offer>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -547,8 +547,8 @@
 		<hotels>0</hotels>
 		<prices>1</prices>
         <sorting>128</sorting>
-	</tx_irretutorial_mnmmasym_offer>
-	<tx_irretutorial_mnmmasym_offer>
+	</tx_testirremm_offer>
+	<tx_testirremm_offer>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -562,8 +562,8 @@
 		<hotels>0</hotels>
 		<prices>1</prices>
         <sorting>256</sorting>
-	</tx_irretutorial_mnmmasym_offer>
-	<tx_irretutorial_mnmmasym_offer>
+	</tx_testirremm_offer>
+	<tx_testirremm_offer>
 		<uid>3</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -577,29 +577,29 @@
 		<hotels>0</hotels>
 		<prices>1</prices>
         <sorting>512</sorting>
-	</tx_irretutorial_mnmmasym_offer>
-	<tx_irretutorial_mnmmasym_offer_price_rel>
+	</tx_testirremm_offer>
+	<tx_testirremm_offer_price_rel>
 		<uid>1</uid>
 		<uid_local>1</uid_local>
 		<uid_foreign>1</uid_foreign>
 		<sorting>1</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_offer_price_rel>
-	<tx_irretutorial_mnmmasym_offer_price_rel>
+	</tx_testirremm_offer_price_rel>
+	<tx_testirremm_offer_price_rel>
 		<uid>2</uid>
 		<uid_local>2</uid_local>
 		<uid_foreign>2</uid_foreign>
 		<sorting>1</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_offer_price_rel>
-	<tx_irretutorial_mnmmasym_offer_price_rel>
+	</tx_testirremm_offer_price_rel>
+	<tx_testirremm_offer_price_rel>
 		<uid>3</uid>
 		<uid_local>3</uid_local>
 		<uid_foreign>3</uid_foreign>
 		<sorting>1</sorting>
 		<sorting_foreign>0</sorting_foreign>
-	</tx_irretutorial_mnmmasym_offer_price_rel>
-	<tx_irretutorial_mnmmasym_price>
+	</tx_testirremm_offer_price_rel>
+	<tx_testirremm_price>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -613,8 +613,8 @@
 		<price>567.00</price>
 		<offers>0</offers>
         <sorting>128</sorting>
-	</tx_irretutorial_mnmmasym_price>
-	<tx_irretutorial_mnmmasym_price>
+	</tx_testirremm_price>
+	<tx_testirremm_price>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -628,8 +628,8 @@
 		<price>567.00</price>
 		<offers>0</offers>
         <sorting>256</sorting>
-	</tx_irretutorial_mnmmasym_price>
-	<tx_irretutorial_mnmmasym_price>
+	</tx_testirremm_price>
+	<tx_testirremm_price>
 		<uid>3</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -643,7 +643,7 @@
 		<price>223.00</price>
 		<offers>0</offers>
         <sorting>512</sorting>
-	</tx_irretutorial_mnmmasym_price>
+	</tx_testirremm_price>
 	<tx_irretutorial_mnsym_hotel>
 		<uid>1</uid>
 		<pid>1</pid>

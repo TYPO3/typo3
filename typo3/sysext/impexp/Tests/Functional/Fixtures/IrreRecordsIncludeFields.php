@@ -163,7 +163,7 @@ return [
         'title',
         'hotels',
     ],
-    'tx_irretutorial_mnmmasym_hotel' => [
+    'tx_testirremm_hotel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -173,15 +173,7 @@ return [
         'title',
         'offers',
     ],
-    'tx_irretutorial_mnmmasym_hotel_offer_rel' => [
-        'uid_local',
-        'uid_foreign',
-        'tablenames',
-        'sorting',
-        'sorting_foreign',
-        'ident',
-    ],
-    'tx_irretutorial_mnmmasym_offer' => [
+    'tx_testirremm_offer' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -192,15 +184,7 @@ return [
         'hotels',
         'prices',
     ],
-    'tx_irretutorial_mnmmasym_offer_price_rel' => [
-        'uid_local',
-        'uid_foreign',
-        'tablenames',
-        'sorting',
-        'sorting_foreign',
-        'ident',
-    ],
-    'tx_irretutorial_mnmmasym_price' => [
+    'tx_testirremm_price' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',

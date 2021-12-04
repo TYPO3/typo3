@@ -49,43 +49,6 @@ CREATE TABLE tx_irretutorial_mnasym_price
 );
 
 #######################################################################################################################
-# mnasym: m:n bidirectional anti-symmetric relations using regular MM tables
-#######################################################################################################################
-
-#
-# Table structure for table 'tx_irretutorial_mnmmasym_hotel'
-#
-CREATE TABLE tx_irretutorial_mnmmasym_hotel
-(
-	title tinytext NOT NULL,
-	offers int(11) DEFAULT '0' NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_mnmmasym_offer'
-#
-CREATE TABLE tx_irretutorial_mnmmasym_offer
-(
-	title tinytext NOT NULL,
-	hotels int(11) DEFAULT '0' NOT NULL,
-	prices int(11) DEFAULT '0' NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_mnmmasym_price'
-#
-CREATE TABLE tx_irretutorial_mnmmasym_price
-(
-	title tinytext NOT NULL,
-	price varchar(255) DEFAULT '0.00' NOT NULL,
-	offers int(11) DEFAULT '0' NOT NULL
-);
-
-#######################################################################################################################
 # mnsym: m:n bidirectional symmetric relations using intermediate table
 #######################################################################################################################
 
