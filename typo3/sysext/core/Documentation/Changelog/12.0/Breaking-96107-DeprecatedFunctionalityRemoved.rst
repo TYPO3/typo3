@@ -122,6 +122,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedHostHeaderValue()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript()`

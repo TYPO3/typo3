@@ -2622,25 +2622,6 @@ class GeneralUtility
     }
 
     /**
-     * Checks if the $path is absolute or relative (detecting either '/' or 'x:/' as first part of string) and returns TRUE if so.
-     *
-     * @param string $path File path to evaluate
-     * @return bool
-     * @deprecated will be removed in TYPO3 v12.0. Use PathUtility::isAbsolutePath() instead.
-     */
-    public static function isAbsPath($path)
-    {
-        trigger_error('GeneralUtility::isAbsPath() will be removed in TYPO3 v12.0. Use PathUtility::isAbsolutePath() instead.', E_USER_DEPRECATED);
-        if (substr($path, 0, 6) === 'vfs://') {
-            return true;
-        }
-        return
-            (isset($path[0]) && $path[0] === '/')
-            || (Environment::isWindows() && (strpos($path, ':/') === 1))
-            || strpos($path, ':\\') === 1;
-    }
-
-    /**
      * Returns TRUE if the path is absolute, without backpath '..' and within TYPO3s project or public folder OR within the lockRootPath
      *
      * @param string $path File path to evaluate

@@ -833,7 +833,7 @@ class Indexer
     /**
      * Indexing a regular document given as $file (relative to public web path, local file)
      *
-     * @param string $file Relative Filename, relative to public web path. It can also be an absolute path as long as it is inside the lockRootPath (validated with \TYPO3\CMS\Core\Utility\GeneralUtility::isAbsPath()). Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
+     * @param string $file Relative Filename, relative to public web path. It can also be an absolute path as long as it is inside the lockRootPath. Finally, if $contentTmpFile is set, this value can be anything, most likely a URL
      * @param bool $force If set, indexing is forced (despite content hashes, mtime etc).
      * @param string $contentTmpFile Temporary file with the content to read it from (instead of $file). Used when the $file is a URL.
      * @param string $altExtension File extension for temporary file.
