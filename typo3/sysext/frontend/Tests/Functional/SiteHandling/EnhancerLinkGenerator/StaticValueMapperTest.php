@@ -139,8 +139,7 @@ class StaticValueMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertStringStartsWith($expectation, (string)$response->getBody());

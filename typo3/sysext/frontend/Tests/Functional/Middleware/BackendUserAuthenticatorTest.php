@@ -49,10 +49,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
      */
     public function nonAuthenticatedRequestDoesNotSendHeaders(): void
     {
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(1),
-            (new InternalRequestContext())
-        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
         self::assertArrayNotHasKey('Cache-Control', $response->getHeaders());
         self::assertArrayNotHasKey('Pragma', $response->getHeaders());
         self::assertArrayNotHasKey('Expires', $response->getHeaders());
@@ -65,8 +62,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(1),
-            (new InternalRequestContext())
-                ->withBackendUserId(1)
+            (new InternalRequestContext())->withBackendUserId(1)
         );
         self::assertEquals('no-cache, must-revalidate', $response->getHeaders()['Cache-Control'][0]);
         self::assertEquals('no-cache', $response->getHeaders()['Pragma'][0]);

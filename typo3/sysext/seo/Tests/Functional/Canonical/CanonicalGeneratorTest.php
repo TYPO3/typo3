@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -31,19 +30,18 @@ class CanonicalGeneratorTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-    private const TYPO3_CONF_VARS = [
-        'SYS' => [
-            'encryptionKey' => self::ENCRYPTION_KEY,
-        ],
-        'FE' => [
-            'cacheHash' => [
-                'requireCacheHashPresenceParameters' => [],
-            ],
-        ],
-    ];
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+    ];
+
+    protected $configurationToUseInTestInstance = [
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
     ];
 
     /**
@@ -51,27 +49,9 @@ class CanonicalGeneratorTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['seo'];
 
-    /**
-     * Used for dynamic TypoScript injection with InternalRequest object.
-     *
-     * @var string[]
-     */
-    protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
-    ];
-
-    /**
-     * @var InternalRequestContext
-     */
-    private $internalRequestContext;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
         $this->writeSiteConfiguration(
             'website-local',
@@ -102,12 +82,6 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             1,
             ['typo3/sysext/seo/Tests/Functional/Fixtures/Canonical.typoscript']
         );
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
     }
 
     public function generateDataProvider(): array
@@ -182,10 +156,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
     public function generate(string $targetUri, string $expectedCanonicalUrl): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($targetUri))
-                ->withInstructions([$this->buildPageTypoScript()]),
-            $this->internalRequestContext,
-            true
+            (new InternalRequest($targetUri))->withInstructions([$this->buildPageTypoScript()])
         );
 
         if ($expectedCanonicalUrl) {

@@ -22,7 +22,6 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
@@ -32,8 +31,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         'DE' => ['id' => 1, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
     ];
-
-    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -45,15 +42,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
     {
         static::destroyDatabaseSnapshot();
         parent::tearDownAfterClass();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
     }
 
     protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void
@@ -71,12 +59,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         });
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
-    }
-
     /**
      * @param string $url
      * @param array $scopes
@@ -91,7 +73,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(new InternalRequest($url), $this->internalRequestContext);
+        $response = $this->executeFrontendSubRequest(new InternalRequest($url));
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
 
         foreach ($scopes as $scopePath => $expectedScopeValue) {
@@ -109,7 +91,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
             ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']
         );
 
-        $response = $this->executeFrontendSubRequest(new InternalRequest($url), $this->internalRequestContext);
+        $response = $this->executeFrontendSubRequest(new InternalRequest($url));
         self::assertSame(404, $response->getStatusCode());
     }
 
@@ -138,8 +120,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
                         'titleField' => 'title',
                         'as' => 'results',
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         $json = json_decode((string)$response->getBody(), true);
@@ -157,8 +138,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         );
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($url))->withInstructions([$this->createLanguageMenuProcessorInstruction(['languages' => 'auto'])]),
-            $this->internalRequestContext
+            (new InternalRequest($url))->withInstructions([$this->createLanguageMenuProcessorInstruction(['languages' => 'auto'])])
         );
 
         $json = json_decode((string)$response->getBody(), true);

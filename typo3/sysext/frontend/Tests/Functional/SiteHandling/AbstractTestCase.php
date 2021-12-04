@@ -29,20 +29,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    protected const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-
-    protected const TYPO3_CONF_VARS = [
-        'SYS' => [
-            'encryptionKey' => self::ENCRYPTION_KEY,
-        ],
-        'FE' => [
-            'cacheHash' => [
-                'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
-                'excludedParameters' => ['tx_testing_link[excludedValue]'],
-            ],
-        ],
-    ];
-
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
         'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
@@ -52,17 +38,30 @@ abstract class AbstractTestCase extends FunctionalTestCase
         'ZH' => ['id' => 4, 'title' => 'Simplified Chinese', 'locale' => 'zh_CN.UTF-8', 'iso' => 'zh', 'hrefLang' => 'zh-Hans', 'direction' => ''],
     ];
 
-    /**
-     * @var string[]
-     */
-    protected $coreExtensionsToLoad = ['workspaces'];
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
+        ],
+        'FE' => [
+            'cacheHash' => [
+                'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
+                'excludedParameters' => ['tx_testing_link[excludedValue]'],
+            ],
+            'debug' => false,
+        ],
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
+    ];
 
     /**
      * @var string[]
      */
-    protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
-    ];
+    protected $coreExtensionsToLoad = ['workspaces'];
 
     /**
      * @param array $array

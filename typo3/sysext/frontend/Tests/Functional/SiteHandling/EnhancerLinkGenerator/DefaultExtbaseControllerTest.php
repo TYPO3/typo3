@@ -100,8 +100,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -183,8 +182,7 @@ class DefaultExtbaseControllerTest extends AbstractEnhancerLinkGeneratorTestCase
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());

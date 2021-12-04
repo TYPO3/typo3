@@ -31,8 +31,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
  */
 class SlugLinkGeneratorTest extends AbstractTestCase
 {
-    private InternalRequestContext $internalRequestContext;
-
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -48,10 +46,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
         $this->writeSiteConfiguration(
             'acme-com',
@@ -136,12 +130,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         );
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
-    }
-
     /**
      * @return array
      */
@@ -197,8 +185,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -270,8 +257,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -347,8 +333,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                         'language' => $targetLanguageId,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -410,8 +395,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                         'additionalParams' => '&testing[value]=1',
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -478,8 +462,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -555,8 +538,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -613,8 +595,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());
@@ -682,7 +663,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'parameter' => $targetPageId,
                     ]),
                 ]),
-            $this->internalRequestContext
+            (new InternalRequestContext())
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
                 ->withBackendUserId($backendUserId)
         );
@@ -830,8 +811,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'includeSpacer' => 1,
                         'titleField' => 'title',
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         $json = json_decode((string)$response->getBody(), true);
@@ -900,8 +880,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createLanguageMenuProcessorInstruction([
                         'languages' => 'auto',
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         $json = json_decode((string)$response->getBody(), true);

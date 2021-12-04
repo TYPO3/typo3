@@ -32,11 +32,14 @@ class TitleTagRenderingTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['seo'];
 
-    /**
-     * @var string[]
-     */
-    protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+    protected $configurationToUseInTestInstance = [
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
     ];
 
     protected function setUp(): void

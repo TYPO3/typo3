@@ -60,11 +60,14 @@ class UriPrefixRenderingTest extends FunctionalTestCase
      */
     protected $coreExtensionsToLoad = ['rte_ckeditor'];
 
-    /**
-     * @var string[]
-     */
-    protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+    protected $configurationToUseInTestInstance = [
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
     ];
 
     protected const LANGUAGE_PRESETS = [
