@@ -4624,29 +4624,11 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table The table of the localized parent record
      * @param int $id The uid of the localized parent record
-     * @param array|string $command Defines the command to be performed (see example above)
+     * @param array $command Defines the command to be performed (see example above)
      */
-    protected function inlineLocalizeSynchronize($table, $id, $command)
+    protected function inlineLocalizeSynchronize($table, $id, array $command)
     {
         $parentRecord = BackendUtility::getRecordWSOL($table, $id);
-
-        // Backward-compatibility handling
-        if (!is_array($command)) {
-            // @deprecated, will be removed in TYPO3 v12.0.
-            trigger_error('DataHandler command InlineLocalizeSynchronize needs to use an array as command input, which is available since TYPO3 v7.6. This fallback mechanism will be removed in TYPO3 v12.0.', E_USER_DEPRECATED);
-            // <field>, (localize | synchronize | <uid>):
-            $parts = GeneralUtility::trimExplode(',', $command);
-            $command = [
-                'field' => $parts[0],
-                // The previous process expected $id to point to the localized record already
-                'language' => (int)$parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']],
-            ];
-            if (!MathUtility::canBeInterpretedAsInteger($parts[1])) {
-                $command['action'] = $parts[1];
-            } else {
-                $command['ids'] = [$parts[1]];
-            }
-        }
 
         // In case the parent record is the default language record, fetch the localization
         if (empty($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {

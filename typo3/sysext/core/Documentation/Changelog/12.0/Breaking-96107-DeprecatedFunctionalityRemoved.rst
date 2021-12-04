@@ -310,6 +310,7 @@ The following features have been removed:
 The following fallbacks have been removed:
 
 - Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
+- Usage of the :php:`DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
 
 The following database tables have been removed:
 
