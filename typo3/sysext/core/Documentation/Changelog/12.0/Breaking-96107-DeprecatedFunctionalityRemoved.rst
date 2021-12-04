@@ -124,6 +124,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedHostHeaderValue()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::minifyJavaScript()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
