@@ -21,15 +21,12 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /**
  * Eid request test
  */
 class EidRequestTest extends AbstractTestCase
 {
-    private InternalRequestContext $internalRequestContext;
-
     /**
      * @var string[]
      */
@@ -52,11 +49,6 @@ class EidRequestTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
-
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
@@ -256,11 +248,7 @@ class EidRequestTest extends AbstractTestCase
         array $expectedHeaders,
         ?array $expectedResponseData
     ): void {
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
-
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
         if ($expectedResponseData !== null) {

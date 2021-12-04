@@ -33,13 +33,26 @@ class SlugSiteRequestTest extends AbstractTestCase
     // Force subrequest-based errors ON, because some tests can't work otherwise.
     protected $configurationToUseInTestInstance = [
         'SYS' => [
+            'encryptionKey' => '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6',
             'features' => [
                 'subrequestPageErrors' => true,
             ],
         ],
+        'FE' => [
+            'cacheHash' => [
+                'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]'],
+                'excludedParameters' => ['tx_testing_link[excludedValue]'],
+            ],
+            'debug' => false,
+        ],
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
     ];
-
-    private InternalRequestContext $internalRequestContext;
 
     public static function setUpBeforeClass(): void
     {
@@ -56,11 +69,6 @@ class SlugSiteRequestTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
-
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
@@ -89,12 +97,6 @@ class SlugSiteRequestTest extends AbstractTestCase
                 'title' => 'ACME Root',
             ]
         );
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
     }
 
     /**
@@ -133,10 +135,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'location' => ['https://website.local/welcome'],
         ];
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
@@ -179,10 +178,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'location' => ['https://website.local/en-en/'],
         ];
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
@@ -208,7 +204,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext,
+            null,
             true
         );
         $responseStructure = ResponseContent::fromString(
@@ -265,10 +261,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             'location' => ['https://website.local/%E7%AE%80/welcome'],
         ];
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
@@ -294,7 +287,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext,
+            null,
             true
         );
         $responseStructure = ResponseContent::fromString(
@@ -345,10 +338,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/any/invalid/slug';
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(
             404,
@@ -375,10 +365,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/en-en/any/invalid/slug';
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(
             404,
@@ -405,10 +392,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         $uri = 'https://website.local/en-en/?type=13';
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(
             500,
@@ -469,10 +453,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
         );
@@ -526,10 +507,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
         );
@@ -594,10 +572,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
         );
@@ -629,11 +604,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
-
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         self::assertSame(200, $response->getStatusCode());
         self::assertSame('EN: Frontend Editing', $responseStructure->getScopePath('page/title'));
@@ -684,8 +655,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -731,8 +701,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
@@ -788,8 +757,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -823,8 +791,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -862,8 +829,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -898,8 +864,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -951,8 +916,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -986,8 +950,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -1025,8 +988,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
 
         self::assertSame(
@@ -1061,8 +1023,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -1110,8 +1071,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($uri),
-            $this->internalRequestContext
-                ->withFrontendUserId($frontendUserId)
+            (new InternalRequestContext())->withFrontendUserId($frontendUserId)
         );
         $json = json_decode((string)$response->getBody(), true);
 
@@ -1165,10 +1125,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame(404, $response->getStatusCode());
     }
 
@@ -1187,10 +1144,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(
             404,
@@ -1220,10 +1174,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Page', [404, 500])
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
 
         self::assertSame(
             404,
@@ -1250,10 +1201,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('PHP', [404])
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $json = json_decode((string)$response->getBody(), true);
 
         self::assertSame(
@@ -1313,10 +1261,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildSiteConfiguration(1000, 'https://website.local/')
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
         );

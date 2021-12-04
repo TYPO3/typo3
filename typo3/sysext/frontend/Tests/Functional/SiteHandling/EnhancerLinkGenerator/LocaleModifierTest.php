@@ -135,8 +135,7 @@ class LocaleModifierTest extends AbstractEnhancerLinkGeneratorTestCase
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         $body = (string)$response->getBody();

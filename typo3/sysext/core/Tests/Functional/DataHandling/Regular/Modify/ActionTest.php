@@ -618,10 +618,8 @@ class ActionTest extends AbstractActionTestCase
 
         // then, assert if preview is possible using a backend user
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())
-                ->withPageId($this->recordIds['newPageId']),
-            (new InternalRequestContext())
-                ->withBackendUserId(self::VALUE_BackendUserId)
+            (new InternalRequest())->withPageId($this->recordIds['newPageId']),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)
         );
         $responseSections = ResponseContent::fromString((string)$response->getBody())
             ->getSections();

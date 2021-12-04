@@ -131,8 +131,7 @@ class PersistedPatternMapperTest extends AbstractEnhancerLinkGeneratorTestCase
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
                     ]),
-                ]),
-            $this->internalRequestContext
+                ])
         );
 
         self::assertSame($expectation, (string)$response->getBody());

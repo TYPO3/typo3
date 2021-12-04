@@ -32,15 +32,12 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractI
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /**
  * Test case for build URLs with TypoLink via Frontend Request.
  */
 class TypoLinkGeneratorTest extends AbstractTestCase
 {
-    private InternalRequestContext $internalRequestContext;
-
     protected $pathsToProvideInTestInstance = [
         'typo3/sysext/backend/Resources/Public/Images/Logo.png' => 'fileadmin/logo.png',
     ];
@@ -60,10 +57,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
         $this->writeSiteConfiguration(
             'acme-com',
@@ -134,12 +127,6 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         );
         $storage = $storageRepository->findByUid($storageId);
         (new Indexer($storage))->processChangesInStorages();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
     }
 
     /**
@@ -564,7 +551,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             $request = $this->applyInstructions($request, ...$instructions);
         }
 
-        return $this->executeFrontendSubRequest($request, $this->internalRequestContext);
+        return $this->executeFrontendSubRequest($request);
     }
 
     /**

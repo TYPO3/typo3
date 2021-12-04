@@ -26,15 +26,12 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
 /**
  * Abstract test case
  */
 abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
 {
-    protected InternalRequestContext $internalRequestContext;
-
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -50,10 +47,6 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // these settings are forwarded to the frontend sub-request as well
-        $this->internalRequestContext = (new InternalRequestContext())
-            ->withGlobalSettings(['TYPO3_CONF_VARS' => static::TYPO3_CONF_VARS]);
 
         $this->writeSiteConfiguration(
             'acme-com',
@@ -78,12 +71,6 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->internalRequestContext);
-        parent::tearDown();
     }
 
     protected function setUpDatabase(): void
@@ -158,7 +145,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
-            $this->internalRequestContext,
+            null,
             true
         );
 
@@ -198,7 +185,7 @@ abstract class AbstractEnhancerSiteRequestTest extends AbstractTestCase
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
-            $this->internalRequestContext,
+            null,
             true
         );
 

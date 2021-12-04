@@ -49,11 +49,14 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     protected $expectedErrorLogEntries = 0;
 
-    /**
-     * @var array
-     */
-    protected $pathsToLinkInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
+    protected $configurationToUseInTestInstance = [
+        'SC_OPTIONS' => [
+            'Core/TypoScript/TemplateService' => [
+                'runThroughTemplatesPostProcessing' => [
+                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                ],
+            ],
+        ],
     ];
 
     /**

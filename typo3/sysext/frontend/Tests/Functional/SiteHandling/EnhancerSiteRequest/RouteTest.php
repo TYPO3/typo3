@@ -487,7 +487,7 @@ class RouteTest extends AbstractEnhancerSiteRequestTest
 
         $response = $this->executeFrontendSubRequest(
             new InternalRequest($targetUri),
-            $this->internalRequestContext,
+            null,
             true
         );
 

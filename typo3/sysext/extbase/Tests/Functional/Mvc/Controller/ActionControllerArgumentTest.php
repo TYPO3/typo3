@@ -36,8 +36,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ActionControllerArgumentTest extends FunctionalTestCase
 {
-    private const ENCRYPTION_KEY = '4408d27a916d51e624b69af3554f516dbab61037a9f7b9fd6f81b4d3bedeccb6';
-
     private string $pluginName = 'Pi1';
     private string $extensionName = 'ActionControllerArgumentTest';
     private ?string $pluginNamespacePrefix = null;
@@ -53,15 +51,8 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->pluginNamespacePrefix = strtolower('tx_' . $this->extensionName . '_' . $this->pluginName);
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = self::ENCRYPTION_KEY;
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-        parent::tearDown();
     }
 
     public function validationErrorReturnsToForwardedPreviousActionDataProvider(): array
