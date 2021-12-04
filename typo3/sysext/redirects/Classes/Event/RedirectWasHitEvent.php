@@ -22,9 +22,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- * This event is fired when a request matches a configured redirect
+ * This event is fired in the \TYPO3\CMS\Redirects\Http\Middleware\RedirectHandler
+ * middleware when a request matches a configured redirect.
  *
- * This allows to further process the matched redirect and adjusting the PSR-7 response
+ * It can be used to further process the matched redirect and
+ * to adjust the PSR-7 Response. It furthermore allows to influence Core
+ * functionality, for example the hit count increment.
  */
 final class RedirectWasHitEvent
 {
