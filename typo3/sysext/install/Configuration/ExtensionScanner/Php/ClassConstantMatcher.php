@@ -446,11 +446,13 @@ return [
     'TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL' => [
         'restFiles' => [
             'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME' => [
         'restFiles' => [
             'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

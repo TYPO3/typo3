@@ -1285,6 +1285,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-95395-GeneralUtilityIsAllowedHostHeaderValueAndTrustedHostsPatternConstants.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -47,11 +46,6 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class GeneralUtility
 {
-    /* @deprecated since v11, will be removed in v12. */
-    const ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL = '.*';
-    /* @deprecated since v11, will be removed in v12. */
-    const ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME = 'SERVER_NAME';
-
     /**
      * @var ContainerInterface|null
      */
@@ -2586,21 +2580,6 @@ class GeneralUtility
         }
         self::$indpEnvCache[$getEnvName] = $retVal;
         return $retVal;
-    }
-
-    /**
-     * Checks if the provided host header value matches the trusted hosts pattern.
-     *
-     * @param string $hostHeaderValue HTTP_HOST header value as sent during the request (may include port)
-     * @return bool
-     * @deprecated will be removed in TYPO3 v12.0.
-     */
-    public static function isAllowedHostHeaderValue($hostHeaderValue)
-    {
-        trigger_error('GeneralUtility::isAllowedHostHeaderValue() will be removed in TYPO3 v12.0. Host header is verified by frontend and backend middlewares.', E_USER_DEPRECATED);
-
-        $verifyHostHeader = new VerifyHostHeader($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] ?? '');
-        return $verifyHostHeader->isAllowedHostHeaderValue($hostHeaderValue, $_SERVER);
     }
 
     /**

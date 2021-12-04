@@ -122,6 +122,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfDefaultLanguage()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedHostHeaderValue()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::stdAuthCode()`
@@ -227,6 +228,8 @@ The following constants have been dropped:
 
 The following class constants have been dropped:
 
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState::NEW_PLACEHOLDER_VERSION`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState::MOVE_PLACEHOLDER`
 
