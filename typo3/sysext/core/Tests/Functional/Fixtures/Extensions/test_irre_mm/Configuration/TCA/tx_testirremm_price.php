@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_mnmmasym_price',
+        'title' => 'LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tx_testirremm_price',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -18,7 +18,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_price.gif',
+        'iconfile' => 'EXT:test_irre_mm/Resources/Public/Icons/icon_price.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
@@ -39,8 +39,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_irretutorial_mnmmasym_price',
-                'foreign_table_where' => 'AND {#tx_irretutorial_mnmmasym_price}.{#pid}=###CURRENT_PID### AND {#tx_irretutorial_mnmmasym_price}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_testirremm_price',
+                'foreign_table_where' => 'AND {#tx_testirremm_price}.{#pid}=###CURRENT_PID### AND {#tx_testirremm_price}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -61,7 +61,7 @@ return [
         'title' => [
             'exclude' => true,
             'l10n_mode' => 'prefixLangTitle',
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.title',
+            'label' => 'LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tx_testirremm_price.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -70,7 +70,7 @@ return [
         ],
         'price' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.price',
+            'label' => 'LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tx_testirremm_price.price',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -79,11 +79,11 @@ return [
         ],
         'offers' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_price.offers',
+            'label' => 'LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tx_testirremm_price.offers',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_irretutorial_mnmmasym_offer',
-                'MM' => 'tx_irretutorial_mnmmasym_offer_price_rel',
+                'foreign_table' => 'tx_testirremm_offer',
+                'MM' => 'tx_testirremm_offer_price_rel',
                 'MM_hasUidField' => true,
                 'MM_opposite_field' => 'prices',
                 'maxitems' => 10,
@@ -97,8 +97,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, price, offers,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden',
+            '--div--;LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tabs.general, title, price, offers,' .
+            '--div--;LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden',
         ],
     ],
     'palettes' => [
