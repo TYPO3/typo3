@@ -2104,27 +2104,6 @@ translation.language
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 
-.. _apireference-finisheroptions-emailfinisher-options-templatepathandfilename:
-
-templatePathAndFilename
-+++++++++++++++++++++++
-
-:aspect:`Data type`
-      string
-
-:aspect:`Mandatory`
-      Yes
-
-:aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
-      'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
-
-:aspect:`Description`
-      Template path and filename for the mail body.
-      The placeholder {\@format} will be replaced with the value from option ``format``
-      The template gets the current :php:`FormRuntime` assigned as :code:`form` and
-      the :php:`FinisherVariableProvider` assigned as :code:`finisherVariableProvider`.
-
-
 .. _apireference-finisheroptions-emailfinisher-options-layoutrootpaths:
 
 layoutRootPaths

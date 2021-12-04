@@ -59,33 +59,37 @@ within your TYPO3 installation.
 Email finisher
 --------------
 
-The 'Email finisher' sends an email to one recipient. EXT:form uses two
-``EmailFinisher`` declarations with the identifiers ``EmailToReceiver`` and
+The :php:`EmailFinisher` sends an email to one recipient. EXT:form uses two
+:php:`EmailFinisher` declarations with the identifiers ``EmailToReceiver`` and
 ``EmailToSender``.
 
 
 .. _concepts-finishers-emailfinisher-fluidemail:
 
-Use FluidEmail
-""""""""""""""
+About FluidEmail
+""""""""""""""""
 
-FluidEmail allows to send mails in a standardized way. To use FluidEmail a new
-option `useFluidEmail` is added to both the EmailToReceiver and EmailToSender
-finisher. It defaults to ``FALSE`` so extension authors are able to smoothly test
-and upgrade their forms. Furthermore a new option `title` is available which can
+.. versionchanged:: 12.0
+    The :php:`EmailFinisher` always sends email via :php:`FluidEmail`.
+
+FluidEmail allows to send mails in a standardized way.
+
+The option :yaml:`title` is available which can
 be used to add an email title to the default FluidEmail template. This option is
 capable of rendering form element variables using the known bracket syntax and can
 be overwritten in the FlexForm configuration of the form plugin.
 
 To customize the templates being used following options can be set:
 
-* ``templateName``: The template name (for both HTML and plaintext) without the
+*   :yaml:`templateName`: The template name (for both HTML and plaintext) without the
   extension
-* ``templateRootPaths``: The paths to the templates
-* ``partialRootPaths``: The paths to the partials
-* ``layoutRootPaths``: The paths to the layouts
+*   :yaml:`templateRootPaths`: The paths to the templates
+*   :yaml:`partialRootPaths`: The paths to the partials
+*   :yaml:`layoutRootPaths`: The paths to the layouts
 
-For FluidEmail, the field ``templatePathAndFilename`` is not evaluated anymore.
+.. note::
+    The formerly available field :yaml:`templatePathAndFilename` is not evaluated
+    anymore.
 
 A finisher configuration could look like this:
 
@@ -106,15 +110,12 @@ A finisher configuration could look like this:
        partialRootPaths:
          100: 'EXT:my_site_package/Resources/Private/Partials/Email/'
        addHtmlPart: true
-       useFluidEmail: true
 
-Please note the old template name syntax `{@format}.html` does not work for
-FluidEmail as each format needs a different template with the corresponing file
-extension. In the example above the following files must exist in the specified
+In the example above the following files must exist in the specified
 template path:
 
-* ``ContactForm.html``
-* ``ContactForm.txt``
+*   :file:`ContactForm.html`
+*   :file:`ContactForm.txt`
 
 
 .. _concepts-finishers-flashmessagefinisher:

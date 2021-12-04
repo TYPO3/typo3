@@ -402,41 +402,6 @@ options.translation.translationFiles
       If not set, the translation file(s) from the 'Form' element will be used.
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
-
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.templatepathandfilename:
-
-options.templatePathAndFilename
--------------------------------
-
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.EmailToReceiver.options.templatePathAndFilename
-
-:aspect:`Data type`
-      string
-
-:aspect:`Needed by`
-      Frontend
-
-:aspect:`Mandatory`
-      Yes
-
-:aspect:`Default value`
-      .. code-block:: yaml
-         :linenos:
-         :emphasize-lines: 2
-
-         EmailToReceiver:
-           options:
-             templatePathAndFilename: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/{@format}.html'
-
-:aspect:`Good to know`
-      - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
-
-:aspect:`Description`
-      Template path and filename for the mail body.
-      The placeholder {\@format} will be replaced with the value from option ``format``.
-
-
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.partialrootpaths:
 
 options.partialRootPaths
