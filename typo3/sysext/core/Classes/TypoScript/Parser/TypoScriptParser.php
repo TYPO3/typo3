@@ -149,16 +149,6 @@ class TypoScriptParser
     public $lineNumberOffset = 0;
 
     /**
-     * @deprecated Unused since v11, will be removed in v12
-     */
-    public $breakPointLN = 0;
-
-    /**
-     * @deprecated Unused since v11, will be removed in v12
-     */
-    public $parentObject;
-
-    /**
      * Start parsing the input TypoScript text piece. The result is stored in $this->setup
      *
      * @param string $string The TypoScript text
@@ -1276,16 +1266,6 @@ class TypoScriptParser
             $array[$k] = self::extractIncludes($array[$k]);
         }
         return $array;
-    }
-
-    /**
-     * @param string $string
-     * @return string
-     * @deprecated since v11, will be removed in v12.
-     */
-    public function doSyntaxHighlight($string)
-    {
-        return $string;
     }
 
     /**

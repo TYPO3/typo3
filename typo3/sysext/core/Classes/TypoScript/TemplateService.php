@@ -78,16 +78,6 @@ class TemplateService
     protected $matchAll = false;
 
     /**
-     * @deprecated Unused since v11, will be removed in v12
-     */
-    public $ext_constants_BRP = 0;
-
-    /**
-     * @deprecated Unused since v11, will be removed in v12
-     */
-    public $ext_config_BRP = 0;
-
-    /**
      * @var bool
      */
     public $ext_regLinenumbers = false;

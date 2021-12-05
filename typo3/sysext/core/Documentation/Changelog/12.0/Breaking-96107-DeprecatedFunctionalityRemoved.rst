@@ -129,6 +129,7 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance()`
+- :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->doSyntaxHighlight()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::compileSelectedGetVarsFromArray()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated()`
@@ -181,6 +182,10 @@ The following PHP class methods changed signature according to previous deprecat
 
 The following class properties have been removed:
 
+- :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->breakPointLN`
+- :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->parentObject`
+- :php:`\TYPO3\CMS\Core\TypoScript\TemplateService->ext_constants_BRP`
+- :php:`\TYPO3\CMS\Core\TypoScript\TemplateService->ext_config_BRP`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->controllerContext`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->controllerContext`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext`

@@ -828,21 +828,25 @@ return [
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->breakPointLN' => [
         'restFiles' => [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->parentObject' => [
         'restFiles' => [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->ext_constants_BRP' => [
         'restFiles' => [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\TypoScript\TemplateService->ext_config_BRP' => [
         'restFiles' => [
             'Deprecation-93726-DeprecatedTypoScriptParserRelatedProperties.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->align' => [
