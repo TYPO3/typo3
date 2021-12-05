@@ -1,0 +1,15 @@
+"pages",,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title",,,
+,200,0,0,0,0,0,0,0,0,"Checkbox Page",,,
+,300,0,0,0,0,0,0,0,0,"Checkbox Page 2",,,
+,201,0,0,0,200,1,0,0,0,"Checkbox Page WS",,,
+,301,0,0,0,300,1,0,0,0,"Checkbox Page 2 WS",,,
+"tt_content",,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","tx_testdatahandler_checkbox_with_eval"
+,10,200,256,0,0,0,0,0,0,0,0,"Regular Element #1","1"
+,11,200,512,0,0,0,0,0,0,0,0,"Regular Element #2","0"
+,12,300,256,0,0,0,0,0,0,0,0,"Regular Element #3","1"
+,100,201,256,0,0,0,10,1,0,0,0,"Regular Element #1 WS","1"
+,111,201,512,0,0,0,11,1,0,0,0,"Regular Element #2 WS","0"
+,112,301,256,0,0,0,12,1,0,0,0,"Regular Element #3 WS","1"
+,113,301,256,0,0,0,0,1,0,0,0,"Regular Element #4 WS","1"

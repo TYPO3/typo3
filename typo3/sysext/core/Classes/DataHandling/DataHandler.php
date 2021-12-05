@@ -1937,6 +1937,7 @@ class DataHandler implements LoggerAwareInterface
             $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
             $otherRecordsWithSameValue = [];
             $maxCheckedRecords = 0;
+            // @todo These checks do not consider the language of the current record (if available).
             if (in_array('maximumRecordsCheckedInPid', $evalCodesArray, true)) {
                 $otherRecordsWithSameValue = $this->getRecordsWithSameValue($table, $id, $field, $value, $realPid);
                 $maxCheckedRecords = (int)$tcaFieldConf['validation']['maximumRecordsCheckedInPid'];

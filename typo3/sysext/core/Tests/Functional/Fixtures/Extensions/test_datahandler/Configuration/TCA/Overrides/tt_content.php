@@ -88,7 +88,19 @@ defined('TYPO3') or die();
                 'default' => '',
             ],
         ],
-    ]
+        'tx_testdatahandler_checkbox_with_eval' => [
+            'exclude' => true,
+            'label' => 'DataHandler Test Checkbox with eval and validation',
+            'config' => [
+                'type' => 'check',
+                'eval' => 'maximumRecordsChecked,maximumRecordsCheckedInPid',
+                'validation' => [
+                    'maximumRecordsChecked' => 3,
+                    'maximumRecordsCheckedInPid' => 2,
+                ],
+            ],
+        ],
+    ],
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
