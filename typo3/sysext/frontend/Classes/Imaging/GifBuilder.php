@@ -96,12 +96,7 @@ class GifBuilder extends GraphicalFunctions
      */
     public $XY = [];
 
-    /**
-     * @var ContentObjectRenderer
-     * @deprecated Set to protected in v12.
-     * @todo: Signature in v12: protected ?ContentObjectRenderer $cObj = null;
-     */
-    public $cObj;
+    protected ?ContentObjectRenderer $cObj = null;
 
     /**
      * @var array

@@ -65,7 +65,7 @@ class AbstractPluginTest extends UnitTestCase
         $contentObjectRenderer->setContentObjectClassMap([
             'TEXT' => TextContentObject::class,
         ]);
-        $this->abstractPlugin->cObj = $contentObjectRenderer;
+        $this->abstractPlugin->setContentObjectRenderer($contentObjectRenderer);
     }
 
     /**

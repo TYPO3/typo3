@@ -43,14 +43,7 @@ class AbstractPlugin
 {
     use DefaultJavaScriptAssetTrait;
 
-    /**
-     * The back-reference to the mother cObj object set at call time
-     *
-     * @var ContentObjectRenderer|null
-     * @deprecated Set to protected in v12.
-     * @todo: Signature in v12: protected ?ContentObjectRenderer $cObj = null;
-     */
-    public $cObj;
+    protected ?ContentObjectRenderer $cObj = null;
 
     /**
      * Should be same as classname of the plugin, used for CSS classes, variables

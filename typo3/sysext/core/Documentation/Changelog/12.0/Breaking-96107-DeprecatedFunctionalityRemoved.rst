@@ -215,7 +215,8 @@ The following class methods visibility have been changed to private:
 
 The following class properties visibility have been changed to protected:
 
-- :php:`\Full\Class\Name->propertyName`
+- :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->cObj`
+- :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->cObj`
 
 The following class properties visibility have been changed to private:
 
