@@ -83,9 +83,16 @@ class RecordFinder
                 $queryBuilder->expr()->eq(
                     'tx_styleguide_containsdemo',
                     $queryBuilder->createNamedParameter($tableName, \PDO::PARAM_STR)
+                ),
+                // only default language pages needed
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
             ->orderBy('pid', 'DESC')
+            // add uid as deterministic last sorting, as not all dbms in all versions do that
+            ->addOrderBy('uid', 'ASC')
             ->execute()
             ->fetchAssociative();
         if (count($row) !== 1) {

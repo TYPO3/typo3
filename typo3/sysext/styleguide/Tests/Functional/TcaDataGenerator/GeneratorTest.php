@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -52,24 +54,62 @@ class GeneratorTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         // Verify there is no tx_styleguide_elements_basic yet
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_styleguide_elements_basic');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_styleguide_elements_basic');
         $queryBuilder->getRestrictions()->removeAll();
-        $count = $queryBuilder->count('uid')
+        $count = (int)$queryBuilder->count('uid')
             ->from('tx_styleguide_elements_basic')
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertEquals(0, $count);
 
         $generator = new Generator();
         $generator->create();
 
         // Verify there is at least one tx_styleguide_elements_basic record now
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_styleguide_elements_basic');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_styleguide_elements_basic');
         $queryBuilder->getRestrictions()->removeAll();
-        $count = $queryBuilder->count('uid')
+        $count = (int)$queryBuilder->count('uid')
             ->from('tx_styleguide_elements_basic')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'pid',
+                    $queryBuilder->createNamedParameter($this->getPageUidFor('tx_styleguide_elements_basic'), \PDO::PARAM_INT)
+                )
+            )
             ->execute()
-            ->fetchColumn(0);
+            ->fetchOne();
         self::assertGreaterThan(0, $count);
+    }
+
+    protected function getPageUidFor(string $dataTable): ?int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages')
+            ->createQueryBuilder();
+
+        $row = $queryBuilder
+            ->select(...['uid'])
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'tx_styleguide_containsdemo',
+                    $queryBuilder->createNamedParameter($dataTable, \PDO::PARAM_STR)
+                ),
+                // only default language pages needed
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            )
+            ->orderBy('pid', 'DESC')
+            // add uid as deterministic last sorting, as not all dbms in all versions do that
+            ->addOrderBy('uid', 'ASC')
+            ->execute()
+            ->fetchAssociative();
+
+        if ($row['uid'] ?? false) {
+            return (int)$row['uid'];
+        }
+        return null;
     }
 }
