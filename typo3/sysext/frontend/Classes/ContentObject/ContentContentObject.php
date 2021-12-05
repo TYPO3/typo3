@@ -73,8 +73,6 @@ class ContentContentObject extends AbstractContentObject
             $records = $this->cObj->getRecords($conf['table'], $conf['select.']);
             $cobjValue = '';
             if (!empty($records)) {
-                // @deprecated since v11, will be removed in v12. Drop together with ContentObjectRenderer->currentRecordTotal
-                $this->cObj->currentRecordTotal = count($records);
                 $this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . count($records));
 
                 /** @var ContentObjectRenderer $cObj */

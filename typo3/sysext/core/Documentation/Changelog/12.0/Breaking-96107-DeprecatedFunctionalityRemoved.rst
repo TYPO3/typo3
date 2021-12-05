@@ -191,6 +191,11 @@ The following class properties have been removed:
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->controllerContext`
 - :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->controllerContext`
 - :php:`\TYPO3\CMS\Form\Domain\Renderer\AbstractElementRenderer->controllerContext`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->align`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->oldData`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->alternativeData`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordTotal`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->recordRegister`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons`

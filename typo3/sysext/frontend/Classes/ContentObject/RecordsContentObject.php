@@ -93,8 +93,6 @@ class RecordsContentObject extends AbstractContentObject
                 $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
-                // @deprecated since v11, will be removed in v12. Drop together with ContentObjectRenderer->currentRecordTotal
-                $this->cObj->currentRecordTotal = $itemArrayCount;
                 foreach ($this->itemArray as $val) {
                     $row = $this->data[$val['table']][$val['id']];
                     // Perform overlays if necessary (records coming from category collections are already overlaid)

@@ -4227,20 +4227,13 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for stdWrap_data.
      *
-     * @return array [$expect, $data, $alt]
+     * @return array [$expect, $data]
      */
     public function stdWrap_dataDataProvider(): array
     {
         $data = [StringUtility::getUniqueId('data')];
-        $alt = [StringUtility::getUniqueId('alternativeData')];
         return [
             'default' => [$data, $data, ''],
-            'alt is array' => [$alt, $data, $alt],
-            'alt is empty array' => [[], $data, []],
-            'alt null' => [$data, $data, null],
-            'alt string' => [$data, $data, 'xxx'],
-            'alt int' => [$data, $data, 1],
-            'alt bool' => [$data, $data, true],
         ];
     }
 
@@ -4248,21 +4241,17 @@ class ContentObjectRendererTest extends UnitTestCase
      * Checks that stdWrap_data works properly.
      *
      * Show:
-     *
      * - Delegates to method getData.
      * - Parameter 1 is $conf['data'].
      * - Parameter 2 is property data by default.
-     * - Parameter 2 is property alternativeData, if set as array.
-     * - Property alternativeData is always unset to ''.
      * - Returns the return value.
      *
      * @test
      * @dataProvider stdWrap_dataDataProvider
-     * @param array $expect Expect either $data or $alternativeData.
+     * @param array $expect Expect either $data
      * @param array $data The data.
-     * @param mixed $alt The alternativeData.
      */
-    public function stdWrap_data(array $expect, array $data, $alt): void
+    public function stdWrap_data(array $expect, array $data): void
     {
         $conf = ['data' => StringUtility::getUniqueId('conf.data')];
         $return = StringUtility::getUniqueId('return');
@@ -4271,14 +4260,12 @@ class ContentObjectRendererTest extends UnitTestCase
             ['getData']
         );
         $subject->_set('data', $data);
-        $subject->_set('alternativeData', $alt);
         $subject
             ->expects(self::once())
             ->method('getData')
             ->with($conf['data'], $expect)
             ->willReturn($return);
         self::assertSame($return, $subject->stdWrap_data('discard', $conf));
-        self::assertSame('', $subject->_get('alternativeData'));
     }
 
     /**
@@ -4390,23 +4377,17 @@ class ContentObjectRendererTest extends UnitTestCase
      * Check if stdWrap_debug works properly.
      *
      * Show:
-     *
      * - Calls the function debug.
      * - Parameter 1 is $this->data.
      * - Parameter 2 is the string '$cObj->data:'.
-     * - If $this->alternativeData is an array the same is repeated with:
-     * - Parameter 1 is $this->alternativeData.
-     * - Parameter 2 is the string '$cObj->alternativeData:'.
      * - Returns $content as is.
      *
      * Note 1:
-     *
      *   As PHPUnit can't mock PHP function calls, the call to debug can't be
      *   easily intercepted. The test is done indirectly by catching the
      *   frontend output of debug.
      *
      * Note 2:
-     *
      *   The second parameter to the debug function isn't used by the current
      *   implementation at all. It can't even indirectly be tested.
      *
@@ -4420,7 +4401,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = StringUtility::getUniqueId('value');
         $altValue = StringUtility::getUniqueId('value alt');
         $this->subject->data = [$key => $value];
-        // Without alternative data only data is returned.
         ob_start();
         $result = $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
@@ -4428,14 +4408,6 @@ class ContentObjectRendererTest extends UnitTestCase
         self::assertStringContainsString('$cObj->data', $out);
         self::assertStringContainsString($value, $out);
         self::assertStringNotContainsString($altValue, $out);
-        // By adding alternative data both are returned together.
-        $this->subject->alternativeData = [$key => $altValue];
-        ob_start();
-        $this->subject->stdWrap_debugData($content);
-        $out = ob_get_clean();
-        self::assertStringNotContainsString('$cObj->alternativeData', $out);
-        self::assertStringContainsString($value, $out);
-        self::assertStringContainsString($altValue, $out);
     }
 
     /**

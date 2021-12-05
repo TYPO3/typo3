@@ -106,16 +106,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $container;
 
     /**
-     * @var array
-     * @deprecated since v11, will be removed in v12. Unused.
-     */
-    public $align = [
-        'center',
-        'right',
-        'left',
-    ];
-
-    /**
      * stdWrap functions in their correct order
      *
      * @see stdWrap()
@@ -298,22 +288,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected $table = '';
 
     /**
-     * Used for backup
-     *
-     * @var array
-     * @deprecated since v11, will be removed in v12. Unused.
-     */
-    public $oldData = [];
-
-    /**
-     * If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
-     *
-     * @var string
-     * @deprecated since v11, will be removed in v12. Drop together with usages in this class.
-     */
-    public $alternativeData = '';
-
-    /**
      * Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
      *
      * @var array
@@ -332,14 +306,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @var string
      */
     public $currentRecord = '';
-
-    /**
-     * Set in RecordsContentObject and ContentContentObject to the current number of records selected in a query.
-     *
-     * @var int
-     * @deprecated since v11, will be removed in v12. Drop together with usages in RecordsContentObject and ContentContentObject
-     */
-    public $currentRecordTotal = 0;
 
     /**
      * Incremented in RecordsContentObject and ContentContentObject before each record rendering.
@@ -387,14 +353,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public $lastTypoLinkLD = [];
 
     public ?LinkResultInterface $lastTypoLinkResult = null;
-
-    /**
-     * array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
-     *
-     * @var array
-     * @deprecated since v11, will be removed in v12. Unused.
-     */
-    public $recordRegister = [];
 
     /**
      * Containing hook objects for stdWrap
@@ -1474,17 +1432,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Gets content from different sources based on getText functions.
      *
-     * @param string $content Input value undergoing processing in this function.
+     * @param string $_ Unused
      * @param array $conf stdWrap properties for data.
      * @return string The processed input value
      */
-    public function stdWrap_data($content = '', $conf = [])
+    public function stdWrap_data($_ = '', $conf = [])
     {
-        // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData.
-        // @todo v12 version: "return $this->getData($conf['data'], $this->data);"
-        $content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
-        $this->alternativeData = '';
-        return $content;
+        return $this->getData($conf['data'], $this->data);
     }
 
     /**
@@ -2637,10 +2591,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function stdWrap_debugData($content = '')
     {
         debug($this->data, '$cObj->data:');
-        if (is_array($this->alternativeData)) {
-            // @deprecated since v11, will be removed in v12. Drop together with property $this->alternativeData
-            debug($this->alternativeData, '$this->alternativeData');
-        }
         return $content;
     }
 
