@@ -396,14 +396,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $registerStack = [];
 
     /**
-     * Checking that the function is not called eternally. This is done by
-     * interrupting at a depth of 50
-     * @var int
-     * @deprecated since v11, will be removed in v12.
-     */
-    public $cObjectDepthCounter = 50;
-
-    /**
      * Used by RecordContentObject and ContentContentObject to ensure the a records is NOT
      * rendered twice through it!
      * @var array

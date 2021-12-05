@@ -197,6 +197,7 @@ The following class properties have been removed:
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->currentRecordTotal`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->recordRegister`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayFieldEditIcons`
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sWordRegex` (internal, but public)

@@ -882,6 +882,7 @@ return [
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->cObjectDepthCounter' => [
         'restFiles' => [
             'Deprecation-94957-TypoScriptFrontendController-cObjectDepthCounter.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->displayEditIcons' => [
