@@ -347,6 +347,7 @@ The following global JavaScript functions have been removed:
 The following JavaScript functions have been removed:
 
 - :js:`FormEngine.requestConfirmationOnFieldChange()`
+- :js:`TBE_EDITOR.fieldChanged()`
 
 The following JavaScript methods bahaviour has changed:
 
