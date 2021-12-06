@@ -75,7 +75,7 @@ declare namespace TYPO3 {
           label: string,
           title: string,
           exclusiveValues?: string,
-          optionEl?: HTMLOptionElement | JQuery,
+          optionEl?: HTMLOptionElement,
         ): void;
         public reinitialize(): void;
         public openPopupWindow(mode: string, params: string): JQuery;

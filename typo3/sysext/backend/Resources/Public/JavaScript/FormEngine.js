@@ -128,14 +128,9 @@ define(['jquery',
    * @param {string} label The visible name in the selector
    * @param {string} title The title when hovering over it
    * @param {string} exclusiveValues If the select field has exclusive options that are not combine-able
-   * @param {HTMLOptionElement|JQuery} optionEl The HTMLOptionElement object of the selected <option> tag
+   * @param {HTMLOptionElement} optionEl The HTMLOptionElement object of the selected <option> tag
    */
   FormEngine.setSelectOptionFromExternalSource = function(fieldName, value, label, title, exclusiveValues, optionEl) {
-    if (optionEl instanceof $) {
-      console.warn('Passing the 6th argument (optionEl) of FormEngine.setSelectOptionFromExternalSource as a jQuery object has been marked as deprecated. Pass an element of type HTMLOptionElement instead.');
-      optionEl = optionEl.get(0);
-    }
-
     exclusiveValues = String(exclusiveValues);
 
     var $fieldEl,
