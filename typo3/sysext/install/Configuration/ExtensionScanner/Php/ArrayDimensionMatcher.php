@@ -553,4 +553,10 @@ return [
             'Breaking-96041-ToolbarItemsRegisterByTag.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_parsehtml_proc.php\'][\'transformation\']' => [
+        'restFiles' => [
+            'Deprecation-92992-HookT3libclasst3lib_parsehtml_procphptransformation.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
+        ],
+    ],
 ];

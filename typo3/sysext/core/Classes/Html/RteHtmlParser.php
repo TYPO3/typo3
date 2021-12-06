@@ -178,28 +178,15 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_rte');
         // Traverse modes
         foreach ($modes as $cmd) {
-            // Checking for user defined transformation:
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
-                trigger_error(
-                    'The hook "t3lib/class.t3lib_parsehtml_proc.php->transformation"' .
-                    ' will be removed in TYPO3 v12. ',
-                    E_USER_DEPRECATED
-                );
-                $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
-                $_procObj->pObj = $this;
-                $value = $_procObj->transform_rte($value, $this);
-            } else {
-                // ... else use defaults:
-                switch ($cmd) {
-                    case 'detectbrokenlinks':
-                        $value = $this->markBrokenLinks($value);
-                        break;
-                    case 'css_transform':
-                        $value = $this->TS_transform_rte($value);
-                        break;
-                    default:
-                        // Do nothing
-                }
+            switch ($cmd) {
+                case 'detectbrokenlinks':
+                    $value = $this->markBrokenLinks($value);
+                    break;
+                case 'css_transform':
+                    $value = $this->TS_transform_rte($value);
+                    break;
+                default:
+                    // Do nothing
             }
         }
         // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
@@ -225,36 +212,22 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_db');
         // Traverse modes
         foreach ($modes as $cmd) {
-            // Checking for user defined transformation:
-            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
-                trigger_error(
-                    'The hook "t3lib/class.t3lib_parsehtml_proc.php->transformation"' .
-                    ' will be removed in TYPO3 v12. ',
-                    E_USER_DEPRECATED
-                );
-                $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
-                $_procObj->pObj = $this;
-                $_procObj->transformationKey = $cmd;
-                $value = $_procObj->transform_db($value, $this);
-            } else {
-                // ... else use defaults:
-                switch ($cmd) {
-                    case 'detectbrokenlinks':
-                        $value = $this->removeBrokenLinkMarkers($value);
-                        break;
-                    case 'ts_links':
-                        $value = $this->TS_links_db($value);
-                        break;
-                    case 'css_transform':
-                        // Transform empty paragraphs into spacing paragraphs
-                        $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
-                        // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
-                        $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value) ?? $value;
-                        $value = $this->TS_transform_db($value);
-                        break;
-                    default:
-                        // Do nothing
-                }
+            switch ($cmd) {
+                case 'detectbrokenlinks':
+                    $value = $this->removeBrokenLinkMarkers($value);
+                    break;
+                case 'ts_links':
+                    $value = $this->TS_links_db($value);
+                    break;
+                case 'css_transform':
+                    // Transform empty paragraphs into spacing paragraphs
+                    $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
+                    // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
+                    $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value) ?? $value;
+                    $value = $this->TS_transform_db($value);
+                    break;
+                default:
+                    // Do nothing
             }
         }
         // process markup with HTML Sanitizer
