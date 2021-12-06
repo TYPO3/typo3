@@ -66,17 +66,9 @@ class RootlineUtilityTest extends FunctionalTestCase
         });
     }
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::initializeDatabaseSnapshot();
-    }
-
     public static function tearDownAfterClass(): void
     {
         RootlineUtility::purgeCaches();
-        static::destroyDatabaseSnapshot();
-        parent::tearDownAfterClass();
     }
 
     protected function setUpDatabase(): void

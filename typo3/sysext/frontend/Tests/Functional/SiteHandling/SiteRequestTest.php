@@ -30,18 +30,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  */
 class SiteRequestTest extends AbstractTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::initializeDatabaseSnapshot();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        static::destroyDatabaseSnapshot();
-        parent::tearDownAfterClass();
-    }
-
     protected function setUp(): void
     {
         parent::setUp();

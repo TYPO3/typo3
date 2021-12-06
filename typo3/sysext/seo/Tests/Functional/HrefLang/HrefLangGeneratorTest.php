@@ -44,18 +44,6 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         'FR' => ['id' => 4, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
     ];
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::initializeDatabaseSnapshot();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        static::destroyDatabaseSnapshot();
-        parent::tearDownAfterClass();
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
