@@ -41,18 +41,6 @@ class ClipboardTest extends FunctionalTestCase
     private Clipboard $subject;
     private BackendUserAuthentication $backendUser;
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::initializeDatabaseSnapshot();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        static::destroyDatabaseSnapshot();
-        parent::tearDownAfterClass();
-    }
-
     protected function setUp(): void
     {
         parent::setUp();

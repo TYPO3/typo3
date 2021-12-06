@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "859b99533bbd022fcf67897ca6599fb8",
+    "content-hash": "0052f0ba386e34ed16bfca0c0ff066a1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8209,16 +8209,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.15.0",
+            "version": "6.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "92510b0ce82b116fda173c7df93e5ab7e3d2040d"
+                "reference": "ba62393db03e28f80fc53191f039fbda28362c1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/92510b0ce82b116fda173c7df93e5ab7e3d2040d",
-                "reference": "92510b0ce82b116fda173c7df93e5ab7e3d2040d",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ba62393db03e28f80fc53191f039fbda28362c1d",
+                "reference": "ba62393db03e28f80fc53191f039fbda28362c1d",
                 "shasum": ""
             },
             "require": {
@@ -8271,9 +8271,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.15.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.15.1"
             },
-            "time": "2021-11-27T12:48:15+00:00"
+            "time": "2021-12-06T19:02:31+00:00"
         }
     ],
     "aliases": [],

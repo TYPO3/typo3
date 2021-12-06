@@ -32,18 +32,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         'DE-CH' => ['id' => 2, 'title' => 'Swiss German', 'locale' => 'de_CH.UTF8', 'iso' => 'de', 'hrefLang' => 'de-CH', 'direction' => ''],
     ];
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::initializeDatabaseSnapshot();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        static::destroyDatabaseSnapshot();
-        parent::tearDownAfterClass();
-    }
-
     protected function setUpDatabaseWithYamlPayload(string $pathToYamlFile): void
     {
         $this->withDatabaseSnapshot(function () use ($pathToYamlFile) {
