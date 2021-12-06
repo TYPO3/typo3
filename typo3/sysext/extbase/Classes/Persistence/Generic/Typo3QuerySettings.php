@@ -199,37 +199,6 @@ class Typo3QuerySettings implements QuerySettingsInterface
     }
 
     /**
-     * Language Mode is NOT used anymore, so just avoid using it. Will be deprecated in the future.
-     *
-     * @param string $languageMode
-     * @return QuerySettingsInterface instance of $this to allow method chaining
-     * @deprecated since TYPO3 11.0, will be removed in version 12.0
-     */
-    public function setLanguageMode($languageMode = '')
-    {
-        trigger_error(
-            __METHOD__ . ' does not have any functionality any more, stop calling it.',
-            E_USER_DEPRECATED
-        );
-        return $this;
-    }
-
-    /**
-     * Language Mode is NOT used anymore, so just avoid using it. Will be deprecated in the future.
-     *
-     * @return string NULL, "content_fallback", "strict" or "ignore"
-     * @deprecated since TYPO3 11.0, will be removed in version 12.0
-     */
-    public function getLanguageMode()
-    {
-        trigger_error(
-            __METHOD__ . ' does not have any functionality any more, stop calling it.',
-            E_USER_DEPRECATED
-        );
-        return null;
-    }
-
-    /**
      * @param int $languageUid
      * @return QuerySettingsInterface instance of $this to allow method chaining
      */

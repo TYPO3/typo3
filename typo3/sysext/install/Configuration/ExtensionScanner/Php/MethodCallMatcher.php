@@ -4737,6 +4737,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-89938-DeprecatedLanguageModeInTypo3QuerySettings.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageMode' => [
@@ -4744,6 +4745,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-89938-DeprecatedLanguageModeInTypo3QuerySettings.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Backend->getSession' => [

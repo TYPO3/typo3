@@ -103,6 +103,8 @@ The following PHP class methods that have previously been marked as deprecated f
 - :php:`\TYPO3\CMS\Extbase\Mvc\Request->setDispatched()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->setControllerContext()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setAddQueryStringMethod()`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageMode()`
+- :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageMode()`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getControllerContext()`
 - :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setControllerContext()`
 - :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView->setControllerContext()`
