@@ -169,6 +169,7 @@ The following PHP class methods changed signature according to previous deprecat
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface->getPublicUrl()` (argument 2 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper->getPublicUrl()` (argument 2 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper->getPublicUrl()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView->__construct()` (optional constructor argument is removed)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams()` (argument 2 is removed)
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:

@@ -16,11 +16,9 @@
 namespace TYPO3\CMS\Fluid\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 /**
@@ -29,28 +27,10 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
  */
 class StandaloneView extends AbstractTemplateView
 {
-    /**
-     * Constructor
-     *
-     * @param ContentObjectRenderer|null $contentObject @deprecated The current cObject. If NULL a new instance will be created
-     * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
-     */
-    public function __construct(ContentObjectRenderer $contentObject = null)
+    public function __construct()
     {
-        // @deprecated since v11, will be removed with v12. Drop $contentObject argument and ConfigurationManager handling.
-        $configurationManager = GeneralUtility::getContainer()->get(ConfigurationManager::class);
-        if ($contentObject !== null) {
-            trigger_error('Argument $contentObject of class ' . __CLASS__ . ' is deprecated since v11, will be removed with v12.', E_USER_DEPRECATED);
-        } else {
-            /** @var ContentObjectRenderer $contentObject */
-            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        }
-        $configurationManager->setContentObject($contentObject);
-
-        $request = GeneralUtility::makeInstance(Request::class);
         $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
-        $renderingContext->setRequest($request);
+        $renderingContext->setRequest(GeneralUtility::makeInstance(Request::class));
         parent::__construct($renderingContext);
     }
 
