@@ -70,7 +70,7 @@ class UpgradeWizards extends AbstractInteractableModule {
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
 
-    this.getData().done((): void => {
+    this.getData().then((): void => {
       this.doneUpgrades();
     });
 

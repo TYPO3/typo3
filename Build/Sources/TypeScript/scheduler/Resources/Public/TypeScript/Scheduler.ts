@@ -241,7 +241,7 @@ class Scheduler {
     if (collapseIcon !== null) {
       Icons
         .getIcon((isCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icons.sizes.small)
-        .done((icon: string): void => {
+        .then((icon: string): void => {
           collapseIcon.innerHTML = icon;
         });
     }

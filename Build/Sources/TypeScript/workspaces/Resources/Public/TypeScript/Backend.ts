@@ -337,7 +337,7 @@ class Backend extends Workspaces {
             this.getWorkspaceInfos();
             Backend.refreshPageTree();
           });
-        }).done((): void => {
+        }).then((): void => {
           Wizard.show();
         });
       });
@@ -1086,7 +1086,7 @@ class Backend extends Workspaces {
         Wizard.dismiss();
         Backend.refreshPageTree();
       });
-    }).done((): void => {
+    }).then((): void => {
       Wizard.show();
 
       Wizard.getComponent().on('wizard-dismissed', (): void => {
@@ -1179,7 +1179,7 @@ class Backend extends Workspaces {
           language: this.settings.language
         }),
       ).then(sendRequestsUntilAllProcessed);
-    }).done((): void => {
+    }).then((): void => {
       Wizard.show();
 
       Wizard.getComponent().on('wizard-dismissed', (): void => {

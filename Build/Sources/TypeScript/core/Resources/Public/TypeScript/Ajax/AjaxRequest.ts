@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import JQueryNativePromises from '../BackwardCompat/JQueryNativePromises';
 import {AjaxResponse} from './AjaxResponse';
 import {GenericKeyValue, InputTransformer} from './InputTransformer';
 
@@ -42,8 +41,6 @@ class AjaxRequest {
   constructor(url: string) {
     this.url = url;
     this.abortController = new AbortController();
-
-    JQueryNativePromises.support();
   }
 
   /**

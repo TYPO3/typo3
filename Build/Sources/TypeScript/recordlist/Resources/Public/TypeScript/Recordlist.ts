@@ -124,7 +124,7 @@ class Recordlist {
     const $collapseIcon = $me.find('.collapseIcon');
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;
 
-    Icons.getIcon(toggleIcon, Icons.sizes.small).done((icon: string): void => {
+    Icons.getIcon(toggleIcon, Icons.sizes.small).then((icon: string): void => {
       $collapseIcon.html(icon);
     });
 
