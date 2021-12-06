@@ -93,9 +93,9 @@ class ExportTest extends UnitTestCase
      */
     public function getOrGenerateExportFileNameWithFileExtensionConsidersLists(): void
     {
-        $this->exportMock->setList(['sys_language:0', 'news:12']);
+        $this->exportMock->setList(['sys_news:0', 'news:12']);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_list_sys_language_0-_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
     public function setExportFileTypeSucceedsWithSupportedFileTypeProvider(): array

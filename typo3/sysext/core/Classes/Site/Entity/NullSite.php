@@ -43,7 +43,7 @@ class NullSite implements SiteInterface
     /**
      * Sets up a null site object
      *
-     * @param array $languages (sys_language objects)
+     * @param array|null $languages site languages
      * @param Uri|null $baseEntryPoint
      */
     public function __construct(array $languages = null, Uri $baseEntryPoint = null)

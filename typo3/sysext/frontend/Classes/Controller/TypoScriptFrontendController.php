@@ -1948,7 +1948,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $languageAspect->getFallbackChain()
             );
 
-            // Setting sys_language if an overlay record was found (which it is only if a language is used)
+            // Setting the site language if an overlay record was found (which it is only if a language is used)
             // We'll do this every time since the language aspect might have changed now
             // Doing this ensures that page properties like the page title are returned in the correct language
             $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());

@@ -204,7 +204,7 @@ class ExtensionManagementUtility
      */
     public static function addTCAcolumns($table, $columnArray)
     {
-        if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
+        if (is_array($columnArray) && is_array($GLOBALS['TCA'][$table]['columns'] ?? false)) {
             // Candidate for array_merge() if integer-keys will some day make trouble...
             $GLOBALS['TCA'][$table]['columns'] = array_merge($GLOBALS['TCA'][$table]['columns'], $columnArray);
         }

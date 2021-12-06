@@ -95,7 +95,7 @@ class SiteModuleCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->amGoingTo('Verify new site configuration has been added with the next available language ID)');
-        $I->canSee('New Language [5] (C)');
+        $I->canSee('New Language [9] (C)');
 
         $I->amGoingTo('Close the site configuration form');
         $I->click('Close');
@@ -108,17 +108,17 @@ class SiteModuleCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Create new Site Configuration', 'h1');
         $I->click('Languages');
-        $I->canSee('New Language [5]', 'option');
+        $I->canSee('New Language [9]', 'option');
         $I->canSee('English Edit [0] (en_US.UTF-8)');
         $title = $I->grabValueFrom('//input[contains(@data-formengine-input-name, "data[site_language]") and contains(@data-formengine-input-name, "[title]")]');
         $I->assertEquals('English Edit', $title);
         $I->click('div.inlineIsNewRecord:nth-child(1) > div:nth-child(1) > div:nth-child(1)');
 
         $I->amGoingTo('Verify new language can be added from selector box and deleted afterwards');
-        $I->selectOption('.t3js-create-new-selector', '5');
+        $I->selectOption('.t3js-create-new-selector', '9');
         $I->waitForElementVisible('div.inlineIsNewRecord:nth-child(2)');
         $I->scrollTo('div.inlineIsNewRecord:nth-child(2)');
-        $I->canSee('New Language [5] (C)');
+        $I->canSee('New Language [9] (C)');
         $I->click('div.inlineIsNewRecord:nth-child(2) > div:nth-child(1) > div:nth-child(1)');
         $I->canSee('/hr/');
         $I->click('div.inlineIsNewRecord:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) button');
@@ -126,7 +126,7 @@ class SiteModuleCest
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         $I->switchToContentFrame();
-        $I->see('New Language [5]', 'option');
+        $I->see('New Language [9]', 'option');
 
         $I->amGoingTo('Undo the generation of the new site configuration');
         $I->click('Close');

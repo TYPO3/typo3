@@ -89,7 +89,7 @@ class TypoScriptFrontendHook
             'id' => $tsfe->id,
             // Page type
             'type'=> $tsfe->type,
-            // sys_language UID of the language of the indexing.
+            // site language id of the language of the indexing.
             'sys_language_uid' => $languageAspect->getId(),
             // MP variable, if any (Mount Points)
             'MP' => $tsfe->MP,

@@ -678,7 +678,7 @@ abstract class ImportExport
                     );
                 }
             } else {
-                // Negative values in relation fields. These are typically fields of sys_language, fe_users etc.
+                // Negative values in relation fields. These are typically fields of e.g. fe_users.
                 // They are static values. They CAN theoretically be negative pointers to uids in other tables,
                 // but this is so rarely used that it is not supported.
                 $line['title'] = htmlspecialchars('FIXED: ' . $line['ref']);

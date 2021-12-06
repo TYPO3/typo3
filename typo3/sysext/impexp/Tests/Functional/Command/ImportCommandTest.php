@@ -41,7 +41,7 @@ class ImportCommandTest extends AbstractImportExportTestCase
      */
     public function importCommandRequiresFileArgumentOnly(): void
     {
-        $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml';
+        $filePath = 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml';
         $tester = new CommandTester(new ImportCommand(new Import()));
         $tester->execute(['file' => $filePath], []);
         self::assertEquals(0, $tester->getStatusCode());
@@ -53,7 +53,7 @@ class ImportCommandTest extends AbstractImportExportTestCase
     public function importCommandPassesArgumentsToImportObject(): void
     {
         $input = [
-            'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml',
+            'file' => 'EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml',
             'pid' => 3,
             '--update-records' => false,
             '--ignore-pid' => false,
@@ -79,7 +79,7 @@ class ImportCommandTest extends AbstractImportExportTestCase
             'tt_content:1' => Import::IMPORT_MODE_EXCLUDE,
             'pages:789' => Import::IMPORT_MODE_FORCE_UID,
         ]));
-        $importMock->expects(self::once())->method('loadFile')->with(self::equalTo('EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml'));
+        $importMock->expects(self::once())->method('loadFile')->with(self::equalTo('EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml'));
 
         $tester = new CommandTester(new ImportCommand($importMock));
         $tester->execute($input);

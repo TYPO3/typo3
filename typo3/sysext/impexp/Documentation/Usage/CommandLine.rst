@@ -41,9 +41,9 @@ with these options available:
       --levels[=LEVELS]                    The depth of the exported page tree. "-2": "Records on this page", "-1": "Expanded tree", "0": "This page", "1": "1 level down", .. "999": "Infinite levels". [default: 0]
       --table[=TABLE]                      Include all records of this table. Examples: "_ALL", "tt_content", "sys_file_reference", etc. (multiple values allowed)
       --record[=RECORD]                    Include this specific record. Pattern is "{table}:{record}". Examples: "tt_content:12", etc. (multiple values allowed)
-      --list[=LIST]                        Include the records of this table and this page. Pattern is "{table}:{pid}". Examples: "sys_language:0", etc. (multiple values allowed)
+      --list[=LIST]                        Include the records of this table and this page. Pattern is "{table}:{pid}". Examples: "be_users:0", etc. (multiple values allowed)
       --include-related[=INCLUDE-RELATED]  Include record relations to this table, including the related record. Examples: "_ALL", "sys_category", etc. (multiple values allowed)
-      --include-static[=INCLUDE-STATIC]    Include record relations to this table, excluding the related record. Examples: "_ALL", "sys_language", etc. (multiple values allowed)
+      --include-static[=INCLUDE-STATIC]    Include record relations to this table, excluding the related record. Examples: "_ALL", "be_users", etc. (multiple values allowed)
       --exclude[=EXCLUDE]                  Exclude this specific record. Pattern is "{table}:{record}". Examples: "fe_users:3", etc. (multiple values allowed)
       --exclude-disabled-records           Exclude records which are handled as disabled by their TCA configuration, e.g. by fields "disabled", "starttime" or "endtime".
       --exclude-html-css                   Exclude referenced HTML and CSS files.

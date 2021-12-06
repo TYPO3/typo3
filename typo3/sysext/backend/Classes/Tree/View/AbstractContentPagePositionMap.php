@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractContentPagePositionMap
 {
     /**
-     * Can be set to the sys_language uid to select content elements for.
+     * Can be set to the language id to select content elements for.
      */
     public int $cur_sys_language = 0;
 

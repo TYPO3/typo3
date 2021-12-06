@@ -611,7 +611,7 @@ class SiteConfigurationController
             $newSysSiteData['errorHandling'] = $validChildren;
         }
 
-        // Verify there is only one inline child per sys_language record configured.
+        // Verify there is at least one site_language element configured.
         if (!isset($newSysSiteData['languages']) || !is_array($newSysSiteData['languages']) || count($newSysSiteData['languages']) < 1) {
             throw new \RuntimeException(
                 'No default language definition found. The interface does not allow this. Aborting',

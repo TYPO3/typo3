@@ -40,7 +40,7 @@ abstract class AbstractDomainObject implements DomainObjectInterface, ObjectMoni
     protected $_localizedUid;
 
     /**
-     * @var int The uid of the language of the object. This is the uid of the language record in the table sys_language.
+     * @var int The uid of the language of the object. This is the id of the corresponding sing language.
      */
     protected $_languageUid;
 

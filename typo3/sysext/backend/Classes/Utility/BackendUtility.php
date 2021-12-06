@@ -283,7 +283,7 @@ class BackendUtility
      *
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param int $uid The uid of the record
-     * @param int $language The uid of the language record in sys_language
+     * @param int $language The id of the site language
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
      * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
      */

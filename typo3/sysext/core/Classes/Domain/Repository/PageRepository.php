@@ -390,7 +390,7 @@ class PageRepository implements LoggerAwareInterface
      * Returns the relevant page overlay record fields
      *
      * @param mixed $pageInput If $pageInput is an integer, it's the pid of the pageOverlay record and thus the page overlay record is returned. If $pageInput is an array, it's a page-record and based on this page record the language record is found and OVERLAID before the page record is returned.
-     * @param int $languageUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
+     * @param int $languageUid anguage UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
      * @throws \UnexpectedValueException
      * @return array Page row which is overlaid with language_overlay record (or the overlay record alone)
      */
@@ -525,7 +525,7 @@ class PageRepository implements LoggerAwareInterface
      * But that's not how it's done right now.
      *
      * @param array $pageUids
-     * @param array $languageUids uid of sys_language, please note that the order is important here.
+     * @param array $languageUids uid of site language, please note that the order is important here.
      * @return array
      */
     protected function getPageOverlaysForLanguageUids(array $pageUids, array $languageUids): array
@@ -594,7 +594,7 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
-     * @param int $sys_language_content Pointer to the sys_language uid for content on the site.
+     * @param int $sys_language_content Pointer to the site language id for content on the site.
      * @param string $OLmode Overlay mode. If "hideNonTranslated" then records without translation will not be returned  un-translated but unset (and return value is NULL)
      * @throws \UnexpectedValueException
      * @return mixed Returns the input record, possibly overlaid with a translation.  But if $OLmode is "hideNonTranslated" then it will return NULL if no translation is found.

@@ -3222,7 +3222,7 @@ class DataHandler implements LoggerAwareInterface
      * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
      * @param array $overrideValues Associative array with field/value pairs to override directly. Notice; Fields must exist in the table record and NOT be among excluded fields!
      * @param string $excludeFields Commalist of fields to exclude from the copy process (might get default values)
-     * @param int $language Language ID (from sys_language table)
+     * @param int $language Language ID
      * @param bool $ignoreLocalization If TRUE, any localization routine is skipped
      * @return int|null ID of new record, if any
      * @internal should only be used from within DataHandler
@@ -3702,7 +3702,7 @@ class DataHandler implements LoggerAwareInterface
      * @param array $row Record array
      * @param array $conf TCA field configuration
      * @param int $realDestPid Real page id (pid) the record is copied to
-     * @param int $language Language ID (from sys_language table) used in the duplicated record
+     * @param int $language Language ID used in the duplicated record
      * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
      * @return array|string
      * @internal
@@ -4427,7 +4427,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param int $uid Record uid (to be localized)
-     * @param int $language Language ID (from sys_language table)
+     * @param int $language Language ID
      * @return int|bool The uid (int) of the new translated record or FALSE (bool) if something went wrong
      * @internal should only be used from within DataHandler
      */

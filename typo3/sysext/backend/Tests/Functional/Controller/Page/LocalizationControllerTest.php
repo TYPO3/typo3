@@ -48,7 +48,6 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         parent::setUp();
 
         $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
         $this->setUpFrontendRootPage(1);
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);

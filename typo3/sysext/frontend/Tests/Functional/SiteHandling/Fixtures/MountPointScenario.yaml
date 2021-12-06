@@ -24,9 +24,6 @@ entitySettings:
     tableName: 'tt_content'
     languageColumnNames: ['l18n_parent', 'l10n_source']
     columnNames: {title: 'header', type: 'CType'}
-  language:
-    tableName: 'sys_language'
-    columnNames: {code: 'language_isocode'}
   visitorGroup:
     tableName: 'fe_groups'
   visitor:
@@ -43,10 +40,6 @@ entitySettings:
 entities:
   workspace:
     - self: {id: 1, title: 'My Personal Workspace'}
-  language:
-    - self: {id: 1, title: 'French', code: 'fr'}
-    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
-    - self: {id: 3, title: 'Spanish', code: 'es'}
   page:
     - self: {id: 1000, title: 'ACME Global', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:

@@ -745,7 +745,7 @@ class FileList
      * Fetch the translations for a sys_file_metadata record
      *
      * @param array $metaDataRecord
-     * @return array keys are the sys_language uids, values are the $rows
+     * @return array keys are the site language ids, values are the $rows
      */
     protected function getTranslationsForMetaData($metaDataRecord)
     {

@@ -99,7 +99,7 @@ class ExportCommand extends Command
                 'list',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Include the records of this table and this page. Pattern is "{table}:{pid}". Examples: "sys_language:0", etc.'
+                'Include the records of this table and this page. Pattern is "{table}:{pid}". Examples: "be_users:0", etc.'
             )
             ->addOption(
                 'include-related',
@@ -111,7 +111,7 @@ class ExportCommand extends Command
                 'include-static',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Include record relations to this table, excluding the related record. Examples: "_ALL", "sys_language", etc.'
+                'Include record relations to this table, excluding the related record. Examples: "_ALL", "be_users", etc.'
             )
             ->addOption(
                 'exclude',

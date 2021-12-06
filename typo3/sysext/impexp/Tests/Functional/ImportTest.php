@@ -33,10 +33,10 @@ class ImportTest extends AbstractImportExportTestCase
     public function loadingFileFromWithinTypo3BaseFolderSucceedsProvider(): array
     {
         return [
-            'relative path to fileadmin' => ['fileadmin/xml_imports/sys_language.xml'],
-            'relative path to system extensions' => ['typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml'],
-            'absolute path to system extensions' => ['%EnvironmentPublicPath%/typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml'],
-            'extension path' => ['EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_language.xml'],
+            'relative path to fileadmin' => ['fileadmin/xml_imports/sys_news.xml'],
+            'relative path to system extensions' => ['typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml'],
+            'absolute path to system extensions' => ['%EnvironmentPublicPath%/typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml'],
+            'extension path' => ['EXT:impexp/Tests/Functional/Fixtures/XmlImports/sys_news.xml'],
         ];
     }
 
@@ -58,8 +58,8 @@ class ImportTest extends AbstractImportExportTestCase
     public function loadingFileFailsProvider(): array
     {
         return [
-            'storage path' => ['1:/xml_imports/sys_language.xml'],
-            'absolute path outside typo3 base folder' => ['/fileadmin/xml_imports/sys_language.xml'],
+            'storage path' => ['1:/xml_imports/sys_news.xml'],
+            'absolute path outside typo3 base folder' => ['/fileadmin/xml_imports/sys_news.xml'],
             'path to not existing file' => ['fileadmin/xml_imports/me_does_not_exist.xml'],
             'unsupported file extension' => ['EXT:impexp/Tests/Functional/Fixtures/XmlImports/unsupported.json'],
             'empty path' => [''],

@@ -28,9 +28,6 @@ entitySettings:
     columnNames: {title: 'header', type: 'CType'}
   workspace:
     tableName: 'sys_workspace'
-  language:
-    tableName: 'sys_language'
-    columnNames: {code: 'language_isocode'}
   visitorGroup:
     tableName: 'fe_groups'
   visitor:
@@ -47,10 +44,6 @@ entitySettings:
 entities:
   workspace:
     - self: {id: 1, title: 'Workspace'}
-  language:
-    - self: {id: 1, title: 'French', code: 'fr'}
-    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
-    - self: {id: 3, title: 'Spanish', code: 'es'}
   beGroup:
     - self: {id: 9, title: 'editors', db_mountpoints: '1000,2000,8110', tables_select: 'pages,tt_content', tables_modify: 'pages,tt_content', page_types_select: '1,4,7,254', groupMods: 'web_layout,web_list'}
   page:

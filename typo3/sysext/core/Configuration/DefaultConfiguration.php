@@ -1282,7 +1282,6 @@ return [
                 be_users.after = be_groups
                 sys_filemounts.after = be_users
                 sys_file_storage.after = sys_filemounts
-                sys_language.after = sys_file_storage
                 fe_users.after = fe_groups
                 fe_users.before = pages
                 sys_template.after = pages

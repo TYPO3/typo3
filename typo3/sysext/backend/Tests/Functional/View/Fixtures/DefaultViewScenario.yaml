@@ -29,9 +29,6 @@ entitySettings:
     defaultValues: {colPos: 0}
   workspace:
     tableName: 'sys_workspace'
-  language:
-    tableName: 'sys_language'
-    columnNames: {code: 'language_isocode'}
   visitorGroup:
     tableName: 'fe_groups'
   visitor:
@@ -46,9 +43,6 @@ entitySettings:
 entities:
   workspace:
     - self: {id: 1, title: 'Workspace'}
-  language:
-    - self: {id: 1, title: 'French', code: 'fr'}
-    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
   page:
     - self: {id: *idAcmeRootPage, title: 'ACME Inc', type: *pageShortcut, shortcut: 'first', root: true}
       children:

@@ -895,7 +895,7 @@ class PageLayoutController
      ******************************/
     /**
      * Returns the number of hidden elements (including those hidden by start/end times)
-     * on the current page (for the current sys_language)
+     * on the current page (for the current site language)
      *
      * @param array $languageColumns
      * @return int

@@ -143,7 +143,6 @@ The available system languages are created by the administrator.</source>
 			</trans-unit>
 			<trans-unit id="_sys_language_uid.seeAlso" resname="_sys_language_uid.seeAlso" xml:space="preserve">
 				<source>tt_content:colPos,
-sys_language,
 Localization concepts [Technical] | http://typo3.org/documentation/tips-tricks/multi-language-sites-in-typo3/,
 _MOD_web_layout:language_list</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>

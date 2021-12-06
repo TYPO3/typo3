@@ -18,9 +18,6 @@ entitySettings:
     valueInstructions:
       shortcut:
         first: {shortcut: 0, shortcut_mode: 1}
-  language:
-    tableName: 'sys_language'
-    columnNames: {code: 'language_isocode'}
   workspace:
     tableName: 'sys_workspace'
 
@@ -28,10 +25,6 @@ entities:
   workspace:
     - self: {id: 1, title: 'My Personal Workspace' }
     - self: {id: 2, title: 'Another Workspace' }
-  language:
-    - self: {id: 1, title: 'French', code: 'fr' }
-    - self: {id: 2, title: 'Franco-Canadian', code: 'fr' }
-    - self: {id: 3, title: 'Spanish', code: 'es'}
   page:
     - self: {id: 1000, title: 'ACME Global', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       versionVariants:

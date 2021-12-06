@@ -2100,7 +2100,7 @@ translation.language
 
 :aspect:`Description`
       If not set, the finisher options are translated depending on the current frontend language (if translations exists).
-      This option allows you to force translations for a given sys_language isocode, e.g 'dk' or 'de'.
+      This option allows you to force translations for a given language isocode, e.g 'dk' or 'de'.
       Read :ref:`Translate finisher options<concepts-frontendrendering-translation-finishers>` for more informations.
 
 

@@ -639,8 +639,7 @@ class GridDataService implements LoggerAwareInterface
     }
 
     /**
-     * Gets the used language value (sys_language.uid) of
-     * a given database record.
+     * Gets the language value (system language uid) of a given database record
      *
      * @param string $table Name of the table
      * @param array $record Database record
@@ -659,9 +658,9 @@ class GridDataService implements LoggerAwareInterface
     }
 
     /**
-     * Gets a named value of the available sys_language elements.
+     * Gets a named value of an available system language
      *
-     * @param int $id sys_language uid
+     * @param int $id system language uid
      * @param int $pageId page id of a site
      * @param string $key Name of the value to be fetched (e.g. title)
      * @return string|null

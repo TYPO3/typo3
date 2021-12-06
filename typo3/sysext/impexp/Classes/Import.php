@@ -1241,8 +1241,7 @@ class Import extends ImportExport
                     $actualRelations[] = $relation['table'] . '_' . $actualUid;
                 }
             } elseif ($this->isTableStatic($relation['table']) || $this->isRecordExcluded($relation['table'], (int)$relation['id']) || $relation['id'] < 0) {
-                // Some select types could contain negative values,
-                // e.g. fe_groups (-1, -2) and sys_language (-1 = ALL languages).
+                // Some select types could contain negative values, e.g. fe_groups (-1, -2).
                 // This must be handled on both export and import.
                 $actualRelations[] = $relation['table'] . '_' . $relation['id'];
             } else {

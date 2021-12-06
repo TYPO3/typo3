@@ -9,11 +9,11 @@
 		<extensionDependencies type="array"></extensionDependencies>
 		<charset>utf-8</charset>
 		<records type="array">
-			<table index="sys_language" type="array">
+			<table index="sys_news" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>0</pid>
-					<title>Dansk</title>
+					<title>News</title>
 					<relations index="rels" type="array"></relations>
 					<softrefs type="array"></softrefs>
 				</rec>
@@ -21,27 +21,26 @@
 		</records>
 		<pid_lookup type="array">
 			<page_contents index="0" type="array">
-				<table index="sys_language" type="array">
+				<table index="sys_news" type="array">
 					<item index="1">1</item>
 				</table>
 			</page_contents>
 		</pid_lookup>
 	</header>
 	<records type="array">
-		<tablerow index="sys_language:1" type="array">
+		<tablerow index="sys_news:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">0</field>
 				<field index="tstamp" type="integer">1602145286</field>
+				<field index="crdate" type="integer">1602145286</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
 				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="title">Dansk</field>
-				<field index="flag">dk</field>
-				<field index="language_isocode">da</field>
-				<field index="nav_title"></field>
-				<field index="locale"></field>
-				<field index="hreflang"></field>
-				<field index="direction"></field>
+                <field index="starttime" type="integer">0</field>
+                <field index="endtime" type="integer">0</field>
+                <field index="title">News</field>
+				<field index="content">content</field>
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>

@@ -2312,11 +2312,10 @@ class EditDocumentController
     }
 
     /**
-     * Returns languages  available for record translations on given page.
+     * Returns languages available for record translations on given page.
      *
-     * @param int $id Page id: If zero, the query will select all sys_language records from root level which are NOT
-     *                hidden. If set to another value, the query will select all sys_language records that has a
-     *                translation record on that page (and is not hidden, unless you are admin user)
+     * @param int $id Page id: If zero, all available system languages will be returned. If set to
+     *                another value, only languages, a page translation exists for, will be returned.
      * @param string $table For pages we want all languages, for other records the languages of the page translations
      * @return array Array with languages (uid, title, ISOcode, flagIcon)
      */

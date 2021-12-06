@@ -44,15 +44,6 @@
 					</softrefs>
 				</rec>
 			</table>
-			<table index="sys_language" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>0</pid>
-					<title>Deutsch</title>
-					<relations index="rels" type="array"></relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
 			<table index="sys_file_reference" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -120,10 +111,6 @@
 					<title>typo3_image2.jpg</title>
 					<relationLevel>2</relationLevel>
 					<relations index="rels" type="array">
-						<element index="sys_language:1" type="array">
-							<id>1</id>
-							<table>sys_language</table>
-						</element>
 						<element index="sys_file_metadata:1" type="array">
 							<id>1</id>
 							<table>sys_file_metadata</table>
@@ -140,9 +127,6 @@
 		<pid_lookup type="array">
 			<page_contents index="0" type="array">
 				<table index="pages" type="array">
-					<item index="1">1</item>
-				</table>
-				<table index="sys_language" type="array">
 					<item index="1">1</item>
 				</table>
 				<table index="sys_file" type="array">
@@ -251,16 +235,6 @@
 					</softrefs>
 				</field>
 			</related>
-		</tablerow>
-		<tablerow index="sys_language:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid">1</field>
-				<field index="pid">0</field>
-				<field index="hidden">0</field>
-				<field index="title">Deutsch</field>
-				<field index="flag">de</field>
-			</fieldlist>
-			<related index="rels" type="array"></related>
 		</tablerow>
 		<tablerow index="sys_file_reference:1" type="array">
 			<fieldlist index="data" type="array">
@@ -411,15 +385,6 @@
 				<field index="alternative">Foto von Programmcode</field>
 			</fieldlist>
 			<related index="rels" type="array">
-				<field index="sys_language_uid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>sys_language</table>
-						</element>
-					</relations>
-				</field>
 				<field index="l10n_parent" type="array">
 					<type>db</type>
 					<relations index="itemArray" type="array">

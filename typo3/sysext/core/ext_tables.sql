@@ -391,16 +391,6 @@ CREATE TABLE sys_log (
 ) ENGINE=InnoDB;
 
 #
-# Table structure for table 'sys_language'
-# This table is deprecated and will be removed in TYPO3 v12
-#
-CREATE TABLE sys_language (
-	title varchar(80) DEFAULT '' NOT NULL,
-	flag varchar(20) DEFAULT '' NOT NULL,
-	language_isocode varchar(2) DEFAULT '' NOT NULL
-);
-
-#
 # Table structure for table 'sys_category'
 #
 CREATE TABLE sys_category (

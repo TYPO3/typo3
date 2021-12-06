@@ -329,7 +329,7 @@ The following fallbacks have been removed:
 
 The following database tables have been removed:
 
-- :sql:`table`
+- :sql:`sys_language`
 
 The following database table fields have been removed:
 

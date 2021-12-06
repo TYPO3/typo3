@@ -37,7 +37,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
@@ -171,13 +170,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
                     'image',
                     't3ver_oid',
                 ],
-                'sys_language' => [
-                    'uid',
-                    'pid',
-                    'hidden',
-                    'title',
-                    'flag',
-                ],
                 'sys_file_reference' => [
                     'uid_local',
                     'uid_foreign',
@@ -236,7 +228,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
             'sys_file',
             'sys_file_metadata',
             'sys_file_storage',
-            'sys_language',
         ]);
         $subject->process();
     }

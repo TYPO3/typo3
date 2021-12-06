@@ -119,9 +119,6 @@ xMOD_csh_corebe:new_ce</source>
 			<trans-unit id="columns_2.description" resname="columns_2.description">
 				<source>In the "Languages" view you can control the content of the web page as it is divided into languages and columns. It enables users to create a new translation of a page.</source>
 			</trans-unit>
-			<trans-unit id="_columns_2.seeAlso" resname="_columns_2.seeAlso">
-        <source>sys_language</source>
-      </trans-unit>
       <trans-unit id="_columns_2.image" resname="_columns_2.image" xml:space="preserve">
         <source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
         EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,

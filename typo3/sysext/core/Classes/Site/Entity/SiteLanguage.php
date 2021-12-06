@@ -25,7 +25,7 @@ use Psr\Http\Message\UriInterface;
 class SiteLanguage
 {
     /**
-     * The language mapped to the sys_language DB entry.
+     * The language id.
      *
      * @var int
      */

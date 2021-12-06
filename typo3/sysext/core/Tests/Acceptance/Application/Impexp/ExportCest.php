@@ -236,7 +236,7 @@ class ExportCest extends AbstractCest
 
         $rootPage = '#identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
-        $sysLanguageTableTitle = 'Website Language';
+        $beUsergroupTableTitle = 'Backend usergroup';
         $listModuleHeader = '.module-docheader';
         $listModuleBtnExport = 'a[title="Export"]';
         $tabExport = 'a[href="#export-filepreset"]';
@@ -249,7 +249,7 @@ class ExportCest extends AbstractCest
         $I->waitForText($rootPageTitle);
         $I->waitForElementNotVisible('#nprogress');
 
-        $I->click($sysLanguageTableTitle);
+        $I->click($beUsergroupTableTitle);
         $I->waitForElementVisible($listModuleHeader . ' ' . $listModuleBtnExport, 5);
         $I->click($listModuleBtnExport, $listModuleHeader);
 
@@ -278,7 +278,7 @@ class ExportCest extends AbstractCest
 
         $rootPage = '#identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
-        $sysLanguageTable = '#recordlist-sys_language';
+        $sysLanguageTable = '#recordlist-be_groups';
         $sysLanguageIcon = 'tr:first-child a.t3js-contextmenutrigger';
         $tabExport = 'a[href="#export-filepreset"]';
         $contentExport = '#export-filepreset';

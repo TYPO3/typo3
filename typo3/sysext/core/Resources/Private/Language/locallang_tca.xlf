@@ -600,18 +600,6 @@
 			<trans-unit id="sys_file_collection.category" resname="sys_file_collection.category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="sys_language" resname="sys_language">
-				<source>Website Language</source>
-			</trans-unit>
-			<trans-unit id="sys_language.isocode" resname="sys_language.isocode">
-				<source>Select Official Language (ISO code)</source>
-			</trans-unit>
-			<trans-unit id="sys_language.language_isocode" resname="sys_language.language_isocode">
-				<source>Select language</source>
-			</trans-unit>
-			<trans-unit id="sys_language.flag" resname="sys_language.flag">
-				<source>Select flag icon</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace" resname="sys_workspace">
 				<source>Workspace</source>
 			</trans-unit>

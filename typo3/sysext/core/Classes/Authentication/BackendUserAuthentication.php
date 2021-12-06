@@ -679,7 +679,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Checking if a language value (-1, 0 and >0 for sys_language records) is allowed to be edited by the user.
+     * Checking if a language value (-1, 0 and >0) is allowed to be edited by the user.
      *
      * @param int $langValue Language value to evaluate
      * @return bool Returns TRUE if the language value is allowed, otherwise FALSE.

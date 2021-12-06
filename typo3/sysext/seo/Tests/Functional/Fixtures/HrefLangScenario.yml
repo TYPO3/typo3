@@ -23,9 +23,6 @@ entitySettings:
     languageColumnNames: ['l18n_parent', 'l10n_source']
     columnNames: {title: 'header', type: 'CType', column: 'colPos'}
     defaultValues: {hidden: 0, type: *contentText, column: 0}
-  language:
-    tableName: 'sys_language'
-    columnNames: {code: 'language_isocode'}
   typoscript:
     tableName: 'sys_template'
     valueInstructions:
@@ -33,11 +30,6 @@ entitySettings:
         site: {root: 1, clear: 1}
 
 entities:
-  language:
-    - self: {id: 1, title: 'German', code: 'de'}
-    - self: {id: 2, title: 'Swiss German', code: 'de'}
-    - self: {id: 3, title: 'Dutch', code: 'nl'}
-    - self: {id: 4, title: 'French', code: 'fr'}
   page:
     - self: {id: *idAcmeRootPage, title: 'EN: Root', root: true, slug: '/'}
       children:

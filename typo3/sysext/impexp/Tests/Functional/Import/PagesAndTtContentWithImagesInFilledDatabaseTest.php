@@ -45,7 +45,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
@@ -74,7 +73,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
@@ -112,7 +110,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
@@ -154,7 +151,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
@@ -191,7 +187,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
