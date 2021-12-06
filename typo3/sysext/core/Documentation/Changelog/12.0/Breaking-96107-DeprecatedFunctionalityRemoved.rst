@@ -344,6 +344,10 @@ The following global JavaScript functions have been removed:
 - :js:`top.goToModule()`
 - :js:`top.jump()`
 
+The following JavaScript functions have been removed:
+
+- :js:`FormEngine.requestConfirmationOnFieldChange()`
+
 The following JavaScript methods bahaviour has changed:
 
 - :js:`show()` and :js:`hide()` of :js:`TYPO3/CMS/Backend/Tooltip` do no longer allow JQuery objects passed as first argument

@@ -729,14 +729,6 @@ define(['jquery',
     return true;
   };
 
-  FormEngine.requestConfirmationOnFieldChange = function(fieldName, showConfirmation) {
-    console.warn('FormEngine.requestConfirmationOnFieldChange() has been marked as deprecated without substitution. Configure the TCA of field "' + fieldName + '" properly to request an FormEngine update on it\'s own.');
-    const $field = FormEngine.getFieldElement(fieldName);
-    $field.on('change', function() {
-      FormEngine.requestFormEngineUpdate(showConfirmation);
-    });
-  }
-
   FormEngine.requestFormEngineUpdate = function(showConfirmation) {
     if (showConfirmation) {
       const $modal = Modal.confirm(
