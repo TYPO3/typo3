@@ -64,6 +64,7 @@ The following PHP interfaces changed:
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
 - :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)
+- :php:`\TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface` (method :php:`setConfiguration()` added)
 
 The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
 

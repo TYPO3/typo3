@@ -35,9 +35,7 @@ interface ExceptionHandlerInterface
     public function handle(\Exception $exception, AbstractContentObject $contentObject = null, $contentObjectConfiguration = []);
 
     /**
-     * @todo Will be activated in TYPO3 v12
-     *
      * Used to pass the TypoScript configuration to the exception handler
      */
-    //public function setConfiguration(array $configuration): void;
+    public function setConfiguration(array $configuration): void;
 }
