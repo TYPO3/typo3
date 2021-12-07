@@ -71,10 +71,6 @@ class BackendRouteInitialization implements MiddlewareInterface
             $route = $this->router->matchRequest($request);
             $request = $request->withAttribute('route', $route);
             $request = $request->withAttribute('target', $route->getOption('target'));
-            // add the GET parameter "route" for backwards-compatibility
-            $queryParams = $request->getQueryParams();
-            $queryParams['route'] = $route->getPath();
-            $request = $request->withQueryParams($queryParams);
         } catch (MethodNotAllowedException $e) {
             return new Response(null, 405);
         } catch (ResourceNotFoundException $e) {

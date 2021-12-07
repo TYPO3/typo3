@@ -128,7 +128,7 @@ class RecyclerModuleController
             return $result;
         }
 
-        $this->registerDocHeaderButtons($request->getQueryParams()['route']);
+        $this->registerDocHeaderButtons();
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
@@ -172,10 +172,9 @@ class RecyclerModuleController
     /**
      * Registers the Icons into the docheader
      *
-     * @param string $route
      * @throws \InvalidArgumentException
      */
-    protected function registerDocHeaderButtons(string $route)
+    protected function registerDocHeaderButtons()
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 

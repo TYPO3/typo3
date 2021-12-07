@@ -30,6 +30,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -1675,17 +1676,24 @@ class EditDocumentController
             && $this->isSavedRecord
             && $this->isSingleRecordView()
         ) {
-            $classNames = 't3js-editform-delete-record';
             $returnUrl = $this->retUrl;
             if ($this->firstEl['table'] === 'pages') {
-                parse_str((string)parse_url($returnUrl, PHP_URL_QUERY), $queryParams);
-                if (
-                    isset($queryParams['route'], $queryParams['id'])
+                // The below is a hack to replace the return url with an url to the current module on id=0. Otherwise,
+                // this might lead to empty views, since the current id is the page, which is about to be deleted.
+                $parsedUrl = parse_url($returnUrl);
+                $routePath = str_replace(TYPO3_mainDir, '', $parsedUrl['path'] ?? '');
+                parse_str($parsedUrl['query'] ?? '', $queryParams);
+                if ($routePath
+                    && isset($queryParams['id'])
                     && (string)$this->firstEl['uid'] === (string)$queryParams['id']
                 ) {
-                    // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
-                    // tree from the outside to be able to mark the pid as active
-                    $returnUrl = (string)$this->uriBuilder->buildUriFromRoutePath($queryParams['route'], ['id' => 0]);
+                    try {
+                        // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
+                        // tree from the outside to be able to mark the pid as active
+                        $returnUrl = (string)$this->uriBuilder->buildUriFromRoutePath($routePath, ['id' => 0]);
+                    } catch (ResourceNotFoundException $e) {
+                        // Resolved path can not be matched to a configured route
+                    }
                 }
             }
 
@@ -1720,13 +1728,12 @@ class EditDocumentController
                         ],
                     ],
                 ],
-                'redirect' => $this->retUrl,
+                'redirect' => $returnUrl,
             ]);
 
             $deleteButton = $buttonBar->makeLinkButton()
-                ->setClasses($classNames)
+                ->setClasses('t3js-editform-delete-record')
                 ->setDataAttributes([
-                    'return-url' => $returnUrl,
                     'uid' => $this->firstEl['uid'],
                     'table' => $this->firstEl['table'],
                     'reference-count-message' => $referenceCountMessage,

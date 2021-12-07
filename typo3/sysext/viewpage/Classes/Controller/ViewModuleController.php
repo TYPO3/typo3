@@ -94,9 +94,8 @@ class ViewModuleController
      * @param int $pageId
      * @param int $languageId
      * @param string $targetUrl
-     * @param string $route
      */
-    protected function registerDocHeader(int $pageId, int $languageId, string $targetUrl, string $route)
+    protected function registerDocHeader(int $pageId, int $languageId, string $targetUrl)
     {
         $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
@@ -206,7 +205,7 @@ class ViewModuleController
             return $this->renderFlashMessage($flashMessage);
         }
 
-        $this->registerDocHeader($pageId, $languageId, $targetUrl, $request->getQueryParams()['route']);
+        $this->registerDocHeader($pageId, $languageId, $targetUrl);
 
         $backendUser = $this->getBackendUser();
         $icons = [];

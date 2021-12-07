@@ -117,7 +117,7 @@ class Router implements SingletonInterface
         if ($path === '' || $path === '/' || $path === '/index.php') {
             // Allow the login page to be displayed if routing is not used and on index.php
             // (consolidate RouteDispatcher::evaluateReferrer() when changing 'login' to something different)
-            $path = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
+            $path = '/login';
         }
         $context = new RequestContext(
             $path,
