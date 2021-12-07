@@ -147,7 +147,6 @@ class RecordFinder
         return $lastLanguageId;
     }
 
-
     /**
      * Find uids of styleguide demo be_groups
      *
