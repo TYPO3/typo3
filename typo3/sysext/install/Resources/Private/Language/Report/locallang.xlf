@@ -93,9 +93,6 @@
 			<trans-unit id="status_uptodate" resname="status_uptodate">
 				<source>Your TYPO3 version is up-to-date.</source>
 			</trans-unit>
-			<trans-unit id="status_installToolPassword" resname="status_installToolPassword">
-				<source>Install Tool Password</source>
-			</trans-unit>
 			<trans-unit id="status_installTool" resname="status_installTool">
 				<source>Install Tool</source>
 			</trans-unit>

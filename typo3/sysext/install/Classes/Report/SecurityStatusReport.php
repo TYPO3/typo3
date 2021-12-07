@@ -15,10 +15,7 @@
 
 namespace TYPO3\CMS\Install\Report;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\EnableFileService;
@@ -41,60 +38,9 @@ class SecurityStatusReport implements StatusProviderInterface
     {
         $this->executeAdminCommand();
         return [
-            'installToolPassword' => $this->getInstallToolPasswordStatus(),
             'installToolProtection' => $this->getInstallToolProtectionStatus(),
             'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus(),
         ];
-    }
-
-    /**
-     * Checks whether the Install Tool password is set to its default value.
-     *
-     * @return Status An object representing the security of the install tool password
-     */
-    protected function getInstallToolPasswordStatus()
-    {
-        // @todo @deprecated: This should be removed in TYPO3 v10.0 when install tool allows proper hashes only
-        $value = $this->getLanguageService()->getLL('status_ok');
-        $message = '';
-        $severity = Status::OK;
-        $isDefaultPassword = false;
-        $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
-        $hashInstance = null;
-        $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        try {
-            $hashInstance = $hashFactory->get($installToolPassword, 'BE');
-        } catch (InvalidPasswordHashException $e) {
-            // $hashInstance stays null
-            $value = $this->getLanguageService()->getLL('status_wrongValue');
-            $message = $e->getMessage();
-            $severity = Status::ERROR;
-        }
-        if ($installToolPassword !== '' && $hashInstance !== null) {
-            $isDefaultPassword = $hashInstance->checkPassword('joh316', $installToolPassword);
-        } elseif ($installToolPassword === 'bacb98acf97e0b6112b1d1b650b84971') {
-            // using MD5 of legacy default password 'joh316'
-            $isDefaultPassword = true;
-        }
-        if ($isDefaultPassword) {
-            $value = $this->getLanguageService()->getLL('status_insecure');
-            $severity = Status::ERROR;
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $changeInstallToolPasswordUrl = (string)$uriBuilder->buildUriFromRoute('tools_toolssettings');
-            $message = sprintf(
-                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.installtool_default_password'),
-                '<a href="' . htmlspecialchars($changeInstallToolPasswordUrl) . '">',
-                '</a>'
-            );
-        }
-        return GeneralUtility::makeInstance(
-            Status::class,
-            $this->getLanguageService()->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_installToolPassword'),
-            $value,
-            $message,
-            $severity
-        );
     }
 
     /**

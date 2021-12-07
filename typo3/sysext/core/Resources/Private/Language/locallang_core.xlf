@@ -1206,12 +1206,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="warning.install_password" resname="warning.install_password">
-				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
-			</trans-unit>
-			<trans-unit id="warning.installtool_default_password" resname="warning.installtool_default_password">
-				<source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
-			</trans-unit>
 			<trans-unit id="warning.backend_admin" resname="warning.backend_admin">
 				<source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
 			</trans-unit>

@@ -162,9 +162,6 @@
 			<trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage">
 				<source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
 			</trans-unit>
-			<trans-unit id="status_installToolPassword" resname="status_installToolPassword">
-				<source>Install Tool Password</source>
-			</trans-unit>
 			<trans-unit id="status_installTool" resname="status_installTool">
 				<source>Install Tool</source>
 			</trans-unit>
