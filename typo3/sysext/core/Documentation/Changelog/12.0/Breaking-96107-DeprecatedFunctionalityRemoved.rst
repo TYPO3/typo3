@@ -386,6 +386,7 @@ The following command line options have been removed:
 The following dependency injection container entries have been removed:
 
 - `TYPO3\CMS\Core\Localization\LanguageService`
+- `TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
 
 Impact
 ======

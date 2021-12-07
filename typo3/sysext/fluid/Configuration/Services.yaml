@@ -6,6 +6,10 @@ services:
 
   TYPO3\CMS\Fluid\:
     resource: '../Classes/*'
+    # glob for services that have been previously available as
+    # container entries and have been removed in the mean time
+    # (e.g. because factories are to be used instead)
+    exclude: '../Classes/{Core/Rendering/RenderingContextFactory.php}'
 
   # Templateview has $context = null, symfony auto-injects in that case,
   # extbase did not, force passing `null`
@@ -19,17 +23,6 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['fluid_template']
-
-  # @deprecated since v11, will be removed in v12 - RenderingContext must be injected / instantiated using factory.
-  TYPO3\CMS\Fluid\Core\Rendering\RenderingContext:
-    factory: ['@TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory', 'create']
-    autowire: false
-    shared: false
-    public: true
-    deprecated:
-      package: 'typo3/cms-fluid'
-      version: '11.3'
-      message: 'Injection/Instantiation of "%service_id%" is deprecated. Please use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory->create().'
 
   # Classes of base package
   TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor:
