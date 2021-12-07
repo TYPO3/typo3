@@ -161,17 +161,34 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
         $rootPackage = $composer->getPackage();
         $autoLoadGenerator = $composer->getAutoloadGenerator();
         $localRepo = $composer->getRepositoryManager()->getLocalRepository();
+        $usedExtensionKeys = [];
 
         $installedTypo3Packages = array_map(
-            function (array $packageAndPath) use ($rootPackage) {
+            function (array $packageAndPath) use ($rootPackage, &$usedExtensionKeys) {
                 [$composerPackage, $packagePath] = $packageAndPath;
                 $packageName = $composerPackage->getName();
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
                 } catch (\Throwable $e) {
-                    // In case we can not determine the extension key, we take the composer name
+                    if (strpos($composerPackage->getType(), 'typo3-cms-') === false) {
+                        // This is only thrown by version > 4.0 of the installer and needs to be propagated
+                        throw $e;
+                    }
+                    // In case we can not otherwise determine the extension key, we take the composer name
                     $extensionKey = $packageName;
                 }
+                if (isset($usedExtensionKeys[$extensionKey])) {
+                    throw new \UnexpectedValueException(
+                        sprintf(
+                            'Package with the name "%s" registered extension key "%s", but this key was already set by package with the name "%s"',
+                            $packageName,
+                            $extensionKey,
+                            $usedExtensionKeys[$extensionKey]
+                        ),
+                        1638880941
+                    );
+                }
+                $usedExtensionKeys[$extensionKey] = $packageName;
                 unset($this->availableComposerPackageKeys[$packageName]);
                 $this->composerNameToPackageKeyMap[$packageName] = $extensionKey;
                 if ($composerPackage === $rootPackage) {
