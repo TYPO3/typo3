@@ -188,6 +188,11 @@ The following PHP class methods changed signature according to previous deprecat
 
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 
+The following PHP class methods changed signature according to previous deprecations:
+
+- :php:`TYPO3\CMS\Core\Controller\ErrorPageController->errorAction()` (the third argument :php:`$severity` is removed)
+
+
 The following class properties have been removed:
 
 - :php:`\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser->breakPointLN`

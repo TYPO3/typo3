@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Controller;
 
 use TYPO3\CMS\Core\Information\Typo3Information;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -53,7 +52,6 @@ class ErrorPageController
      *
      * @param string $title The title to be shown
      * @param string $message The message to be shown
-     * @param int $severity The severity of the error, see AbstractMessage constants - todo: @deprecated in v12
      * @param int $errorCode The error code to be referenced
      * @param int|null $httpStatusCode The http status code
      * @return string the output of the view
@@ -61,7 +59,6 @@ class ErrorPageController
     public function errorAction(
         string $title,
         string $message,
-        int $severity = AbstractMessage::ERROR,
         int $errorCode = 0,
         ?int $httpStatusCode = null
     ): string {

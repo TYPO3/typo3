@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\RateLimiter\RequestRateLimitedException;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -132,7 +131,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
                 $content = GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
                     'Login Error',
                     'TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',
-                    AbstractMessage::ERROR,
                     1294585860,
                     503
                 );

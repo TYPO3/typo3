@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Error;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Error\Http\AbstractClientErrorException;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -65,7 +64,6 @@ class ProductionExceptionHandler extends AbstractExceptionHandler
         echo GeneralUtility::makeInstance(ErrorPageController::class)->errorAction(
             $this->getTitle($exception),
             $this->getMessage($exception),
-            AbstractMessage::ERROR,
             $this->discloseExceptionInformation($exception) ? $exception->getCode() : 0,
             503
         );
