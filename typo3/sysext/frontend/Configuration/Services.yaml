@@ -6,17 +6,10 @@ services:
 
   TYPO3\CMS\Frontend\:
     resource: '../Classes/*'
-
-  # @deprecated since v11, will be removed in v12 - TypoScriptFrontendController is stateful and must be retrieved from the request attribute frontend.controller.
-  TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController:
-    factory: ['TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', getGlobalInstance]
-    shared: false
-    autoconfigure: false
-    autowire: false
-    deprecated:
-      package: 'typo3/cms-core'
-      version: '11.5'
-      message: 'Injection of "%service_id%" breaks subrequests. Please use the PSR-7 request attribute "frontend.controller".'
+    # glob for services that have been previously available as
+    # container entries and have been removed in the mean time
+    # (e.g. because factories are to be used instead)
+    exclude: '../Classes/{Frontend/Controller/TypoScriptFrontendController.php}'
 
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
