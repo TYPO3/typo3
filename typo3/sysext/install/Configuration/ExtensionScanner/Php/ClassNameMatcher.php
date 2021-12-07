@@ -1823,6 +1823,7 @@ return [
     'TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface' => [
         'restFiles' => [
             'Deprecation-95065-HookExtTablesInclusion-PostProcessing.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Filelist\FileListEditIconHookInterface' => [

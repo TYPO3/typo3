@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
-use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
@@ -531,31 +530,6 @@ class Bootstrap
             $coreCache = $coreCache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
         }
         ExtensionManagementUtility::loadExtTables($allowCaching, $coreCache);
-        static::runExtTablesPostProcessingHooks();
-    }
-
-    /**
-     * Check for registered ext tables hooks and run them
-     *
-     * @throws \UnexpectedValueException
-     * @deprecated will be removed in TYPO3 v12.0, use the PSR-14 based BootCompletedEvent instead.
-     */
-    protected static function runExtTablesPostProcessingHooks()
-    {
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
-            trigger_error('Using the hook $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][extTablesInclusion-PostProcessing] will be removed in TYPO3 v12.0. in favor of the new PSR-14 BootCompletedEvent', E_USER_DEPRECATED);
-        }
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] ?? [] as $className) {
-            /** @var \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface $hookObject */
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof TableConfigurationPostProcessingHookInterface) {
-                throw new \UnexpectedValueException(
-                    '$hookObject "' . $className . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
-                    1320585902
-                );
-            }
-            $hookObject->processData();
-        }
     }
 
     /**
