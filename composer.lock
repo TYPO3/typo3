@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77cbdb64178e6299cc10c4ce1c72c447",
+    "content-hash": "2c78ea109eaae98bc8d0db996ec4e61e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4739,16 +4739,16 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "3092660e3cb629782b364266985b5b9b1f51f165"
+                "reference": "1483e434946cf68b6589cdd61c760b19d0988d62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/3092660e3cb629782b364266985b5b9b1f51f165",
-                "reference": "3092660e3cb629782b364266985b5b9b1f51f165",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/1483e434946cf68b6589cdd61c760b19d0988d62",
+                "reference": "1483e434946cf68b6589cdd61c760b19d0988d62",
                 "shasum": ""
             },
             "require": {
@@ -4756,7 +4756,7 @@
                 "php": "^7.2 || ^8.0"
             },
             "conflict": {
-                "composer/installers": "<1.0.24 || >1.0.24"
+                "composer/installers": "<2.0.0"
             },
             "replace": {
                 "lw/typo3cms-installers": "*",
@@ -4772,7 +4772,7 @@
             "extra": {
                 "class": "TYPO3\\CMS\\Composer\\Installer\\Plugin",
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
@@ -4808,9 +4808,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/CmsComposerInstallers/issues",
-                "source": "https://github.com/TYPO3/CmsComposerInstallers/tree/v3.1.1"
+                "source": "https://github.com/TYPO3/CmsComposerInstallers/tree/v3.1.2"
             },
-            "time": "2021-03-22T12:30:09+00:00"
+            "time": "2021-07-26T22:16:58+00:00"
         },
         {
             "name": "typo3/html-sanitizer",
