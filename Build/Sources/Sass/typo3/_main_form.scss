@@ -313,8 +313,11 @@ select {
 
     > .form-wizards-element {
         grid-area: main;
-        overflow: hidden;
         min-width: 120px;
+
+        &:not(.form-wizards-element--overflow-visible) {
+            overflow: hidden;
+        }
 
         .col-icon img,
         .inline-icon img {
