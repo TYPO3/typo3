@@ -145,9 +145,6 @@ abstract class AbstractConfigurationManager implements SingletonInterface
             $pluginConfiguration = $this->getPluginConfiguration((string)$this->extensionName, (string)$this->pluginName);
             ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
             $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$this->extensionName, (string)$this->pluginName);
-            if (isset($this->configuration['switchableControllerActions'])) {
-                $this->overrideControllerConfigurationWithSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
-            }
         } else {
             $pluginConfiguration = $this->getPluginConfiguration((string)$extensionName, (string)$pluginName);
             $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$extensionName, (string)$pluginName);
@@ -225,118 +222,10 @@ abstract class AbstractConfigurationManager implements SingletonInterface
     }
 
     /**
-     * This method possibly overrides the controller configuration with an alternative configuration passed along via
-     * $frameworkConfiguration.
-     *
-     * If called by \TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager::getConfiguration,
-     * $switchableControllerActions may contain an alternative controller configuration defined via typoscript:
-     *
-     * Example:
-     * tt_content.list.20.indexedsearch_pi2.switchableControllerActions {
-     *     Search {
-     *         0 = search
-     *     }
-     * }
-     *
-     * If called by \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::overrideSwitchableControllerActionsFromFlexForm,
-     * $switchableControllerActions may contain an alternative controller configuration defined via plugin flexform.
-     *
-     * @param array $frameworkConfiguration
-     * @param array $switchableControllerActions
-     * @deprecated since TYPO3 v10, will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0.
-     */
-    protected function overrideControllerConfigurationWithSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions): void
-    {
-        trigger_error(
-            sprintf(
-                'Plugin "%s" of extension "%s" uses switchable controller actions which has been marked as deprecated as of version TYPO3 10 and will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0',
-                $frameworkConfiguration['pluginName'],
-                $frameworkConfiguration['extensionName']
-            ),
-            E_USER_DEPRECATED
-        );
-
-        $controllerAliasToClass = [];
-        foreach ($frameworkConfiguration['controllerConfiguration'] as $controllerClass => $controllerConfiguration) {
-            $controllerAliasToClass[$controllerConfiguration['alias']] = $controllerClass;
-        }
-
-        $overriddenControllerConfiguration = [];
-        foreach ($switchableControllerActions as $controllerName => $actions) {
-            // Trim leading backslashes if a fully qualified controller class name with leading slashes is used.
-            $controllerName = ltrim($controllerName, '\\');
-
-            $controllerIsConfigured = false;
-            if (array_key_exists($controllerName, $controllerAliasToClass)) {
-                /*
-                 * If $controllerName can be found in the keys of $controllerAliasToClass, $controllerName is a
-                 * controller alias and not a FQCN. In this case switchable controller actions have been defined with
-                 * controller aliases as such:
-                 *
-                 * tt_content.list.20.indexedsearch_pi2.switchableControllerActions {
-                 *     Search {
-                 *         0 = search
-                 *     }
-                 * }
-                 */
-                $controllerIsConfigured = true;
-                $controllerClassName = $controllerAliasToClass[$controllerName];
-                $controllerAlias = $controllerName;
-            }
-
-            if (in_array($controllerName, $controllerAliasToClass, true)) {
-                /*
-                 * If $controllerName can be found in the values of $controllerAliasToClass, $controllerName is a
-                 * FQCN. In this case switchable controller actions have been defined with fully qualified controller
-                 * class names as such:
-                 *
-                 * tt_content.list.20.indexedsearch_pi2.switchableControllerActions {
-                 *     TYPO3\CMS\IndexedSearch\Controller\SearchController {
-                 *         0 = search
-                 *     }
-                 * }
-                 */
-                $controllerIsConfigured = true;
-                $controllerClassName = $controllerName;
-                $controllerAlias = $frameworkConfiguration['controllerConfiguration'][$controllerName]['alias'];
-            }
-
-            if (!$controllerIsConfigured) {
-                continue;
-            }
-
-            if (!isset($overriddenControllerConfiguration[$controllerClassName])) {
-                $overriddenControllerConfiguration[$controllerClassName] = [
-                    'alias' => $controllerAlias,
-                    'className' => $controllerClassName,
-                    'actions' => [],
-                ];
-            }
-            $overriddenControllerConfiguration[$controllerClassName]['actions'] = array_merge(
-                $overriddenControllerConfiguration[$controllerClassName]['actions'],
-                $actions
-            );
-            $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
-            if (!is_array($nonCacheableActions)) {
-                // There are no non-cacheable actions, thus we can directly continue
-                // with the next controller name.
-                continue;
-            }
-            $overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
-            if (!empty($overriddenNonCacheableActions)) {
-                $overriddenControllerConfiguration[$controllerClassName]['nonCacheableActions'] = $overriddenNonCacheableActions;
-            }
-        }
-        $frameworkConfiguration['controllerConfiguration'] = $overriddenControllerConfiguration;
-    }
-
-    /**
      * The context specific configuration returned by this method
      * will override the framework configuration which was
      * obtained from TypoScript. This can be used f.e. to override the storagePid
      * with the value set inside the Plugin Instance.
-     *
-     * WARNING: Make sure this method ALWAYS returns an array!
      *
      * @param array $frameworkConfiguration The framework configuration until now
      * @return array context specific configuration which will override the configuration obtained by TypoScript

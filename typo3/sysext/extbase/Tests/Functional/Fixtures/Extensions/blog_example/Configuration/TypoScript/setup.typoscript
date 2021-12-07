@@ -46,11 +46,6 @@ tx_blogexample_plaintext {
 		userFunc = tx_extbase_core_bootstrap->run
 		extensionName = BlogExample
 		pluginName = PostList
-		switchableControllerActions {
-			Post {
-				1 = index
-			}
-		}
 	}
 	config {
 		admPanel = 0

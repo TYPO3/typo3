@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter;
@@ -35,5 +34,3 @@ ExtensionUtility::registerTypeConverter(CoreTypeConverter::class);
 ExtensionUtility::registerTypeConverter(FileConverter::class);
 ExtensionUtility::registerTypeConverter(FileReferenceConverter::class);
 ExtensionUtility::registerTypeConverter(FolderConverter::class);
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = CheckFlexFormValue::class;

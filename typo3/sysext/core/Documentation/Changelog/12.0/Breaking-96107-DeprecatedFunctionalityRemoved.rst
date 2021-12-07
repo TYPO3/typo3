@@ -20,6 +20,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Core\Database\SoftReferenceIndex`
 - :php:`\TYPO3\CMS\Core\Service\AbstractService`
 - :php:`\TYPO3\CMS\Extbase\Annotation\Inject`
+- :php:`\TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUser`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup`
 - :php:`\TYPO3\CMS\Extbase\Domain\Model\FrontendUser`
@@ -330,6 +331,7 @@ The following features are now always enabled:
 
 The following features have been removed:
 
+- Extbase switchable controller actions
 - Upgrade wizard "Migrate felogin plugins to use prefixed flexform keys"
 - Upgrade wizard "Migrate felogin plugins to use extbase CType"
 - Upgrade wizard "Install extension 'feedit' from TER"

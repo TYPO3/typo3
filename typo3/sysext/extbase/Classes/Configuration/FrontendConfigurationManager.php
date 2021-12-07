@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException;
 
 /**
  * A general purpose configuration manager used in frontend mode.
@@ -172,9 +171,7 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
     }
 
     /**
-     * Overrides configuration settings from flexForms.
-     * This merges the whole flexForm data, and overrides the controller configuration with possibly configured
-     * switchable controller actions.
+     * Overrides configuration settings from flexForms. This merges the whole flexForm data.
      *
      * @param array $frameworkConfiguration the framework configuration
      * @return array the framework configuration with overridden data from flexForm
@@ -193,7 +190,6 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
-            $frameworkConfiguration = $this->overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm($frameworkConfiguration, $flexFormConfiguration);
         }
         return $frameworkConfiguration;
     }
@@ -214,38 +210,6 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
             } else {
                 $frameworkConfiguration[$configurationPartName] = $configuration[$configurationPartName];
             }
-        }
-        return $frameworkConfiguration;
-    }
-
-    /**
-     * Overrides the controller configuration with possibly registered switchable controller actions of the flex form
-     * configuration.
-     *
-     * @param array $frameworkConfiguration The original framework configuration
-     * @param array $flexFormConfiguration The full flexForm configuration
-     * @throws Exception\ParseErrorException
-     * @return array the modified framework configuration, if needed
-     * @deprecated since TYPO3 v10, will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0.
-     */
-    protected function overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration): array
-    {
-        if (!isset($flexFormConfiguration['switchableControllerActions']) || is_array($flexFormConfiguration['switchableControllerActions'])) {
-            return $frameworkConfiguration;
-        }
-        // As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
-        // The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
-        $switchableControllerActionPartsFromFlexForm = GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
-        $overriddenControllerConfiguration = [];
-        foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
-            [$controller, $action] = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
-            if (empty($controller) || empty($action)) {
-                throw new ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
-            }
-            $overriddenControllerConfiguration[$controller][] = $action;
-        }
-        if (!empty($overriddenControllerConfiguration)) {
-            $this->overrideControllerConfigurationWithSwitchableControllerActions($frameworkConfiguration, $overriddenControllerConfiguration);
         }
         return $frameworkConfiguration;
     }
