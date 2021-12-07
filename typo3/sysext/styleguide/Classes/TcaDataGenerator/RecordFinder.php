@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -105,32 +107,46 @@ class RecordFinder
     }
 
     /**
-     * Find uids of styleguide demo sys_language`s
+     * Find ids of styleguide demo languages
      *
-     * @return array List of uids
+     * @return array List of language ids
      */
-    public function findUidsOfDemoLanguages(): array
+    public function findIdsOfDemoLanguages(): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $rows = $queryBuilder->select('uid')
-            ->from('sys_language')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tx_styleguide_isdemorecord',
-                    $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetchAllAssociative();
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($this->findUidsOfStyleguideEntryPages()[0]);
+        } catch (SiteNotFoundException $e) {
+            return [];
+        }
+
         $result = [];
-        if (is_array($rows)) {
-            foreach ($rows as $row) {
-                $result[] = $row['uid'];
+        foreach ($site->getAllLanguages() as $language) {
+            if ($language->getLanguageId() === 0) {
+                continue;
             }
+            $result[] = $language->getLanguageId();
         }
         return $result;
     }
+
+    /**
+     * Returns the highest language id from all sites
+     *
+     * @return int
+     */
+    public function findHighestLanguageId(): int
+    {
+        $lastLanguageId = 0;
+        foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
+            foreach ($site->getAllLanguages() as $language) {
+                if ($language->getLanguageId() > $lastLanguageId) {
+                    $lastLanguageId = $language->getLanguageId();
+                }
+            }
+        }
+        return $lastLanguageId;
+    }
+
 
     /**
      * Find uids of styleguide demo be_groups

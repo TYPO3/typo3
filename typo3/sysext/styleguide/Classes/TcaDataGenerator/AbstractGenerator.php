@@ -46,7 +46,7 @@ abstract class AbstractGenerator
         $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $siteIdentifier = 'styleguide-demo-' . $topPageUid;
         $siteConfiguration->rename($site->getIdentifier(), $siteIdentifier);
-        $styleguideSysLanguages = $recordFinder->findUidsOfDemoLanguages();
+        $highestLanguageId = $recordFinder->findHighestLanguageId();
         $configuration = [
             'base' => $base . 'styleguide-demo-' . $topPageUid,
             'rootPageId' => $topPageUid,
@@ -83,7 +83,7 @@ abstract class AbstractGenerator
                     'fallbackType' => 'strict',
                     'fallbacks' => '',
                     'flag' => 'dk',
-                    'languageId' => $styleguideSysLanguages[0],
+                    'languageId' => $highestLanguageId + 1,
                 ],
                 [
                     'title' => 'styleguide demo language german',
@@ -99,7 +99,7 @@ abstract class AbstractGenerator
                     'fallbackType' => 'strict',
                     'fallbacks' => '',
                     'flag' => 'de',
-                    'languageId' => $styleguideSysLanguages[1],
+                    'languageId' => $highestLanguageId + 2,
                 ],
                 [
                     'title' => 'styleguide demo language french',
@@ -115,7 +115,7 @@ abstract class AbstractGenerator
                     'fallbackType' => 'strict',
                     'fallbacks' => '',
                     'flag' => 'fr',
-                    'languageId' => $styleguideSysLanguages[2],
+                    'languageId' => $highestLanguageId + 3,
                 ],
                 [
                     'title' => 'styleguide demo language spanish',
@@ -131,7 +131,7 @@ abstract class AbstractGenerator
                     'fallbackType' => 'strict',
                     'fallbacks' => '',
                     'flag' => 'es',
-                    'languageId' => $styleguideSysLanguages[3],
+                    'languageId' => $highestLanguageId + 4,
                 ]
             ]
         ];
@@ -223,39 +223,6 @@ abstract class AbstractGenerator
             if (!Environment::isCli()) {
                 BackendUtility::setUpdateSignal('updatePageTree');
             }
-        }
-    }
-
-    /**
-     * Create demo languages if they do not already exist
-     */
-    protected function createSysLanguages(): void
-    {
-        $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoLanguagesUids = $recordFinder->findUidsOfDemoLanguages();
-        if (empty($demoLanguagesUids)) {
-            // Add four sys_language`s
-            $fields = [
-                'pid' => 0,
-                'tx_styleguide_isdemorecord' => 1,
-                'title' => 'styleguide demo language danish',
-                'language_isocode' => 'da',
-                'flag' => 'dk',
-            ];
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_language');
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language german';
-            $fields['language_isocode'] = 'de';
-            $fields['flag'] = 'de';
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language french';
-            $fields['language_isocode'] = 'fr';
-            $fields['flag'] = 'fr';
-            $connection->insert('sys_language', $fields);
-            $fields['title'] = 'styleguide demo language spanish';
-            $fields['language_isocode'] = 'es';
-            $fields['flag'] = 'es';
-            $connection->insert('sys_language', $fields);
         }
     }
 }

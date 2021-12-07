@@ -79,10 +79,11 @@ class Generator extends AbstractGenerator
             ],
         ];
 
-        // Add rows of third party tables like be_users, fal and sys_language records
+        // Add rows of third party tables like be_users and fal
         $this->populateRowsOfThirdPartyTables();
 
-        $sysLanguageStyleguideDemoUids = $recordFinder->findUidsOfDemoLanguages();
+        $highestLanguageId = $recordFinder->findHighestLanguageId();
+        $styleguideDemoLanguageIds = range($highestLanguageId + 1, $highestLanguageId + 4);
 
         // Add a page for each main table below entry page
         $mainTables = $this->getListOfStyleguideMainTables();
@@ -99,8 +100,8 @@ class Generator extends AbstractGenerator
             ];
 
             // Add page translations for all styleguide languages
-            if (!empty($sysLanguageStyleguideDemoUids)) {
-                foreach ($sysLanguageStyleguideDemoUids as $languageUid) {
+            if (!empty($styleguideDemoLanguageIds)) {
+                foreach ($styleguideDemoLanguageIds as $languageUid) {
                     $newIdOfLocalizedPage = StringUtility::getUniqueId('NEW');
                     $data['pages'][$newIdOfLocalizedPage] = [
                         'title' => str_replace('_', ' ', substr($mainTable . ' - language ' . $languageUid, strlen('tx_styleguide_'))),
@@ -165,14 +166,6 @@ class Generator extends AbstractGenerator
         if (!empty($topUids)) {
             foreach ($topUids as $topUid) {
                 $commands['pages'][(int)$topUid]['delete'] = 1;
-            }
-        }
-
-        // Delete all the sys_language demo records
-        $languageUids = $recordFinder->findUidsOfDemoLanguages();
-        if (!empty($languageUids)) {
-            foreach ($languageUids as $languageUid) {
-                $commands['sys_language'][(int)$languageUid]['delete'] = 1;
             }
         }
 
@@ -253,8 +246,6 @@ class Generator extends AbstractGenerator
             $fields['password'] = $passwordHash->getHashedPassword($random->generateRandomBytes(10));
             $connection->insert('be_users', $fields);
         }
-
-        $this->createSysLanguages();
 
         // Add 3 files from resources directory to default storage
         $this->addToFal([

@@ -54,7 +54,7 @@ class AbstractTableHandler
         }
 
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $demoLanguages = $recordFinder->findUidsOfDemoLanguages();
+        $demoLanguages = $recordFinder->findIdsOfDemoLanguages();
 
         $translatedRecord = -42;
         foreach ($demoLanguages as $demoLanguageIndex => $demoLanguageUid) {
@@ -79,7 +79,7 @@ class AbstractTableHandler
                     break;
                 default:
                     throw new Exception(
-                        'Unknown language. No idea what to do with sys_language record ' . (int)$demoLanguageUid . ' for table ' . $tableName,
+                        'Unknown language. No idea what to do with language ' . (int)$demoLanguageUid . ' for table ' . $tableName,
                         1597437985
                     );
             }
