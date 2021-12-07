@@ -50,7 +50,7 @@ define('TYPO3/CMS/Styleguide/ProcessingIndicator', ['nprogress', 'TYPO3/CMS/Back
           // Set button states
           e.target.querySelector('.t3js-icon').outerHTML = originalIcon;
           disabledButton.classList.remove('disabled');
-        }).done(() => {
+        }).finally(() => {
           // Party when done
         }).catch((error) => {
           // Action failed, reset to its original state
