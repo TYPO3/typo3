@@ -330,7 +330,12 @@ The following features are now always enabled:
 
 The following features have been removed:
 
-- A feature like a removed upgrade wizard
+- Upgrade wizard "Migrate felogin plugins to use prefixed flexform keys"
+- Upgrade wizard "Migrate felogin plugins to use extbase CType"
+- Upgrade wizard "Install extension 'feedit' from TER"
+- Upgrade wizard "Install extension 'sys_action' from TER"
+- Upgrade wizard "Install extension "taskcenter" from TER"
+- Row upgrader "Workspace 'pid -1' migration"
 
 The following fallbacks have been removed:
 

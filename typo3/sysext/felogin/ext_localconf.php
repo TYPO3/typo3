@@ -6,8 +6,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\FrontendLogin\Controller\LoginController;
 use TYPO3\CMS\FrontendLogin\Controller\PasswordRecoveryController;
-use TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPlugins;
-use TYPO3\CMS\FrontendLogin\Updates\MigrateFeloginPluginsCtype;
 
 defined('TYPO3') or die();
 
@@ -37,9 +35,3 @@ ExtensionUtility::configurePlugin(
 ExtensionManagementUtility::addPageTSConfig(
     "@import 'EXT:felogin/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
 );
-
-// Add migration wizards
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['TYPO3\\CMS\\Felogin\\Updates\\MigrateFeloginPlugins']
-    = MigrateFeloginPlugins::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][MigrateFeloginPluginsCtype::class]
-    = MigrateFeloginPluginsCtype::class;
