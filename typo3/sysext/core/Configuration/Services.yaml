@@ -6,6 +6,10 @@ services:
 
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
+    # glob for services that have been previously available as
+    # container entries and have been removed in the mean time
+    # (e.g. because factories are to be used instead)
+    exclude: '../Classes/{Localization/LanguageService.php}'
 
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
     tags: ['container.env_var_processor']
@@ -179,20 +183,6 @@ services:
     public: true
     arguments:
       $coreCache: '@cache.core'
-
-  # @internal
-  # This service entry is provided for legacy code that instantiates LanguageService
-  # using GeneralUtility::makeInstance instead of the factory methods which itself
-  # use LanguageServiceFactory (for install tool compatibility).
-  TYPO3\CMS\Core\Localization\LanguageService:
-    shared: false
-    public: true
-    arguments:
-      $runtimeCache: '@cache.runtime'
-    deprecated:
-      package: 'typo3/cms-core'
-      version: '11.3'
-      message: 'Injection/Instantiation of "%service_id%" is deprecated. Please use TYPO3\CMS\Core\Localization\LanguageServiceFactory->create().'
 
   TYPO3\CMS\Core\Localization\CacheWarmer:
     tags:

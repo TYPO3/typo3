@@ -126,6 +126,9 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService::create()`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService::createFromSiteLanguage()`
+- :php:`\TYPO3\CMS\Core\Localization\LanguageService::createFromUserPreferences()`
 - :php:`\TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\Index\FileIndexRepository::getInstance()`
 - :php:`\TYPO3\CMS\Core\Resource\Index\MetaDataRepository::getInstance()`
@@ -379,6 +382,10 @@ The following command line options have been removed:
 - :shell:`impexp:import --forceUid`
 - :shell:`impexp:import --importMode`
 - :shell:`impexp:import --enableLog`
+
+The following dependency injection container entries have been removed:
+
+- `TYPO3\CMS\Core\Localization\LanguageService`
 
 Impact
 ======

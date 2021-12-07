@@ -1131,6 +1131,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService::createFromUserPreferences' => [
@@ -1138,6 +1139,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Localization\LanguageService::createFromSiteLanguage' => [
@@ -1145,6 +1147,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-94414-DeprecateLanguageServiceContainerEntry.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable' => [

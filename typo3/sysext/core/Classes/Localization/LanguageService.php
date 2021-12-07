@@ -15,11 +15,8 @@
 
 namespace TYPO3\CMS\Core\Localization;
 
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -335,36 +332,5 @@ class LanguageService
 
         $this->runtimeCache->set($cacheIdentifier, $localLanguage);
         return $localLanguage;
-    }
-
-    /**
-     * Factory method to create a language service object.
-     *
-     * @param string $locale the locale (= the TYPO3-internal locale given)
-     * @return static
-     * @deprecated since TYPO3 v11.3, will be removed in v12.0
-     */
-    public static function create(string $locale): self
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($locale);
-    }
-
-    /**
-     * @deprecated since TYPO3 v11.3, will be removed in v12.0
-     */
-    public static function createFromUserPreferences(?AbstractUserAuthentication $user): self
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromUserPreferences($user);
-    }
-
-    /**
-     * @deprecated since TYPO3 v11.3, will be removed in v12.0
-     */
-    public static function createFromSiteLanguage(SiteLanguage $language): self
-    {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated and will be removed in TYPO3 12.0 Use LanguageServiceFactory instead.', E_USER_DEPRECATED);
-        return GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($language);
     }
 }
