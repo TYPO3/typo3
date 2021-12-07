@@ -61,6 +61,7 @@ The following PHP interfaces that have previously been marked as deprecated for 
 
 The following PHP interfaces changed:
 
+- :php:`TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
 - :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)

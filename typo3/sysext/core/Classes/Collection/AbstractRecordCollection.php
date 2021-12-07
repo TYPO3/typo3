@@ -164,19 +164,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
     }
 
     /**
-     * (PHP 5 >= 5.1.0)
-     * String representation of object
-     *
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or &null;
-     * @todo: Drop method and \Serializable (through parent inteface) class interface in v12.
-     */
-    public function serialize()
-    {
-        return serialize($this->__serialize());
-    }
-
-    /**
      * Returns class state to be serialized.
      */
     public function __serialize(): array
@@ -184,20 +171,6 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
         return [
             'uid' => $this->getIdentifier(),
         ];
-    }
-
-    /**
-     * (PHP 5 >= 5.1.0)
-     * Constructs the object
-     *
-     * @link https://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized The string representation of the object
-     * @return mixed the original value unserialized.
-     * @todo: Drop method and \Serializable (through parent interface) class interface in v12.
-     */
-    public function unserialize($serialized)
-    {
-        $this->__unserialize(unserialize($serialized));
     }
 
     /**
