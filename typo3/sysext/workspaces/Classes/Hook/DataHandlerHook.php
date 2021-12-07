@@ -675,7 +675,7 @@ class DataHandlerHook
         $tableDetails = null;
         if ($platform instanceof SQLServerPlatform) {
             // mssql needs to set proper PARAM_LOB and others to update fields
-            $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+            $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
         }
 
         try {

@@ -140,7 +140,7 @@ class CacheService implements SingletonInterface
         if (!isset($this->hasPidColumn[$tableName])) {
             $columns = $this->connectionPool
                 ->getConnectionForTable($tableName)
-                ->getSchemaManager()
+                ->createSchemaManager()
                 ->listTableColumns($tableName);
             $this->hasPidColumn[$tableName] = array_key_exists('pid', $columns);
         }

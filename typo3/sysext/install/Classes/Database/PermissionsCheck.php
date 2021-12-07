@@ -213,6 +213,6 @@ class PermissionsCheck
 
     private function getSchemaManager(): AbstractSchemaManager
     {
-        return $this->getConnection()->getSchemaManager();
+        return $this->getConnection()->createSchemaManager();
     }
 }

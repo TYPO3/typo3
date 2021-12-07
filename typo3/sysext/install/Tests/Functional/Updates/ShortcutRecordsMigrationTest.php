@@ -50,7 +50,7 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
 
         $schemaManager = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable(self::TABLE_NAME)
-            ->getSchemaManager();
+            ->createSchemaManager();
 
         $schemaManager->alterTable(
             new TableDiff(

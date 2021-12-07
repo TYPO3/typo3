@@ -110,7 +110,7 @@ class CollectionsExtractionUpdate extends AbstractDownloadExtensionUpdate
         // Check if database table exist
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName('Default');
-        $tableNames = $connection->getSchemaManager()->listTableNames();
+        $tableNames = $connection->createSchemaManager()->listTableNames();
         if (in_array('sys_collection', $tableNames, true)) {
             // table is available, now check if there are entries in it
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

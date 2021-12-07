@@ -389,7 +389,7 @@ class DatabaseIntegrityCheck
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach ($fkey_arrays as $table => $fields) {
             $connection = $connectionPool->getConnectionForTable($table);
-            $schemaManager = $connection->getSchemaManager();
+            $schemaManager = $connection->createSchemaManager();
             $tableColumns = $schemaManager->listTableColumns($table);
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);

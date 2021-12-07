@@ -742,7 +742,7 @@ class InstallerController
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
                 $connection
-                    ->getSchemaManager()
+                    ->createSchemaManager()
                     ->dropDatabase($connection->quoteIdentifier($databaseName));
             }
 
@@ -876,7 +876,7 @@ class InstallerController
     {
         $existingTables = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
-            ->getSchemaManager()
+            ->createSchemaManager()
             ->listTableNames();
         return new JsonResponse([
             'success' => !empty($existingTables),
@@ -1274,6 +1274,7 @@ For each website you need a TypoScript template on the main page of your website
         // an invalid database name would lead to exceptions which would prevent
         // changing the currently configured database.
         $connection = DriverManager::getConnection($connectionParams);
+        // @todo: migrate to createSchemaManager() with Doctrine DBAL 3.2 requirement in TYPO3 v12.0
         $databaseArray = $connection->getSchemaManager()->listDatabases();
         $connection->close();
 
@@ -1292,6 +1293,7 @@ For each website you need a TypoScript template on the main page of your website
                 $connectionParams['dbname'] = $databaseName;
                 $connection = DriverManager::getConnection($connectionParams);
 
+                // @todo: migrate to createSchemaManager() with Doctrine DBAL 3.2 requirement in TYPO3 v12.0
                 $databases[] = [
                     'name' => $databaseName,
                     'tables' => count($connection->getSchemaManager()->listTableNames()),
@@ -1369,7 +1371,7 @@ For each website you need a TypoScript template on the main page of your website
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-            if (!empty($connection->getSchemaManager()->listTableNames())) {
+            if (!empty($connection->createSchemaManager()->listTableNames())) {
                 $result = new FlashMessage(
                     sprintf('Cannot use database "%s"', $dbName)
                         . ', because it already contains tables. Please select a different database or choose to create one!',

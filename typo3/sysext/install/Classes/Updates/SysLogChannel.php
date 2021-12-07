@@ -72,7 +72,7 @@ END;
         }
 
         // Ensure the level field is a varchar, otherwise we are in trouble when logging into TYPO3 Backend.
-        $schema = $this->sysLogTable->getSchemaManager();
+        $schema = $this->sysLogTable->createSchemaManager();
         $table = $schema->listTableDetails('sys_log');
         if (!$table->getColumn('level')->getType() instanceof StringType) {
             $schema->alterTable(new TableDiff(

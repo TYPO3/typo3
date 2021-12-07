@@ -71,7 +71,7 @@ class ClearTableService
         $tableStatistics = [];
         foreach ($this->tableList as $table) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table['name']);
-            if ($connection->getSchemaManager()->tablesExist([$table['name']])) {
+            if ($connection->createSchemaManager()->tablesExist([$table['name']])) {
                 $table['rowCount'] = $connection->count(
                     '*',
                     $table['name'],
