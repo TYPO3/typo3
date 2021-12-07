@@ -215,7 +215,7 @@ class ConnectionMigrator
     protected function buildSchemaDiff(bool $renameUnused = true): SchemaDiff
     {
         // Build the schema definitions
-        $fromSchema = $this->connection->getSchemaManager()->createSchema();
+        $fromSchema = $this->connection->createSchemaManager()->createSchema();
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
 
         // Add current table options to the fromSchema

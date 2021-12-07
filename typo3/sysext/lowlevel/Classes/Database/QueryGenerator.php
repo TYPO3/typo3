@@ -409,7 +409,7 @@ class QueryGenerator
                     continue;
                 }
                 $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-                $tableColumns = $connection->getSchemaManager()->listTableColumns($table);
+                $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
                 $fieldsInDatabase = [];
                 foreach ($tableColumns as $column) {
                     $fieldsInDatabase[] = $column->getName();

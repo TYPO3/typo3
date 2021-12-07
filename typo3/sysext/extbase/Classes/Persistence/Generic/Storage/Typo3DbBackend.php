@@ -81,7 +81,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $platform = $connection->getDatabasePlatform();
             if ($platform instanceof SQLServerPlatform) {
                 // mssql needs to set proper PARAM_LOB and others to update fields
-                $tableDetails = $connection->getSchemaManager()->listTableDetails($tableName);
+                $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
                 foreach ($fieldValues as $columnName => $columnValue) {
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
                 }
@@ -126,7 +126,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $platform = $connection->getDatabasePlatform();
             if ($platform instanceof SQLServerPlatform) {
                 // mssql needs to set proper PARAM_LOB and others to update fields
-                $tableDetails = $connection->getSchemaManager()->listTableDetails($tableName);
+                $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
                 foreach ($fieldValues as $columnName => $columnValue) {
                     $columnName = (string)$columnName;
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();

@@ -24,6 +24,7 @@ use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -411,6 +412,17 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
         }
 
         return $version;
+    }
+
+    /**
+     * Creates a SchemaManager that can be used to inspect or change the
+     * database schema through the connection.
+     *
+     * This is a copy from Doctrine DBAL 3.x, and can be removed once Doctrine DBAL 3.2 is included
+     */
+    public function createSchemaManager(): AbstractSchemaManager
+    {
+        return $this->_driver->getSchemaManager($this);
     }
 
     /**

@@ -358,7 +358,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
         if (empty($this->tableColumns[$this->table])) {
             $this->tableColumns[$this->table] = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($this->table)
-                ->getSchemaManager()
+                ->createSchemaManager()
                 ->listTableColumns($this->table);
         }
 

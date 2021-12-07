@@ -102,7 +102,7 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
 
     protected function columnsExistInTable(): bool
     {
-        $schemaManager = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME)->getSchemaManager();
+        $schemaManager = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME)->createSchemaManager();
 
         if ($schemaManager === null) {
             return false;

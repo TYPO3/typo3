@@ -7246,7 +7246,7 @@ class DataHandler implements LoggerAwareInterface
                 $platform = $connection->getDatabasePlatform();
                 if ($platform instanceof SQLServerPlatform) {
                     // mssql needs to set proper PARAM_LOB and others to update fields
-                    $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+                    $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
                     foreach ($fieldArray as $columnName => $columnValue) {
                         $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
                     }
@@ -7995,7 +7995,7 @@ class DataHandler implements LoggerAwareInterface
             ->fetchAssociative();
         // If the current record exists (which it should...), begin comparison:
         if (is_array($currentRecord)) {
-            $tableDetails = $connection->getSchemaManager()->listTableDetails($table);
+            $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
             $columnRecordTypes = [];
             foreach ($currentRecord as $columnName => $_) {
                 $columnRecordTypes[$columnName] = '';

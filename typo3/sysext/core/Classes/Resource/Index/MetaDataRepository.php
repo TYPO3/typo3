@@ -183,7 +183,7 @@ class MetaDataRepository implements SingletonInterface
             $types = [];
             if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
                 // mssql needs to set proper PARAM_LOB and others to update fields
-                $tableDetails = $connection->getSchemaManager()->listTableDetails($this->tableName);
+                $tableDetails = $connection->createSchemaManager()->listTableDetails($this->tableName);
                 foreach ($updateRow as $columnName => $columnValue) {
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
                 }
@@ -230,7 +230,7 @@ class MetaDataRepository implements SingletonInterface
         if (empty($this->tableFields)) {
             $this->tableFields = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable($this->tableName)
-                ->getSchemaManager()
+                ->createSchemaManager()
                 ->listTableColumns($this->tableName);
         }
 

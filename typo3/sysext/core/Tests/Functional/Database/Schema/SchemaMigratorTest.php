@@ -66,7 +66,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $this->subject = GeneralUtility::makeInstance(SchemaMigrator::class);
         $this->sqlReader = GeneralUtility::makeInstance(SqlReader::class);
         $this->connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $this->schemaManager = $this->connectionPool->getConnectionForTable($this->tableName)->getSchemaManager();
+        $this->schemaManager = $this->connectionPool->getConnectionForTable($this->tableName)->createSchemaManager();
         $this->prepareTestTable();
     }
 
