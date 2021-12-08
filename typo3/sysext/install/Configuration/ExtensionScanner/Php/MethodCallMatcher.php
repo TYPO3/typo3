@@ -5073,6 +5073,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-91814-DeprecateAbstractControlsetOnClick.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Template\Components\AbstractControl->getOnClick' => [
@@ -5080,6 +5081,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-91814-DeprecateAbstractControlsetOnClick.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

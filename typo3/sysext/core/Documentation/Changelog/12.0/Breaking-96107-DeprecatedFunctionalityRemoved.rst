@@ -79,6 +79,8 @@ The following PHP class aliases that have previously been marked as deprecated f
 The following PHP class methods that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Form\FormDataProvider\AbstractItemProvider->addItemsFromSpecial()`
+- :php:`\TYPO3\CMS\Backend\Template\Components\AbstractControl->getOnClick'()`
+- :php:`\TYPO3\CMS\Backend\Template\Components\AbstractControl->setOnClick'()`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getIconFactory()`
 - :php:`\TYPO3\CMS\Backend\Template\ModuleTemplate->getPageRenderer()`
 - :php:`\TYPO3\CMS\Backend\Domain\Module\BackendModule->setNavigationFrameScript()`
