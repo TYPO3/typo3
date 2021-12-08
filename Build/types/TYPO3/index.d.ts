@@ -127,7 +127,6 @@ interface Window {
   require: Function;
   list_frame: Window;
   jump: Function;
-  fsMod: { [key: string]: any };
 
   // required for Paste.ts
   // TODO these should be passed as data attributes

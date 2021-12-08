@@ -30,9 +30,6 @@ interface CurrentState {
  * > between modules Typically that is set by something like this in a
  * > Web>* sub module
  *
- * Reading from `fsMod` is still possible as fall-back, however write
- * access is only possible via static API in this `ModuleStateStorage` class.
- *
  * @exports TYPO3/CMS/Backend/Storage/ModuleStateStorage
  */
 export class ModuleStateStorage {
@@ -113,62 +110,3 @@ export class ModuleStateStorage {
 
 // exposing `ModuleStateStorage`
 (window as any).ModuleStateStorage = ModuleStateStorage;
-
-/**
- * Provides fallback handling for reading from `top.fsMod` directly.
- * + `top.fsMod.recentIds.web`
- * + `top.fsMod.navFrameHighlightedID.web`
- * + `top.fsMod.currentBank`
- *
- * @deprecated `top.fsMod` is deprecated, will be removed in TYPO3 v12.0
- */
-if (!top.fsMod || !top.fsMod.isProxy) {
-  const proxy = (aspect: string): CurrentState => {
-    return new Proxy<CurrentState>({} as StateChange, {
-      get(target: Object, p: PropertyKey): any {
-        const prop = p.toString();
-        const current = ModuleStateStorage.current(prop);
-        if (aspect === 'identifier') {
-          return current.identifier;
-        }
-        if (aspect === 'selection') {
-          return current.selection;
-        }
-        return undefined;
-      },
-      set(target: Object, p: PropertyKey, value: any, receiver: any): boolean {
-        throw new Error('Writing to fsMod is not possible anymore, use ModuleStateStorage instead.');
-      }
-    });
-  }
-  const fsMod = {
-    isProxy: true,
-    recentIds:{},
-    navFrameHighlightedID: {},
-    currentBank: '0'
-  };
-  /*
-   */
-  top.fsMod = new Proxy<Object>(fsMod, {
-    get(target: Object, p: PropertyKey): any {
-      const prop = p.toString();
-      if (prop === 'isProxy') {
-        return true;
-      }
-      console.warn('Reading from fsMod is deprecated, use ModuleStateStorage instead.');
-      if (prop === 'recentIds') {
-        return proxy('identifier');
-      }
-      if (prop === 'navFrameHighlightedID') {
-        return proxy('selection');
-      }
-      if (prop === 'currentBank') {
-        return ModuleStateStorage.current('web').mount;
-      }
-      return undefined;
-    },
-    set(target: Object, p: PropertyKey, value: any, receiver: any): boolean {
-      throw new Error('Writing to fsMod is not possible anymore, use ModuleStateStorage instead.');
-    }
-  });
-}

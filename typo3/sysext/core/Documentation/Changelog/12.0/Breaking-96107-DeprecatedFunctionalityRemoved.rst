@@ -362,6 +362,7 @@ The following Backend route identifiers have been removed:
 The following global JavaScript variables have been removed:
 
 - :js:`top.currentSubScript`
+- :js:`top.fsMod`
 - :js:`top.nextLoadModuleUrl`
 
 The following global JavaScript functions have been removed:
