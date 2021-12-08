@@ -138,12 +138,25 @@ interface Window {
  * Needed type declarations for provided libs
  */
 declare module 'muuri';
+declare module 'ckeditor';
 declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
+declare module 'flatpickr/locales';
 declare module 'moment';
 declare module 'TYPO3/CMS/Backend/LegacyTree';
+declare module 'TYPO3/CMS/Install/chosen.jquery.min';
 declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
 declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
+interface Taboverride {
+  set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
+}
+declare module 'taboverride' {
+  const _exported: Taboverride;
+  export default _exported;
+}
+declare module 'autosize' {
+  export default function (el: HTMLElement, options?: Object): HTMLElement;
+}
 
 interface JQueryTypedEvent<T extends Event> extends JQueryEventObject {
   originalEvent: T;

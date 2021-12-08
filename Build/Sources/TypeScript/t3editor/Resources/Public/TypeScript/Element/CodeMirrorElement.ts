@@ -107,7 +107,7 @@ export class CodeMirrorElement extends LitElement {
     const options = this.options;
 
     // load mode + registered addons
-    require([this.mode, ...this.addons], (): void => {
+    Promise.all([this.mode, ...this.addons].map((module: string) => import(module))).then((): void => {
       const cm = CodeMirror((node: HTMLElement): void => {
         const wrapper = document.createElement('div');
         wrapper.setAttribute('slot', 'codemirror');

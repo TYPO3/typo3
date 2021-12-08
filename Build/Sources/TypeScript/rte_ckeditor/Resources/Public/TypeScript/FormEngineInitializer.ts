@@ -31,7 +31,7 @@ interface CKEditorExternalPlugin {
  */
 export class FormEngineInitializer {
   public static initializeCKEditor(options: CKEditorOptions): void {
-    require(['ckeditor', ], (CKEDITOR: any) => {
+    import('ckeditor').then(({default: CKEDITOR}) => {
       CKEDITOR.timestamp += '-' + options.configurationHash;
       options.externalPlugins
         .forEach((item: CKEditorExternalPlugin) => CKEDITOR.plugins.addExternal(item.name, item.resource, ''));

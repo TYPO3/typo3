@@ -20,7 +20,7 @@ export class Resizable {
    * @param {HTMLTextAreaElement} textarea
    */
   public static enable(textarea: HTMLTextAreaElement): void {
-    require(['autosize'], (autosize: Function): void => {
+    import('autosize').then(({default: autosize}): void => {
       autosize(textarea);
     });
   }

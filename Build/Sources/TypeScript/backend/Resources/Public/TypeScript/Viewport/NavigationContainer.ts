@@ -58,7 +58,7 @@ class NavigationContainer extends AbstractContainer {
       return;
     }
 
-    require([navigationComponentId], (__esModule: any): void => {
+    import(navigationComponentId).then((__esModule: {navigationComponentName?: string}): void => {
       if (typeof __esModule.navigationComponentName === 'string') {
         const tagName: string = __esModule.navigationComponentName;
         const element = document.createElement(tagName);

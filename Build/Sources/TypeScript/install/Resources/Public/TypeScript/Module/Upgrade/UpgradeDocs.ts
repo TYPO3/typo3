@@ -56,7 +56,7 @@ class UpgradeDocs extends AbstractInteractableModule {
         this.getContent();
       });
     } else {
-      require(['TYPO3/CMS/Install/chosen.jquery.min'], (): void => {
+      import('TYPO3/CMS/Install/chosen.jquery.min').then((): void => {
         this.getContent();
       });
     }

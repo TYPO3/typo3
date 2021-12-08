@@ -863,7 +863,7 @@ export const initialize = function (): void {
   ) {
     $.each(
       TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], (pos: number, moduleName: string) => {
-        require([moduleName]);
+        import(moduleName);
       },
     );
   }

@@ -21,7 +21,7 @@ export class Tabbable {
    */
   public static enable(textarea: HTMLTextAreaElement): void {
     if (textarea.classList.contains('t3js-enable-tab')) {
-      require(['taboverride'], (taboverride: any): void => {
+      import('taboverride').then(({default: taboverride}): void => {
         taboverride.set(textarea);
       });
     }

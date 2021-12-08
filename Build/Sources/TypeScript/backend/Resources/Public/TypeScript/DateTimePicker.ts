@@ -64,7 +64,7 @@ class DateTimePicker {
     }
 
     element.dataset.datepickerInitialized = '1';
-    require(['flatpickr/locales'], (): void => {
+    import('flatpickr/locales').then((): void => {
       this.initializeField(element, userLocale);
     });
   }

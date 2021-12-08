@@ -222,7 +222,7 @@ class ContextMenu {
         const callbackName = $me.data('callback-action');
         const callbackModule = $me.data('callback-module');
         if ($me.data('callback-module')) {
-          require([callbackModule], (callbackModuleCallback: any): void => {
+          import(callbackModule).then(({default: callbackModuleCallback}: {default: any}): void => {
             callbackModuleCallback[callbackName].bind($me)(this.record.table, this.record.uid);
           });
         } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackName] === 'function') {

@@ -204,7 +204,7 @@ class PageActions {
     parameters.data.pages = {};
     parameters.data.pages[recordUid] = { title: $field.val() };
 
-    require(['TYPO3/CMS/Backend/AjaxDataHandler'], (DataHandler: any): void => {
+    import('TYPO3/CMS/Backend/AjaxDataHandler').then(({default: DataHandler}): void => {
       DataHandler.process(parameters).then((): void => {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
         this.$pageTitle.text($field.val());

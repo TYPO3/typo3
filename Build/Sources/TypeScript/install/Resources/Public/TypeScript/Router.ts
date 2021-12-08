@@ -52,7 +52,7 @@ class Router {
       const inlineState = $me.data('inline');
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        require([requireModule], (aModule: AbstractInlineModule): void => {
+        import(requireModule).then(({default: aModule}: {default: AbstractInlineModule}): void => {
           aModule.initialize($me);
         });
       } else {
@@ -65,7 +65,7 @@ class Router {
           content: $('<div class="modal-loading">'),
           additionalCssClasses: ['install-tool-modal'],
           callback: (currentModal: any): void => {
-            require([requireModule], (aModule: AbstractInteractableModule): void => {
+            import(requireModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
               aModule.initialize(currentModal);
             });
           },
