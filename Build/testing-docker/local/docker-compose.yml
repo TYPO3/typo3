@@ -1299,7 +1299,7 @@ services:
         mkdir -p ${CORE_ROOT}/.cache
         yarn install || exit 1
         cd ..;
-        Build/node_modules/karma/bin/karma start vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.ci.js --single-run
+        Build/node_modules/karma/bin/karma start Build/JSUnit/karma.conf.ci.js --single-run
       "
 
   unitRandom:

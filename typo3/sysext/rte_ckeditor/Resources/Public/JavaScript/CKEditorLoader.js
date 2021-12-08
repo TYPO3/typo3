@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","module"],(function(e,t,o){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.loadCKEditor=void 0,o=__importDefault(o);let r=null;t.loadCKEditor=function(){if(null===r){const t=o.default.uri.replace(/\/[^\/]+\.js/,"/Contrib/ckeditor.js");r=(e=t,new Promise((t,o)=>{const r=document.createElement("script");r.async=!0,r.onerror=o,r.onload=e=>t(e),r.src=e,document.head.appendChild(r)})).then(()=>window.CKEDITOR)}var e;return r}}));
+let ckeditorPromise=null;function loadScript(e){return new Promise((o,r)=>{const t=document.createElement("script");t.async=!0,t.onerror=r,t.onload=e=>o(e),t.src=e,document.head.appendChild(t)})}export function loadCKEditor(){if(null===ckeditorPromise){const e=import.meta.url.replace(/\/[^\/]+\.js/,"/Contrib/ckeditor.js");ckeditorPromise=loadScript(e).then(()=>window.CKEDITOR)}return ckeditorPromise}

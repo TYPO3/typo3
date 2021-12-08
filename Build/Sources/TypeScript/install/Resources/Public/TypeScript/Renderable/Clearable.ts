@@ -101,4 +101,4 @@ class Clearable {
   }
 }
 
-export = new Clearable();
+export default new Clearable();

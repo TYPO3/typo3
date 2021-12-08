@@ -6,15 +6,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="{f:uri.resource(path: 'EXT:backend/Resources/Public/Css/backend.css')}?{bust}" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="{f:uri.resource(path: 'EXT:install/Resources/Public/Icons/favicon.ico')}?{bust}" />
+    {importmap->f:format.raw()}
+    <script type="module" src="{initModule}"></script>
 </head>
-<body class="backend install-tool-init t3js-body scaffold t3js-scaffold scaffold-modulemenu-expanded" data-controller="{controller}" data-context="{context}" data-package-resource-paths="{packageResourcePaths -> f:format.json()}">
+<body class="backend install-tool-init t3js-body scaffold t3js-scaffold scaffold-modulemenu-expanded" data-controller="{controller}" data-context="{context}">
 <div>
     <div id="t3js-ui-block" class="ui-block">
         <core:icon identifier="spinner-circle" size="large" />
         <h2 id="t3js-ui-block-detail">Initializing</h2>
     </div>
 </div>
-<script src="{f:uri.resource(path: 'EXT:install/Resources/Public/JavaScript/RequireJSConfig.js')}?{bust}" data-bust="{bust}" data-init="TYPO3/CMS/Install/Install"></script>
-<script src="{f:uri.resource(path: 'EXT:core/Resources/Public/JavaScript/Contrib/require.js')}?{bust}"></script>
 </body>
 </html>

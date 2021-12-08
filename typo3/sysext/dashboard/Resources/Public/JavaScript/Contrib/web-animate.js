@@ -1,3 +1,5 @@
+export default (new function() {
+  const module = { exports: {} }, exports = module.exports, define = null;
 var WebAnimate=function(t){"use strict"
 var i,e=/[A-Z]/g,n=function(t){return"-"+t.toLowerCase()},a=/^ms-/,r=void 0,o="idle",s="finished",l="paused",m="running"
 function f(t){var i=[]
@@ -43,3 +45,6 @@ A(t)
 var i=t._rate>=0,e=t._time===r?r:Math.round(t._time)
 e=!i||e!==r&&e<t._totalTime?i||e!==r&&e>0?e:t._totalTime:0,t._state=m,t._time=e,t._startTime=v(),C(t),w(t)},pause:function(){var t=this
 t._state!==s&&(A(t),t._state=l,t._startTime=r,F(t),w(t))},reverse:function(){this.playbackRate=-1*this._rate}},"undefined"==typeof Element.prototype.animate&&M(),t.animate=function(t,i,e){return I.call(t,i,e)},t.polyfill=M,t.isPolyfilled=function(){return Element.prototype.animate===I},t}({})
+
+  this.__default_export = module.exports;
+}).__default_export;

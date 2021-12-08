@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/Hashing/Md5"],(function(e,a,t){"use strict";Object.defineProperty(a,"__esModule",{value:!0}),describe("TYPO3/CMS/Backend/Hashing/Md5:",()=>{describe("tests for hash",()=>{it("hashes a value as expected",()=>{expect(t.hash("Hello World")).toBe("b10a8db164e0754105b7a99be72e3fe5"),expect(t.hash("TYPO3 CMS is an Open Source Enterprise Content Management System with a large global community, backed by the approximately 900 members of the TYPO3 Association.")).toBe("65b0beb76ada01bd7b5f44fb37da6139")})})})}));
+import Md5 from"TYPO3/CMS/Backend/Hashing/Md5.js";describe("TYPO3/CMS/Backend/Hashing/Md5:",()=>{describe("tests for hash",()=>{it("hashes a value as expected",()=>{expect(Md5.hash("Hello World")).toBe("b10a8db164e0754105b7a99be72e3fe5"),expect(Md5.hash("TYPO3 CMS is an Open Source Enterprise Content Management System with a large global community, backed by the approximately 900 members of the TYPO3 Association.")).toBe("65b0beb76ada01bd7b5f44fb37da6139")})})});

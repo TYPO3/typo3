@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=this&&this.__decorate||function(e,t,i,r){var o,n=arguments.length,s=n<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,i):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,i,r);else for(var a=e.length-1;a>=0;a--)(o=e[a])&&(s=(n<3?o(s):n>3?o(t,i,s):o(t,i))||s);return n>3&&s&&Object.defineProperty(t,i,s),s};define(["require","exports","lit","lit/decorators","../Enum/IconTypes"],(function(e,t,i,r,o){"use strict";var n;Object.defineProperty(t,"__esModule",{value:!0}),t.SpinnerElement=void 0,function(e){e.light="light",e.dark="dark"}(n||(n={}));let s=class extends i.LitElement{constructor(){super(...arguments),this.size=o.Sizes.default,this.variant=n.dark}render(){return i.html`
+var Variant,__decorate=function(e,t,i,r){var n,o=arguments.length,a=o<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,i):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,i,r);else for(var s=e.length-1;s>=0;s--)(n=e[s])&&(a=(o<3?n(a):o>3?n(t,i,a):n(t,i))||a);return o>3&&a&&Object.defineProperty(t,i,a),a};import{html,css,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{Sizes}from"TYPO3/CMS/Backend/Enum/IconTypes.js";!function(e){e.light="light",e.dark="dark"}(Variant||(Variant={}));let SpinnerElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.variant=Variant.dark}render(){return html`
       <div class="icon">
         <svg viewBox="0 0 16 16">
           <path d="M8 15c-3.86 0-7-3.141-7-7 0-3.86 3.14-7 7-7 3.859 0 7 3.14 7 7 0 3.859-3.141 7-7 7zM8 3C5.243 3 3 5.243 3 8s2.243 5 5 5 5-2.243 5-5 -2.243-5-5-5z" opacity=".3"/>
@@ -19,7 +19,7 @@ var __decorate=this&&this.__decorate||function(e,t,i,r){var o,n=arguments.length
           </path>
         </svg>
       </div>
-    `}};s.styles=i.css`
+    `}};SpinnerElement.styles=css`
     :host {
       display: flex;
       width: 1em;
@@ -63,4 +63,4 @@ var __decorate=this&&this.__decorate||function(e,t,i,r){var o,n=arguments.length
     :host([size=mega]) {
       font-size: 64px;
     }
-  `,__decorate([(0,r.property)({type:String})],s.prototype,"size",void 0),__decorate([(0,r.property)({type:String})],s.prototype,"variant",void 0),s=__decorate([(0,r.customElement)("typo3-backend-spinner")],s),t.SpinnerElement=s}));
+  `,__decorate([property({type:String})],SpinnerElement.prototype,"size",void 0),__decorate([property({type:String})],SpinnerElement.prototype,"variant",void 0),SpinnerElement=__decorate([customElement("typo3-backend-spinner")],SpinnerElement);export{SpinnerElement};

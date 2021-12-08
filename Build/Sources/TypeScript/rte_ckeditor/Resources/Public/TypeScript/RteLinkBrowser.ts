@@ -12,8 +12,8 @@
  */
 
 import $ from 'jquery';
-import LinkBrowser = require('TYPO3/CMS/Recordlist/LinkBrowser');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import LinkBrowser from 'TYPO3/CMS/Recordlist/LinkBrowser';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 /**
  * Module: TYPO3/CMS/RteCkeditor/RteLinkBrowser
@@ -135,5 +135,5 @@ class RteLinkBrowser {
 }
 
 let rteLinkBrowser = new RteLinkBrowser();
-export = rteLinkBrowser;
+export default rteLinkBrowser;
 LinkBrowser.finalizeFunction = (link: string): void => { rteLinkBrowser.finalizeFunction(link); };

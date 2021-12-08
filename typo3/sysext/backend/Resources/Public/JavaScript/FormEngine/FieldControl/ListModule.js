@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Core/DocumentService","TYPO3/CMS/Backend/FormEngine"],(function(e,t,r,n){"use strict";return class{constructor(e){this.controlElement=null,this.registerClickHandler=e=>{e.preventDefault(),n.preventFollowLinkIfNotSaved(this.controlElement.getAttribute("href"))},r.ready().then(()=>{this.controlElement=document.querySelector(e),this.controlElement.addEventListener("click",this.registerClickHandler)})}}}));
+import DocumentService from"TYPO3/CMS/Core/DocumentService.js";import FormEngine from"TYPO3/CMS/Backend/FormEngine.js";class ListModule{constructor(e){this.controlElement=null,this.registerClickHandler=e=>{e.preventDefault(),FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute("href"))},DocumentService.ready().then(()=>{this.controlElement=document.querySelector(e),this.controlElement.addEventListener("click",this.registerClickHandler)})}}export default ListModule;

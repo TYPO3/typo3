@@ -11,9 +11,9 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class DashboardDelete {
 
@@ -54,4 +54,4 @@ class DashboardDelete {
   }
 }
 
-export = new DashboardDelete();
+export default new DashboardDelete();

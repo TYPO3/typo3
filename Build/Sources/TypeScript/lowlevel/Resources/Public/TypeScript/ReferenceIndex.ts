@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import NProgress = require('nprogress');
+import NProgress from 'nprogress';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum Selectors {
@@ -41,4 +41,4 @@ class ReferenceIndex {
 
 }
 
-export = new ReferenceIndex();
+export default new ReferenceIndex();

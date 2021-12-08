@@ -12,9 +12,9 @@
 */
 
 import $ from 'jquery';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class WidgetSelector {
 
@@ -50,4 +50,4 @@ class WidgetSelector {
   }
 }
 
-export = new WidgetSelector();
+export default new WidgetSelector();

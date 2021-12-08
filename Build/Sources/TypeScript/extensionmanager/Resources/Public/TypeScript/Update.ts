@@ -13,9 +13,9 @@
 
 import $ from 'jquery';
 import NProgress from 'nprogress';
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import Notification from 'TYPO3/CMS/Backend/Notification';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 
 enum ExtensionManagerUpdateIdentifier {
   extensionTable = '#terTable',
@@ -118,4 +118,4 @@ class ExtensionManagerUpdate {
   }
 }
 
-export = ExtensionManagerUpdate;
+export default ExtensionManagerUpdate;

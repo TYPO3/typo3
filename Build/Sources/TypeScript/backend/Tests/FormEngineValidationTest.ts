@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
+import FormEngineValidation from 'TYPO3/CMS/Backend/FormEngineValidation';
 
 declare function using(values: Function|Array<Object>|Object, func: Function): void;
 

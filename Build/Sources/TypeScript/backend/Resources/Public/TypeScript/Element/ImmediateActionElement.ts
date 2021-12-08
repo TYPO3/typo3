@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Utility = require('TYPO3/CMS/Backend/Utility');
+import Utility from 'TYPO3/CMS/Backend/Utility';
 import {EventDispatcher} from 'TYPO3/CMS/Backend/Event/EventDispatcher';
 
 /**

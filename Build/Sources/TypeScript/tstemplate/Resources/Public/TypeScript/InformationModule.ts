@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class InformationModule {
   constructor() {
@@ -28,4 +28,4 @@ class InformationModule {
   }
 }
 
-export = new InformationModule();
+export default new InformationModule();

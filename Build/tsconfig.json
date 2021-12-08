@@ -1,18 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es2017",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "scripthost",
-            "es2017",
-            "es2018",
-            "es2019"
-        ],
-        "esModuleInterop": true,
+        "target": "es2020",
+        "allowSyntheticDefaultImports": true,
         "incremental": true,
         "tsBuildInfoFile": "./.cache/tsconfig.tsbuildinfo",
-        "module": "amd",
+        "module": "es2020",
         "moduleResolution": "node",
         "sourceMap": false,
         "removeComments": false,

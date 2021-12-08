@@ -12,8 +12,8 @@
  */
 
 import {ImmediateActionElement} from 'TYPO3/CMS/Backend/Element/ImmediateActionElement';
-import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
-import viewportObject = require('TYPO3/CMS/Backend/Viewport');
+import moduleMenuApp from 'TYPO3/CMS/Backend/ModuleMenu';
+import viewportObject from 'TYPO3/CMS/Backend/Viewport';
 
 describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
   let root: HTMLElement; // This will hold the actual element under test.

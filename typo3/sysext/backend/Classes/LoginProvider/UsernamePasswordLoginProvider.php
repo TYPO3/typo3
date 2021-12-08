@@ -35,7 +35,7 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
      */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
     {
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/UserPassLogin.js');
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));
         $request = $loginController->getCurrentRequest();

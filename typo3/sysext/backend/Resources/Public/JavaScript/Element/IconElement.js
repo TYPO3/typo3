@@ -10,14 +10,14 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=this&&this.__decorate||function(e,t,i,o){var n,r=arguments.length,s=r<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,i,o);else for(var a=e.length-1;a>=0;a--)(n=e[a])&&(s=(r<3?n(s):r>3?n(t,i,s):n(t,i))||s);return r>3&&s&&Object.defineProperty(t,i,s),s};define(["require","exports","lit","lit/decorators","lit/directives/unsafe-html","lit/directives/until","../Enum/IconTypes","../Icons","TYPO3/CMS/Backend/Element/SpinnerElement"],(function(e,t,i,o,n,r,s,a){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.IconElement=void 0;const l=(e,t)=>i.css`
+var __decorate=function(e,t,i,o){var n,r=arguments.length,s=r<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,i,o);else for(var c=e.length-1;c>=0;c--)(n=e[c])&&(s=(r<3?n(s):r>3?n(t,i,s):n(t,i))||s);return r>3&&s&&Object.defineProperty(t,i,s),s};import{html,css,unsafeCSS,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{until}from"lit/directives/until.js";import{Sizes,States,MarkupIdentifiers}from"TYPO3/CMS/Backend/Enum/IconTypes.js";import Icons from"TYPO3/CMS/Backend/Icons.js";import"TYPO3/CMS/Backend/Element/SpinnerElement.js";const iconUnifyModifier=.86,iconSize=(e,t)=>css`
   :host([size=${e}]),
   :host([raw]) .icon-size-${e} {
     font-size: ${t}px;
   }
-`;let c=class extends i.LitElement{constructor(){super(...arguments),this.size=s.Sizes.default,this.state=s.States.default,this.overlay=null,this.markup=s.MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return i.html`${(0,n.unsafeHTML)(this.raw)}`;if(!this.identifier)return i.html``;const e=a.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>i.html`
-          ${(0,n.unsafeHTML)(e)}
-        `);return i.html`${(0,r.until)(e,i.html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};c.styles=[i.css`
+`;let IconElement=class extends LitElement{constructor(){super(...arguments),this.size=Sizes.default,this.state=States.default,this.overlay=null,this.markup=MarkupIdentifiers.inline,this.raw=null}render(){if(this.raw)return html`${unsafeHTML(this.raw)}`;if(!this.identifier)return html``;const e=Icons.getIcon(this.identifier,this.size,this.overlay,this.state,this.markup).then(e=>html`
+          ${unsafeHTML(e)}
+        `);return html`${until(e,html`<typo3-backend-spinner></typo3-backend-spinner>`)}`}};IconElement.styles=[css`
       :host {
         display: flex;
         width: 1em;
@@ -94,4 +94,4 @@ var __decorate=this&&this.__decorate||function(e,t,i,o){var n,r=arguments.length
           transform: rotate(360deg);
         }
       }
-    `,l((0,i.unsafeCSS)(s.Sizes.small),16),l((0,i.unsafeCSS)(s.Sizes.default),32),l((0,i.unsafeCSS)(s.Sizes.large),48),l((0,i.unsafeCSS)(s.Sizes.mega),64)],__decorate([(0,o.property)({type:String})],c.prototype,"identifier",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"size",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"state",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"overlay",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"markup",void 0),__decorate([(0,o.property)({type:String})],c.prototype,"raw",void 0),c=__decorate([(0,o.customElement)("typo3-backend-icon")],c),t.IconElement=c}));
+    `,iconSize(unsafeCSS(Sizes.small),16),iconSize(unsafeCSS(Sizes.default),32),iconSize(unsafeCSS(Sizes.large),48),iconSize(unsafeCSS(Sizes.mega),64)],__decorate([property({type:String})],IconElement.prototype,"identifier",void 0),__decorate([property({type:String})],IconElement.prototype,"size",void 0),__decorate([property({type:String})],IconElement.prototype,"state",void 0),__decorate([property({type:String})],IconElement.prototype,"overlay",void 0),__decorate([property({type:String})],IconElement.prototype,"markup",void 0),__decorate([property({type:String})],IconElement.prototype,"raw",void 0),IconElement=__decorate([customElement("typo3-backend-icon")],IconElement);export{IconElement};

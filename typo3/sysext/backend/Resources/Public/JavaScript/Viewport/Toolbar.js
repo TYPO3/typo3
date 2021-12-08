@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],(function(e,t,r,u){"use strict";u=__importDefault(u);return class{registerEvent(e){(0,u.default)(e),(0,u.default)(r.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}}));
+import{ScaffoldIdentifierEnum}from"TYPO3/CMS/Backend/Enum/Viewport/ScaffoldIdentifier.js";import $ from"jquery";class Toolbar{registerEvent(e){$(e),$(ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}export default Toolbar;

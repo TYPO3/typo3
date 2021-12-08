@@ -13,8 +13,8 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Notification from 'TYPO3/CMS/Backend/Notification';
 
 enum MarkupIdentifiers {
   loginrefresh = 't3js-modal-loginrefresh',
@@ -487,4 +487,4 @@ if (!loginRefreshObject) {
   }
 }
 
-export = loginRefreshObject;
+export default loginRefreshObject;

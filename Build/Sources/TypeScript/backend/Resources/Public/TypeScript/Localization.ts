@@ -14,9 +14,9 @@
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from './Enum/Severity';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Icons = require('./Icons');
-import Wizard = require('./Wizard');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Icons from './Icons';
+import Wizard from './Wizard';
 
 type LanguageRecord = {
   uid: number;
@@ -379,4 +379,4 @@ class Localization {
   }
 }
 
-export = new Localization();
+export default new Localization();

@@ -44,4 +44,4 @@ class InteractionRequest {
   }
 }
 
-export = InteractionRequest;
+export default InteractionRequest;

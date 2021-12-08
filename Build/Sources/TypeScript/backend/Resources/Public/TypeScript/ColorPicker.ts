@@ -65,4 +65,4 @@ class ColorPicker {
   }
 }
 // create an instance and return it
-export = new ColorPicker();
+export default new ColorPicker();

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import ElementBrowser = require('./ElementBrowser');
+import ElementBrowser from './ElementBrowser';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
@@ -35,4 +35,4 @@ class BrowseDatabase {
   }
 }
 
-export = new BrowseDatabase();
+export default new BrowseDatabase();

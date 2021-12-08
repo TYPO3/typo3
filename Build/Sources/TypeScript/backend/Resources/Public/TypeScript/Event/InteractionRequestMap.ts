@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest = require('./InteractionRequest');
-import InteractionRequestAssignment = require('./InteractionRequestAssignment');
+import InteractionRequest from './InteractionRequest';
+import InteractionRequestAssignment from './InteractionRequestAssignment';
 
 class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];
@@ -72,4 +72,4 @@ class InteractionRequestMap {
   }
 }
 
-export = new InteractionRequestMap();
+export default new InteractionRequestMap();

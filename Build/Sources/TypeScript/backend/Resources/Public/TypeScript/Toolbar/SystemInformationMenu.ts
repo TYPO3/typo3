@@ -13,10 +13,10 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Icons = require('../Icons');
-import PersistentStorage = require('../Storage/Persistent');
-import Viewport = require('../Viewport');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Icons from '../Icons';
+import PersistentStorage from '../Storage/Persistent';
+import Viewport from '../Viewport';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-systeminformationtoolbaritem',
@@ -116,4 +116,4 @@ class SystemInformationMenu {
   }
 }
 
-export = new SystemInformationMenu();
+export default new SystemInformationMenu();

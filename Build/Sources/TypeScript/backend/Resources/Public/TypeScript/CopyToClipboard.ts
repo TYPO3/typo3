@@ -13,7 +13,7 @@
 
 import {html, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import Notification from 'TYPO3/CMS/Backend/Notification';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 
 /**

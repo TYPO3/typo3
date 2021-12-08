@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Md5 = require('TYPO3/CMS/Backend/Hashing/Md5');
+import Md5 from 'TYPO3/CMS/Backend/Hashing/Md5';
 
 describe('TYPO3/CMS/Backend/Hashing/Md5:', () => {
   describe('tests for hash', () => {

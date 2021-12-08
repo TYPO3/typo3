@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import FormEngine from 'TYPO3/CMS/Backend/FormEngine';
 
 /**
  * Handles the "Add record" field control that renders a new FormEngine instance
@@ -37,4 +37,4 @@ class AddRecord {
   }
 }
 
-export = AddRecord;
+export default AddRecord;

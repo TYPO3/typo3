@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.EventDispatcher=void 0;t.EventDispatcher=class{static dispatchCustomEvent(e,t=null,n=!1){const s=new CustomEvent(e,{detail:t});n?"undefined"!=typeof top&&top.document.dispatchEvent(s):document.dispatchEvent(s)}}}));
+export class EventDispatcher{static dispatchCustomEvent(t,e=null,n=!1){const s=new CustomEvent(t,{detail:e});n?"undefined"!=typeof top&&top.document.dispatchEvent(s):document.dispatchEvent(s)}}

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum Identifier {
   toggleAll = '.t3js-toggle-checkboxes',
@@ -90,4 +90,4 @@ class SelectCheckBoxElement {
   }
 }
 
-export = SelectCheckBoxElement;
+export default SelectCheckBoxElement;

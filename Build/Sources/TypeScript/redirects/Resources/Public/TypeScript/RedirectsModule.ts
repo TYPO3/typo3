@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Redirects/RedirectsModule
@@ -55,4 +55,4 @@ class RedirectsModule {
   }
 }
 
-export = new RedirectsModule();
+export default new RedirectsModule();

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 /**
  * This module is used for the field control "Reset selection" used for selectSingleBox
@@ -45,4 +45,4 @@ class ResetSelection {
   }
 }
 
-export = ResetSelection;
+export default ResetSelection;

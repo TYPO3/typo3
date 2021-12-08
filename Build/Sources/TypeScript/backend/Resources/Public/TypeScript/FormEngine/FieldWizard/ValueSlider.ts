@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
+import ThrottleEvent from 'TYPO3/CMS/Core/Event/ThrottleEvent';
 
 class ValueSlider {
   private readonly controlElement: HTMLInputElement = null;
@@ -58,4 +58,4 @@ class ValueSlider {
   }
 }
 
-export = ValueSlider;
+export default ValueSlider;

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Core/DocumentService"],(function(e,i,t){"use strict";return new class{constructor(){t.ready().then(()=>{TYPO3.settings.ajaxUrls.record_inline_details=TYPO3.settings.ajaxUrls.site_configuration_inline_details,TYPO3.settings.ajaxUrls.record_inline_create=TYPO3.settings.ajaxUrls.site_configuration_inline_create})}}}));
+import DocumentService from"TYPO3/CMS/Core/DocumentService.js";class SiteInlineActions{constructor(){DocumentService.ready().then(()=>{TYPO3.settings.ajaxUrls.record_inline_details=TYPO3.settings.ajaxUrls.site_configuration_inline_details,TYPO3.settings.ajaxUrls.record_inline_create=TYPO3.settings.ajaxUrls.site_configuration_inline_create})}}export default new SiteInlineActions;

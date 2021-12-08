@@ -383,7 +383,5 @@ class PageRendererTest extends FunctionalTestCase
         $subject->loadRequireJs();
         $renderedString = $subject->render();
         self::assertStringContainsString($expectedConfiguration, $renderedString);
-        // Default ("public") packages must not have been overwritten
-        self::assertStringContainsString('{"name":"lit-html"', $renderedString);
     }
 }

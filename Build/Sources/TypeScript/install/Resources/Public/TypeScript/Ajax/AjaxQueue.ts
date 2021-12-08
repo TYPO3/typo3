@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 
 interface Payload {
   url: string;
@@ -79,4 +79,4 @@ class AjaxQueue {
   }
 }
 
-export = new AjaxQueue();
+export default new AjaxQueue();

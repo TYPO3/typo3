@@ -250,4 +250,4 @@ class Md5 {
   }
 }
 
-export = Md5;
+export default Md5;

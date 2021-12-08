@@ -12,12 +12,12 @@
  */
 
 import $ from 'jquery';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import PasswordStrength = require('./Module/PasswordStrength');
-import InfoBox = require('./Renderable/InfoBox');
-import ProgressBar = require('./Renderable/ProgressBar');
-import Severity = require('./Renderable/Severity');
+import PasswordStrength from './Module/PasswordStrength';
+import InfoBox from './Renderable/InfoBox';
+import ProgressBar from './Renderable/ProgressBar';
+import Severity from './Renderable/Severity';
 
 /**
  * Walk through the installation process of TYPO3
@@ -485,4 +485,4 @@ class Installer {
   }
 }
 
-export = new Installer();
+export default new Installer();

@@ -12,7 +12,7 @@
  */
 
 import {Tooltip as BootstrapTooltip} from 'bootstrap';
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 /**
  * The main tooltip object
@@ -105,4 +105,4 @@ const tooltipObject = new Tooltip();
 // expose as global object
 TYPO3.Tooltip = tooltipObject;
 
-export = tooltipObject;
+export default tooltipObject;

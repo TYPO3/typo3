@@ -56,4 +56,4 @@ class DocumentService {
 }
 
 const documentService = new DocumentService();
-export = documentService;
+export default documentService;

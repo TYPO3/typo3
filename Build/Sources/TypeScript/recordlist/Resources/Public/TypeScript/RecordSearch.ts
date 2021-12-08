@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum Selectors {
   searchFieldSelector = '#search_field',
@@ -41,4 +41,4 @@ class RecordSearch {
   }
 }
 
-export = new RecordSearch();
+export default new RecordSearch();

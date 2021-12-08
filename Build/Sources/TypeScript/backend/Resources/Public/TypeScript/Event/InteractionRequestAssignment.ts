@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest = require('./InteractionRequest');
+import InteractionRequest from './InteractionRequest';
 
 interface InteractionRequestAssignment {
   request: InteractionRequest;
@@ -19,4 +19,4 @@ interface InteractionRequestAssignment {
   deferreds: any[];
 }
 
-export = InteractionRequestAssignment;
+export default InteractionRequestAssignment;

@@ -36,4 +36,4 @@ class BackendUserListing {
   }
 }
 
-export = new BackendUserListing();
+export default new BackendUserListing();

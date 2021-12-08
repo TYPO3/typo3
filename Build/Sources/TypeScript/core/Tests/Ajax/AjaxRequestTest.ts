@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 
 describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {

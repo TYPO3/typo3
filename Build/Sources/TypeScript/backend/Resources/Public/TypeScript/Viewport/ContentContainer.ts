@@ -14,11 +14,11 @@
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
 import $ from 'jquery';
-import ClientRequest = require('../Event/ClientRequest');
-import InteractionRequest = require('../Event/InteractionRequest');
-import Loader = require('./Loader');
-import Utility = require('../Utility');
-import TriggerRequest = require('../Event/TriggerRequest');
+import ClientRequest from '../Event/ClientRequest';
+import InteractionRequest from '../Event/InteractionRequest';
+import Loader from './Loader';
+import Utility from '../Utility';
+import TriggerRequest from '../Event/TriggerRequest';
 
 class ContentContainer extends AbstractContainer {
   public get(): Window {
@@ -114,4 +114,4 @@ class ContentContainer extends AbstractContainer {
   }
 }
 
-export = ContentContainer;
+export default ContentContainer;

@@ -16,10 +16,10 @@ import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import '../../Renderable/Clearable';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Router = require('../../Router');
-import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Router from '../../Router';
+import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 
 /**
  * Module: TYPO3/CMS/Install/Module/UpgradeDocs
@@ -324,4 +324,4 @@ class UpgradeDocs extends AbstractInteractableModule {
   }
 }
 
-export = new UpgradeDocs();
+export default new UpgradeDocs();

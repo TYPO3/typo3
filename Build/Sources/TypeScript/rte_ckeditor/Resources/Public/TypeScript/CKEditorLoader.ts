@@ -1,5 +1,3 @@
-import module from 'module';
-
 let ckeditorPromise: Promise<typeof window.CKEDITOR>|null = null;
 
 function loadScript(url: string): Promise<Event> {
@@ -15,7 +13,7 @@ function loadScript(url: string): Promise<Event> {
 
 export function loadCKEditor(): Promise<typeof window.CKEDITOR> {
   if (ckeditorPromise === null) {
-    const scriptUrl = module.uri.replace(/\/[^\/]+\.js/, '/Contrib/ckeditor.js')
+    const scriptUrl = (import.meta as any).url.replace(/\/[^\/]+\.js/, '/Contrib/ckeditor.js')
     ckeditorPromise = loadScript(scriptUrl).then(() => window.CKEDITOR);
   }
   return ckeditorPromise;

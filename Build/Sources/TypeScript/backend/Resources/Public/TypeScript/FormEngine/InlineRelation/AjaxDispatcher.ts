@@ -12,10 +12,10 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {JavaScriptItemProcessor} from 'TYPO3/CMS/Core/JavaScriptItemProcessor';
-import Notification = require('../../Notification');
-import Utility = require('../../Utility');
+import Notification from '../../Notification';
+import Utility from '../../Utility';
 
 interface Context {
   config: Object;

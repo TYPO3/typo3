@@ -14,9 +14,9 @@
 import {Collapse} from 'bootstrap';
 import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
 import FlexFormSectionContainer from './FlexFormSectionContainer';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
-import Severity = require('TYPO3/CMS/Backend/Severity');
+import Severity from 'TYPO3/CMS/Backend/Severity';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="flexform-inline"]',
@@ -156,4 +156,4 @@ class FlexFormContainerContainer {
   }
 }
 
-export = FlexFormContainerContainer;
+export default FlexFormContainerContainer;

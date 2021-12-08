@@ -66,7 +66,7 @@ class Installer implements MiddlewareInterface
         $action = $actionName . 'Action';
 
         if ($actionName === 'init' || $actionName === 'mainLayout') {
-            $response = $controller->$action();
+            $response = $controller->$action($request);
         } elseif ($actionName === 'checkInstallerAvailable') {
             $response = new JsonResponse([
                 'success' => $this->isInstallerAvailable(),

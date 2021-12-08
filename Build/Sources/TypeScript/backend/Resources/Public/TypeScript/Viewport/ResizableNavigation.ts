@@ -14,7 +14,7 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
-import Persistent = require('../Storage/Persistent');
+import Persistent from '../Storage/Persistent';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 
 const selectorConverter = {

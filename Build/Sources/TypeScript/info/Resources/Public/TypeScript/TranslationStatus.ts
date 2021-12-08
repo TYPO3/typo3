@@ -44,4 +44,4 @@ class TranslationStatus {
   }
 }
 
-export = new TranslationStatus();
+export default new TranslationStatus();

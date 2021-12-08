@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import ConsumerScope = require('../Event/ConsumerScope');
+import ConsumerScope from '../Event/ConsumerScope';
 
 export abstract class AbstractContainer {
   protected readonly consumerScope: any = ConsumerScope;

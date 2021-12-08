@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest = require('./InteractionRequest');
+import InteractionRequest from './InteractionRequest';
 
 interface Consumable {
   consume(interactionRequest: InteractionRequest): any;
 }
 
-export = Consumable;
+export default Consumable;

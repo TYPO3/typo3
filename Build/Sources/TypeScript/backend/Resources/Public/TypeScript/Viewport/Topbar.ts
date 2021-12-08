@@ -13,8 +13,8 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
-import Toolbar = require('./Toolbar');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Toolbar from './Toolbar';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 
 class Topbar {
   public static readonly topbarSelector: string = ScaffoldIdentifierEnum.header;
@@ -36,4 +36,4 @@ class Topbar {
   }
 }
 
-export = Topbar;
+export default Topbar;

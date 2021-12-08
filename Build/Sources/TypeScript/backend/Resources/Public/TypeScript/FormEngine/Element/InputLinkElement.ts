@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 enum Selectors {
   toggleSelector = '.t3js-form-field-inputlink-explanation-toggle',
@@ -75,4 +75,4 @@ class InputLinkElement {
   }
 }
 
-export = InputLinkElement;
+export default InputLinkElement;

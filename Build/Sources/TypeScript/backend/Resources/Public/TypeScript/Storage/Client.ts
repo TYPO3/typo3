@@ -25,4 +25,4 @@ class Client extends AbstractClientStorage {
   }
 }
 
-export = new Client();
+export default new Client();

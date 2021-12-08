@@ -21,14 +21,14 @@ import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 import {getRecordFromName} from '../Module';
-import ContextMenu = require('../ContextMenu');
+import ContextMenu from '../ContextMenu';
 import * as d3selection from 'd3-selection';
 import {KeyTypesEnum as KeyTypes} from 'TYPO3/CMS/Backend/Enum/KeyTypes';
 import {TreeNodeSelection, TreeWrapperSelection, Toolbar} from '../SvgTree';
 import {DragDrop, DragDropHandler, DraggablePositionEnum} from '../Tree/DragDrop';
 import {D3DragEvent} from 'd3-drag';
-import Modal = require('../Modal');
-import Severity = require('../Severity');
+import Modal from '../Modal';
+import Severity from '../Severity';
 import {ModuleStateStorage} from '../Storage/ModuleStateStorage';
 
 /**

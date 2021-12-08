@@ -266,15 +266,15 @@ class ModuleTemplate
      */
     protected function loadJavaScripts()
     {
-        $this->pageRenderer->loadRequireJsModule('bootstrap');
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
 
         if ($this->getBackendUserAuthentication() && !empty($this->getBackendUserAuthentication()->user)) {
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DocumentHeader');
+            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextHelp.js');
+            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DocumentHeader.js');
         }
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
     }
 
     /**

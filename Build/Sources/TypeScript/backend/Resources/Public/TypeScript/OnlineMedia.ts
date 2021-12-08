@@ -15,11 +15,11 @@ import $ from 'jquery';
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {KeyTypesEnum} from './Enum/KeyTypes';
-import NProgress = require('nprogress');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
-import Modal = require('./Modal');
-import Severity = require('./Severity');
+import NProgress from 'nprogress';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
+import Modal from './Modal';
+import Severity from './Severity';
 
 interface Response {
   file?: number;
@@ -140,4 +140,4 @@ class OnlineMedia {
   }
 }
 
-export = new OnlineMedia();
+export default new OnlineMedia();

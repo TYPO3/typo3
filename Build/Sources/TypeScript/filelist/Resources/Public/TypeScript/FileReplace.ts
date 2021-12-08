@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 class FileReplace {
   constructor() {
@@ -34,4 +34,4 @@ class FileReplace {
   }
 }
 
-export = new FileReplace();
+export default new FileReplace();

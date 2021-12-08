@@ -101,4 +101,4 @@ class ConstantEditor {
   }
 }
 
-export = new ConstantEditor();
+export default new ConstantEditor();

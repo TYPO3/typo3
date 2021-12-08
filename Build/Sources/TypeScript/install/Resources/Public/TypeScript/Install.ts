@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import Router = require('./Router');
+import Router from './Router';
 
 /**
  * Walk through the installation process of TYPO3
@@ -25,4 +25,4 @@ class Install {
   }
 }
 
-export = new Install();
+export default new Install();

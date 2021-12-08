@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
 
 describe('TYPO3/CMS/Core/SecurityUtility', (): void => {
   it('generates random hex value', (): void => {

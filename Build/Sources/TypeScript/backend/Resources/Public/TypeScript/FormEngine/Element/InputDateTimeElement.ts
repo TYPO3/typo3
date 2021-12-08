@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import FormEngineValidation from 'TYPO3/CMS/Backend/FormEngineValidation';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class InputDateTimeElement {
   private element: HTMLInputElement = null;
@@ -41,4 +41,4 @@ class InputDateTimeElement {
   }
 }
 
-export = InputDateTimeElement;
+export default InputDateTimeElement;

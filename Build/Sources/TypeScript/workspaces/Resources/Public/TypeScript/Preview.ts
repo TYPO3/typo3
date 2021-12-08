@@ -14,10 +14,10 @@
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import $ from 'jquery';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Utility = require('TYPO3/CMS/Backend/Utility');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Utility from 'TYPO3/CMS/Backend/Utility';
 import Workspaces from './Workspaces';
-import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
+import ThrottleEvent from 'TYPO3/CMS/Core/Event/ThrottleEvent';
 
 enum Identifiers {
   topbar = '#typo3-topbar',
@@ -266,4 +266,4 @@ class Preview extends Workspaces {
   }
 }
 
-export = new Preview();
+export default new Preview();

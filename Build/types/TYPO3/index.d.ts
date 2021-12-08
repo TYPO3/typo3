@@ -117,12 +117,12 @@ declare namespace TBE_EDITOR {
 
 declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
   const _exported: TYPO3.CMS.Backend.FormEngineValidation;
-  export = _exported;
+  export default _exported;
 }
 
 declare module 'TYPO3/CMS/Backend/FormEngine' {
   const _exported: TYPO3.CMS.Backend.FormEngine;
-  export = _exported;
+  export default _exported;
 }
 
 // type definition for global namespace object

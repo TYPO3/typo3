@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 

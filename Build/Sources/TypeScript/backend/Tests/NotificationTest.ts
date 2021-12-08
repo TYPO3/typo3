@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
-import ImmediateAction = require('TYPO3/CMS/Backend/ActionButton/ImmediateAction');
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import DeferredAction from 'TYPO3/CMS/Backend/ActionButton/DeferredAction';
+import ImmediateAction from 'TYPO3/CMS/Backend/ActionButton/ImmediateAction';
+import Notification from 'TYPO3/CMS/Backend/Notification';
 import type {LitElement} from 'lit';
 
 describe('TYPO3/CMS/Backend/Notification:', () => {

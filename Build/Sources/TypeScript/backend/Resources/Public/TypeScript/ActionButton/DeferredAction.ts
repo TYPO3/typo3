@@ -12,7 +12,7 @@
  */
 
 import {AbstractAction} from './AbstractAction';
-import Icons = require('../Icons');
+import Icons from '../Icons';
 
 /**
  * Action used when an operation execution time is unknown.
@@ -32,4 +32,4 @@ class DeferredAction extends AbstractAction {
   }
 }
 
-export = DeferredAction;
+export default DeferredAction;

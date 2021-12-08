@@ -12,11 +12,11 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import $ from 'jquery';
-import NProgress = require('nprogress');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import NProgress from 'nprogress';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 export default class Workspaces {
   private tid: number = 0;

@@ -16,15 +16,15 @@
  * LinkBrowser communication with parent window
  */
 import $ from 'jquery';
-import LinkBrowser = require('TYPO3/CMS/Recordlist/LinkBrowser')
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import LinkBrowser from 'TYPO3/CMS/Recordlist/LinkBrowser'
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 interface OnFieldChangeItem {
   name: string;
   data: {[key: string]: string|number|boolean|null}
 }
 
-export = (function() {
+export default (function() {
 
   /**
    * @exports TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter

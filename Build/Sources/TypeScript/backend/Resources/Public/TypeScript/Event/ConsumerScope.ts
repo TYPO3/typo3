@@ -12,8 +12,8 @@
  */
 
 import $ from 'jquery';
-import Consumable = require('./Consumable');
-import InteractionRequest = require('./InteractionRequest');
+import Consumable from './Consumable';
+import InteractionRequest from './InteractionRequest';
 
 class ConsumerScope {
   private consumers: Consumable[] = [];
@@ -52,4 +52,4 @@ class ConsumerScope {
   }
 }
 
-export = new ConsumerScope();
+export default new ConsumerScope();

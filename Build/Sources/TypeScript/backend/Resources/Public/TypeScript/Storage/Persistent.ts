@@ -218,4 +218,4 @@ class Persistent {
   }
 }
 
-export = new Persistent();
+export default new Persistent();

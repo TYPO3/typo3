@@ -13,7 +13,7 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 
 class UploadForm {
   public expandedUploadFormClass: string = 'transformed';
@@ -40,4 +40,4 @@ class UploadForm {
   }
 }
 
-export = UploadForm;
+export default UploadForm;

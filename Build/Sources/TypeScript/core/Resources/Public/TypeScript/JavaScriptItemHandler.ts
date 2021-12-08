@@ -22,7 +22,9 @@ if (document.currentScript) {
   const textContent = scriptElement.textContent.replace(/^\s*\/\*\s*|\s*\*\/\s*/g, '')
   const items = JSON.parse(textContent);
 
-  window.require(['TYPO3/CMS/Core/JavaScriptItemProcessor'], ({JavaScriptItemProcessor}: typeof import('TYPO3/CMS/Core/JavaScriptItemProcessor')) => {
+  const moduleImporter = (moduleName: string) => import(moduleName).catch(() => (window as any).importShim(moduleName));
+
+  moduleImporter('TYPO3/CMS/Core/JavaScriptItemProcessor.js').then(({JavaScriptItemProcessor}) => {
     const processor = new JavaScriptItemProcessor();
     processor.processItems(items);
   });

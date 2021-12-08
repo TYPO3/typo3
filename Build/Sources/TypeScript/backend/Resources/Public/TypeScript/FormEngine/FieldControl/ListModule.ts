@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import FormEngine from 'TYPO3/CMS/Backend/FormEngine';
 
 /**
  * This module is used for the field control "List module" used for "group" fields
@@ -37,4 +37,4 @@ class ListModule {
   }
 }
 
-export = ListModule;
+export default ListModule;

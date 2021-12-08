@@ -14,8 +14,8 @@
 import {html, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Severity from 'TYPO3/CMS/Backend/Severity';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
 
 enum Selectors {

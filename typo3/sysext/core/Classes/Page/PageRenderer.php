@@ -1394,52 +1394,9 @@ class PageRenderer implements SingletonInterface
         $corePath = $packages['core']->getPackagePath() . 'Resources/Public/JavaScript/Contrib/';
         $corePath = PathUtility::getAbsoluteWebPath($corePath);
         // first, load all paths for the namespaces, and configure contrib libs.
-        $requireJsConfig['public']['paths'] = [
-            'jquery' => $corePath . 'jquery/jquery',
-            'jquery-ui' => $corePath . 'jquery-ui',
-            'nprogress' => $corePath . 'nprogress',
-            'moment' => $corePath . 'moment',
-            'cropperjs' => $corePath . 'cropper.min',
-            'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
-            'bootstrap' => $corePath . 'bootstrap/bootstrap',
-            'autosize' => $corePath . 'autosize',
-            'taboverride' => $corePath . 'taboverride',
-            'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
-            'jquery/minicolors' => $corePath . 'jquery.minicolors',
-            'd3-selection' => $corePath . 'd3-selection',
-            'd3-drag' => $corePath . 'd3-drag',
-            'd3-dispatch' => $corePath . 'd3-dispatch',
-            'sortablejs' => $corePath . 'Sortable.min',
-            'tablesort' => $corePath . 'tablesort',
-            'tablesort.dotsep' => $corePath . 'tablesort.dotsep',
-            'broadcastchannel' => $corePath . 'broadcastchannel-polyfill',
-            'flatpickr' => $corePath . 'flatpickr',
-        ];
-        $requireJsConfig['public']['shim'] = [
-            'tablesort.dotsep' => ['deps' => ['tablesort']],
-        ];
-        $requireJsConfig['public']['packages'] = [
-            [
-                'name' => 'lit-html',
-                'location' => $corePath . 'lit-html',
-                'main' => 'lit-html',
-            ],
-            [
-                'name' => '@lit/reactive-element',
-                'location' => $corePath . '@lit/reactive-element',
-                'main' => 'reactive-element',
-            ],
-            [
-                'name' => 'lit-element',
-                'location' => $corePath . 'lit-element',
-                'main' => 'index',
-            ],
-            [
-                'name' => 'lit',
-                'location' => $corePath . 'lit',
-                'main' => 'index',
-            ],
-        ];
+        $requireJsConfig['public']['paths'] = [];
+        $requireJsConfig['public']['shim'] = [];
+
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;
         $publicPackageNames = ['core', 'frontend', 'backend'];

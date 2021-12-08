@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Icons = require('TYPO3/CMS/Backend/Icons');
+import Icons from 'TYPO3/CMS/Backend/Icons';
 
 describe('TYPO3/CMS/Backend/IconsTest:', () => {
   /**

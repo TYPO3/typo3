@@ -172,4 +172,4 @@ class Popover {
   }
 }
 
-export = new Popover();
+export default new Popover();

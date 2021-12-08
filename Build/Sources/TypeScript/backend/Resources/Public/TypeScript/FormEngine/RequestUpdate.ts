@@ -13,7 +13,7 @@
 
 import {LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import FormEngine from 'TYPO3/CMS/Backend/FormEngine';
 
 enum UpdateMode {
   ask = 'ask',

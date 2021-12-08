@@ -1,1 +1,0 @@
-define(["exports","lit-html"],(function(exports,litHtml){"use strict";Object.keys(litHtml).forEach((function(k){"default"!==k&&Object.defineProperty(exports,k,{enumerable:!0,get:function(){return litHtml[k]}})})),Object.defineProperty(exports,"__esModule",{value:!0})}));

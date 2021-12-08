@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(t,e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.AbstractAction=void 0;e.AbstractAction=class{constructor(t){this.callback=t}}}));
+export class AbstractAction{constructor(c){this.callback=c}}

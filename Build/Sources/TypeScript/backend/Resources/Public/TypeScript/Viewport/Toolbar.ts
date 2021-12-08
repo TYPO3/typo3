@@ -21,4 +21,4 @@ class Toolbar {
   }
 }
 
-export = Toolbar;
+export default Toolbar;

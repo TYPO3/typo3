@@ -28,4 +28,4 @@ class ImmediateAction extends AbstractAction {
   }
 }
 
-export = ImmediateAction;
+export default ImmediateAction;

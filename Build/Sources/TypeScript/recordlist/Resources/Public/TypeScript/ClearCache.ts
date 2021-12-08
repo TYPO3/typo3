@@ -12,10 +12,10 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import Icons = require('TYPO3/CMS/Backend/Icons');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import Icons from 'TYPO3/CMS/Backend/Icons';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 
 enum Identifiers {
   clearCache = '.t3js-clear-page-cache',
@@ -85,4 +85,4 @@ class ClearCache {
   }
 }
 
-export = new ClearCache();
+export default new ClearCache();

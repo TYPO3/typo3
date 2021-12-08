@@ -12,7 +12,7 @@
 */
 
 import {Listener} from './EventInterface';
-import RegularEvent = require('./RegularEvent');
+import RegularEvent from './RegularEvent';
 
 /**
  * Creates a event aimed for high performance visual operations
@@ -42,4 +42,4 @@ class RequestAnimationFrameEvent extends RegularEvent {
   }
 }
 
-export = RequestAnimationFrameEvent;
+export default RequestAnimationFrameEvent;

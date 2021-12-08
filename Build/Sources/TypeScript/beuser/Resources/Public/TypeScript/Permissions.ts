@@ -13,8 +13,8 @@
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Tooltip from 'TYPO3/CMS/Backend/Tooltip';
 
 /**
  * Module: TYPO3/CMS/Beuser/Permissions
@@ -289,4 +289,4 @@ class Permissions {
   }
 }
 
-export = new Permissions();
+export default new Permissions();

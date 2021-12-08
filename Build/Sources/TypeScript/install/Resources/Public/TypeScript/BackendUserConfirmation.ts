@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 class BackendUserConfirmation {
 
@@ -28,4 +28,4 @@ class BackendUserConfirmation {
 
 }
 
-export = new BackendUserConfirmation();
+export default new BackendUserConfirmation();

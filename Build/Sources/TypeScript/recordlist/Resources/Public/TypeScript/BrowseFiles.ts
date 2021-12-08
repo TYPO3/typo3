@@ -12,9 +12,9 @@
  */
 
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
-import ElementBrowser = require('./ElementBrowser');
-import NProgress = require('nprogress');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import ElementBrowser from './ElementBrowser';
+import NProgress from 'nprogress';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import Icons = TYPO3.Icons;
 import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 
@@ -97,4 +97,4 @@ class BrowseFiles {
   }
 }
 
-export = new BrowseFiles();
+export default new BrowseFiles();

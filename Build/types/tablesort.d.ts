@@ -5,3 +5,7 @@ declare const Tablesort: {
   new(table: Element, options?: {[key: string]: any}): Tablesort;
   extend(name: string, pattern: Function, sort: Function): void;
 }
+
+declare module 'tablesort' {
+  export default Tablesort;
+}

@@ -86,4 +86,4 @@ class SecurityUtility {
   }
 }
 
-export = SecurityUtility;
+export default SecurityUtility;

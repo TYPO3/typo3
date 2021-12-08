@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/FormEngineValidation"],(function(e,t,i){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.FormEngineEvaluation=void 0;class o{static registerCustomEvaluation(e){i.registerCustomEvaluation(e,o.evaluateSourceHost)}static evaluateSourceHost(e){return"*"===e?e:(e.includes("://")||(e="http://"+e),new URL(e).host)}}t.FormEngineEvaluation=o}));
+import FormEngineValidation from"TYPO3/CMS/Backend/FormEngineValidation.js";export class FormEngineEvaluation{static registerCustomEvaluation(t){FormEngineValidation.registerCustomEvaluation(t,FormEngineEvaluation.evaluateSourceHost)}static evaluateSourceHost(t){return"*"===t?t:(t.includes("://")||(t="http://"+t),new URL(t).host)}}

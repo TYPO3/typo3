@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import documentService = require('TYPO3/CMS/Core/DocumentService');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import documentService from 'TYPO3/CMS/Core/DocumentService';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 type HTMLFormChildElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -169,4 +169,4 @@ class GlobalEventHandler {
   }
 }
 
-export = new GlobalEventHandler();
+export default new GlobalEventHandler();

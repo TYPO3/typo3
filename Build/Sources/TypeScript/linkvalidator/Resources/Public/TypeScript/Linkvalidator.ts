@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import Notification from 'TYPO3/CMS/Backend/Notification';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 enum Selectors {
@@ -48,4 +48,4 @@ class Linkvalidator {
   }
 }
 
-export = new Linkvalidator();
+export default new Linkvalidator();

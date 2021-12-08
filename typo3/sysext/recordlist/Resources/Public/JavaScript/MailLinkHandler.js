@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./LinkBrowser","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r,u){"use strict";u=__importDefault(u);return new class{constructor(){new u.default("submit",(e,t)=>{e.preventDefault();let u=t.querySelector('[name="lemail"]').value;if("mailto:"!==u){for(;"mailto:"===u.substr(0,7);)u=u.substr(7);r.finalizeFunction("mailto:"+u)}}).delegateTo(document,"#lmailform")}}}));
+import LinkBrowser from"TYPO3/CMS/Recordlist/LinkBrowser.js";import RegularEvent from"TYPO3/CMS/Core/Event/RegularEvent.js";class MailLinkHandler{constructor(){new RegularEvent("submit",(e,r)=>{e.preventDefault();let t=r.querySelector('[name="lemail"]').value;if("mailto:"!==t){for(;"mailto:"===t.substr(0,7);)t=t.substr(7);LinkBrowser.finalizeFunction("mailto:"+t)}}).delegateTo(document,"#lmailform")}}export default new MailLinkHandler;

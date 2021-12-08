@@ -272,24 +272,16 @@ class DashboardController extends AbstractController
     protected function preparePageRenderer(): void
     {
         $publicResourcesPath = PathUtility::getPublicResourceWebPath('EXT:dashboard/Resources/Public/');
-        $this->pageRenderer->addRequireJsConfiguration(
-            [
-                'paths' => [
-                    'muuri' => $publicResourcesPath . 'JavaScript/Contrib/muuri',
-                    'web-animate' => $publicResourcesPath . 'JavaScript/Contrib/web-animate',
-                ],
-            ]
-        );
 
-        $this->pageRenderer->loadRequireJsModule('muuri');
-        $this->pageRenderer->loadRequireJsModule('web-animate');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/Grid');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetContentCollector');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetSelector');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRefresh');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/WidgetRemover');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardModal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Dashboard/DashboardDelete');
+        $this->pageRenderer->loadJavaScriptModule('muuri');
+        $this->pageRenderer->loadJavaScriptModule('web-animate');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/Grid.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetContentCollector.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetSelector.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetRefresh.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetRemover.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardModal.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardDelete.js');
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
     }
 }

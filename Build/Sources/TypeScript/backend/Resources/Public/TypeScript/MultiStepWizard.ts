@@ -13,9 +13,9 @@
 
 import {SeverityEnum} from './Enum/Severity';
 import $ from 'jquery';
-import Modal = require('./Modal');
-import Severity = require('./Severity');
-import Icons = require('./Icons');
+import Modal from './Modal';
+import Severity from './Severity';
+import Icons from './Icons';
 
 
 interface MultiStepWizardSettings {
@@ -571,4 +571,4 @@ if (!multistepWizardObject) {
   }
 }
 
-export = multistepWizardObject;
+export default multistepWizardObject;

@@ -25,4 +25,4 @@ class BrowserSession extends AbstractClientStorage {
   }
 }
 
-export = new BrowserSession();
+export default new BrowserSession();

@@ -12,7 +12,7 @@
  */
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
-import NProgress = require('nprogress');
+import NProgress from 'nprogress';
 
 class Loader {
   public static start(): void {
@@ -25,4 +25,4 @@ class Loader {
   }
 }
 
-export = Loader;
+export default Loader;

@@ -13,10 +13,10 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Icons = require('../Icons');
-import Notification = require('../Notification');
-import Viewport = require('../Viewport');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Icons from '../Icons';
+import Notification from '../Notification';
+import Viewport from '../Viewport';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
@@ -83,4 +83,4 @@ class ClearCacheMenu {
   }
 }
 
-export = new ClearCacheMenu();
+export default new ClearCacheMenu();

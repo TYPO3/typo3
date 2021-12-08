@@ -13,8 +13,8 @@
 
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 /**
  * Module: TYPO3/CMS/Filelist/FileDelete
@@ -66,4 +66,4 @@ class FileDelete {
   }
 }
 
-export = new FileDelete();
+export default new FileDelete();

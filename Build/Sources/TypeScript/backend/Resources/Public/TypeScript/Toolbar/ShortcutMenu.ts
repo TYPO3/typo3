@@ -13,11 +13,11 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Icons = require('../Icons');
-import Modal = require('../Modal');
-import Notification = require('../Notification');
-import Viewport = require('../Viewport');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Icons from '../Icons';
+import Modal from '../Modal';
+import Notification from '../Notification';
+import Viewport from '../Viewport';
 import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 
@@ -208,4 +208,4 @@ if (!top.TYPO3.ShortcutMenu || typeof top.TYPO3.ShortcutMenu !== 'object') {
 }
 
 const shortcutMenuObject: ShortcutMenu = top.TYPO3.ShortcutMenu;
-export = shortcutMenuObject;
+export default shortcutMenuObject;

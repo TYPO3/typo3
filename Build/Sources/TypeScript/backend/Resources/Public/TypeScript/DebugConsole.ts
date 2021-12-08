@@ -255,4 +255,4 @@ const debugConsole = new DebugConsole();
 
 // expose as global object
 TYPO3.DebugConsole = debugConsole;
-export = debugConsole;
+export default debugConsole;

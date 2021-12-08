@@ -18,8 +18,8 @@
  */
 import $ from 'jquery';
 import 'jquery-ui/droppable';
-import DataHandler = require('../AjaxDataHandler');
-import Icons = require('../Icons');
+import DataHandler from '../AjaxDataHandler';
+import Icons from '../Icons';
 import ResponseInterface from '../AjaxDataHandler/ResponseInterface';
 
 interface Parameters {

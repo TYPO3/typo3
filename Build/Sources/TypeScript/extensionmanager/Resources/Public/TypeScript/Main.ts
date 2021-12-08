@@ -13,20 +13,20 @@
 
 import $ from 'jquery';
 import NProgress from 'nprogress';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
-import ExtensionManagerRepository = require('./Repository');
-import ExtensionManagerUpdate = require('./Update');
-import ExtensionManagerUploadForm = require('./UploadForm');
-import 'tablesort';
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Tooltip from 'TYPO3/CMS/Backend/Tooltip';
+import Severity from 'TYPO3/CMS/Backend/Severity';
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility';
+import ExtensionManagerRepository from './Repository';
+import ExtensionManagerUpdate from './Update';
+import ExtensionManagerUploadForm from './UploadForm';
+import Tablesort from 'tablesort';
 import 'tablesort.dotsep';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import DebounceEvent = require('TYPO3/CMS/Core/Event/DebounceEvent');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 const securityUtility = new SecurityUtility();
 
@@ -237,4 +237,4 @@ if (typeof TYPO3.ExtensionManager === 'undefined') {
   TYPO3.ExtensionManager = extensionManagerObject;
 }
 
-export = extensionManagerObject;
+export default extensionManagerObject;

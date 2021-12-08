@@ -51,9 +51,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Middleware\VerifyHostHeader;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
@@ -146,22 +146,26 @@ class InstallerController
 
     /**
      * Init action loads <head> with JS initiating further stuff
-     *
-     * @return ResponseInterface
      */
-    public function initAction(): ResponseInterface
+    public function initAction(ServerRequestInterface $request): ResponseInterface
     {
         $bust = $GLOBALS['EXEC_TIME'];
         if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
+        $packages = [
+            $this->packageManager->getPackage('core'),
+            $this->packageManager->getPackage('backend'),
+            $this->packageManager->getPackage('install'),
+        ];
+        $importMap = new ImportMap($packages);
+        $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
+        $initModule = $sitePath . $importMap->resolveImport('TYPO3/CMS/Install/InitInstaller.js');
         $view = $this->initializeView();
         $view->assign('bust', $bust);
-        $view->assign('packageResourcePaths', [
-            'backend' => PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/'),
-            'core' => PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/'),
-            'install' => PathUtility::getPublicResourceWebPath('EXT:install/Resources/Public/'),
-        ]);
+        $view->assign('initModule', $initModule);
+        $view->assign('importmap', $importMap->render($sitePath, 'rAnd0m'));
+
         return new HtmlResponse(
             $view->render('Installer/Init'),
             200,
@@ -174,10 +178,8 @@ class InstallerController
 
     /**
      * Main layout with progress bar, header
-     *
-     * @return ResponseInterface
      */
-    public function mainLayoutAction(): ResponseInterface
+    public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView();
         return new JsonResponse([

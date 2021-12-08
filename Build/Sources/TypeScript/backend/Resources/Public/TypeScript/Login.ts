@@ -14,7 +14,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 
 interface PreflightResponse {
@@ -223,4 +223,4 @@ class BackendLogin {
   }
 }
 
-export = new BackendLogin();
+export default new BackendLogin();

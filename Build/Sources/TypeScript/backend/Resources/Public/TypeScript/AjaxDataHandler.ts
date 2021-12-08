@@ -13,16 +13,16 @@
 
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {SeverityEnum} from './Enum/Severity';
 import MessageInterface from './AjaxDataHandler/MessageInterface';
 import ResponseInterface from './AjaxDataHandler/ResponseInterface';
 import $ from 'jquery';
-import BroadcastService = require('TYPO3/CMS/Backend/BroadcastService');
-import Icons = require('./Icons');
-import Modal = require('./Modal');
-import Notification = require('./Notification');
-import Viewport = require('./Viewport');
+import BroadcastService from 'TYPO3/CMS/Backend/BroadcastService';
+import Icons from './Icons';
+import Modal from './Modal';
+import Notification from './Notification';
+import Viewport from './Viewport';
 
 enum Identifiers {
   hide = '.t3js-record-hide',
@@ -288,4 +288,4 @@ class AjaxDataHandler {
   }
 }
 
-export = new AjaxDataHandler();
+export default new AjaxDataHandler();

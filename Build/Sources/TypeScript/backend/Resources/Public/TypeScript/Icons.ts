@@ -12,8 +12,8 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import ClientStorage = require('./Storage/Client');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import ClientStorage from './Storage/Client';
 import {Sizes, States, MarkupIdentifiers} from './Enum/IconTypes';
 
 interface PromiseCache {
@@ -171,4 +171,4 @@ if (!iconsObject) {
   TYPO3.Icons = iconsObject;
 }
 
-export = iconsObject;
+export default iconsObject;

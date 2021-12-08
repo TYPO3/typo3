@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Router = require('../../Router');
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Router from '../../Router';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInlineModule} from '../AbstractInlineModule';
 
@@ -54,4 +54,4 @@ class Cache extends AbstractInlineModule {
   }
 }
 
-export = new Cache();
+export default new Cache();

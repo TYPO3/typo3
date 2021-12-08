@@ -13,7 +13,7 @@
 
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Setup/SetupModule
@@ -109,4 +109,4 @@ class SetupModule {
   }
 }
 
-export = new SetupModule();
+export default new SetupModule();

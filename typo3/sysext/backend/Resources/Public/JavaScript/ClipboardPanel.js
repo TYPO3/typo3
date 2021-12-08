@@ -10,95 +10,95 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=this&&this.__decorate||function(e,t,i,a){var n,l=arguments.length,o=l<3?t:null===a?a=Object.getOwnPropertyDescriptor(t,i):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(e,t,i,a);else for(var r=e.length-1;r>=0;r--)(n=e[r])&&(o=(l<3?n(o):l>3?n(t,i,o):n(t,i))||o);return l>3&&o&&Object.defineProperty(t,i,o),o};define(["require","exports","lit","lit/decorators","lit/directives/until","lit/directives/unsafe-html","lit/directives/class-map","TYPO3/CMS/Core/Ajax/AjaxRequest","TYPO3/CMS/Backend/Notification","TYPO3/CMS/Backend/Element/SpinnerElement","TYPO3/CMS/Backend/Element/IconElement"],(function(e,t,i,a,n,l,o,r,c){"use strict";var s,d;Object.defineProperty(t,"__esModule",{value:!0}),t.ClipboardPanel=void 0,function(e){e.cut="cut",e.copy="copy"}(d||(d={}));let p=s=class extends i.LitElement{constructor(){super(...arguments),this.returnUrl="",this.table=""}static renderLoader(){return i.html`
+var ClipboardPanel_1,CopyMode,__decorate=function(t,e,i,a){var o,n=arguments.length,l=n<3?e:null===a?a=Object.getOwnPropertyDescriptor(e,i):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)l=Reflect.decorate(t,e,i,a);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(l=(n<3?o(l):n>3?o(e,i,l):o(e,i))||l);return n>3&&l&&Object.defineProperty(e,i,l),l};import{html,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{until}from"lit/directives/until.js";import{unsafeHTML}from"lit/directives/unsafe-html.js";import{classMap}from"lit/directives/class-map.js";import AjaxRequest from"TYPO3/CMS/Core/Ajax/AjaxRequest.js";import Notification from"TYPO3/CMS/Backend/Notification.js";import"TYPO3/CMS/Backend/Element/SpinnerElement.js";import"TYPO3/CMS/Backend/Element/IconElement.js";!function(t){t.cut="cut",t.copy="copy"}(CopyMode||(CopyMode={}));let ClipboardPanel=ClipboardPanel_1=class extends LitElement{constructor(){super(...arguments),this.returnUrl="",this.table=""}static renderLoader(){return html`
       <div class="panel-loader">
         <typo3-backend-spinner size="small" variant="dark"></typo3-backend-spinner>
       </div>
-    `}createRenderRoot(){return this}render(){return i.html`
+    `}createRenderRoot(){return this}render(){return html`
       <div class="clipboard-panel">
-        ${(0,n.until)(this.renderPanel(),s.renderLoader())}
+        ${until(this.renderPanel(),ClipboardPanel_1.renderLoader())}
       </div>
-    `}renderPanel(){return new r(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then(async e=>{const t=await e.resolve();if(!0===t.success&&t.data){const e=t.data;return i.html`
+    `}renderPanel(){return new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then(async t=>{const e=await t.resolve();if(!0===e.success&&e.data){const t=e.data;return html`
             <div class="row">
               <div class="col-sm-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    ${e.labels.clipboard}
+                    ${t.labels.clipboard}
                   </div>
                   <table class="table">
                     <tbody>
-                      ${e.tabs.map(t=>this.renderTab(t,e))}
+                      ${t.tabs.map(e=>this.renderTab(e,t))}
                     </tbody>
                   </tabel>
                 </div>
               </div>
             </div>
-          `}return c.error("Clipboard data could not be fetched"),i.html``}).catch(()=>(c.error("An error occured while fetching clipboard data"),i.html``))}renderTab(e,t){return i.html`
+          `}return Notification.error("Clipboard data could not be fetched"),html``}).catch(()=>(Notification.error("An error occured while fetching clipboard data"),html``))}renderTab(t,e){return html`
       <tr>
         <td colspan="2" class="nowrap">
-          <button type="button" class="btn btn-link p-0" title="${e.description}" data-action="setP" @click="${t=>this.updateClipboard(t,{CB:{setP:e.identifier}})}">
-            ${t.current===e.identifier?i.html`
+          <button type="button" class="btn btn-link p-0" title="${t.description}" data-action="setP" @click="${e=>this.updateClipboard(e,{CB:{setP:t.identifier}})}">
+            ${e.current===t.identifier?html`
               <typo3-backend-icon identifier="actions-check-circle-alt" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
-              ${e.title}
-              ${e.info}`:i.html`
+              ${t.title}
+              ${t.info}`:html`
               <typo3-backend-icon identifier="actions-circle" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
               <span class="text-muted">
-                ${e.title}
-                ${e.info}
+                ${t.title}
+                ${t.info}
               </span>
             `}
           </button>
         </td>
         <td class="col-control nowrap">
-          ${t.current!==e.identifier?i.html``:i.html`
+          ${e.current!==t.identifier?html``:html`
             <div class="btn-group">
-              <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${t.copyMode===d.copy} @click="${e=>this.updateClipboard(e,{CB:{setCopyMode:"1"}})}">
+              <input type="radio" class="btn-check" id="clipboard-copymode-copy" data-action="setCopyMode" ?checked=${e.copyMode===CopyMode.copy} @click="${t=>this.updateClipboard(t,{CB:{setCopyMode:"1"}})}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-copy">
                 <typo3-backend-icon identifier="actions-edit-copy" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                ${t.labels.copyElements}
+                ${e.labels.copyElements}
               </label>
-              <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${t.copyMode!==d.copy} @click="${e=>this.updateClipboard(e,{CB:{setCopyMode:"0"}})}">
+              <input type="radio" class="btn-check" id="clipboard-copymode-move" data-action="setCopyMode" ?checked=${e.copyMode!==CopyMode.copy} @click="${t=>this.updateClipboard(t,{CB:{setCopyMode:"0"}})}">
               <label class="btn btn-default btn-sm" for="clipboard-copymode-move">
                 <typo3-backend-icon identifier="actions-cut" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                ${t.labels.moveElements}
+                ${e.labels.moveElements}
               </label>
             </div>
-            ${t.elementCount?i.html`
-              <button type="button" class="btn btn-default btn-sm" title="${t.labels.removeAll}" data-action="removeAll" @click="${t=>this.updateClipboard(t,{CB:{removeAll:e.identifier}})}">
+            ${e.elementCount?html`
+              <button type="button" class="btn btn-default btn-sm" title="${e.labels.removeAll}" data-action="removeAll" @click="${e=>this.updateClipboard(e,{CB:{removeAll:t.identifier}})}">
                 <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                ${t.labels.removeAll}
-              </button>`:i.html``}
+                ${e.labels.removeAll}
+              </button>`:html``}
           `}
         </td>
       </tr>
-      ${t.current===e.identifier&&e.items?e.items.map(i=>this.renderTabItem(i,e.identifier,t)):i.html``}
-    `}renderTabItem(e,t,a){return i.html`
+      ${e.current===t.identifier&&t.items?t.items.map(i=>this.renderTabItem(i,t.identifier,e)):html``}
+    `}renderTabItem(t,e,i){return html`
       <tr>
-        <td class="col-icon nowrap ${(0,o.classMap)({"ps-4":!e.identifier})}">
-          ${(0,l.unsafeHTML)(e.icon)}
+        <td class="col-icon nowrap ${classMap({"ps-4":!t.identifier})}">
+          ${unsafeHTML(t.icon)}
         </td>
         <td class="nowrap" style="width: 95%">
-          ${(0,l.unsafeHTML)(e.title)}
-          ${"normal"===t?i.html`<strong>(${a.copyMode===d.copy?i.html`${a.labels.copy}`:i.html`${a.labels.cut}`})</strong>`:i.html``}
-          ${e.thumb?i.html`<div class="d-block">${(0,l.unsafeHTML)(e.thumb)}</div>`:i.html``}
+          ${unsafeHTML(t.title)}
+          ${"normal"===e?html`<strong>(${i.copyMode===CopyMode.copy?html`${i.labels.copy}`:html`${i.labels.cut}`})</strong>`:html``}
+          ${t.thumb?html`<div class="d-block">${unsafeHTML(t.thumb)}</div>`:html``}
         </td>
         <td class="col-control nowrap">
           <div class="btn-group">
-            ${e.infoDataDispatch?i.html`
-              <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${e.infoDataDispatch.action}" data-dispatch-args="${e.infoDataDispatch.args}" title="${a.labels.info}">
+            ${t.infoDataDispatch?html`
+              <button type="button" class="btn btn-default btn-sm" data-dispatch-action="${t.infoDataDispatch.action}" data-dispatch-args="${t.infoDataDispatch.args}" title="${i.labels.info}">
                 <span>
                   <typo3-backend-icon identifier="actions-document-info" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
                 </span>
               </button>
-            `:i.html``}
-            ${e.identifier?i.html`
-              <button type="button" class="btn btn-default btn-sm" title="${a.labels.removeItem}" data-action="remove" @click="${t=>this.updateClipboard(t,{CB:{remove:e.identifier}})}">
+            `:html``}
+            ${t.identifier?html`
+              <button type="button" class="btn btn-default btn-sm" title="${i.labels.removeItem}" data-action="remove" @click="${e=>this.updateClipboard(e,{CB:{remove:t.identifier}})}">
                 <span>
                     <typo3-backend-icon identifier="actions-remove" alternativeMarkupIdentifier="inline" size="small" class="icon icon-size-small"></typo3-backend-icon>
-                    ${a.labels.removeItem}
+                    ${i.labels.removeItem}
                 </span>
               </button>
-            `:i.html``}
+            `:html``}
           </div>
         </td>
-      </tr>`}updateClipboard(e,t){e.preventDefault();const i=e.currentTarget;new r(top.TYPO3.settings.Clipboard.moduleUrl).post(t).then(async e=>{const a=await e.resolve();!0===a.success?(i.dataset.action&&i.dispatchEvent(new CustomEvent("typo3:clipboard:"+i.dataset.action,{detail:{payload:t,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):c.error("Clipboard data could not be updated")}).catch(()=>{c.error("An error occured while updating clipboard data")})}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([(0,a.property)({type:String,attribute:"return-url"})],p.prototype,"returnUrl",void 0),__decorate([(0,a.property)({type:String})],p.prototype,"table",void 0),p=s=__decorate([(0,a.customElement)("typo3-backend-clipboard-panel")],p),t.ClipboardPanel=p}));
+      </tr>`}updateClipboard(t,e){t.preventDefault();const i=t.currentTarget;new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).post(e).then(async t=>{const a=await t.resolve();!0===a.success?(i.dataset.action&&i.dispatchEvent(new CustomEvent("typo3:clipboard:"+i.dataset.action,{detail:{payload:e,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):Notification.error("Clipboard data could not be updated")}).catch(()=>{Notification.error("An error occured while updating clipboard data")})}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([property({type:String,attribute:"return-url"})],ClipboardPanel.prototype,"returnUrl",void 0),__decorate([property({type:String})],ClipboardPanel.prototype,"table",void 0),ClipboardPanel=ClipboardPanel_1=__decorate([customElement("typo3-backend-clipboard-panel")],ClipboardPanel);export{ClipboardPanel};

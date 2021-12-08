@@ -13,7 +13,7 @@
 
 import {customElement, property} from 'lit/decorators';
 import {html, LitElement, TemplateResult} from 'lit';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import {NewContentElementWizard} from 'TYPO3/CMS/Backend/NewContentElementWizard';
 

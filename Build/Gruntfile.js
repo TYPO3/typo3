@@ -14,6 +14,7 @@
 module.exports = function (grunt) {
 
   const sass = require('node-sass');
+  const esModuleLexer = require('es-module-lexer');
 
   /**
    * Grunt stylefmt task
@@ -222,6 +223,20 @@ module.exports = function (grunt) {
         punctuation: ''
       },
       ts_files: {
+        options: {
+          process: (source, srcpath) => {
+            const [imports, exports] = esModuleLexer.parse(source, srcpath);
+
+            source = require('./util/map-import.js').mapImports(source, srcpath, imports);
+
+            // Workaround for https://github.com/microsoft/TypeScript/issues/35802 to avoid
+            // rollup from complaining in karma/jsunit test setup:
+            //   The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten
+            source = source.replace('__decorate=this&&this.__decorate||function', '__decorate=function');
+
+            return source;
+          }
+        },
         files: [{
           expand: true,
           cwd: '<%= paths.root %>Build/JavaScript/',
@@ -308,6 +323,43 @@ module.exports = function (grunt) {
           }
         ]
       },
+      lit: {
+        options: {
+          process: (content, srcpath) => content.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= paths.node_modules %>',
+          dest: '<%= paths.core %>Public/JavaScript/Contrib/',
+          rename: function (dest, src) {
+            let [packageName, ...paths] = src.split('/');
+            let packageJson = `${grunt.config.get('paths.node_modules')}/${packageName}/package.json`;
+            let scopedPackageJson = `${grunt.config.get('paths.node_modules')}/${packageName}/${paths[0]}/package.json`;
+
+            let version = '';
+            if (grunt.file.exists(packageJson)) {
+              version = '@' + grunt.file.readJSON(packageJson).version;
+            } else if (grunt.file.exists(scopedPackageJson)) {
+              version = '@' + grunt.file.readJSON(scopedPackageJson).version;
+              packageName += '/' + paths[0];
+              paths.shift();
+            }
+
+            return `${dest}${packageName}${version}/${paths.join('/')}`;
+          },
+          src: [
+            'lit/*.js',
+            'lit/decorators/*.js',
+            'lit/directives/*.js',
+            'lit-html/*.js',
+            'lit-html/directives/*.js',
+            'lit-element/*.js',
+            'lit-element/decorators/*.js',
+            '@lit/reactive-element/*.js',
+            '@lit/reactive-element/decorators/*.js',
+          ],
+        }]
+      },
       t3editor: {
         files: [
           {
@@ -326,60 +378,57 @@ module.exports = function (grunt) {
     },
     rollup: {
       options: {
-        format: 'amd'
+        format: 'esm',
+        entryFileNames: '[name].js'
       },
-      'lit-html': {
+      'd3-selection': {
         options: {
-          preserveModules: true,
+          preserveModules: false,
           plugins: () => [
-            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
             {
               name: 'terser',
-              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
             }
           ]
         },
         files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/lit-html': [
-            'node_modules/lit-html/*.js',
-            'node_modules/lit-html/directives/*.js',
+          '<%= paths.core %>Public/JavaScript/Contrib/d3-selection.js': [
+            'node_modules/d3-selection/src/index.js'
           ]
         }
       },
-      '@lit/reactive-element': {
+      'd3-dispatch': {
         options: {
-          preserveModules: true,
+          preserveModules: false,
           plugins: () => [
-            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
             {
               name: 'terser',
-              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
-            },
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
+            }
           ]
         },
         files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/@lit/reactive-element': [
-            'node_modules/@lit/reactive-element/*.js',
-            'node_modules/@lit/reactive-element/decorators/*.js',
-            // omitted, empty
-            '!node_modules/@lit/reactive-element/reactive-controller.js'
+          '<%= paths.core %>Public/JavaScript/Contrib/d3-dispatch.js': [
+            'node_modules/d3-dispatch/src/index.js'
           ]
         }
       },
-      'lit-element': {
+      'd3-drag': {
         options: {
-          preserveModules: true,
+          preserveModules: false,
           plugins: () => [
-            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
             {
               name: 'terser',
-              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
+              renderChunk: code => require('terser').minify(code, grunt.config.get('terser.options'))
             },
             {
               name: 'externals',
               resolveId: (source) => {
-                if (source.startsWith('lit-html') || source.startsWith('@lit/reactive-element')) {
-                  return {id: source.replace(/\.js$/, ''), external: true}
+                if (source === 'd3-selection') {
+                  return {id: 'd3-selection', external: true}
+                }
+                if (source === 'd3-dispatch') {
+                  return {id: 'd3-dispatch', external: true}
                 }
                 return null
               }
@@ -387,37 +436,8 @@ module.exports = function (grunt) {
           ]
         },
         files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/lit-element': [
-            'node_modules/lit-element/*.js',
-            'node_modules/lit-element/decorators/*.js',
-          ]
-        }
-      },
-      'lit': {
-        options: {
-          preserveModules: true,
-          plugins: () => [
-            require('@rollup/plugin-replace')({ values: { 'globalThis': 'window' }, preventAssignment: false }),
-            {
-              name: 'terser',
-              renderChunk: code => require('terser').minify(code, {...grunt.config.get('terser.options'), ...{mangle: false}})
-            },
-            {
-              name: 'externals',
-              resolveId: (source) => {
-                if (source.startsWith('lit-html') || source.startsWith('lit-element') || source.startsWith('@lit/reactive-element')) {
-                  return {id: source.replace(/\.js$/, ''), external: true}
-                }
-                return null
-              }
-            }
-          ]
-        },
-        files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/lit': [
-            'node_modules/lit/*.js',
-            'node_modules/lit/decorators/*.js',
-            'node_modules/lit/directives/*.js',
+          '<%= paths.core %>Public/JavaScript/Contrib/d3-drag.js': [
+            'node_modules/d3-drag/src/index.js'
           ]
         }
       },
@@ -447,7 +467,7 @@ module.exports = function (grunt) {
           ]
         },
         files: {
-          '<%= paths.core %>Public/JavaScript/Contrib/bootstrap/bootstrap.js': [
+          '<%= paths.core %>Public/JavaScript/Contrib/bootstrap.js': [
             'Sources/JavaScript/core/Resources/Public/JavaScript/Contrib/bootstrap.js'
           ]
         }
@@ -494,7 +514,21 @@ module.exports = function (grunt) {
       },
       dashboard: {
         options: {
-          destPrefix: "<%= paths.dashboard %>Public"
+          destPrefix: "<%= paths.dashboard %>Public",
+          copyOptions: {
+            process: (source, srcpath) => {
+              if (srcpath.match(/.*\.js$/)) {
+                const imports = [];
+
+                if (srcpath === 'node_modules/chart.js/dist/Chart.min.js') {
+                  imports.push('moment');
+                }
+                return require('./util/cjs-to-esm.js').cjsToEsm(source);
+              }
+
+              return source;
+            }
+          }
         },
         files: {
           'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js',
@@ -503,39 +537,117 @@ module.exports = function (grunt) {
           'Css/Contrib/chart.css': 'chart.js/dist/Chart.min.css'
         }
       },
-      all: {
+      umdToEs6: {
         options: {
-          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
+          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
+          copyOptions: {
+            process: (source, srcpath) => {
+              let imports = [], prefix = '', suffix = '';
+
+              if (srcpath === 'node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js') {
+                imports.push('jquery');
+              }
+
+              if (srcpath === 'node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js') {
+                imports.push('jquery');
+              }
+
+              if (srcpath === 'node_modules/imagesloaded/imagesloaded.js') {
+                imports.push('ev-emitter');
+              }
+
+              if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js') {
+                prefix = 'import Tablesort from "tablesort";';
+              }
+
+              if (srcpath === 'node_modules/jquery/dist/jquery.js') {
+                // Provide jQuery global "window.$" (and window.jQuery) for BC
+                // Still used by ./typo3/sysext/core/Tests/Acceptance/Application/FileList/FileStorageTreeFilterCest.php
+                // Also has been suggested to be used in #79221 and #82378
+                // @todo: deprecate $/jQuery global (note: PageRenderer->loadJQuery
+                // or maybe not and simply remove? Since PageRenderer->loadJQuery has long
+                // been deprecated with #86438
+                suffix = 'window.$ = window.jQuery = module.exports;';
+              }
+
+              return require('./util/cjs-to-esm.js').cjsToEsm(source, imports, prefix, suffix);
+            }
+          }
         },
         files: {
-          'nprogress.js': 'nprogress/nprogress.js',
-          'tablesort.js': 'tablesort/dist/tablesort.min.js',
-          'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
-          'require.js': 'requirejs/require.js',
+          'autosize.js': 'autosize/dist/autosize.min.js',
+          'broadcastchannel.js': 'broadcastchannel-polyfill/index.js',
+          'ev-emitter.js': 'ev-emitter/ev-emitter.js',
+          'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
+          'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
+          'imagesloaded.js': 'imagesloaded/imagesloaded.js',
+          'jquery.js': 'jquery/dist/jquery.js',
+          'jquery.autocomplete.js': 'devbridge-autocomplete/dist/jquery.autocomplete.min.js',
+          'jquery/minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           'moment.js': 'moment/min/moment-with-locales.min.js',
           'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
-          'cropper.min.js': 'cropperjs/dist/cropper.min.js',
-          'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
-          'autosize.js': 'autosize/dist/autosize.min.js',
+          'nprogress.js': 'nprogress/nprogress.js',
+          'sortablejs.js': 'sortablejs/dist/sortable.umd.js',
+          'tablesort.js': 'tablesort/dist/tablesort.min.js',
+          'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
           'taboverride.js': 'taboverride/build/output/taboverride.js',
-          'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
-          'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
-          'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.min.js',
-          'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
-          'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
-          '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
-          'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.js',
-          'd3-dispatch.js': 'd3-dispatch/dist/d3-dispatch.min.js',
-          'd3-drag.js': 'd3-drag/dist/d3-drag.min.js',
-          'd3-selection.js': 'd3-selection/dist/d3-selection.min.js',
-          /**
-           * copy needed parts of jquery
-           */
-          'jquery/jquery.js': 'jquery/dist/jquery.js',
-          'jquery/jquery.min.js': 'jquery/dist/jquery.min.js',
-          /**
-           * copy needed parts of jquery-ui
-           */
+        }
+      },
+      install: {
+        options: {
+          destPrefix: "<%= paths.install %>Public/JavaScript",
+          copyOptions: {
+            process: (source, srcpath) => {
+              if (srcpath === 'node_modules/chosen-js/chosen.jquery.js') {
+                source = 'import jQuery from \'jquery\';\n' + source;
+              }
+
+              return source;
+            }
+          }
+        },
+        files: {
+          'chosen.jquery.min.js': 'chosen-js/chosen.jquery.js',
+        }
+      },
+      jqueryUi: {
+        options: {
+          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
+          copyOptions: {
+            process: (source, srcpath) => {
+
+              const imports = {
+                core: [],
+                draggable: ['core', 'mouse', 'widget'],
+                droppable: ['core', 'widget', 'mouse', 'draggable'],
+                mouse: ['widget'],
+                position: [],
+                resizable: ['core', 'mouse', 'widget'],
+                selectable: ['core', 'mouse', 'widget'],
+                sortable: ['core', 'mouse', 'widget'],
+                widget: []
+              };
+
+              const moduleName = require('path').basename(srcpath, '.js');
+
+              const code = [
+                'import jQuery from "jquery";',
+              ];
+
+              if (moduleName in imports) {
+                imports[moduleName].forEach(importName => {
+                  code.push('import "jquery-ui/' + importName + '.js";');
+                });
+              }
+
+              code.push('let define = null;');
+              code.push(source);
+
+              return code.join('\n');
+            }
+          }
+        },
+        files: {
           'jquery-ui/core.js': 'jquery-ui/ui/core.js',
           'jquery-ui/draggable.js': 'jquery-ui/ui/draggable.js',
           'jquery-ui/droppable.js': 'jquery-ui/ui/droppable.js',
@@ -545,7 +657,17 @@ module.exports = function (grunt) {
           'jquery-ui/selectable.js': 'jquery-ui/ui/selectable.js',
           'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
           'jquery-ui/widget.js': 'jquery-ui/ui/widget.js',
-          'Sortable.min.js': 'sortablejs/dist/sortable.umd.js'
+        }
+      },
+      all: {
+        options: {
+          destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
+        },
+        files: {
+          'require.js': 'requirejs/require.js',
+          'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
+          'es-module-shims.js': 'es-module-shims/dist/es-module-shims.js',
+          '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
         }
       }
     },
@@ -558,7 +680,11 @@ module.exports = function (grunt) {
       thirdparty: {
         files: {
           "<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js": ["<%= paths.core %>Public/JavaScript/Contrib/es-module-shims.js"],
-          "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js": ["<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/imagesloaded.js": ["<%= paths.core %>Public/JavaScript/Contrib/imagesloaded.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/ev-emitter.js": ["<%= paths.core %>Public/JavaScript/Contrib/ev-emitter.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
@@ -572,7 +698,7 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
-          "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"]
+          "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.install %>Public/JavaScript/chosen.jquery.min.js"]
         }
       },
       t3editor: {
@@ -645,7 +771,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:ckeditor', 'npmcopy:ckeditor_externalplugins', 'npmcopy:dashboard', 'npmcopy:all'],
+      npmcopy: ['npmcopy:ckeditor', 'npmcopy:ckeditor_externalplugins', 'npmcopy:dashboard', 'npmcopy:umdToEs6', 'npmcopy:jqueryUi', 'npmcopy:install', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'lintspaces'],
       compile_assets: ['scripts', 'css'],
       minify_assets: ['terser:thirdparty', 'terser:t3editor'],

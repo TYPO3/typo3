@@ -38,4 +38,4 @@ class PasswordStrength {
   }
 }
 
-export = new PasswordStrength();
+export default new PasswordStrength();

@@ -13,9 +13,9 @@
 
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 /**
  * Module: TYPO3/CMS/Filelist/RenameFile
@@ -104,4 +104,4 @@ class RenameFile {
   }
 }
 
-export = new RenameFile();
+export default new RenameFile();

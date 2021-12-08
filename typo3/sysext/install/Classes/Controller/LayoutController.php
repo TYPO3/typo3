@@ -24,8 +24,9 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
+use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\Exception\TemplateFileChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
@@ -40,13 +41,16 @@ use TYPO3\CMS\Install\Service\SilentTemplateFileUpgradeService;
  */
 class LayoutController extends AbstractController
 {
+    private FailsafePackageManager $packageManager;
     private SilentConfigurationUpgradeService $silentConfigurationUpgradeService;
     private SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService;
 
     public function __construct(
+        FailsafePackageManager $packageManager,
         SilentConfigurationUpgradeService $silentConfigurationUpgradeService,
         SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService
     ) {
+        $this->packageManager = $packageManager;
         $this->silentConfigurationUpgradeService = $silentConfigurationUpgradeService;
         $this->silentTemplateFileUpgradeService = $silentTemplateFileUpgradeService;
     }
@@ -64,16 +68,23 @@ class LayoutController extends AbstractController
         if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
+
+        $packages = [
+            $this->packageManager->getPackage('core'),
+            $this->packageManager->getPackage('backend'),
+            $this->packageManager->getPackage('install'),
+        ];
+        $importMap = new ImportMap($packages);
+        $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
+        $initModule = $sitePath . $importMap->resolveImport('TYPO3/CMS/Install/InitInstall.js');
+
         $view = $this->initializeView($request);
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
             'bust' => $bust,
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-            'packageResourcePaths' => [
-                'backend' => PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/'),
-                'core' => PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/'),
-                'install' => PathUtility::getPublicResourceWebPath('EXT:install/Resources/Public/'),
-            ],
+            'initModule' => $initModule,
+            'importmap' => $importMap->render($sitePath, 'rAnd0m'),
         ]);
         return new HtmlResponse(
             $view->render('Layout/Init'),

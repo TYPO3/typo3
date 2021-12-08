@@ -40,4 +40,4 @@ class TypoScriptObjectBrowser {
   }
 }
 
-export = new TypoScriptObjectBrowser();
+export default new TypoScriptObjectBrowser();

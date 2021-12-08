@@ -238,6 +238,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getLayoutController(ContainerInterface $container): Controller\LayoutController
     {
         return new Controller\LayoutController(
+            $container->get(FailsafePackageManager::class),
             $container->get(Service\SilentConfigurationUpgradeService::class),
             $container->get(Service\SilentTemplateFileUpgradeService::class)
         );

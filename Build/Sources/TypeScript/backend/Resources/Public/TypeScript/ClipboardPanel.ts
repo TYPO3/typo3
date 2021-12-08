@@ -16,9 +16,9 @@ import {customElement, property} from 'lit/decorators';
 import {until} from 'lit/directives/until';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {classMap} from 'lit/directives/class-map';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import Notification from 'TYPO3/CMS/Backend/Notification';
 import 'TYPO3/CMS/Backend/Element/SpinnerElement';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 

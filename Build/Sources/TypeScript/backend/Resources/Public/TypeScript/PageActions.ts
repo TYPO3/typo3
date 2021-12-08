@@ -13,7 +13,7 @@
 
 import { KeyTypesEnum } from './Enum/KeyTypes';
 import $ from 'jquery';
-import PersistentStorage = require('./Storage/Persistent');
+import PersistentStorage from './Storage/Persistent';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import 'TYPO3/CMS/Backend/NewContentElementWizardButton';
 
@@ -217,4 +217,4 @@ class PageActions {
   }
 }
 
-export = new PageActions();
+export default new PageActions();

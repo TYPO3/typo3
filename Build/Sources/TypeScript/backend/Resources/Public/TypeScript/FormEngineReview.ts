@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
+import FormEngine from 'TYPO3/CMS/Backend/FormEngine';
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngineReview
@@ -161,4 +161,4 @@ class FormEngineReview {
 }
 
 // create an instance and return it
-export = new FormEngineReview();
+export default new FormEngineReview();

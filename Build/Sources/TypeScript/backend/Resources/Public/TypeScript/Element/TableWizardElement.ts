@@ -15,8 +15,8 @@ import { html, LitElement, TemplateResult, render } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { lll } from 'TYPO3/CMS/Core/lit-helper';
 import 'TYPO3/CMS/Backend/Element/IconElement';
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Severity from 'TYPO3/CMS/Backend/Severity';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import { SeverityEnum } from 'TYPO3/CMS/Backend/Enum/Severity';
 
 /**

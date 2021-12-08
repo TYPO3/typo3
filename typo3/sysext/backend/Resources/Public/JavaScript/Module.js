@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.getRecordFromName=void 0,n.getRecordFromName=function(e){const n=document.getElementById(e);return n?{name:e,component:n.dataset.component,navigationComponentId:n.dataset.navigationcomponentid,link:n.getAttribute("href")}:{name:e,component:"",navigationComponentId:"",link:""}}}));
+export function getRecordFromName(n){const t=document.getElementById(n);return t?{name:n,component:t.dataset.component,navigationComponentId:t.dataset.navigationcomponentid,link:t.getAttribute("href")}:{name:n,component:"",navigationComponentId:"",link:""}}

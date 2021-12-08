@@ -48,4 +48,4 @@ class Severity {
   }
 }
 
-export = new Severity();
+export default new Severity();

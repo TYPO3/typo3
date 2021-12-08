@@ -13,12 +13,12 @@
 
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
-import Viewport = require('TYPO3/CMS/Backend/Viewport');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import ModuleMenu from 'TYPO3/CMS/Backend/ModuleMenu';
+import Viewport from 'TYPO3/CMS/Backend/Viewport';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
-import Icons = require('TYPO3/CMS/Backend/Icons');
+import Icons from 'TYPO3/CMS/Backend/Icons';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem',
@@ -227,4 +227,4 @@ const workspacesMenu = new WorkspacesMenu();
 // expose the module in a global object
 TYPO3.WorkspacesMenu = workspacesMenu;
 
-export = workspacesMenu;
+export default workspacesMenu;

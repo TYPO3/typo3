@@ -45,4 +45,4 @@ class RegularEvent implements EventInterface {
   }
 }
 
-export = RegularEvent;
+export default RegularEvent;

@@ -50,4 +50,4 @@ class BroadcastService {
   }
 }
 
-export = new BroadcastService();
+export default new BroadcastService();

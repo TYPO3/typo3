@@ -113,4 +113,10 @@ The custom module loader RequireJS will become superfluous and can be removed
 in favor of native browser modules. This will speed up module loading.
 Also the RequireJS system is discontinued.
 
+.. attention::
+
+   This API is considered experimental and may change until v12.0.
+   For example there are plans to take :file:`package.json` files into
+   account.
+
 .. index:: JavaScript, ext:core

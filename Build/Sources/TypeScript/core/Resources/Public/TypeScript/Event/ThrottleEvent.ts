@@ -12,7 +12,7 @@
 */
 
 import {Listener} from './EventInterface';
-import RegularEvent = require('./RegularEvent');
+import RegularEvent from './RegularEvent';
 
 /**
  * Throttles the event listener to be called only after a defined time during the event's execution over time.
@@ -44,4 +44,4 @@ class ThrottleEvent extends RegularEvent {
   }
 }
 
-export = ThrottleEvent;
+export default ThrottleEvent;

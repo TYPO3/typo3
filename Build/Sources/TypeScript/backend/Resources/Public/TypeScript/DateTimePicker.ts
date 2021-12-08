@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import flatpickr = require('flatpickr/flatpickr.min');
-import moment = require('moment');
-import PersistentStorage = require('./Storage/Persistent');
-import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
+import flatpickr from 'flatpickr/flatpickr.min';
+import moment from 'moment';
+import PersistentStorage from './Storage/Persistent';
+import ThrottleEvent from 'TYPO3/CMS/Core/Event/ThrottleEvent';
 
 interface FlatpickrInputElement extends HTMLInputElement {
   _flatpickr: any;
@@ -223,4 +223,4 @@ class DateTimePicker {
   }
 }
 
-export = new DateTimePicker();
+export default new DateTimePicker();

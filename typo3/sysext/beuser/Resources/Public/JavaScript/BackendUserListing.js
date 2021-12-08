@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/Input/Clearable"],(function(e,t){"use strict";return new class{constructor(){let e;if(null!==(e=document.getElementById("tx_Beuser_username"))){const t=""!==e.value;e.clearable({onClear:e=>{t&&e.closest("form").submit()}})}}}}));
+import"TYPO3/CMS/Backend/Input/Clearable.js";class BackendUserListing{constructor(){let e;if(null!==(e=document.getElementById("tx_Beuser_username"))){const t=""!==e.value;e.clearable({onClear:e=>{t&&e.closest("form").submit()}})}}}export default new BackendUserListing;

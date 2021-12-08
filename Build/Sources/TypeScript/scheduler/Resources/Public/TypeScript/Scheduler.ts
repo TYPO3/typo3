@@ -12,15 +12,15 @@
  */
 
 import $ from 'jquery';
-import 'tablesort';
-import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
+import Tablesort from 'tablesort';
+import DocumentSaveActions from 'TYPO3/CMS/Backend/DocumentSaveActions';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Icons = require('TYPO3/CMS/Backend/Icons');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Icons from 'TYPO3/CMS/Backend/Icons';
 import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
-import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
-import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
+import PersistentStorage from 'TYPO3/CMS/Backend/Storage/Persistent';
+import DateTimePicker from 'TYPO3/CMS/Backend/DateTimePicker';
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -287,4 +287,4 @@ class Scheduler {
   }
 }
 
-export = new Scheduler();
+export default new Scheduler();

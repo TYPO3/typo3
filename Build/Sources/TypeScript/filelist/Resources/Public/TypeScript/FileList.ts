@@ -12,22 +12,22 @@
  */
 
 import {lll} from 'TYPO3/CMS/Core/lit-helper';
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import InfoWindow from 'TYPO3/CMS/Backend/InfoWindow';
 import {BroadcastMessage} from 'TYPO3/CMS/Backend/BroadcastMessage';
-import broadcastService = require('TYPO3/CMS/Backend/BroadcastService');
-import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
-import NProgress = require('nprogress');
-import Icons = require('TYPO3/CMS/Backend/Icons');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import broadcastService from 'TYPO3/CMS/Backend/BroadcastService';
+import Tooltip from 'TYPO3/CMS/Backend/Tooltip';
+import NProgress from 'nprogress';
+import Icons from 'TYPO3/CMS/Backend/Icons';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import {ModuleStateStorage} from 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
 import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import Severity = require('TYPO3/CMS/Backend/Severity');
+import Severity from 'TYPO3/CMS/Backend/Severity';
 
 type QueryParameters = {[key: string]: string};
 
@@ -316,4 +316,4 @@ class Filelist {
   }
 }
 
-export = new Filelist();
+export default new Filelist();

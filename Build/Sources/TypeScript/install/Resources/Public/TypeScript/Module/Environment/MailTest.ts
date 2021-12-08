@@ -14,13 +14,13 @@
 import 'bootstrap';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import InfoBox = require('../../Renderable/InfoBox');
-import ProgressBar = require('../../Renderable/ProgressBar');
-import Severity = require('../../Renderable/Severity');
-import Router = require('../../Router');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import InfoBox from '../../Renderable/InfoBox';
+import ProgressBar from '../../Renderable/ProgressBar';
+import Severity from '../../Renderable/Severity';
+import Router from '../../Router';
 
 /**
  * Module: TYPO3/CMS/Install/Module/CreateAdmin
@@ -98,4 +98,4 @@ class MailTest extends AbstractInteractableModule {
   }
 }
 
-export = new MailTest();
+export default new MailTest();

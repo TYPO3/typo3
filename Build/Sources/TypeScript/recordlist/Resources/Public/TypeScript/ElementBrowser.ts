@@ -12,8 +12,8 @@
  */
 
 import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility';
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 interface RTESettings {
   parameters: string;
@@ -172,4 +172,4 @@ class ElementBrowser {
   }
 }
 
-export = new ElementBrowser();
+export default new ElementBrowser();

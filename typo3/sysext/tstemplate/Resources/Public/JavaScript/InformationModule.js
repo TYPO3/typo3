@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r){"use strict";return new class{constructor(){this.registerEventListeners()}registerEventListeners(){new r("typo3:datahandler:process",e=>{const t=e.detail.payload;"delete"!==t.action||t.hasErrors||document.location.reload()}).bindTo(document)}}}));
+import RegularEvent from"TYPO3/CMS/Core/Event/RegularEvent.js";class InformationModule{constructor(){this.registerEventListeners()}registerEventListeners(){new RegularEvent("typo3:datahandler:process",e=>{const t=e.detail.payload;"delete"!==t.action||t.hasErrors||document.location.reload()}).bindTo(document)}}export default new InformationModule;

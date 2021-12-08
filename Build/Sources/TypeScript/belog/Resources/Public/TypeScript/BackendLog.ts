@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import DateTimePicker from 'TYPO3/CMS/Backend/DateTimePicker';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
@@ -46,4 +46,4 @@ class BackendLog {
   }
 }
 
-export = new BackendLog();
+export default new BackendLog();

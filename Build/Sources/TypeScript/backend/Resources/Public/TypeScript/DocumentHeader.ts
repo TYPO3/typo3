@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import ThrottleEvent from 'TYPO3/CMS/Core/Event/ThrottleEvent';
 
 /**
  * Module: TYPO3/CMS/Backend/DocumentHeader
@@ -75,4 +75,4 @@ class DocumentHeader {
   }
 }
 
-export = new DocumentHeader();
+export default new DocumentHeader();

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 /**
  * Handles the "Edit popup" field control that renders a new FormEngine instance
@@ -61,4 +61,4 @@ class EditPopup {
   }
 }
 
-export = EditPopup;
+export default EditPopup;

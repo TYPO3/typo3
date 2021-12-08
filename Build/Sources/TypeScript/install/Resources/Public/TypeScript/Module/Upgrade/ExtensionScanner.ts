@@ -13,13 +13,13 @@
 
 import 'bootstrap';
 import $ from 'jquery';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import AjaxQueue = require('../../Ajax/AjaxQueue');
-import Router = require('../../Router');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import AjaxQueue from '../../Ajax/AjaxQueue';
+import Router from '../../Router';
 
 interface FileData {
   success: boolean;
@@ -338,4 +338,4 @@ class ExtensionScanner extends AbstractInteractableModule {
   }
 }
 
-export = new ExtensionScanner();
+export default new ExtensionScanner();

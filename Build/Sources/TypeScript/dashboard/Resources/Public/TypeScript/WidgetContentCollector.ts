@@ -12,8 +12,8 @@
 */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class WidgetContentCollector {
 
@@ -91,4 +91,4 @@ class WidgetContentCollector {
   }
 }
 
-export = new WidgetContentCollector();
+export default new WidgetContentCollector();

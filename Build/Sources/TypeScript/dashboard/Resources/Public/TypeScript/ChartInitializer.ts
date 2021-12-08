@@ -12,7 +12,7 @@
 */
 
 import Chart from 'TYPO3/CMS/Dashboard/Contrib/chartjs';
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class ChartInitializer {
 
@@ -47,4 +47,4 @@ class ChartInitializer {
   }
 }
 
-export = new ChartInitializer();
+export default new ChartInitializer();

@@ -87,4 +87,4 @@ if (!severityObject) {
   }
 }
 
-export = severityObject;
+export default severityObject;

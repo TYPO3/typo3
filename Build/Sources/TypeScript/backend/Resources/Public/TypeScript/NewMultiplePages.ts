@@ -70,4 +70,4 @@ class NewMultiplePages {
   }
 }
 
-export = new NewMultiplePages();
+export default new NewMultiplePages();

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import LinkBrowser = require('./LinkBrowser');
+import LinkBrowser from './LinkBrowser';
 import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
@@ -36,4 +36,4 @@ class FileLinkHandler {
 
 }
 
-export = new FileLinkHandler();
+export default new FileLinkHandler();

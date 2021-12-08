@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest = require('./InteractionRequest');
+import InteractionRequest from './InteractionRequest';
 
 class TriggerRequest extends InteractionRequest {
   constructor(type: string, parentRequest: InteractionRequest = null) {
@@ -47,4 +47,4 @@ class TriggerRequest extends InteractionRequest {
   }
 }
 
-export = TriggerRequest;
+export default TriggerRequest;

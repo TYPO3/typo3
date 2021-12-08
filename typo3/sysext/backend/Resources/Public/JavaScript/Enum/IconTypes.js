@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],(function(e,i){"use strict";Object.defineProperty(i,"__esModule",{value:!0}),i.MarkupIdentifiers=i.States=i.Sizes=void 0,function(e){e.small="small",e.default="default",e.large="large",e.mega="mega",e.overlay="overlay"}(i.Sizes||(i.Sizes={})),function(e){e.default="default",e.disabled="disabled"}(i.States||(i.States={})),function(e){e.default="default",e.inline="inline"}(i.MarkupIdentifiers||(i.MarkupIdentifiers={}))}));
+export var Sizes;!function(e){e.small="small",e.default="default",e.large="large",e.mega="mega",e.overlay="overlay"}(Sizes||(Sizes={}));export var States;!function(e){e.default="default",e.disabled="disabled"}(States||(States={}));export var MarkupIdentifiers;!function(e){e.default="default",e.inline="inline"}(MarkupIdentifiers||(MarkupIdentifiers={}));

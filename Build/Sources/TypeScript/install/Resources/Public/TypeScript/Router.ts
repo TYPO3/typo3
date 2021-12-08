@@ -12,15 +12,15 @@
  */
 
 import $ from 'jquery';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
 import {AbstractInlineModule} from './Module/AbstractInlineModule';
-import Icons = require('TYPO3/CMS/Backend/Icons');
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import InfoBox = require('./Renderable/InfoBox');
-import ProgressBar = require('./Renderable/ProgressBar');
-import Severity = require('./Renderable/Severity');
+import Icons from 'TYPO3/CMS/Backend/Icons';
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import InfoBox from './Renderable/InfoBox';
+import ProgressBar from './Renderable/ProgressBar';
+import Severity from './Renderable/Severity';
 
 class Router {
   private selectorBody: string = '.t3js-body';
@@ -52,7 +52,7 @@ class Router {
       const inlineState = $me.data('inline');
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        import(requireModule).then(({default: aModule}: {default: AbstractInlineModule}): void => {
+        import(requireModule + '.js').then(({default: aModule}: {default: AbstractInlineModule}): void => {
           aModule.initialize($me);
         });
       } else {
@@ -65,7 +65,7 @@ class Router {
           content: $('<div class="modal-loading">'),
           additionalCssClasses: ['install-tool-modal'],
           callback: (currentModal: any): void => {
-            import(requireModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
+            import(requireModule + '.js').then(({default: aModule}: {default: AbstractInteractableModule}): void => {
               aModule.initialize(currentModal);
             });
           },
@@ -425,4 +425,4 @@ class Router {
   }
 }
 
-export = new Router();
+export default new Router();

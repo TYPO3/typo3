@@ -15,13 +15,13 @@ import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ScaffoldIdentifierEnum} from './Enum/Viewport/ScaffoldIdentifier';
 import {getRecordFromName, Module, ModuleState} from './Module';
 import $ from 'jquery';
-import PersistentStorage = require('./Storage/Persistent');
-import Viewport = require('./Viewport');
-import ClientRequest = require('./Event/ClientRequest');
-import TriggerRequest = require('./Event/TriggerRequest');
-import InteractionRequest = require('./Event/InteractionRequest');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import PersistentStorage from './Storage/Persistent';
+import Viewport from './Viewport';
+import ClientRequest from './Event/ClientRequest';
+import TriggerRequest from './Event/TriggerRequest';
+import InteractionRequest from './Event/InteractionRequest';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 import {ModuleStateStorage} from './Storage/ModuleStateStorage';
 
 /**
@@ -499,4 +499,4 @@ if (!top.TYPO3.ModuleMenu) {
 }
 const moduleMenuApp = top.TYPO3.ModuleMenu;
 
-export = moduleMenuApp;
+export default moduleMenuApp;

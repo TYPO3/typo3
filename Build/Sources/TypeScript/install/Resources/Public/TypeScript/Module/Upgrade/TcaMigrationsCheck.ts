@@ -14,13 +14,13 @@
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import FlashMessage = require('../../Renderable/FlashMessage');
-import InfoBox = require('../../Renderable/InfoBox');
-import ProgressBar = require('../../Renderable/ProgressBar');
-import Severity = require('../../Renderable/Severity');
-import Router = require('../../Router');
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import FlashMessage from '../../Renderable/FlashMessage';
+import InfoBox from '../../Renderable/InfoBox';
+import ProgressBar from '../../Renderable/ProgressBar';
+import Severity from '../../Renderable/Severity';
+import Router from '../../Router';
 
 /**
  * Module: TYPO3/CMS/Install/Module/TcaMigrationsCheck
@@ -82,4 +82,4 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
 
 }
 
-export = new TcaMigrationsCheck();
+export default new TcaMigrationsCheck();

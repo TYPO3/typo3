@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 
 /**
  * Module: TYPO3/CMS/Impexp/ImportExport
@@ -47,4 +47,4 @@ class ImportExport {
   }
 }
 
-export = new ImportExport();
+export default new ImportExport();

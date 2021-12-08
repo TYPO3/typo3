@@ -12,15 +12,15 @@
  */
 
 import $ from 'jquery';
-import Icons = require('TYPO3/CMS/Backend/Icons');
-import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import Icons from 'TYPO3/CMS/Backend/Icons';
+import PersistentStorage from 'TYPO3/CMS/Backend/Storage/Persistent';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import Tooltip from 'TYPO3/CMS/Backend/Tooltip';
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 import {ActionConfiguration, ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
-import Severity = require('TYPO3/CMS/Backend/Severity');
+import Severity from 'TYPO3/CMS/Backend/Severity';
 
 interface IconIdentifier {
   collapse: string;
@@ -324,4 +324,4 @@ class Recordlist {
   }
 }
 
-export = new Recordlist();
+export default new Recordlist();

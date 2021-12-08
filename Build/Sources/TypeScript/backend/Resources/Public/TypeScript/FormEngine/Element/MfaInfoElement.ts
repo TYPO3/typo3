@@ -12,11 +12,11 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import Modal from 'TYPO3/CMS/Backend/Modal';
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 
 interface FieldOptions {
@@ -164,4 +164,4 @@ class MfaInfoElement {
   }
 }
 
-export = MfaInfoElement;
+export default MfaInfoElement;

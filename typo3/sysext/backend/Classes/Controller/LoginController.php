@@ -226,7 +226,7 @@ class LoginController
             $this->redirectToUrl();
         }
 
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Login.js');
         $this->view = $this->moduleTemplate->getView();
         $this->view->getRequest()->setControllerExtensionName('Backend');
         $this->provideCustomLoginStyling();

@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import ElementBrowser = require('./ElementBrowser');
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import ElementBrowser from './ElementBrowser';
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Severity from 'TYPO3/CMS/Backend/Severity';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 /**
  * Module: TYPO3/CMS/Recordlist/BrowseFolders
@@ -42,4 +42,4 @@ class BrowseFolders {
   }
 }
 
-export = new BrowseFolders();
+export default new BrowseFolders();

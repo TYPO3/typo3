@@ -13,14 +13,14 @@
 
 import $ from 'jquery';
 import NProgress from 'nprogress';
-import Modal = require('TYPO3/CMS/Backend/Modal');
-import Notification = require('TYPO3/CMS/Backend/Notification');
-import Severity = require('TYPO3/CMS/Backend/Severity');
-import 'tablesort';
+import Modal from 'TYPO3/CMS/Backend/Modal';
+import Notification from 'TYPO3/CMS/Backend/Notification';
+import Severity from 'TYPO3/CMS/Backend/Severity';
+import Tablesort from 'tablesort';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class Repository {
   public downloadPath: string = '';
@@ -162,4 +162,4 @@ class Repository {
   }
 }
 
-export = Repository;
+export default Repository;

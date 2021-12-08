@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InfoWindow = require('TYPO3/CMS/Backend/InfoWindow');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
-import shortcutMenu = require('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
-import windowManager = require('TYPO3/CMS/Backend/WindowManager');
-import moduleMenuApp = require('TYPO3/CMS/Backend/ModuleMenu');
-import documentService = require('TYPO3/CMS/Core/DocumentService');
-import Utility = require('TYPO3/CMS/Backend/Utility');
+import InfoWindow from 'TYPO3/CMS/Backend/InfoWindow';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
+import shortcutMenu from 'TYPO3/CMS/Backend/Toolbar/ShortcutMenu';
+import windowManager from 'TYPO3/CMS/Backend/WindowManager';
+import moduleMenuApp from 'TYPO3/CMS/Backend/ModuleMenu';
+import documentService from 'TYPO3/CMS/Core/DocumentService';
+import Utility from 'TYPO3/CMS/Backend/Utility';
 
 declare type ActionDispatchArgument = string | HTMLElement | Event;
 
@@ -113,4 +113,4 @@ class ActionDispatcher {
   }
 }
 
-export = new ActionDispatcher();
+export default new ActionDispatcher();

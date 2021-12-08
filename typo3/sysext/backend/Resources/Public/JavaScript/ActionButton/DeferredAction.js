@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./AbstractAction","../Icons"],(function(e,t,c,n){"use strict";class s extends c.AbstractAction{async execute(e){return n.getIcon("spinner-circle-light",n.sizes.small).then(t=>{e.innerHTML=t}),await this.executeCallback()}async executeCallback(){return await this.callback()}}return s}));
+import{AbstractAction}from"TYPO3/CMS/Backend/ActionButton/AbstractAction.js";import Icons from"TYPO3/CMS/Backend/Icons.js";class DeferredAction extends AbstractAction{async execute(t){return Icons.getIcon("spinner-circle-light",Icons.sizes.small).then(e=>{t.innerHTML=e}),await this.executeCallback()}async executeCallback(){return await this.callback()}}export default DeferredAction;

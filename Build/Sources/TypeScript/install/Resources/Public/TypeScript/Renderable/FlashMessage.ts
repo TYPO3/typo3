@@ -12,7 +12,7 @@
  */
 
 import $ from 'jquery';
-import Severity = require('./Severity');
+import Severity from './Severity';
 
 /**
  * Module: TYPO3/CMS/Install/Module/FlashMessage
@@ -35,4 +35,4 @@ class FlashMessage {
   }
 }
 
-export = new FlashMessage();
+export default new FlashMessage();

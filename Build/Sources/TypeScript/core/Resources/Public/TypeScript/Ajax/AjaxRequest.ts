@@ -186,4 +186,4 @@ class AjaxRequest {
   }
 }
 
-export = AjaxRequest;
+export default AjaxRequest;

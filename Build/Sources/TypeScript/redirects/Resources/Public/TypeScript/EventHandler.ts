@@ -12,9 +12,9 @@
  */
 
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import NotificationService = require('TYPO3/CMS/Backend/Notification');
-import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import NotificationService from 'TYPO3/CMS/Backend/Notification';
+import DeferredAction from 'TYPO3/CMS/Backend/ActionButton/DeferredAction';
 
 /**
  * Module: TYPO3/CMS/Redirects/EventHandler
@@ -89,4 +89,4 @@ class EventHandler {
   }
 }
 
-export = new EventHandler();
+export default new EventHandler();

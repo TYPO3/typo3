@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __importDefault=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};define(["require","exports","./ElementBrowser","TYPO3/CMS/Core/Event/RegularEvent"],(function(e,t,r,n){"use strict";n=__importDefault(n);return new class{constructor(){new n.default("click",(e,t)=>{e.preventDefault();const n=t.closest("span").dataset;r.insertElement(n.table,n.uid,n.title,"",1===parseInt(t.dataset.close||"0",10))}).delegateTo(document,"[data-close]")}}}));
+import ElementBrowser from"TYPO3/CMS/Recordlist/ElementBrowser.js";import RegularEvent from"TYPO3/CMS/Core/Event/RegularEvent.js";class BrowseDatabase{constructor(){new RegularEvent("click",(e,t)=>{e.preventDefault();const a=t.closest("span").dataset;ElementBrowser.insertElement(a.table,a.uid,a.title,"",1===parseInt(t.dataset.close||"0",10))}).delegateTo(document,"[data-close]")}}export default new BrowseDatabase;

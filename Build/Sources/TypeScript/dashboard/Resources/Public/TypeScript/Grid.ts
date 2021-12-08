@@ -13,8 +13,8 @@
 
 import Muuri from 'muuri';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
-import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
-import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
+import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import RegularEvent from 'TYPO3/CMS/Core/Event/RegularEvent';
 
 class Grid {
   private readonly selector: string = '.dashboard-grid';
@@ -89,4 +89,4 @@ class Grid {
   }
 }
 
-export = new Grid();
+export default new Grid();

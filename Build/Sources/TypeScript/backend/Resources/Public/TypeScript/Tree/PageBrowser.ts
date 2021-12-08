@@ -20,8 +20,8 @@ import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {TreeNode} from './TreeNode';
 import {TreeNodeSelection, Toolbar} from '../SvgTree';
-import ElementBrowser = require('TYPO3/CMS/Recordlist/ElementBrowser');
-import LinkBrowser = require('TYPO3/CMS/Recordlist/LinkBrowser');
+import ElementBrowser from 'TYPO3/CMS/Recordlist/ElementBrowser';
+import LinkBrowser from 'TYPO3/CMS/Recordlist/LinkBrowser';
 import 'TYPO3/CMS/Backend/Element/IconElement';
 import Persistent from 'TYPO3/CMS/Backend/Storage/Persistent';
 
