@@ -95,10 +95,17 @@ class RecyclerModuleCest
     }
 
     /**
-     * @param ApplicationTester $I
-     * @throws \Exception
+     * @todo: Method protected! This means the test is disabled.
+     *        There are at least two tests that confuse this test if they are executed earlier:
+     *        - PageTreeFilterCest.php:deletingPageWithFilterAppliedRespectsFilterUponPageTreeReload
+     *        - InlineFalCest.php:deleteFalRelation
+     *        The main issue is that this Cest.php works on a main page within styleguide tree which
+     *        is deleted and resurrected. This breaks as soon as other tests delete something within
+     *        the same tree. Suggestion: Let _before() create *two* pages: A main page as tree page
+     *        to use as recycler main page, plus a sub page of that page that can be deleted and
+     *        resurrected at will. This should limit side effects from other tests.
      */
-    public function deleteAndWipeRecords(ApplicationTester $I): void
+    protected function deleteAndWipeRecords(ApplicationTester $I): void
     {
         $this->deletePage($I);
         $this->goToRecyclerModule($I);
@@ -109,7 +116,7 @@ class RecyclerModuleCest
         $I->click('.t3js-multi-record-selection-check-actions-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
 
-        $I->click('Delete 2 records');
+        $I->click('button[data-multi-record-selection-action="massdelete"]');
         $this->modalDialog->canSeeDialog();
         $this->modalDialog->clickButtonInDialog('Delete');
 
