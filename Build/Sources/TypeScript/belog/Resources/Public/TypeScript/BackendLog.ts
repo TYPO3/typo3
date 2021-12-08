@@ -12,6 +12,7 @@
  */
 
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
+import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
 import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
@@ -21,17 +22,26 @@ import 'TYPO3/CMS/Backend/Input/Clearable';
  */
 class BackendLog {
   private clearableElements: NodeListOf<HTMLInputElement> = null;
+  private dateTimePickerElements: NodeListOf<HTMLInputElement> = null;
 
   constructor() {
     DocumentService.ready().then((): void => {
       this.clearableElements = document.querySelectorAll('.t3js-clearable');
+      this.dateTimePickerElements = document.querySelectorAll('.t3js-datetimepicker');
       this.initializeClearableElements();
+      this.initializeDateTimePickerElements();
     });
   }
 
   private initializeClearableElements(): void {
     this.clearableElements.forEach(
       (clearableField: HTMLInputElement) => clearableField.clearable()
+    );
+  }
+
+  private initializeDateTimePickerElements(): void {
+    this.dateTimePickerElements.forEach(
+      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
 }

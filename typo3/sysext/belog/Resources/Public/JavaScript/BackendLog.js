@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Core/DocumentService","TYPO3/CMS/Backend/Input/Clearable"],(function(e,l,t){"use strict";return new class{constructor(){this.clearableElements=null,t.ready().then(()=>{this.clearableElements=document.querySelectorAll(".t3js-clearable"),this.initializeClearableElements()})}initializeClearableElements(){this.clearableElements.forEach(e=>e.clearable())}}}));
+define(["require","exports","TYPO3/CMS/Core/DocumentService","TYPO3/CMS/Backend/DateTimePicker","TYPO3/CMS/Backend/Input/Clearable"],(function(e,i,t,l){"use strict";return new class{constructor(){this.clearableElements=null,this.dateTimePickerElements=null,t.ready().then(()=>{this.clearableElements=document.querySelectorAll(".t3js-clearable"),this.dateTimePickerElements=document.querySelectorAll(".t3js-datetimepicker"),this.initializeClearableElements(),this.initializeDateTimePickerElements()})}initializeClearableElements(){this.clearableElements.forEach(e=>e.clearable())}initializeDateTimePickerElements(){this.dateTimePickerElements.forEach(e=>l.initialize(e))}}}));

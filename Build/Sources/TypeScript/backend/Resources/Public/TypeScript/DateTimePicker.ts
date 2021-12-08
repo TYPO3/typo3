@@ -12,7 +12,6 @@
  */
 
 import flatpickr = require('flatpickr/flatpickr.min');
-import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import moment = require('moment');
 import PersistentStorage = require('./Storage/Persistent');
 import ThrottleEvent = require('TYPO3/CMS/Core/Event/ThrottleEvent');
@@ -27,7 +26,6 @@ interface FlatpickrInputElement extends HTMLInputElement {
  * and EXT:belog and EXT:scheduler
  */
 class DateTimePicker {
-  private fieldSelector: string = '.t3js-datetimepicker';
   private format: string = (typeof opener?.top?.TYPO3 !== 'undefined' ? opener.top : top).TYPO3.settings.DateTimePicker.DateFormat;
 
   /**
@@ -47,33 +45,13 @@ class DateTimePicker {
     return date.format();
   }
 
-  constructor(selector?: string) {
-    DocumentService.ready().then((): void => {
-      this.initialize(selector);
-    });
-  }
-
   /**
    * initialize date fields to add a datepicker to each field
    * note: this function can be called multiple times (e.g. after AJAX requests) because it only
    * applies to fields which haven't been used yet.
    */
-  public initialize(element?: string | HTMLElement): void {
-    let dateTimePickers;
-    if (element instanceof HTMLElement) {
-      if (typeof element.dataset.datepickerInitialized !== 'undefined') {
-        return;
-      }
-
-      dateTimePickers = [element];
-    } else {
-      console.warn('Initializing all date pickers globally has been marked as deprecated. Please pass a specific element.');
-      dateTimePickers = Array.from(document.querySelectorAll(element as string || this.fieldSelector)).filter((inputElement: HTMLInputElement): boolean => {
-        return typeof inputElement.dataset.datepickerInitialized === 'undefined';
-      });
-    }
-
-    if (dateTimePickers.length === 0) {
+  public initialize(element: HTMLInputElement): void {
+    if (!(element instanceof HTMLInputElement) || typeof element.dataset.datepickerInitialized !== 'undefined') {
       return;
     }
 
@@ -85,11 +63,9 @@ class DateTimePicker {
       userLocale = 'zh';
     }
 
-    dateTimePickers.forEach((inputElement: HTMLInputElement): void => {
-      inputElement.dataset.datepickerInitialized = '1';
-      require(['flatpickr/locales'], (): void => {
-        this.initializeField(inputElement, userLocale);
-      });
+    element.dataset.datepickerInitialized = '1';
+    require(['flatpickr/locales'], (): void => {
+      this.initializeField(element, userLocale);
     });
   }
 

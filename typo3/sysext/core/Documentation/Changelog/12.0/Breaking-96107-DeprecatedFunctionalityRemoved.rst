@@ -381,6 +381,7 @@ The following JavaScript methods bahaviour has changed:
 
 - :js:`show()` and :js:`hide()` of :js:`TYPO3/CMS/Backend/Tooltip` do no longer allow JQuery objects passed as first argument
 - :js:`FormEngine.setSelectOptionFromExternalSource()` does no longer allow JQuery objects passed as sixth argument
+- :js:`DateTimePicker.initialize()` always requires an :js:`HTMLInputElement` to be passed as first argument
 
 The following JavaScript modules have been removed:
 

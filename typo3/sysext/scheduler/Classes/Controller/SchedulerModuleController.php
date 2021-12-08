@@ -642,7 +642,6 @@ class SchedulerModuleController
 
         // Load necessary JavaScript
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 
         // Start rendering the add/edit form
         $this->view->assign('uid', htmlspecialchars((string)$this->submittedData['uid']));

@@ -69,7 +69,6 @@ class BackendLogController extends ActionController
         $constraintConfiguration->allowAllProperties();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Belog/BackendLog');
     }
 

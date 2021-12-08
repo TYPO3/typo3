@@ -20,6 +20,7 @@ import Icons = require('TYPO3/CMS/Backend/Icons');
 import { MessageUtility } from 'TYPO3/CMS/Backend/Utility/MessageUtility';
 import {ActionEventDetails} from 'TYPO3/CMS/Backend/MultiRecordSelectionAction';
 import PersistentStorage = require('TYPO3/CMS/Backend/Storage/Persistent');
+import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -180,6 +181,10 @@ class Scheduler {
     if (taskGroupTable !== null) {
       new Tablesort(taskGroupTable);
     }
+
+    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('#tx_scheduler_form .t3js-datetimepicker')).forEach(
+      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
+    );
 
     $(document).on('click', '.t3js-element-browser', (e: JQueryEventObject): void => {
       e.preventDefault();

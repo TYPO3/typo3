@@ -13,6 +13,7 @@
 
 import $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
 
 /**
  * Module: TYPO3/CMS/Lowlevel/QueryGenerator
@@ -65,6 +66,9 @@ class QueryGenerator {
           this.doSubmit();
         },
       }),
+    );
+    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-datetimepicker')).forEach(
+      (dateTimePickerElement: HTMLInputElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
 
