@@ -105,10 +105,8 @@ class Request implements ServerRequestInterface, RequestInterface
 
     /**
      * Returns the plugin key.
-     *
-     * @todo: Should be "public function getPluginName(): string", blocked by testing-framework
      */
-    public function getPluginName()
+    public function getPluginName(): string
     {
         return $this->getExtbaseAttribute()->getPluginName();
     }
@@ -125,21 +123,16 @@ class Request implements ServerRequestInterface, RequestInterface
 
     /**
      * Returns the extension name of the specified controller.
-     *
-     * @todo: Should be "public function getControllerExtensionName(): string", blocked by testing-framework
      */
-    public function getControllerExtensionName()
+    public function getControllerExtensionName(): string
     {
         return $this->getExtbaseAttribute()->getControllerExtensionName();
     }
 
     /**
      * Return an instance with the specified controller extension name set.
-     *
-     * @param string|null $controllerExtensionName Extension name
-     * @return self
      */
-    public function withControllerExtensionName($controllerExtensionName): self
+    public function withControllerExtensionName(?string $controllerExtensionName = null): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerExtensionName($controllerExtensionName);
@@ -148,8 +141,6 @@ class Request implements ServerRequestInterface, RequestInterface
 
     /**
      * Returns the extension key of the specified controller.
-     *
-     * @return string The extension key
      */
     public function getControllerExtensionKey(): string
     {
@@ -159,22 +150,16 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Returns the controller name supposed to handle this request, if one
      * was set already (if not, the name of the default controller is returned)
-     *
-     * @todo: Should be "public function getControllerName(): string", blocked by testing-framework
      */
-    public function getControllerName()
+    public function getControllerName(): string
     {
-        return (string)$this->getExtbaseAttribute()->getControllerName();
+        return $this->getExtbaseAttribute()->getControllerName();
     }
 
     /**
      * Return an instance with the specified controller name set.
-     * Note: This is not the object name of the controller!
-     *
-     * @param string|null $controllerName Controller name
-     * @return self
      */
-    public function withControllerName($controllerName): self
+    public function withControllerName(?string $controllerName = null): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerName($controllerName);
@@ -183,23 +168,17 @@ class Request implements ServerRequestInterface, RequestInterface
 
     /**
      * Returns the name of the action the controller is supposed to execute.
-     *
-     * @todo: Should be "public function getControllerActionName(): string", blocked by testing-framework
      */
-    public function getControllerActionName()
+    public function getControllerActionName(): string
     {
         return $this->getExtbaseAttribute()->getControllerActionName();
     }
 
     /**
      * Return an instance with the specified controller action name set.
-     *
-     * Note that the action name must start with a lower case letter and is case sensitive.
-     *
-     * @param string|null $actionName Action name
-     * @return self
+     * Note that the action name must start with a lower case letter and is case-sensitive.
      */
-    public function withControllerActionName($actionName): self
+    public function withControllerActionName(?string $actionName = null): self
     {
         $attribute = clone $this->getExtbaseAttribute();
         $attribute->setControllerActionName($actionName);

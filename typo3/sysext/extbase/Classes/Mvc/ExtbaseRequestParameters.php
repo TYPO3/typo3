@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,103 +22,96 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 
 /**
  * Extbase request related state.
  * Attached as 'extbase' attribute to PSR-7 ServerRequestInterface.
  *
- * @internal Set up extbase internally, use TYPO3\CMS\Extbase\Mvc\Request instead.
+ * @internal Sets up extbase internally, use TYPO3\CMS\Extbase\Mvc\Request instead.
  */
 class ExtbaseRequestParameters
 {
     /**
-     * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
+     * Key of the plugin which identifies the plugin.
+     * In frontend, it is the second argument of ExtensionUtility::configurePlugin(), example: "FormFramework" in ext:form.
+     * In backend, it is the combination $mainModuleName_$extensionName$subModuleName from ExtensionUtility::registerModule(),
+     * for example "web_FormFormbuilder" for the ext:form backend module.
      */
-    protected $pluginName = '';
+    protected string $pluginName = '';
 
     /**
-     * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
-     *
-     * @todo: Should probably at least init to empty string.
+     * Name of the extension which is supposed to handle this request. This is the extension key in UpperCamelCase.
+     * This is typically defined by ExtensionUtility::configurePlugin() and friends as first argument.
+     * Example: "IndexedSearch", when the extension key "directory name of extension" is indexed_search.
      */
-    protected $controllerExtensionName;
+    protected string $controllerExtensionName = '';
 
     /**
-     * @var string
-     *
-     * @todo: Should probably at least init to empty string.
+     * This is the FQDN of a controller, example: "TYPO3\CMS\Form\Controller\FormManagerController"
+     * for ext:form backend module.
      */
-    protected $controllerObjectName;
+    protected string $controllerObjectName = '';
 
     /**
-     * @var string Object name of the controller which is supposed to handle this request.
+     * Object name of the controller which is supposed to handle this request. This is the non-FQDN
+     * version of $controllerObjectName, without the word "Controller", example: "FormManager".
      */
-    protected $controllerName = 'Standard';
+    protected string $controllerName = 'Standard';
 
     /**
-     * @var string Name of the action the controller is supposed to take.
+     * A map $controllerName => $controllerObjectName
      */
-    protected $controllerActionName = 'index';
+    protected array $controllerAliasToClassNameMapping = [];
 
     /**
-     * @var array The arguments for this request
+     * Name of the action the controller is supposed to execute. For example "create" with the
+     * controller method name being "createAction()".
+     * Action name must start with a lower case letter and is case-sensitive.
      */
-    protected $arguments = [];
+    protected string $controllerActionName = 'index';
+
+    /**
+     * The arguments for this request. This receives only those arguments relevant and
+     * prefixed for this extension/controller/plugin combination.
+     */
+    protected array $arguments = [];
 
     /**
      * Framework-internal arguments for this request, such as __referrer.
      * All framework-internal arguments start with double underscore (__),
      * and are only used from within the framework. Not for user consumption.
      * Internal Arguments can be objects, in contrast to public arguments
-     *
-     * @var array
      */
     protected array $internalArguments = [];
 
     /**
-     * @var string The requested representation format
+     * The requested representation format, "html", "xml", "png", "json" or the like.
+     * Can even be something like "rss.xml".
      */
-    protected $format = 'html';
+    protected string $format = 'html';
 
     /**
      * If this request is a forward because of an error, the original request gets filled.
-     *
-     * @var \TYPO3\CMS\Extbase\Mvc\Request|null
      */
-    protected $originalRequest;
+    protected ?Request $originalRequest = null;
 
     /**
      * If the request is a forward because of an error, these mapping results get filled here.
-     *
-     * @var \TYPO3\CMS\Extbase\Error\Result|null
      */
-    protected $originalRequestMappingResults;
+    protected ?Result $originalRequestMappingResults = null;
 
-    /**
-     * @param string $controllerClassName
-     */
     public function __construct(string $controllerClassName = '')
     {
         $this->controllerObjectName = $controllerClassName;
     }
 
-    /**
-     * @return string
-     */
     public function getControllerObjectName(): string
     {
         return $this->controllerObjectName;
     }
 
-    /**
-     * Explicitly sets the object name of the controller
-     *
-     * @param string $controllerObjectName The fully qualified controller object name
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerObjectName($controllerObjectName)
+    public function setControllerObjectName(string $controllerObjectName): self
     {
         $nameParts = ClassNamingUtility::explodeObjectControllerName($controllerObjectName);
         $this->controllerExtensionName = $nameParts['extensionName'];
@@ -124,13 +119,7 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Sets the plugin name.
-     *
-     * @param string|null $pluginName
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setPluginName($pluginName = null)
+    public function setPluginName(?string $pluginName = null): self
     {
         if ($pluginName !== null) {
             $this->pluginName = $pluginName;
@@ -138,24 +127,12 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Returns the plugin key.
-     *
-     * @return string The plugin key
-     */
-    public function getPluginName()
+    public function getPluginName(): string
     {
         return $this->pluginName;
     }
 
-    /**
-     * Sets the extension name of the controller.
-     *
-     * @param string $controllerExtensionName The extension name.
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerExtensionName($controllerExtensionName): self
+    public function setControllerExtensionName(?string $controllerExtensionName = null): self
     {
         if ($controllerExtensionName !== null) {
             $this->controllerExtensionName = $controllerExtensionName;
@@ -163,35 +140,17 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Returns the extension name of the specified controller.
-     *
-     * @return string The extension name
-     */
-    public function getControllerExtensionName()
+    public function getControllerExtensionName(): string
     {
         return $this->controllerExtensionName;
     }
 
-    /**
-     * Returns the extension name of the specified controller.
-     *
-     * @return string The extension key
-     */
-    public function getControllerExtensionKey()
+    public function getControllerExtensionKey(): string
     {
-        return GeneralUtility::camelCaseToLowerCaseUnderscored((string)$this->controllerExtensionName);
+        return GeneralUtility::camelCaseToLowerCaseUnderscored($this->controllerExtensionName);
     }
 
-    /**
-     * @var array
-     */
-    protected $controllerAliasToClassNameMapping = [];
-
-    /**
-     * @param array $controllerAliasToClassNameMapping
-     */
-    public function setControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping)
+    public function setControllerAliasToClassNameMapping(array $controllerAliasToClassNameMapping): self
     {
         // this is only needed as long as forwarded requests are altered and unless there
         // is no new request object created by the request builder.
@@ -199,52 +158,26 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Sets the name of the controller which is supposed to handle the request.
-     * Note: This is not the object name of the controller!
-     *
-     * @param string $controllerName Name of the controller
-     * @throws Exception\InvalidControllerNameException
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setControllerName($controllerName): self
+    public function setControllerName(?string $controllerName = null): self
     {
-        if (!is_string($controllerName) && $controllerName !== null) {
-            throw new InvalidControllerNameException('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
-        }
         if ($controllerName !== null) {
             $this->controllerName = $controllerName;
-            $this->controllerObjectName = $this->controllerAliasToClassNameMapping[$controllerName] ?? '';
             // There might be no Controller Class, for example for Fluid Templates.
+            $this->controllerObjectName = $this->controllerAliasToClassNameMapping[$controllerName] ?? '';
         }
         return $this;
     }
 
-    /**
-     * Returns the object name of the controller supposed to handle this request, if one
-     * was set already (if not, the name of the default controller is returned)
-     *
-     * @return string Object name of the controller
-     */
-    public function getControllerName()
+    public function getControllerName(): string
     {
         return $this->controllerName;
     }
 
     /**
-     * Sets the name of the action contained in this request.
-     *
-     * Note that the action name must start with a lower case letter and is case sensitive.
-     *
-     * @param string $actionName Name of the action to execute by the controller
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @throws InvalidActionNameException if the action name is not valid
      */
-    public function setControllerActionName($actionName): self
+    public function setControllerActionName(?string $actionName = null): self
     {
-        if (!is_string($actionName) && $actionName !== null) {
-            throw new InvalidActionNameException('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176359);
-        }
         if ($actionName[0] !== strtolower($actionName[0]) && $actionName !== null) {
             throw new InvalidActionNameException('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
         }
@@ -254,11 +187,6 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Returns the name of the action the controller is supposed to execute.
-     *
-     * @return string Action name
-     */
     public function getControllerActionName(): string
     {
         $controllerObjectName = $this->getControllerObjectName();
@@ -281,12 +209,8 @@ class ExtbaseRequestParameters
     }
 
     /**
-     * Sets the value of the specified argument
-     *
-     * @param string $argumentName Name of the argument to set
      * @param mixed $value The new value
      * @throws InvalidArgumentNameException
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function setArgument(string $argumentName, $value): self
     {
@@ -304,11 +228,9 @@ class ExtbaseRequestParameters
     }
 
     /**
-     * Sets the whole arguments array and therefore replaces any arguments
-     * which existed before.
+     * Sets the whole arguments array and therefore replaces any arguments which existed before.
      *
-     * @param array $arguments An array of argument names and their values
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @throws InvalidArgumentNameException
      */
     public function setArguments(array $arguments): self
     {
@@ -319,25 +241,18 @@ class ExtbaseRequestParameters
         return $this;
     }
 
-    /**
-     * Returns an array of arguments and their values
-     *
-     * @return array Associative array of arguments and their values (which may be arguments and values as well)
-     */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
 
     /**
-     * Returns the value of the specified argument
-     *
-     * @param string $argumentName Name of the argument
+     * Returns the value of the specified argument.
      *
      * @return string|array Value of the argument
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
+     * @throws NoSuchArgumentException if such an argument does not exist
      */
-    public function getArgument($argumentName)
+    public function getArgument(string $argumentName)
     {
         if (!isset($this->arguments[$argumentName])) {
             throw new NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
@@ -347,64 +262,36 @@ class ExtbaseRequestParameters
 
     /**
      * Checks if an argument of the given name exists (is set)
-     *
-     * @param string $argumentName Name of the argument to check
-     *
-     * @return bool TRUE if the argument is set, otherwise FALSE
      */
-    public function hasArgument($argumentName)
+    public function hasArgument(string $argumentName = ''): bool
     {
         return isset($this->arguments[$argumentName]);
     }
 
-    /**
-     * Sets the requested representation format
-     *
-     * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
     public function setFormat(string $format): self
     {
         $this->format = $format;
         return $this;
     }
 
-    /**
-     * Returns the requested representation format
-     *
-     * @return string The desired format, something like "html", "xml", "png", "json" or the like.
-     */
-    public function getFormat()
+    public function getFormat(): string
     {
         return $this->format;
     }
 
     /**
      * Returns the original request. Filled only if a property mapping error occurred.
-     *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request|null the original request.
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function getOriginalRequest(): ?Request
     {
         return $this->originalRequest;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest)
+    public function setOriginalRequest(Request $originalRequest): void
     {
         $this->originalRequest = $originalRequest;
     }
 
-    /**
-     * Get the request mapping results for the original request.
-     *
-     * @return \TYPO3\CMS\Extbase\Error\Result
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
     public function getOriginalRequestMappingResults(): Result
     {
         if ($this->originalRequestMappingResults === null) {
@@ -413,22 +300,11 @@ class ExtbaseRequestParameters
         return $this->originalRequestMappingResults;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Error\Result $originalRequestMappingResults
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
-    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults)
+    public function setOriginalRequestMappingResults(Result $originalRequestMappingResults): void
     {
         $this->originalRequestMappingResults = $originalRequestMappingResults;
     }
 
-    /**
-     * Get the internal arguments of the request, i.e. every argument starting
-     * with two underscores.
-     *
-     * @return array
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
-     */
     public function getInternalArguments(): array
     {
         return $this->internalArguments;
@@ -437,9 +313,7 @@ class ExtbaseRequestParameters
     /**
      * Returns the value of the specified argument
      *
-     * @param string $argumentName Name of the argument
-     * @return string|null Value of the argument, or NULL if not set.
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @return string|object|null Value of the argument, or NULL if not set.
      */
     public function getInternalArgument($argumentName)
     {
