@@ -64,6 +64,8 @@ class Features
      * @var array
      */
     protected $alwaysActiveFeatures = [
+        // Enabled in v12.0 at any time, feature switch will be completely ignored in TYPO3 v13.
+        'runtimeDbQuotingOfTcaConfiguration',
         // Enabled in v11.0 at any time, feature switch will be completely ignored in TYPO3 v12.
         'fluidBasedPageModule',
         // Enabled in v10.0 at any time, feature switch will be completely ignored in TYPO3 v11.

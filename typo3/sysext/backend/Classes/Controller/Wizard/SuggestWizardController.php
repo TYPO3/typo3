@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -151,11 +150,7 @@ class SuggestWizardController
                         $replacement['###PAGE_TSCONFIG_STR###'] = trim($connection->quote($fieldTSconfig['PAGE_TSCONFIG_STR']), '\'');
                     }
                 }
-                if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
-                    $config['addWhere'] = QueryHelper::quoteDatabaseIdentifiers($connectionPool->getConnectionForTable($queryTable), strtr(' ' . $config['addWhere'], $replacement));
-                } else {
-                    $config['addWhere'] = strtr(' ' . $config['addWhere'], $replacement);
-                }
+                $config['addWhere'] = QueryHelper::quoteDatabaseIdentifiers($connectionPool->getConnectionForTable($queryTable), strtr(' ' . $config['addWhere'], $replacement));
             }
 
             // instantiate the class that should fetch the records for this $queryTable

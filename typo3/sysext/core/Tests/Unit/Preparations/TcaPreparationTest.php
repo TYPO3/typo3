@@ -17,13 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Preparations;
 
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -330,67 +325,6 @@ class TcaPreparationTest extends UnitTestCase
                 ],
             ],
             1627335017,
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider prepareQuotingOfTableNamesAndColumnNamesDataProvider
-     */
-    public function prepareQuotingOfTableNamesAndColumnNames(array $input, array $expected): void
-    {
-        $connection = $this->prophesize(Connection::class);
-        $connection->quoteIdentifier('tt_content')->willReturn('`tt_content`');
-        $connection->quoteIdentifier('CType')->willReturn('`CType`');
-        $connection->quoteIdentifier('uid_local')->willReturn('`uid_local`');
-        $connection->quoteIdentifier('title')->willReturn('`title`');
-        $connectionPool = $this->prophesize(ConnectionPool::class);
-        $connectionPool->getConnectionForTable(Argument::any())->willReturn($connection->reveal());
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
-        $features = $this->prophesize(Features::class);
-        $features->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')->willReturn(false);
-        GeneralUtility::addInstance(Features::class, $features->reveal());
-        $subject = new TcaPreparation();
-        self::assertEquals($expected, $subject->prepare($input));
-    }
-
-    public function prepareQuotingOfTableNamesAndColumnNamesDataProvider(): array
-    {
-        return [
-            [
-                [
-                    'aTable' => [
-                        'columns' => [
-                            'foo' => [
-                                'config' => [
-                                    'type' => 'inline',
-                                    'foreign_table_where' => 'AND {#tt_content}.{#CType} IN (\'text\',\'textpic\',\'textmedia\') ORDER BY {#tt_content}.{#CType} ASC',
-                                    'MM_table_where' => 'AND {#uid_local} = ###REC_FIELD_category###',
-                                    'search' => [
-                                        'andWhere' => '{#CType}=\'text\' OR {#CType}=\'textpic\' OR {#CType}=\'textmedia\' AND {#title}=\'foo\'',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'aTable' => [
-                        'columns' => [
-                            'foo' => [
-                                'config' => [
-                                    'type' => 'inline',
-                                    'foreign_table_where' => 'AND `tt_content`.`CType` IN (\'text\',\'textpic\',\'textmedia\') ORDER BY `tt_content`.`CType` ASC',
-                                    'MM_table_where' => 'AND `uid_local` = ###REC_FIELD_category###',
-                                    'search' => [
-                                        'andWhere' => '`CType`=\'text\' OR `CType`=\'textpic\' OR `CType`=\'textmedia\' AND `title`=\'foo\'',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
         ];
     }
 

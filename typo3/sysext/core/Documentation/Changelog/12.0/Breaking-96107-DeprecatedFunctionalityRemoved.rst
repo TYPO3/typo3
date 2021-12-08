@@ -331,7 +331,7 @@ The following signals have been removed:
 
 The following features are now always enabled:
 
-- `the.feature.name`
+- `runtimeDbQuotingOfTcaConfiguration`
 
 The following features have been removed:
 

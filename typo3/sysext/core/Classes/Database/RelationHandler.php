@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Database;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -541,15 +540,9 @@ class RelationHandler
             $sorting_field = 'sorting';
         }
         if ($this->MM_table_where) {
-            if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
-                $queryBuilder->andWhere(
-                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $this->MM_table_where)))
-                );
-            } else {
-                $queryBuilder->andWhere(
-                    QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where))
-                );
-            }
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix(str_replace('###THIS_UID###', (string)$uid, QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $this->MM_table_where)))
+            );
         }
         foreach ($this->MM_match_fields as $field => $value) {
             $queryBuilder->andWhere(

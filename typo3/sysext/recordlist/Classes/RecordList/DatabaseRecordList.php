@@ -26,7 +26,6 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -2597,15 +2596,9 @@ class DatabaseRecordList
                         $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
                     }
                     if ($searchConfig['andWhere'] ?? false) {
-                        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
-                            $searchConstraint->add(
-                                QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere']))
-                            );
-                        } else {
-                            $searchConstraint->add(
-                                QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
-                            );
-                        }
+                        $searchConstraint->add(
+                            QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere']))
+                        );
                     }
                 }
                 if ($fieldType === 'text'

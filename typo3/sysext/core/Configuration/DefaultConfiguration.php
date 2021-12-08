@@ -72,7 +72,6 @@ return [
         'folderCreateMask' => '2775',
         'features' => [
             'redirects.hitCount' => false,
-            'runtimeDbQuotingOfTcaConfiguration' => true,
             'unifiedPageTranslationHandling' => false,
             'security.frontend.htmlSanitizeParseFuncDefault' => true,
             'security.backend.htmlSanitizeRte' => false,

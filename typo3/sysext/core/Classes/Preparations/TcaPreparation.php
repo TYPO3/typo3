@@ -17,11 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Preparations;
 
-use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Prepare TCA. Used in bootstrap and Flex Form Data Structures.
  *
@@ -46,9 +41,6 @@ class TcaPreparation
     public function prepare(array $tca): array
     {
         $tca = $this->configureCategoryRelations($tca);
-        if (!GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('runtimeDbQuotingOfTcaConfiguration')) {
-            $tca = $this->prepareQuotingOfTableNamesAndColumnNames($tca);
-        }
         return $tca;
     }
 
@@ -176,51 +168,5 @@ class TcaPreparation
         }
 
         return $tca;
-    }
-
-    /**
-     * Quote all table and field names in definitions known to possibly have quoted identifiers like '{#tablename}.{#columnname}='
-     *
-     * @param array $tca Incoming TCA
-     * @return array Prepared TCA
-     */
-    protected function prepareQuotingOfTableNamesAndColumnNames(array $tca): array
-    {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        $newTca = $tca;
-        $configToPrepareQuoting = [
-            'foreign_table_where',
-            'MM_table_where',
-            'search' => 'andWhere',
-        ];
-        foreach ($tca as $table => $tableDefinition) {
-            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
-                continue;
-            }
-
-            foreach ($tableDefinition['columns'] as $columnName => $columnConfig) {
-                foreach ($configToPrepareQuoting as $level => $value) {
-                    if (is_string($level)) {
-                        $sqlQueryPartToPrepareQuotingIn = $columnConfig['config'][$level][$value] ?? '';
-                    } else {
-                        $sqlQueryPartToPrepareQuotingIn = $columnConfig['config'][$value] ?? '';
-                    }
-                    if (str_contains($sqlQueryPartToPrepareQuotingIn, '{#')) {
-                        $quoted = QueryHelper::quoteDatabaseIdentifiers(
-                            $connectionPool->getConnectionForTable($table),
-                            $sqlQueryPartToPrepareQuotingIn
-                        );
-                        if (is_string($level)) {
-                            $newTca[$table]['columns'][$columnName]['config'][$level][$value] = $quoted;
-                        } else {
-                            $newTca[$table]['columns'][$columnName]['config'][$value] = $quoted;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $newTca;
     }
 }
