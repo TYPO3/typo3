@@ -281,17 +281,13 @@ interface QueryInterface
     /**
      * Sets the Query Settings. These Query settings must match the settings expected by
      * the specific Storage Backend.
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
-     * @todo decide whether this can be deprecated somewhen
      */
     public function setQuerySettings(QuerySettingsInterface $querySettings);
 
     /**
      * Returns the Query Settings.
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
-     * @todo decide whether this can be deprecated eventually
+     * @return QuerySettingsInterface $querySettings The Query Settings
      */
     public function getQuerySettings();
 
