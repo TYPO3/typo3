@@ -214,8 +214,6 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
         // A method is considered a test method, if:
         if (// It is a method
             $node instanceof \PhpParser\Node\Stmt\ClassMethod
-            // There is a method comment
-            && ($docComment = $node->getDocComment()) instanceof Doc
             // The method is public
             && $node->isPublic()
             // The methods does not start with an "_" (eg. _before())
@@ -225,15 +223,18 @@ class AcceptanceTestCaseVisitor extends NodeVisitorAbstract
             $test = [
                 'methodName' => $node->name->name,
             ];
-            preg_match_all(
-                '/\s*\s@(?<annotations>[^\s.].*)\n/',
-                $docComment->getText(),
-                $matches
-            );
-            foreach ($matches['annotations'] as $possibleDataProvider) {
-                // See if this test has a data provider attached
-                if (strpos($possibleDataProvider, 'dataProvider') === 0) {
-                    $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
+            $docComment = $node->getDocComment();
+            if ($docComment instanceof Doc) {
+                preg_match_all(
+                    '/\s*\s@(?<annotations>[^\s.].*)\n/',
+                    $docComment->getText(),
+                    $matches
+                );
+                foreach ($matches['annotations'] as $possibleDataProvider) {
+                    // See if this test has a data provider attached
+                    if (strpos($possibleDataProvider, 'dataProvider') === 0) {
+                        $test['dataProvider'] = trim(ltrim($possibleDataProvider, 'dataProvider'));
+                    }
                 }
             }
             $this->tests[] = $test;

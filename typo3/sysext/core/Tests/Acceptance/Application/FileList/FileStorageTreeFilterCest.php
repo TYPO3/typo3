@@ -36,8 +36,7 @@ class FileStorageTreeFilterCest
         $I->click('Filelist');
         $I->waitForElement('svg .nodes .node');
 
-        // @todo extend testing-frameworks AbstractPageTree.php:openPath
-        //  to make it usable with the file tree
+        // @todo extend testing-frameworks AbstractPageTree.php:openPath to make it usable with the file tree.
         $I->click($this->openPath);
         $I->waitForElement($this->withinTree . ' .node', 5);
 
@@ -64,9 +63,7 @@ class FileStorageTreeFilterCest
     }
 
     /**
-     * This test is disabled just for now
-     *
-     * @param ApplicationTester $I
+     * @todo: Method protected! This means the test is disabled.
      */
     protected function clearFilterReloadsTreeWithoutFilterApplied(ApplicationTester $I): void
     {
