@@ -1095,24 +1095,6 @@ class LocalDriverTest extends BaseTestCase
     /**
      * @test
      */
-    public function permissionsAreCorrectlyRetrievedForForbiddenFile(): void
-    {
-        if (\function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        } elseif (Environment::isWindows()) {
-            self::markTestSkipped('Test skipped if run on Windows system');
-        }
-        /** @var $subject LocalDriver */
-        [$basedir, $subject] = $this->prepareRealTestEnvironment();
-        touch($basedir . '/someForbiddenFile');
-        chmod($basedir . '/someForbiddenFile', 0);
-        clearstatcache();
-        self::assertEquals(['r' => false, 'w' => false], $subject->getPermissions('/someForbiddenFile'));
-    }
-
-    /**
-     * @test
-     */
     public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
         /** @var $subject LocalDriver */
@@ -1121,27 +1103,6 @@ class LocalDriverTest extends BaseTestCase
         chmod($basedir . '/someFolder', 448);
         clearstatcache();
         self::assertEquals(['r' => true, 'w' => true], $subject->getPermissions('/someFolder'));
-    }
-
-    /**
-     * @test
-     */
-    public function permissionsAreCorrectlyRetrievedForForbiddenFolder(): void
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        } elseif (Environment::isWindows()) {
-            self::markTestSkipped('Test skipped if run on Windows system');
-        }
-        /** @var $subject LocalDriver */
-        [$basedir, $subject] = $this->prepareRealTestEnvironment();
-        mkdir($basedir . '/someForbiddenFolder');
-        chmod($basedir . '/someForbiddenFolder', 0);
-        clearstatcache();
-        $result = $subject->getPermissions('/someForbiddenFolder');
-        // Change permissions back to writable, so the sub-folder can be removed in tearDown
-        chmod($basedir . '/someForbiddenFolder', 0777);
-        self::assertEquals(['r' => false, 'w' => false], $result);
     }
 
     /**

@@ -19,17 +19,14 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
 use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -451,54 +448,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->_set('dataMapCache', $cacheMock);
         $mockDataMapFactory->_set('baseCacheIdentifier', 'PackageDependentCacheIdentifier');
         $mockDataMapFactory->buildDataMap('UnknownObject');
-    }
-
-    /**
-     * @test
-     */
-    public function buildDataMapFetchesSubclassesRecursively(): void
-    {
-        self::markTestSkipped('Incomplete mocking in a complex scenario. This should be a functional test');
-        $configuration = [
-            'persistence' => [
-                'classes' => [
-                    Administrator::class => [
-                        'subclasses' => [
-                            'Tx_SampleExt_Domain_Model_LevelOne1' => 'Tx_SampleExt_Domain_Model_LevelOne1',
-                            'Tx_SampleExt_Domain_Model_LevelOne2' => 'Tx_SampleExt_Domain_Model_LevelOne2',
-                        ],
-                    ],
-                    'Tx_SampleExt_Domain_Model_LevelOne1' => [
-                        'subclasses' => [
-                            'Tx_SampleExt_Domain_Model_LevelTwo1' => 'Tx_SampleExt_Domain_Model_LevelTwo1',
-                            'Tx_SampleExt_Domain_Model_LevelTwo2' => 'Tx_SampleExt_Domain_Model_LevelTwo2',
-                        ],
-                    ],
-                    'Tx_SampleExt_Domain_Model_LevelOne2' => [
-                        'subclasses' => [],
-                    ],
-                ],
-            ],
-        ];
-        $expectedSubclasses = [
-            'Tx_SampleExt_Domain_Model_LevelOne1',
-            'Tx_SampleExt_Domain_Model_LevelTwo1',
-            'Tx_SampleExt_Domain_Model_LevelTwo2',
-            'Tx_SampleExt_Domain_Model_LevelOne2',
-        ];
-
-        /** @var $configurationManager \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject */
-        $configurationManager = $this->createMock(ConfigurationManager::class);
-        $configurationManager->expects(self::once())->method('getConfiguration')->with('Framework')->willReturn($configuration);
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory */
-        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['test']);
-        $dataMapFactory->_set('reflectionService', new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata'));
-        $dataMapFactory->_set('configurationManager', $configurationManager);
-        $cacheMock = $this->createMock(VariableFrontend::class);
-        $cacheMock->method('get')->willReturn(false);
-        $dataMapFactory->_set('dataMapCache', $cacheMock);
-        $dataMap = $dataMapFactory->buildDataMap(Administrator::class);
-        self::assertSame($expectedSubclasses, $dataMap->getSubclasses());
     }
 
     /**

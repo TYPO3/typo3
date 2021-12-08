@@ -593,22 +593,6 @@ class DirectoryNodeTest extends FolderStructureTestCase
     /**
      * @test
      */
-    public function isWritableReturnsFalseIfNodeExistsButFileCanNotBeCreated(): void
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        }
-        /** @var $node DirectoryNode|AccessibleObjectInterface|MockObject */
-        $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = $this->getVirtualTestDir('root_');
-        chmod($path, 02550);
-        $node->method('getAbsolutePath')->willReturn($path);
-        self::assertFalse($node->isWritable());
-    }
-
-    /**
-     * @test
-     */
     public function isDirectoryReturnsTrueIfNameIsADirectory(): void
     {
         /** @var $node DirectoryNode|AccessibleObjectInterface|MockObject */

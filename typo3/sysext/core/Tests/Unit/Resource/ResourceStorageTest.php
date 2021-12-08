@@ -31,13 +31,11 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case for ResourceStorage class
@@ -238,61 +236,6 @@ class ResourceStorageTest extends BaseTestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider capabilitiesDataProvider
-     * @TODO: Rewrite or move to functional suite
-     * @param array $capabilities
-     */
-    public function capabilitiesOfStorageObjectAreCorrectlySet(array $capabilities): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $storageRecord = [
-            'is_public' => $capabilities['public'],
-            'is_writable' => $capabilities['writable'],
-            'is_browsable' => $capabilities['browsable'],
-            'is_online' => true,
-        ];
-        $mockedDriver = $this->createDriverMock(
-            [
-                'pathType' => 'relative',
-                'basePath' => 'fileadmin/',
-            ],
-            $this->subject,
-            null
-        );
-        $this->prepareSubject([], false, $mockedDriver, null, $storageRecord);
-        self::assertEquals(
-            $capabilities['public'],
-            $this->subject->isPublic(),
-            'Capability "public" is not correctly set.'
-        );
-        self::assertEquals(
-            $capabilities['writable'],
-            $this->subject->isWritable(),
-            'Capability "writable" is not correctly set.'
-        );
-        self::assertEquals(
-            $capabilities['browsable'],
-            $this->subject->isBrowsable(),
-            'Capability "browsable" is not correctly set.'
-        );
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function fileAndFolderListFiltersAreInitializedWithDefaultFilters(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $this->prepareSubject([]);
-        self::assertEquals(
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'],
-            $this->subject->getFileAndFolderNameFilters()
-        );
     }
 
     /**
@@ -563,152 +506,6 @@ class ResourceStorageTest extends BaseTestCase
 
     /**
      * @test
-     * @group integration
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function setFileContentsUpdatesObjectProperties(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $this->initializeVfs();
-        $driverObject = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
-        $this->subject = $this->getMockBuilder(ResourceStorage::class)
-            ->onlyMethods(['getFileIndexRepository', 'checkFileActionPermission'])
-            ->setConstructorArgs([$driverObject, [], $this->eventDispatcher])
-            ->getMock();
-        $this->subject->method('checkFileActionPermission')->willReturn(true);
-        $fileInfo = [
-            'storage' => 'A',
-            'identifier' => 'B',
-            'mtime' => 'C',
-            'ctime' => 'D',
-            'mimetype' => 'E',
-            'size' => 'F',
-            'name' => 'G',
-        ];
-        $newProperties = [
-            'storage' => $fileInfo['storage'],
-            'identifier' => $fileInfo['identifier'],
-            'tstamp' => $fileInfo['mtime'],
-            'crdate' => $fileInfo['ctime'],
-            'mime_type' => $fileInfo['mimetype'],
-            'size' => $fileInfo['size'],
-            'name' => $fileInfo['name'],
-        ];
-        $hash = 'asdfg';
-        /** @var $mockedDriver LocalDriver|MockObject */
-        $mockedDriver = $this->getMockBuilder(LocalDriver::class)
-            ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
-            ->getMock();
-        $mockedDriver->expects(self::once())->method('getFileInfoByIdentifier')->willReturn($fileInfo);
-        $mockedDriver->expects(self::once())->method('hash')->willReturn($hash);
-        $this->subject->setDriver($mockedDriver);
-        $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
-        $this->subject->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
-        /** @var $mockedFile File|MockObject */
-        $mockedFile = $this->createMock(File::class);
-        $mockedFile->method('getIdentifier')->willReturn($fileInfo['identifier']);
-        // called by indexer because the properties are updated
-        $this->subject->method('getFileInfoByIdentifier')->willReturn($newProperties);
-        $mockedFile->method('getStorage')->willReturn($this->subject);
-        $mockedFile->method('getProperties')->willReturn(array_keys($fileInfo));
-        $mockedFile->method('getUpdatedProperties')->willReturn(array_keys($newProperties));
-        // do not update directly; that's up to the indexer
-        $indexFileRepositoryMock->expects(self::never())->method('update');
-        $this->subject->setFileContents($mockedFile, StringUtility::getUniqueId('content_'));
-    }
-
-    /**
-     * @test
-     * @group integration
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function moveFileCallsDriversMethodsWithCorrectArguments(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $localFilePath = '/path/to/localFile';
-        $sourceFileIdentifier = '/sourceFile.ext';
-        $fileInfoDummy = [
-            'storage' => 'A',
-            'identifier' => 'B',
-            'mtime' => 'C',
-            'ctime' => 'D',
-            'mimetype' => 'E',
-            'size' => 'F',
-            'name' => 'G',
-        ];
-        $this->addToMount([
-            'targetFolder' => [],
-        ]);
-        $this->initializeVfs();
-        $targetFolder = $this->getSimpleFolderMock('/targetFolder/');
-        /** @var $sourceDriver LocalDriver|MockObject */
-        $sourceDriver = $this->createMock(LocalDriver::class);
-        $sourceDriver->expects(self::once())->method('deleteFile')->with(self::equalTo($sourceFileIdentifier));
-        $configuration = $this->convertConfigurationArrayToFlexformXml([]);
-        $sourceStorage = new ResourceStorage($sourceDriver, ['configuration' => $configuration]);
-        $sourceFile = $this->getSimpleFileMock($sourceFileIdentifier);
-        $sourceFile->expects(self::once())->method('getForLocalProcessing')->willReturn($localFilePath);
-        $sourceFile->method('getStorage')->willReturn($sourceStorage);
-        $sourceFile->expects(self::once())->method('getUpdatedProperties')->willReturn(array_keys($fileInfoDummy));
-        $sourceFile->expects(self::once())->method('getProperties')->willReturn($fileInfoDummy);
-        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\LocalDriver|MockObject */
-        $mockedDriver = $this->getMockBuilder(LocalDriver::class)
-            ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
-            ->getMock();
-        $mockedDriver->expects(self::once())->method('getFileInfoByIdentifier')->willReturn($fileInfoDummy);
-        $mockedDriver->expects(self::once())->method('addFile')->with(
-            $localFilePath,
-            '/targetFolder/',
-            self::equalTo('file.ext')
-        )->willReturn('/targetFolder/file.ext');
-        /** @var $subject ResourceStorage */
-        $subject = $this->getMockBuilder(ResourceStorage::class)
-            ->onlyMethods(['assureFileMovePermissions'])
-            ->setConstructorArgs([$mockedDriver, ['configuration' => $configuration], $this->eventDispatcher])
-            ->getMock();
-        $subject->moveFile($sourceFile, $targetFolder, 'file.ext');
-    }
-
-    /**
-     * @test
-     * @group integration
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function storageUsesInjectedFilemountsToCheckForMountBoundaries(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $mockedFile = $this->getSimpleFileMock('/mountFolder/file');
-        $this->addToMount([
-            'mountFolder' => [
-                'file' => 'asdfg',
-            ],
-        ]);
-        $mockedDriver = $this->createDriverMock(['basePath' => $this->getMountRootUrl()], null, null);
-        $this->initializeVfs();
-        $this->prepareSubject([], (bool)null, $mockedDriver);
-        $this->subject->addFileMount('/mountFolder');
-        self::assertCount(1, $this->subject->getFileMounts());
-        $this->subject->isWithinFileMountBoundaries($mockedFile);
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function createFolderChecksIfParentFolderExistsBeforeCreatingFolder(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
-        $mockedDriver = $this->createDriverMock([]);
-        $mockedDriver->expects(self::once())->method('folderExists')->with(self::equalTo('/someFolder/'))->willReturn(true);
-        $mockedDriver->expects(self::once())->method('createFolder')->with(self::equalTo('newFolder'))->willReturn($mockedParentFolder);
-        $this->prepareSubject([], true);
-        $this->subject->setDriver($mockedDriver);
-        $this->subject->createFolder('newFolder', $mockedParentFolder);
-    }
-
-    /**
-     * @test
      */
     public function deleteFolderThrowsExceptionIfFolderIsNotEmptyAndRecursiveDeleteIsDisabled(): void
     {
@@ -725,74 +522,6 @@ class ResourceStorageTest extends BaseTestCase
         $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);
         $subject->deleteFolder($folderMock, false);
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function createFolderCallsDriverForFolderCreation(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $mockedParentFolder = $this->getSimpleFolderMock('/someFolder/');
-        $this->prepareSubject([], true);
-        $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects(self::once())->method('createFolder')->with(
-            self::equalTo('newFolder'),
-            self::equalTo('/someFolder/')
-        )->willReturn(true);
-        $mockedDriver->expects(self::once())->method('folderExists')->with(self::equalTo('/someFolder/'))->willReturn(true);
-        $this->subject->createFolder('newFolder', $mockedParentFolder);
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function createFolderCanRecursivelyCreateFolders(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $this->addToMount(['someFolder' => []]);
-        $mockedDriver = $this->createDriverMock(['basePath' => $this->getMountRootUrl()], null, null);
-        $this->prepareSubject([], true, $mockedDriver);
-        $parentFolder = $this->subject->getFolder('/someFolder/');
-        $newFolder = $this->subject->createFolder('subFolder/secondSubfolder', $parentFolder);
-        self::assertEquals('secondSubfolder', $newFolder->getName());
-        self::assertFileExists($this->getUrlInMount('/someFolder/subFolder/'));
-        self::assertFileExists($this->getUrlInMount('/someFolder/subFolder/secondSubfolder/'));
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function createFolderUsesRootFolderAsParentFolderIfNotGiven(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $this->prepareSubject([], true);
-        $mockedDriver = $this->createDriverMock([], $this->subject);
-        $mockedDriver->expects(self::once())->method('getRootLevelFolder')->with()->willReturn('/');
-        $mockedDriver->expects(self::once())->method('createFolder')->with(self::equalTo('someFolder'));
-        $this->subject->createFolder('someFolder');
-    }
-
-    /**
-     * @test
-     * @TODO: Rewrite or move to functional suite
-     */
-    public function createFolderCreatesNestedStructureEvenIfPartsAlreadyExist(): void
-    {
-        self::markTestSkipped('This test does way to much and is mocked incomplete. Skipped for now.');
-        $this->addToMount([
-            'existingFolder' => [],
-        ]);
-        $this->initializeVfs();
-        $mockedDriver = $this->createDriverMock(['basePath' => $this->getMountRootUrl()], null, null);
-        $this->prepareSubject([], true, $mockedDriver);
-        $rootFolder = $this->subject->getFolder('/');
-        $newFolder = $this->subject->createFolder('existingFolder/someFolder', $rootFolder);
-        self::assertEquals('someFolder', $newFolder->getName());
-        self::assertFileExists($this->getUrlInMount('existingFolder/someFolder'));
     }
 
     /**

@@ -189,62 +189,6 @@ class AbstractNodeTest extends FolderStructureTestCase
     /**
      * @test
      */
-    public function fixPermissionReturnsNoticeStatusIfPermissionCanNotBeChanged(): void
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        }
-        /** @var $node AbstractNode|AccessibleObjectInterface|MockObject */
-        $node = $this->getAccessibleMock(
-            AbstractNode::class,
-            ['isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'],
-            [],
-            '',
-            false
-        );
-        $node->method('getRelativePathBelowSiteRoot')->willReturn('');
-        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
-        $path = $this->getVirtualTestDir();
-        $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
-        mkdir($subPath);
-        chmod($path, 02000);
-        $node->method('getAbsolutePath')->willReturn($subPath);
-        $node->_set('targetPermission', '2770');
-        self::assertEquals(FlashMessage::NOTICE, $node->_call('fixPermission')->getSeverity());
-        chmod($path, 02770);
-    }
-
-    /**
-     * @test
-     */
-    public function fixPermissionReturnsNoticeStatusIfPermissionsCanNotBeChanged(): void
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        }
-        /** @var $node AbstractNode|AccessibleObjectInterface|MockObject */
-        $node = $this->getAccessibleMock(
-            AbstractNode::class,
-            ['isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'],
-            [],
-            '',
-            false
-        );
-        $node->method('getRelativePathBelowSiteRoot')->willReturn('');
-        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
-        $path = $this->getVirtualTestDir();
-        $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
-        mkdir($subPath);
-        chmod($path, 02000);
-        $node->method('getAbsolutePath')->willReturn($subPath);
-        $node->_set('targetPermission', '2770');
-        self::assertEquals(FlashMessage::NOTICE, $node->_call('fixPermission')->getSeverity());
-        chmod($path, 02770);
-    }
-
-    /**
-     * @test
-     */
     public function fixPermissionReturnsOkStatusIfPermissionCanBeFixedAndSetsPermissionToCorrectValue(): void
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|MockObject */

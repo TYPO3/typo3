@@ -374,34 +374,6 @@ class ConfigurationManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @requires OSFAMILY Linux|Darwin
-     */
-    public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable(): void
-    {
-        if (\function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        }
-        /** @var $subject ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
-
-        $file = StringUtility::getUniqueId('test_');
-        $absoluteFile = Environment::getVarPath() . '/tests/' . $file;
-        touch($absoluteFile);
-        $this->testFilesToDelete[] = $absoluteFile;
-        chmod($absoluteFile, 0444);
-        clearstatcache();
-
-        $subject->_set('localConfigurationFile', $file);
-
-        $result = $subject->canWriteConfiguration();
-
-        chmod($absoluteFile, 0644);
-
-        self::assertFalse($result);
-    }
-
-    /**
-     * @test
      */
     public function canWriteConfigurationReturnsTrueIfDirectoryAndFilesAreWritable(): void
     {
