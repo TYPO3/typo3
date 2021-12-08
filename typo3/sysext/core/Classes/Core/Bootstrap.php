@@ -118,8 +118,6 @@ class Bootstrap
         $dependencyInjectionContainerCache = static::createCache('di');
 
         $bootState = new \stdClass();
-        $bootState->done = false;
-        // After a deprecation grace period, only one of those flag will remain, likely ->done
         $bootState->complete = false;
         $bootState->cacheDisabled = $disableCaching;
 
@@ -152,7 +150,6 @@ class Bootstrap
         ExtensionManagementUtility::setPackageManager($packageManager);
 
         if ($failsafe) {
-            $bootState->done = true;
             $bootState->complete = true;
             return $container;
         }
@@ -162,7 +159,6 @@ class Bootstrap
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
         static::unsetReservedGlobalVariables();
-        $bootState->done = true;
         static::loadBaseTca(true, $coreCache);
         static::checkEncryptionKey();
         $bootState->complete = true;

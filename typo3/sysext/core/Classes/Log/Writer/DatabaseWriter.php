@@ -63,7 +63,7 @@ class DatabaseWriter extends AbstractWriter
     public function writeLog(LogRecord $record)
     {
         try {
-            // Avoid database writes until boot has been completed.
+            // Avoid ConnectionPool usage prior boot completion (see #96291).
             if (!GeneralUtility::getContainer()->get('boot.state')->complete) {
                 return $this;
             }

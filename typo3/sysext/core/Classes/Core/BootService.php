@@ -125,7 +125,6 @@ class BootService
         $backup = $this->makeCurrent($container);
         $beUserBackup = $GLOBALS['BE_USER'] ?? null;
 
-        $container->get('boot.state')->done = false;
         $container->get('boot.state')->complete = false;
         $assetsCache = $container->get('cache.assets');
         PageRenderer::setCache($assetsCache);
@@ -134,11 +133,10 @@ class BootService
         Bootstrap::loadTypo3LoadedExtAndExtLocalconf($allowCaching, $container->get('cache.core'));
         Bootstrap::unsetReservedGlobalVariables();
         $GLOBALS['BE_USER'] = $beUserBackup;
-        $container->get('boot.state')->done = true;
         Bootstrap::loadBaseTca($allowCaching, $container->get('cache.core'));
-        Bootstrap::loadExtTables($allowCaching, $container->get('cache.core'));
         $container->get('boot.state')->complete = true;
         $eventDispatcher->dispatch(new BootCompletedEvent($allowCaching));
+        Bootstrap::loadExtTables($allowCaching, $container->get('cache.core'));
 
         if ($resetContainer) {
             $this->makeCurrent(null, $backup);
