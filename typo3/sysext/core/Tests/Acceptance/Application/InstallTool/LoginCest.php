@@ -25,8 +25,7 @@ class LoginCest extends AbstractCest
     public function installToolLogin(ApplicationTester $I): void
     {
         $I->amGoingTo('assert the install tool is locked in the first place');
-        $I->waitForElementVisible('.panel-heading');
-        $I->see('The Install Tool is locked');
+        $I->waitForText('The Install Tool is locked', 10, '.callout-warning');
         $I->assertFileDoesNotExist(self::ENABLE_INSTALL_TOOL_FILEPATH);
 
         $I->amGoingTo('lock the tool without logging in');

@@ -109,7 +109,7 @@ class RecyclerModuleCest
         $I->click('.t3js-multi-record-selection-check-actions-toggle');
         $I->click('button[data-multi-record-selection-check-action="check-all"]');
 
-        $I->click('Delete 2 records');
+        $I->click('button[data-multi-record-selection-action="massdelete"]');
         $this->modalDialog->canSeeDialog();
         $this->modalDialog->clickButtonInDialog('Delete');
 

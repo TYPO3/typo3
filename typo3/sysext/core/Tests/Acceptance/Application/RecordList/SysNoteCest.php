@@ -45,8 +45,7 @@ class SysNoteCest
         $I->click('.module-docheader .btn[title="Create new record"]');
         $I->wait(0.2);
         $I->canSee('New record');
-
-        $I->scrollTo(Locator::find('span', ['data-table' => 'sys_note']));
+        $I->scrollTo(Locator::find('span', ['data-identifier' => 'mimetypes-x-sys_note']));
         $I->click('Internal note');
 
         $I->fillField('//input[contains(@data-formengine-input-name, "data[sys_note]") and contains(@data-formengine-input-name, "[subject]")]', 'new sys_note');

@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 class InlineFalCest
 {
-    protected static string $filenameSelector = '.form-irre-header-body > span > dl.row:first-child > dd:last-child';
+    protected static string $filenameSelector = '.form-irre-header-body > span > dl.row:first-child > dd.col';
     protected static string $saveButtonLink = '//*/button[@name="_savedok"][1]';
 
     /**
