@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'A Blog Example for the Extbase Framework',
-    'description' => 'An example extension demonstrating the features of the Extbase Framework. It is the back-ported and tweaked Blog Example package of TYPO3.Flow. Have fun playing with it!',
+    'title' => 'Functional test related extension derived from blog_example',
+    'description' => 'A test related extension used to verify various extbase features',
     'category' => 'example',
     'author' => 'TYPO3 core team',
     'author_company' => '',
