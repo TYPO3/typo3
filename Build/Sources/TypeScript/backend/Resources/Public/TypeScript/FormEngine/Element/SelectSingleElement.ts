@@ -11,14 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {Listener} from 'TYPO3/CMS/Core/Event/EventInterface';
 import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import DocumentService = require('TYPO3/CMS/Core/DocumentService');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
 interface SelectSingleElementOptions {
-  onChange?: Listener|OnFieldChangeItem[];
+  onChange?: OnFieldChangeItem[];
 }
 
 /**
@@ -61,13 +60,7 @@ class SelectSingleElement {
 
     if (options.onChange instanceof Array) {
       // hand `OnFieldChange` processing over to `FormEngine`
-      new RegularEvent('change', () => {
-        FormEngine.processOnFieldChange(options.onChange as OnFieldChangeItem[]);
-      }).bindTo(selectElement);
-    } else if (typeof options.onChange === 'function') {
-      // @deprecated in favor of `OnFieldChangeItem[]`
-      // Append optionally passed additional "change" event callback
-      new RegularEvent('change', options.onChange).bindTo(selectElement);
+      new RegularEvent('change', () => FormEngine.processOnFieldChange(options.onChange)).bindTo(selectElement);
     }
 
     new RegularEvent('click', (e: Event, target: HTMLAnchorElement): void => {
