@@ -20,32 +20,23 @@ namespace TYPO3\CMS\Core\Tests\Unit\Crypto\PasswordHashing;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class Argon2idPasswordHashTest extends UnitTestCase
 {
     protected Argon2idPasswordHash $subject;
 
-    /**
-     * Sets up the subject for this test case.
-     *
-     * @requires PHP 7.3
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $options = [
             'memory_cost' => 65536,
             'time_cost' => 4,
-            'threads' => 2,
+            'threads' => 1,
         ];
         $this->subject = new Argon2idPasswordHash($options);
     }
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function constructorThrowsExceptionIfMemoryCostIsTooLow(): void
     {
@@ -56,7 +47,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function constructorThrowsExceptionIfTimeCostIsTooLow(): void
     {
@@ -67,22 +57,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
-     */
-    public function constructorThrowsExceptionIfThreadsIsTooLow(): void
-    {
-        if (extension_loaded('sodium')) {
-            self::markTestSkipped('Thread count is always 1 when libsodium is enabled.');
-            return;
-        }
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1533899614);
-        new Argon2idPasswordHash(['threads' => 0]);
-    }
-
-    /**
-     * @test
-     * @requires PHP 7.3
      */
     public function getHashedPasswordReturnsNullOnEmptyPassword(): void
     {
@@ -91,7 +65,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function getHashedPasswordReturnsString(): void
     {
@@ -102,7 +75,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword(): void
     {
@@ -114,7 +86,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * Tests authentication procedure with alphabet characters.
      *
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithValidAlphaCharClassPassword(): void
     {
@@ -127,7 +98,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * Tests authentication procedure with numeric characters.
      *
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithValidNumericCharClassPassword(): void
     {
@@ -140,7 +110,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * Tests authentication procedure with US-ASCII special characters.
      *
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithValidAsciiSpecialCharClassPassword(): void
     {
@@ -153,7 +122,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * Tests authentication procedure with latin1 special characters.
      *
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1SpecialCharClassPassword(): void
     {
@@ -170,7 +138,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
      * Tests authentication procedure with latin1 umlauts.
      *
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithValidLatin1UmlautCharClassPassword(): void
     {
@@ -188,7 +155,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function checkPasswordReturnsTrueForHashedPasswordWithNonValidPassword(): void
     {
@@ -200,7 +166,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function isHashUpdateNeededReturnsFalseForJustGeneratedHash(): void
     {
@@ -211,7 +176,6 @@ class Argon2idPasswordHashTest extends UnitTestCase
 
     /**
      * @test
-     * @requires PHP 7.3
      */
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions(): void
     {

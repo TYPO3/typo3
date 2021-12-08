@@ -1226,37 +1226,6 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @requires OSFAMILY Linux|Darwin (path starts with a drive on Windows)
-     */
-    public function getIndpEnvTypo3SitePathReturnsStringStartingWithSlash(): void
-    {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getBackendPath() . '/index.php',
-            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
-        );
-        $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        self::assertEquals('/', $result[0]);
-    }
-
-    /**
-     * @test
-     * @requires OSFAMILY Windows
-     */
-    public function getIndpEnvTypo3SitePathReturnsStringStartingWithDrive(): void
-    {
-        $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        self::assertMatchesRegularExpression('/^[a-z]:\//i', $result);
-    }
-
-    /**
-     * @test
      */
     public function getIndpEnvTypo3SitePathReturnsStringEndingWithSlash(): void
     {
@@ -2360,49 +2329,6 @@ class GeneralUtilityTest extends UnitTestCase
         self::assertEquals('0772', $resultDirectoryPermissions);
     }
 
-    /**
-     * @test
-     */
-    public function mkdirSetsGroupOwnershipOfCreatedDirectory(): void
-    {
-        $swapGroup = $this->checkGroups(__FUNCTION__);
-        if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('mkdirtest_');
-            GeneralUtilityFilesystemFixture::mkdir($directory);
-            clearstatcache();
-            $resultDirectoryGroup = filegroup($directory);
-            self::assertEquals($resultDirectoryGroup, $swapGroup);
-        }
-    }
-
-    ///////////////////////////////
-    // Helper function for filesystem ownership tests
-    ///////////////////////////////
-    /**
-     * Check if test on filesystem group ownership can be done in this environment
-     * If so, return second group of webserver user
-     *
-     * @param string $methodName calling method name
-     * @return mixed FALSE if test cannot be run, int group id of the second group of webserver user
-     * @requires function posix_getegid
-     * @requires function posix_getgroups
-     */
-    private function checkGroups(string $methodName)
-    {
-        if (Environment::isWindows()) {
-            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
-            return false;
-        }
-        $groups = posix_getgroups();
-        if (count($groups) <= 1) {
-            self::markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
-            return false;
-        }
-        $secondaryGroups = array_diff($groups, [posix_getegid()]);
-        return array_shift($secondaryGroups);
-    }
-
     /////////////////////////////////////////////
     // Tests concerning writeFileToTypo3tempDir()
     /////////////////////////////////////////////
@@ -2598,59 +2524,6 @@ class GeneralUtilityTest extends UnitTestCase
         chmod($baseDirectory . $existingDirectory, 482);
         GeneralUtility::mkdir_deep($baseDirectory . $existingDirectory . $newSubDirectory);
         self::assertEquals(742, (int)substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
-    }
-
-    /**
-     * @test
-     */
-    public function mkdirDeepSetsGroupOwnershipOfCreatedDirectory(): void
-    {
-        $swapGroup = $this->checkGroups(__FUNCTION__);
-        if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
-            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
-            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
-            clearstatcache();
-            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            self::assertEquals($resultDirectoryGroup, $swapGroup);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function mkdirDeepSetsGroupOwnershipOfCreatedParentDirectory(): void
-    {
-        $swapGroup = $this->checkGroups(__FUNCTION__);
-        if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
-            $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
-            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
-            clearstatcache();
-            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            self::assertEquals($resultDirectoryGroup, $swapGroup);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function mkdirDeepSetsGroupOwnershipOnNewSubDirectory(): void
-    {
-        $swapGroup = $this->checkGroups(__FUNCTION__);
-        if ($swapGroup !== false) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
-            $subDirectory = $directory . '/bar';
-            GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
-            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
-            clearstatcache();
-            $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            self::assertEquals($resultDirectoryGroup, $swapGroup);
-        }
     }
 
     /**
@@ -4059,36 +3932,6 @@ class GeneralUtilityTest extends UnitTestCase
             ],
         ];
         self::assertSame($expected, GeneralUtility::xml2arrayProcess($input));
-    }
-
-    /**
-     * @todo: The parser run into a memory issue with files bigger 10 MB
-     * @todo: This special tests documents the issue. If fixed, this test
-     * @todo: should become a data set of xml2ArrayHandlesBigXmlFilesDataProvider()
-     * @todo: This test does not pass in all environments. It should be evaluated whether this test is really needed or should be removed.
-     *
-     * @see https://forge.typo3.org/issues/83580
-     *
-     * @test
-     */
-    public function xml2ArrayFailsWithXmlContentBiggerThanTenMegabytes(): void
-    {
-        self::markTestSkipped('This test does not pass in all environments. It should be evaluated whether this test is really needed or should be removed.');
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheProphecy->get('generalUtilityXml2Array')->shouldBeCalled()->willReturn(false);
-        $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $input = '<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-            <T3:T3FlexForms>
-                <data>
-                    <field index="settings.persistenceIdentifier">
-                        <value index="vDEF">' . str_repeat('1', 10 * 1024 * 1024) . '</value>
-                    </field>
-                </data>
-            </T3:T3FlexForms>';
-        self::assertStringContainsString('No memory', GeneralUtility::xml2array($input));
     }
 
     /**

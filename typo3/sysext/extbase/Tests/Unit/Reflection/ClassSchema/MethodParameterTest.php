@@ -50,21 +50,6 @@ class MethodParameterTest extends UnitTestCase
     /**
      * @test
      */
-    public function classSchemaDetectsNullableParams(): void
-    {
-        self::markTestSkipped('Skip until MethodParameter::allowsNull() is needed and properly implemented');
-
-        self::assertTrue(
-            (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
-                ->getMethod('methodWithNullableParam')
-                ->getParameter('param')
-                ->allowsNull()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function classSchemaDetectsDefaultValueParams(): void
     {
         self::assertSame(

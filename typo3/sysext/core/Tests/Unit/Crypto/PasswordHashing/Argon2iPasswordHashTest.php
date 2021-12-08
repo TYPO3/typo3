@@ -36,7 +36,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
         $options = [
             'memory_cost' => 65536,
             'time_cost' => 4,
-            'threads' => 2,
+            'threads' => 1,
         ];
         $this->subject = new Argon2iPasswordHash($options);
     }
@@ -59,20 +59,6 @@ class Argon2iPasswordHashTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533899613);
         new Argon2iPasswordHash(['time_cost' => 1]);
-    }
-
-    /**
-     * @test
-     */
-    public function constructorThrowsExceptionIfThreadsIsTooLow(): void
-    {
-        if (extension_loaded('sodium')) {
-            self::markTestSkipped('Thread count is always 1 when libsodium is enabled.');
-            return;
-        }
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1533899614);
-        new Argon2iPasswordHash(['threads' => 0]);
     }
 
     /**

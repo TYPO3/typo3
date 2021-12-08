@@ -748,26 +748,6 @@ class FileNodeTest extends FolderStructureTestCase
     /**
      * @test
      */
-    public function setContentReturnsErrorStatusIfContentCanNotBeSetSet(): void
-    {
-        if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            self::markTestSkipped('Test skipped if run on linux as root');
-        }
-        /** @var $node FileNode|AccessibleObjectInterface|MockObject */
-        $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
-        $dir = $this->getVirtualTestDir('dir_');
-        $file = $dir . '/' . StringUtility::getUniqueId('file_');
-        touch($file);
-        chmod($file, 0440);
-        $node->method('getAbsolutePath')->willReturn($file);
-        $targetContent = StringUtility::getUniqueId('content_');
-        $node->_set('targetContent', $targetContent);
-        self::assertSame(FlashMessage::ERROR, $node->_call('setContent')->getSeverity());
-    }
-
-    /**
-     * @test
-     */
     public function isFileReturnsTrueIfNameIsFile(): void
     {
         /** @var $node FileNode|AccessibleObjectInterface|MockObject */

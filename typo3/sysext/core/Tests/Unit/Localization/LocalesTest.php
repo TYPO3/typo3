@@ -115,21 +115,6 @@ class LocalesTest extends UnitTestCase
         self::assertEquals($locale, $currentLocale);
     }
 
-    /**
-     * @test
-     * @requires OSFAMILY Linux|Darwin (setlocale does not check invalid locales on Windows)
-     */
-    public function setSystemLocaleFromSiteLanguageWithInvalidLocaleDoesNotSetLocale(): void
-    {
-        $locale = 'af_EUR';
-        $site = $this->createSiteWithDefaultLanguage($locale);
-        $result = Locales::setSystemLocaleFromSiteLanguage($site->getLanguageById(0));
-        self::assertFalse($result);
-        $currentLocale = setlocale(LC_COLLATE, 0);
-        // Check that the locale was not overridden
-        self::assertEquals($this->originalLocale, $currentLocale);
-    }
-
     private function createSiteWithDefaultLanguage(string $locale): Site
     {
         return new Site('test', 1, [
