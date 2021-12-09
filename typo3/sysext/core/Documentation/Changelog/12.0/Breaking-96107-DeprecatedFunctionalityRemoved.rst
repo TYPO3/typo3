@@ -195,6 +195,7 @@ The following PHP class methods changed signature according to previous deprecat
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getConfigArray()` (argument 1 is always required)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()` (argument 1 is always required)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->INTincScript()` (argument 1 is always required)
+- :php:`\TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder->build()` (return type is now of LinkResultInterface)
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 

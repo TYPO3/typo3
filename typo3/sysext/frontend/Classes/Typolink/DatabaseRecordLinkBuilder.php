@@ -26,10 +26,7 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  */
 class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
-    public function build(array &$linkDetails, string $linkText, string $target, array $conf)
+    public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $pageTsConfig = $tsfe->getPagesTSconfig();

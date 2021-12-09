@@ -39,22 +39,9 @@ use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
  */
 abstract class AbstractTypolinkBuilder
 {
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $contentObjectRenderer;
+    protected ContentObjectRenderer $contentObjectRenderer;
+    protected ?TypoScriptFrontendController $typoScriptFrontendController = null;
 
-    /**
-     * @var TypoScriptFrontendController|null
-     */
-    protected $typoScriptFrontendController;
-
-    /**
-     * AbstractTypolinkBuilder constructor.
-     *
-     * @param ContentObjectRenderer $contentObjectRenderer
-     * @param TypoScriptFrontendController $typoScriptFrontendController
-     */
     public function __construct(ContentObjectRenderer $contentObjectRenderer, TypoScriptFrontendController $typoScriptFrontendController = null)
     {
         $this->contentObjectRenderer = $contentObjectRenderer;
@@ -72,9 +59,9 @@ abstract class AbstractTypolinkBuilder
      * @param string $linkText the link text
      * @param string $target the target to point to
      * @param array $conf the TypoLink configuration array
-     * @return array|LinkResultInterface an array with three parts (URL, Link Text, Target) - please note that in TYPO3 v12.0. this method will require to return a LinkResultInterface object
+     * @return LinkResultInterface
      */
-    abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf);
+    abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
 
     /**
      * Forces a given URL to be absolute.
@@ -241,9 +228,6 @@ abstract class AbstractTypolinkBuilder
         return $url;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     public function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {

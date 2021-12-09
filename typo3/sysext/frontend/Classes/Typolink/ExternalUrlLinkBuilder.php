@@ -25,9 +25,6 @@ use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
  */
 class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $url = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);

@@ -48,10 +48,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class PageLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     * @throws UnableToLinkException
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();

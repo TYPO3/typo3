@@ -26,9 +26,6 @@ use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
  */
 class LegacyLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $tsfe = $this->getTypoScriptFrontendController();

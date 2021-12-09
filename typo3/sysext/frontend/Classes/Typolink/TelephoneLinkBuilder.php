@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Frontend\Typolink;
  */
 class TelephoneLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         return (new LinkResult($linkDetails['type'], $linkDetails['typoLinkParameter']))->withLinkConfiguration($conf)->withLinkText($linkText);

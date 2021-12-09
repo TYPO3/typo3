@@ -26,9 +26,6 @@ use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
  */
 class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         $fileOrFolderObject = ($linkDetails['file'] ?? false) ?: ($linkDetails['folder'] ?? null);

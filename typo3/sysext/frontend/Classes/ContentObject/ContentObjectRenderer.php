@@ -4638,19 +4638,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
             );
             try {
                 $linkedResult = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
-                // Legacy layer, can be removed in TYPO3 v12.0.
-                if (!($linkedResult instanceof LinkResultInterface)) {
-                    if (is_array($linkedResult)) {
-                        [$url, $linkText, $target] = $linkedResult;
-                    } else {
-                        $url = '';
-                    }
-                    $linkedResult = new LinkResult($linkDetails['type'], $url);
-                    $linkedResult = $linkedResult
-                        ->withTarget($target)
-                        ->withLinkConfiguration($conf)
-                        ->withLinkText($linkText);
-                }
             } catch (UnableToLinkException $e) {
                 $this->logger->debug('Unable to link "{text}"', [
                     'text' => $e->getLinkText(),

@@ -24,9 +24,6 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
  */
 class EmailLinkBuilder extends AbstractTypolinkBuilder
 {
-    /**
-     * @inheritdoc
-     */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
         [$url, $linkText, $attributes] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
