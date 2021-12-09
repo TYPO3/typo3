@@ -21,7 +21,6 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\PlatformRepository;
 use Composer\Script\Event;
 use Composer\Util\Filesystem;
-use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Composer\Plugin\Config;
 use TYPO3\CMS\Composer\Plugin\Core\InstallerScript;
 use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
@@ -214,7 +213,6 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
             )
         );
 
-        $installedTypo3Packages = $this->amendWithLocallyAvailableExtensions($installedTypo3Packages);
         $this->publishResources($installedTypo3Packages);
 
         return $installedTypo3Packages;
@@ -281,69 +279,5 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 $fileSystem->relativeSymlink($fileSystemResourcesPath, $publicResourcesPath);
             }
         }
-    }
-
-    /**
-     * Add extensions, that are located in typo3conf/ext, but are not installed by Composer
-     * to the list of known packages. This is now deprecated and will be removed with TYPO3 12.
-     * From then on all Extension for Composer enabled TYPO3 projects must be installed with Composer.
-     *
-     * @deprecated Will be removed with TYPO3 12
-     * @param array $installedTypo3Packages
-     * @return array
-     */
-    private function amendWithLocallyAvailableExtensions(array $installedTypo3Packages): array
-    {
-        $installedExtensionKeys = array_map(
-            static function (array $packageAndPathAndKey) {
-                [, , $extensionKey] = $packageAndPathAndKey;
-                return $extensionKey;
-            },
-            $installedTypo3Packages
-        );
-
-        foreach ($this->scanForRootExtensions($installedExtensionKeys) as [$composerPackage, $path, $extensionKey]) {
-            $this->event->getIO()->warning(sprintf('Extension "%s" not installed with Composer. This is deprecated and will not work any more with TYPO3 12.', $extensionKey));
-            $installedTypo3Packages[] = [$composerPackage, $path, $extensionKey];
-        }
-
-        return $installedTypo3Packages;
-    }
-
-    /**
-     * Scans typo3conf/ext folder for extensions
-     *
-     * @param array $installedExtensionKeys
-     * @return array
-     */
-    private function scanForRootExtensions(array $installedExtensionKeys): array
-    {
-        $thirdPartyExtensionDir = $this->config->get('root-dir') . self::LEGACY_EXTENSION_INSTALL_PATH;
-        if (!is_dir($thirdPartyExtensionDir) || !$this->hasSubDirectories($thirdPartyExtensionDir)) {
-            return [];
-        }
-        $rootExtensionPackages = [];
-        $finder = new Finder();
-        $finder
-            ->name('composer.json')
-            ->followLinks()
-            ->depth(0)
-            ->ignoreUnreadableDirs()
-            ->in($thirdPartyExtensionDir . '/*/');
-
-        foreach ($finder as $splFileInfo) {
-            $foundExtensionKey = basename($splFileInfo->getPath());
-            if (in_array($foundExtensionKey, $installedExtensionKeys, true)) {
-                // Found the extension to be installed with Composer, so no need to register it again
-                continue;
-            }
-            $composerJson = json_decode($splFileInfo->getContents(), true);
-            $extPackage = new \Composer\Package\Package($composerJson['name'], '1.0.0', '1.0.0.0');
-            $extPackage->setExtra($composerJson['extra'] ?? []);
-            $extPackage->setType($composerJson['type'] ?? 'typo3-cms-extension');
-            $rootExtensionPackages[] = [$extPackage, $splFileInfo->getPath(), $foundExtensionKey];
-        }
-
-        return $rootExtensionPackages;
     }
 }

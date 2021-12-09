@@ -46,10 +46,6 @@ parameters:
       count: 1
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
     -
-      message: "#^Instantiated class Composer\\\\Package\\\\Package not found\\.$#"
-      count: 1
-      path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-    -
       message: "#^Instantiated class Composer\\\\Util\\\\Filesystem not found\\.$#"
       count: 4
       path: typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php

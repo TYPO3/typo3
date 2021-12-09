@@ -371,6 +371,7 @@ The following fallbacks have been removed:
 - Usage of the :html:`t3js-toggle-new-content-element-wizard` class to trigger the new content element wizard
 - Usage of the :php:`DataHandler->inlineLocalizeSynchronize()` functionality without an array as input argument
 - The :php:`route` parameter is no longer added to backend urls
+- Extensions, which are located in `typo3conf/ext`, but not installed by Composer, are no longer evaluated for installations in "composer mode"
 - Extbase no longer accepts :php:`MyVendor.` prefixed :php:`MyExtensionName` as first argument in
   :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()`, :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
   and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` and controller class names must be registered
