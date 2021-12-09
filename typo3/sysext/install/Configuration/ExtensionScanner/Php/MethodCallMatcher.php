@@ -5084,4 +5084,11 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->updateRootlineData' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-96351-UnusedTemplateService-updateRootlineDataMethodRemoved.rst',
+        ],
+    ],
 ];
