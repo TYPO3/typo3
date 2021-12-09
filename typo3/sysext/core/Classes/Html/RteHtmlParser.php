@@ -386,7 +386,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 // NON-block:
                 if (trim($blockSplit[$k]) !== '') {
                     $string = $blockSplit[$k];
-                    $string = str_replace('<hr/>', '<hr />', $string);
+                    $string = preg_replace('#<([a-z]+)/>#', '<$1 />', $string);
                     // Remove linebreaks preceding hr tags
                     $string = preg_replace('/[' . LF . ']+<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/', '<$1$2/>', $string) ?? '';
                     // Remove linebreaks following hr tags
