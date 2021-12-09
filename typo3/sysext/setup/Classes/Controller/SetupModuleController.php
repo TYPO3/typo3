@@ -575,21 +575,6 @@ class SetupModuleController
                         }
                         $html = '<br><input '
                             . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';
-                    } elseif (!empty($config['onClick'])) {
-                        /**
-                         * @deprecated Will be removed in TYPO3 v12.0
-                         */
-                        $onClick = $config['onClick'];
-                        if ($config['onClickLabels'] ?? false) {
-                            foreach ($config['onClickLabels'] as $key => $labelclick) {
-                                $config['onClickLabels'][$key] = $this->getLabel($labelclick, '', false);
-                            }
-                            $onClick = vsprintf($onClick, $config['onClickLabels']);
-                        }
-                        $html = '<br><input class="btn btn-default" type="button"
-                            aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
-                            value="' . $this->getLabel($config['buttonlabel'], '', false) . '"
-                            onclick="' . $onClick . '" />';
                     }
                     if (!empty($config['confirm'])) {
                         $confirmData = $config['confirmData'];
@@ -606,12 +591,6 @@ class SetupModuleController
                             $buttonAttributes['data-event'] = 'confirm';
                             $buttonAttributes['data-event-name'] = htmlspecialchars($confirmData['eventName']);
                             $buttonAttributes['data-event-payload'] = htmlspecialchars($fieldName);
-                        }
-                        if (isset($confirmData['jsCodeAfterOk'])) {
-                            /**
-                             * @deprecated Will be removed in TYPO3 v12.0
-                             */
-                            $buttonAttributes['data-href'] = 'javascript:' . htmlspecialchars($confirmData['jsCodeAfterOk']);
                         }
                         $html = '<br><input '
                             . GeneralUtility::implodeAttributes($buttonAttributes, false) . ' />';

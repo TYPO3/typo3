@@ -325,6 +325,12 @@ The following single field configurations have been removed from TCA:
 - :php:`special` (for TCA type :php:`select`)
 - :php:`treeConfig.rootUid` (for TCA renderType :php:`selectTree` and :php:`category`)
 
+The following single field configurations have been removed from :php:`$GLOBALS['TYPO3_USER_SETTINGS']`:
+
+- :php:`confirmData.jsCodeAfterOk`
+- :php:`onClick`
+- :php:`onClickLabels`
+
 The following signals have been removed:
 
 - :php:`\Full\Class\Name::signalName`
