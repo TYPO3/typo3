@@ -76,16 +76,6 @@
     return windowRef;
   }
 
-  // @deprecated Will be removed in TYPO3 v12.0
-  if (typeof window['linkTo_UnCryptMailto'] === 'undefined') {
-    window['linkTo_UnCryptMailto'] = function(value, offset) {
-      console.warn('Function linkTo_UnCryptMailto() is deprecated and will be remove in TYPO3 v12.0');
-      if (value && offset) {
-        document.location.href = decryptString(value, offset);
-      }
-    };
-  }
-
   ready(function() {
     var mailtoElements = document.querySelectorAll('a[data-mailto-token][data-mailto-vector]');
     // `Array.from` for IE compatibility

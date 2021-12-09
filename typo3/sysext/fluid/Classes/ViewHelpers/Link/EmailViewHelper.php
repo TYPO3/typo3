@@ -50,7 +50,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
+ *    <a href="#" data-mailto-token="ocknvq,hqqBdct0vnf" data-mailto-vector="1">some custom content</a>
  *
  * Depending on `spamProtectEmailAddresses`_ setting.
  */

@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -45,8 +44,6 @@ use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
  */
 abstract class AbstractMenuContentObject
 {
-    use DefaultJavaScriptAssetTrait;
-
     /**
      * tells you which menu number this is. This is important when getting data from the setup
      *
