@@ -3606,7 +3606,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $warning .= ' Caching is disabled!';
             $this->disableCache();
         }
-        if ($internal && $this->isBackendUserLoggedIn()) {
+        if ($internal && ($this->isBackendUserLoggedIn() || $this->isInPreviewMode())) {
             $this->logger->notice($warning);
         } else {
             $this->logger->warning($warning);
