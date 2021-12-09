@@ -5767,6 +5767,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // Call recursively, if the id is not in prevID_array:
                         if (!in_array($next_id, $prevId_array)) {
                             $theList = array_merge(
+                                $theList,
                                 GeneralUtility::intExplode(
                                     ',',
                                     $this->getTreeList(
@@ -5780,8 +5781,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                         $recursionLevel + 1
                                     ),
                                     true
-                                ),
-                                $theList
+                                )
                             );
                         }
                     }
