@@ -401,6 +401,10 @@ The following JavaScript modules have been removed:
 - :js:`TYPO3/CMS/Core/Ajax/ResponseError`
 - :js:`TYPO3/CMS/T3editor/T3editor`
 
+The following RequireJS module names have been removed:
+
+- :js:`Sortable`
+
 The following module configuration have been removed:
 
 - :php:`navFrameScript`
