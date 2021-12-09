@@ -38,7 +38,7 @@ class ConditionMatcher extends AbstractConditionMatcher
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->pageId = $pageId ?? $this->determinePageId();
         if ($rootLine === null) {
-            $rootLine = BackendUtility::BEgetRootLine($pageId, '', true);
+            $rootLine = BackendUtility::BEgetRootLine($this->pageId, '', true);
             ksort($rootLine);
         }
         $this->rootline = $rootLine;
