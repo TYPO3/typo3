@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Utility;
 
+use Doctrine\DBAL\Statement;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -431,6 +432,7 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
+            /** @var Statement $statement */
             $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
             if (!$statement) {
                 $queryBuilder = static::getQueryBuilderForTable('pages');
@@ -468,17 +470,16 @@ class BackendUtility
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)),
                         QueryHelper::stripLogicalOperatorPrefix($clause)
                     );
-                $statement = $queryBuilder->execute();
-                if (class_exists(\Doctrine\DBAL\ForwardCompatibility\Result::class) && $statement instanceof \Doctrine\DBAL\ForwardCompatibility\Result) {
-                    $statement = $statement->getIterator();
-                }
+                $statement = $queryBuilder->prepare();
                 $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $statement);
-            } else {
-                $statement->bindValue(1, (int)$uid);
-                $statement->execute();
             }
             $row = $statement->fetchAssociative();
             $statement->free();
+
+            $statement->bindValue(1, (int)$uid, \PDO::PARAM_INT);
+            $result = $statement->executeQuery();
+            $row = $result->fetchAssociative();
+            $result->free();
 
             if ($row) {
                 if ($workspaceOL) {
