@@ -89,13 +89,15 @@
                                         </f:if>
                                         )
                                     </f:if>
-                                    <br>
-                                    <span class="text-muted">
-                                        <f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
-                                            <f:then><belog:workspaceTitle uid="{logItem.workspaceUid}"/></f:then>
-                                            <f:else>[{logItem.workspaceUid}]</f:else>
-                                        </f:if>
-                                    </span>
+                                    <f:if condition="{workspaces}">
+                                        <br>
+                                        <span class="text-muted">
+                                            <f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
+                                                <f:then><belog:workspaceTitle uid="{logItem.workspaceUid}"/></f:then>
+                                                <f:else>[{logItem.workspaceUid}]</f:else>
+                                            </f:if>
+                                        </span>
+                                    </f:if>
                                 </td>
                                 <td>
                                     <f:if condition="{isSubmoduleLayout}">
