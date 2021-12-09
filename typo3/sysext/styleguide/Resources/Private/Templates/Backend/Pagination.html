@@ -174,6 +174,10 @@
                         class="form-control t3js-datetimepicker t3js-clearable"
                         data="{date-type: 'datetime'}"
                     />
+                    <f:form.hidden
+                        property="manualDateStart"
+                        value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                    />
                     <label class="mb-0 btn btn-default" for="manualDateStart">
                         <core:icon identifier="actions-calendar" />
                     </label>
@@ -185,11 +189,15 @@
                 <div class="input-group">
                     <f:form.textfield
                         name="manualDateStop"
-                        value="{f:format.date(date: 'now', format: 'H:i d-m-Y')}"
+                        value="{f:format.date(date: 'now', format: dateTimeFormat)}"
                         additionalAttributes="{'autocomplete': 'off'}"
                         id="manualDateStop"
                         class="form-control t3js-datetimepicker t3js-clearable"
                         data="{date-type: 'datetime'}"
+                    />
+                    <f:form.hidden
+                        property="manualDateStop"
+                        value="{f:format.date(date: 'now', format: dateTimeFormat)}"
                     />
                     <label class="mb-0 btn btn-default" for="manualDateStop">
                         <core:icon identifier="actions-calendar" />
