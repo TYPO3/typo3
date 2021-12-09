@@ -2377,16 +2377,19 @@ class DataHandler implements LoggerAwareInterface
         $newValue = $originalValue = $value;
         $queryBuilder = $this->getUniqueCountStatement($newValue, $table, $field, (int)$id, (int)$newPid);
         // For as long as records with the test-value existing, try again (with incremented numbers appended)
-        $result = $queryBuilder->executeQuery();
+        $statement = $queryBuilder->prepare();
+        $result = $statement->executeQuery();
         if ($result->fetchOne()) {
             for ($counter = 0; $counter <= 100; $counter++) {
+                $result->free();
                 $newValue = $value . $counter;
-                $queryBuilder->setParameter(0, $newValue);
-                $result = $queryBuilder->executeQuery();
+                $statement->bindValue(1, $newValue);
+                $result = $statement->executeQuery();
                 if (!$result->fetchOne()) {
                     break;
                 }
             }
+            $result->free();
         }
 
         if ($originalValue !== $newValue) {

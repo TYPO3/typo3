@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Query;
 
+use Doctrine\DBAL\Driver\Statement as DriverStatement;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
@@ -24,6 +27,8 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -31,6 +36,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Object oriented approach to building SQL queries.
@@ -202,6 +208,49 @@ class QueryBuilder
     }
 
     /**
+     * Create prepared statement out of QueryBuilder instance.
+     *
+     * doctrine/dbal does not provide support for prepared statement
+     * in QueryBuilder, but as TYPO3 uses the API throughout the code
+     * via QueryBuilder, so the functionality of
+     * prepared statements for multiple executions is added.
+     *
+     * You should be aware that this method will throw a named
+     * 'UnsupportedPreparedStatementParameterTypeException()'
+     * exception, if 'PARAM_INT_ARRAY' or 'PARAM_STR_ARRAY' is set,
+     * as this is not supported for prepared statements directly.
+     *
+     * NamedPlaceholder are not supported, and if one or
+     * more are set a 'NamedParameterNotSupportedForPreparedStatementException'
+     * will be thrown.
+     *
+     * @return Statement
+     */
+    public function prepare(): Statement
+    {
+        $connection = $this->getConnection();
+
+        $originalWhereConditions = null;
+        if ($this->getType() === \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
+            $originalWhereConditions = $this->addAdditionalWhereConditions();
+        }
+
+        $sql = $this->concreteQueryBuilder->getSQL();
+        $params = $this->concreteQueryBuilder->getParameters();
+        $types = $this->concreteQueryBuilder->getParameterTypes();
+        $this->throwExceptionOnInvalidPreparedStatementParamArrayType($types);
+        $this->throwExceptionOnNamedParameterForPreparedStatement($params);
+        $statement = $connection->prepare($sql)->getWrappedStatement();
+        $this->bindTypedValues($statement, $params, $types);
+
+        if ($originalWhereConditions !== null) {
+            $this->concreteQueryBuilder->add('where', $originalWhereConditions, false);
+        }
+
+        return new Statement($connection, $statement, $sql);
+    }
+
+    /**
      * Executes this query using the bound parameters and their types.
      *
      * doctrine/dbal decided to split execute() into executeQuery() and
@@ -210,7 +259,7 @@ class QueryBuilder
      * decorator class also as preparation for extension authors, that
      * they are able to write code which is compatible across two core
      * versions and avoid deprecation warning. Additional this will ease
-     * backport without the need to switch if execute() is not used anymore.
+     * backports without the need to switch between execute() and executeQuery().
      *
      * It is recommended to use directly executeQuery() for 'SELECT' and
      * executeStatement() for 'INSERT', 'UPDATE' and 'DELETE' queries.
@@ -1297,5 +1346,102 @@ class QueryBuilder
     {
         $this->concreteQueryBuilder = clone $this->concreteQueryBuilder;
         $this->restrictionContainer = clone $this->restrictionContainer;
+    }
+
+    private function throwExceptionOnInvalidPreparedStatementParamArrayType(array $types): void
+    {
+        $invalidTypeMap = [
+            Connection::PARAM_INT_ARRAY => 'PARAM_INT_ARRAY',
+            Connection::PARAM_STR_ARRAY => 'PARAM_STR_ARRAY',
+        ];
+        foreach ($types as $type) {
+            if ($invalidTypeMap[$type] ?? false) {
+                throw UnsupportedPreparedStatementParameterTypeException::new($invalidTypeMap[$type]);
+            }
+        }
+    }
+
+    private function throwExceptionOnNamedParameterForPreparedStatement(array $params): void
+    {
+        foreach ($params as $key => $value) {
+            if (is_string($key) && !MathUtility::canBeInterpretedAsInteger($key)) {
+                throw NamedParameterNotSupportedForPreparedStatementException::new($key);
+            }
+        }
+    }
+
+    /**
+     * Binds a set of parameters, some or all of which are typed with a PDO binding type
+     * or DBAL mapping type, to a given statement.
+     *
+     * Cloned from doctrine/dbal connection, as we need to call from external
+     * to support and work with prepared statement from QueryBuilder instance
+     * directly.
+     *
+     * This needs to be checked with each doctrine/dbal release raise.
+     *
+     * @param DriverStatement                                                      $stmt   Prepared statement
+     * @param list<mixed>|array<string, mixed>                                     $params Statement parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     */
+    private function bindTypedValues(DriverStatement $stmt, array $params, array $types): void
+    {
+        // Check whether parameters are positional or named. Mixing is not allowed.
+        if (is_int(key($params))) {
+            $bindIndex = 1;
+
+            foreach ($params as $key => $value) {
+                if (isset($types[$key])) {
+                    $type                  = $types[$key];
+                    [$value, $bindingType] = $this->getBindingInfo($value, $type);
+                    $stmt->bindValue($bindIndex, $value, $bindingType);
+                } else {
+                    $stmt->bindValue($bindIndex, $value);
+                }
+
+                ++$bindIndex;
+            }
+        } else {
+            // Named parameters
+            foreach ($params as $name => $value) {
+                if (isset($types[$name])) {
+                    $type                  = $types[$name];
+                    [$value, $bindingType] = $this->getBindingInfo($value, $type);
+                    $stmt->bindValue($name, $value, $bindingType);
+                } else {
+                    $stmt->bindValue($name, $value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the binding type of a given type.
+     *
+     * Cloned from doctrine/dbal connection, as we need to call from external
+     * to support and work with prepared statement from QueryBuilder instance
+     * directly.
+     *
+     * This needs to be checked with each doctrine/dbal release raise.
+     *
+     * @param mixed                $value The value to bind.
+     * @param int|string|Type|null $type  The type to bind (PDO or DBAL).
+     *
+     * @return array{mixed, int} [0] => the (escaped) value, [1] => the binding type.
+     */
+    private function getBindingInfo($value, $type): array
+    {
+        if (is_string($type)) {
+            $type = Type::getType($type);
+        }
+
+        if ($type instanceof Type) {
+            $value       = $type->convertToDatabaseValue($value, $this->getConnection()->getDatabasePlatform());
+            $bindingType = $type->getBindingType();
+        } else {
+            $bindingType = $type ?? ParameterType::STRING;
+        }
+
+        return [$value, $bindingType];
     }
 }
