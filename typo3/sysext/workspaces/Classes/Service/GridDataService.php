@@ -786,12 +786,11 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Gets all available system languages.
      *
-     * @param int $pageId
      * @return array
      */
-    public function getSystemLanguages(int $pageId)
+    public function getSystemLanguages(?int $pageId)
     {
-        return GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId);
+        return GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages((int)$pageId);
     }
 
     /**
