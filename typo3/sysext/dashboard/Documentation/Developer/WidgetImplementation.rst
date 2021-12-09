@@ -50,14 +50,14 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
        private $cache;
 
        /**
-        * @var array
-        */
-       private $options;
-
-       /**
         * @var ButtonProviderInterface|null
         */
        private $buttonProvider;
+
+       /**
+        * @var array
+        */
+       private options;
 
        public function __construct(
            WidgetConfigurationInterface $configuration,
@@ -95,6 +95,11 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
 
            return $items;
        }
+
+       public function getOptions(): array
+       {
+           return $this->options;
+       }
    }
 
 The class should always provide documentation how to use in :file:`Services.yaml`.
@@ -102,9 +107,10 @@ The above class is documented at :ref:`rss-widget`.
 The documentation should provide all possible options and an concrete example.
 It should make it possible for integrators to register new widgets using the implementation.
 
-The difference between ``$options`` and ``$configuration`` in above example is the following:
-``$options`` are the options for this implementation which can be provided through :file:`Services.yaml`.
-``$configuration`` is an instance of :php:class:`WidgetConfigurationInterface` holding all internal configuration, like icon identifier.
+The difference between :php:`$options` and :php:`$configuration` in above example is the following:
+:php:`$options` are the options for this implementation which can be provided through :file:`Services.yaml`.
+:php:`$configuration` is an instance of :php:class:`WidgetConfigurationInterface`
+holding all internal configuration, like icon identifier.
 
 .. _implement-new-widget-fluid:
 
@@ -112,7 +118,8 @@ Using Fluid
 -----------
 
 Most widgets will need a template.
-Therefore each widget can define :php:`StandaloneView` as requirement for DI in constructor, like done in RSS example.
+Therefore each widget can define :php:`StandaloneView` as requirement for DI in
+constructor, like done in RSS example.
 In order to provide a common configured instance to all widgets,
 the following service can be used in :file:`Services.yaml` to provide the instance:
 

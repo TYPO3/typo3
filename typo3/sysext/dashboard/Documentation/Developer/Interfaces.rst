@@ -23,6 +23,11 @@ For up to date information, please check the source code.
       :returntype: string
       :returns: The rendered HTML to display.
 
+   .. php:method:: getOptions()
+
+      :returntype: array
+      :returns: The options of the widget as set in the registration.
+
 .. php:class:: WidgetConfigurationInterface
 
    Used internally in ext:dashboard.

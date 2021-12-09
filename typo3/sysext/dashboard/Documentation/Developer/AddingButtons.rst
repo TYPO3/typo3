@@ -79,9 +79,15 @@ An example implementation could look like this:
         */
        private $buttonProvider;
 
+       /**
+        * @var array
+        */
+       private options;
+
        public function __construct(
            // …
            ButtonProviderInterface $buttonProvider = null,
+           array $options = [],
            // …
        ) {
            $this->buttonProvider = $buttonProvider;
@@ -96,5 +102,10 @@ An example implementation could look like this:
                // …
            ]);
            return $this->view->render();
+       }
+
+       public function getOptions(): array
+       {
+           return $this->options;
        }
    }

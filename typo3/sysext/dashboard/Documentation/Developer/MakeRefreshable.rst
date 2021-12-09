@@ -41,10 +41,9 @@ registration. Below is an example of a RSS widget with the refresh option enable
 
    In this example, the TYPO3 core :php:`TYPO3\CMS\Dashboard\Widgets\RssWidget`
    widget class is used. In case you have implemented own widget classes, you
-   have to add the :php:`getOptions()` method, returning :php:`$this->options`,
+   have to implement the :php:`getOptions()` method, returning :php:`$this->options`,
    to the corresponding classes. Otherwise the refresh option won't have any
-   effect. The method will anyways be required by the :php:`WidgetInterface`
-   in TYPO3 v12.
+   effect.
 
 Enable the refresh button
 -------------------------

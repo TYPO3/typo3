@@ -33,9 +33,15 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
         */
        private $dataProvider;
 
+       /**
+        * @var array
+        */
+       private options;
+
        public function __construct(
            // …
            ChartDataProviderInterface $dataProvider,
+           array $options = [],
            // …
        ) {
            // …
@@ -78,6 +84,11 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
                'TYPO3/CMS/Dashboard/Contrib/chartjs',
                'TYPO3/CMS/Dashboard/ChartInitializer',
            ];
+       }
+
+       public function getOptions(): array
+       {
+           return $this->options;
        }
    }
 
