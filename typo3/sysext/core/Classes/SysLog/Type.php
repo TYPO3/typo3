@@ -45,7 +45,7 @@ class Type
     ];
 
     private static array $levelMap = [
-        self::DB => LogLevel::WARNING,
+        self::DB => LogLevel::INFO,
         self::FILE => LogLevel::INFO,
         self::CACHE => LogLevel::INFO,
         self::EXTENSION => LogLevel::INFO,
