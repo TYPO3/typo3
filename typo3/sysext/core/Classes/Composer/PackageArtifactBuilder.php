@@ -170,8 +170,9 @@ class PackageArtifactBuilder extends PackageManager implements InstallerScript
                 try {
                     $extensionKey = ExtensionKeyResolver::resolve($composerPackage);
                 } catch (\Throwable $e) {
-                    if (strpos($composerPackage->getType(), 'typo3-cms-') === false) {
-                        // This is only thrown by version > 4.0 of the installer and needs to be propagated
+                    if (strpos($composerPackage->getType(), 'typo3-cms-') === 0) {
+                        // This means we have a package of type extension, and it does not have the extension key set
+                        // This only happens since version > 4.0 of the installer and must be propagated to become user facing
                         throw $e;
                     }
                     // In case we can not otherwise determine the extension key, we take the composer name
