@@ -265,9 +265,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
      *
-     * @param ServerRequestInterface|null $request (will become a requirement in v12.0)
+     * @param ServerRequestInterface $request
      */
-    public function fetchGroupData(ServerRequestInterface $request = null)
+    public function fetchGroupData(ServerRequestInterface $request)
     {
         $this->TSdataArray = [];
         $this->userTS = [];
@@ -290,7 +290,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
         // Fire an event for any kind of user (even when no specific user is here, using hideLogin feature)
         $dispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
-        $event = $dispatcher->dispatch(new ModifyResolvedFrontendGroupsEvent($this, $groupDataArr, $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null));
+        $event = $dispatcher->dispatch(new ModifyResolvedFrontendGroupsEvent($this, $groupDataArr, $request));
         $groupDataArr = $event->getGroups();
 
         if (empty($groupDataArr)) {

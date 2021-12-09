@@ -47,7 +47,6 @@ use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
@@ -669,11 +668,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * if he has read access to the page and if he's previewing the page.
      * That all determines which id to show and how to initialize the id.
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      */
-    public function determineId(ServerRequestInterface $request = null)
+    public function determineId(ServerRequestInterface $request): void
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         // Call pre processing function for id determination
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
             $parameters = ['parentObject' => $this];
@@ -893,11 +891,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * indirectly by page objects. Page objects still don't exist.
      *
      * @internal
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      */
-    protected function fetch_the_id(ServerRequestInterface $request = null)
+    protected function fetch_the_id(ServerRequestInterface $request): void
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('fetch_the_id initialize/');
         // Set the valid usergroups for FE
@@ -1729,13 +1726,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Checks if config-array exists already but if not, gets it
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      * @throws \TYPO3\CMS\Core\Error\Http\InternalServerErrorException
      * @throws \TYPO3\CMS\Core\Error\Http\ServiceUnavailableException
      */
-    public function getConfigArray(ServerRequestInterface $request = null)
+    public function getConfigArray(ServerRequestInterface $request): void
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         if (!$this->tmpl instanceof TemplateService) {
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
@@ -2007,7 +2003,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function checkTranslatedShortcut(int $languageId, ServerRequestInterface $request)
     {
-        if (!is_null($this->originalShortcutPage)) {
+        if ($this->originalShortcutPage !== null) {
             $originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $languageId);
             if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
                 // the translation of the original shortcut page has a different shortcut target!
@@ -2606,11 +2602,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Processes the INTinclude-scripts
      *
-     * @param ServerRequestInterface|null $request
+     * @param ServerRequestInterface $request
      */
-    public function INTincScript(ServerRequestInterface $request = null)
+    public function INTincScript(ServerRequestInterface $request): void
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
         $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
         if (empty($this->config['INTincScript_ext']['pageRenderer'])) {

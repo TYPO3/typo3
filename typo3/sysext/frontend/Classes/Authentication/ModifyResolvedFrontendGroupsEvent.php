@@ -27,16 +27,16 @@ final class ModifyResolvedFrontendGroupsEvent
 {
     private FrontendUserAuthentication $user;
     private array $groups;
-    private ?ServerRequestInterface $request;
+    private ServerRequestInterface $request;
 
-    public function __construct(FrontendUserAuthentication $user, array $groups, ?ServerRequestInterface $request)
+    public function __construct(FrontendUserAuthentication $user, array $groups, ServerRequestInterface $request)
     {
         $this->user = $user;
         $this->groups = $groups;
         $this->request = $request;
     }
 
-    public function getRequest(): ?ServerRequestInterface
+    public function getRequest(): ServerRequestInterface
     {
         return $this->request;
     }

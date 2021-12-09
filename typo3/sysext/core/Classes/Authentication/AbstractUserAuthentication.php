@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
-use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -251,11 +250,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * d) Garbage collection, setting of no-cache headers.
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
      *
-     * @param ServerRequestInterface|null $request @todo: Make mandatory in v12.
+     * @param ServerRequestInterface $request
      */
-    public function start(ServerRequestInterface $request = null)
+    public function start(ServerRequestInterface $request)
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $this->logger->debug('## Beginning of auth logging.');
         // Make certain that NO user is set initially
         $this->user = null;
@@ -421,13 +419,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Checks if a submission of username and password is present or use other authentication by auth services
      *
-     * @param ServerRequestInterface|null $request @todo: Make mandatory in v12.
+     * @param ServerRequestInterface $request
      * @throws MfaRequiredException
      * @internal
      */
-    public function checkAuthentication(ServerRequestInterface $request = null)
+    public function checkAuthentication(ServerRequestInterface $request)
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
         $authConfiguration = $this->getAuthServiceConfiguration();
         if (!empty($authConfiguration)) {
             $this->logger->debug('Authentication Service Configuration found.', ['auth_configuration' => $authConfiguration]);

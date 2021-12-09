@@ -2875,16 +2875,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content The string to perform the operation on
      * @param string $options The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
+     * @see stdWrap()
      * @return string The processed input value.
      * @internal
-     * @see stdWrap()
-     * @todo Set signature to (string $content, string $options): string as breaking change in v12 and remove string
-     *       casts of $content and $option.
      */
-    public function cropHTML($content, $options)
+    public function cropHTML(string $content, string $options): string
     {
-        $content = (string)$content;
-        $options = (string)$options;
         $options = explode('|', $options);
         $chars = (int)$options[0];
         $absChars = abs($chars);

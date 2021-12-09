@@ -139,11 +139,11 @@ class Bootstrap
      *
      * @param string $content The content. Not used
      * @param array $configuration The TS configuration array
+     * @param ServerRequestInterface $request the incoming server request
      * @return string $content The processed content
      */
-    public function run(string $content, array $configuration, ?ServerRequestInterface $request = null): string
+    public function run(string $content, array $configuration, ServerRequestInterface $request): string
     {
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
         $this->initialize($configuration);
         return $this->handleFrontendRequest($request);
     }

@@ -171,6 +171,9 @@ The following PHP class methods changed signature according to previous deprecat
 
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->unpack_uc()` (argument 1 removed)
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->writeUC()` (argument 1 removed)
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->start()` (argument 1 always required)
+- :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->checkAuthentication()` (argument 1 always required)
+- :php:`\TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication->checkAuthentication()` (argument 1 always required)
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isInWebMount()` (argument 3 removed)
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()` (argument 4 removed)
@@ -185,8 +188,13 @@ The following PHP class methods changed signature according to previous deprecat
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface->getPublicUrl()` (argument 2 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\VimeoHelper->getPublicUrl()` (argument 2 is removed)
 - :php:`\TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper->getPublicUrl()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Extbase\Core\Bootstrap->run()` (optional third argument is now required)
 - :php:`\TYPO3\CMS\Fluid\View\StandaloneView->__construct()` (optional constructor argument is removed)
+- :php:`\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->fetchGroupData()` (argument 1 always required)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->ATagParams()` (argument 2 is removed)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getConfigArray()` (argument 1 is always required)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()` (argument 1 is always required)
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->INTincScript()` (argument 1 is always required)
 
 The following PHP static class methods changed signature according to previous deprecations in v11 at the end of the argument list:
 
