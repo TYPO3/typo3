@@ -203,6 +203,7 @@ The following PHP static class methods changed signature according to previous d
 
 The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:
 
+- :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->setTSlogMessage()` (second argument requires a string)
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalAnd()` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalOr()` (all three arguments are now type hinted as `ConstraintInterface`)
@@ -234,6 +235,11 @@ The following class properties have been removed:
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sWordRegex` (internal, but public)
 - :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sWordList` (internal, but public)
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_EPtemp_cObj`
+
+The following class properties have been changed:
+
+- :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->wrapError` (does not contain numeric keys anymore)
+- :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->wrapIcon` (does not contain numeric keys anymore)
 
 The following class methods visibility have been changed to protected:
 

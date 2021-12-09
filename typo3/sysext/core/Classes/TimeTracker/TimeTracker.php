@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,146 +26,77 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Frontend Timetracking functions
- *
  * Is used to register how much time is used with operations in TypoScript
  */
 class TimeTracker implements SingletonInterface
 {
     /**
-     * If set to true (see constructor) then then the timetracking is enabled
-     * @var bool
+     * If set to true (see constructor) then timetracking is enabled
      */
-    protected $isEnabled = false;
+    protected bool $isEnabled = false;
 
     /**
      * Is loaded with the millisecond time when this object is created
-     *
-     * @var int
      */
-    public $starttime = 0;
+    public int $starttime = 0;
 
     /**
      * Is set via finish() with the millisecond time when the request handler is finished.
-     *
-     * @var float
      */
-    protected $finishtime = 0;
+    protected float $finishtime = 0;
 
     /**
      * Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle().
      * This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
-     *
-     * @var bool
      */
-    public $LR = true;
+    public bool $LR = true;
 
-    /**
-     * @var array
-     */
-    public $printConf = [
-        'showParentKeys' => 1,
+    public array $printConf = [
+        'showParentKeys' => true,
         'contentLength' => 10000,
         // Determines max length of displayed content before it gets cropped.
         'contentLength_FILE' => 400,
         // Determines max length of displayed content FROM FILE cObjects before it gets cropped. Reason is that most FILE cObjects are huge and often used as template-code.
-        'flag_tree' => 1,
-        'flag_messages' => 1,
-        'flag_content' => 0,
-        'allTime' => 0,
+        'flag_tree' => true,
+        'flag_messages' => true,
+        'flag_content' => false,
+        'allTime' => false,
         'keyLgd' => 40,
     ];
 
-    /**
-     * @var array
-     */
-    public $wrapError = [
-        // the numeric items can be removed in TYPO3 v12.0.
-        0 => ['', ''],
-        1 => ['<strong>', '</strong>'],
-        2 => ['<strong style="color:#ff6600;">', '</strong>'],
-        3 => ['<strong style="color:#ff0000;">', '</strong>'],
+    public array $wrapError = [
         LogLevel::INFO => ['', ''],
         LogLevel::NOTICE => ['<strong>', '</strong>'],
         LogLevel::WARNING => ['<strong style="color:#ff6600;">', '</strong>'],
         LogLevel::ERROR => ['<strong style="color:#ff0000;">', '</strong>'],
     ];
 
-    /**
-     * @var array
-     */
-    public $wrapIcon = [
-        // the numeric items can be removed in TYPO3 v12.0.
-        0 => '',
-        1 => 'actions-document-info',
-        2 => 'status-dialog-warning',
-        3 => 'status-dialog-error',
+    public array $wrapIcon = [
         LogLevel::INFO => '',
         LogLevel::NOTICE => 'actions-document-info',
         LogLevel::WARNING => 'status-dialog-warning',
         LogLevel::ERROR => 'status-dialog-error',
     ];
 
-    /**
-     * @var int
-     */
-    public $uniqueCounter = 0;
+    public int $uniqueCounter = 0;
+    public array $tsStack = [[]];
+    public int $tsStackLevel = 0;
+    public array $tsStackLevelMax = [];
+    public array $tsStackLog = [];
+    public int $tsStackPointer = 0;
+    public array $currentHashPointer = [];
 
     /**
-     * @var array
+     * Log entries that take than this number of milliseconds (own time) will be highlighted during
+     * log display. Set 0 to disable highlighting.
      */
-    public $tsStack = [[]];
+    public int $highlightLongerThan = 0;
 
-    /**
-     * @var int
-     */
-    public $tsStackLevel = 0;
-
-    /**
-     * @var array
-     */
-    public $tsStackLevelMax = [];
-
-    /**
-     * @var array
-     */
-    public $tsStackLog = [];
-
-    /**
-     * @var int
-     */
-    public $tsStackPointer = 0;
-
-    /**
-     * @var array
-     */
-    public $currentHashPointer = [];
-
-    /**
-     * Log entries that take than this number of milliseconds (own time) will be highlighted during log display. Set 0 to disable highlighting.
-     *
-     * @var int
-     */
-    public $highlightLongerThan = 0;
-
-    /*******************************************
-     *
-     * Logging parsing times in the scripts
-     *
-     *******************************************/
-
-    /**
-     * TimeTracker constructor.
-     *
-     * @param bool $isEnabled
-     */
-    public function __construct($isEnabled = true)
+    public function __construct(bool $isEnabled = true)
     {
         $this->isEnabled = $isEnabled;
     }
 
-    /**
-     * @param bool $isEnabled
-     */
     public function setEnabled(bool $isEnabled = true)
     {
         $this->isEnabled = $isEnabled;
@@ -191,7 +124,7 @@ class TimeTracker implements SingletonInterface
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      * @see pull()
      */
-    public function push($tslabel, $value = '')
+    public function push(string $tslabel, string $value = ''): void
     {
         if (!$this->isEnabled) {
             return;
@@ -218,7 +151,7 @@ class TimeTracker implements SingletonInterface
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      * @see push()
      */
-    public function pull($content = '')
+    public function pull(string $content = ''): void
     {
         if (!$this->isEnabled) {
             return;
@@ -235,10 +168,10 @@ class TimeTracker implements SingletonInterface
      * Logs the TypoScript entry
      *
      * @param string $content The message string
-     * @param string|int $logLevel Message type: 0: information, 1: message, 2: warning, 3: error or the LogLevel constants - will become the LogLevel constants only in TYPO3 v12.0.
+     * @param string $logLevel Message type: see LogLevel constants
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::CONTENT()
      */
-    public function setTSlogMessage($content, $logLevel = LogLevel::INFO)
+    public function setTSlogMessage(string $content, string $logLevel = LogLevel::INFO)
     {
         if (!$this->isEnabled) {
             return;
@@ -260,7 +193,7 @@ class TimeTracker implements SingletonInterface
      * @param array $data Query array
      * @param string $msg Message/Label to attach
      */
-    public function setTSselectQuery(array $data, $msg = '')
+    public function setTSselectQuery(array $data, string $msg = ''): void
     {
         if (!$this->isEnabled) {
             return;
@@ -280,7 +213,7 @@ class TimeTracker implements SingletonInterface
      * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
-    public function incStackPointer()
+    public function incStackPointer(): void
     {
         if (!$this->isEnabled) {
             return;
@@ -296,7 +229,7 @@ class TimeTracker implements SingletonInterface
      * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
-    public function decStackPointer()
+    public function decStackPointer(): void
     {
         if (!$this->isEnabled) {
             return;
@@ -308,15 +241,15 @@ class TimeTracker implements SingletonInterface
     /**
      * Gets a microtime value as milliseconds value.
      *
-     * @param float $microtime The microtime value - if not set the current time is used
+     * @param float|null $microtime The microtime value - if not set the current time is used
      * @return int The microtime value as milliseconds value
      */
-    public function getMilliseconds($microtime = null)
+    public function getMilliseconds(?float $microtime = null): int
     {
         if (!$this->isEnabled) {
             return 0;
         }
-        if (!isset($microtime)) {
+        if ($microtime === null) {
             $microtime = microtime(true);
         }
         return (int)round($microtime * 1000);
@@ -325,10 +258,10 @@ class TimeTracker implements SingletonInterface
     /**
      * Gets the difference between a given microtime value and the starting time as milliseconds.
      *
-     * @param float $microtime The microtime value - if not set the current time is used
+     * @param float|null $microtime The microtime value - if not set the current time is used
      * @return int The difference between a given microtime value and starting time as milliseconds
      */
-    public function getDifferenceToStarttime($microtime = null)
+    public function getDifferenceToStarttime(float $microtime = null): int
     {
         return $this->getMilliseconds($microtime) - $this->starttime;
     }
@@ -371,13 +304,13 @@ class TimeTracker implements SingletonInterface
      *
      * @return string HTML table with the information about parsing times.
      */
-    public function printTSlog()
+    public function printTSlog(): string
     {
         if (!$this->isEnabled) {
             return '';
         }
         // Calculate times and keys for the tsStackLog
-        foreach ($this->tsStackLog as $uniqueId => &$data) {
+        foreach ($this->tsStackLog as &$data) {
             $data['endtime'] = $this->getDifferenceToStarttime($data['endtime'] ?? 0);
             $data['starttime'] = $this->getDifferenceToStarttime($data['starttime'] ?? 0);
             $data['deltatime'] = $data['endtime'] - $data['starttime'];
@@ -416,9 +349,9 @@ class TimeTracker implements SingletonInterface
         $flag_content = $this->printConf['flag_content'];
         $keyLgd = (int)$this->printConf['keyLgd'];
         $c = 0;
-        foreach ($this->tsStackLog as $uniqueId => $data) {
+        foreach ($this->tsStackLog as $data) {
             $logRowClass = '';
-            if ($this->highlightLongerThan && (int)$data['owntime'] > (int)$this->highlightLongerThan) {
+            if ($this->highlightLongerThan && (int)$data['owntime'] > $this->highlightLongerThan) {
                 $logRowClass = 'typo3-adminPanel-logRow-highlight';
             }
             $item = '';
@@ -489,8 +422,7 @@ class TimeTracker implements SingletonInterface
             $out .= '<tr>' . $item . '</tr>';
             $c++;
         }
-        $out = '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table typo3-adminPanel-table-debug">' . $out . '</table></div>';
-        return $out;
+        return '<div class="typo3-adminPanel-table-overflow"><table class="typo3-adminPanel-table typo3-adminPanel-table-debug">' . $out . '</table></div>';
     }
 
     /**
@@ -502,7 +434,7 @@ class TimeTracker implements SingletonInterface
      * @param string $vKey Seems to be the previous tsStackLog key
      * @return string Returns the $content string generated/modified. Also the $arr array is modified!
      */
-    protected function fixContent(&$arr, $content, $depthData = '', $vKey = '')
+    protected function fixContent(array &$arr, string $content, string $depthData = '', string $vKey = ''): string
     {
         $entriesCount = 0;
         $c = 0;
@@ -568,7 +500,7 @@ class TimeTracker implements SingletonInterface
      * @param string $v Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
      * @return string
      */
-    protected function fixCLen($c, $v)
+    protected function fixCLen(string $c, string $v): string
     {
         $len = $v === 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength'];
         if (strlen($c) > $len) {
@@ -585,7 +517,7 @@ class TimeTracker implements SingletonInterface
      * @param string $str The string to be wrapped
      * @return string
      */
-    protected function fw($str)
+    protected function fw(string $str): string
     {
         return '<span>' . $str . '</span>';
     }
@@ -599,15 +531,14 @@ class TimeTracker implements SingletonInterface
      * @internal
      * @see printTSlog()
      */
-    protected function createHierarchyArray(&$arr, $pointer, $uniqueId)
+    protected function createHierarchyArray(array &$arr, int $pointer, string $uniqueId): void
     {
-        if (!is_array($arr)) {
-            $arr = [];
-        }
         if ($pointer > 0) {
             end($arr);
             $k = key($arr);
-            $this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
+            if (is_array($arr[(int)$k . '.'] ?? null)) {
+                $this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
+            }
         } else {
             $arr[] = $uniqueId;
         }
