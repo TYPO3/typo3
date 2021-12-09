@@ -194,6 +194,40 @@ class RteHtmlParserTest extends UnitTestCase
     }
 
     /**
+     * Data provider for brTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
+     */
+    public static function brTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider(): array
+    {
+        return [
+            '<br>' => [
+                '<p>foo<br>bar</p>',
+                '<p>foo<br />bar</p>',
+            ],
+            '<br/> without white space' => [
+                '<p>foo<br/>bar</p>',
+                '<p>foo<br />bar</p>',
+            ],
+            '<br /> with whitespace' => [
+                '<p>foo<br />bar</p>',
+                '<p>foo<br />bar</p>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider brTagCorrectlyTransformedOnWayToDatabaseAndBackToRteProvider
+     */
+    public function brTagCorrectlyTransformedOnWayToDatabaseAndBackToRte($content, $expectedResult): void
+    {
+        // @todo Explicitly disabled HTML Sanitizer (since it is based on HTML5)
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.backend.htmlSanitizeRte'] = false;
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $subject = new RteHtmlParser($eventDispatcher);
+        self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
+    }
+
+    /**
      * Data provider for paragraphCorrectlyTransformedOnWayToDatabase
      */
     public static function paragraphCorrectlyTransformedOnWayToDatabaseProvider(): array
