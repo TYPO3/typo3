@@ -182,7 +182,7 @@ The 'Number range validator' checks if the given value is a number in
 the specified range. The validator has 2 options:
 
 - Minimum: The minimum value to accept.
-- Maximum: The maximum vlaue to accept.
+- Maximum: The maximum value to accept.
 
 
 .. _concepts-validators-mimetype:
