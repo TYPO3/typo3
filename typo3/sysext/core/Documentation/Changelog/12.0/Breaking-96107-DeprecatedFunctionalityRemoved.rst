@@ -376,6 +376,8 @@ The following fallbacks have been removed:
   :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin()`, :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin()`
   and :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule()` and controller class names must be registered
   with their fully qualified name.
+- Extbase no longer determines types from doc block annotations for dependency injection methods and actions with validators,
+  defined types in method signatures must be used.
 
 The following database tables have been removed:
 

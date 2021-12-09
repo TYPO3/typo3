@@ -404,6 +404,8 @@ class ClassSchema
                      * due to non PSR-5 compatible tags in the core and in user land code.
                      *
                      * Fetching the data type via doc blocks is deprecated and will be removed in the near future.
+                     * Currently, this affects at least fooAction() ActionController methods, which does not
+                     * deprecate non-PHP-type-hinted methods.
                      */
                     $params = self::$docBlockFactory->create($docComment)
                         ->getTagsByName('param');
@@ -423,10 +425,10 @@ class ClassSchema
                     if ($typeDetectedViaDocBlock) {
                         $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
                         $errorMessage = <<<MESSAGE
-The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock, which is deprecated and will be removed in TYPO3 12.0. Use a proper parameter type hint instead:
+The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock. Use a proper PHP parameter type hint instead:
 [private|protected|public] function $methodName($parameterType \$$parameterName)
 MESSAGE;
-                        trigger_error($errorMessage, E_USER_DEPRECATED);
+                        throw new \RuntimeException($errorMessage, 1639224353);
                     }
                     $this->methods[$methodName]['params'][$parameterName]['dependency'] = $reflectionType->getName();
                 }
@@ -442,11 +444,10 @@ MESSAGE;
                     if ($typeDetectedViaDocBlock) {
                         $parameterType = $this->methods[$methodName]['params'][$parameterName]['type'];
                         $errorMessage = <<<MESSAGE
-The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock, which is deprecated and will be removed in TYPO3 12.0. Use a proper parameter type hint instead:
+The type ($parameterType) of parameter \$$parameterName of method $this->className::$methodName() is defined via php DocBlock. Use a proper PHP parameter type hint instead:
 [private|protected|public] function $methodName($parameterType \$$parameterName)
 MESSAGE;
-
-                        trigger_error($errorMessage, E_USER_DEPRECATED);
+                        throw new \RuntimeException($errorMessage, 1639224354);
                     }
 
                     $this->methods[$methodName]['params'][$parameterName]['validators'] = $argumentValidators[$parameterName];
