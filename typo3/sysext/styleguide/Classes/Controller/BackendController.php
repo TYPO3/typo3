@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,6 +42,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 class BackendController extends ActionController
 {
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
+
     protected ModuleTemplate $moduleTemplate;
 
     /**
@@ -49,9 +52,11 @@ class BackendController extends ActionController
     protected $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
 
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        PageRenderer $pageRenderer
     ) {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -352,7 +357,10 @@ class BackendController extends ActionController
             'paginator' => $paginator,
             'pagination' => new SimplePagination($paginator),
             'userGroups' => $userGroupArray,
+            'dateTimeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'h:m m-d-Y' : 'h:m d-m-Y'
         ]);
+
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/Pagination');
 
         return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
     }

@@ -168,11 +168,11 @@
                 <div class="input-group">
                     <f:form.textfield
                         name="manualDateStart"
-                        value="{f:format.date(date: 'now')}"
-                    id="manualDateStart"
-                    additionalAttributes="{'autocomplete': 'off'}"
-                    class="form-control t3js-datetimepicker t3js-clearable"
-                    data="{date-type: 'datetime'}"
+                        value="{f:format.date(date: 'now', format: dateTimeFormat)}"
+                        id="manualDateStart"
+                        additionalAttributes="{'autocomplete': 'off'}"
+                        class="form-control t3js-datetimepicker t3js-clearable"
+                        data="{date-type: 'datetime'}"
                     />
                     <label class="mb-0 btn btn-default" for="manualDateStart">
                         <core:icon identifier="actions-calendar" />
