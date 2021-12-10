@@ -739,11 +739,6 @@
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.47.tgz#9665a157519dd48d259f94ac670d332a56561c00"
   integrity sha512-5bidBzyNZ5euxwRjN0UsGsnmCXb6yuNAQkJceJ00Qq7uVLAZ442gJ2I0h56wGfRpIcZyY2wPV103Zq9IMnkjkg==
 
-"@types/jquery@^2.0.32":
-  version "2.0.55"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.55.tgz#5a2984988952789faaffdd4baee11141d6bc999c"
-  integrity sha512-uYRE5OytoDlKznee3WPoXeyv3uMTYWHlAQMgn9esgFB5pC2uCyWe35wZYyCM51Cc3SeslXS9iilBqGwc/3QsDQ==
-
 "@types/jqueryui@^1.12.13":
   version "1.12.13"
   resolved "https://registry.yarnpkg.com/@types/jqueryui/-/jqueryui-1.12.13.tgz#1aa0507b4d1a75b03592d2126fbd6d2ea8e8c284"
@@ -2555,12 +2550,11 @@ detect-file@^1.0.0:
   resolved "https://registry.yarnpkg.com/detect-file/-/detect-file-1.0.0.tgz#f0d66d03672a825cb1b73bdb3fe62310c8e552b7"
   integrity sha1-8NZtA2cqglyxtzvbP+YjEMjlUrc=
 
-devbridge-autocomplete@^1.4.11:
-  version "1.4.11"
-  resolved "https://registry.yarnpkg.com/devbridge-autocomplete/-/devbridge-autocomplete-1.4.11.tgz#05424a675711a9c3ad118c98de0a22180944b00f"
-  integrity sha512-lRU1y9IKyPm45NKDMcujszJoftw+wqxKbtcNJoMx+LywJQJdDwjg/s4lwLYR4vyQQ6VTcUaIeveLMkZTqorBIA==
+devbridge-autocomplete@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/devbridge-autocomplete/-/devbridge-autocomplete-1.3.0.tgz#9894a3d36e9b7406461c0ba8f21e648fbcffe16b"
+  integrity sha1-mJSj026bdAZGHAuo8h5kj7z/4Ws=
   dependencies:
-    "@types/jquery" "^2.0.32"
     jquery ">=1.7"
 
 dezalgo@^1.0.0:

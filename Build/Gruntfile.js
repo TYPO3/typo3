@@ -522,9 +522,7 @@ module.exports = function (grunt) {
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
           '../../../../../backend/Resources/Public/Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
-          /* disabled until autocomplete formatGroup is fixed to pass on the index too
-                       'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
-                     */
+          'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.js',
           'd3-dispatch.js': 'd3-dispatch/dist/d3-dispatch.min.js',
           'd3-drag.js': 'd3-drag/dist/d3-drag.min.js',
           'd3-selection.js': 'd3-selection/dist/d3-selection.min.js',

@@ -1,5 +1,5 @@
 /**
-*  Ajax Autocomplete for jQuery, version %version%
+*  Ajax Autocomplete for jQuery, version 1.3.0
 *  (c) 2017 Tomas Kirda
 *
 *  Ajax Autocomplete for jQuery is freely distributable under the terms of an MIT-style license.
@@ -132,7 +132,7 @@
         if (!currentValue) {
             return suggestion.value;
         }
-
+        
         var pattern = '(' + utils.escapeRegExChars(currentValue) + ')';
 
         return suggestion.value
@@ -230,7 +230,7 @@
         onBlur: function () {
             this.enableKillerFn();
         },
-
+        
         abortAjax: function () {
             var that = this;
             if (that.currentRequest) {
@@ -359,8 +359,8 @@
             that.stopKillSuggestions();
             that.intervalId = window.setInterval(function () {
                 if (that.visible) {
-                    // No need to restore value when
-                    // preserveInput === true,
+                    // No need to restore value when 
+                    // preserveInput === true, 
                     // because we did not change it
                     if (!that.options.preserveInput) {
                         that.el.val(that.currentValue);
@@ -368,7 +368,7 @@
 
                     that.hide();
                 }
-
+                
                 that.stopKillSuggestions();
             }, 50);
         },
@@ -667,7 +667,7 @@
                 beforeRender = options.beforeRender,
                 html = '',
                 category,
-				// modified for TYPO3, added index parameter
+                // modified for TYPO3, added index parameter
                 formatGroup = function (suggestion, value, index) {
                         var currentCategory = suggestion.data[groupBy];
 
@@ -677,7 +677,7 @@
 
                         category = currentCategory;
 
-						// modified for TYPO3, added index parameter
+                        // modified for TYPO3, added index parameter
                         return options.formatGroup(suggestion, category, index);
                     };
 
