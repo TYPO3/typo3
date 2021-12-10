@@ -1395,7 +1395,7 @@ class PageRenderer implements SingletonInterface
             'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
             'bootstrap' => $corePath . 'bootstrap/bootstrap',
             'autosize' => $corePath . 'autosize',
-            'taboverride' => $corePath . 'taboverride.min',
+            'taboverride' => $corePath . 'taboverride',
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'jquery/minicolors' => $corePath . 'jquery.minicolors',
             'd3-selection' => $corePath . 'd3-selection',

@@ -516,9 +516,7 @@ module.exports = function (grunt) {
           'cropper.min.js': 'cropperjs/dist/cropper.min.js',
           'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
           'autosize.js': 'autosize/dist/autosize.min.js',
-          /* disabled for removed sourcemap reference in file
-          'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
-          */
+          'taboverride.js': 'taboverride/build/output/taboverride.js',
           'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
           'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.min.js',
           'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
@@ -567,6 +565,7 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js": ["<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/taboverride.js": ["<%= paths.core %>Public/JavaScript/Contrib/taboverride.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js"],
