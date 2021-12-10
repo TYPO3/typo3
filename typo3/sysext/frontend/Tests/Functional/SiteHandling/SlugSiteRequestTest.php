@@ -1298,10 +1298,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }

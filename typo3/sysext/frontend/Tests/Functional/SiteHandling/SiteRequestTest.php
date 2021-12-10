@@ -1078,10 +1078,7 @@ class SiteRequestTest extends AbstractTestCase
             ]
         );
 
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedHeaders, $response->getHeaders());
     }
@@ -1133,10 +1130,7 @@ class SiteRequestTest extends AbstractTestCase
                 'title' => 'ACME Blog',
             ]
         );
-        $response = $this->executeFrontendSubRequest(
-            new InternalRequest($uri),
-            $this->internalRequestContext
-        );
+        $response = $this->executeFrontendSubRequest(new InternalRequest($uri));
         $json = json_decode((string)$response->getBody(), true);
         self::assertSame(404, $response->getStatusCode());
         self::assertThat(
