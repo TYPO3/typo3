@@ -26,20 +26,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 class OpenDocumentService
 {
     /**
-     * @var BackendUserAuthentication
-     */
-    protected $backendUser;
-
-    /**
-     * Constructor
-     * @param BackendUserAuthentication|null $backendUser
-     */
-    public function __construct(BackendUserAuthentication $backendUser = null)
-    {
-        $this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Get the list of open documents for the current user
      *
      * @return array
@@ -47,7 +33,7 @@ class OpenDocumentService
     public function getOpenDocuments(): array
     {
         $openDocuments = [];
-        $sessionOpenDocuments = $this->backendUser->getModuleData('FormEngine', 'ses');
+        $sessionOpenDocuments = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
 
         if ($sessionOpenDocuments !== null) {
             $openDocuments = $sessionOpenDocuments[0];
@@ -63,7 +49,7 @@ class OpenDocumentService
      */
     public function getRecentDocuments(): array
     {
-        return $this->backendUser->getModuleData('opendocs::recent') ?: [];
+        return $this->getBackendUser()->getModuleData('opendocs::recent') ?: [];
     }
 
     /**
@@ -105,8 +91,8 @@ class OpenDocumentService
      */
     protected function storeOpenDocuments(array $openDocuments): void
     {
-        [, $lastOpenDocumentIdentifier] = $this->backendUser->getModuleData('FormEngine', 'ses');
-        $this->backendUser->pushModuleData('FormEngine', [$openDocuments, $lastOpenDocumentIdentifier]);
+        [, $lastOpenDocumentIdentifier] = $this->getBackendUser()->getModuleData('FormEngine', 'ses');
+        $this->getBackendUser()->pushModuleData('FormEngine', [$openDocuments, $lastOpenDocumentIdentifier]);
     }
 
     /**
@@ -128,6 +114,11 @@ class OpenDocumentService
             $recentDocuments = array_slice($recentDocuments, 0, 8);
         }
 
-        $this->backendUser->pushModuleData('opendocs::recent', $recentDocuments);
+        $this->getBackendUser()->pushModuleData('opendocs::recent', $recentDocuments);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
