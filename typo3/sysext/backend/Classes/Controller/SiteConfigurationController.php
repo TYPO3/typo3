@@ -48,6 +48,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\SysLog\Action\Site as SiteAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -422,8 +425,14 @@ class SiteConfigurationController
             try {
                 if (!$isNewConfiguration && $currentIdentifier !== $siteIdentifier) {
                     $siteConfigurationManager->rename($currentIdentifier, $siteIdentifier);
+                    $this->getBackendUser()->writelog(Type::SITE, SiteAction::RENAME, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was renamed to \'%s\'.', [$currentIdentifier, $siteIdentifier], 'site');
                 }
                 $siteConfigurationManager->write($siteIdentifier, $newSiteConfiguration);
+                if ($isNewConfiguration) {
+                    $this->getBackendUser()->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was created.', [$siteIdentifier], 'site');
+                } else {
+                    $this->getBackendUser()->writelog(Type::SITE, SiteAction::UPDATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was updated.', [$siteIdentifier], 'site');
+                }
             } catch (SiteConfigurationWriteException $e) {
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -667,6 +676,7 @@ class SiteConfigurationController
         try {
             // Verify site does exist, method throws if not
             GeneralUtility::makeInstance(SiteConfiguration::class)->delete($siteIdentifier);
+            $this->getBackendUser()->writelog(Type::SITE, SiteAction::DELETE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was deleted.', [$siteIdentifier], 'site');
         } catch (SiteConfigurationWriteException $e) {
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', FlashMessage::WARNING, true);
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
