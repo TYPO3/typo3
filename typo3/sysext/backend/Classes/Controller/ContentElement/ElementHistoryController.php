@@ -266,7 +266,7 @@ class ElementHistoryController
                 }
                 // Build up temporary diff array
                 // turn around diff because it should be a "rollback preview"
-                if ($diff['newData'][$key]) {
+                if ($diff['newData'][$key] ?? false) {
                     $tmpArr = [
                         'newRecord' => $diff['oldData'][$key],
                         'oldRecord' => $diff['newData'][$key],
@@ -373,8 +373,8 @@ class ElementHistoryController
                 if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && ($GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '') !== 'passthrough') {
                     // Create diff-result:
                     $diffres = $diffUtility->makeDiffDisplay(
-                        BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, true),
-                        BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, true)
+                        BackendUtility::getProcessedValue($table, $fN, ($entry['oldRecord'][$fN] ?? ''), 0, true),
+                        BackendUtility::getProcessedValue($table, $fN, ($entry['newRecord'][$fN] ?? ''), 0, true)
                     );
                     $rollbackUrl = '';
                     if ($rollbackUid) {
