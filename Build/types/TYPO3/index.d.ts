@@ -8,6 +8,7 @@ declare namespace TYPO3 {
   export let Backend: any;
   export let DebugConsole: any;
   export let ExtensionManager: any;
+  export let FormEngine: any;
   export let Icons: any;
   export let InfoWindow: any;
   export let LoginRefresh: any;
@@ -49,12 +50,13 @@ declare namespace TYPO3 {
         public btrim(value: string): string;
         public getYear(timeObj: Date): number|null;
         public getDate(timeObj: Date): number;
-        public splitStr(theStr1: string, delim: string, index: number): Array<string>;
-        public initializeInputFields(): void;
+        public splitStr(theStr1: string, delim: string, index: number): string;
+        public initializeInputFields(): JQuery;
         public registerCustomEvaluation(name: string, handler: Function): void;
         public formatValue(type: string, value: string|number, config: Object): string;
+        public updateInputField(fieldName: string): void;
         public validate(section?: Element): void;
-        public validateField(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): void;
+        public validateField(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): string;
         public processValue(command: string, value: string, config: Object): string;
         public initialize(): void;
       }
@@ -79,7 +81,7 @@ declare namespace TYPO3 {
         public readonly Validation: FormEngineValidation;
         public legacyFieldChangedCb(): void;
         public getFieldElement(fieldName: string, appendix?: string, noFallback?: boolean): JQuery;
-        public updateHiddenFieldValueFromSelect(selectFieldEl: HTMLElement, originalFieldEl: HTMLElement): void;
+        public updateHiddenFieldValueFromSelect(selectFieldEl: HTMLSelectElement, originalFieldEl: HTMLSelectElement): void;
         public preventFollowLinkIfNotSaved(href: string): boolean;
         public setSelectOptionFromExternalSource(
           fieldName: string,
@@ -111,6 +113,10 @@ declare namespace TYPO3 {
       }
     }
   }
+}
+
+declare namespace TBE_EDITOR {
+  export const customEvalFunctions: { [key: string]: Function };
 }
 
 /**
