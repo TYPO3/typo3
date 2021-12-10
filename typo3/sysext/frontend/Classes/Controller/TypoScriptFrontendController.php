@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
-use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -76,7 +75,6 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
-use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -1787,7 +1785,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (!isset($this->config['config']['inlineStyle2TempFile'])) {
                         $this->config['config']['inlineStyle2TempFile'] = 1;
                     }
-
                     if (!isset($this->config['config']['compressJs'])) {
                         $this->config['config']['compressJs'] = 0;
                     }
@@ -1802,16 +1799,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
-                    // Class for render Header and Footer parts
-                    if ($this->pSetup['pageHeaderFooterTemplateFile'] ?? false) {
-                        try {
-                            $file = GeneralUtility::makeInstance(FilePathSanitizer::class)
-                                ->sanitize((string)$this->pSetup['pageHeaderFooterTemplateFile'], true);
-                            $this->pageRenderer->setTemplateFile($file);
-                        } catch (Exception $e) {
-                            // do nothing
-                        }
-                    }
                 }
                 $timeTracker->pull();
             } else {
