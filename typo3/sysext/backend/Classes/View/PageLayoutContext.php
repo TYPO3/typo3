@@ -191,7 +191,16 @@ class PageLayoutContext
     {
         $selectedLanguageId = $this->drawingConfiguration->getSelectedLanguageId();
         if ($selectedLanguageId === -1) {
-            return $this->getSiteLanguages();
+            $languages = $this->getSiteLanguages();
+            if (!isset($languages[0])) {
+                // $languages may not contain the default (0) in case the user does not have access to it.
+                // However, as for selected pages, it should also be displayed readonly in the "all languages" view
+                $languages = [
+                    $this->site->getDefaultLanguage(),
+                    ...$languages,
+                ];
+            }
+            return $languages;
         }
         if ($selectedLanguageId > 0) {
             // A specific language is selected; compose a list of default language plus selected language

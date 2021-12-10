@@ -1295,7 +1295,7 @@ class EditDocumentController
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        if ($this->firstEl !== null) {
+        if (!empty($this->firstEl)) {
             $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
             $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
 
@@ -2115,6 +2115,11 @@ class EditDocumentController
                 );
             } else {
                 $availableLanguages = $this->getLanguages((int)$pid, $table);
+            }
+            // Remove default language, if user does not have access. This is necessary, since
+            // the default language is always added when fetching the system languages (#88504).
+            if (isset($availableLanguages[0]) && !$this->getBackendUser()->checkLanguageAccess(0)) {
+                unset($availableLanguages[0]);
             }
             // Page available in other languages than default language?
             if (count($availableLanguages) > 1) {
