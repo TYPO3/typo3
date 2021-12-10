@@ -31,6 +31,7 @@ class Type
     public const CACHE = 3;
     public const EXTENSION = 4;
     public const ERROR = 5;
+    public const SITE = 6;
     public const SETTING = 254;
     public const LOGIN = 255;
 
@@ -40,6 +41,7 @@ class Type
         self::CACHE => 'default',
         self::EXTENSION => 'default',
         self::ERROR => 'php',
+        self::SITE => 'site',
         self::SETTING => 'default',
         self::LOGIN => 'user',
     ];
@@ -50,6 +52,7 @@ class Type
         self::CACHE => LogLevel::INFO,
         self::EXTENSION => LogLevel::INFO,
         self::ERROR => LogLevel::ERROR,
+        self::SITE => LogLevel::INFO,
         self::SETTING => LogLevel::INFO,
         self::LOGIN => LogLevel::INFO,
     ];
