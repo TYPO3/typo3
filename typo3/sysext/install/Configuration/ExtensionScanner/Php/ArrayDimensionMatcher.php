@@ -560,4 +560,9 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'ContextMenu\'][\'ItemProviders\']' => [
+        'restFiles' => [
+            'Breaking-96333-AutoConfigurationOfContextMenuItemProviders.rst',
+        ],
+    ],
 ];

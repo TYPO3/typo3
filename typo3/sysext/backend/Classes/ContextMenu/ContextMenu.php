@@ -17,9 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ContextMenu;
 
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\RecordProvider;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry;
+use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 
 /**
  * Class for generating the click menu
@@ -27,15 +26,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ContextMenu
 {
-    /**
-     * Click menu item providers shipped with EXT:backend
-     *
-     * @var array
-     */
-    protected $itemProviders = [
-        PageProvider::class,
-        RecordProvider::class,
-    ];
+    protected ItemProvidersRegistry $itemProvidersRegistry;
+
+    public function __construct(ItemProvidersRegistry $itemProvidersRegistry)
+    {
+        $this->itemProvidersRegistry = $itemProvidersRegistry;
+    }
 
     /**
      * @param string $table
@@ -46,10 +42,7 @@ class ContextMenu
     public function getItems(string $table, string $identifier, string $context = ''): array
     {
         $items = [];
-        $itemsProviders = $this->getAvailableProviders($table, $identifier, $context);
-
-        /** @var \TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface $provider */
-        foreach ($itemsProviders as $provider) {
+        foreach ($this->getAvailableProviders($table, $identifier, $context) as $provider) {
             $items = $provider->addItems($items);
         }
         return $this->cleanItems($items);
@@ -59,14 +52,16 @@ class ContextMenu
      * @param string $table
      * @param string $identifier
      * @param string $context
-     * @return array of \TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface
+     * @return ProviderInterface[]
      */
     protected function getAvailableProviders(string $table, string $identifier, string $context): array
     {
-        $providers = array_merge($this->itemProviders, $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders'] ?? []);
+        $providers = $this->itemProvidersRegistry->getItemProviders();
         $availableProviders = [];
-        foreach ($providers as $providerClass) {
-            $provider = GeneralUtility::makeInstance($providerClass, $table, $identifier, $context);
+        foreach ($providers as $provider) {
+            if (is_callable([$provider, 'setContext'])) {
+                $provider->setContext($table, $identifier, $context);
+            }
             if ($provider->canHandle()) {
                 $priority = $provider->getPriority();
                 $availableProviders[$priority] = $provider;

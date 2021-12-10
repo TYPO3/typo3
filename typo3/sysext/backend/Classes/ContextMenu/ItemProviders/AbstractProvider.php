@@ -80,21 +80,17 @@ class AbstractProvider implements ProviderInterface
      */
     protected $context = '';
 
-    /**
-     * Lightweight constructor, just to be able to call ->canHandle(). Rest of the initialization is done
-     * in the initialize() method
-     *
-     * @param string $table
-     * @param string $identifier
-     * @param string $context
-     */
-    public function __construct(string $table, string $identifier, string $context = '')
+    public function __construct()
+    {
+        $this->languageService = $GLOBALS['LANG'];
+        $this->backendUser = $GLOBALS['BE_USER'];
+    }
+
+    public function setContext(string $table, string $identifier, string $context = ''): void
     {
         $this->table = $table;
         $this->identifier = $identifier;
         $this->context = $context;
-        $this->languageService = $GLOBALS['LANG'];
-        $this->backendUser = $GLOBALS['BE_USER'];
     }
 
     /**

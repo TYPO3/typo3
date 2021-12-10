@@ -27,6 +27,13 @@ services:
     shared: false
     public: true
 
+  TYPO3\CMS\Backend\ContextMenu\ContextMenu:
+    public: true
+
+  TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry:
+    arguments:
+      - !tagged_iterator backend.contextmenu.itemprovider
+
   TYPO3\CMS\Backend\Template\ModuleTemplate:
     shared: false
     public: true
@@ -159,6 +166,7 @@ services:
     tags:
       - name: event.listener
         identifier: 'backend-empty-colpos'
+
   # Toolbar registry
   TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry:
     arguments:
