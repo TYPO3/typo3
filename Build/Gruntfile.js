@@ -541,11 +541,7 @@ module.exports = function (grunt) {
           'jquery-ui/position.js': 'jquery-ui/ui/position.js',
           'jquery-ui/resizable.js': 'jquery-ui/ui/resizable.js',
           'jquery-ui/selectable.js': 'jquery-ui/ui/selectable.js',
-          // jquery-ui/sortable.js requires a patch @see: https://github.com/jquery/jquery-ui/pull/1093
-          // for this reason this lib is modified and can't be copied
-          // For the moment this is ok, because we stuck on version 1.11.4 which is very old
-          // the jquery ui stuff should be replaced by modern libs asap
-          // 'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
+          'jquery-ui/sortable.js': 'jquery-ui/ui/sortable.js',
           'jquery-ui/widget.js': 'jquery-ui/ui/widget.js',
           'Sortable.min.js': 'sortablejs/dist/sortable.umd.js'
         }
@@ -571,6 +567,7 @@ module.exports = function (grunt) {
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
+          "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"],
           "<%= paths.install %>Public/JavaScript/chosen.jquery.min.js": ["<%= paths.node_modules %>chosen-js/chosen.jquery.js"]
         }
