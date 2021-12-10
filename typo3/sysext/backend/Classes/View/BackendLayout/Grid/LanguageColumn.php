@@ -108,7 +108,8 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowEditPage(): bool
     {
-        return $this->getBackendUser()->check('tables_modify', 'pages');
+        return $this->getBackendUser()->check('tables_modify', 'pages')
+            && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage()->getLanguageId());
     }
 
     public function getPageEditTitle(): string
