@@ -93,7 +93,7 @@ declare namespace TYPO3 {
         public unlockPrevStep(): JQuery;
         public blurCancelStep(): JQuery;
         public getComponent(): JQuery;
-        public addFinalProcessingSlide(callback?: Function): JQueryXHR;
+        public addFinalProcessingSlide(callback?: Function): Promise<void>;
         public show(): MultiStepWizard;
         public dismiss(): MultiStepWizard;
       }

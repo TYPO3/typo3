@@ -492,7 +492,7 @@ define(['jquery',
             $(getDomElementIdentifier('t3Footer', 'id'), responseBody).remove();
             $(getDomElementIdentifier('moduleBody', 'class')).html(responseBody.html());
           });
-        }).done(function() {
+        }).then(function() {
           MultiStepWizard.show();
         });
       });
@@ -737,7 +737,7 @@ define(['jquery',
             $(getDomElementIdentifier('t3Footer', 'id'), responseBody).remove();
             $(getDomElementIdentifier('moduleBody', 'class')).html(responseBody.html());
           });
-        }).done(function() {
+        }).then(function() {
           MultiStepWizard.show();
         });
       });
