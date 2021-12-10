@@ -173,7 +173,7 @@ class RecordHistory
                 if (!isset($insertsDeletes[$field])) {
                     $insertsDeletes[$field] = 0;
                 }
-                $value['action'] === 'insert' ? $insertsDeletes[$field]++ : $insertsDeletes[$field]--;
+                ($value['action'] ?? '') === 'insert' ? $insertsDeletes[$field]++ : $insertsDeletes[$field]--;
                 // unset not needed fields
                 if ($insertsDeletes[$field] === 0) {
                     unset($insertsDeletes[$field]);
