@@ -100,7 +100,7 @@ class ConditionMatcher extends AbstractConditionMatcher
         } elseif (is_array($editStatement)) {
             $table = key($editStatement);
             $uidAndAction = current($editStatement);
-            $uid = key($uidAndAction);
+            $uid = (int)key($uidAndAction);
             $action = current($uidAndAction);
             if ($action === 'edit') {
                 $pageId = $this->getPageIdByRecord($table, $uid);
@@ -134,7 +134,6 @@ class ConditionMatcher extends AbstractConditionMatcher
     private function getPageIdByRecord(string $table, int $id, bool $ignoreTable = false): int
     {
         $pageId = 0;
-        $id = (int)$id;
         if ($table && $id) {
             if (($ignoreTable || $table === 'pages') && $id >= 0) {
                 $pageId = $id;
