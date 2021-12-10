@@ -248,7 +248,20 @@ class BackendLayoutRenderer
                 $this->view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($this->context));
             }
         } else {
-            $this->view->assign('grid', $this->getGridForPageLayoutContext($this->context));
+            $context = $this->context;
+            // Check if we have to use a localized context for grid creation
+            if ($this->context->getDrawingConfiguration()->getSelectedLanguageId() > 0) {
+                // In case a localization is selected, clone the context with this language
+                $localizedContext = $this->context->cloneForLanguage(
+                    $this->context->getSiteLanguage($this->context->getDrawingConfiguration()->getSelectedLanguageId())
+                );
+                if ($localizedContext->getLocalizedPageRecord()) {
+                    // In case the localized context contains the corresponding
+                    // localized page record use this context for grid creation.
+                    $context = $localizedContext;
+                }
+            }
+            $this->view->assign('grid', $this->getGridForPageLayoutContext($context));
         }
 
         $rendered = $this->view->render('PageLayout');

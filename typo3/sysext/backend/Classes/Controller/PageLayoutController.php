@@ -286,9 +286,11 @@ class PageLayoutController
             1 => $this->getLanguageService()->getLL('m_function_1')
         ];
         // Find if there are ANY languages at all (and if not, do not show the language option from function menu).
-        if (count($this->availableLanguages) > 1) {
+        // The second check is for an edge case: Only two languages in the site and the default is not allowed.
+        if (count($this->availableLanguages) > 1 || (int)array_key_first($this->availableLanguages) > 0) {
             $actions[2] = $this->getLanguageService()->getLL('m_function_2');
         }
+
         $this->makeLanguageMenu();
         // Page / user TSconfig blinding of menu-items
         $blindActions = $this->modTSconfig['properties']['menu.']['functions.'] ?? [];
@@ -804,68 +806,63 @@ class PageLayoutController
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
         if (empty($this->modTSconfig['properties']['disableIconToolbar'])) {
-            // Edit page properties and page language overlay icons
+            // Edit page properties
             if ($this->isPageEditable(0)) {
-                /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
-                $normalizedParams = $request->getAttribute('normalizedParams');
-                // Edit localized pages only when one specific language is selected
-                if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
-                    $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
-                    $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('pages');
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                        ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
-                    $overlayRecord = $queryBuilder
-                        ->select('uid')
-                        ->from('pages')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                $localizationParentField,
-                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                $languageField,
-                                $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
-                            )
-                        )
-                        ->setMaxResults(1)
-                        ->execute()
-                        ->fetch();
-                    BackendUtility::workspaceOL('pages', $overlayRecord, (int)$this->getBackendUser()->workspace);
-                    // Edit button
-                    $urlParameters = [
-                        'edit' => [
-                            'pages' => [
-                                $overlayRecord['uid'] => 'edit'
-                            ]
-                        ],
-                        'returnUrl' => $normalizedParams->getRequestUri(),
-                    ];
-
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    $editLanguageButton = $this->buttonBar->makeLinkButton()
-                        ->setHref($url)
-                        ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
-                        ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
-                    $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
-                }
-                $urlParameters = [
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
                         'pages' => [
                             $this->id => 'edit'
                         ]
                     ],
-                    'returnUrl' => $normalizedParams->getRequestUri(),
-                ];
-                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                ]);
                 $editPageButton = $this->buttonBar->makeLinkButton()
                     ->setHref($url)
                     ->setTitle($lang->getLL('editPageProperties'))
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
                 $this->buttonBar->addButton($editPageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
+            }
+            // Edit page properties of page language overlay (Only when one specific language is selected)
+            if ((int)$this->MOD_SETTINGS['function'] === 1
+                && $this->current_sys_language > 0
+                && $this->isPageEditable($this->current_sys_language)
+            ) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+                $overlayRecord = $queryBuilder
+                    ->select('uid')
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                            $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                            $queryBuilder->createNamedParameter($this->current_sys_language, \PDO::PARAM_INT)
+                        )
+                    )
+                    ->setMaxResults(1)
+                    ->execute()
+                    ->fetch();
+                BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
+                // Edit button
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                    'edit' => [
+                        'pages' => [
+                            $overlayRecord['uid'] => 'edit'
+                        ]
+                    ],
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                ]);
+                $editLanguageButton = $this->buttonBar->makeLinkButton()
+                    ->setHref($url)
+                    ->setTitle($lang->getLL('editPageLanguageOverlayProperties'))
+                    ->setIcon($this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL));
+                $this->buttonBar->addButton($editLanguageButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
             }
         }
     }
@@ -974,13 +971,22 @@ class PageLayoutController
      */
     protected function isPageEditable(int $languageId): bool
     {
-        if ($this->getBackendUser()->isAdmin()) {
+        if ($GLOBALS['TCA']['pages']['ctrl']['readOnly'] ?? false) {
+            return false;
+        }
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->isAdmin()) {
             return true;
         }
+        if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
+            return false;
+        }
 
-        return !$this->pageinfo['editlock']
-            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
-            && $this->getBackendUser()->checkLanguageAccess($languageId);
+        return $this->pageinfo !== []
+            && !(bool)($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['editlock'] ?? null] ?? false)
+            && $backendUser->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
+            && $backendUser->checkLanguageAccess($languageId)
+            && $backendUser->check('tables_modify', 'pages');
     }
 
     /**

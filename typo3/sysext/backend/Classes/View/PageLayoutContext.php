@@ -209,7 +209,13 @@ class PageLayoutContext
                 $this->site->getLanguageById($selectedLanguageId)
             ];
         }
-        return $this->getSiteLanguages();
+        $languages = $this->getSiteLanguages();
+        if (!isset($languages[0])) {
+            // $languages may not contain the default (0) in case the user does not have access to it.
+            // However, as for a selected page, it should also be displayed readonly for the "all languages" view
+            $languages = [$this->site->getDefaultLanguage()] + $languages;
+        }
+        return $languages;
     }
 
     public function getSiteLanguage(?int $languageId = null): SiteLanguage
