@@ -2095,19 +2095,22 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function applyFiltersToValues(array $tcaFieldConfiguration, array $values)
     {
-        if (empty($tcaFieldConfiguration['filter']) || !is_array($tcaFieldConfiguration['filter'])) {
+        if (!is_array($tcaFieldConfiguration['filter'] ?? null)) {
             return $values;
         }
         foreach ($tcaFieldConfiguration['filter'] as $filter) {
             if (empty($filter['userFunc'])) {
                 continue;
             }
-            $parameters = $filter['parameters'] ?: [];
+            $parameters = $filter['parameters'] ?? [];
+            if (!is_array($parameters)) {
+                $parameters = [];
+            }
             $parameters['values'] = $values;
             $parameters['tcaFieldConfig'] = $tcaFieldConfiguration;
             $values = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
             if (!is_array($values)) {
-                throw new \RuntimeException('Failed calling filter userFunc.', 1336051942);
+                throw new \RuntimeException('Expected userFunc filter "' . $filter['userFunc'] . '" to return an array. Got ' . gettype($values) . '.', 1336051942);
             }
         }
         return $values;
