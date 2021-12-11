@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
@@ -3484,34 +3483,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function getTimeTracker()
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
-    }
-
-    /**
-     * Return the global instance of this class.
-     *
-     * Intended to be used as prototype factory for this class, see Services.yaml.
-     * This is required as long as TypoScriptFrontendController needs request
-     * dependent constructor parameters. Once that has been refactored this
-     * factory will be removed.
-     *
-     * @return TypoScriptFrontendController
-     * @internal
-     */
-    public static function getGlobalInstance(): ?self
-    {
-        if (($GLOBALS['TSFE'] ?? null) instanceof self) {
-            return $GLOBALS['TSFE'];
-        }
-
-        if (!($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            || !ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
-        ) {
-            // Return null for now (together with shared: false in Services.yaml) as TSFE might not be available in backend context
-            // That's not an error then
-            return null;
-        }
-
-        throw new \LogicException('TypoScriptFrontendController was tried to be injected before initial creation', 1538370377);
     }
 
     public function getLanguage(): SiteLanguage
