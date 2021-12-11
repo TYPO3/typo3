@@ -2584,9 +2584,10 @@ class EditDocumentController
     {
         $queryParameters = $request->getQueryParams();
         $languageService = $this->getLanguageService();
+        $defaultTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit');
 
         if (!is_array($queryParameters['edit'] ?? false)) {
-            return '';
+            return $defaultTitle;
         }
 
         // @todo There may be a more efficient way in using FormEngine FormData.
@@ -2594,35 +2595,48 @@ class EditDocumentController
 
         $table = (string)key($queryParameters['edit']);
         $tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table;
-        $recordId = (int)key($queryParameters['edit'][$table]);
-        $action = (string)($queryParameters['edit'][$table][$recordId] ?? '');
+        $identifier = (string)key($queryParameters['edit'][$table]);
+        $action = (string)($queryParameters['edit'][$table][$identifier] ?? '');
 
         if ($action === 'new') {
             return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNew') . ' ' . $tableTitle;
         }
 
         if ($action === 'edit') {
+            if ($multiple = str_contains($identifier, ',')) {
+                // Multiple records are given, use the first one for further evaluation of e.g. the parent page
+                $recordId = (int)(GeneralUtility::trimExplode(',', $identifier, true)[0] ?? 0);
+            } else {
+                $recordId = (int)$identifier;
+            }
             $record = BackendUtility::getRecord($table, $recordId) ?? [];
             $recordTitle = BackendUtility::getRecordTitle($table, $record) ?? '';
             if ($table === 'pages') {
-                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editPage'), $tableTitle, $recordTitle);
+                return $multiple
+                    ? $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editMultiplePages')
+                    : sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editPage'), $tableTitle, $recordTitle);
             }
             if (!isset($record['pid'])) {
-                return $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit');
+                return $defaultTitle;
             }
             $pageId = (int)$record['pid'];
             if ($pageId === 0) {
-                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordRootLevel'), $tableTitle, $recordTitle);
+                return $multiple
+                    ? sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editMultipleRecordsRootLevel'), $tableTitle)
+                    : sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordRootLevel'), $tableTitle, $recordTitle);
             }
             $pageRow = BackendUtility::getRecord('pages', $pageId) ?? [];
             $pageTitle = BackendUtility::getRecordTitle('pages', $pageRow);
+            if ($multiple) {
+                return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editMultipleRecords'), $tableTitle, $pageTitle);
+            }
             if ($recordTitle !== '') {
                 return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecord'), $tableTitle, $recordTitle, $pageTitle);
             }
             return sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editRecordNoTitle'), $tableTitle, $pageTitle);
         }
 
-        return '';
+        return $defaultTitle;
     }
 
     /**

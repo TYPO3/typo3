@@ -304,6 +304,15 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.editRecordRootLevel" resname="labels.editRecordRootLevel">
 				<source>Edit %s "%s" on root level</source>
 			</trans-unit>
+			<trans-unit id="labels.editMultiplePages" resname="labels.editMultiplePages">
+				<source>Edit multiple pages</source>
+			</trans-unit>
+			<trans-unit id="labels.editMultipleRecords" resname="labels.editMultipleRecords">
+				<source>Edit multiple "%s" records on page "%s"</source>
+			</trans-unit>
+			<trans-unit id="labels.editMultipleRecordsRootLevel" resname="labels.editMultipleRecordsRootLevel">
+				<source>Edit multiple "%s" records on root level</source>
+			</trans-unit>
 			<trans-unit id="labels.rootLevel" resname="labels.rootLevel">
 				<source>root level</source>
 			</trans-unit>
