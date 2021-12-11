@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
+use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
@@ -1099,5 +1100,73 @@ class DataHandlerTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
         self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
+    }
+
+    public function applyFiltersToValuesFiltersValuesDataProvider(): iterable
+    {
+        yield 'values are filtered by provided user function' => [
+            'tcaFieldConfiguration' => [
+                'filter' => [
+                    [
+                        'userFunc' => UserOddNumberFilter::class . '->filter',
+                    ],
+                ],
+            ],
+            'values' => [1, 2, 3, 4, 5],
+            'expected' => [1, 3, 5],
+        ];
+
+        yield 'parameters are passed to the user function' => [
+            'tcaFieldConfiguration' => [
+                'filter' => [
+                    [
+                        'userFunc' => UserOddNumberFilter::class . '->filter',
+                        'parameters' => [
+                            'exclude' => 1,
+                        ],
+                    ],
+                ],
+            ],
+            'values' => [1, 2, 3, 4, 5],
+            'expected' => [3, 5],
+        ];
+
+        yield 'no filters return value as is' => [
+            'tcaFieldConfiguration' => [],
+            'values' => [1, 2, 3, 4, 5],
+            'expected' => [1, 2, 3, 4, 5],
+        ];
+    }
+
+    /**
+     * @dataProvider applyFiltersToValuesFiltersValuesDataProvider
+     * @test
+     */
+    public function applyFiltersToValuesFiltersValues(array $tcaFieldConfiguration, array $values, array $expected): void
+    {
+        self::assertEqualsCanonicalizing($expected, $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values));
+    }
+
+    /**
+     * @test
+     */
+    public function applyFiltersToValuesExpectsArray(): void
+    {
+        $tcaFieldConfiguration = [
+            'filter' => [
+                [
+                    'userFunc' => UserOddNumberFilter::class . '->filter',
+                    'parameters' => [
+                        'break' => true,
+                    ],
+                ],
+            ],
+        ];
+
+        $values = [1, 2, 3, 4, 5];
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1336051942);
+        $this->expectDeprecationMessage('Expected userFunc filter "TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter->filter" to return an array. Got NULL.');
+        $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values);
     }
 }
