@@ -12,6 +12,7 @@
  */
 
 import {Collapse} from 'bootstrap';
+import $ from 'jquery';
 import Sortable from 'sortablejs';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';

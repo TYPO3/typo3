@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import $ from 'jquery';
+
 export abstract class AbstractInteractableModule {
   protected currentModal: JQuery;
   private readonly selectorModalBody: string = '.t3js-modal-body';

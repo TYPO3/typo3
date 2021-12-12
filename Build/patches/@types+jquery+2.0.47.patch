@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/jquery/index.d.ts b/node_modules/@types/jquery/index.d.ts
+index b01e4ce..153d4c3 100644
+--- a/node_modules/@types/jquery/index.d.ts
++++ b/node_modules/@types/jquery/index.d.ts
+@@ -3819,7 +3819,6 @@ interface JQuery {
+     extend(object: { [method: string]: (...args: any[]) => any; }): JQuery;
+ }
+ declare module "jquery" {
++    var $: JQueryStatic;
+     export = $;
+ }
+-declare var jQuery: JQueryStatic;
+-declare var $: JQueryStatic;
