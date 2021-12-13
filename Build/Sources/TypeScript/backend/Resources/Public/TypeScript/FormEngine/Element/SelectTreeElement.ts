@@ -85,6 +85,8 @@ export class SelectTreeElement {
       tableName: this.recordField.dataset.tablename,
       fieldName: this.recordField.dataset.fieldname,
       uid: this.recordField.dataset.uid,
+      defaultValues: this.recordField.dataset.defaultvalues,
+      overrideValues: this.recordField.dataset.overridevalues,
       recordTypeValue: this.recordField.dataset.recordtypevalue,
       dataStructureIdentifier: this.recordField.dataset.datastructureidentifier,
       flexFormSheetName: this.recordField.dataset.flexformsheetname,

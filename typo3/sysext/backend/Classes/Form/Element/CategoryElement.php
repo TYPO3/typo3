@@ -138,6 +138,8 @@ class CategoryElement extends AbstractFormElement
             'data-flexformcontaineridentifier' => $flexFormContainerIdentifier,
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-flexformsectioncontainerisnew' => (string)$flexFormSectionContainerIsNew,
+            'data-overridevalues' => GeneralUtility::jsonEncodeForHtmlAttribute($this->data['overrideValues'], false),
+            'data-defaultvalues' => GeneralUtility::jsonEncodeForHtmlAttribute($this->data['defaultValues'], false),
         ];
 
         $resultArray['html'] =

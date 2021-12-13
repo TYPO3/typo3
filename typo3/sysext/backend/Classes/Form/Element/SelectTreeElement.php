@@ -171,6 +171,8 @@ class SelectTreeElement extends AbstractFormElement
         $html[] =                       ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
         $html[] =                       ' id="treeinput' . $formElementId . '"';
         $html[] =                       ' value="' . htmlspecialchars(implode(',', $parameterArray['itemFormElValue'])) . '"';
+        $html[] =                       ' data-overridevalues="' . GeneralUtility::jsonEncodeForHtmlAttribute($this->data['overrideValues']) . '"';
+        $html[] =                       ' data-defaultvalues="' . GeneralUtility::jsonEncodeForHtmlAttribute($this->data['defaultValues']) . '"';
         $html[] =                   '/>';
         $html[] =               '</div>';
         $html[] =               '<div id="' . $treeWrapperId . '" class="svg-tree-element" style="height: ' . $heightInPx . 'px;"></div>';
