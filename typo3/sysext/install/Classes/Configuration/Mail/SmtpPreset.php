@@ -59,7 +59,7 @@ class SmtpPreset extends AbstractPreset
                 $configurationValues[$key] = $this->postValues['Smtp'][$key];
             }
         }
-        if ($this->postValues['Mail']['enable'] === 'Smtp') {
+        if (($this->postValues['Mail']['enable'] ?? '') === 'Smtp') {
             $configurationValues['MAIL/transport'] = 'smtp';
         }
         return $configurationValues;
