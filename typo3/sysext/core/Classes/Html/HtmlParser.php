@@ -452,7 +452,7 @@ class HtmlParser
                     $endTag = $firstChar === '/' ? 1 : 0;
                     $tagContent = substr($tok, $endTag, $tagEnd - $endTag);
                     $tagParts = preg_split('/\\s+/s', $tagContent, 2);
-                    $tagName = strtolower($tagParts[0]);
+                    $tagName = strtolower(rtrim($tagParts[0], '/'));
                     $emptyTag = 0;
                     if (isset($tags[$tagName])) {
                         // If there is processing to do for the tag:
