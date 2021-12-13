@@ -153,6 +153,28 @@ class HtmlParserTest extends UnitTestCase
     }
 
     /**
+     * @test
+     * @dataProvider htmlWithDifferentSingleTagsDataProvider
+     */
+    public function htmlCleanerKeepsSingleTagsWithAndWithoutEndingSlashUnchanged(string $exampleString): void
+    {
+        $result = $this->subject->HTMLcleaner($exampleString, ['br' => true], 0);
+        self::assertSame($exampleString, $result);
+    }
+
+    /**
+     * Data provider for htmlCleanerCanHandleSingleTagsWithEndingSlashes
+     */
+    public static function htmlWithDifferentSingleTagsDataProvider(): array
+    {
+        return [
+            'no slash' => ['one<br>two'],
+            'slash without space' => ['one<br/>two'],
+            'space and slash' => ['one<br />two'],
+        ];
+    }
+
+    /**
      * Data provider for spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured
      */
     public static function spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider(): array
