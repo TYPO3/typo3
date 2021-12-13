@@ -12,6 +12,7 @@
 .. --------------------------------------------------
 
 .. role::   typoscript(code)
+.. role::   sql(code)
 
 .. role::   ts(typoscript)
    :class:  typoscript

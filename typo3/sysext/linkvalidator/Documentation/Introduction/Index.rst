@@ -97,14 +97,9 @@ The LinkValidator features full support of the TYPO3 Scheduler. This is
 the LinkValidator task:
 
 .. figure:: ../Images/SchedulerTask.png
-   :alt: The LinkValidator Scheduler task (1)
+   :alt: The LinkValidator Scheduler task
 
-   Defining the LinkValidator task in the Scheduler (2)
-
-.. figure:: ../Images/SchedulerTask2.png
-   :alt: The LinkValidator Scheduler task (2)
-
-   Defining the LinkValidator task in the Scheduler (2)
+   Defining the LinkValidator task in the Scheduler
 
 
 -   With this task you can run LinkValidator regularly via cron without
