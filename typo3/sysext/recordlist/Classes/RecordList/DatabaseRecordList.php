@@ -2295,7 +2295,7 @@ class DatabaseRecordList
         if ($editPermission && !$this->getBackendUserAuthentication()->isAdmin()) {
             // If no $row is submitted we only check for general edit lock of current page (except for table "pages")
             if (empty($row)) {
-                return $table === 'pages' ? true : !$this->pageRow['editlock'];
+                return ($table === 'pages') || !($this->pageRow['editlock'] ?? false);
             }
             if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $this->pageRow['editlock'])) {
                 $editPermission = false;
