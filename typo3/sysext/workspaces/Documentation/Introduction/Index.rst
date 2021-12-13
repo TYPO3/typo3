@@ -27,9 +27,9 @@ Credits
 ^^^^^^^
 
 This manual corresponds in large parts to the original version from
-Kasper found in the :ref:`Inside TYPO3 <t3inside:start>` document. It was adjusted and
-updated to fit with the workspaces and versioning modules as found in
-current versions.
+Kasper found in `Inside TYPO3 <https://docs.typo3.org/typo3cms/InsideTypo3Reference/>`__
+document. It was adjusted and updated to fit with the workspaces and versioning
+modules and moved into :ref:`TYPO3 Explained <t3coreapi:workspaces>`.
 
 
 .. _feedback:
