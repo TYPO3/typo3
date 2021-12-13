@@ -94,6 +94,8 @@ class CategoryElement extends HTMLElement{
       command: this.recordField.dataset.command,
       tableName: this.recordField.dataset.tablename,
       fieldName: this.recordField.dataset.fieldname,
+      defaultValues: this.recordField.dataset.defaultvalues,
+      overrideValues: this.recordField.dataset.overridevalues,
       recordTypeValue: this.recordField.dataset.recordtypevalue,
       flexFormSheetName: this.recordField.dataset.flexformsheetname,
       flexFormFieldName: this.recordField.dataset.flexformfieldname,

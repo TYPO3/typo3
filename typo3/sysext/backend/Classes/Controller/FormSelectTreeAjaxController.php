@@ -162,6 +162,12 @@ class FormSelectTreeAjaxController
             'selectTreeCompileItems' => true,
             'flexSectionContainerPreparation' => $flexSectionContainerPreparation,
         ];
+        if (!empty($request->getQueryParams()['overrideValues'])) {
+            $formDataCompilerInput['overrideValues'] = json_decode($request->getQueryParams()['overrideValues'], true);
+        }
+        if (!empty($request->getQueryParams()['defaultValues'])) {
+            $formDataCompilerInput['defaultValues'] = json_decode($request->getQueryParams()['defaultValues'], true);
+        }
         $formData = $formDataCompiler->compile($formDataCompilerInput);
 
         if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
