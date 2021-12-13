@@ -46,7 +46,7 @@ not enabled in your :file:`Configuration/Services.(yaml|php)` file,
 manually configure your item providers with the
 :yaml:`backend.contextmenu.itemprovider` tag.
 
-If you your item providers extend :php:`AbstractProvider` and overwrite the
+If your item providers extend :php:`AbstractProvider` and overwrite the
 :php:`__construct()` method, adjust the signature like shown below:
 
 .. code-block:: php

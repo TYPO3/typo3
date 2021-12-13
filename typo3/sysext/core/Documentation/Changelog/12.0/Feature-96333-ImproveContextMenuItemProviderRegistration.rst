@@ -21,7 +21,7 @@ previously registered in the global TYPO3 configuration, via the
 Since the introduction of the symfony service container in TYPO3 v10,
 it's possible to autoconfigure services. This feature is now also used
 for the context menu item providers. Therefore, the previous registration
-step is now superfluous. All toolbar items are now automatically tagged
+step is now superfluous. All item providers are now automatically tagged
 and registered based on the implemented :php:`ProviderInterface`.
 
 Impact
