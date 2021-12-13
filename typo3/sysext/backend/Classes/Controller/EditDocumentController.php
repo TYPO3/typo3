@@ -1022,7 +1022,7 @@ class EditDocumentController
             // Creating the editing form, wrap it with buttons, document selector etc.
             $editForm = $this->makeEditForm();
             if ($editForm) {
-                $this->firstEl = reset($this->elementsData);
+                $this->firstEl = $this->elementsData ? reset($this->elementsData) : null;
                 // Checking if the currently open document is stored in the list of "open documents" - if not, add it:
                 if ((($this->docDat[1] ?? null) !== $this->storeUrlMd5 || !isset($this->docHandler[$this->storeUrlMd5]))
                     && !$this->dontStoreDocumentRef
