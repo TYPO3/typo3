@@ -1,3 +1,4 @@
+.. include:: /Includes.rst.txt
 renderingOptions.controllerAction
 ---------------------------------
 

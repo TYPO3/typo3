@@ -1,4 +1,4 @@
-.. include:: ../../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _concepts-finishers:
@@ -79,11 +79,11 @@ be overwritten in the FlexForm configuration of the form plugin.
 
 To customize the templates being used following options can be set:
 
-* ``templateName``: The template name (for both HTML and plaintext) without the
-  extension
-* ``templateRootPaths``: The paths to the templates
-* ``partialRootPaths``: The paths to the partials
-* ``layoutRootPaths``: The paths to the layouts
+*   :yaml:`templateName`: The template name (for both HTML and plaintext) without the
+    extension
+*   :yaml:`templateRootPaths`: The paths to the templates
+*   :yaml:`partialRootPaths`: The paths to the partials
+*   :yaml:`layoutRootPaths`: The paths to the layouts
 
 For FluidEmail, the field ``templatePathAndFilename`` is not evaluated anymore.
 

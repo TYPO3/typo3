@@ -1,3 +1,4 @@
+.. include:: /Includes.rst.txt
 renderingOptions.templateVariant
 --------------------------------
 
@@ -20,7 +21,9 @@ renderingOptions.templateVariant
       No
 
 :aspect:`Default value (for prototype 'standard')`
+
       .. code-block:: yaml
+
          templateVariant: version1
 
 :aspect:`Description`
