@@ -429,7 +429,7 @@ define([
       case 'alphanum_x':
         newString = '';
         for (a = 0; a < value.length; a++) {
-          theChar = value.substr(a, 1);
+          var theChar = value.substr(a, 1);
           var special = (theChar === '_' || theChar === '-');
           var alpha = (theChar >= 'a' && theChar <= 'z') || (theChar >= 'A' && theChar <= 'Z');
           var num = (theChar >= '0' && theChar <= '9');
