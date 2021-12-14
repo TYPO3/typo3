@@ -150,7 +150,7 @@ class DateViewHelper extends AbstractViewHelper
         }
 
         if ($date === '') {
-            $date = 'now';
+            $date = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp', 'now');
         }
 
         if (!$date instanceof \DateTimeInterface) {
