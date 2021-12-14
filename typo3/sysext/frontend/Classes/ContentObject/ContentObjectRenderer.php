@@ -1287,7 +1287,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         unset($this->stopRendering[$this->stdWrapRecursionLevel]);
         $this->stdWrapRecursionLevel--;
 
-        return $content;
+        return (string)$content;
     }
 
     /**
@@ -1443,7 +1443,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_field($content = '', $conf = [])
     {
-        return $this->getFieldVal($conf['field']);
+        return (string)$this->getFieldVal($conf['field']);
     }
 
     /**
@@ -5784,8 +5784,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         foreach ($properties as $property) {
             $conf[$property] = trim(
                 isset($conf[$property . '.'])
-                    ? $this->stdWrap($conf[$property] ?? '', $conf[$property . '.'] ?? [])
-                    : ($conf[$property] ?? '')
+                    ? (string)$this->stdWrap($conf[$property] ?? '', $conf[$property . '.'] ?? [])
+                    : (string)($conf[$property] ?? '')
             );
             if ($conf[$property] === '') {
                 unset($conf[$property]);

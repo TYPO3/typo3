@@ -138,11 +138,11 @@ class Package implements PackageInterface
     protected function createPackageMetaData(PackageManager $packageManager)
     {
         $this->packageMetaData = new MetaData($this->getPackageKey());
-        $description = $this->getValueFromComposerManifest('description');
+        $description = (string)$this->getValueFromComposerManifest('description');
         $this->packageMetaData->setDescription($description);
         $this->packageMetaData->setTitle($this->getValueFromComposerManifest('title') ?? $description);
-        $this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
-        $this->packageMetaData->setPackageType($this->getValueFromComposerManifest('type'));
+        $this->packageMetaData->setVersion((string)$this->getValueFromComposerManifest('version'));
+        $this->packageMetaData->setPackageType((string)$this->getValueFromComposerManifest('type'));
         $requirements = $this->getValueFromComposerManifest('require');
         if ($requirements !== null) {
             foreach ($requirements as $requirement => $version) {

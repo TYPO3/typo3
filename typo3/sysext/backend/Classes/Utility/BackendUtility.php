@@ -629,12 +629,16 @@ class BackendUtility
             $field = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
             if (str_contains($field, ':')) {
                 [$pointerField, $foreignTableTypeField] = explode(':', $field);
-                // Get field value from database if field is not in the $row array
-                if (!isset($row[$pointerField])) {
-                    $localRow = self::getRecord($table, $row['uid'], $pointerField);
-                    $foreignUid = $localRow[$pointerField];
-                } else {
-                    $foreignUid = $row[$pointerField];
+                // Check if the record has been persisted already
+                $foreignUid = 0;
+                if (isset($row['uid'])) {
+                    // Get field value from database if field is not in the $row array
+                    if (!isset($row[$pointerField])) {
+                        $localRow = self::getRecord($table, $row['uid'], $pointerField);
+                        $foreignUid = $localRow[$pointerField];
+                    } else {
+                        $foreignUid = $row[$pointerField];
+                    }
                 }
                 if ($foreignUid) {
                     $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$pointerField]['config'];
