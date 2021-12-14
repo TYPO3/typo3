@@ -468,7 +468,7 @@ class TimeTracker implements SingletonInterface
                         $v
                     );
                 } else {
-                    $this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
+                    $this->tsStackLog[$v]['content'] = $this->fixCLen(($this->tsStackLog[$v]['content'] ?? ''), $this->tsStackLog[$v]['value']);
                     $this->tsStackLog[$v]['subtime'] = '';
                     $this->tsStackLog[$v]['owntime'] = $this->tsStackLog[$v]['deltatime'];
                 }
