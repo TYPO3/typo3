@@ -1,4 +1,4 @@
-.. include:: ../../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _concepts-finishers:
@@ -82,7 +82,7 @@ be overwritten in the FlexForm configuration of the form plugin.
 To customize the templates being used following options can be set:
 
 *   :yaml:`templateName`: The template name (for both HTML and plaintext) without the
-  extension
+    extension
 *   :yaml:`templateRootPaths`: The paths to the templates
 *   :yaml:`partialRootPaths`: The paths to the partials
 *   :yaml:`layoutRootPaths`: The paths to the layouts
