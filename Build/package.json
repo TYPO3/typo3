@@ -9,7 +9,7 @@
   "license": "GPL-2.0+",
   "engines": {
     "node": ">=14.15.0 <17.0.0",
-    "yarn": "^1.22.0"
+    "npm": ">=8.0.0 <9.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^2.4.2",
@@ -62,7 +62,7 @@
     "patch-package": "^6.2.2",
     "postcss-banner": "^3.0.2",
     "postcss-clean": "^1.1.0",
-    "rollup": "^2.32.0",
+    "rollup": "~2.32.0",
     "rollup-plugin-glob-import": "^0.5.0",
     "sass": "^1.54.4",
     "stylefmt": "^6.0.3",
@@ -71,9 +71,9 @@
     "typescript": "~4.7.0"
   },
   "scripts": {
+    "build": "./node_modules/.bin/grunt",
     "build-css": "./node_modules/.bin/grunt css",
     "build-js": "./node_modules/.bin/grunt scripts",
-    "build": "./node_modules/.bin/grunt build",
     "format": "./node_modules/.bin/grunt format",
     "update": "./node_modules/.bin/grunt update",
     "lint": "./node_modules/.bin/grunt lint",
@@ -82,7 +82,7 @@
   "dependencies": {
     "@claviska/jquery-minicolors": "^2.3.6",
     "@lit/reactive-element": "^1.0.0",
-    "@popperjs/core": "^2.10.2",
+    "@popperjs/core": "^2.11.6",
     "@typo3/icons": "^3.2.0",
     "autosize": "^4.0.2",
     "bootstrap": "^5.2.0",
@@ -101,7 +101,7 @@
     "flatpickr": "^4.6.13",
     "imagesloaded": "^4.1.4",
     "jquery": "^3.6.0",
-    "jquery-ui": "github:jquery/jquery-ui#1.11.4",
+    "jquery-ui": "git+https://git@github.com/jquery/jquery-ui.git#1.11.4",
     "lit": "^2.0.0",
     "lit-element": "^3.0.0",
     "lit-html": "^2.0.0",

@@ -185,7 +185,7 @@ module.exports = function (grunt) {
     },
     exec: {
       ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
-      'yarn-install': 'yarn install'
+      'npm-install': 'npm install'
     },
     eslint: {
       options: {
@@ -357,7 +357,7 @@ module.exports = function (grunt) {
             expand: true,
             cwd: '<%= paths.node_modules %>codemirror',
             dest: '<%= paths.t3editor %>Public/JavaScript/Contrib/codemirror',
-            src: ['**/*', '!**/src/**', '!rollup.config.js']
+            src: ['**/*', '!**/src/**', '!rollup.config.js', '!package.json']
           }
         ]
       }
@@ -778,15 +778,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-concurrent');
 
   /**
-   * grunt default task
-   *
-   * call "$ grunt"
-   *
-   * this will trigger the CSS build
-   */
-  grunt.registerTask('default', ['css']);
-
-  /**
    * grunt lint
    *
    * call "$ grunt lint"
@@ -816,10 +807,9 @@ module.exports = function (grunt) {
    * call "$ grunt update"
    *
    * this task does the following things:
-   * - yarn install
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['exec:yarn-install', 'rollup', 'concurrent:npmcopy']);
+  grunt.registerTask('update', ['rollup', 'concurrent:npmcopy']);
 
   /**
    * grunt compile-typescript task
@@ -877,9 +867,9 @@ module.exports = function (grunt) {
   });
 
   /**
-   * grunt build task
+   * grunt default task
    *
-   * call "$ grunt build"
+   * call "$ grunt default"
    *
    * this task does the following things:
    * - execute update task
@@ -889,5 +879,16 @@ module.exports = function (grunt) {
    * - minifies svg files
    * - compiles TypeScript files
    */
-  grunt.registerTask('build', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'imagemin']);
+  grunt.registerTask('default', ['clear-build', 'update', 'concurrent:copy_static', 'concurrent:compile_assets', 'concurrent:minify_assets', 'imagemin']);
+
+  /**
+   * grunt build task (legacy, for those used to it). Use `grunt default` instead.
+   *
+   * call "$ grunt build"
+   *
+   * this task does the following things:
+   * - execute exec:npm-install task
+   * - execute all task
+   */
+  grunt.registerTask('build', ['exec:npm-install', 'default']);
 };

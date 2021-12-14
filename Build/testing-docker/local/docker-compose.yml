@@ -449,7 +449,7 @@ services:
       "
 
   build_css:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -462,12 +462,12 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm install || exit 1
         node_modules/grunt/bin/grunt css
       "
 
   build_javascript:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -480,7 +480,7 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm install || exit 1
         node_modules/grunt/bin/grunt scripts
       "
 
@@ -629,7 +629,7 @@ services:
       "
 
   check_grunt_clean:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -642,8 +642,8 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
-        node_modules/grunt/bin/grunt build;
+        npm ci || exit 1
+        node_modules/grunt/bin/grunt default;
         cd ..;
         git add *;
         git status;
@@ -1141,7 +1141,7 @@ services:
       "
 
   lint_scss:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1154,12 +1154,12 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm ci || exit 1
         node_modules/grunt/bin/grunt stylelint;
       "
 
   lint_html:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1172,12 +1172,12 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm ci || exit 1
         node_modules/grunt/bin/grunt lintspaces;
       "
 
   lint_typescript:
-    image: typo3/core-testing-js:latest
+    image: typo3/core-testing-nodejs16:latest
     user: "${HOST_UID}"
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -1190,7 +1190,7 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm ci || exit 1
         node_modules/grunt/bin/grunt eslint;
       "
 
@@ -1289,7 +1289,7 @@ services:
       "
 
   unitJavascript:
-    image: typo3/core-testing-js-chrome:latest
+    image: typo3/core-testing-nodejs16-chrome:latest
     user: "${HOST_UID}"
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -1302,7 +1302,7 @@ services:
           set -x
         fi
         mkdir -p ${CORE_ROOT}/.cache
-        yarn install || exit 1
+        npm ci || exit 1
         cd ..;
         Build/node_modules/karma/bin/karma start Build/JSUnit/karma.conf.ci.js --single-run
       "

@@ -31,7 +31,7 @@ cache:
   # it is more important that single jobs don't unpack too much every time.
   # The default key is: "Cache everything created by a 'composer install' for main branch.
   # This means jobs using this default key should not create additional stuff in .cache
-  # directory, for instance by calling a 'yarn install' or 'composer min' or similar.
+  # directory, for instance by calling a 'npm ci' or 'composer min' or similar.
   key: main-composer
   paths:
     - .cache

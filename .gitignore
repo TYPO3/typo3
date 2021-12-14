@@ -25,7 +25,8 @@ nbproject
 .webprj
 #
 # Temporary files and folders
-.cache
+/.cache/*
+!/.cache/.npmrc
 .php_cs.cache
 .php-cs-fixer.cache
 .sass-cache
@@ -34,6 +35,7 @@ nbproject
 #
 # Ignore build stuff
 /.ddev/*
+/Build/.cache
 /Build/phpunit/FunctionalTests-Job-*
 /Build/bower_components/*
 /Build/node_modules/*
