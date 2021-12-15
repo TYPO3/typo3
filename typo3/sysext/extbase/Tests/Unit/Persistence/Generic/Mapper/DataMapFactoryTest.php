@@ -35,36 +35,130 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DataMapFactoryTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
-    public function oneToOneRelation(): array
+    public function setRelationsDataProvider(): iterable
     {
-        return [
-            ['Tx_Myext_Domain_Model_Foo'],
-            [Administrator::class],
+        yield 'setRelations detects one to one relation with legacy "Tx_Foo_Bar" class name schema' => [
+            'type' => 'Tx_Myext_Domain_Model_Foo',
+            'elementType' => null,
+            'tca' => [
+                'type' => 'select',
+                'foreign_table' => 'tx_myextension_bar',
+                'foreign_field' => 'parentid',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_ONE,
+        ];
+
+        yield 'setRelations detects one to one relation with FQCN' => [
+            'type' => Administrator::class,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'select',
+                'foreign_table' => 'tx_myextension_bar',
+                'foreign_field' => 'parentid',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_ONE,
+        ];
+
+        yield 'setRelations detects one to one relation with intermediate table' => [
+            'type' => 'Tx_Myext_Domain_Model_Foo',
+            'elementType' => null,
+            'tca' => [
+                'type' => 'select',
+                'foreign_table' => 'tx_myextension_bar',
+                'MM' => 'tx_myextension_mm',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY,
+        ];
+
+        yield 'setRelations detects one to many relation' => [
+            'type' => ObjectStorage::class,
+            'elementType' => 'Tx_Myext_Domain_Model_Foo',
+            'tca' => [
+                'type' => 'select',
+                'foreign_table' => 'tx_myextension_bar',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_MANY,
+        ];
+
+        yield 'setRelations detects select renderType selectSingle as non-relational' => [
+            'type' => null,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['One', 1],
+                    ['Two', 2],
+                    ['Three', 3],
+                ],
+            ],
+            'expectedRelation' => ColumnMap::RELATION_NONE,
+        ];
+
+        yield 'columns configuration is initialized for type group' => [
+            'type' => null,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'group',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_MANY,
+        ];
+
+        yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
+            'type' => null,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'group',
+                'maxitems' => '1',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_NONE,
+        ];
+
+        yield 'columns configuration is initialized with maxitems > 1 evaluation for type group' => [
+            'type' => null,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'group',
+                'maxitems' => '10',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_MANY,
+        ];
+
+        yield 'setRelations detects many to many relation of type select' => [
+            'type' => ObjectStorage::class,
+            'elementType' => 'Tx_Myext_Domain_Model_Foo',
+            'tca' => [
+                'type' => 'select',
+                'foreign_table' => 'tx_myextension_bar',
+                'MM' => 'tx_myextension_mm',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY,
+        ];
+
+        yield 'setRelations detects many to many relation of type inline with intermediate table' => [
+            'type' => ObjectStorage::class,
+            'elementType' => 'Tx_Myext_Domain_Model_Foo',
+            'tca' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_myextension_righttable',
+                'MM' => 'tx_myextension_mm',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY,
         ];
     }
 
     /**
+     * @dataProvider setRelationsDataProvider
      * @test
-     * @dataProvider oneToOneRelation
      */
-    public function setRelationsDetectsOneToOneRelation($className): void
+    public function setRelations(?string $type, ?string $elementType, array $columnConfiguration, string $expectedRelation): void
     {
-        $mockColumnMap = $this->createMock(ColumnMap::class);
-        $columnConfiguration = [
-            'type' => 'select',
-            'foreign_table' => 'tx_myextension_bar',
-            'foreign_field' => 'parentid',
-        ];
-        $type = $className;
-        $elementType = null;
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::once())->method('setOneToOneRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $columnMap = new ColumnMap('foo', 'foo');
+        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, null, [], '', false);
+        $actualColumnMap = $mockDataMapFactory->_call('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
+        self::assertSame($expectedRelation, $actualColumnMap->getTypeOfRelation());
     }
 
     /**
@@ -111,152 +205,6 @@ class DataMapFactoryTest extends UnitTestCase
             ->with($matchFields);
         $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
         $mockDataMapFactory->_call('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
-    }
-
-    /**
-     * @test
-     */
-    public function setRelationsDetectsOneToOneRelationWithIntermediateTable(): void
-    {
-        $mockColumnMap = $this->createMock(ColumnMap::class);
-        $columnConfiguration = [
-            'type' => 'select',
-            'foreign_table' => 'tx_myextension_bar',
-            'MM' => 'tx_myextension_mm',
-        ];
-        $type = 'Tx_Myext_Domain_Model_Foo';
-        $elementType = null;
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
-    }
-
-    /**
-     * @test
-     */
-    public function setRelationsDetectsOneToManyRelation(): void
-    {
-        $mockColumnMap = $this->createMock(ColumnMap::class);
-        $columnConfiguration = [
-            'type' => 'select',
-            'foreign_table' => 'tx_myextension_bar',
-            'foreign_field' => 'parentid',
-            'foreign_table_field' => 'parenttable',
-        ];
-        $type = ObjectStorage::class;
-        $elementType = 'Tx_Myext_Domain_Model_Foo';
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::once())->method('setOneToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
-    }
-
-    /**
-     * @test
-     */
-    public function setRelationsDetectsSelectRenderTypeSingleAsNonRelational(): void
-    {
-        $columnMap = new ColumnMap('foo', 'foo');
-        $columnConfiguration = [
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => [
-                ['One', 1],
-                ['Two', 2],
-                ['Three', 3],
-            ],
-        ];
-        $type = null;
-        $elementType = null;
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $actualColumnMap = $mockDataMapFactory->_call('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
-        self::assertSame($columnMap::RELATION_NONE, $actualColumnMap->getTypeOfRelation());
-    }
-
-    /**
-     * @return array
-     */
-    public function columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider(): array
-    {
-        return [
-            'maxitems not set' => ['', 'RELATION_HAS_MANY'],
-            'maxitems equals 1' => ['1', 'RELATION_NONE'],
-            'maxitems higher than 1' => ['10', 'RELATION_HAS_MANY'],
-        ];
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider columnConfigurationIsInitializedWithMaxItemsEvaluationForTypeGroupDataProvider
-     */
-    public function setRelationsDetectsTypeGroupAndRelationManyToMany($maxitems, $relation): void
-    {
-        $columnMap = new ColumnMap('foo', 'foo');
-        if (empty($maxitems)) {
-            $columnConfiguration = [
-                'type' => 'group',
-            ];
-        } else {
-            $columnConfiguration = [
-                'type' => 'group',
-                'maxitems' => $maxitems,
-            ];
-        }
-        $type = null;
-        $elementType = null;
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $actualColumnMap = $mockDataMapFactory->_call('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
-        self::assertSame($relation, $actualColumnMap->getTypeOfRelation());
-    }
-
-    /**
-     * @test
-     */
-    public function setRelationsDetectsManyToManyRelationOfTypeSelect(): void
-    {
-        $mockColumnMap = $this->createMock(ColumnMap::class);
-        $columnConfiguration = [
-            'type' => 'select',
-            'foreign_table' => 'tx_myextension_bar',
-            'MM' => 'tx_myextension_mm',
-        ];
-        $type = ObjectStorage::class;
-        $elementType = 'Tx_Myext_Domain_Model_Foo';
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
-    }
-
-    /**
-     * @test
-     */
-    public function setRelationsDetectsManyToManyRelationOfTypeInlineWithIntermediateTable(): void
-    {
-        $mockColumnMap = $this->createMock(ColumnMap::class);
-        $columnConfiguration = [
-            'type' => 'inline',
-            'foreign_table' => 'tx_myextension_righttable',
-            'MM' => 'tx_myextension_mm',
-        ];
-        $type = ObjectStorage::class;
-        $elementType = 'Tx_Myext_Domain_Model_Foo';
-        $mockDataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'], [], '', false);
-        $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
-        $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
-        $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
