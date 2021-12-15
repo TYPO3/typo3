@@ -36,21 +36,6 @@
 			<trans-unit id="all" resname="all">
 				<source>[all]</source>
 			</trans-unit>
-			<trans-unit id="50" resname="50" translate="no">
-				<source>50</source>
-			</trans-unit>
-			<trans-unit id="100" resname="100" translate="no">
-				<source>100</source>
-			</trans-unit>
-			<trans-unit id="200" resname="200" translate="no">
-				<source>200</source>
-			</trans-unit>
-			<trans-unit id="500" resname="500" translate="no">
-				<source>500</source>
-			</trans-unit>
-			<trans-unit id="1000" resname="1000" translate="no">
-				<source>1000</source>
-			</trans-unit>
 			<trans-unit id="actionAll" resname="actionAll">
 				<source>All</source>
 			</trans-unit>

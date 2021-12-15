@@ -101,6 +101,7 @@ class BackendLogController extends ActionController
             'groupedLogEntries' => $groupedLogEntries,
             'constraint' => $constraint,
             'userGroups' => $this->createUserAndGroupListForSelectOptions(),
+            'selectableNumberOfLogEntries' => $this->createSelectableNumberOfLogEntriesOptions(),
             'workspaces' => $this->createWorkspaceListForSelectOptions(),
             'pageDepths' => $this->createPageDepthOptions(),
             'channels' => $this->logEntryRepository->getUsedChannels(),
@@ -238,6 +239,21 @@ class BackendLogController extends ActionController
             $userGroupArray['us-' . $user['uid']] = LocalizationUtility::translate('user', 'Belog') . ' ' . $user['username'];
         }
         return $userGroupArray;
+    }
+
+    /**
+     * Options for the "max" drop down
+     */
+    protected function createSelectableNumberOfLogEntriesOptions(): array
+    {
+        return [
+            50 => 50,
+            100 => 100,
+            200 => 200,
+            500 => 500,
+            1000 => 1000,
+            1000000 => LocalizationUtility::translate('any', 'Belog'),
+        ];
     }
 
     /**

@@ -30,10 +30,9 @@
 
         <div class="col">
             <label for="belog-max" class="form-label"><f:translate key="max" /></label>
-            <belog:form.translateLabelSelect
+            <f:form.select
                 property="number"
-                options="{settings.selectableNumberOfLogEntries}"
-                optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
+                options="{selectableNumberOfLogEntries}"
                 class="form-select"
                 id="belog-max"
             />
