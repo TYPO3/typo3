@@ -1167,16 +1167,11 @@ class EditDocumentController
 
                         // Determine if delete button can be shown
                         $deleteAccess = false;
-                        if (
-                            $command === 'edit'
-                            || $command === 'new'
-                        ) {
-                            $permission = new Permission($formData['userPermissionOnPage']);
-                            if ($formData['tableName'] === 'pages') {
-                                $deleteAccess = $permission->get(Permission::PAGE_DELETE);
-                            } else {
-                                $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
-                            }
+                        $permission = new Permission($formData['userPermissionOnPage']);
+                        if ($formData['tableName'] === 'pages') {
+                            $deleteAccess = $permission->get(Permission::PAGE_DELETE);
+                        } else {
+                            $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
                         }
 
                         // Display "is-locked" message
