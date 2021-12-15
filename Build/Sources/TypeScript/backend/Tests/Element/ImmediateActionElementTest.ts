@@ -29,70 +29,74 @@ describe('TYPO3/CMS/Backend/Element/ImmediateActionElement:', () => {
   });
 
   it('dispatches action when created via constructor', async () => {
-    const backup = viewportObject.Topbar.refresh;
+    const backup = viewportObject.Topbar;
     const observer = {
-      callback: (): void => {
+      refresh: (): void => {
         return;
       },
     };
-    spyOn(observer, 'callback').and.callThrough();
-    viewportObject.Topbar.refresh = observer.callback;
+    spyOn(observer, 'refresh').and.callThrough();
+    (viewportObject as any).Topbar = observer;
     const element = new ImmediateActionElement;
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
-    expect(observer.callback).not.toHaveBeenCalled();
+    expect(observer.refresh).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('TYPO3/CMS/Backend/Viewport');
-    expect(observer.callback).toHaveBeenCalled();
-    viewportObject.Topbar.refresh = backup;
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    expect(observer.refresh).toHaveBeenCalled();
+    (viewportObject as any).Topbar = backup;
   });
 
   it('dispatches action when created via createElement', async () => {
-    const backup = viewportObject.Topbar.refresh;
+    const backup = viewportObject.Topbar;
     const observer = {
-      callback: (): void => {
+      refresh: (): void => {
         return;
       },
     };
-    spyOn(observer, 'callback').and.callThrough();
-    viewportObject.Topbar.refresh = observer.callback;
+    spyOn(observer, 'refresh').and.callThrough();
+    (viewportObject as any).Topbar = observer;
     const element = <ImmediateActionElement>document.createElement('typo3-immediate-action');
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
-    expect(observer.callback).not.toHaveBeenCalled();
+    expect(observer.refresh).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('TYPO3/CMS/Backend/Viewport');
-    expect(observer.callback).toHaveBeenCalled();
-    viewportObject.Topbar.refresh = backup;
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    expect(observer.refresh).toHaveBeenCalled();
+    (viewportObject as any).Topbar = backup;
   });
 
   it('dispatches action when created from string', async () => {
-    const backup = moduleMenuApp.App.refreshMenu;
+    const backup = moduleMenuApp.App;
     const observer = {
-      callback: (): void => {
+      refreshMenu: (): void => {
         return;
       },
     };
-    spyOn(observer, 'callback').and.callThrough();
-    moduleMenuApp.App.refreshMenu = observer.callback;
+    spyOn(observer, 'refreshMenu').and.callThrough();
+    (moduleMenuApp as any).App = observer;
     const element = document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector('typo3-immediate-action');
-    expect(observer.callback).not.toHaveBeenCalled();
+    expect(observer.refreshMenu).not.toHaveBeenCalled();
     root.appendChild(element);
     await import('TYPO3/CMS/Backend/ModuleMenu');
-    expect(observer.callback).toHaveBeenCalled();
-    moduleMenuApp.App.refreshMenu = backup;
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    expect(observer.refreshMenu).toHaveBeenCalled();
+    (viewportObject as any).App = backup;
   });
 
   it('dispatches action when created via innerHTML', async () => {
-    const backup = moduleMenuApp.App.refreshMenu;
+    const backup = moduleMenuApp.App;
     const observer = {
-      callback: (): void => {
+      refreshMenu: (): void => {
         return;
       },
     };
-    spyOn(observer, 'callback').and.callThrough();
-    moduleMenuApp.App.refreshMenu = observer.callback;
+    spyOn(observer, 'refreshMenu').and.callThrough();
+    (moduleMenuApp as any).App = observer;
     root.innerHTML = '<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>';
     await import('TYPO3/CMS/Backend/ModuleMenu');
-    expect(observer.callback).toHaveBeenCalled();
-    moduleMenuApp.App.refreshMenu = backup;
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    expect(observer.refreshMenu).toHaveBeenCalled();
+    (moduleMenuApp as any).App = backup;
   });
 });
