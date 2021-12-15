@@ -199,11 +199,7 @@ class LiveSearch
                 $queryBuilder->andWhere($this->userPermissions);
             }
 
-            $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?? $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'] ?? '';
-            foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
-                [$fieldName, $order] = $orderPair;
-                $queryBuilder->addOrderBy($fieldName, $order);
-            }
+            $queryBuilder->addOrderBy('uid', 'DESC');
 
             $getRecordArray = $this->getRecordArray($queryBuilder, $tableName);
         }
