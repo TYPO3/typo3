@@ -1,5 +1,4 @@
 {namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-{namespace belog=TYPO3\CMS\Belog\ViewHelpers}
 <f:layout name="Default"/>
 
 <f:section name="content">
@@ -133,10 +132,9 @@
 
             <div class="col">
                 <label for="belog-max" class="form-label">Max</label>
-                <belog:form.translateLabelSelect
+                <f:form.select
                     property="number"
                     options="{0: '50', 1: '100', 2: '200'}"
-                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                     class="form-select"
                     id="belog-max"
                 />
@@ -153,10 +151,9 @@
 
             <div class="col">
                 <label for="belog-action" class="form-label">Action</label>
-                <belog:form.translateLabelSelect
+                <f:form.select
                     property="action"
                     options="{0: '[Any]', 1: 'Database', 2: 'File', 3: 'Cache', 4: 'Settings'}"
-                    optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
                     class="form-select"
                     id="belog-action"
                 />
