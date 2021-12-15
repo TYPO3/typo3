@@ -22,22 +22,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper for update script link
  * @internal
  */
-class ReloadSqlDataViewHelper extends ActionViewHelper
+class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
      */
-    protected static $registryNamespace = 'extensionDataImport';
+    protected $tagName = 'a';
+
+    protected static string $registryNamespace = 'extensionDataImport';
 
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', 'Extension key', true);
     }
 
@@ -79,7 +82,11 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $uriBuilder->reset();
-        $uri = $uriBuilder->uriFor('reloadExtensionData', ['extension' => $extension['key']], 'Action');
+        $uri = $uriBuilder->uriFor(
+            'reloadExtensionData',
+            ['extension' => $extension['key']],
+            'Action'
+        );
         $this->tag->addAttribute('href', $uri);
         $this->tag->addAttribute('title', LocalizationUtility::translate($languageKey, 'extensionmanager'));
         $this->tag->setContent($iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render());

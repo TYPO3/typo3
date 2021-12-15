@@ -22,22 +22,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper for displaying a remove extension link
  * @internal
  */
-class RemoveExtensionViewHelper extends ActionViewHelper
+class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
 {
     /**
-     * Initialize arguments
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @var string
      */
+    protected $tagName = 'a';
+
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', '', true);
     }
 
@@ -62,15 +63,15 @@ class RemoveExtensionViewHelper extends ActionViewHelper
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
-        $action = 'removeExtension';
         $uriBuilder->reset();
         $uriBuilder->setFormat('json');
-        $uri = $uriBuilder->uriFor($action, [
-            'extension' => $extension['key'],
-        ], 'Action');
+        $uri = $uriBuilder->uriFor(
+            'removeExtension',
+            ['extension' => $extension['key']],
+            'Action'
+        );
         $this->tag->addAttribute('href', $uri);
-        $cssClass = 'removeExtension btn btn-default';
-        $this->tag->addAttribute('class', $cssClass);
+        $this->tag->addAttribute('class', $this->arguments['class']);
         $this->tag->addAttribute('title', LocalizationUtility::translate('extensionList.remove', 'extensionmanager'));
         $this->tag->setContent($iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render());
         return $this->tag->render();
