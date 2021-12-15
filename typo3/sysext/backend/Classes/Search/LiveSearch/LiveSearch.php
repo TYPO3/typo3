@@ -89,13 +89,7 @@ class LiveSearch
     public function find($searchQuery)
     {
         $recordArray = [];
-        $pageList = [];
-        $mounts = $this->getBackendUser()->returnWebmounts();
-        foreach ($mounts as $pageId) {
-            $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
-        }
-        $pageIdList = array_unique(explode(',', implode(',', $pageList)));
-        unset($pageList);
+        $pageIdList = $this->getPageIdList();
         if ($this->queryParser->isValidCommand($searchQuery)) {
             $this->setQueryString($this->queryParser->getSearchQueryValue($searchQuery));
             $tableName = $this->queryParser->getTableNameFromCommand($searchQuery);
@@ -107,6 +101,22 @@ class LiveSearch
             $recordArray = $this->findByGlobalTableList($pageIdList);
         }
         return $recordArray;
+    }
+
+    /**
+     * List of available page uids for user, empty array for admin users.
+     */
+    protected function getPageIdList(): array
+    {
+        $pageList = [];
+        if ($this->getBackendUser()->isAdmin()) {
+            return $pageList;
+        }
+        $mounts = $this->getBackendUser()->returnWebmounts();
+        foreach ($mounts as $pageId) {
+            $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
+        }
+        return array_unique(explode(',', implode(',', $pageList)));
     }
 
     /**
@@ -172,14 +182,19 @@ class LiveSearch
                 ->select('*')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->in(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pageIdList, Connection::PARAM_INT_ARRAY)
-                    ),
                     $this->makeQuerySearchByTable($queryBuilder, $tableName, $fieldsToSearchWithin)
                 )
                 ->setFirstResult($firstResult)
                 ->setMaxResults($maxResults);
+
+            if ($pageIdList !== []) {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageIdList, Connection::PARAM_INT_ARRAY)
+                    )
+                );
+            }
 
             if ($tableName === 'pages' && $this->userPermissions) {
                 $queryBuilder->andWhere($this->userPermissions);
