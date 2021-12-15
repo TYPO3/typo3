@@ -1551,7 +1551,7 @@ class PageRepository implements LoggerAwareInterface
                     // enablefields for BOTH the version AND the online record deselects it. See
                     // note for $bypassEnableFieldsCheck
                     /** @var \TYPO3\CMS\Core\Versioning\VersionState $versionState */
-                    $versionState = VersionState::cast($row['t3ver_state']);
+                    $versionState = VersionState::cast($row['t3ver_state'] ?? 0);
                     if ($wsAlt <= -1 || $versionState->indicatesPlaceholder()) {
                         // Unset record if it turned out to be "hidden"
                         $row = false;

@@ -812,6 +812,164 @@ class SlugLinkGeneratorTest extends AbstractTestCase
     /**
      * @return array
      */
+    public function directoryMenuIsGeneratedDataProvider(): array
+    {
+        return [
+            'ACME Inc First Level - Live' => [
+                'https://acme.us/',
+                1100,
+                1000,
+                0,
+                0,
+                [
+                    [
+                        'title' => 'EN: Welcome',
+                        'link' => '/welcome',
+                    ],
+                    [
+                        'title' => 'ZH-CN: Welcome Default',
+                        // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
+                        'link' => '/%E7%AE%80-bienvenue',
+                    ],
+                    [
+                        'title' => 'EN: Features',
+                        'link' => '/features',
+                    ],
+                    [
+                        'title' => 'EN: Products',
+                        'link' => 'https://products.acme.com/products',
+                    ],
+                    [
+                        'title' => 'EN: ACME in your Region',
+                        'link' => '/acme-in-your-region',
+                    ],
+                    [
+                        'title' => 'Internal',
+                        'link' => '/my-acme',
+                    ],
+                    [
+                        'title' => 'About us',
+                        'link' => '/about',
+                    ],
+                    [
+                        'title' => 'Announcements & News',
+                        'link' => '/news',
+                    ],
+                    [
+                        'title' => 'That page is forbidden to you',
+                        'link' => '/403',
+                    ],
+                    [
+                        'title' => 'That page was not found',
+                        'link' => '/404',
+                    ],
+                    [
+                        'title' => 'Our Blog',
+                        'link' => 'https://blog.acme.com/authors',
+                    ],
+                    [
+                        'title' => 'Cross Site Shortcut',
+                        'link' => 'https://blog.acme.com/authors',
+                    ],
+                ],
+            ],
+            'ACME Inc First Level - Draft Workspace' => [
+                'https://acme.us/',
+                1100,
+                1000,
+                1,
+                1,
+                [
+                    [
+                        'title' => 'EN: Goodbye',
+                        'link' => '/bye',
+                    ],
+                    [
+                        'title' => 'EN: Welcome to ACME Inc',
+                        'link' => '/welcome-modified',
+                    ],
+                    [
+                        'title' => 'ZH-CN: Welcome Default',
+                        // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
+                        'link' => '/%E7%AE%80-bienvenue',
+                    ],
+                    [
+                        'title' => 'EN: Features',
+                        'link' => '/features',
+                    ],
+                    [
+                        'title' => 'EN: Products',
+                        'link' => 'https://products.acme.com/products',
+                    ],
+                    [
+                        'title' => 'EN: ACME in your Region',
+                        'link' => '/acme-in-your-region',
+                    ],
+                    [
+                        'title' => 'Internal',
+                        'link' => '/my-acme',
+                    ],
+                    [
+                        'title' => 'About us',
+                        'link' => '/about',
+                    ],
+                    [
+                        'title' => 'Announcements & News',
+                        'link' => '/news',
+                    ],
+                    [
+                        'title' => 'That page is forbidden to you',
+                        'link' => '/403',
+                    ],
+                    [
+                        'title' => 'That page was not found',
+                        'link' => '/404',
+                    ],
+                    [
+                        'title' => 'Our Blog',
+                        'link' => 'https://blog.acme.com/authors',
+                    ],
+                    [
+                        'title' => 'Cross Site Shortcut',
+                        'link' => 'https://blog.acme.com/authors',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider directoryMenuIsGeneratedDataProvider
+     */
+    public function directoryMenuIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $backendUserId, int $workspaceId, array $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'special' => 'directory',
+                        'special.' => [
+                            'value' => $directoryMenuParentPage,
+                        ],
+                        'titleField' => 'title',
+                    ]),
+                ]),
+            (new InternalRequestContext())
+                ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
+                ->withBackendUserId($backendUserId)
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        self::assertSame($expectation, $json);
+    }
+
+    /**
+     * @return array
+     */
     public function languageMenuIsGeneratedDataProvider(): array
     {
         return [

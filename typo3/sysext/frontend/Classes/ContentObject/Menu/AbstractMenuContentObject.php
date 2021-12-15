@@ -668,43 +668,13 @@ abstract class AbstractMenuContentObject
                 }
                 $id = $mount_info['mount_pid'];
             }
-            // Get sub-pages:
-            $statement = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
-            while ($row = $statement->fetchAssociative()) {
-                // When the site language configuration is in "free" mode, then the page without overlay is fetched
-                // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
-                // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
-                // the default translation page again, (which does a ->getPageOverlay() again - doing this on a
-                // translated page would result in no record at all)
-                if ($row['l10n_parent'] > 0 && !isset($row['_PAGES_OVERLAY'])) {
-                    $row = $this->sys_page->getPage($row['l10n_parent'], true);
+            $subPages = $this->sys_page->getMenu($id, '*', $sortingField);
+            foreach ($subPages as $row) {
+                // Add external MP params
+                if ($MP) {
+                    $row['_MP_PARAM'] = $MP . (($row['_MP_PARAM'] ?? '') ? ',' . $row['_MP_PARAM'] : '');
                 }
-                $tsfe->sys_page->versionOL('pages', $row, true);
-                if (!empty($row)) {
-                    // Keep mount point?
-                    $mount_info = $this->sys_page->getMountPointInfo($row['uid'], $row);
-                    // There is a valid mount point.
-                    if (is_array($mount_info) && $mount_info['overlay']) {
-                        // Using "getPage" is OK since we need the check for enableFields
-                        // AND for type 2 of mount pids we DO require a doktype < 200!
-                        $mp_row = $this->sys_page->getPage($mount_info['mount_pid']);
-                        if (!empty($mp_row)) {
-                            $row = $mp_row;
-                            $row['_MP_PARAM'] = $mount_info['MPvar'];
-                        } else {
-                            // If the mount point could not be fetched with respect
-                            // to enableFields, unset the row so it does not become a part of the menu!
-                            unset($row);
-                        }
-                    }
-                    // Add external MP params, then the row:
-                    if (!empty($row)) {
-                        if ($MP) {
-                            $row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
-                        }
-                        $menuItems[] = $this->sys_page->getPageOverlay($row);
-                    }
-                }
+                $menuItems[] = $row;
             }
         }
 
@@ -802,6 +772,7 @@ abstract class AbstractMenuContentObject
             }
         }
         $id_list = implode(',', $id_list_arr);
+        $pageIds = GeneralUtility::intExplode(',', $id_list);
         // Get sortField (mode)
         $sortField = $this->getMode($mode);
 
@@ -812,26 +783,16 @@ abstract class AbstractMenuContentObject
         if ($maxAge > 0) {
             $extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
         }
-        $statement = $this->parent_cObj->exec_getQuery('pages', [
-            'pidInList' => '0',
-            'uidInList' => $id_list,
-            'where' => $sortField . '>=0' . $extraWhere,
-            'orderBy' => $sortingField ?: $sortField . ' DESC',
-            'max' => $limit,
-        ]);
-        while ($row = $statement->fetchAssociative()) {
-            // When the site language configuration is in "free" mode, then the page without overlay is fetched
-            // (which is kind-of strange for pages, but this is what exec_getQuery() is doing)
-            // this means, that $row is a translated page, but hasn't been overlaid. For this reason, we fetch
-            // the default translation page again, (which does a ->getPageOverlay() again - doing this on a
-            // translated page would result in no record at all)
-            if ($row['l10n_parent'] > 0 && !isset($row['_PAGES_OVERLAY'])) {
-                $row = $this->sys_page->getPage($row['l10n_parent'], true);
+        $extraWhere = $sortField . '>=0' . $extraWhere;
+
+        $i = 0;
+        $pageRecords = $this->sys_page->getMenuForPages($pageIds, '*', $sortingField ?: $sortField . ' DESC', $extraWhere);
+        foreach ($pageRecords as $row) {
+            // Build a custom LIMIT clause as "getMenuForPages()" does not support this
+            if ($limit && ++$i > $limit) {
+                continue;
             }
-            $tsfe->sys_page->versionOL('pages', $row, true);
-            if (is_array($row)) {
-                $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
-            }
+            $menuItems[$row['uid']] = $row;
         }
 
         return $menuItems;
