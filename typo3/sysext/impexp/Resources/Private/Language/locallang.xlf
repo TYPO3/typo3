@@ -255,9 +255,6 @@
 			<trans-unit id="importdata_preview" resname="importdata_preview">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="importdata_update_299e" resname="importdata_update_299e">
-				<source>Update</source>
-			</trans-unit>
 			<trans-unit id="importdata_import" resname="importdata_import">
 				<source>Import</source>
 			</trans-unit>
@@ -331,7 +328,7 @@
 				<source>Structure to be imported</source>
 			</trans-unit>
 			<trans-unit id="ALL_tables" resname="ALL_tables">
-				<source>ALL tables</source>
+				<source>[ ALL tables ]</source>
 			</trans-unit>
 			<trans-unit id="impexpcore_displaycon_controls" resname="impexpcore_displaycon_controls">
 				<source>Controls</source>

@@ -20,306 +20,234 @@ namespace TYPO3\CMS\Impexp\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Impexp\Import;
 
 /**
- * Main script class for the Import facility
+ * Import module controller
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-class ImportController extends ImportExportController
+class ImportController
 {
     protected const NO_UPLOAD = 0;
     protected const UPLOAD_DONE = 1;
     protected const UPLOAD_FAILED = 2;
 
-    /**
-     * @var string
-     */
-    protected $routeName = 'tx_impexp_import';
+    protected IconFactory $iconFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ExtendedFileUtility $fileProcessor;
+    protected ResourceFactory $resourceFactory;
 
-    /**
-     * @var Import
-     */
-    protected $import;
+    public function __construct(
+        IconFactory $iconFactory,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        ExtendedFileUtility $fileProcessor,
+        ResourceFactory $resourceFactory
+    ) {
+        $this->iconFactory = $iconFactory;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->fileProcessor = $fileProcessor;
+        $this->resourceFactory = $resourceFactory;
+    }
 
-    /**
-     * Incoming array has syntax:
-     *
-     * id = import page id (must be readable)
-     *
-     * file = pointing to filename relative to public web path
-     *
-     * [all relation fields are clear, but not files]
-     * - page-tree is written first
-     * - then remaining pages (to the root of import)
-     * - then all other records are written either to related included pages or if not found to import-root (should be a sysFolder in most cases)
-     * - then all internal relations are set and non-existing relations removed, relations to static tables preserved.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws Exception
-     * @throws \TYPO3\CMS\Core\Resource\Exception
-     * @throws \RuntimeException
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->isImportEnabled() === false) {
+        if (!$this->isImportEnabled()) {
             throw new \RuntimeException(
-                'Import module is disabled for non admin users and '
-                . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
+                'Import module is disabled for non admin users and userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
                 1464435459
             );
         }
 
-        $this->main($request);
+        $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+        $queryParams = $request->getQueryParams();
+        $parsedBody = $request->getParsedBody();
 
-        // Input data
-        $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];
-        $inData = $this->preprocessInputData($inData);
-
-        // Handle upload
-        $inData = $this->handleUpload($request, $inData);
-
-        // Perform import
-        $inData = $this->importData($inData);
-
-        // Prepare view
-        $this->registerDocHeaderButtons();
-        $this->makeForm();
-        $this->standaloneView->assign('inData', $inData);
-        $this->standaloneView->assign('isAdmin', $this->getBackendUser()->isAdmin());
-        $this->standaloneView->setTemplate('Import.html');
-        $this->moduleTemplate->setContent($this->standaloneView->render());
-
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Check if import functionality is available for current user
-     *
-     * @return bool
-     */
-    protected function isImportEnabled(): bool
-    {
-        return $this->getBackendUser()->isAdmin()
-            || (bool)($this->getBackendUser()->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
-    }
-
-    protected function preprocessInputData(array $inData): array
-    {
-        if ($inData['new_import'] ?? false) {
-            unset($inData['import_mode']);
-        }
-        return $inData;
-    }
-
-    /**
-     * Handle upload of an export file
-     *
-     * @param ServerRequestInterface $request
-     * @param array $inData
-     * @return array Modified data
-     * @throws Exception
-     * @throws \TYPO3\CMS\Core\Resource\Exception
-     */
-    protected function handleUpload(ServerRequestInterface $request, array $inData): array
-    {
-        if ($request->getMethod() !== 'POST') {
-            return $inData;
+        $id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+        $pageInfo = BackendUtility::readPageAccess($id, $permsClause) ?: [];
+        if ($pageInfo === []) {
+            throw new \RuntimeException("You don't have access to this page.", 1604308205);
         }
 
-        $parsedBody = $request->getParsedBody() ?? [];
-
-        if (empty($parsedBody)) {
-            // This happens if the post request was larger than allowed on the server.
-            $this->moduleTemplate->addFlashMessage(
-                $this->lang->getLL('importdata_upload_nodata'),
-                $this->lang->getLL('importdata_upload_error'),
-                FlashMessage::ERROR
-            );
-            return $inData;
+        $inputData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];
+        if ($inputData['new_import'] ?? false) {
+            unset($inputData['import_mode']);
         }
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         $uploadStatus = self::NO_UPLOAD;
-
-        if (isset($parsedBody['_upload'])) {
-            $file = $parsedBody['file'];
-            $conflictMode = empty($parsedBody['overwriteExistingFiles']) ? DuplicationBehavior::CANCEL : DuplicationBehavior::REPLACE;
-            $fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
-            $fileProcessor->setActionPermissions();
-            $fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::cast($conflictMode));
-            $fileProcessor->start($file);
-            $result = $fileProcessor->processData();
-            // Finally: If upload went well, set the new file as the import file.
-            if (isset($result['upload'][0][0])) {
-                /** @var File $uploadedFile */
-                $uploadedFile = $result['upload'][0][0];
-                if (in_array($uploadedFile->getExtension(), ['t3d', 'xml'], true)) {
-                    $inData['file'] = $uploadedFile->getCombinedIdentifier();
-                }
-                $this->standaloneView->assign('uploadedFile', $uploadedFile->getName());
+        $uploadedFileName = '';
+        if ($request->getMethod() === 'POST' && empty($parsedBody)) {
+            // This happens if the post request was larger than allowed on the server.
+            $moduleTemplate->addFlashMessage(
+                $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_nodata'),
+                $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_error'),
+                AbstractMessage::ERROR
+            );
+        }
+        if ($request->getMethod() === 'POST' && isset($parsedBody['_upload'])) {
+            $uploadStatus = self::UPLOAD_FAILED;
+            $file = $this->handleFileUpload($request);
+            if (($file instanceof File) && in_array($file->getExtension(), ['t3d', 'xml'], true)) {
+                $inputData['file'] = $file->getCombinedIdentifier();
                 $uploadStatus = self::UPLOAD_DONE;
-            } else {
-                $uploadStatus = self::UPLOAD_FAILED;
+                $uploadedFileName = $file->getName();
             }
         }
 
-        $this->standaloneView->assign('uploadStatus', $uploadStatus);
-        return $inData;
+        $import = $this->configureImportFromFormDataAndImportIfRequested($moduleTemplate, $id, $inputData);
+        $importFolder = $import->getOrCreateDefaultImportExportFolder();
+
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:impexp/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:impexp/Resources/Private/Partials']);
+        $view->assignMultiple([
+            'importFolder' => ($importFolder instanceof Folder) ? $importFolder->getCombinedIdentifier(): '',
+            'import' => $import,
+            'errors' => $import->getErrorLog(),
+            'preview' => $import->renderPreview(),
+            'id' => $id,
+            'fileSelectOptions' => $this->getSelectableFileList($import),
+            'inData' => $inputData,
+            'isAdmin' => $this->getBackendUser()->isAdmin(),
+            'uploadedFile' => $uploadedFileName,
+            'uploadStatus' => $uploadStatus,
+        ]);
+        $moduleTemplate->setContent($view->render('Import.html'));
+        $moduleTemplate->setModuleName('');
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfo);
+        if ((int)($pageInfo['uid'] ?? 0) > 0) {
+            $this->addDocHeaderPreviewButton($moduleTemplate, (int)$pageInfo['uid']);
+        }
+        return new HtmlResponse($moduleTemplate->renderContent());
+    }
+
+    protected function addDocHeaderPreviewButton(ModuleTemplate $moduleTemplate, int $pageUid): void
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $previewDataAttributes = PreviewUriBuilder::create($pageUid)
+            ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
+            ->buildDispatcherDataAttributes();
+        $viewButton = $buttonBar->makeLinkButton()
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+            ->setHref('#')
+            ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
+            ->setDataAttributes($previewDataAttributes ?? []);
+        $buttonBar->addButton($viewButton);
     }
 
     /**
-     * Import part of module
-     *
-     * @param array $inData
-     * @return array Modified data
+     * Check if import functionality is available for current user.
+     */
+    protected function isImportEnabled(): bool
+    {
+        $backendUser = $this->getBackendUser();
+        return $backendUser->isAdmin() || ($backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
+    }
+
+    protected function handleFileUpload(ServerRequestInterface $request): ?File
+    {
+        $parsedBody = $request->getParsedBody() ?? [];
+        $file = $parsedBody['file'] ?? [];
+        $conflictMode = empty($parsedBody['overwriteExistingFiles']) ? DuplicationBehavior::CANCEL : DuplicationBehavior::REPLACE;
+        $this->fileProcessor->setActionPermissions();
+        $this->fileProcessor->setExistingFilesConflictMode(DuplicationBehavior::cast($conflictMode));
+        $this->fileProcessor->start($file);
+        $result = $this->fileProcessor->processData();
+        if (isset($result['upload'][0][0])) {
+            // If upload went well, set the new file as the import file.
+            return $result['upload'][0][0];
+        }
+        return null;
+    }
+
+    /**
      * @throws \BadFunctionCallException
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    protected function importData(array $inData): array
+    protected function configureImportFromFormDataAndImportIfRequested(ModuleTemplate $moduleTemplate, int $id, array $inputData): Import
     {
-        // Create import object and configure it:
-        $this->import = GeneralUtility::makeInstance(Import::class);
-        $this->import->setPid($this->id);
-        $this->import->setUpdate((bool)($inData['do_update'] ?? false));
-        $this->import->setImportMode((array)($inData['import_mode'] ?? null));
-        $this->import->setEnableLogging((bool)($inData['enableLogging'] ?? false));
-        $this->import->setGlobalIgnorePid((bool)($inData['global_ignore_pid'] ?? false));
-        $this->import->setForceAllUids((bool)($inData['force_all_UIDS'] ?? false));
-        $this->import->setShowDiff(!(bool)($inData['notShowDiff'] ?? false));
-        $this->import->setSoftrefInputValues((array)($inData['softrefInputValues'] ?? null));
-
-        // Perform preview and import:
-        if (!empty($inData['file'])) {
-            $filePath = $this->getFilePathWithinFileMountBoundaries((string)$inData['file']);
+        $import = GeneralUtility::makeInstance(Import::class);
+        $import->setPid($id);
+        $import->setUpdate((bool)($inputData['do_update'] ?? false));
+        $import->setImportMode((array)($inputData['import_mode'] ?? null));
+        $import->setEnableLogging((bool)($inputData['enableLogging'] ?? false));
+        $import->setGlobalIgnorePid((bool)($inputData['global_ignore_pid'] ?? false));
+        $import->setForceAllUids((bool)($inputData['force_all_UIDS'] ?? false));
+        $import->setShowDiff(!(bool)($inputData['notShowDiff'] ?? false));
+        $import->setSoftrefInputValues((array)($inputData['softrefInputValues'] ?? null));
+        if (!empty($inputData['file'])) {
+            $filePath = $this->getFilePathWithinFileMountBoundaries((string)$inputData['file']);
             try {
-                $this->import->loadFile($filePath, true);
-                $this->import->checkImportPrerequisites();
-                if ($inData['import_file'] ?? false) {
-                    $this->import->importData();
+                $import->loadFile($filePath, true);
+                $import->checkImportPrerequisites();
+                if ($inputData['import_file'] ?? false) {
+                    $import->importData();
                     BackendUtility::setUpdateSignal('updatePageTree');
                 }
             } catch (\Exception $e) {
-                $this->moduleTemplate->addFlashMessage($e->getMessage(), '', FlashMessage::ERROR);
+                $moduleTemplate->addFlashMessage($e->getMessage(), '', AbstractMessage::ERROR);
             }
         }
-
-        $this->standaloneView->assign('import', $this->import);
-        $this->standaloneView->assign('errors', $this->import->getErrorLog());
-        $this->standaloneView->assign('preview', $this->import->renderPreview());
-        return $inData;
+        return $import;
     }
 
     protected function getFilePathWithinFileMountBoundaries(string $filePath): string
     {
         try {
-            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($filePath);
+            $file = $this->resourceFactory->getFileObjectFromCombinedIdentifier($filePath);
             return $file->getForLocalProcessing(false);
         } catch (\Exception $exception) {
             return '';
         }
     }
 
-    protected function registerDocHeaderButtons(): void
-    {
-        parent::registerDocHeaderButtons();
-
-        if ($this->pageInfo['uid'] ?? false) {
-            $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-            $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageInfo['uid'])
-                ->withRootLine(BackendUtility::BEgetRootLine($this->pageInfo['uid']))
-                ->buildDispatcherDataAttributes();
-            $viewButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
-                ->setHref('#')
-                ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
-                ->setDataAttributes($previewDataAttributes ?? []);
-            $buttonBar->addButton($viewButton);
-        }
-    }
-
-    /**
-     * Create module forms
-     */
-    protected function makeForm(): void
-    {
-        $selectOptions = [''];
-        foreach ($this->getExportFiles() as $file) {
-            $selectOptions[$file->getCombinedIdentifier()] = $file->getPublicUrl();
-        }
-
-        $importFolder = $this->import->getOrCreateDefaultImportExportFolder();
-        if ($importFolder) {
-            $this->standaloneView->assign('importFolder', $importFolder->getCombinedIdentifier());
-            $this->standaloneView->assign(
-                'importFolderHint',
-                sprintf(
-                    $this->lang->getLL('importdata_fromPathS'),
-                    $importFolder->getCombinedIdentifier()
-                )
-            );
-        } else {
-            $this->standaloneView->assign(
-                'importFolderHint',
-                $this->lang->getLL('importdata_no_default_upload_folder')
-            );
-        }
-
-        $this->standaloneView->assign('fileSelectOptions', $selectOptions);
-    }
-
-    /**
-     * Gets all export files.
-     *
-     * @return File[]
-     * @throws \InvalidArgumentException
-     */
-    protected function getExportFiles(): array
+    protected function getSelectableFileList(Import $import): array
     {
         $exportFiles = [];
-
-        $folder = $this->import->getOrCreateDefaultImportExportFolder();
+        $folder = $import->getOrCreateDefaultImportExportFolder();
         if ($folder !== null) {
-
-            /** @var FileExtensionFilter $filter */
             $filter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $filter->setAllowedFileExtensions(['t3d', 'xml']);
             $folder->getStorage()->addFileAndFolderNameFilter([$filter, 'filterFileList']);
-
             $exportFiles = $folder->getFiles();
         }
-
-        return $exportFiles;
+        $selectableFiles = [''];
+        foreach ($exportFiles as $file) {
+            $selectableFiles[$file->getCombinedIdentifier()] = $file->getPublicUrl();
+        }
+        return $selectableFiles;
     }
 
-    /**
-     * Gets a file by combined identifier.
-     *
-     * @param string $combinedIdentifier
-     * @return File|ProcessedFile|null
-     */
-    protected function getFile(string $combinedIdentifier)
+    protected function getBackendUser(): BackendUserAuthentication
     {
-        try {
-            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($combinedIdentifier);
-        } catch (\Exception $exception) {
-            $file = null;
-        }
+        return $GLOBALS['BE_USER'];
+    }
 
-        return $file;
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

@@ -1,47 +1,49 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <h3>
-    <f:translate key="importdata_metaData"/>
+    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_metaData"/>
 </h3>
 <div class="table-fit table-fit-wrap">
     <table class="table table-striped table-hover">
         <tbody>
-        <tr>
-            <th class="col-nowrap">
-                <f:translate key="importdata_title"/>
-            </th>
-            <td>
-                <f:format.nl2br>{import.metaData.title}</f:format.nl2br>
-            </td>
-        </tr>
-        <tr>
-            <th class="col-nowrap">
-                <f:translate key="importdata_description"/>
-            </th>
-            <td>
-                <f:format.nl2br>{import.metaData.description}</f:format.nl2br>
-            </td>
-        </tr>
-        <tr>
-            <th class="col-nowrap">
-                <f:translate key="importdata_notes"/>
-            </th>
-            <td>
-                <f:format.nl2br>{import.metaData.notes}</f:format.nl2br>
-            </td>
-        </tr>
-        <tr>
-            <th class="col-nowrap">
-                <f:translate key="importdata_packager"/>
-            </th>
-            <td>
-                <f:format.nl2br>{import.metaData.packager_name} ({import.metaData.packager_username})</f:format.nl2br>
-                <br/>
-                <f:translate key="importdata_email"/>
-                {import.metaData.packager_email}
-            </td>
-        </tr>
+            <tr>
+                <th class="col-nowrap">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_title"/>
+                </th>
+                <td>
+                    <f:format.nl2br>{import.metaData.title}</f:format.nl2br>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-nowrap">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_description"/>
+                </th>
+                <td>
+                    <f:format.nl2br>{import.metaData.description}</f:format.nl2br>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-nowrap">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_notes"/>
+                </th>
+                <td>
+                    <f:format.nl2br>{import.metaData.notes}</f:format.nl2br>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-nowrap">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_packager"/>
+                </th>
+                <td>
+                    <f:format.nl2br>{import.metaData.packager_name} ({import.metaData.packager_username})</f:format.nl2br>
+                    <br/>
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_email"/>
+                    {import.metaData.packager_email}
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

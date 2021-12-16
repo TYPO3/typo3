@@ -7,10 +7,10 @@ return [
     // Register click menu entry point
     'tx_impexp_export' => [
         'path' => '/record/importexport/export',
-        'target' => \TYPO3\CMS\Impexp\Controller\ExportController::class . '::mainAction',
+        'target' => \TYPO3\CMS\Impexp\Controller\ExportController::class . '::handleRequest',
     ],
     'tx_impexp_import' => [
         'path' => '/record/importexport/import',
-        'target' => \TYPO3\CMS\Impexp\Controller\ImportController::class . '::mainAction',
+        'target' => \TYPO3\CMS\Impexp\Controller\ImportController::class . '::handleRequest',
     ],
 ];

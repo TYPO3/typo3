@@ -195,8 +195,6 @@ class ExportCest extends AbstractCest
 
     public function exportPageAndRecordsFromPageTree(ApplicationTester $I, PageTree $pageTree): void
     {
-        $I->wantToTest('exporting a page with records.');
-
         $pageTitle = 'staticdata';
         $exportPageTitle = 'Export pagetree configuration';
         $pageIcon = '//*[text()=\'' . $pageTitle . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -232,8 +230,6 @@ class ExportCest extends AbstractCest
 
     public function exportTable(ApplicationTester $I): void
     {
-        $I->wantToTest('exporting a table of records.');
-
         $rootPage = '#identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
         $beUsergroupTableTitle = 'Backend usergroup';
@@ -274,8 +270,6 @@ class ExportCest extends AbstractCest
 
     public function exportRecord(ApplicationTester $I): void
     {
-        $I->wantToTest('exporting a single record.');
-
         $rootPage = '#identifier-0_0 .node-name';
         $rootPageTitle = 'New TYPO3 site';
         $sysLanguageTable = '#recordlist-be_groups';

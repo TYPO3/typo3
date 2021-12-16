@@ -1198,8 +1198,6 @@ abstract class ImportExport
     /**
      * Returns a \TYPO3\CMS\Core\Resource\Folder object for saving export files
      * to the server and is also used for uploading import files.
-     *
-     * @return Folder|null
      */
     public function getOrCreateDefaultImportExportFolder(): ?Folder
     {
@@ -1218,7 +1216,6 @@ abstract class ImportExport
         $defaultTemporaryFolder = $this->getBackendUser()->getDefaultUploadTemporaryFolder();
         $defaultImportExportFolder = null;
         $importExportFolderName = 'importexport';
-
         if ($defaultTemporaryFolder !== null) {
             if ($defaultTemporaryFolder->hasFolder($importExportFolderName) === false) {
                 $defaultImportExportFolder = $defaultTemporaryFolder->createFolder($importExportFolderName);

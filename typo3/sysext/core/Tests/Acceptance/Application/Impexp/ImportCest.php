@@ -163,8 +163,6 @@ class ImportCest extends AbstractCest
      */
     public function rejectImportIfPrerequisitesNotMet(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
-        $I->wantToTest('rejecting import if prerequisites not met.');
-
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -212,8 +210,6 @@ class ImportCest extends AbstractCest
      */
     public function importPageAndRecords(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
-        $I->wantToTest('importing a page with records.');
-
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/404_page_and_records.xml';
@@ -252,8 +248,6 @@ class ImportCest extends AbstractCest
      */
     public function importTable(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
-        $I->wantToTest('importing a table of records.');
-
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';
@@ -300,8 +294,6 @@ class ImportCest extends AbstractCest
      */
     public function importRecord(ApplicationTester $I, ModalDialog $modalDialog, PageTree $pageTree): void
     {
-        $I->wantToTest('importing a single record.');
-
         $sysCategoryTable = '#recordlist-sys_category';
         $page1Title = 'styleguide TCA demo';
         $page1Icon = '//*[text()=\'' . $page1Title . '\']/../*[contains(@class, \'node-icon-container\')]';

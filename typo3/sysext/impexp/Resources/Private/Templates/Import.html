@@ -1,42 +1,48 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/ContextMenu',
+        1: 'TYPO3/CMS/Impexp/ImportExport',
+        2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement'
+    }"
+/>
+<form action="{f:be.uri(route:'tx_impexp_import')}" method="post" id="ImportExportController" enctype="multipart/form-data">
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <input type="hidden" name="id" value="{id}" />
 
-<f:layout name="Default"/>
-
-<f:section name="content">
     <h1>
-        <f:translate key="title_import"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_import"/>
     </h1>
 
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize active" href="#import-import" aria-controls="import-import" role="tab"
-                data-bs-toggle="tab">
-                <f:translate key="importdata_import" />
+            <a class="nav-link text-capitalize active" href="#import-import" aria-controls="import-import" role="tab" data-bs-toggle="tab">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_import" />
             </a>
         </li>
         <f:if condition="{importFolder}">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-upload" aria-controls="import-upload" role="tab"
-                    data-bs-toggle="tab">
-                    <f:translate key="importdata_upload" />
+                <a class="nav-link text-capitalize" href="#import-upload" aria-controls="import-upload" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload" />
                 </a>
             </li>
         </f:if>
         <f:if condition="{import.metaData}">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-metadata" aria-controls="import-metadata" role="tab"
-                    data-bs-toggle="tab">
-                    <f:translate key="importdata_metaData_1387" />
+                <a class="nav-link text-capitalize" href="#import-metadata" aria-controls="import-metadata" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_metaData_1387" />
                 </a>
             </li>
         </f:if>
         <f:if condition="{errors -> f:count()} > 0">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab"
-                    data-bs-toggle="tab">
-                    <f:translate key="importdata_messages" />
+                <a class="nav-link text-capitalize" href="#import-errors" aria-controls="import-errors" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_messages" />
                     <core:icon identifier="status-dialog-warning" />
                 </a>
             </li>
@@ -84,6 +90,6 @@
     </div>
 
     <f:render partial="Preview" arguments="{_all}"/>
-</f:section>
+</form>
 
 </html>

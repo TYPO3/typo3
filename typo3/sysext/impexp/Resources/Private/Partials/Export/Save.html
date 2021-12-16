@@ -1,104 +1,180 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <h3>
     <f:be.buttons.csh table="xMOD_tx_impexp" field="presets">
-        <f:translate key="makesavefo_presets"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_presets"/>
     </f:be.buttons.csh>
 </h3>
 <div class="form-group">
     <label for="preset-select">
-        <f:translate key="makesavefo_selectPreset"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_selectPreset"/>
     </label>
-    <f:form.select class="form-select" id="preset-select" name="preset[select]" options="{presetSelectOptions}"/>
+    <select
+        class="form-select"
+        id="preset-select"
+        name="preset[select]"
+    >
+        <f:for each="{presetSelectOptions}" as="optionLabel" key="optionValue">
+            <option value="{optionValue}">{optionLabel}</option>
+        </f:for>
+    </select>
 </div>
 <div class="form-group">
-    <f:form.hidden name="not-set" value="1" id="t3js-submit-field"/>
-    <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_load')}" name="preset[load]"/>
-    <f:form.button class="btn btn-default t3js-confirm-trigger"
-        type="button" name="preset[save]"
-        data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
-        <f:translate key="makesavefo_save"/>
-    </f:form.button>
-    <f:form.button class="btn btn-default t3js-confirm-trigger"
-        type="button" name="preset[delete]"
-        data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
-        <f:translate key="makesavefo_delete"/>
-    </f:form.button>
-    <f:form.button class="btn btn-default t3js-confirm-trigger"
-        type="button" name="preset[merge]"
-        data="{title: '{f:translate(key: \'pleaseConfirm\')}', message: '{f:translate(key: \'makesavefo_areYouSure\')}'}">
-        <f:translate key="makesavefo_merge"/>
-    </f:form.button>
+    <input type="hidden" id="t3js-submit-field" name="not-set" value="1">
+    <input
+        type="submit"
+        class="btn btn-default"
+        name="preset[load]"
+        value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_load')}"
+    />
+    <button
+        type="button"
+        name="preset[save]"
+        class="btn btn-default t3js-confirm-trigger"
+        data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
+        data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
+        value=""
+    >
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_save"/>
+    </button>
+    <button
+        type="button"
+        name="preset[delete]"
+        class="btn btn-default t3js-confirm-trigger"
+        data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
+        data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
+        value=""
+    >
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_delete"/>
+    </button>
+    <button
+        class="btn btn-default t3js-confirm-trigger"
+        type="button"
+        name="preset[merge]"
+        data-title="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:pleaseConfirm')}"
+        data-message="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_areYouSure')}"
+        value=""
+    >
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_merge"/>
+    </button>
 </div>
 <div class="form-group">
     <label for="preset-title">
-        <f:translate key="makesavefo_titleOfNewPreset"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_titleOfNewPreset"/>
     </label>
-    <f:form.textfield class="form-control" id="preset-title" name="tx_impexp[preset][title]"
-        value="{inData.preset.title}"/>
+    <input
+        type="text"
+        name="tx_impexp[preset][title]"
+        class="form-control"
+        id="preset-title"
+        value="{inData.preset.title}"
+    />
 </div>
 <div class="form-group">
     <label for="checkPresetPublic">
-        <f:form.checkbox name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"
-            checked="{inData.preset.public} == 1"/>
-        <f:translate key="makesavefo_public"/>
+        <input type="hidden" name="tx_impexp[preset][public]" value="" />
+        <input
+            type="checkbox"
+            id="checkPresetPublic"
+            name="tx_impexp[preset][public]"
+            value="1"
+            {f:if(condition:'{inData.preset.public} == 1', then:'checked="checked"')}
+        />
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_public"/>
     </label>
 </div>
 
 <h3>
-    <f:translate key="makesavefo_outputOptions"/>
+    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_outputOptions"/>
 </h3>
 <h4>
     <f:be.buttons.csh table="xMOD_tx_impexp" field="metadata">
-        <f:translate key="makesavefo_metaData"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_metaData"/>
     </f:be.buttons.csh>
 </h4>
 <div class="form-group">
     <label for="meta-title">
-        <f:translate key="makesavefo_title"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_title"/>
     </label>
-    <f:form.textfield class="form-control" name="tx_impexp[meta][title]" id="meta-title" value="{inData.meta.title}"/>
+    <input
+        type="text"
+        name="tx_impexp[meta][title]"
+        class="form-control"
+        id="meta-title"
+        value="{inData.meta.title}"
+    />
 </div>
 <div class="form-group">
     <label for="meta-description">
-        <f:translate key="makesavefo_description"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_description"/>
     </label>
-    <f:form.textfield class="form-control" name="tx_impexp[meta][description]" id="meta-description"
-        value="{inData.meta.description}"/>
+    <input
+        type="text"
+        name="tx_impexp[meta][description]"
+        class="form-control"
+        id="meta-description"
+        value="{inData.meta.description}"
+    />
 </div>
 <div class="form-group">
     <label for="meta-notes">
-        <f:translate key="makesavefo_notes"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_notes"/>
     </label>
-    <f:form.textarea class="form-control" name="tx_impexp[meta][notes]" id="meta-notes" value="{inData.meta.notes}"/>
+    <textarea
+        name="tx_impexp[meta][notes]"
+        class="form-control"
+        id="meta-notes"
+    >{inData.meta.notes}</textarea>
 </div>
 
 <h4>
     <f:be.buttons.csh table="xMOD_tx_impexp" field="fileFormat">
-        <f:translate key="makesavefo_fileFormat"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_fileFormat"/>
     </f:be.buttons.csh>
 </h4>
 <div class="form-group">
-    <f:form.select class="form-select" name="tx_impexp[filetype]" options="{filetypeSelectOptions}"
-        value="{inData.filetype}"/>
+    <select
+        class="form-select"
+        name="tx_impexp[filetype]"
+    >
+        <f:for each="{filetypeSelectOptions}" as="optionLabel" key="optionValue">
+            <option value="{optionValue}" {f:if(condition:'{optionValue} == {{inData.filetype}}', then:'selected="selected"')}>{optionLabel}</option>
+        </f:for>
+    </select>
 </div>
 <div class="form-group">
     <label for="impexp-filename">
-        <f:translate key="makesavefo_filenameSavedInS" arguments="{0: saveFolder}"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_filenameSavedInS" arguments="{0: saveFolder}"/>
     </label>
-    <f:form.textfield class="form-control" name="tx_impexp[filename]" id="impexp-filename" value="{inData.filename}"/>
+    <input
+        type="text"
+        name="tx_impexp[filename]"
+        value="{inData.filename}"
+        class="form-control"
+        id="impexp-filename"
+    />
 </div>
 <div class="form-group">
-    <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_update')}"/>
-    -
-    <f:form.submit class="btn btn-default" value="{f:translate(key: 'makesavefo_downloadExport')}"
-        name="tx_impexp[download_export]"/>
-    <f:if condition="{hasSaveFolder}">
-        -
-        <f:form.submit class="btn btn-default" value="{f:translate(key: 'importdata_saveToFilename')}"
-            name="tx_impexp[save_export]"/>
-    </f:if>
+    <input
+        class="btn btn-default"
+        type="submit"
+        value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_update')}"
+    />
+    <input
+        type="submit"
+        name="tx_impexp[download_export]"
+        class="btn btn-default"
+        value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makesavefo_downloadExport')}"
+    >
+    <input
+        type="submit"
+        name="tx_impexp[save_export]"
+        class="btn btn-default"
+        value="{f:translate(key: 'LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_saveToFilename')}"
+    />
 </div>
 
 </html>

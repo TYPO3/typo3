@@ -1,38 +1,44 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/ContextMenu',
+        1: 'TYPO3/CMS/Impexp/ImportExport',
+        2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement'
+    }"
+/>
+<form action="{f:be.uri(route:'tx_impexp_export')}" method="post" id="ImportExportController">
+    <f:variable name="args" value="{0: 'web', 1: id}" />
+    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+    <input type="hidden" name="id" value="{id}" />
 
-<f:layout name="Default"/>
-
-<f:section name="content">
     <h1>
-        <f:translate key="title_export"/>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export"/>
     </h1>
 
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration"
-                role="tab" data-bs-toggle="tab">
-                <f:translate key="tableselec_configuration" />
+            <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration" role="tab" data-bs-toggle="tab">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:tableselec_configuration" />
             </a>
         </li>
         <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset"
-                role="tab" data-bs-toggle="tab">
-                <f:translate key="exportdata_filePreset" />
+            <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-bs-toggle="tab">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_filePreset" />
             </a>
         </li>
         <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions"
-                role="tab" data-bs-toggle="tab">
-                <f:translate key="exportdata_advancedOptions" />
+            <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-bs-toggle="tab">
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_advancedOptions" />
             </a>
         </li>
         <f:if condition="{errors -> f:count()} > 0">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors"
-                    role="tab" data-bs-toggle="tab">
-                    <f:translate key="exportdata_messages" />
+                <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_messages" />
                     <core:icon identifier="status-dialog-warning" />
                 </a>
             </li>
@@ -76,6 +82,6 @@
     </div>
 
     <f:render partial="Preview" arguments="{_all}"/>
-</f:section>
+</form>
 
 </html>

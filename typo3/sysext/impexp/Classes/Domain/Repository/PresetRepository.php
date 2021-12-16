@@ -22,112 +22,70 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Impexp\Exception\MalformedPresetException;
 use TYPO3\CMS\Impexp\Exception\PresetNotFoundException;
 
 /**
- * Export preset repository
+ * Export preset repository manages export presets.
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
-class PresetRepository
+final class PresetRepository
 {
-    /**
-     * @var string
-     */
-    protected $table = 'tx_impexp_presets';
+    protected const PRESET_TABLE = 'tx_impexp_presets';
+    protected QueryBuilder $queryBuilder;
+    protected Connection $connection;
+    protected Context $context;
 
-    /**
-     * @param int $pageId
-     * @return array
-     */
+    public function __construct(
+        ConnectionPool $connectionPool,
+        Context $context
+    ) {
+        $this->queryBuilder = $connectionPool->getQueryBuilderForTable(self::PRESET_TABLE);
+        $this->connection = $connectionPool->getConnectionForTable(self::PRESET_TABLE);
+        $this->context = $context;
+    }
+
     public function getPresets(int $pageId): array
     {
-        $queryBuilder = $this->createQueryBuilder();
-
+        $backendUser = $this->getBackendUser();
+        $queryBuilder = $this->queryBuilder;
         $queryBuilder->select('*')
-            ->from($this->table)
+            ->from(self::PRESET_TABLE)
             ->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->gt(
-                        'public',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'user_uid',
-                        $queryBuilder->createNamedParameter($this->getBackendUser()->user['uid'], \PDO::PARAM_INT)
-                    )
+                    $queryBuilder->expr()->gt('public', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT))
                 )
             );
-
         if ($pageId) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->eq(
-                        'item_uid',
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'item_uid',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
+                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                 )
             );
         }
-
         $presets = $queryBuilder->execute();
-
+        // @todo: View should handle default option and data details parsing, not repository.
         $options = [''];
         while ($presetCfg = $presets->fetchAssociative()) {
             $options[$presetCfg['uid']] = $presetCfg['title'] . ' [' . $presetCfg['uid'] . ']'
                 . ($presetCfg['public'] ? ' [Public]' : '')
-                . ($presetCfg['user_uid'] === $this->getBackendUser()->user['uid'] ? ' [Own]' : '');
+                . ($presetCfg['user_uid'] === $backendUser->user['uid'] ? ' [Own]' : '');
         }
         return $options;
     }
 
-    /**
-     * Get single preset record
-     *
-     * @param int $uid Preset record
-     * @throws PresetNotFoundException
-     * @return array Preset record
-     */
-    protected function getPreset(int $uid): array
-    {
-        $queryBuilder = $this->createQueryBuilder();
-
-        $preset = $queryBuilder->select('*')
-            ->from($this->table)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetchAssociative();
-
-        if (!is_array($preset)) {
-            throw new PresetNotFoundException(
-                'ERROR: No valid preset #' . $uid . ' found.',
-                1604608843
-            );
-        }
-
-        return $preset;
-    }
-
     public function createPreset(array $data): void
     {
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
-        $connection = $this->createConnection();
-        $connection->insert(
-            $this->table,
+        $backendUser = $this->getBackendUser();
+        $timestamp = $this->context->getPropertyFromAspect('date', 'timestamp');
+        $this->connection->insert(
+            self::PRESET_TABLE,
             [
-                'user_uid' => $this->getBackendUser()->user['uid'],
+                'user_uid' => $backendUser->user['uid'],
                 'public' => $data['preset']['public'],
                 'title' => $data['preset']['title'],
                 'item_uid' => (int)$data['pagetree']['id'],
@@ -140,26 +98,22 @@ class PresetRepository
     }
 
     /**
-     * @param int $uid
-     * @param array $data
      * @throws InsufficientUserPermissionsException
+     * @throws PresetNotFoundException
      */
     public function updatePreset(int $uid, array $data): void
     {
+        $backendUser = $this->getBackendUser();
         $preset = $this->getPreset($uid);
-
-        if (!($this->getBackendUser()->isAdmin() || $preset['user_uid'] === $this->getBackendUser()->user['uid'])) {
+        if (!($backendUser->isAdmin() || $preset['user_uid'] === $backendUser->user['uid'])) {
             throw new InsufficientUserPermissionsException(
                 'ERROR: You were not the owner of the preset so you could not delete it.',
                 1604584766
             );
         }
-
-        $timestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
-
-        $connection = $this->createConnection();
-        $connection->update(
-            $this->table,
+        $timestamp = $this->context->getPropertyFromAspect('date', 'timestamp');
+        $this->connection->update(
+            self::PRESET_TABLE,
             [
                 'public' => $data['preset']['public'],
                 'title' => $data['preset']['title'],
@@ -173,14 +127,12 @@ class PresetRepository
     }
 
     /**
-     * @param int $uid
      * @throws MalformedPresetException
-     * @return array
      */
     public function loadPreset(int $uid): array
     {
         $preset = $this->getPreset($uid);
-
+        // @todo: Move this to a json array instead.
         $presetData = unserialize($preset['preset_data'], ['allowed_classes' => false]);
         if (!is_array($presetData)) {
             throw new MalformedPresetException(
@@ -188,51 +140,51 @@ class PresetRepository
                 1604608922
             );
         }
-
         return $presetData;
     }
 
     /**
-     * @param int $uid
      * @throws InsufficientUserPermissionsException
+     * @throws PresetNotFoundException
      */
     public function deletePreset(int $uid): void
     {
+        $backendUser = $this->getBackendUser();
         $preset = $this->getPreset($uid);
-
-        if (!($this->getBackendUser()->isAdmin() || $preset['user_uid'] === $this->getBackendUser()->user['uid'])) {
+        if (!($backendUser->isAdmin() || $preset['user_uid'] === $backendUser->user['uid'])) {
             throw new InsufficientUserPermissionsException(
                 'ERROR: You were not the owner of the preset so you could not delete it.',
                 1604564346
             );
         }
-
-        $connection = $this->createConnection();
-        $connection->delete(
-            $this->table,
+        $this->connection->delete(
+            self::PRESET_TABLE,
             ['uid' => $uid]
         );
     }
 
     /**
-     * @return Connection
+     * Get raw preset from database. Does not unserialize preset_data as opposed to public loadPreset().
+     *
+     * @throws PresetNotFoundException
      */
-    protected function createConnection(): Connection
+    protected function getPreset(int $uid): array
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->table);
+        $queryBuilder = $this->queryBuilder;
+        $preset = $queryBuilder->select('*')
+            ->from(self::PRESET_TABLE)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
+            ->execute()
+            ->fetchAssociative();
+        if (!is_array($preset)) {
+            throw new PresetNotFoundException(
+                'ERROR: No valid preset #' . $uid . ' found.',
+                1604608843
+            );
+        }
+        return $preset;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    protected function createQueryBuilder(): QueryBuilder
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
