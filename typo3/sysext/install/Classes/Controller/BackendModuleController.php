@@ -29,10 +29,9 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -43,6 +42,7 @@ use TYPO3\CMS\Install\Service\SessionService;
  * This is a classic backend module that does not interfere with other code
  * within the Install Tool, it can be seen as a facade around Install Tool just
  * to embed the Install Tool in backend.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendModuleController
@@ -97,17 +97,11 @@ class BackendModuleController
             $flagInvalidPassword = true;
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getTemplatePaths()->setTemplatePathAndFilename(
-            ExtensionManagementUtility::extPath(
-                'install',
-                'Resources/Private/Templates/BackendModule/BackendUserConfirmation.html'
-            )
-        );
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
         $view->assignMultiple([
             'flagInvalidPassword' => $flagInvalidPassword,
             'flagInstallToolPassword' => $flagInstallToolPassword,
-            'languageFileReference' => 'LLL:EXT:install/Resources/Private/Language/BackendModule.xlf',
             'passwordModeUri' => $this->getBackendUserConfirmationUri([
                 'targetController' => $targetController,
                 'targetHash' => $targetHash,
@@ -124,7 +118,7 @@ class BackendModuleController
 
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->setModuleName('tools_tools' . $targetController);
-        $moduleTemplate->setContent($view->render());
+        $moduleTemplate->setContent($view->render('BackendModule/BackendUserConfirmation'));
         return new HtmlResponse($moduleTemplate->renderContent());
     }
 

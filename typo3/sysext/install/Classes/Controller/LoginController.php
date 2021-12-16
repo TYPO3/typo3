@@ -38,10 +38,10 @@ class LoginController extends AbstractController
      */
     public function showEnableInstallToolFileAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Login/ShowEnableInstallToolFile.html');
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Login/ShowEnableInstallToolFile'),
         ]);
     }
 
@@ -54,7 +54,7 @@ class LoginController extends AbstractController
     public function showLoginAction(ServerRequestInterface $request): ResponseInterface
     {
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view = $this->initializeStandaloneView($request, 'Login/ShowLogin.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
             'loginToken' => $formProtection->generateToken('installTool', 'login'),
@@ -62,7 +62,7 @@ class LoginController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Login/ShowLogin'),
         ]);
     }
 }

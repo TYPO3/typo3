@@ -64,7 +64,7 @@ class LayoutController extends AbstractController
         if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
-        $view = $this->initializeStandaloneView($request, 'Layout/Init.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
             'bust' => $bust,
@@ -76,7 +76,7 @@ class LayoutController extends AbstractController
             ],
         ]);
         return new HtmlResponse(
-            $view->render(),
+            $view->render('Layout/Init'),
             200,
             [
                 'Cache-Control' => 'no-cache, must-revalidate',
@@ -95,11 +95,11 @@ class LayoutController extends AbstractController
      */
     public function mainLayoutAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Layout/MainLayout.html');
+        $view = $this->initializeView($request);
         $view->assign('moduleName', 'tools_tools' . ($request->getQueryParams()['install']['module'] ?? 'layout'));
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Layout/MainLayout'),
         ]);
     }
 

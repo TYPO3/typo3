@@ -1,6 +1,5 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
 <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Install/BackendUserConfirmation'}" />
@@ -13,10 +12,10 @@
                 <h4 class="modal-title">
                     <f:if condition="{flagInstallToolPassword}">
                         <f:then>
-                            <f:translate key="{languageFileReference}:sudoInstallToolPasswordConfirm" />
+                            <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:sudoInstallToolPasswordConfirm" />
                         </f:then>
                         <f:else>
-                            <f:translate key="{languageFileReference}:sudoUserPasswordConfirm" />
+                            <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:sudoUserPasswordConfirm" />
                         </f:else>
                     </f:if>
                 </h4>
@@ -25,30 +24,29 @@
                 <div>
                     <f:if condition="{flagInvalidPassword} || {isJsonRequest}">
                         <div class="alert alert-danger" id="invalid-sudo">
-                            <f:translate key="{languageFileReference}:sudoPasswordInvalid" />
+                            <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:sudoPasswordInvalid" />
                         </div>
                     </f:if>
-                    <f:form id="confirm-sudo" class="form" method="post" actionUri="{verifyUri}" absolute="true">
+                    <form method="post" class="form" id="confirm-sudo" action="{verifyUri}">
                         <div class="form-group">
                             <div class="form-control-holder">
                                 <label for="confirmationPassword">
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password" />
                                 </label>
                                 <f:variable name="autocomplete" value="{f:if(condition: flagInstallToolPassword, then: 'section-install current-password', else: 'current-password')}" />
-                                <f:form.password name="confirmationPassword" id="confirmationPassword" class="form-control"
-                                                additionalAttributes="{required: 'required', autocomplete: autocomplete}" />
-                                <f:form.hidden name="flags" value="{flags}" />
+                                <input required="required" autocomplete="{autocomplete}" class="form-control" id="confirmationPassword" type="password" name="confirmationPassword">
+                                <input type="hidden" name="flags" value="{flags}">
                             </div>
                         </div>
-                    </f:form>
+                    </form>
                     <div class="text-end">
                         <a href="{passwordModeUri}">
                             <f:if condition="{flagInstallToolPassword}">
                                 <f:then>
-                                    <f:translate key="{languageFileReference}:sudoUserPasswordMode" />
+                                    <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:sudoUserPasswordMode" />
                                 </f:then>
                                 <f:else>
-                                    <f:translate key="{languageFileReference}:sudoInstallToolPasswordMode" />
+                                    <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:sudoInstallToolPasswordMode" />
                                 </f:else>
                             </f:if>
                         </a>
@@ -57,7 +55,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" form="confirm-sudo" class="btn btn-warning" role="button">
-                    <f:translate key="{languageFileReference}:confirm" />
+                    <f:translate key="LLL:EXT:install/Resources/Private/Language/BackendModule.xlf:confirm" />
                 </button>
             </div>
         </div>

@@ -54,7 +54,7 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Exception;
@@ -155,7 +155,7 @@ class InstallerController
         if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
-        $view = $this->initializeStandaloneView('Installer/Init.html');
+        $view = $this->initializeView();
         $view->assign('bust', $bust);
         $view->assign('packageResourcePaths', [
             'backend' => PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/'),
@@ -163,7 +163,7 @@ class InstallerController
             'install' => PathUtility::getPublicResourceWebPath('EXT:install/Resources/Public/'),
         ]);
         return new HtmlResponse(
-            $view->render(),
+            $view->render('Installer/Init'),
             200,
             [
                 'Cache-Control' => 'no-cache, must-revalidate',
@@ -179,10 +179,10 @@ class InstallerController
      */
     public function mainLayoutAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/MainLayout.html');
+        $view = $this->initializeView();
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/MainLayout'),
         ]);
     }
 
@@ -193,10 +193,10 @@ class InstallerController
      */
     public function showInstallerNotAvailableAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowInstallerNotAvailable.html');
+        $view = $this->initializeView();
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowInstallerNotAvailable'),
         ]);
     }
 
@@ -219,7 +219,7 @@ class InstallerController
      */
     public function showEnvironmentAndFoldersAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowEnvironmentAndFolders.html');
+        $view = $this->initializeView();
         $systemCheckMessageQueue = new FlashMessageQueue('install');
         $checkMessages = (new Check())->getStatus();
         foreach ($checkMessages as $message) {
@@ -234,7 +234,7 @@ class InstallerController
         $structureMessageQueue = $structureFacade->getStatus();
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowEnvironmentAndFolders'),
             'environmentStatusErrors' => $systemCheckMessageQueue->getAllMessages(FlashMessage::ERROR),
             'environmentStatusWarnings' => $systemCheckMessageQueue->getAllMessages(FlashMessage::WARNING),
             'structureErrors' => $structureMessageQueue->getAllMessages(FlashMessage::ERROR),
@@ -360,7 +360,7 @@ class InstallerController
      */
     public function showDatabaseConnectAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowDatabaseConnect.html');
+        $view = $this->initializeView();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $hasAtLeastOneOption = false;
         $activeAvailableOption = '';
@@ -474,7 +474,7 @@ class InstallerController
 
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowDatabaseConnect'),
         ]);
     }
 
@@ -666,7 +666,7 @@ class InstallerController
      */
     public function showDatabaseSelectAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowDatabaseSelect.html');
+        $view = $this->initializeView();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $errors = [];
         try {
@@ -681,7 +681,7 @@ class InstallerController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowDatabaseSelect'),
         ]);
     }
 
@@ -890,7 +890,7 @@ class InstallerController
      */
     public function showDatabaseDataAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowDatabaseData.html');
+        $view = $this->initializeView();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'siteName' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
@@ -898,7 +898,7 @@ class InstallerController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowDatabaseData'),
         ]);
     }
 
@@ -994,7 +994,7 @@ class InstallerController
      */
     public function showDefaultConfigurationAction(): ResponseInterface
     {
-        $view = $this->initializeStandaloneView('Installer/ShowDefaultConfiguration.html');
+        $view = $this->initializeView();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'composerMode' => Environment::isComposerMode(),
@@ -1002,7 +1002,7 @@ class InstallerController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Installer/ShowDefaultConfiguration'),
         ]);
     }
 
@@ -1131,26 +1131,16 @@ For each website you need a TypoScript template on the main page of your website
 
     /**
      * Helper method to initialize a standalone view instance.
-     *
-     * @param string $templatePath
-     * @return StandaloneView
-     * @internal param string $template
      */
-    protected function initializeStandaloneView(string $templatePath): StandaloneView
+    protected function initializeView(): BackendTemplateView
     {
-        $viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRequest()->setControllerExtensionName('Install');
-        $view->setTemplatePathAndFilename($viewRootPath . 'Templates/' . $templatePath);
-        $view->setLayoutRootPaths([$viewRootPath . 'Layouts/']);
-        $view->setPartialRootPaths([$viewRootPath . 'Partials/']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
         return $view;
     }
 
     /**
      * Test connection with given credentials and return exception message if exception thrown
-     *
-     * @return bool
      */
     protected function isDatabaseConnectSuccessful(): bool
     {

@@ -94,10 +94,10 @@ class MaintenanceController extends AbstractController
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/Cards.html');
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Maintenance/Cards'),
         ]);
     }
 
@@ -130,7 +130,7 @@ class MaintenanceController extends AbstractController
         $container = $this->lateBootService->loadExtLocalconfDatabaseAndExtTables(false);
         $typo3tempFileService = $container->get(Typo3tempFileService::class);
 
-        $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTypo3tempFiles.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'clearTypo3tempFilesToken' => $formProtection->generateToken('installTool', 'clearTypo3tempFiles'),
@@ -139,7 +139,7 @@ class MaintenanceController extends AbstractController
             [
                 'success' => true,
                 'stats' => $typo3tempFileService->getDirectoryStatistics(),
-                'html' => $view->render(),
+                'html' => $view->render('Maintenance/ClearTypo3tempFiles'),
                 'buttons' => [
                     [
                         'btnClass' => 'btn-default t3js-clearTypo3temp-stats',
@@ -226,14 +226,14 @@ class MaintenanceController extends AbstractController
      */
     public function databaseAnalyzerAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/DatabaseAnalyzer.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'databaseAnalyzerExecuteToken' => $formProtection->generateToken('installTool', 'databaseAnalyzerExecute'),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Maintenance/DatabaseAnalyzer'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-databaseAnalyzer-analyze',
@@ -452,7 +452,7 @@ class MaintenanceController extends AbstractController
      */
     public function clearTablesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTables.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
@@ -460,7 +460,7 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'stats' => (new ClearTableService())->getTableStatistics(),
-            'html' => $view->render(),
+            'html' => $view->render('Maintenance/ClearTables'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-clearTables-stats',
@@ -503,14 +503,14 @@ class MaintenanceController extends AbstractController
      */
     public function createAdminGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/CreateAdmin.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'createAdminToken' => $formProtection->generateToken('installTool', 'createAdmin'),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Maintenance/CreateAdmin'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-createAdmin-create',
@@ -623,7 +623,7 @@ class MaintenanceController extends AbstractController
      */
     public function languagePacksGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Maintenance/LanguagePacks.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'languagePacksActivateLanguageToken' => $formProtection->generateToken('installTool', 'languagePacksActivateLanguage'),
@@ -641,7 +641,7 @@ class MaintenanceController extends AbstractController
             'extensions' => $extensions,
             'activeLanguages' => $languagePackService->getActiveLanguages(),
             'activeExtensions' => array_column($extensions, 'key'),
-            'html' => $view->render(),
+            'html' => $view->render('Maintenance/LanguagePacks'),
         ]);
     }
 

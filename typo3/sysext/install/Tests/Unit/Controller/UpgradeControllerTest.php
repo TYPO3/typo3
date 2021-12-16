@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Install\Controller\UpgradeController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -78,7 +78,7 @@ class UpgradeControllerTest extends UnitTestCase
         /** @var UpgradeController|MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getDocumentationFiles', 'initializeStandaloneView'])
+            ->onlyMethods(['getDocumentationFiles', 'initializeView'])
             ->getMock();
 
         $subject->method('getDocumentationFiles')->willReturn([
@@ -87,8 +87,8 @@ class UpgradeControllerTest extends UnitTestCase
             'notAffectedFiles' => [],
         ]);
         $subject
-            ->method('initializeStandaloneView')
-            ->willReturn($this->prophesize(StandaloneView::class)->reveal());
+            ->method('initializeView')
+            ->willReturn($this->prophesize(BackendTemplateView::class)->reveal());
         $subject->upgradeDocsGetChangelogForVersionAction($requestProphecy->reveal());
     }
 }

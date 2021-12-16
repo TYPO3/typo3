@@ -73,10 +73,10 @@ class EnvironmentController extends AbstractController
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/Cards.html');
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Environment/Cards'),
         ]);
     }
 
@@ -88,7 +88,7 @@ class EnvironmentController extends AbstractController
      */
     public function systemInformationGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/SystemInformation.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'systemInformationCgiDetected' => Environment::isRunningOnCgiServer(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
@@ -98,7 +98,7 @@ class EnvironmentController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Environment/SystemInformation'),
         ]);
     }
 
@@ -110,10 +110,10 @@ class EnvironmentController extends AbstractController
      */
     public function phpInfoGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/PhpInfo.html');
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Environment/PhpInfo'),
         ]);
     }
 
@@ -125,7 +125,7 @@ class EnvironmentController extends AbstractController
      */
     public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/EnvironmentCheck.html');
+        $view = $this->initializeView($request);
         $messageQueue = new FlashMessageQueue('install');
         $checkMessages = (new Check())->getStatus();
         foreach ($checkMessages as $message) {
@@ -152,7 +152,7 @@ class EnvironmentController extends AbstractController
                 'information' => $messageQueue->getAllMessages(FlashMessage::INFO),
                 'notice' => $messageQueue->getAllMessages(FlashMessage::NOTICE),
             ],
-            'html' => $view->render(),
+            'html' => $view->render('Environment/EnvironmentCheck'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-environmentCheck-execute',
@@ -170,7 +170,7 @@ class EnvironmentController extends AbstractController
      */
     public function folderStructureGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/FolderStructure.html');
+        $view = $this->initializeView($request);
         $folderStructureFactory = GeneralUtility::makeInstance(DefaultFactory::class);
         $structureFacade = $folderStructureFactory->getStructure();
 
@@ -205,7 +205,7 @@ class EnvironmentController extends AbstractController
             'okStatus' => $okQueue,
             'folderStructureFilePermissionStatus' => $permissionCheck->getMaskStatus('fileCreateMask'),
             'folderStructureDirectoryPermissionStatus' => $permissionCheck->getMaskStatus('folderCreateMask'),
-            'html' => $view->render(),
+            'html' => $view->render('Environment/FolderStructure'),
             'buttons' => $buttons,
         ]);
     }
@@ -234,7 +234,7 @@ class EnvironmentController extends AbstractController
      */
     public function mailTestGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/MailTest.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'mailTestToken' => $formProtection->generateToken('installTool', 'mailTest'),
@@ -242,7 +242,7 @@ class EnvironmentController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Environment/MailTest'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-mailTest-execute',
@@ -321,7 +321,7 @@ class EnvironmentController extends AbstractController
      */
     public function imageProcessingGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Environment/ImageProcessing.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'imageProcessingProcessor' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick',
             'imageProcessingEnabled' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'],
@@ -334,7 +334,7 @@ class EnvironmentController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Environment/ImageProcessing'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default disabled t3js-imageProcessing-execute',

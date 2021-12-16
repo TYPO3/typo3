@@ -210,7 +210,7 @@ class UpgradeController extends AbstractController
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Upgrade/Cards.html');
+        $view = $this->initializeView($request);
         $installedExtensions = 0;
         if (is_dir(Environment::getExtensionsPath())) {
             $installedExtensions = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->count();
@@ -218,7 +218,7 @@ class UpgradeController extends AbstractController
         $view->assign('extensionFoldersInTypo3conf', $installedExtensions);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/Cards'),
         ]);
     }
 
@@ -275,7 +275,7 @@ class UpgradeController extends AbstractController
      */
     public function coreUpdateGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Upgrade/CoreUpdate.html');
+        $view = $this->initializeView($request);
         $coreUpdateService = GeneralUtility::makeInstance(CoreUpdateService::class);
         $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
 
@@ -307,7 +307,7 @@ class UpgradeController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/CoreUpdate'),
             'buttons' => $buttons,
         ]);
     }
@@ -505,7 +505,7 @@ class UpgradeController extends AbstractController
     public function extensionCompatTesterLoadedExtensionListAction(ServerRequestInterface $request): ResponseInterface
     {
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view = $this->initializeStandaloneView($request, 'Upgrade/ExtensionCompatTester.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'extensionCompatTesterLoadExtLocalconfToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtLocalconf'),
             'extensionCompatTesterLoadExtTablesToken' => $formProtection->generateToken('installTool', 'extensionCompatTesterLoadExtTables'),
@@ -514,7 +514,7 @@ class UpgradeController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/ExtensionCompatTester'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default disabled t3js-extensionCompatTester-check',
@@ -640,7 +640,7 @@ class UpgradeController extends AbstractController
     public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
         $extensionsInTypo3conf = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->sortByName();
-        $view = $this->initializeStandaloneView($request, 'Upgrade/ExtensionScanner.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'extensionScannerExtensionList' => $extensionsInTypo3conf,
@@ -650,7 +650,7 @@ class UpgradeController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/ExtensionScanner'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-extensionScanner-scan-all',
@@ -882,7 +882,7 @@ class UpgradeController extends AbstractController
      */
     public function tcaExtTablesCheckAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Upgrade/TcaExtTablesCheck.html');
+        $view = $this->initializeView($request);
         $messageQueue = new FlashMessageQueue('install');
         $loadTcaService = GeneralUtility::makeInstance(LoadTcaService::class);
         $loadTcaService->loadExtensionTablesWithoutMigration();
@@ -911,7 +911,7 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/TcaExtTablesCheck'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-tcaExtTablesCheck-check',
@@ -929,7 +929,7 @@ class UpgradeController extends AbstractController
      */
     public function tcaMigrationsCheckAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Upgrade/TcaMigrationsCheck.html');
+        $view = $this->initializeView($request);
         $messageQueue = new FlashMessageQueue('install');
         GeneralUtility::makeInstance(LoadTcaService::class)->loadExtensionTablesWithoutMigration();
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
@@ -945,7 +945,7 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'status' => $messageQueue,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/TcaMigrationsCheck'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-tcaMigrationsCheck-check',
@@ -965,7 +965,7 @@ class UpgradeController extends AbstractController
     {
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $documentationDirectories = $this->getDocumentationDirectories();
-        $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeDocsGetContent.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'upgradeDocsMarkReadToken' => $formProtection->generateToken('installTool', 'upgradeDocsMarkRead'),
             'upgradeDocsUnmarkReadToken' => $formProtection->generateToken('installTool', 'upgradeDocsUnmarkRead'),
@@ -973,7 +973,7 @@ class UpgradeController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/UpgradeDocsGetContent'),
         ]);
     }
 
@@ -989,7 +989,7 @@ class UpgradeController extends AbstractController
         $this->assertValidVersion($version);
 
         $documentationFiles = $this->getDocumentationFiles($version);
-        $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeDocsGetChangelogForVersion.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'upgradeDocsFiles' => $documentationFiles['normalFiles'],
             'upgradeDocsReadFiles' => $documentationFiles['readFiles'],
@@ -997,7 +997,7 @@ class UpgradeController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/UpgradeDocsGetChangelogForVersion'),
         ]);
     }
 
@@ -1253,7 +1253,7 @@ class UpgradeController extends AbstractController
      */
     public function upgradeWizardsGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Upgrade/UpgradeWizards.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'upgradeWizardsMarkUndoneToken' => $formProtection->generateToken('installTool', 'upgradeWizardsMarkUndone'),
@@ -1262,7 +1262,7 @@ class UpgradeController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Upgrade/UpgradeWizards'),
         ]);
     }
 

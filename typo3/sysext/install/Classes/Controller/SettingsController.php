@@ -79,10 +79,10 @@ class SettingsController extends AbstractController
      */
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Settings/Cards.html');
+        $view = $this->initializeView($request);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/Cards'),
         ]);
     }
 
@@ -94,14 +94,14 @@ class SettingsController extends AbstractController
      */
     public function changeInstallToolPasswordGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Settings/ChangeInstallToolPassword.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'changeInstallToolPasswordToken' => $formProtection->generateToken('installTool', 'changeInstallToolPassword'),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/ChangeInstallToolPassword'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-changeInstallToolPassword-change',
@@ -161,7 +161,7 @@ class SettingsController extends AbstractController
      */
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Settings/SystemMaintainer.html');
+        $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
@@ -199,7 +199,7 @@ class SettingsController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'users' => $users,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/SystemMaintainer'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-systemMaintainer-write',
@@ -280,14 +280,14 @@ class SettingsController extends AbstractController
     {
         $localConfigurationValueService = new LocalConfigurationValueService();
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view = $this->initializeStandaloneView($request, 'Settings/LocalConfigurationGetContent.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'localConfigurationWriteToken' => $formProtection->generateToken('installTool', 'localConfigurationWrite'),
             'localConfigurationData' => $localConfigurationValueService->getCurrentConfigurationData(),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/LocalConfigurationGetContent'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-localConfiguration-write',
@@ -340,7 +340,7 @@ class SettingsController extends AbstractController
      */
     public function presetsGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeStandaloneView($request, 'Settings/PresetsGetContent.html');
+        $view = $this->initializeView($request);
         $presetFeatures = GeneralUtility::makeInstance(FeatureManager::class);
         $presetFeatures = $presetFeatures->getInitializedFeatures($request->getParsedBody()['install']['values'] ?? []);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
@@ -352,7 +352,7 @@ class SettingsController extends AbstractController
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/PresetsGetContent'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-presets-activate',
@@ -422,14 +422,14 @@ class SettingsController extends AbstractController
         }
         ksort($extensionsWithConfigurations);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view = $this->initializeStandaloneView($request, 'Settings/ExtensionConfigurationGetContent.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'extensionsWithConfigurations' => $extensionsWithConfigurations,
             'extensionConfigurationWriteToken' => $formProtection->generateToken('installTool', 'extensionConfigurationWrite'),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/ExtensionConfigurationGetContent'),
         ]);
     }
 
@@ -490,14 +490,14 @@ class SettingsController extends AbstractController
             }
         }
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
-        $view = $this->initializeStandaloneView($request, 'Settings/FeaturesGetContent.html');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'features' => $features,
             'featuresSaveToken' => $formProtection->generateToken('installTool', 'featuresSave'),
         ]);
         return new JsonResponse([
             'success' => true,
-            'html' => $view->render(),
+            'html' => $view->render('Settings/FeaturesGetContent'),
             'buttons' => [
                 [
                     'btnClass' => 'btn-default t3js-features-save',

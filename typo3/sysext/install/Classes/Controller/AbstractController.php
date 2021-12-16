@@ -21,30 +21,23 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Controller abstract for shared parts of the install tool
+ * Controller abstract for shared parts of the install tool.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class AbstractController
 {
     /**
-     * Helper method to initialize a standalone view instance.
-     *
-     * @param ServerRequestInterface $request
-     * @param string $templatePath
-     * @return StandaloneView
-     * @internal param string $template
+     * Helper method to initialize a view instance.
      */
-    protected function initializeStandaloneView(ServerRequestInterface $request, string $templatePath): StandaloneView
+    protected function initializeView(ServerRequestInterface $request): BackendTemplateView
     {
-        $viewRootPath = GeneralUtility::getFileAbsFileName('EXT:install/Resources/Private/');
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRequest()->setControllerExtensionName('Install');
-        $view->setTemplatePathAndFilename($viewRootPath . 'Templates/' . $templatePath);
-        $view->setLayoutRootPaths([$viewRootPath . 'Layouts/']);
-        $view->setPartialRootPaths([$viewRootPath . 'Partials/']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:install/Resources/Private/Partials']);
         $view->assignMultiple([
             'controller' => $request->getQueryParams()['install']['controller'] ?? 'maintenance',
             'context' => $request->getQueryParams()['install']['context'] ?? '',
