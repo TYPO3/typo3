@@ -2362,7 +2362,7 @@ class GeneralUtility
                 // return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO
                 // because of PHP_SAPI=='cgi' (see above)
                 if (!Environment::isRunningOnCgiServer()) {
-                    $retVal = $_SERVER['PATH_INFO'];
+                    $retVal = $_SERVER['PATH_INFO'] ?? '';
                 }
                 break;
             case 'TYPO3_REV_PROXY':
