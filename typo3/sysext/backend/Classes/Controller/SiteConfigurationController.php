@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Site as SiteAction;
@@ -54,8 +53,7 @@ use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Backend controller: The "Site management" -> "Sites" module
@@ -68,75 +66,44 @@ class SiteConfigurationController
 {
     protected const ALLOWED_ACTIONS = ['overview', 'edit', 'save', 'delete'];
 
-    /**
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
-
     protected SiteFinder $siteFinder;
     protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
         SiteFinder $siteFinder,
         IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->siteFinder = $siteFinder;
         $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Main entry method: Dispatch to other actions - those method names that end with "Action".
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         // forcing uncached sites will re-initialize `SiteFinder`
         // which is used later by FormEngine (implicit behavior)
         $this->siteFinder->getAllSites(false);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
-
         if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
             return new HtmlResponse('Action not allowed', 400);
         }
-
-        $this->initializeView($action);
-
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->{$action . 'Action'}($request);
     }
 
     /**
      * List pages that have 'is_siteroot' flag set - those that have the globe icon in page tree.
      * Link to Add / Edit / Delete for each.
-     *
-     * @param ServerRequestInterface $request
      */
-    protected function overviewAction(ServerRequestInterface $request): void
+    protected function overviewAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->configureOverViewDocHeader($request->getAttribute('normalizedParams')->getRequestUri());
         $allSites = $this->siteFinder->getAllSites();
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
@@ -150,26 +117,29 @@ class SiteConfigurationController
             }
         }
 
-        $this->moduleTemplate->setTitle(
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->configureOverViewDocHeader($moduleTemplate, $request->getAttribute('normalizedParams')->getRequestUri());
+        $moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
         );
-        $this->view->assignMultiple([
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->assignMultiple([
             'pages' => $pages,
             'unassignedSites' => $unassignedSites,
             'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
         ]);
+        $moduleTemplate->setContent($view->render('SiteConfiguration/Overview'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Shows a form to create a new site configuration, or edit an existing one.
      *
-     * @param ServerRequestInterface $request
      * @throws \RuntimeException
      */
-    protected function editAction(ServerRequestInterface $request): void
+    protected function editAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->configureEditViewDocHeader();
-
         // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
@@ -215,23 +185,30 @@ class SiteConfigurationController
         $formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
         $formResultCompiler->mergeResult($formResult);
         $formResultCompiler->addCssFiles();
-        // Always add rootPageId as additional field to have a reference for new records
-        $this->view->assign('rootPageId', $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId());
-        $this->view->assign('returnUrl', $returnUrl);
-        $this->view->assign('formEngineHtml', $formResult['html']);
-        $this->view->assign('formEngineFooter', $formResultCompiler->printNeededJSFunctions());
 
-        $this->moduleTemplate->setTitle(
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->assignMultiple([
+            // Always add rootPageId as additional field to have a reference for new records
+            'rootPageId' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
+            'returnUrl' => $returnUrl,
+            'formEngineHtml' => $formResult['html'],
+            'formEngineFooter' => $formResultCompiler->printNeededJSFunctions(),
+        ]);
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->configureEditViewDocHeader($moduleTemplate);
+        $moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
             $siteIdentifier ?? ''
         );
+        $moduleTemplate->setContent($view->render('SiteConfiguration/Edit'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Save incoming data from editAction and redirect to overview or edit
      *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws \RuntimeException
      */
     protected function saveAction(ServerRequestInterface $request): ResponseInterface
@@ -663,9 +640,6 @@ class SiteConfigurationController
 
     /**
      * Delete an existing configuration
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     protected function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -688,25 +662,11 @@ class SiteConfigurationController
     }
 
     /**
-     * Sets up the Fluid View.
-     *
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName): void
-    {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/SiteConfiguration']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-    }
-
-    /**
      * Create document header buttons of "edit" action
      */
-    protected function configureEditViewDocHeader(): void
+    protected function configureEditViewDocHeader(ModuleTemplate $moduleTemplate): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
@@ -727,12 +687,10 @@ class SiteConfigurationController
 
     /**
      * Create document header buttons of "overview" action
-     *
-     * @param string $requestUri
      */
-    protected function configureOverViewDocHeader(string $requestUri): void
+    protected function configureOverViewDocHeader(ModuleTemplate $moduleTemplate, string $requestUri): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($requestUri)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
@@ -746,8 +704,6 @@ class SiteConfigurationController
 
     /**
      * Returns a list of pages that have 'is_siteroot' set
-     *
-     * @return array
      */
     protected function getAllSitePages(): array
     {
@@ -819,8 +775,6 @@ class SiteConfigurationController
 
     /**
      * Returns the last (highest) language id from all sites
-     *
-     * @return int
      */
     protected function getLastLanguageId(): int
     {
@@ -835,17 +789,11 @@ class SiteConfigurationController
         return $lastLanguageId;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

@@ -1,8 +1,15 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/ContextMenu',
+        1: 'TYPO3/CMS/Backend/Modal'
+    }"
+/>
+
 <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.title" /></h1>
 
 <f:if condition="{pages}">
@@ -164,10 +171,10 @@
                                 class="btn btn-default t3js-modal-trigger"
                                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
                                 data="{
-                                            severity: 'error',
-                                            title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
-                                            button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
-                                        }"
+                                    severity: 'error',
+                                    title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
+                                    button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
+                                }"
                             >
                                 <core:icon identifier="actions-delete" />
                             </f:be.link>

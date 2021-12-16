@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller to configure MFA providers in the backend
@@ -104,10 +104,9 @@ class MfaConfigurationController extends AbstractMfaController
 
         switch ($action) {
             case 'overview':
-                return $this->overviewAction($request, $this->initializeView($action));
+                return $this->overviewAction($request);
             case 'setup':
             case 'edit':
-                return $this->{$action . 'Action'}($request, $mfaProvider, $this->initializeView($action));
             case 'activate':
             case 'deactivate':
             case 'unlock':
@@ -121,32 +120,34 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Setup the overview with all available MFA providers
      */
-    public function overviewAction(ServerRequestInterface $request, StandaloneView $view): ResponseInterface
+    public function overviewAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->addOverviewButtons($request);
+        $view = $this->initializeView();
         $view->assignMultiple([
             'providers' => $this->allowedProviders,
             'defaultProvider' => $this->getDefaultProviderIdentifier(),
             'recommendedProvider' => $this->getRecommendedProviderIdentifier(),
             'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser()),
         ]);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Mfa/Overview'));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Render form to setup a provider by using provider specific content
      */
-    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
+    public function setupAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
         $this->addFormButtons();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
+        $view = $this->initializeView();
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
         ]);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Mfa/Setup'));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -180,7 +181,7 @@ class MfaConfigurationController extends AbstractMfaController
             $this->setDefaultProvider($mfaProvider);
         }
         // If this is the first activated provider, the user has logged in without being required
-        // to pass the MFA challenge. Therefore no session entry exists. To prevent the challenge
+        // to pass the MFA challenge. Therefore, no session entry exists. To prevent the challenge
         // from showing up after the activation we need to set the session data here.
         if (!(bool)($backendUser->getSessionData('mfa') ?? false)) {
             $backendUser->setSessionData('mfa', true);
@@ -227,7 +228,7 @@ class MfaConfigurationController extends AbstractMfaController
     /**
      * Render form to edit a provider by using provider specific content
      */
-    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider, StandaloneView $view): ResponseInterface
+    public function editAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         if ($mfaProvider->isLocked($propertyManager)) {
@@ -237,12 +238,13 @@ class MfaConfigurationController extends AbstractMfaController
         }
         $this->addFormButtons();
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::EDIT);
+        $view = $this->initializeView();
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
             'isDefaultProvider' => $this->isDefaultProvider($mfaProvider),
         ]);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('Mfa/Edit'));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -271,15 +273,14 @@ class MfaConfigurationController extends AbstractMfaController
     }
 
     /**
-     * Initialize the standalone view and set the template name
+     * Initialize the simple view and set the template name
      */
-    protected function initializeView(string $templateName): StandaloneView
+    protected function initializeView(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setTemplate($templateName);
         return $view;
     }
 

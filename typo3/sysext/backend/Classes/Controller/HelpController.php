@@ -31,11 +31,11 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Main "CSH help" module controller
+ * Main "CSH help" module controller.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class HelpController
@@ -51,12 +51,6 @@ class HelpController
      * Show only Table of contents
      */
     const TOC_ONLY = 1;
-
-    /** @var ModuleTemplate */
-    protected $moduleTemplate;
-
-    /** @var ViewInterface */
-    protected $view;
 
     protected Typo3Information $typo3Information;
     protected TableManualRepository $tableManualRepository;
@@ -80,100 +74,75 @@ class HelpController
 
     /**
      * Injects the request object for the current request, and renders correct action
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
-
+        $action = $request->getQueryParams()['action'] ?? 'index';
         if ($action === 'detail') {
-            $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
+            $table = $request->getQueryParams()['table'] ?? '';
             if (!$table) {
                 return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('help_cshmanual', [
                     'action' => 'index',
                 ]), 303);
             }
         }
-
         if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
             return new HtmlResponse('Action not allowed', 400);
         }
-
-        $this->initializeView($action);
-
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
-
-        $this->registerDocHeaderButtons($request);
-
-        $this->moduleTemplate->setTitle($this->getShortcutTitle($request));
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName)
-    {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ContextSensitiveHelp']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $this->view->getRequest()->setControllerExtensionName('Backend');
-        $this->view->assign('copyright', $this->typo3Information->getCopyrightNotice());
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setTitle($this->getShortcutTitle($request));
+        return $this->{$action . 'Action'}($moduleTemplate, $request);
     }
 
     /**
      * Show table of contents
      */
-    public function indexAction()
+    protected function indexAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
     {
-        $this->view->assign('toc', $this->tableManualRepository->getSections(self::TOC_ONLY));
+        $view = $this->initializeView();
+        $view->assign('toc', $this->tableManualRepository->getSections(self::TOC_ONLY));
+        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/Index'));
+        $this->addShortcutButton($moduleTemplate, $request);
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Show the table of contents and all manuals
      */
-    public function allAction()
+    protected function allAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
     {
-        $this->view->assign('all', $this->tableManualRepository->getSections(self::FULL));
+        $view = $this->initializeView();
+        $view->assign('all', $this->tableManualRepository->getSections(self::FULL));
+        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/All'));
+        $this->addShortcutButton($moduleTemplate, $request);
+        $this->addBackButton($moduleTemplate);
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Show a single manual
-     *
-     * @param ServerRequestInterface $request
      */
-    public function detailAction(ServerRequestInterface $request)
+    protected function detailAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
     {
+        $view = $this->initializeView();
         $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
-
-        $this->view->assignMultiple([
+        $view->assignMultiple([
             'table' => $table,
             'key' => $table,
             'field' => $field,
             'manuals' => $this->getManuals($request),
         ]);
+        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/Detail'));
+        $this->addShortcutButton($moduleTemplate, $request);
+        $this->addBackButton($moduleTemplate);
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Registers the Icons into the docheader
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function registerDocHeaderButtons(ServerRequestInterface $request)
+    protected function addShortcutButton(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $action = $request->getQueryParams()['action'] ?? 'index';
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('help_cshmanual')
             ->setDisplayName($this->getShortcutTitle($request))
@@ -183,32 +152,27 @@ class HelpController
                 'field' => $request->getQueryParams()['field'] ?? '',
             ]);
         $buttonBar->addButton($shortcutButton);
+    }
 
-        if ($action !== 'index') {
-            $backButton = $buttonBar->makeLinkButton()
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
-                ->setHref((string)$this->uriBuilder->buildUriFromRoute('help_cshmanual'));
-            $buttonBar->addButton($backButton);
-        }
+    protected function addBackButton(ModuleTemplate $moduleTemplate): void
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $backButton = $buttonBar->makeLinkButton()
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('help_cshmanual'));
+        $buttonBar->addButton($backButton);
     }
 
     protected function getManuals(ServerRequestInterface $request): array
     {
         $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'] ?? '';
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
-
         return $field === '*'
             ? $this->tableManualRepository->getTableManual($table)
             : [$this->tableManualRepository->getSingleManual($table, $field)];
     }
 
-    /**
-     * Returns the shortcut title for the current page
-     *
-     * @param ServerRequestInterface $request
-     * @return string
-     */
     protected function getShortcutTitle(ServerRequestInterface $request): string
     {
         $title = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf:mlang_labels_tablabel');
@@ -221,21 +185,21 @@ class HelpController
         return $title;
     }
 
-    /**
-     * Returns the currently logged in BE user
-     *
-     * @return BackendUserAuthentication
-     */
+    protected function initializeView(): BackendTemplateView
+    {
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view->assign('copyright', $this->typo3Information->getCopyrightNotice());
+        return $view;
+    }
+
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns the LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

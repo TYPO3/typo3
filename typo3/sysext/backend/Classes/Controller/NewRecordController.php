@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script class for 'db_new' and 'db_new_pages'
@@ -116,17 +116,8 @@ class NewRecordController
      */
     protected $tRows = [];
 
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
+    protected ModuleTemplate $moduleTemplate;
+    protected BackendTemplateView $view;
 
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
@@ -160,12 +151,12 @@ class NewRecordController
             return new RedirectResponse($uri, 301);
         }
 
-        $this->initializeView('NewRecord');
+        $this->initializeView();
         $this->init($request);
 
         // If there was a page - or if the user is admin (admins has access to the root) we proceed, otherwise just output the header
         if (empty($this->pageinfo['uid']) && !$this->getBackendUserAuthentication()->isAdmin()) {
-            $this->moduleTemplate->setContent($this->view->render());
+            $this->moduleTemplate->setContent($this->view->render('NewRecord'));
             return new HtmlResponse($this->moduleTemplate->renderContent());
         }
 
@@ -174,7 +165,7 @@ class NewRecordController
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons();
         // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render());
+        $this->moduleTemplate->setContent($this->view->render('NewRecord'));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -183,12 +174,12 @@ class NewRecordController
      */
     public function newPageAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initializeView('NewPagePosition');
+        $this->initializeView();
         $this->init($request);
 
         // If there was a page - or if the user is admin (admins has access to the root) we proceed, otherwise just output the header
         if ((empty($this->pageinfo['uid']) && !$this->getBackendUserAuthentication()->isAdmin()) || !$this->isRecordCreationAllowedForTable('pages')) {
-            $this->moduleTemplate->setContent($this->view->render());
+            $this->moduleTemplate->setContent($this->view->render('NewPagePosition'));
             return new HtmlResponse($this->moduleTemplate->renderContent());
         }
         if (!$this->doPageRecordsExistInSystem()) {
@@ -216,7 +207,7 @@ class NewRecordController
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons(true);
         // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render());
+        $this->moduleTemplate->setContent($this->view->render('NewPagePosition'));
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -698,31 +689,17 @@ class NewRecordController
         return !in_array($table, $deniedNewTables) && (empty($allowedNewTables) || in_array($table, $allowedNewTables));
     }
 
-    /**
-     * Initializes the view by setting the templateName
-     *
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName): void
+    protected function initializeView(): void
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
+        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

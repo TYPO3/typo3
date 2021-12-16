@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,12 +18,12 @@
 namespace TYPO3\CMS\Backend\Backend\Avatar;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Main class to render an avatar image of a certain Backend user, resolving any avatar provider
@@ -32,92 +34,67 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class Avatar
 {
     /**
-     * Array of sorted and initialized avatar providers
+     * Sorted and initialized avatar providers
      *
      * @var AvatarProviderInterface[]
      */
-    protected $avatarProviders = [];
+    protected array $avatarProviders = [];
+
+    protected FrontendInterface $cache;
+    protected DependencyOrderingService $dependencyOrderingService;
+    protected IconFactory $iconFactory;
+
+    public function __construct(
+        FrontendInterface $cache,
+        DependencyOrderingService $dependencyOrderingService,
+        IconFactory $iconFactory
+    ) {
+        $this->cache = $cache;
+        $this->dependencyOrderingService = $dependencyOrderingService;
+        $this->iconFactory = $iconFactory;
+    }
 
     /**
-     * Renders an avatar based on a Fluid template which contains some base wrapper classes and does
-     * a simple caching functionality, used in Avatar ViewHelper for instance
-     *
-     * @param array $backendUser be_users record
-     * @param int $size width and height of the image
-     * @param bool $showIcon show the record icon
-     * @return string
+     * Renders an avatar based on a Fluid template which contains some base wrapper css classes.
+     * Has a simple caching functionality. Used in Avatar ViewHelper for instance.
+     * Renders avatar of a given backend user record, or of current logged-in backend user.
      */
-    public function render(array $backendUser = null, int $size = 32, bool $showIcon = false)
+    public function render(array $backendUser = null, int $size = 32, bool $showIcon = false): string
     {
         if (!is_array($backendUser)) {
+            /** @var array $backendUser */
             $backendUser = $this->getBackendUser()->user;
         }
-
-        $cacheId = 'avatar_' . md5(
-            $backendUser['uid'] . '/' .
-            (string)$size . '/' .
-            (string)$showIcon
-        );
-
-        $avatar = $this->getCache()->get($cacheId);
-
+        $cacheId = 'avatar_' . sha1($backendUser['uid'] . $size . $showIcon);
+        $avatar = $this->cache->get($cacheId);
         if (!$avatar) {
             $this->validateSortAndInitiateAvatarProviders();
-            $view = $this->getFluidTemplateObject();
-
-            $view->assignMultiple([
-                'image' => $this->getImgTag($backendUser, $size),
-                'showIcon' => $showIcon,
-                'backendUser' => $backendUser,
-            ]);
-            $avatar = $view->render();
-            $this->getCache()->set($cacheId, $avatar);
+            $icon = $showIcon ? $this->iconFactory->getIconForRecord('be_users', $backendUser, Icon::SIZE_SMALL)->render() : '';
+            $avatar =
+                '<span class="avatar">'
+                    . '<span class="avatar-image">' . $this->getImgTag($backendUser, $size) . '</span>'
+                    . ($showIcon ? '<span class="avatar-icon">' . $icon . '</span>' : '')
+                . '</span>';
+            $this->cache->set($cacheId, $avatar);
         }
-
         return $avatar;
     }
 
     /**
-     * Returns an HTML <img> tag for the avatar
-     *
-     * @param array $backendUser be_users record
-     * @param int $size
-     * @return string
+     * Returns an HTML <img> tag of given backend users avatar.
      */
-    public function getImgTag(array $backendUser = null, $size = 32)
+    protected function getImgTag(array $backendUser, int $size = 32): string
     {
-        if (!is_array($backendUser)) {
-            $backendUser = $this->getBackendUser()->user;
-        }
-
-        $avatarImage = false;
-        if ($backendUser !== null) {
-            $avatarImage = $this->getImage($backendUser, $size);
-        }
-
-        if (!$avatarImage) {
-            $avatarImage = GeneralUtility::makeInstance(
-                Image::class,
-                PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg'),
-                $size,
-                $size
-            );
-        }
-        $imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
+        $avatarImage = $this->getImage($backendUser, $size);
+        return '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '" ' .
             'width="' . (int)$avatarImage->getWidth() . '" ' .
             'height="' . (int)$avatarImage->getHeight() . '" />';
-
-        return $imageTag;
     }
 
     /**
-     * Get Image from first provider that returns one
-     *
-     * @param array $backendUser be_users record
-     * @param int $size
-     * @return Image|null
+     * Get Image from first provider that returns one.
      */
-    public function getImage(array $backendUser, $size)
+    protected function getImage(array $backendUser, int $size): Image
     {
         foreach ($this->avatarProviders as $provider) {
             $avatarImage = $provider->getImage($backendUser, $size);
@@ -125,7 +102,12 @@ class Avatar
                 return $avatarImage;
             }
         }
-        return null;
+        return GeneralUtility::makeInstance(
+            Image::class,
+            PathUtility::getPublicResourceWebPath('EXT:core/Resources/Public/Icons/T3Icons/svgs/avatar/avatar-default.svg'),
+            $size,
+            $size
+        );
     }
 
     /**
@@ -133,9 +115,9 @@ class Avatar
      *
      * @throws \RuntimeException
      */
-    protected function validateSortAndInitiateAvatarProviders()
+    protected function validateSortAndInitiateAvatarProviders(): void
     {
-        /** @var array<string,array<mixed>> $providers */
+        /** @var array<string,array> $providers */
         $providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'] ?? [];
         if (empty($providers)) {
             return;
@@ -157,10 +139,7 @@ class Avatar
                 );
             }
         }
-
-        $orderedProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($providers);
-
-        // Initializes providers
+        $orderedProviders = $this->dependencyOrderingService->orderByDependencies($providers);
         foreach ($orderedProviders as $configuration) {
             /** @var AvatarProviderInterface $avatarProvider */
             $avatarProvider = GeneralUtility::makeInstance($configuration['provider']);
@@ -168,44 +147,8 @@ class Avatar
         }
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename = null): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-
-        if ($filename === null) {
-            $filename = 'Main.html';
-        }
-
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/Avatar/' . $filename));
-
-        $view->getRequest()->setControllerExtensionName('Backend');
-        return $view;
-    }
-
-    /**
-     * @return FrontendInterface
-     */
-    protected function getCache()
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 }

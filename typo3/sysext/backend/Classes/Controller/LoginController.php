@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -68,8 +69,6 @@ class LoginController
 
     /**
      * the active login provider identifier
-     *
-     * @var string
      */
     protected string $loginProviderIdentifier = '';
 
@@ -133,9 +132,6 @@ class LoginController
     /**
      * Injects the request and response objects for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the finished response with the content
      */
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -146,9 +142,6 @@ class LoginController
 
     /**
      * Calls the main function but with loginRefresh enabled at any time
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the finished response with the content
      */
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -161,10 +154,6 @@ class LoginController
     /**
      * If a login provider was chosen in the previous request, which is not the default provider, it is stored in a
      * Cookie and appended to the HTTP Response.
-     *
-     * @param NormalizedParams $normalizedParams
-     * @param ResponseInterface $response
-     * @return ResponseInterface
      */
     protected function appendLoginProviderCookie(NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
@@ -187,19 +176,15 @@ class LoginController
     }
 
     /**
-     * This can be called by single login providers, they receive an instance of $this
-     *
-     * @return string
+     * This can be called by single login providers, they receive an instance of $this.
      */
-    public function getLoginProviderIdentifier()
+    public function getLoginProviderIdentifier(): string
     {
         return $this->loginProviderIdentifier;
     }
 
     /**
      * Initialize the login box. Will also react on a &L=OUT flag and exit.
-     *
-     * @param ServerRequestInterface $request the current request
      */
     protected function init(ServerRequestInterface $request): void
     {
@@ -241,10 +226,10 @@ class LoginController
             $this->redirectToUrl();
         }
 
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
         $this->view = $this->moduleTemplate->getView();
         $this->view->getRequest()->setControllerExtensionName('Backend');
         $this->provideCustomLoginStyling();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
         $this->view->assign('referrerCheckEnabled', $this->features->isFeatureEnabled('security.backend.enforceReferrer'));
         $this->view->assign('loginUrl', (string)$request->getUri());
         $this->view->assign('loginProviderIdentifier', $this->loginProviderIdentifier);
@@ -279,9 +264,6 @@ class LoginController
 
     /**
      * Main function - creating the login/logout form
-     *
-     * @param ServerRequestInterface $request
-     * @return string $content
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
@@ -347,13 +329,11 @@ class LoginController
 
     /**
      * Checking, if we should perform some sort of redirection OR closing of windows.
+     * Do a redirect if a user is logged in.
      *
-     * Do a redirect if a user is logged in
-     *
-     * @param ServerRequestInterface $request
      * @throws \RuntimeException
      * @throws \UnexpectedValueException
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     protected function checkRedirect(ServerRequestInterface $request): void
     {
@@ -362,11 +342,9 @@ class LoginController
             return;
         }
 
-        /*
-         * If no cookie has been set previously, we tell people that this is a problem.
-         * This assumes that a cookie-setting script (like this one) has been hit at
-         * least once prior to this instance.
-         */
+        // If no cookie has been set previously, we tell people that this is a problem.
+        // This assumes that a cookie-setting script (like this one) has been hit at
+        // least once prior to this instance.
         if (!isset($_COOKIE[BackendUserAuthentication::getCookieName()])) {
             if ($this->submitValue === 'setCookie') {
                 // we tried it a second time but still no cookie
@@ -414,8 +392,7 @@ class LoginController
     }
 
     /**
-     * Making interface selector
-     * @param ServerRequestInterface $request
+     * Making interface selector.
      */
     protected function makeInterfaceSelector(ServerRequestInterface $request): void
     {
@@ -448,8 +425,7 @@ class LoginController
     }
 
     /**
-     * Gets news from sys_news and converts them into a format suitable for
-     * showing them at the login screen.
+     * Gets news from sys_news and converts them into a format suitable for showing them at the login screen.
      *
      * @return array An array of login news.
      */
@@ -478,9 +454,6 @@ class LoginController
 
     /**
      * Checks if login credentials are currently submitted
-     *
-     * @param ServerRequestInterface $request
-     * @return bool
      */
     protected function isLoginInProgress(ServerRequestInterface $request): bool
     {
@@ -491,26 +464,20 @@ class LoginController
     }
 
     /**
-     * Wrapper method to redirect to configured redirect URL
+     * Wrapper method to redirect to configured redirect URL.
+     *
+     * @throws PropagateResponseException
      */
     protected function redirectToUrl(): void
     {
         throw new PropagateResponseException(new RedirectResponse($this->redirectToURL, 303), 1607271511);
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

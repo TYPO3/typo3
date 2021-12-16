@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,15 +20,13 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Module 'about' shows some standard information for TYPO3 CMS:
@@ -36,18 +36,6 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class AboutController
 {
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
-
     protected Typo3Version $version;
     protected Typo3Information $typo3Information;
     protected ModuleLoader $moduleLoader;
@@ -72,14 +60,9 @@ class AboutController
 
     /**
      * Main action: Show standard information
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface the HTML output
      */
-    public function indexAction(ServerRequestInterface $request): ResponseInterface
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->initializeView('index');
         $warnings = [];
         // Hook for additional warnings
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] ?? [] as $className) {
@@ -89,7 +72,10 @@ class AboutController
             }
         }
 
-        $this->view->assignMultiple([
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->assignMultiple([
             'copyrightYear' => $this->typo3Information->getCopyrightYear(),
             'donationUrl' => $this->typo3Information::URL_DONATE,
             'currentVersion' => $this->version->getVersion(),
@@ -98,16 +84,14 @@ class AboutController
             'warnings' => $warnings,
             'modules' => $this->getModulesData(),
         ]);
-
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setContent($view->render('About/Index'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Create array with data of all main modules (Web, File, ...)
-     * and its nested sub modules
-     *
-     * @return array
+     * and its nested sub modules.
      */
     protected function getModulesData(): array
     {
@@ -128,16 +112,12 @@ class AboutController
 
     /**
      * Create array with data of all subModules of a specific main module
-     *
-     * @param string $moduleName Name of the main module
-     * @return array
      */
     protected function getSubModuleData(string $moduleName): array
     {
         if (empty($this->moduleLoader->getModules()[$moduleName]['sub'])) {
             return [];
         }
-
         $subModulesData = [];
         foreach ($this->moduleLoader->getModules()[$moduleName]['sub'] ?? [] as $subModuleName => $subModuleInfo) {
             $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName . '_' . $subModuleName);
@@ -155,8 +135,6 @@ class AboutController
 
     /**
      * Fetches a list of all active (loaded) extensions in the current system
-     *
-     * @return array
      */
     protected function getLoadedExtensions(): array
     {
@@ -173,19 +151,5 @@ class AboutController
             ];
         }
         return $extensions;
-    }
-
-    /**
-     * Initializes the view by setting the templateName
-     *
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName)
-    {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/About']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/About']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
     }
 }

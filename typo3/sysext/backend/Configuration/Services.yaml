@@ -23,6 +23,11 @@ services:
     tags:
       - { name: 'console.command', command: 'backend:resetpassword', description: 'Trigger a password reset for a backend user', schedulable: false }
 
+  TYPO3\CMS\Backend\Backend\Avatar\Avatar:
+    public: true
+    arguments:
+      $cache: '@cache.runtime'
+
   TYPO3\CMS\Backend\Clipboard\Clipboard:
     shared: false
     public: true

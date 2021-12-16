@@ -1,5 +1,5 @@
 <div class="container-small about-module">
-    <f:render partial="Logo" arguments="{_all}" />
+    <f:render partial="About/Logo" arguments="{_all}" />
 
     <f:if condition="{warnings}">
         <f:be.infobox title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header')}" state="2">
@@ -22,13 +22,13 @@
         </f:be.infobox>
     </f:if>
 
-    <f:render partial="About" arguments="{_all}" />
-    <f:render partial="Modules" arguments="{_all}" />
-    <f:render partial="Donation" arguments="{_all}" />
-    <f:render partial="Credits" arguments="{_all}" />
-    <f:render partial="CoreTeam" arguments="{_all}" />
-    <f:render partial="ExternalLibraries" arguments="{_all}" />
-    <f:render partial="Extensions" arguments="{_all}" />
+    <f:render partial="About/About" arguments="{_all}" />
+    <f:render partial="About/Modules" arguments="{_all}" />
+    <f:render partial="About/Donation" arguments="{_all}" />
+    <f:render partial="About/Credits" arguments="{_all}" />
+    <f:render partial="About/CoreTeam" arguments="{_all}" />
+    <f:render partial="About/ExternalLibraries" arguments="{_all}" />
+    <f:render partial="About/Extensions" arguments="{_all}" />
 
     <p>
         <em class="text-muted">

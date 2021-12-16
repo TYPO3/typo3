@@ -73,7 +73,7 @@ ExtensionManagementUtility::addModule(
     'top',
     null,
     [
-        'routeTarget' => AboutController::class . '::indexAction',
+        'routeTarget' => AboutController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'help_AboutAbout',
         'iconIdentifier' => 'module-about',

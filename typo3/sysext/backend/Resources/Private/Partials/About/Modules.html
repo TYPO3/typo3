@@ -4,7 +4,7 @@
 <f:for each="{modules}" as="mainModule">
     <f:if condition="{mainModule.subModules}">
         <f:if condition="{mainModule.label}">
-            <h2>{f:translate(key: mainModule.label)}</h2>
+            <h2><f:translate key="{mainModule.label}" default="{mainModule.label}"/></h2>
         </f:if>
         <section class="card-container">
             <f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
@@ -12,7 +12,7 @@
                     href="#"
                     data-dispatch-action="TYPO3.ModuleMenu.showModule"
                     data-dispatch-args-list="{mainModule.name}_{subModule.name}"
-                    title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription)}')}"
+                    title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}')}"
                     class="card card-size-medium"
                 >
                     <div class="card-header">
@@ -22,16 +22,16 @@
                         <f:if condition="{subModule.label}">
                             <div class="card-header-body">
                                 <h3 class="card-title">
-                                    {f:translate(key: subModule.label)}
+                                    {f:translate(key: subModule.label, default: subModule.label)}
                                 </h3>
                                 <f:if condition="{subModule.shortDescription}">
                                     <span class="card-subtitle">
-                                        <f:translate key="{subModule.shortDescription}" />
+                                        <f:translate key="{subModule.shortDescription}" default="{subModule.shortDescription}" />
                                     </span>
                                 </f:if>
                                 <f:if condition="{subModule.longDescription}">
                                     <div class="card-longdesc">
-                                        {f:translate(key: subModule.longDescription) -> f:format.raw()}
+                                        {f:translate(key: subModule.longDescription, default: subModule.longDescription) -> f:format.raw()}
                                     </div>
                                 </f:if>
                             </div>

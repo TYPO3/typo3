@@ -1,4 +1,14 @@
-<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Backend/SiteInlineActions'}" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/ContextMenu',
+        1: 'TYPO3/CMS/Backend/Modal',
+        2: 'TYPO3/CMS/Backend/SiteInlineActions'
+    }"
+/>
 <form
     action="{f:be.uri(route:'site_configuration', parameters:'{action: \'save\'}')}"
     method="post"
@@ -15,3 +25,4 @@
 
     {formEngineFooter -> f:format.raw()}
 </form>
+</html>

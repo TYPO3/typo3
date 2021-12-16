@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Class for rendering the TYPO3 backend
@@ -54,11 +54,6 @@ class BackendController
      * @var array
      */
     protected $toolbarItems = [];
-
-    /**
-     * @var string
-     */
-    protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
 
     protected BackendModuleRepository $backendModuleRepository;
     protected PageRenderer $pageRenderer;
@@ -164,8 +159,7 @@ class BackendController
         // Prepare the scaffolding, at this point extension may still add javascript and css
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $view = $moduleTemplate->getView();
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . 'Backend/Main.html'));
+        $view->setTemplatePathAndFilename('EXT:backend/Resources/Private/Templates/Backend/Main.html');
         $moduleTemplate->setBodyTag($bodyTag);
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
@@ -198,8 +192,6 @@ class BackendController
      */
     protected function renderTopbar()
     {
-        $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Topbar.html');
-
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
         $logoPath = '';
@@ -227,6 +219,7 @@ class BackendController
             }
         }
 
+        $view = $this->getFluidTemplateObject();
         $view->assign('hasModules', count($this->moduleStorage) > 0);
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
@@ -234,8 +227,7 @@ class BackendController
         $view->assign('applicationVersion', $this->typo3Version->getVersion());
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('toolbar', $this->renderToolbar());
-
-        return $view->render();
+        return $view->render('Backend/Topbar.html');
     }
 
     /**
@@ -437,9 +429,9 @@ class BackendController
      */
     protected function generateModuleMenu()
     {
-        $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/ModuleMenu.html');
+        $view = $this->getFluidTemplateObject();
         $view->assign('modules', $this->moduleStorage);
-        return $view->render();
+        return $view->render('Backend/ModuleMenu.html');
     }
 
     protected function getCollapseStateOfMenu(): bool
@@ -470,19 +462,10 @@ class BackendController
         return new JsonResponse(['topbar' => $this->renderTopbar()]);
     }
 
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @param string $templatePathAndFileName optional the path to set the template path and filename
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-    protected function getFluidTemplateObject($templatePathAndFileName = null)
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        if ($templatePathAndFileName) {
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));
-        }
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
         return $view;
     }
 
