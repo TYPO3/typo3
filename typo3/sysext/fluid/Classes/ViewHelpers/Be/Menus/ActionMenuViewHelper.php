@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,7 +42,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="List Posts" controller="Post" action="index" arguments="{blog: blog}" />
  *    </f:be.menus.actionMenu>
  *
- * Selectbox with the options "Overview", "Create new Blog" and "List Posts".
+ * Select box with the options "Overview", "Create new Blog" and "List Posts".
  *
  * Localized::
  *
@@ -49,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="{f:translate(key:'create_blog')}" controller="Blog" action="new" />
  *    </f:be.menus.actionMenu>
  *
- * Localized selectbox.
+ * Localized select box.
  */
 final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
 {
@@ -58,30 +60,13 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'select';
 
-    /**
-     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
-     *
-     * @var array
-     */
-    protected $childNodes = [];
-
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('defaultController', 'string', 'The default controller to be used');
     }
 
-    /**
-     * Render FunctionMenu
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $options = '';
         foreach ($this->childNodes as $childNode) {
@@ -102,12 +87,10 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
      * @param string $argumentsName
      * @param string $closureName
      * @param string $initializationPhpCode
-     * @param ViewHelperNode $node
-     * @param TemplateCompiler $compiler
      */
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {
-        // @TODO: replace with a true compiling method to make compilable!
+        // @todo: replace with a true compiling method to make compilable!
         $compiler->disable();
         return null;
     }

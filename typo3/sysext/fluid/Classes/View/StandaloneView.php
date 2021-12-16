@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Fluid\View;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
@@ -30,6 +31,10 @@ class StandaloneView extends AbstractTemplateView
     public function __construct()
     {
         $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create();
+        // @todo: This is very unfortunate. This creates an extbase request by default. Standalone
+        //        usage is typically *not* extbase context. Controllers that want to get rid of this
+        //        have to ->setRequest($myServerRequestInterface), or even ->setRequest(null) after
+        //        object construction to get rid of an extbase request again.
         $renderingContext->setRequest(GeneralUtility::makeInstance(Request::class));
         parent::__construct($renderingContext);
     }
@@ -55,6 +60,7 @@ class StandaloneView extends AbstractTemplateView
      *
      * @return string $format
      * @throws \RuntimeException
+     * @todo: deprecate?!
      */
     public function getFormat()
     {
@@ -65,13 +71,23 @@ class StandaloneView extends AbstractTemplateView
     }
 
     /**
+     * @internal Currently used especially in functional tests. May change.
+     */
+    public function setRequest(?ServerRequestInterface $request = null): void
+    {
+        if ($this->baseRenderingContext instanceof RenderingContext) {
+            $this->baseRenderingContext->setRequest($request);
+        }
+    }
+
+    /**
      * Returns the current request object
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request
      * @throws \RuntimeException
      * @internal
+     * @todo: deprecate?!
      */
-    public function getRequest()
+    public function getRequest(): ?ServerRequestInterface
     {
         if ($this->baseRenderingContext instanceof RenderingContext) {
             return $this->baseRenderingContext->getRequest();

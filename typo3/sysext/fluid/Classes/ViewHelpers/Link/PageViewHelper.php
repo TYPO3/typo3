@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,12 +17,14 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating links to TYPO3 pages.
+ * A ViewHelper for creating links to TYPO3 pages. Tailored for extbase plugins, uses extbase Request and extbase UriBuilder.
  *
  * Examples
  * ========
@@ -71,10 +75,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -83,7 +84,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
         $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter');
         $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.');
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.');
         $this->registerArgument('additionalParams', 'array', 'Additional query parameters that won\'t be prefixed like $arguments (overrule $arguments)');
@@ -92,24 +93,30 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'Arguments to be removed from the URI. Only active if $addQueryString = TRUE');
     }
 
-    /**
-     * @return string Rendered page URI
-     */
-    public function render()
+    public function render(): string
     {
+        $request = $this->renderingContext->getRequest();
+        if (!$request instanceof RequestInterface) {
+            throw new \RuntimeException(
+                'ViewHelper f:link.page can be used only in extbase context and needs a request implementing extbase RequestInterface.',
+                1639819269
+            );
+        }
+
         $pageUid = isset($this->arguments['pageUid']) ? (int)$this->arguments['pageUid'] : null;
         $pageType = isset($this->arguments['pageType']) ? (int)$this->arguments['pageType'] : 0;
-        $noCache = isset($this->arguments['noCache']) ? (bool)$this->arguments['noCache'] : false;
+        $noCache = isset($this->arguments['noCache']) && (bool)$this->arguments['noCache'];
         $section = isset($this->arguments['section']) ? (string)$this->arguments['section'] : '';
         $language = $this->arguments['language'] ?? null;
-        $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) ? (bool)$this->arguments['linkAccessRestrictedPages'] : false;
+        $linkAccessRestrictedPages = isset($this->arguments['linkAccessRestrictedPages']) && (bool)$this->arguments['linkAccessRestrictedPages'];
         $additionalParams = isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [];
-        $absolute = isset($this->arguments['absolute']) ? (bool)$this->arguments['absolute'] : false;
-        $addQueryString = isset($this->arguments['addQueryString']) ? (bool)$this->arguments['addQueryString'] : false;
+        $absolute = isset($this->arguments['absolute']) && (bool)$this->arguments['absolute'];
+        $addQueryString = isset($this->arguments['addQueryString']) && (bool)$this->arguments['addQueryString'];
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getUriBuilder();
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->reset()
+            ->setRequest($request)
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
             ->setSection($section)

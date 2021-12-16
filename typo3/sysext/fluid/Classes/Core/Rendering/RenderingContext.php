@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,9 +17,9 @@
 
 namespace TYPO3\CMS\Fluid\Core\Rendering;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
@@ -29,15 +31,9 @@ use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInvoker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
-/**
- * Class RenderingContext
- */
 class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
 {
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected ?ServerRequestInterface $request = null;
 
     /**
      * @var string
@@ -58,130 +54,98 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         array $templateProcessors,
         array $expressionNodeTypes
     ) {
-        // Reproduced partial initialisation from parent::__construct; minus the custom implementations we attach below.
+        // Partially cloning parent::__construct() but with custom implementations.
         $this->setTemplateParser(new TemplateParser());
         $this->setTemplateCompiler(new TemplateCompiler());
         $this->setViewHelperInvoker(new ViewHelperInvoker());
         $this->setViewHelperVariableContainer(new ViewHelperVariableContainer());
         $this->setVariableProvider(new StandardVariableProvider());
-
         $this->setTemplateProcessors($templateProcessors);
-
         $this->setExpressionNodeTypes($expressionNodeTypes);
         $this->setTemplatePaths(GeneralUtility::makeInstance(TemplatePaths::class));
         $this->setViewHelperResolver($viewHelperResolver);
-
         $this->setCache($cache);
     }
 
     /**
-     * Alternative to buildParserConfiguration, called only in Fluid 3.0
-     *
-     * @return Configuration
-     */
-    public function getParserConfiguration(): Configuration
-    {
-        $parserConfiguration = parent::getParserConfiguration();
-        $this->addInterceptorsToParserConfiguration($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['interceptors'], $parserConfiguration);
-        return $parserConfiguration;
-    }
-
-    /**
-     * Build parser configuration
+     * Build parser configuration. Adds custom fluid interceptors from configuration.
      *
      * @return Configuration
      * @throws \InvalidArgumentException if a class not implementing InterceptorInterface was registered
      */
-    public function buildParserConfiguration()
+    public function buildParserConfiguration(): Configuration
     {
         $parserConfiguration = parent::buildParserConfiguration();
-        $this->addInterceptorsToParserConfiguration($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['interceptors'], $parserConfiguration);
-        return $parserConfiguration;
-    }
-
-    protected function addInterceptorsToParserConfiguration(iterable $interceptors, Configuration $parserConfiguration): void
-    {
-        foreach ($interceptors as $className) {
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['interceptors'] as $className) {
             $interceptor = GeneralUtility::makeInstance($className);
             if (!$interceptor instanceof InterceptorInterface) {
-                throw new \InvalidArgumentException('Interceptor "' . $className . '" needs to implement ' . InterceptorInterface::class . '.', 1462869795);
+                throw new \InvalidArgumentException(
+                    'Interceptor "' . $className . '" needs to implement ' . InterceptorInterface::class . '.',
+                    1462869795
+                );
             }
             $parserConfiguration->addInterceptor($interceptor);
         }
+        return $parserConfiguration;
     }
 
     /**
      * @param string $action
      */
-    public function setControllerAction($action)
+    public function setControllerAction($action): void
     {
         $dotPosition = strpos($action, '.');
         if ($dotPosition !== false) {
             $action = substr($action, 0, $dotPosition);
         }
         $this->controllerAction = $action;
-        if ($this->request) {
+        if ($this->request instanceof RequestInterface) {
+            // @todo: Avoid altogether?!
             $this->request->setControllerActionName(lcfirst($action));
         }
     }
 
     /**
      * @param string $controllerName
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
      */
-    public function setControllerName($controllerName)
+    public function setControllerName($controllerName): void
     {
         $this->controllerName = $controllerName;
-        if ($this->request instanceof Request) {
+        if ($this->request instanceof RequestInterface) {
+            // @todo: Avoid altogether?!
             $this->request->setControllerName($controllerName);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getControllerName()
+    public function getControllerName(): string
     {
-        return $this->request instanceof Request ? $this->request->getControllerName() : $this->controllerName;
+        // @todo: Why fallback to request here? This is not consistent!
+        return $this->request instanceof RequestInterface ? $this->request->getControllerName() : $this->controllerName;
+    }
+
+    public function getControllerAction(): string
+    {
+        // @todo: Why fallback to request here? This is not consistent!
+        return $this->request instanceof RequestInterface ? $this->request->getControllerActionName() : $this->controllerAction;
     }
 
     /**
-     * @return string
+     * It is currently allowed to setRequest(null) to unset a
+     * request object created by factories. Some tests use this
+     * to make sure no extbase request is set. This may change.
      */
-    public function getControllerAction()
-    {
-        return $this->request instanceof Request ? $this->request->getControllerActionName() : $this->controllerAction;
-    }
-
-    /**
-     * @param Request $request
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
-     * @internal this might change to use a PSR-7 compliant request
-     */
-    public function setRequest(Request $request): void
+    public function setRequest(?ServerRequestInterface $request): void
     {
         $this->request = $request;
-        $this->setControllerAction($request->getControllerActionName());
-        $this->setControllerName($request->getControllerName());
+        if ($request instanceof RequestInterface) {
+            // Set magic if this is an extbase request
+            $this->setControllerAction($request->getControllerActionName());
+            $this->setControllerName($request->getControllerName());
+        }
     }
 
-    /**
-     * @return Request
-     * @internal this might change to use a PSR-7 compliant request
-     */
-    public function getRequest(): Request
+    public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;
-    }
-
-    /**
-     * @return UriBuilder
-     * @internal this is subject to change
-     */
-    public function getUriBuilder(): UriBuilder
-    {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
-        return $uriBuilder;
     }
 }

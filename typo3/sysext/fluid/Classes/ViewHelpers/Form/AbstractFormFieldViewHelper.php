@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Error\Result;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
@@ -25,31 +28,20 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
  *
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
+ *
+ * Note this set of ViewHelpers is tailored to be used only in extbase context.
  */
 abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
+    protected bool $respectSubmittedDataValue = false;
 
-    /**
-     * @var bool
-     */
-    protected $respectSubmittedDataValue = false;
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
@@ -63,20 +55,16 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Getting the current configuration for respectSubmittedDataValue.
-     *
-     * @return bool
      */
-    public function getRespectSubmittedDataValue()
+    public function getRespectSubmittedDataValue(): bool
     {
         return $this->respectSubmittedDataValue;
     }
 
     /**
      * Define respectSubmittedDataValue to enable or disable the usage of the submitted values in the viewhelper.
-     *
-     * @param bool $respectSubmittedDataValue
      */
-    public function setRespectSubmittedDataValue($respectSubmittedDataValue)
+    public function setRespectSubmittedDataValue(bool $respectSubmittedDataValue): void
     {
         $this->respectSubmittedDataValue = $respectSubmittedDataValue;
     }
@@ -84,12 +72,9 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Get the name of this form element.
      * Either returns arguments['name'], or the correct name for Object Access.
-     *
      * In case property is something like bla.blubb (hierarchical), then [bla][blubb] is generated.
-     *
-     * @return string Name
      */
-    protected function getName()
+    protected function getName(): string
     {
         $name = $this->getNameWithoutPrefix();
         return $this->prefixFieldName($name);
@@ -98,19 +83,17 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Shortcut for retrieving the request from the controller context
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request
+     * @return RequestInterface The extbase (!) request. All these VH's are extbase-only.
      */
-    protected function getRequest()
+    protected function getRequest(): RequestInterface
     {
         return $this->renderingContext->getRequest();
     }
 
     /**
      * Get the name of this form element, without prefix.
-     *
-     * @return string name
      */
-    protected function getNameWithoutPrefix()
+    protected function getNameWithoutPrefix(): string
     {
         if ($this->isObjectAccessorMode()) {
             $formObjectName = $this->renderingContext->getViewHelperVariableContainer()->get(
@@ -214,12 +197,10 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Checks if a property mapping error has occurred in the last request.
-     *
-     * @return bool TRUE if a mapping error occurred, FALSE otherwise
      */
-    protected function hasMappingErrorOccurred()
+    protected function hasMappingErrorOccurred(): bool
     {
-        return $this->renderingContext->getRequest()->getOriginalRequest() !== null;
+        return $this->getRequest()->getOriginalRequest() !== null;
     }
 
     /**
@@ -232,7 +213,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     {
         $propertyPath = rtrim(preg_replace('/(\\]\\[|\\[|\\])/', '.', $this->getNameWithoutPrefix()) ?? '', '.');
         $value = ObjectAccess::getPropertyPath(
-            $this->renderingContext->getRequest()->getOriginalRequest()->getArguments(),
+            $this->getRequest()->getOriginalRequest()->getArguments(),
             $propertyPath
         );
         return $value;
@@ -242,7 +223,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
      * Add additional identity properties in case the current property is hierarchical (of the form "bla.blubb").
      * Then, [bla][__identity] has to be generated as well.
      */
-    protected function addAdditionalIdentityPropertiesIfNeeded()
+    protected function addAdditionalIdentityPropertiesIfNeeded(): void
     {
         if (!$this->isObjectAccessorMode()) {
             return;
@@ -315,11 +296,10 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     }
 
     /**
-     * Internal method which checks if we should evaluate a domain object or just output arguments['name'] and arguments['value']
-     *
-     * @return bool TRUE if we should evaluate the domain object, FALSE otherwise.
+     * Internal method which checks if we should evaluate a domain object or just output arguments['name']
+     * and arguments['value']. Returns true if domoin object should be evaluated.
      */
-    protected function isObjectAccessorMode()
+    protected function isObjectAccessorMode(): bool
     {
         return $this->hasArgument('property') && $this->renderingContext->getViewHelperVariableContainer()->exists(
             FormViewHelper::class,
@@ -330,7 +310,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Add a CSS class if this ViewHelper has errors
      */
-    protected function setErrorClassAttribute()
+    protected function setErrorClassAttribute(): void
     {
         if ($this->hasArgument('class')) {
             $cssClass = $this->arguments['class'] . ' ';
@@ -351,10 +331,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
 
     /**
      * Get errors for the property and form name of this ViewHelper
-     *
-     * @return \TYPO3\CMS\Extbase\Error\Result Array of errors
      */
-    protected function getMappingResultsForProperty()
+    protected function getMappingResultsForProperty(): Result
     {
         if (!$this->isObjectAccessorMode()) {
             return new Result();
@@ -370,10 +348,8 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     /**
      * Renders a hidden field with the same name as the element, to make sure the empty value is submitted
      * in case nothing is selected. This is needed for checkbox and multiple select fields
-     *
-     * @return string the hidden field.
      */
-    protected function renderHiddenFieldForEmptyValue()
+    protected function renderHiddenFieldForEmptyValue(): string
     {
         $hiddenFieldNames = [];
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();

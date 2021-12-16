@@ -95,16 +95,11 @@ final class ResourceViewHelper extends AbstractViewHelper
         if ($arguments['absolute']) {
             $uri = GeneralUtility::locationHeaderUrl($uri);
         }
-
         return $uri;
     }
 
     /**
      * Resolves the extension path, either directly when possible, or from extension name and request
-     *
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
     private static function resolveExtensionPath(array $arguments, RenderingContextInterface $renderingContext): string
     {
@@ -112,7 +107,6 @@ final class ResourceViewHelper extends AbstractViewHelper
         if (PathUtility::isExtensionPath($path)) {
             return $path;
         }
-
         return sprintf(
             'EXT:%s/Resources/Public/%s',
             self::resolveExtensionKey($arguments, $renderingContext),
@@ -122,10 +116,6 @@ final class ResourceViewHelper extends AbstractViewHelper
 
     /**
      * Resolves extension key either from given extension name argument or from request
-     *
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
     private static function resolveExtensionKey(array $arguments, RenderingContextInterface $renderingContext): string
     {
@@ -133,16 +123,11 @@ final class ResourceViewHelper extends AbstractViewHelper
         if ($extensionName === null) {
             return self::resolveValidatedRequest($arguments, $renderingContext)->getControllerExtensionKey();
         }
-
         return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
     }
 
     /**
      * Resolves and validates the request from rendering context
-     *
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return RequestInterface
      */
     private static function resolveValidatedRequest(array $arguments, RenderingContextInterface $renderingContext): RequestInterface
     {
@@ -179,7 +164,6 @@ final class ResourceViewHelper extends AbstractViewHelper
                 1640097205
             );
         }
-
         return $request;
     }
 }

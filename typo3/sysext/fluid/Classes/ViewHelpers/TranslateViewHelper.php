@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,6 +17,9 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -106,32 +111,24 @@ final class TranslateViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('key', 'string', 'Translation Key');
         $this->registerArgument('id', 'string', 'Translation ID. Same as key.');
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
-        $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
+        $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string', false, []);
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
-        $this->registerArgument('languageKey', 'string', 'Language key ("dk" for example) or "default" to use for this translation. If this argument is empty, we use the current language');
-        $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist');
+        $this->registerArgument('languageKey', 'string', 'Language key ("dk" for example) or "default" to use. If empty, use current language. Ignored in non-extbase context.');
+        $this->registerArgument('alternativeLanguageKeys', 'array', 'Alternative language keys if no translation does exist. Ignored in non-extbase context.');
     }
 
     /**
      * Return array element by key.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @throws Exception
-     * @return string
+     * @throws \RuntimeException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $key = $arguments['key'];
         $id = $arguments['id'];
@@ -149,10 +146,44 @@ final class TranslateViewHelper extends AbstractViewHelper
         }
 
         $request = $renderingContext->getRequest();
+
+        if (!$request instanceof RequestInterface) {
+            // Straight resolving via core LanguageService in non-extbase context
+            if (!str_starts_with($id, 'LLL:EXT:') && empty($default)) {
+                // Resolve "short key" without LLL:EXT: syntax given, if an extension name is given.
+                // @todo: We could consider to deprecate this case. It is mostly implemented for a more
+                //        smooth transition when (backend) controllers no longer feed an extbase request.
+                if (empty($extensionName)) {
+                    throw new \RuntimeException(
+                        'ViewHelper f:translate in non-extbase context needs attribute "extensionName" to resolve'
+                        . ' key="' . $id . '" without path. Either set attribute "extensionName" together with the short'
+                        . ' key "yourKey" to result in a lookup "LLL:EXT:your_extension/Resources/Private/Language/locallang.xlf:yourKey",'
+                        . ' or (better) use a full LLL reference like key="LLL:EXT:your_extension/Resources/Private/Language/yourFile.xlf:yourKey"',
+                        1639828178
+                    );
+                }
+                $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
+            }
+            $value = self::getLanguageService()->sL($id);
+            if (empty($value)) {
+                $value = $default ?? $renderChildrenClosure() ?? '';
+            }
+            if (!empty($translateArguments)) {
+                $value = vsprintf($value, $translateArguments);
+            }
+            return $value;
+        }
+
         $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
-            $value = static::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
+            // Trigger full extbase magic: "<f:translate key="key1" />" will look up
+            // "LLL:EXT:current_extension/Resources/Private/Language/locallang.xlf:key1" AND
+            // overloads from _LOCAL_LANG extbase TypoScript settings if specified.
+            // Not this triggers TypoScript parsing via extbase ConfigurationManager
+            // and should be avoided in backend context!
+            $value = LocalizationUtility::translate($id, $extensionName, $translateArguments, $arguments['languageKey'], $arguments['alternativeLanguageKeys']);
         } catch (\InvalidArgumentException $e) {
+            // @todo: Switch to more specific Exceptions here - for instance those thrown when a package was not found, see #95957
             $value = null;
         }
         if ($value === null) {
@@ -161,22 +192,12 @@ final class TranslateViewHelper extends AbstractViewHelper
                 $value = vsprintf($value, $translateArguments);
             }
         }
+        $value = $value ?? '';
         return $value;
     }
 
-    /**
-     * Wrapper call to static LocalizationUtility
-     *
-     * @param string $id Translation Key
-     * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
-     * @param array $arguments Arguments to be replaced in the resulting string
-     * @param string $languageKey Language key to use for this translation
-     * @param string[] $alternativeLanguageKeys Alternative language keys if no translation does exist
-     *
-     * @return string|null
-     */
-    protected static function translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys)
+    protected static function getLanguageService(): LanguageService
     {
-        return LocalizationUtility::translate($id, $extensionName, $arguments, $languageKey, $alternativeLanguageKeys);
+        return $GLOBALS['LANG'];
     }
 }

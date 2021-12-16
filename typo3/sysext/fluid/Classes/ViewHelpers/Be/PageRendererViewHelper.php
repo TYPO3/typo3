@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,8 +17,10 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -30,26 +34,23 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * All options::
  *
- *    <f:be.pageRenderer pageTitle="foo"
- *        includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}"
- *        includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}"
- *        addJsInlineLabels="{0: 'label1', 1: 'label2'}" />
+ *    <f:be.pageRenderer
+ *        pageTitle="foo"
+ *        includeCssFiles="{0: 'EXT:my_ext/Resources/Public/Css/Stylesheet.css'}"
+ *        includeJsFiles="{0: 'EXT:my_ext/Resources/Public/JavaScript/Library1.js', 1: 'EXT:my_ext/Resources/Public/JavaScript/Library2.js'}"
+ *        addJsInlineLabels="{'my_ext.label1': 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:label1'}"
+ *        includesRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule.js'}"
+ *        addInlineSettings="{'some.setting.key': 'some.setting.value'}"
+ *    />
  *
- * Custom CSS file :file:`EXT:your_extension/Resources/Public/Css/styles.css` and
- * JavaScript files :file:`EXT:your_extension/Resources/Public/JavaScript/Library1.js` and
- * :file:`EXT:your_extension/Resources/Public/JavaScript/Library2.js`
- * will be loaded, plus some inline labels for usage in JS code.
+ * This will load the specified css, js files and requireJs modules, adds a custom js
+ * inline setting, and adds a resolved label to be used in js.
  */
 final class PageRendererViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('pageTitle', 'string', 'title tag of the module. Not required by default, as BE modules are shown in a frame', false, '');
         $this->registerArgument('includeCssFiles', 'array', 'List of custom CSS file to be loaded');
@@ -59,14 +60,9 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): void
     {
-        $pageRenderer = static::getPageRenderer();
+        $pageRenderer = self::getPageRenderer();
         $pageTitle = $arguments['pageTitle'];
         $includeCssFiles = $arguments['includeCssFiles'];
         $includeJsFiles = $arguments['includeJsFiles'];
@@ -79,32 +75,43 @@ final class PageRendererViewHelper extends AbstractViewHelper
         }
 
         // Include custom CSS and JS files
-        if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
+        if (is_array($includeCssFiles)) {
             foreach ($includeCssFiles as $addCssFile) {
                 $pageRenderer->addCssFile($addCssFile);
             }
         }
-        if (is_array($includeJsFiles) && count($includeJsFiles) > 0) {
+        if (is_array($includeJsFiles)) {
             foreach ($includeJsFiles as $addJsFile) {
                 $pageRenderer->addJsFile($addJsFile);
             }
         }
-        if (is_array($includeRequireJsModules) && count($includeRequireJsModules) > 0) {
+        if (is_array($includeRequireJsModules)) {
             foreach ($includeRequireJsModules as $addRequireJsFile) {
                 $pageRenderer->loadRequireJsModule($addRequireJsFile);
             }
         }
 
-        if (is_array($addInlineSettings) && count($addInlineSettings) > 0) {
+        if (is_array($addInlineSettings)) {
             $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         }
 
         // Add inline language labels
         if (is_array($addJsInlineLabels) && count($addJsInlineLabels) > 0) {
-            $extensionKey = $renderingContext->getRequest()->getControllerExtensionKey();
-            foreach ($addJsInlineLabels as $key) {
-                $label = LocalizationUtility::translate($key, $extensionKey);
-                $pageRenderer->addInlineLanguageLabel($key, $label);
+            $request = $renderingContext->getRequest();
+            if ($request instanceof RequestInterface) {
+                // Extbase request resolves extension key and allows overriding labels using TypoScript configuration.
+                $extensionKey = $request->getControllerExtensionKey();
+                foreach ($addJsInlineLabels as $key) {
+                    $label = LocalizationUtility::translate($key, $extensionKey);
+                    $pageRenderer->addInlineLanguageLabel($key, $label);
+                }
+            } else {
+                // No extbase request, labels should follow "LLL:EXT:some_ext/Resources/Private/someFile.xlf:key"
+                // syntax, and are not overridden by TypoScript extbase module / plugin configuration.
+                foreach ($addJsInlineLabels as &$labelKey) {
+                    $labelKey = self::getLanguageService()->sL($labelKey);
+                }
+                $pageRenderer->addInlineLanguageLabelArray($addJsInlineLabels);
             }
         }
     }
@@ -112,5 +119,10 @@ final class PageRendererViewHelper extends AbstractViewHelper
     protected static function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
+    }
+
+    protected static function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

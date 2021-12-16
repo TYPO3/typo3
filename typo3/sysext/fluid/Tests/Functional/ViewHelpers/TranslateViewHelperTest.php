@@ -17,12 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 class TranslateViewHelperTest extends FunctionalTestCase
 {
+    protected $coreExtensionsToLoad = ['indexed_search'];
+
     /**
      * @test
      */
@@ -30,7 +36,6 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1351584844);
-
         $view = new StandaloneView();
         $view->setTemplateSource('<f:translate />');
         $view->render();
@@ -39,52 +44,130 @@ class TranslateViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function renderReturnsStringForGivenKey(): void
+    public function renderThrowsExceptionInNonExtbaseContextWithoutExtensionName(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1639828178);
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate key="foo">hello world</f:translate>');
-        self::assertSame('hello world', $view->render());
+        $view->getRenderingContext()->setRequest(null);
+        $view->setTemplateSource('<f:translate key="key1" />');
+        $view->render();
+    }
+
+    public function renderReturnsStringInNonExtbaseContextDataProvider(): array
+    {
+        return [
+            'fallback to default attribute for not existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" default="myDefault" />',
+                'myDefault',
+            ],
+            'fallback to child for not existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist">myDefault</f:translate>',
+                'myDefault',
+            ],
+            'id and underscored extensionName given' => [
+                '<f:translate key="form.legend" extensionName="indexed_search" />',
+                'Search form',
+            ],
+            'key and underscored extensionName given' => [
+                '<f:translate key="form.legend" extensionName="indexed_search" />',
+                'Search form',
+            ],
+            'id and CamelCased extensionName given' => [
+                '<f:translate key="form.legend" extensionName="IndexedSearch" />',
+                'Search form',
+            ],
+            'key and CamelCased extensionName given' => [
+                '<f:translate key="form.legend" extensionName="IndexedSearch" />',
+                'Search form',
+            ],
+            'full LLL syntax for not existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
+                '',
+            ],
+            'full LLL syntax for existing label' => [
+                '<f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:form.legend" />',
+                'Search form',
+            ],
+            'empty string on invalid extension' => [
+                '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
+                '',
+            ],
+        ];
     }
 
     /**
-     * @test
+     * @dataProvider renderReturnsStringInNonExtbaseContextDataProvider
      */
-    public function renderReturnsStringForGivenId(): void
-    {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate id="foo">hello world</f:translate>');
-        self::assertSame('hello world', $view->render());
-    }
-
-    /**
-     * @test
-     */
-    public function renderReturnsDefaultIfNoTranslationIsFound(): void
-    {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate id="foo" default="default" />');
-        self::assertSame('default', $view->render());
-    }
-
-    /**
-     * @test
-     */
-    public function renderReturnsTranslatedKey(): void
+    public function renderReturnsStringInNonExtbaseContext(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack" />');
-        self::assertSame('Go back', $view->render());
+        $view->setTemplateSource($template);
+        $view->getRenderingContext()->setRequest(null);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        self::assertSame($expected, $view->render());
+    }
+
+    public function renderReturnsStringInExtbaseContextDataProvider(): array
+    {
+        return [
+            'key given for not existing label, fallback to child' => [
+                '<f:translate key="foo">hello world</f:translate>',
+                'hello world',
+            ],
+            'id given for not existing label, fallback to child' => [
+                '<f:translate id="foo">hello world</f:translate>',
+                'hello world',
+            ],
+            'fallback to default attribute for not existing label' => [
+                '<f:translate key="foo" default="myDefault" />',
+                'myDefault',
+            ],
+            'id given with existing label' => [
+                '<f:translate id="login.header" />',
+                'Login',
+            ],
+            'key given with existing label' => [
+                '<f:translate key="login.header" />',
+                'Login',
+            ],
+            'id and extensionName given' => [
+                '<f:translate key="validator.string.notvalid" extensionName="extbase" />',
+                'A valid string is expected.',
+            ],
+            'key and extensionName given' => [
+                '<f:translate key="validator.string.notvalid" extensionName="extbase" />',
+                'A valid string is expected.',
+            ],
+            'full LLL syntax for not existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" />',
+                '',
+            ],
+            'full LLL syntax for existing label' => [
+                '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.header" />',
+                'Login',
+            ],
+            'empty string on invalid extension' => [
+                '<f:translate key="LLL:EXT:i_am_invalid/Resources/Private/Language/locallang.xlf:dummy" />',
+                '',
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider renderReturnsStringInExtbaseContextDataProvider
      */
-    public function renderReturnsNullOnInvalidExtension(): void
+    public function renderReturnsStringInExtbaseContext(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
         $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate key="LLL:EXT:invalid/Resources/Private/Language/locallang.xlf:dummy" />');
-        self::assertNull($view->render());
+        $view->setTemplateSource($template);
+        $extbaseRequestParameters = new ExtbaseRequestParameters();
+        $extbaseRequestParameters->setControllerExtensionName('backend');
+        $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
+        $view->getRenderingContext()->setRequest($extbaseRequest);
+        self::assertSame($expected, $view->render());
     }
 }

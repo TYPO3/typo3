@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +18,7 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -62,12 +65,7 @@ final class CshViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('table', 'string', 'Table name (\'_MOD_\'+module name). If not set, the current module name will be used');
@@ -75,35 +73,31 @@ final class CshViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('wrap', 'string', 'Markup to wrap around the CSH, split by "|"', false, '');
     }
 
-    /**
-     * Render context sensitive help (CSH) for the given table
-     *
-     * @return string the rendered CSH icon
-     */
-    public function render()
+    public function render(): string
     {
-        return static::renderStatic(
-            $this->arguments,
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
+     * @throws \RuntimeException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $table = $arguments['table'];
         $field = $arguments['field'];
         $wrap = $arguments['wrap'];
 
         if ($table === null) {
-            $currentRequest = $renderingContext->getRequest();
-            $moduleName = $currentRequest->getPluginName();
+            $request = $renderingContext->getRequest();
+            if (!$request instanceof RequestInterface) {
+                // Throw if not an extbase request
+                throw new \RuntimeException(
+                    'ViewHelper f:be.buttons.csh needs an extbase Request object to resolve module name magically.'
+                    . ' When not in extbase context, attribute "table" is required to be set to something like "_MOD_my_module_name"',
+                    1639740545
+                );
+            }
+            $moduleName = $request->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
         $content = (string)$renderChildrenClosure();

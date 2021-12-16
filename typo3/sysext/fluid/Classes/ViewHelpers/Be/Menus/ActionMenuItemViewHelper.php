@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,12 +19,14 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper which returns an option tag.
  * This ViewHelper only works in conjunction with :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper`.
+ * This ViewHelper is tailored to be used only in extbase context.
  *
  * .. note::
  *    This ViewHelper is experimental!
@@ -38,7 +42,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="List Posts" controller="Post" action="index" arguments="{blog: blog}" />
  *    </f:be.menus.actionMenu>
  *
- * Selectbox with the options "Overview", "Create new Blog" and "List Posts".
+ * Select box with the options "Overview", "Create new Blog" and "List Posts".
  *
  * Localized::
  *
@@ -47,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="{f:translate(key='create_blog')}" controller="Blog" action="new" />
  *    </f:be.menus.actionMenu>
  *
- * Localized selectbox.
+ * Localized select box.
  */
 final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
 {
@@ -56,12 +60,7 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'option';
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('label', 'string', 'label of the option tag', true);
@@ -70,13 +69,7 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('arguments', 'array', 'additional controller arguments to be passed to the action when this ActionMenuItem is selected', false, []);
     }
 
-    /**
-     * Renders an ActionMenu option tag
-     *
-     * @return string the rendered option tag
-     * @see \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
-     */
-    public function render()
+    public function render(): string
     {
         $label = $this->arguments['label'];
         $controller = $this->arguments['controller'];
@@ -84,7 +77,15 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         $arguments = $this->arguments['arguments'];
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->renderingContext->getRequest());
+        $request = $this->renderingContext->getRequest();
+        if (!$request instanceof RequestInterface) {
+            // Throw if not an extbase request
+            throw new \RuntimeException(
+                'ViewHelper f:be.menus.actionMenuItem needs an extbase Request object to create URIs.',
+                1639741792
+            );
+        }
+        $uriBuilder->setRequest($request);
 
         $uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
         $this->tag->addAttribute('value', $uri);
@@ -93,21 +94,18 @@ final class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
             $this->evaluateSelectItemState($controller, $action, $arguments);
         }
 
-        $this->tag->setContent(
-            // Double encode can be set to true, once the typo3fluid/fluid fix is released and required
-            htmlspecialchars($label, ENT_QUOTES, '', false)
-        );
+        $this->tag->setContent(htmlspecialchars($label, ENT_QUOTES, '', true));
         return $this->tag->render();
     }
 
     protected function evaluateSelectItemState(string $controller, string $action, array $arguments): void
     {
-        $currentRequest = $this->renderingContext->getRequest();
+        $request = $this->renderingContext->getRequest();
         $flatRequestArguments = ArrayUtility::flattenPlain(
             array_merge([
-                'controller' => $currentRequest->getControllerName(),
-                'action' => $currentRequest->getControllerActionName(),
-            ], $currentRequest->getArguments())
+                'controller' => $request->getControllerName(),
+                'action' => $request->getControllerActionName(),
+            ], $request->getArguments())
         );
         $flatViewHelperArguments = ArrayUtility::flattenPlain(
             array_merge(['controller' => $controller, 'action' => $action], $arguments)

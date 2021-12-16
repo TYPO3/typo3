@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -70,10 +72,7 @@ final class BytesViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'int', 'The incoming data to convert, or NULL if VH children should be used');
         $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, 0);
@@ -83,15 +82,9 @@ final class BytesViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render the supplied byte count as a human readable string.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     *
-     * @return string Formatted byte count
+     * Render the supplied byte count as a human-readable string.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         if ($arguments['units'] !== null) {
             $units = $arguments['units'];

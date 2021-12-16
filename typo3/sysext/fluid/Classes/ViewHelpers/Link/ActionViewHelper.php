@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,12 +17,14 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating links to extbase actions.
+ * A ViewHelper for creating links to extbase actions. Tailored for extbase plugins, uses extbase Request and extbase UriBuilder.
  *
  * Examples
  * ========
@@ -42,10 +46,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -70,11 +71,16 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('arguments', 'array', 'Arguments for the controller action, associative array');
     }
 
-    /**
-     * @return string Rendered link
-     */
-    public function render()
+    public function render(): string
     {
+        $request = $this->renderingContext->getRequest();
+        if (!$request instanceof RequestInterface) {
+            throw new \RuntimeException(
+                'ViewHelper f:link.action can be used only in extbase context and needs a request implementing extbase RequestInterface.',
+                1639818540
+            );
+        }
+
         $action = $this->arguments['action'];
         $controller = $this->arguments['controller'];
         $extensionName = $this->arguments['extensionName'];
@@ -90,10 +96,11 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
         $addQueryString = (bool)$this->arguments['addQueryString'];
         $argumentsToBeExcludedFromQueryString = (array)$this->arguments['argumentsToBeExcludedFromQueryString'];
         $parameters = $this->arguments['arguments'];
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->renderingContext->getUriBuilder();
+
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder
             ->reset()
+            ->setRequest($request)
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
             ->setSection($section)

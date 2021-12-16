@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 abstract class AbstractTemplateView extends Typo3FluidAbstractTemplateView
 {
     /**
-     * @param RenderingContextInterface $context
+     * @param RenderingContextInterface|null $context
      * @internal
      */
     public function __construct(RenderingContextInterface $context = null)

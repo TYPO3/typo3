@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,6 +20,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -105,10 +108,7 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use');
         $this->registerArgument('as', 'string', 'The name of the current flashMessage variable for rendering inside');
@@ -123,37 +123,36 @@ final class FlashMessagesViewHelper extends AbstractViewHelper
      *       (e.g. for a controller action).
      *       Custom caching using the Caching Framework can be used in this case.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $as = $arguments['as'];
-        $queueIdentifier = $arguments['queueIdentifier'] ?? null;
+        $queueIdentifier = $arguments['queueIdentifier'];
 
         if ($queueIdentifier === null) {
+            $request = $renderingContext->getRequest();
+            if (!$request instanceof RequestInterface) {
+                // Throw if not an extbase request
+                throw new \RuntimeException(
+                    'ViewHelper f:flashMessages needs an extbase Request object to resolve the Queue identifier magically.'
+                    . ' When not in extbase context, set attribute "queueIdentifier".',
+                    1639821269
+                );
+            }
             $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-            $pluginNamespace = $extensionService->getPluginNamespace(
-                $renderingContext->getRequest()->getControllerExtensionName(),
-                $renderingContext->getRequest()->getPluginName()
-            );
+            $pluginNamespace = $extensionService->getPluginNamespace($request->getControllerExtensionName(), $request->getPluginName());
             $queueIdentifier = 'extbase.flashmessages.' . $pluginNamespace;
         }
 
-        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)
-            ->getMessageQueueByIdentifier($queueIdentifier);
-
+        $flashMessageQueue = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier($queueIdentifier);
         $flashMessages = $flashMessageQueue->getAllMessagesAndFlush();
         if ($flashMessages === null || count($flashMessages) === 0) {
             return '';
         }
 
         if ($as === null) {
-            return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
-                ->resolve()
-                ->render($flashMessages);
+            return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve()->render($flashMessages);
         }
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $templateVariableContainer->add($as, $flashMessages);

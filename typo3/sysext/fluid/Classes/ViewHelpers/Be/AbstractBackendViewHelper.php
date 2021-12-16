@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -29,10 +31,8 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
     /**
      * Gets instance of template if exists or create a new one.
      * Saves instance in viewHelperVariableContainer
-     *
-     * @return ModuleTemplate
      */
-    public function getModuleTemplate()
+    public function getModuleTemplate(): ModuleTemplate
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(self::class, 'ModuleTemplate')) {
@@ -47,10 +47,8 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
     /**
      * Gets instance of PageRenderer if exists or create a new one.
      * Saves instance in viewHelperVariableContainer
-     *
-     * @return PageRenderer
      */
-    public function getPageRenderer()
+    public function getPageRenderer(): PageRenderer
     {
         $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($viewHelperVariableContainer->exists(self::class, 'PageRenderer')) {
@@ -59,7 +57,6 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $viewHelperVariableContainer->add(self::class, 'PageRenderer', $pageRenderer);
         }
-
         return $pageRenderer;
     }
 }

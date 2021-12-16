@@ -94,10 +94,6 @@ parameters:
       message: "#^Unsafe usage of new static\\(\\)\\.$#"
       count: 1
       path: typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
-    -
-      message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContext\\:\\:getParserConfiguration\\(\\)\\.$#"
-      count: 1
-      path: typo3/sysext/fluid/Classes/Core/Rendering/RenderingContext.php
 
     # ignored errors for level 1
     -
