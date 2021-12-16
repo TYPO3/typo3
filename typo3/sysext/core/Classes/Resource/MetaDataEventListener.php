@@ -26,13 +26,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class MetaDataEventListener
 {
-    private $tableName = 'sys_file_metadata';
+    private const TABLE_NAME = 'sys_file_metadata';
 
+    /**
+     * @param AfterFileMetaDataUpdatedEvent $event
+     */
     public function afterFileMetaDataUpdated(AfterFileMetaDataUpdatedEvent $event): void
     {
         $record = $event->getRecord();
 
-        if ((int)$record['width'] <= 0 || (int)$record['height'] <= 0) {
+        if (($record['width'] ?? 0) <= 0 || ($record['height'] ?? 0) <= 0) {
             return;
         }
 
@@ -41,29 +44,15 @@ final class MetaDataEventListener
             'height' => (int)$record['height'],
         ];
 
-        // Fetch translated meta data records
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
-        $translations = $connection->select(
-            ['uid'],
-            $this->tableName,
-            ['file' => $event->getFileUid(), 'l10n_parent' => $event->getMetaDataUid()]
-        )->fetchFirstColumn();
-
-        if (empty($translations)) {
-            return;
-        }
-
-        // Update width and height of all translations
-        foreach ($translations as $uid) {
-            if ((int)$uid > 0) {
-                $connection->update(
-                    $this->tableName,
-                    $metaData,
-                    [
-                        'uid' => (int)$uid,
-                    ]
-                );
-            }
-        }
+        // Update translated meta data records
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE_NAME);
+        $connection->update(
+            self::TABLE_NAME,
+            $metaData,
+            [
+                'file' => $event->getFileUid(),
+                'l10n_parent' => $event->getMetaDataUid(),
+            ]
+        );
     }
 }
