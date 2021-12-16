@@ -41,4 +41,10 @@ interface ProviderInterface
      * @return bool
      */
     public function canHandle(): bool;
+
+    /**
+     * Initialize the current context.
+     * This method is called directly after fetching the provider from the container.
+     */
+    public function setContext(string $table, string $identifier, string $context = ''): void;
 }

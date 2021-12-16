@@ -20,6 +20,8 @@ usually also used by extensions. Due to the auto configuration, the context
 information (table, record identifier and context) is no longer passed to the
 :php:`__construct()`, but instead to the new :php:`setContext()` method.
 
+The :php:`setContext()` method is therefore required for all item providers.
+
 Impact
 ======
 
@@ -28,6 +30,7 @@ isn't evaluated anymore.
 
 The item providers are retrieved from the container and are no longer
 instantiated while passing context information as constructor arguments.
+The context information is now passed to :php:`setContext()`.
 
 Affected Installations
 ======================
@@ -36,6 +39,9 @@ All extensions, registering custom ContextMenu item providers.
 
 All extensions, extending :php:`AbstractProvider` and overwriting the
 :php:`__construct()` method.
+
+All extensions, not extending :php:`AbstractProvider`, but implementing
+:php:`\TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface` directly.
 
 Migration
 =========
@@ -108,5 +114,8 @@ prior to any other action like :php:`canHandle()`.
         }
     }
 
+In case your item provider does not extend :php:`AbstractProvider`, but instead
+implements the :php:`\TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface`
+directly, add the new :php:`setContext()` to the item provider.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend

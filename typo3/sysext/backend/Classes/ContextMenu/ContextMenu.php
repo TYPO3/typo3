@@ -59,9 +59,7 @@ class ContextMenu
         $providers = $this->itemProvidersRegistry->getItemProviders();
         $availableProviders = [];
         foreach ($providers as $provider) {
-            if (is_callable([$provider, 'setContext'])) {
-                $provider->setContext($table, $identifier, $context);
-            }
+            $provider->setContext($table, $identifier, $context);
             if ($provider->canHandle()) {
                 $priority = $provider->getPriority();
                 $availableProviders[$priority] = $provider;
