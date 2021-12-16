@@ -809,9 +809,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    /**
-     * @return array
-     */
     public function directoryMenuIsGeneratedDataProvider(): array
     {
         return [
@@ -952,6 +949,83 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'special' => 'directory',
                         'special.' => [
                             'value' => $directoryMenuParentPage,
+                        ],
+                        'titleField' => 'title',
+                    ]),
+                ]),
+            (new InternalRequestContext())
+                ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
+                ->withBackendUserId($backendUserId)
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        self::assertSame($expectation, $json);
+    }
+
+    public function listMenuIsGeneratedDataProvider(): array
+    {
+        return [
+            'Live' => [
+                'https://acme.us/',
+                1100,
+                [1100, 1600, 1700, 1800, 1520],
+                0,
+                0,
+                [
+                    [
+                        'title' => 'EN: Welcome',
+                        'link' => '/welcome',
+                    ],
+                    [
+                        'title' => 'About us',
+                        'link' => '/about',
+                    ],
+                    [
+                        'title' => 'Announcements & News',
+                        'link' => '/news',
+                    ],
+                ],
+            ],
+            'Workspaces' => [
+                'https://acme.us/',
+                1100,
+                [1100, 1600, 1700, 1800, 1520],
+                1,
+                1,
+                [
+                    [
+                        'title' => 'EN: Welcome to ACME Inc',
+                        'link' => '/welcome-modified',
+                    ],
+                    [
+                        'title' => 'About us',
+                        'link' => '/about',
+                    ],
+                    [
+                        'title' => 'Announcements & News',
+                        'link' => '/news',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider listMenuIsGeneratedDataProvider
+     */
+    public function listMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $menuPageIds, int $backendUserId, int $workspaceId, array $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'special' => 'list',
+                        'special.' => [
+                            'value' => implode(',', $menuPageIds),
                         ],
                         'titleField' => 'title',
                     ]),
