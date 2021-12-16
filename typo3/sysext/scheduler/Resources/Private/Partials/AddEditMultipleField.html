@@ -1,0 +1,9 @@
+<div class="form-section" id="task_multiple_row">
+    <div class="form-group">
+        <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_multiple" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel.long"/>
+        <div class="form-control-wrap">
+            <input type="hidden" name="tx_scheduler[multiple]" value="0">
+            <input class="checkbox" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple" {f:if(condition:currentData.multiple,then:'checked="checked"')}>
+        </div>
+    </div>
+</div>

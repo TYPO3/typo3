@@ -1,0 +1,30 @@
+<html data-namespace-typo3-fluid="true">
+    <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check" /></h1>
+    <div class="tx_scheduler_mod1">
+        <p class="lead">
+            <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulerSetupCheck" />
+        </p>
+
+        <f:be.infobox
+            title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:hdg.lastRun')}"
+            message="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:{lastRunMessageLabel}', arguments:'{lastRunMessageLabelArguments}')}"
+            state="{lastRunSeverity}"
+        />
+
+        <f:if condition="{composerMode}">
+            <f:then>
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:hdg.composerMode')}" state="-1">
+                    <p>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.composerMode')}</p>
+                </f:be.infobox>
+            </f:then>
+            <f:else>
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:hdg.cliScript')}" state="{isExecutableSeverity}">
+                    <p>{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.cliScript', arguments: '{0: script}') -> f:format.raw()}</p>
+                    <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:{isExecutableMessageLabel}" />
+                </f:be.infobox>
+            </f:else>
+        </f:if>
+
+        <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />
+    </div>
+</html>

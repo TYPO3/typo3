@@ -246,48 +246,44 @@ class Scheduler implements SingletonInterface
     }
 
     /**
-     * Updates a task in the pool
-     *
-     * @param Task\AbstractTask $task Scheduler task object
-     * @return bool False if submitted task was not of proper class
+     * Update a task in the pool.
      */
-    public function saveTask(AbstractTask $task)
+    public function saveTask(AbstractTask $task): bool
     {
         $result = true;
         $taskUid = $task->getTaskUid();
-        if (!empty($taskUid)) {
-            try {
-                if ($task->getRunOnNextCronJob()) {
-                    $executionTime = time();
-                } else {
-                    $executionTime = $task->getNextDueExecution();
-                }
-                $task->setExecutionTime($executionTime);
-            } catch (\Exception $e) {
-                $task->setDisabled(true);
-                $executionTime = 0;
+        if (empty($taskUid)) {
+            return false;
+        }
+        try {
+            if ($task->getRunOnNextCronJob()) {
+                $executionTime = time();
+            } else {
+                $executionTime = $task->getNextDueExecution();
             }
-            $task->unsetScheduler();
-            $fields = [
-                'nextexecution' => $executionTime,
-                'disable' => (int)$task->isDisabled(),
-                'description' => $task->getDescription(),
-                'task_group' => $task->getTaskGroup(),
-                'serialized_task_object' => serialize($task),
-            ];
-            try {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('tx_scheduler_task')
-                    ->update(
-                        'tx_scheduler_task',
-                        $fields,
-                        ['uid' => $taskUid],
-                        ['serialized_task_object' => Connection::PARAM_LOB]
-                    );
-            } catch (DBALException $e) {
-                $result = false;
-            }
-        } else {
+            $task->setExecutionTime($executionTime);
+        } catch (\Exception $e) {
+            $task->setDisabled(true);
+            $executionTime = 0;
+        }
+        $task->unsetScheduler();
+        $fields = [
+            'nextexecution' => $executionTime,
+            'disable' => (int)$task->isDisabled(),
+            'description' => $task->getDescription(),
+            'task_group' => $task->getTaskGroup(),
+            'serialized_task_object' => serialize($task),
+        ];
+        try {
+            GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getConnectionForTable('tx_scheduler_task')
+                ->update(
+                    'tx_scheduler_task',
+                    $fields,
+                    ['uid' => $taskUid],
+                    ['serialized_task_object' => Connection::PARAM_LOB]
+                );
+        } catch (DBALException $e) {
             $result = false;
         }
         return $result;
@@ -303,7 +299,7 @@ class Scheduler implements SingletonInterface
      * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
      */
-    public function fetchTask($uid = 0)
+    public function fetchTask($uid = 0): AbstractTask
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_scheduler_task');

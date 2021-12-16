@@ -1,0 +1,28 @@
+<f:for each="{additionalFields}" as="field">
+    <div
+        class="form-section extraFields extra_fields_{field.htmlClassName}"
+        {f:if(condition:{currentData.class} !== {field.class},then:'style="display: none"')}
+        id="{field.fieldID}_row"
+    >
+        <div class="form-group">
+            <f:be.labels.csh table="{field.cshKey}" field="{field.cshLabel}" label="{field.langLabel}"/>
+            <div class="form-control-wrap">
+                {field.code -> f:format.raw()}
+            </div>
+            <f:if condition="{field.browser} == 'page'">
+                <f:comment>A page browser button. Used in ext:linkvalidator task. See issue #12211.</f:comment>
+                <div>
+                    <f:be.link
+                        route="wizard_element_browser"
+                        class="btn btn-default t3js-element-browser"
+                        data="{trigger-for: field.fieldID, mode:'db'}"
+                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
+                    >
+                        <core:icon identifier="actions-insert-record" />
+                    </f:be.link>
+                    <span id="page_{field.fieldID}">{field.pageTitle}</span>
+                </div>
+            </f:if>
+        </div>
+    </div>
+</f:for>

@@ -37,13 +37,13 @@ class TasksCest
     public function createASchedulerTask(ApplicationTester $I): void
     {
         $I->see('No tasks defined yet');
-        $I->click('//a[contains(@title, "Add task")]', '.module-docheader');
+        $I->click('//a[contains(@title, "Add new scheduler task")]', '.module-docheader');
         $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
 
         $I->amGoingTo('check save action in case no settings given');
         $I->click('button.dropdown-toggle', '.module-docheader');
         $I->click("//a[contains(@data-value,'saveclose')]");
-        $I->waitForText('No frequency was defined, either as an interval or as a cron command.', 5, '.alert');
+        $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
 
         $I->selectOption('#task_class', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
@@ -61,7 +61,7 @@ class TasksCest
     public function canRunTask(ApplicationTester $I): void
     {
         // run the task
-        $I->click('button[name="tx_scheduler[execute]"]');
+        $I->click('button[name="execute"]');
         $I->waitForText('Executed: System Status Update');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -73,7 +73,7 @@ class TasksCest
     public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@data-bs-original-title, "Edit")]');
-        $I->waitForText('Edit task');
+        $I->waitForText('Edit scheduled task "System Status Update (reports)"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
         $I->click('button.dropdown-toggle', '.module-docheader');
@@ -88,15 +88,15 @@ class TasksCest
     public function canEnableAndDisableTask(ApplicationTester $I): void
     {
         $I->wantTo('See a enable button for a task');
-        $I->click('//a[contains(@data-bs-original-title, "Enable")]', '#tx_scheduler_form');
+        $I->click('//button[contains(@data-bs-original-title, "Enable")]', '#tx_scheduler_form');
         $I->dontSeeElement('.tx_scheduler_mod1 .disabled');
         $I->dontSee('disabled');
         $I->wantTo('See a disable button for a task');
         // Give tooltips some time to fully init
         $I->wait(1);
-        $I->moveMouseOver('//a[contains(@data-bs-original-title, "Disable")]');
+        $I->moveMouseOver('//button[contains(@data-bs-original-title, "Disable")]');
         $I->wait(1);
-        $I->click('//a[contains(@data-bs-original-title, "Disable")]');
+        $I->click('//button[contains(@data-bs-original-title, "Disable")]');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
         $I->seeElement('.tx_scheduler_mod1 .disabled');
         $I->see('disabled');
@@ -128,17 +128,17 @@ class TasksCest
 
     public function canSwitchToSetupCheck(ApplicationTester $I): void
     {
-        $I->selectOption('select[name=SchedulerJumpMenu]', 'Setup check');
+        $I->selectOption('select[name=SchedulerJumpMenu]', 'Scheduler setup check');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
-        $I->see('Setup check');
+        $I->see('Scheduler setup check');
         $I->see('This screen checks if the requisites for running the Scheduler as a cron job are fulfilled');
     }
 
     public function canSwitchToInformation(ApplicationTester $I): void
     {
-        $I->selectOption('select[name=SchedulerJumpMenu]', 'Information');
+        $I->selectOption('select[name=SchedulerJumpMenu]', 'Available scheduler tasks');
         $I->waitForElementVisible('div.tx_scheduler_mod1');
-        $I->see('Information');
+        $I->see('Available scheduler tasks');
         $I->canSeeNumberOfElements('.tx_scheduler_mod1 table tbody tr', [1, 10000]);
     }
 
@@ -151,7 +151,7 @@ class TasksCest
         $I->amGoingTo('test the new task group button on task edit view');
         $I->click('.taskGroup-table > tbody > tr > td.nowrap > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit task', 'h2');
+        $I->canSee('Edit scheduled task "System Status Update (reports)"');
         $I->click('#task_group_row > div > div > div > div > a');
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->canSee('Create new Scheduler task group on root level', 'h1');

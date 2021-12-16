@@ -3,12 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="action.add" resname="action.add">
-				<source>Add task</source>
-			</trans-unit>
-			<trans-unit id="action.edit" resname="action.edit">
-				<source>Edit task</source>
-			</trans-unit>
 			<trans-unit id="button.cancel" resname="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
@@ -16,10 +10,16 @@
 				<source>Scheduled tasks</source>
 			</trans-unit>
 			<trans-unit id="function.check" resname="function.check">
-				<source>Setup check</source>
+				<source>Scheduler setup check</source>
 			</trans-unit>
 			<trans-unit id="function.info" resname="function.info">
-				<source>Information</source>
+				<source>Available scheduler tasks</source>
+			</trans-unit>
+			<trans-unit id="function.edit" resname="function.edit">
+				<source>Edit scheduled task "%s"</source>
+			</trans-unit>
+			<trans-unit id="function.add" resname="function.add">
+				<source>Add new scheduler task</source>
 			</trans-unit>
 			<trans-unit id="hdg.cliScript" resname="hdg.cliScript">
 				<source>CLI script</source>
@@ -49,7 +49,7 @@
 				<source>Check/uncheck all</source>
 			</trans-unit>
 			<trans-unit id="label.class" resname="label.class">
-				<source>Class</source>
+				<source>Task</source>
 			</trans-unit>
 			<trans-unit id="label.cron" resname="label.cron">
 				<source>Cron</source>
@@ -175,7 +175,7 @@
 			    <source>Amount of tasks in this scheduler task group</source>
 			</trans-unit>
 			<trans-unit id="label.noGroup" resname="label.noGroup">
-				<source>(no task group defined)</source>
+				<source>[No task group]</source>
 			</trans-unit>
 			<trans-unit id="label.noGroup.taskCount" resname="label.noGroup.taskCount">
 				<source>Amount of tasks that are not assigned to any scheduler task group</source>
@@ -194,9 +194,6 @@
 			</trans-unit>
 			<trans-unit id="label.addOptionToCommand" resname="label.addOptionToCommand">
 				<source>Add option</source>
-			</trans-unit>
-			<trans-unit id="msg.addError" resname="msg.addError">
-				<source>The task could not be added.</source>
 			</trans-unit>
 			<trans-unit id="msg.addSuccess" resname="msg.addSuccess">
 				<source>The task was added successfully.</source>
@@ -243,7 +240,7 @@
 			<trans-unit id="msg.lastRun" resname="msg.lastRun">
 				<source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotDeleteRunningTask" resname="msg.maynotDeleteRunningTask">
+			<trans-unit id="msg.canNotDeleteRunningTask" resname="msg.canNotDeleteRunningTask">
 				<source>A running task may not be deleted.</source>
 			</trans-unit>
 			<trans-unit id="msg.maynotEditRunningTask" resname="msg.maynotEditRunningTask">
@@ -267,6 +264,9 @@
 			<trans-unit id="msg.noTaskClassFound" resname="msg.noTaskClassFound">
 				<source>The selected task class could not be found. You should probably contact the task's developers.</source>
 			</trans-unit>
+			<trans-unit id="msg.invalidTaskType" resname="msg.invalidTaskType">
+				<source>The selected task type must be either "single execution" or "recurring execution".</source>
+			</trans-unit>
 			<trans-unit id="msg.noTasks" resname="msg.noTasks">
 				<source>No tasks defined yet.</source>
 			</trans-unit>
@@ -275,6 +275,15 @@
 			</trans-unit>
 			<trans-unit id="msg.executionFailed" resname="msg.executionFailed">
 				<source>Execution of task "%1$s" failed with the following message: %2$s</source>
+			</trans-unit>
+			<trans-unit id="msg.schedulingFailed" resname="msg.schedulingFailed">
+				<source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
+			</trans-unit>
+			<trans-unit id="msg.toggleDisableFailed" resname="msg.toggleDisableFailed">
+				<source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
+			</trans-unit>
+			<trans-unit id="msg.stopTaskFailed" resname="msg.stopTaskFailed">
+				<source>Stopping task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
 			<trans-unit id="msg.executionFailureDefault" resname="msg.executionFailureDefault">
 				<source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
@@ -355,7 +364,19 @@
 				<source>Error parsing current set of options: "%s".</source>
 			</trans-unit>
 			<trans-unit id="msg.mandatoryArgumentMissing" resname="msg.mandatoryArgumentMissing">
-				<source>Argument "%s" is mandatory</source>
+				<source>Argument "%s" is mandatory.</source>
+			</trans-unit>
+			<trans-unit id="msg.taskEnabled" resname="msg.taskEnabled">
+				<source>Task "%s" with uid "%s" has been enabled.</source>
+			</trans-unit>
+			<trans-unit id="msg.taskDisabled" resname="msg.taskDisabled">
+				<source>Task "%s" with uid "%s" has been disabled.</source>
+			</trans-unit>
+			<trans-unit id="msg.taskEnabledAndQueuedForExecution" resname="msg.taskEnabledAndQueuedForExecution">
+				<source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
+			</trans-unit>
+			<trans-unit id="msg.taskQueuedForExecution" resname="msg.taskQueuedForExecution">
+				<source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
 			</trans-unit>
 			<trans-unit id="none" resname="none">
 				<source>None</source>

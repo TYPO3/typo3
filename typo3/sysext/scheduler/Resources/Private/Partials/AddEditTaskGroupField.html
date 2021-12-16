@@ -1,0 +1,26 @@
+<div class="form-section" id="task_group_row">
+    <div class="form-group">
+        <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_group" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group"/>
+        <div class="form-control-wrap">
+            <div class="input-group">
+                <select name="tx_scheduler[task_group]" id="task_group" class="form-select">
+                    <option value="0" title="" {f:if(condition:'{currentData.task_group} == 0',then:'selected="selected"')} ></option>
+                    <f:for each="{registeredTaskGroups}" as="registeredTaskGroup">
+                        <option
+                            value="{registeredTaskGroup.uid}"
+                            title="{registeredTaskGroup.groupName}"
+                            {f:if(condition:'{currentData.task_group} == {registeredTaskGroup.uid}',then:'selected="selected"')}
+                        >
+                        {registeredTaskGroup.groupName}
+                        </option>
+                    </f:for>
+                </select>
+                <div class="input-group-btn" role="group">
+                    <be:link.newRecord class="btn btn-default" table="tx_scheduler_task_group" returnUrl="{returnUrl}">
+                        <core:icon identifier="actions-add" />
+                    </be:link.newRecord>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -46,11 +46,9 @@ abstract class AbstractTask implements LoggerAwareInterface
     protected $scheduler;
 
     /**
-     * The unique id of the task used to identify it in the database
-     *
-     * @var int
+     * The unique id of the task used to identify it in the database.
      */
-    protected $taskUid;
+    protected int $taskUid = 0;
 
     /**
      * Disable flag, TRUE if task is disabled, FALSE otherwise
@@ -82,10 +80,8 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     /**
      * Description for the task
-     *
-     * @var string
      */
-    protected $description = '';
+    protected string $description = '';
 
     /**
      * Task group for this task
@@ -133,7 +129,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      *
      * @param int $id Primary key (from the database record) of the scheduled task
      */
-    public function setTaskUid($id)
+    public function setTaskUid($id): void
     {
         $this->taskUid = (int)$id;
     }
@@ -143,7 +139,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      *
      * @return int The id of the task
      */
-    public function getTaskUid()
+    public function getTaskUid(): int
     {
         return $this->taskUid;
     }
@@ -267,9 +263,9 @@ abstract class AbstractTask implements LoggerAwareInterface
      *
      * @param string $description Description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
-        $this->description = $description;
+        $this->description = (string)$description;
     }
 
     /**
@@ -311,7 +307,6 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function registerSingleExecution($timestamp)
     {
-        /** @var Execution $execution */
         $execution = GeneralUtility::makeInstance(Execution::class);
         $execution->setStart($timestamp);
         $execution->setInterval(0);
@@ -334,7 +329,6 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
     {
-        /** @var Execution $execution */
         $execution = GeneralUtility::makeInstance(Execution::class);
         // Set general values
         $execution->setStart($start);

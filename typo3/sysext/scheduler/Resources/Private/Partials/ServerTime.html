@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.serverTime')}">
+    <p><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.serverTimeHelp" /></p>
+    <p>
+        <f:variable
+            name="formattedNow"
+            value="{f:format.date(format: '{dateFormat.day} {dateFormat.time} T', date: '')} ({f:format.date(format: 'e', date: '')}, GMT {f:format.date(format: 'P', date: '')})"
+        />
+        <f:translate
+            key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.serverTime"
+            arguments="{0: formattedNow}"
+        />
+    </p>
+</f:be.infobox>
+</html>

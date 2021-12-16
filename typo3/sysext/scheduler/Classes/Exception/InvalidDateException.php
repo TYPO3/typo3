@@ -15,18 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Scheduler\Task\Enumeration;
+namespace TYPO3\CMS\Scheduler\Exception;
 
-use TYPO3\CMS\Core\Type\Enumeration;
+use TYPO3\CMS\Scheduler\Exception;
 
 /**
- * List of possible scheduler actions. Additional field providers use this.
- * Set by SchedulerModuleController.
+ * Thrown if a submitted date can not be converted to timestamp using the backend module.
  */
-final class Action extends Enumeration
+class InvalidDateException extends Exception
 {
-    const __default = self::LIST;
-    const ADD = 'add';
-    const EDIT = 'edit';
-    const LIST = 'list';
 }

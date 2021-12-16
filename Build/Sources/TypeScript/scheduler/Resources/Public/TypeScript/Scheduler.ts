@@ -266,18 +266,20 @@ class Scheduler {
       }
     });
     if (taskIds.length) {
-      const executeTasks: HTMLInputElement = document.createElement('input');
-      executeTasks.setAttribute('type', 'hidden');
-      executeTasks.setAttribute('name', 'tx_scheduler[execute]');
-      executeTasks.setAttribute('value', taskIds.join(','));
-      form.append(executeTasks);
-
       if (e.type === 'multiRecordSelection:action:go_cron') {
+        // Schedule selected tasks for next cron run
         const goCron: HTMLInputElement = document.createElement('input');
         goCron.setAttribute('type', 'hidden');
-        goCron.setAttribute('name', 'go_cron');
-        goCron.setAttribute('value', '1');
+        goCron.setAttribute('name', 'scheduleCron');
+        goCron.setAttribute('value', taskIds.join(','));
         form.append(goCron);
+      } else {
+        // Execute selected tasks directly
+        const executeTasks: HTMLInputElement = document.createElement('input');
+        executeTasks.setAttribute('type', 'hidden');
+        executeTasks.setAttribute('name', 'execute');
+        executeTasks.setAttribute('value', taskIds.join(','));
+        form.append(executeTasks);
       }
 
       form.submit();

@@ -61,25 +61,12 @@ final class ToolbarItemProvider
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
                     $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systemmessage.noLastRun'),
-                    (string)$uriBuilder->buildUriFromRoute(
-                        'system_txschedulerM1',
-                        [
-                            'id' => 0,
-                            'SET' => [
-                                'function' => 'check',
-                            ],
-                        ]
-                    )
+                    (string)$uriBuilder->buildUriFromRoute('system_txschedulerM1', ['function' => 'check'])
                 ),
                 InformationStatus::STATUS_WARNING,
                 0,
                 'system_txschedulerM1',
-                http_build_query([
-                    'id' => 0,
-                    'SET' => [
-                        'function' => 'check',
-                    ],
-                ])
+                http_build_query(['function' => 'check'])
             );
         } else {
             // Display information about the last Scheduler execution
@@ -104,7 +91,7 @@ final class ToolbarItemProvider
                 $message = sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systeminformation.lastRunValue'), $startDate, $startTime, $duration, $type);
             }
             $systemInformationToolbarItem->addSystemInformation(
-                $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systeminformation.lastRunLabel'),
+                'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systeminformation.lastRunLabel',
                 $message,
                 'actions-play',
                 $severity

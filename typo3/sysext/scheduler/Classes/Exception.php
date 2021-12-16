@@ -15,18 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Scheduler\Task\Enumeration;
+namespace TYPO3\CMS\Scheduler;
 
-use TYPO3\CMS\Core\Type\Enumeration;
+use TYPO3\CMS\Core\Exception as CoreException;
 
 /**
- * List of possible scheduler actions. Additional field providers use this.
- * Set by SchedulerModuleController.
+ * A generic scheduler exception
  */
-final class Action extends Enumeration
+class Exception extends CoreException
 {
-    const __default = self::LIST;
-    const ADD = 'add';
-    const EDIT = 'edit';
-    const LIST = 'list';
 }

@@ -14,7 +14,7 @@ ExtensionManagementUtility::addModule(
     '',
     '',
     [
-        'routeTarget' => SchedulerModuleController::class . '::mainAction',
+        'routeTarget' => SchedulerModuleController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'system_txschedulerM1',
         'iconIdentifier' => 'module-scheduler',

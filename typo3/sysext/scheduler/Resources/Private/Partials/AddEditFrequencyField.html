@@ -1,0 +1,24 @@
+<div class="form-section" id="task_frequency_row">
+    <div class="form-group">
+        <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_frequency" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long"/>
+        <div class="form-control-wrap">
+            <div class="form-wizards-wrap">
+                <div class="form-wizards-element">
+                    <input type="text" name="tx_scheduler[frequency]" class="form-control" id="task_frequency" value="{currentData.frequency}">
+                </div>
+                <f:if condition="{frequencyOptions}">
+                    <div class="form-wizards-items-aside form-wizards-items-aside--field-control">
+                        <div class="btn-group">
+                            <select data-update-task-frequency class="form-select">
+                                <option></option>
+                                <f:for each="{frequencyOptions}" as="label" key="command">
+                                    <option value="{command}">{f:translate(key:label,default:label)} ({command})</option>
+                                </f:for>
+                            </select>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+        </div>
+    </div>
+</div>

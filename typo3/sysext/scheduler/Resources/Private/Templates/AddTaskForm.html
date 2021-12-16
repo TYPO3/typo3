@@ -1,0 +1,51 @@
+<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0: 'TYPO3/CMS/Backend/Modal',
+            1: 'TYPO3/CMS/Scheduler/Scheduler'
+        }"
+    />
+    <form name="tx_scheduler_form" id="tx_scheduler_form" method="post">
+        <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" /></h1>
+
+        <div class="tx_scheduler_mod1">
+            <input type="hidden" name="action" value="add" />
+
+            <div class="form-section" id="task_class_row">
+                <div class="form-group">
+                    <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_class" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/>
+                    <div class="form-control-wrap">
+                        <select name="tx_scheduler[class]" id="task_class" class="form-select">
+                            <f:for each="{groupedClasses}" as="classGroup" key="extension">
+                                <optgroup label="{extension}">
+                                    <f:for each="{classGroup}" as="classInfo" key="class">
+                                        <option
+                                            value="{class}"
+                                            title="{classInfo.description}"
+                                            {f:if(condition:'{currentData.class} == {class}',then:'selected="selected"')}
+                                        >
+                                            {classInfo.title}
+                                        </option>
+                                    </f:for>
+                                </optgroup>
+                            </f:for>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <f:render partial="AddEditDisableField" arguments="{currentData: currentData}"/>
+            <f:render partial="AddEditTaskGroupField" arguments="{currentData: currentData, registeredTaskGroups: registeredTaskGroups, returnUrl: returnUrl}"/>
+            <f:render partial="AddEditTypeField" arguments="{currentData: currentData}"/>
+            <f:render partial="AddEditStartEndFields" arguments="{currentData: currentData}"/>
+            <f:render partial="AddEditFrequencyField" arguments="{currentData: currentData, frequencyOptions: frequencyOptions}"/>
+            <f:render partial="AddEditMultipleField" arguments="{currentData: currentData}"/>
+            <f:render partial="AddEditDescriptionField" arguments="{currentData: currentData}"/>
+            <f:render partial="AddEditAdditionalFields" arguments="{currentData: currentData, additionalFields: additionalFields}"/>
+
+            <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />
+        </div>
+        <div id="extraFieldsSection"></div>
+    </form>
+    <div id="extraFieldsHidden"></div>
+</html>
