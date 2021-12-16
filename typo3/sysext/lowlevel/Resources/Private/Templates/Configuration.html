@@ -1,5 +1,15 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Lowlevel/ConfigurationView'
+    }"
+/>
 <form action="" id="ConfigurationView" method="post">
-    <h1><f:translate key="configuration" /></h1>
+    <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:configuration" /></h1>
 
     <h2>{treeName}</h2>
 
@@ -11,14 +21,14 @@
                 </button>
 
                 <label for="lowlevel-searchString" class="visually-hidden">
-                    <f:translate key="enterSearchPhrase"/>
+                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase"/>
                 </label>
                 <input class="form-control"
                     type="search"
                     id="lowlevel-searchString"
                     name="searchString"
                     value="{searchString}"
-                    placeholder="{f:translate(key: 'enterSearchPhrase')}"
+                    placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase')}"
                 />
 
                 <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
@@ -35,7 +45,7 @@
                                     {f:if(condition:'{regexSearch}', then: ' checked')}
                                 />
                                 <label for="lowlevel-regexSearch" class="form-check-label">
-                                    <f:translate key="useRegExp" />
+                                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useRegExp" />
                                 </label>
                             </div>
                         </div>
@@ -58,3 +68,4 @@
         <f:format.raw>{tree}</f:format.raw>
     </div>
 </form>
+</html>

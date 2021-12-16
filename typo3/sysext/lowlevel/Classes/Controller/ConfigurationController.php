@@ -25,9 +25,8 @@ use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 
 /**
@@ -37,18 +36,15 @@ use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 class ConfigurationController
 {
     protected ProviderRegistry $configurationProviderRegistry;
-    protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
         ProviderRegistry $configurationProviderRegistry,
-        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->configurationProviderRegistry = $configurationProviderRegistry;
-        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
@@ -62,7 +58,7 @@ class ConfigurationController
      * @return ResponseInterface the response with the content
      * @throws \RuntimeException
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
@@ -113,11 +109,8 @@ class ConfigurationController
         $backendUser->writeUC();
 
         // Render main body
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRequest()->setControllerExtensionName('lowlevel');
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:lowlevel/Resources/Private/Templates/Backend/Configuration.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assignMultiple([
             'treeName' => $configurationProvider->getLabel(),
             'searchString' => $searchString,
@@ -126,8 +119,7 @@ class ConfigurationController
         ]);
 
         // Prepare module setup
-        $moduleTemplate->setContent($view->render());
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/ConfigurationView');
+        $moduleTemplate->setContent($view->render('Configuration'));
 
         // Shortcut in doc header
         $shortcutButton = $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
@@ -163,20 +155,12 @@ class ConfigurationController
         return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Returns the Backend User
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns the Language Service
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

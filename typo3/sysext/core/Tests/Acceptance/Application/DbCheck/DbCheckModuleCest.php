@@ -106,17 +106,18 @@ class DbCheckModuleCest
         $this->goToPageAndSeeHeadline($I, 'Manage Reference Index', 'Manage Reference Index');
 
         $I->click('Check reference index');
-        $I->waitForElement('.alert');
+        $I->waitForElement('.callout-warning');
 
         $I->click('Update reference index');
-        $I->waitForElement('.alert');
+        $I->waitForElement('.callout-warning');
 
         $I->click('Check reference index');
-        $I->waitForElement('.alert-success');
-        $I->see('Index Integrity was perfect!', '.alert-success');
+        $I->waitForElement('.callout-success');
+        $I->see('Index integrity was perfect!', '.callout-success');
 
         $I->click('Update reference index');
-        $I->see('Index Integrity was perfect!', '.alert-success');
+        $I->waitForElement('.callout-success');
+        $I->see('Index integrity was perfect!', '.callout-success');
     }
 
     /**

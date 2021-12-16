@@ -1,0 +1,17 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:title')}</h1>
+<dl class="t3-overview-list">
+    <f:for each="{availableFunctions}" as="url" key="name">
+        <dt>
+            <a href="{url}">
+                <core:icon identifier="module-dbint" size="small" /> {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:{name}')}
+            </a>
+        </dt>
+        <dd>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:{name}_description')}</dd>
+    </f:for>
+</dl>
+</html>

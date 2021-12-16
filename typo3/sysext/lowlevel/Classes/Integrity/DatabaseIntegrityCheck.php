@@ -34,8 +34,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @TODO: updated and the whole API is better defined. There are some known bugs
  * @TODO: in this library. Further it would be nice with a facility to not only
  * @TODO: analyze but also clean up!
- * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::func_relations()
- * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::func_records()
+ * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::relationsAction()
+ * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::recordStatisticsAction()
  */
 class DatabaseIntegrityCheck
 {

@@ -7,6 +7,11 @@ services:
   TYPO3\CMS\Lowlevel\:
     resource: '../Classes/*'
 
+  TYPO3\CMS\Lowlevel\Controller\ConfigurationController:
+    tags: ['backend.controller']
+  TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Lowlevel\Command\ListSysLogCommand:
     tags:
       - name: 'console.command'

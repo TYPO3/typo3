@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,163 +29,82 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
 use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 
 /**
- * Script class for the DB int module
+ * "DB Check" module.
+ *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class DatabaseIntegrityController
 {
     /**
-     * @var string
+     * The module menu items array.
      */
-    protected $formName = 'queryform';
+    protected array $MOD_MENU = [];
 
     /**
-     * The name of the module
-     *
-     * @var string
+     * Current settings for the keys of the MOD_MENU array.
      */
-    protected $moduleName = 'system_dbint';
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    /**
-     * @var string
-     */
-    protected $templatePath = 'EXT:lowlevel/Resources/Private/Templates/Backend/';
-
-    /**
-     * ModuleTemplate Container
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * The module menu items array. Each key represents a key for which values can range between the items in the array of that key.
-     *
-     * @see init()
-     * @var array
-     */
-    protected $MOD_MENU = [
-        'function' => [],
-    ];
-
-    /**
-     * Current settings for the keys of the MOD_MENU array
-     *
-     * @var array
-     */
-    protected $MOD_SETTINGS = [];
+    protected array $MOD_SETTINGS = [];
 
     protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
         IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
-    /**
-     * Injects the request object for the current request or subrequest
-     * Simply calls main() and init() and outputs the content
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getLanguageService()->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->getRequest()->setControllerExtensionName('lowlevel');
+        $languageService = $this->getLanguageService();
+        $languageService->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
 
-        $this->menuConfig();
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->menuConfig($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->setUpDocHeader($moduleTemplate);
 
+        $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
         switch ($this->MOD_SETTINGS['function']) {
             case 'search':
-                $title = $this->getLanguageService()->getLL('fullSearch');
-                $templateFilename = 'CustomSearch.html';
-                $this->func_search();
-                break;
+                $moduleTemplate->setTitle($title, $languageService->getLL('fullSearch'));
+                return $this->searchAction($moduleTemplate);
             case 'records':
-                $title = $this->getLanguageService()->getLL('recordStatistics');
-                $templateFilename = 'RecordStatistics.html';
-                $this->func_records();
-                break;
+                $moduleTemplate->setTitle($title, $languageService->getLL('recordStatistics'));
+                return $this->recordStatisticsAction($moduleTemplate, $request);
             case 'relations':
-                $title = $this->getLanguageService()->getLL('databaseRelations');
-                $templateFilename = 'Relations.html';
-                $this->func_relations();
-                break;
+                $moduleTemplate->setTitle($title, $languageService->getLL('databaseRelations'));
+                return $this->relationsAction($moduleTemplate);
             case 'refindex':
-                $title = $this->getLanguageService()->getLL('manageRefIndex');
-                $templateFilename = 'ReferenceIndex.html';
-                $this->func_refindex();
-                break;
+                $moduleTemplate->setTitle($title, $languageService->getLL('manageRefIndex'));
+                return $this->referenceIndexAction($moduleTemplate, $request);
             default:
-                $title = $this->getLanguageService()->getLL('menuTitle');
-                $templateFilename = 'IntegrityOverview.html';
-                $this->func_default();
+                $moduleTemplate->setTitle($title, $languageService->getLL('menuTitle'));
+                return $this->overviewAction($moduleTemplate);
         }
-        $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . $templateFilename));
-        $content = '<form action="" method="post" id="DatabaseIntegrityView" name="' . $this->formName . '">';
-        $content .= $this->view->render();
-        $content .= '</form>';
-
-        // Setting up the shortcut button for docheader
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        // Shortcut
-        $shortCutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier($this->moduleName)
-            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
-            ->setArguments([
-                'SET' => [
-                    'function' => $this->MOD_SETTINGS['function'] ?? '',
-                    'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
-                    'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
-                ],
-            ]);
-        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
-
-        $this->getModuleMenu();
-
-        $this->moduleTemplate->setContent($content);
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
-            $title
-        );
-        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * Configure menu
      */
-    protected function menuConfig()
+    protected function menuConfig(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
         // MENU-ITEMS:
         // If array, then it's a selector box menu
         // If empty string it's just a variable, that'll be saved.
@@ -236,17 +157,17 @@ class DatabaseIntegrityController
             'sword' => '',
         ];
         // CLEAN SETTINGS
-        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], $this->moduleName, 'ses');
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName, 'ses');
-        if (GeneralUtility::_GP('queryConfig')) {
-            $qA = GeneralUtility::_GP('queryConfig');
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, ['queryConfig' => serialize($qA)], $this->moduleName, 'ses');
+        $OLD_MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, [], 'system_dbint', 'ses');
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $parsedBody['SET'] ?? $queryParams['SET'] ?? [], 'system_dbint', 'ses');
+        $queryConfig = $parsedBody['queryConfig'] ?? $queryParams['queryConfig'] ?? false;
+        if ($queryConfig) {
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, ['queryConfig' => serialize($queryConfig)], 'system_dbint', 'ses');
         }
-        $addConditionCheck = GeneralUtility::_GP('qG_ins');
         $setLimitToStart = false;
         foreach ($OLD_MOD_SETTINGS as $key => $val) {
             if (strpos($key, 'query') === 0 && $this->MOD_SETTINGS[$key] != $val && $key !== 'queryLimit' && $key !== 'use_listview') {
                 $setLimitToStart = true;
+                $addConditionCheck = (bool)($parsedBody['qG_ins'] ?? $queryParams['qG_ins'] ?? false);
                 if ($key === 'queryTable' && !$addConditionCheck) {
                     $this->MOD_SETTINGS['queryConfig'] = '';
                 }
@@ -262,23 +183,36 @@ class DatabaseIntegrityController
             } else {
                 $this->MOD_SETTINGS['queryLimit'] = '0';
             }
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, $this->moduleName, 'ses');
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->MOD_SETTINGS, 'system_dbint', 'ses');
         }
     }
 
     /**
-     * Generates the action menu
+     * Generate doc header drop-down and shortcut button.
      */
-    protected function getModuleMenu()
+    protected function setUpDocHeader(ModuleTemplate $moduleTemplate): void
     {
-        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortCutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_dbint')
+            ->setDisplayName($this->MOD_MENU['function'][$this->MOD_SETTINGS['function']])
+            ->setArguments([
+                'SET' => [
+                    'function' => $this->MOD_SETTINGS['function'] ?? '',
+                    'search' => $this->MOD_SETTINGS['search'] ?? 'raw',
+                    'search_query_makeQuery' => $this->MOD_SETTINGS['search_query_makeQuery'] ?? '',
+                ],
+            ]);
+        $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+
+        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('DatabaseJumpMenu');
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
                     (string)$this->uriBuilder->buildUriFromRoute(
-                        $this->moduleName,
+                        'system_dbint',
                         [
                             'id' => 0,
                             'SET' => [
@@ -293,67 +227,62 @@ class DatabaseIntegrityController
             }
             $menu->addMenuItem($item);
         }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
     /**
      * Creates the overview menu.
      */
-    protected function func_default()
+    protected function overviewAction(ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        $modules = [];
-        $availableModFuncs = ['records', 'relations', 'search', 'refindex'];
-        foreach ($availableModFuncs as $modFunc) {
-            $modules[$modFunc] = (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => $modFunc]]);
-        }
-        $this->view->assign('availableFunctions', $modules);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
+        $view->assign(
+            'availableFunctions',
+            [
+                'records' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'records']]),
+                'relations' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'relations']]),
+                'search' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'search']]),
+                'refindex' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'refindex']]),
+            ]
+        );
+        $moduleTemplate->setContent($view->render('IntegrityOverview'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /****************************
-     *
-     * Functionality implementation
-     *
-     ****************************/
     /**
-     * Check and update reference index!
+     * Check and update reference index.
      */
-    protected function func_refindex()
+    protected function referenceIndexAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
     {
-        $readmeLocation = ExtensionManagementUtility::extPath('lowlevel', 'README.rst');
-        $this->view->assign('ReadmeLink', PathUtility::getAbsoluteWebPath($readmeLocation));
-        $this->view->assign('ReadmeLocation', $readmeLocation);
-        $this->view->assign('binaryPath', ExtensionManagementUtility::extPath('core', 'bin/typo3'));
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/ReferenceIndex');
-
-        if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
-            $testOnly = (bool)GeneralUtility::_GP('_check');
-            $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
-            $result = $refIndexObj->updateIndex($testOnly);
-            $recordsCheckedString = $result['resultText'];
-            $errors = $result['errors'];
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                !empty($errors) ? implode("\n", $errors) : 'Index Integrity was perfect!',
-                $recordsCheckedString,
-                !empty($errors) ? FlashMessage::ERROR : FlashMessage::OK
-            );
-
-            $flashMessageRenderer = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();
-            $bodyContent = $flashMessageRenderer->render([$flashMessage]);
-
-            $this->view->assign('content', nl2br($bodyContent));
+        $isUpdate = $request->getParsedBody()['update'] ?? false;
+        $isCheckOnly = $request->getParsedBody()['checkOnly'] ?? false;
+        $referenceIndexResult = [];
+        if ($isUpdate || $isCheckOnly) {
+            $referenceIndexResult = GeneralUtility::makeInstance(ReferenceIndex::class)->updateIndex($isCheckOnly);
         }
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
+        $readmeLocation = ExtensionManagementUtility::extPath('lowlevel', 'README.rst');
+        $view->assignMultiple([
+            'ReadmeLink' => PathUtility::getAbsoluteWebPath($readmeLocation),
+            'ReadmeLocation' => $readmeLocation,
+            'binaryPath' => ExtensionManagementUtility::extPath('core', 'bin/typo3'),
+            'referenceIndexResult' => $referenceIndexResult,
+        ]);
+        $moduleTemplate->setContent($view->render('ReferenceIndex'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Search (Full / Advanced)
      */
-    protected function func_search()
+    protected function searchAction(ModuleTemplate $moduleTemplate): ResponseInterface
     {
         $lang = $this->getLanguageService();
         $searchMode = $this->MOD_SETTINGS['search'];
-        $fullsearch = GeneralUtility::makeInstance(QueryGenerator::class, $this->MOD_SETTINGS, $this->MOD_MENU, $this->moduleName);
-        $fullsearch->setFormName($this->formName);
+        $fullSearch = GeneralUtility::makeInstance(QueryGenerator::class, $this->MOD_SETTINGS, $this->MOD_MENU, 'system_dbint');
+        $fullSearch->setFormName('queryform');
         $submenu = '<div class="row row-cols-auto align-items-end g-3 mb-3">';
         $submenu .= '<div class="col">' . BackendUtility::getDropdownMenu(0, 'SET[search]', $searchMode, $this->MOD_MENU['search']) . '</div>';
         if ($this->MOD_SETTINGS['search'] === 'query') {
@@ -367,52 +296,53 @@ class DatabaseIntegrityController
             $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
             $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
         }
-        $this->view->assign('submenu', $submenu);
-        $this->view->assign('searchMode', $searchMode);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
+        $view->assign('submenu', $submenu);
+        $view->assign('searchMode', $searchMode);
         switch ($searchMode) {
             case 'query':
-                $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Lowlevel/QueryGenerator');
-                $this->view->assign('queryMaker', $fullsearch->queryMaker());
+                $view->assign('queryMaker', $fullSearch->queryMaker());
                 break;
             case 'raw':
             default:
-                $this->view->assign('searchOptions', $fullsearch->form());
-                $this->view->assign('results', $fullsearch->search());
+                $view->assign('searchOptions', $fullSearch->form());
+                $view->assign('results', $fullSearch->search());
         }
+        $moduleTemplate->setContent($view->render('CustomSearch'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
      * Records overview
      */
-    protected function func_records()
+    protected function recordStatisticsAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
     {
-        /** @var DatabaseIntegrityCheck $admin */
-        $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-        $admin->genTree(0);
+        $languageService = $this->getLanguageService();
+        $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
+        $databaseIntegrityCheck->genTree(0);
 
-        // Pages stat
+        // Page stats
         $pageStatistic = [
             'total_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
-                'count' => count($admin->getPageIdArray()),
+                'count' => count($databaseIntegrityCheck->getPageIdArray()),
             ],
             'translated_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', [], Icon::SIZE_SMALL)->render(),
-                'count' => count($admin->getPageTranslatedPageIDArray()),
+                'count' => count($databaseIntegrityCheck->getPageTranslatedPageIDArray()),
             ],
             'hidden_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['hidden' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => $admin->getRecStats()['hidden'] ?? 0,
+                'count' => $databaseIntegrityCheck->getRecStats()['hidden'] ?? 0,
             ],
             'deleted_pages' => [
                 'icon' => $this->iconFactory->getIconForRecord('pages', ['deleted' => 1], Icon::SIZE_SMALL)->render(),
-                'count' => isset($admin->getRecStats()['deleted']['pages']) ? count($admin->getRecStats()['deleted']['pages']) : 0,
+                'count' => isset($databaseIntegrityCheck->getRecStats()['deleted']['pages']) ? count($databaseIntegrityCheck->getRecStats()['deleted']['pages']) : 0,
             ],
         ];
 
-        $lang = $this->getLanguageService();
-
-        // Doktype
+        // doktypes stats
         $doktypes = [];
         $doktype = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
         if (is_array($doktype)) {
@@ -420,86 +350,107 @@ class DatabaseIntegrityController
                 if ($setup[1] !== '--div--') {
                     $doktypes[] = [
                         'icon' => $this->iconFactory->getIconForRecord('pages', ['doktype' => $setup[1]], Icon::SIZE_SMALL)->render(),
-                        'title' => $lang->sL($setup[0]) . ' (' . $setup[1] . ')',
-                        'count' => (int)($admin->getRecStats()['doktype'][$setup[1]] ?? 0),
+                        'title' => $languageService->sL($setup[0]) . ' (' . $setup[1] . ')',
+                        'count' => (int)($databaseIntegrityCheck->getRecStats()['doktype'][$setup[1]] ?? 0),
                     ];
                 }
             }
         }
 
         // Tables and lost records
-        $id_list = '-1,0,' . implode(',', array_keys($admin->getPageIdArray()));
+        $id_list = '-1,0,' . implode(',', array_keys($databaseIntegrityCheck->getPageIdArray()));
         $id_list = rtrim($id_list, ',');
-        $admin->lostRecords($id_list);
-        if ($admin->fixLostRecord(GeneralUtility::_GET('fixLostRecords_table'), GeneralUtility::_GET('fixLostRecords_uid'))) {
-            $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-            $admin->genTree(0);
-            $id_list = '-1,0,' . implode(',', array_keys($admin->getPageIdArray()));
+        $databaseIntegrityCheck->lostRecords($id_list);
+
+        // Fix a lost record if requested
+        $fixSingleLostRecordTableName = (string)($request->getQueryParams()['fixLostRecords_table'] ?? '');
+        $fixSingleLostRecordUid = (int)($request->getQueryParams()['fixLostRecords_uid'] ?? 0);
+        if (!empty($fixSingleLostRecordTableName) && $fixSingleLostRecordUid
+            && $databaseIntegrityCheck->fixLostRecord($fixSingleLostRecordTableName, $fixSingleLostRecordUid)
+        ) {
+            $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
+            $databaseIntegrityCheck->genTree(0);
+            $id_list = '-1,0,' . implode(',', array_keys($databaseIntegrityCheck->getPageIdArray()));
             $id_list = rtrim($id_list, ',');
-            $admin->lostRecords($id_list);
+            $databaseIntegrityCheck->lostRecords($id_list);
         }
+
         $tableStatistic = [];
-        $countArr = $admin->countRecords($id_list);
+        $countArr = $databaseIntegrityCheck->countRecords($id_list);
         if (is_array($GLOBALS['TCA'])) {
             foreach ($GLOBALS['TCA'] as $t => $value) {
                 if ($GLOBALS['TCA'][$t]['ctrl']['hideTable'] ?? false) {
                     continue;
                 }
-                if ($t === 'pages' && $admin->getLostPagesList() !== '') {
-                    $lostRecordCount = count(explode(',', $admin->getLostPagesList()));
+                if ($t === 'pages' && $databaseIntegrityCheck->getLostPagesList() !== '') {
+                    $lostRecordCount = count(explode(',', $databaseIntegrityCheck->getLostPagesList()));
                 } else {
-                    $lostRecordCount = isset($admin->getLRecords()[$t]) ? count($admin->getLRecords()[$t]) : 0;
+                    $lostRecordCount = isset($databaseIntegrityCheck->getLRecords()[$t]) ? count($databaseIntegrityCheck->getLRecords()[$t]) : 0;
                 }
+                $recordCount = 0;
                 if ($countArr['all'][$t] ?? false) {
-                    $theNumberOfRe = (int)($countArr['non_deleted'][$t] ?? 0) . '/' . $lostRecordCount;
-                } else {
-                    $theNumberOfRe = '';
+                    $recordCount = (int)($countArr['non_deleted'][$t] ?? 0) . '/' . $lostRecordCount;
                 }
-                $lr = '';
-                if (is_array($admin->getLRecords()[$t] ?? false)) {
-                    foreach ($admin->getLRecords()[$t] as $data) {
-                        if (!GeneralUtility::inList($admin->getLostPagesList(), $data['pid'])) {
-                            $lr .= '<div class="record"><a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $t, 'fixLostRecords_uid' => $data['uid']])) . '" title="' . htmlspecialchars($lang->getLL('fixLostRecord')) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                $lostRecordList = [];
+                if (is_array($databaseIntegrityCheck->getLRecords()[$t] ?? false)) {
+                    foreach ($databaseIntegrityCheck->getLRecords()[$t] as $data) {
+                        if (!GeneralUtility::inList($databaseIntegrityCheck->getLostPagesList(), $data['pid'])) {
+                            $fixLink = (string)$this->uriBuilder->buildUriFromRoute(
+                                'system_dbint',
+                                ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $t, 'fixLostRecords_uid' => $data['uid']]
+                            );
+                            $lostRecordList[] =
+                                '<div class="record">' .
+                                    '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->getLL('fixLostRecord')) . '">' .
+                                        $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() .
+                                    '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
+                                '</div>';
                         } else {
-                            $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                            $lostRecordList[] =
+                                '<div class="record-noicon">' .
+                                    'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
+                                '</div>';
                         }
                     }
                 }
                 $tableStatistic[$t] = [
                     'icon' => $this->iconFactory->getIconForRecord($t, [], Icon::SIZE_SMALL)->render(),
-                    'title' => $lang->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
-                    'count' => $theNumberOfRe,
-                    'lostRecords' => $lr,
+                    'title' => $languageService->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
+                    'count' => $recordCount,
+                    'lostRecords' => implode(LF, $lostRecordList),
                 ];
             }
         }
 
-        $this->view->assignMultiple([
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
+        $view->assignMultiple([
             'pages' => $pageStatistic,
             'doktypes' => $doktypes,
             'tables' => $tableStatistic,
         ]);
+        $moduleTemplate->setContent($view->render('RecordStatistics'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
-     * Show list references
+     * Show reference list
      */
-    protected function func_relations()
+    protected function relationsAction(ModuleTemplate $moduleTemplate): ResponseInterface
     {
-        $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-        $admin->selectNonEmptyRecordsWithFkeys();
-
-        $this->view->assignMultiple([
-            'select_db' => $admin->testDBRefs($admin->getCheckSelectDBRefs()),
-            'group_db' => $admin->testDBRefs($admin->getCheckGroupDBRefs()),
+        $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
+        $databaseIntegrityCheck->selectNonEmptyRecordsWithFkeys();
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
+        $view->assignMultiple([
+            'select_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckSelectDBRefs()),
+            'group_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckGroupDBRefs()),
         ]);
+        $moduleTemplate->setContent($view->render('Relations'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Returns the Language Service
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

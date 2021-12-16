@@ -1,6 +1,10 @@
-<h1>{f:translate(key:'records')}</h1>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:records')}</h1>
 
-<h2>{f:translate(key:'pages')}</h2>
+<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:pages')}</h2>
 <table class="table table-striped table-hover">
     <colgroup>
         <col width="24">
@@ -10,21 +14,21 @@
     <thead>
     <tr>
         <th colspan="2"></th>
-        <th>{f:translate(key:'count')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
     </tr>
     </thead>
     <tbody>
     <f:for each="{pages}" as="item" key="name">
         <tr>
             <td><f:format.raw>{item.icon}</f:format.raw></td>
-            <td>{f:translate(key:'{name}')}</td>
+            <td>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:{name}')}</td>
             <td>{item.count}</td>
         </tr>
     </f:for>
     </tbody>
 </table>
 
-<h2>{f:translate(key:'doktype')}</h2>
+<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype')}</h2>
 <table class="table table-striped table-hover">
     <colgroup>
         <col width="24">
@@ -34,8 +38,8 @@
     <thead>
     <tr>
         <th></th>
-        <th>{f:translate(key:'doktype_value')}</th>
-        <th>{f:translate(key:'count')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype_value')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
     </tr>
     </thead>
     <tbody>
@@ -49,7 +53,7 @@
     </tbody>
 </table>
 
-<h2>{f:translate(key:'tables')}</h2>
+<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tables')}</h2>
 <table class="table table-striped table-hover">
     <colgroup>
         <col width="24">
@@ -59,9 +63,9 @@
     <thead>
     <tr>
         <th></th>
-        <th>{f:translate(key:'label')}</th>
-        <th>{f:translate(key:'tablename')}</th>
-        <th>{f:translate(key:'total_lost')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:label')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tablename')}</th>
+        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:total_lost')}</th>
         <th></th>
     </tr>
     </thead>
@@ -77,3 +81,4 @@
     </f:for>
     </tbody>
 </table>
+</html>

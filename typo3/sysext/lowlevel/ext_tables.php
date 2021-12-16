@@ -14,7 +14,7 @@ ExtensionManagementUtility::addModule(
     '',
     '',
     [
-        'routeTarget' => DatabaseIntegrityController::class . '::mainAction',
+        'routeTarget' => DatabaseIntegrityController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'system_dbint',
         'workspaces' => 'online',
@@ -28,7 +28,7 @@ ExtensionManagementUtility::addModule(
     '',
     '',
     [
-        'routeTarget' => ConfigurationController::class . '::mainAction',
+        'routeTarget' => ConfigurationController::class . '::handleRequest',
         'access' => 'admin',
         'name' => 'system_config',
         'workspaces' => 'online',

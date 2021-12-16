@@ -1,0 +1,56 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Lowlevel/ReferenceIndex'
+    }"
+/>
+<h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex')}</h1>
+<p class="lead">{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:referenceIndex_description')}</p>
+
+<f:if condition="{referenceIndexResult}">
+    <f:be.infobox state="{f:if(condition:'{referenceIndexResult.errors}', then:'1', else:'0')}" title="{referenceIndexResult.resultText}">
+        <f:if condition="{referenceIndexResult.errors}">
+            <f:then>
+                <f:for each="{referenceIndexResult.errors}" as="error">
+                    {error}<br/>
+                </f:for>
+            </f:then>
+            <f:else>
+                <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:refindex_ok"/>
+            </f:else>
+        </f:if>
+    </f:be.infobox>
+</f:if>
+
+<form action="" method="post" id="DatabaseIntegrityView" name="queryform">
+    <div class="t3js-reference-index-actions">
+        <button type="submit" class="btn btn-default" name="checkOnly" value="1">
+            {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:referenceIndex_buttonCheck')}
+        </button>
+        <button type="submit" class="btn btn-default" name="update" value="1">
+            {f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:referenceIndex_buttonUpdate')}
+        </button>
+    </div>
+</form>
+
+<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_headline')}</h2>
+<p>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript')}</p>
+
+<h3>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_check_description')}</h3>
+<p>
+    <code>php {binaryPath} referenceindex:update -c</code>
+</p>
+
+<h3>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_update_description')}</h3>
+<p>
+    <code>php {binaryPath} referenceindex:update</code>
+</p>
+
+<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:checkScript_moreDetails')}</h2>
+<p>
+    <a href="{ReadmeLink}" target="_new">{ReadmeLocation}</a>
+</p>
+</html>
