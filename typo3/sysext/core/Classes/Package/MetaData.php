@@ -40,7 +40,7 @@ class MetaData
     /**
      * Package type
      *
-     * @var string
+     * @var string|null
      */
     protected $packageType;
 
@@ -52,13 +52,13 @@ class MetaData
 
     /**
      * Package title
-     * @var ?string
+     * @var string|null
      */
     protected $title;
 
     /**
      * Package description
-     * @var string
+     * @var string|null
      */
     protected $description;
 
@@ -98,7 +98,7 @@ class MetaData
 
     public function isExtensionType(): bool
     {
-        return str_starts_with($this->packageType, 'typo3-cms-');
+        return is_string($this->packageType) && str_starts_with($this->packageType, 'typo3-cms-');
     }
 
     public function isFrameworkType(): bool
@@ -119,7 +119,7 @@ class MetaData
     /**
      * Set package type
      *
-     * @param string $packageType
+     * @param string|null $packageType
      */
     public function setPackageType($packageType)
     {
@@ -153,7 +153,7 @@ class MetaData
     }
 
     /**
-     * @return string The package description
+     * @return string|null The package description
      */
     public function getDescription()
     {
@@ -161,7 +161,7 @@ class MetaData
     }
 
     /**
-     * @param string $description The package description to set
+     * @param string|null $description The package description to set
      */
     public function setDescription($description)
     {
