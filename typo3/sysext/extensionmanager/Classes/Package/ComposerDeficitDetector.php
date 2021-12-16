@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Package;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
@@ -63,7 +62,7 @@ class ComposerDeficitDetector
             throw new \InvalidArgumentException('Extension key ' . $extensionKey . ' is not valid.', 1619446378);
         }
 
-        $composerManifestPath = Environment::getExtensionsPath() . '/' . $extensionKey . '/composer.json';
+        $composerManifestPath = $this->availableExtensions[$extensionKey]['packagePath'] . 'composer.json';
 
         if (!file_exists($composerManifestPath) || !($composerManifest = file_get_contents($composerManifestPath))) {
             return self::EXTENSION_COMPOSER_MANIFEST_MISSING;
