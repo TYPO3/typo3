@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -84,8 +85,12 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
         if ($this->arguments['uid'] < 1) {
             throw new \InvalidArgumentException('Uid must be a positive integer, ' . $this->arguments['uid'] . ' given.', 1526127158);
         }
-        if (empty($this->arguments['returnUrl'])) {
-            $this->arguments['returnUrl'] = $this->renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+        $request = $this->renderingContext->getRequest();
+        if (empty($this->arguments['returnUrl'])
+            && $request instanceof ServerRequestInterface
+        ) {
+            // @todo: We may want to deprecate fetching returnUrl from request
+            $this->arguments['returnUrl'] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $params = [

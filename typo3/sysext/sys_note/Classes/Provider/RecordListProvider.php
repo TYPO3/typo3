@@ -22,12 +22,13 @@ use TYPO3\CMS\SysNote\Controller\NoteController;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
 /**
- * Class RecordListProvider
+ * Render existing notes within list module.
+ *
  * @internal
  */
 class RecordListProvider
 {
-    protected $noteController;
+    protected NoteController $noteController;
 
     public function __construct(NoteController $noteController)
     {
@@ -36,8 +37,10 @@ class RecordListProvider
 
     public function __invoke(RenderAdditionalContentToRecordListEvent $event): void
     {
-        $id = (int)($event->getRequest()->getParsedBody()['id'] ?? $event->getRequest()->getQueryParams()['id'] ?? 0);
-        $event->addContentAbove($this->noteController->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_TOP));
-        $event->addContentBelow($this->noteController->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM));
+        $request = $event->getRequest();
+        $pid = (int)($event->getRequest()->getParsedBody()['id'] ?? $event->getRequest()->getQueryParams()['id'] ?? 0);
+        $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
+        $event->addContentAbove($this->noteController->listAction($pid, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
+        $event->addContentBelow($this->noteController->listAction($pid, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
     }
 }

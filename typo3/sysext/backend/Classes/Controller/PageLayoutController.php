@@ -614,7 +614,7 @@ class PageLayoutController
             // Page title
             $content .= '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
             // All other listings
-            $content .= $this->renderContent();
+            $content .= $this->renderContent($request);
             $content .= '</form>';
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
@@ -664,7 +664,7 @@ class PageLayoutController
      *
      * @return string
      */
-    protected function renderContent(): string
+    protected function renderContent(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
@@ -727,14 +727,14 @@ class PageLayoutController
         $content = '';
         // Additional header content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'] ?? [] as $hook) {
-            $params = [];
+            $params = ['request' => $request];
             $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         $content .= $tableOutput;
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = [];
+            $params = ['request' => $request];
             $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
         return $content;

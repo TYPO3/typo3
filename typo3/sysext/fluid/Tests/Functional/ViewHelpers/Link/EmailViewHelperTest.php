@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -34,9 +32,8 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackend(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $view = new StandaloneView();
+        $view->setRequest();
         $view->setTemplateSource('<f:link.email email="foo@example.com">send mail</f:link.email>');
         self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', $view->render());
     }
@@ -46,9 +43,8 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackendWithEmptyChild(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $view = new StandaloneView();
+        $view->setRequest();
         $view->setTemplateSource('<f:link.email email="foo@example.com" />');
         self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', $view->render());
     }

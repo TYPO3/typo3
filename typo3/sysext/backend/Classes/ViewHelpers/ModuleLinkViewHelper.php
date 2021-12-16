@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -64,8 +65,14 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
         if ($arguments['query'] !== null) {
             ArrayUtility::mergeRecursiveWithOverrule($parameters, GeneralUtility::explodeUrl2Array($arguments['query']));
         }
-        if ($arguments['currentUrlParameterName'] !== null) {
-            $parameters[$arguments['currentUrlParameterName']] = $renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
+        $request = $renderingContext->getRequest();
+        if (!empty($arguments['currentUrlParameterName'])
+            && empty($arguments['arguments'][$arguments['currentUrlParameterName']])
+            && $request instanceof ServerRequestInterface
+        ) {
+            // If currentUrlParameterName is given and if that argument is not hand over yet, and if there is a request, fetch it from request
+            // @todo: We may want to deprecate fetching stuff from request and advise handing over a proper value as 'arguments' argument.
+            $parameters[$arguments['currentUrlParameterName']] = $request->getAttribute('normalizedParams')->getRequestUri();
         }
         return (string)$uriBuilder->buildUriFromRoute($arguments['route'], $parameters);
     }

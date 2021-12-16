@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
 /**
@@ -31,11 +31,7 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
  */
 class NoteController
 {
-    /**
-     * @var SysNoteRepository
-     */
-    protected $notesRepository;
-
+    protected SysNoteRepository $notesRepository;
     protected array $pagePermissionCache = [];
 
     public function __construct()
@@ -44,34 +40,34 @@ class NoteController
     }
 
     /**
-     * Render notes by single PID or PID list
+     * Render notes by single PID
      *
-     * @param string $pids Single PID or comma separated list of PIDs
+     * @param int $pid The page id notes should be rendered for
      * @param int|null $position null for no restriction, integer for defined position
+     * @param string $returnUrl Url to return to when editing and closing a notes record again
      * @return string
      */
-    public function listAction($pids, int $position = null): string
+    public function listAction(int $pid, int $position = null, string $returnUrl = ''): string
     {
         $backendUser = $this->getBackendUser();
-        if (empty($pids)
+        if ($pid <= 0
             || empty($backendUser->user[$backendUser->userid_column])
             || !$backendUser->check('tables_select', 'sys_note')
         ) {
             return '';
         }
 
-        $notes = $this->notesRepository->findByPidsAndAuthorId($pids, (int)$backendUser->user[$backendUser->userid_column], $position);
+        $notes = $this->notesRepository->findByPidsAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
         if (!$notes) {
             return '';
         }
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:sys_note/Resources/Private/Templates/Note/List.html'
-        ));
-        $view->setLayoutRootPaths(['EXT:sys_note/Resources/Private/Layouts']);
-        $view->getRequest()->setControllerExtensionName('SysNote');
-        $view->assign('notes', $this->enrichWithEditPermissions($notes));
-        return $view->render();
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:sys_note/Resources/Private/Templates']);
+        $view->assignMultiple([
+            'notes' => $this->enrichWithEditPermissions($notes),
+            'returnUrl' => $returnUrl,
+        ]);
+        return $view->render('List');
     }
 
     protected function enrichWithEditPermissions(array $notes): array

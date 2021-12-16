@@ -39,7 +39,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        includeCssFiles="{0: 'EXT:my_ext/Resources/Public/Css/Stylesheet.css'}"
  *        includeJsFiles="{0: 'EXT:my_ext/Resources/Public/JavaScript/Library1.js', 1: 'EXT:my_ext/Resources/Public/JavaScript/Library2.js'}"
  *        addJsInlineLabels="{'my_ext.label1': 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:label1'}"
- *        includesRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule.js'}"
+ *        includeRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule.js'}"
  *        addInlineSettings="{'some.setting.key': 'some.setting.value'}"
  *    />
  *
