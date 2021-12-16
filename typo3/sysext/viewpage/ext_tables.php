@@ -13,7 +13,7 @@ ExtensionManagementUtility::addModule(
     'after:layout',
     null,
     [
-        'routeTarget' => ViewModuleController::class . '::showAction',
+        'routeTarget' => ViewModuleController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'web_ViewpageView',
         'iconIdentifier' => 'module-viewpage',
