@@ -695,12 +695,10 @@ abstract class AbstractMenuContentObject
         }
         $pageIds = GeneralUtility::intExplode(',', (string)$specialValue);
         $disableGroupAccessCheck = !empty($this->mconf['showAccessRestrictedPages']);
+        $pageRecords = $this->sys_page->getMenuForPages($pageIds);
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
-        foreach ($pageIds as $pageId) {
-            $row = $this->sys_page->getPage($pageId, $disableGroupAccessCheck);
-            if (!is_array($row)) {
-                continue;
-            }
+        foreach ($pageRecords as $row) {
+            $pageId = (int)$row['uid'];
             $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($pageId);
             // Keep mount point?
             $mount_info = $this->sys_page->getMountPointInfo($pageId, $row);
