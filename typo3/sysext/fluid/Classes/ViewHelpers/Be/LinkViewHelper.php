@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * ``<a href="/typo3/module/web/ts?token=b6e9c9f&id=92">Go to web_ts</a>``
  */
-class LinkViewHelper extends AbstractTagBasedViewHelper
+final class LinkViewHelper extends AbstractTagBasedViewHelper
 {
 
     /**

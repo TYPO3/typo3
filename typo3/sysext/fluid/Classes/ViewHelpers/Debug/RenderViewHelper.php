@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * :php:`ViewHelperResolver` class). Also possible to use explicitly by using
  * ``f:debug.render`` instead of the normal ``f:render`` statement.
  */
-class RenderViewHelper extends AbstractViewHelper
+final class RenderViewHelper extends AbstractViewHelper
 {
 
     /**

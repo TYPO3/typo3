@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * @internal
  */
-class MfaStatusViewHelper extends AbstractTagBasedViewHelper
+final class MfaStatusViewHelper extends AbstractTagBasedViewHelper
 {
     protected $tagName = 'span';
 

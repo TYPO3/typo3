@@ -49,7 +49,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * Url encoded text :php:`rawurlencode()` applied.
  */
-class UrlencodeViewHelper extends AbstractViewHelper
+final class UrlencodeViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

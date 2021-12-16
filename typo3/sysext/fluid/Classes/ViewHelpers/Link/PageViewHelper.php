@@ -64,7 +64,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Depending on current page, routing and page path configuration.
  */
-class PageViewHelper extends AbstractTagBasedViewHelper
+final class PageViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

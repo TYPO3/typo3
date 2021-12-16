@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
-class TableAccessViewHelper extends AbstractConditionViewHelper
+final class TableAccessViewHelper extends AbstractConditionViewHelper
 {
     public function initializeArguments(): void
     {

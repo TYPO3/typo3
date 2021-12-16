@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Scope: backend
  * @internal
  */
-class RenderContentElementPreviewViewHelper extends AbstractViewHelper
+final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

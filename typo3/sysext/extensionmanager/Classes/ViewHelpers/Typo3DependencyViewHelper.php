@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @internal
  */
-class Typo3DependencyViewHelper extends AbstractViewHelper
+final class Typo3DependencyViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

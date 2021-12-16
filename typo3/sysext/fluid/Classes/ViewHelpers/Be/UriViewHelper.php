@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * ``/typo3/module/web/ts?token=b6e9c9f&id=92``
  */
-class UriViewHelper extends AbstractBackendViewHelper
+final class UriViewHelper extends AbstractBackendViewHelper
 {
 
     /**

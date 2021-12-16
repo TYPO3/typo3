@@ -94,7 +94,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <f:flashMessages queueIdentifier="myQueue" />
  */
-class FlashMessagesViewHelper extends AbstractViewHelper
+final class FlashMessagesViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

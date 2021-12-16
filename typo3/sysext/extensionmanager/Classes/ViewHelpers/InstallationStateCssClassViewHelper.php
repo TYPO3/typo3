@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * available or installed
  * @internal
  */
-class InstallationStateCssClassViewHelper extends AbstractViewHelper
+final class InstallationStateCssClassViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

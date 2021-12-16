@@ -45,7 +45,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  *    <a href="ftp://typo3.org">external ftp link</a>
  */
-class ExternalViewHelper extends AbstractTagBasedViewHelper
+final class ExternalViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

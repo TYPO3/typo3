@@ -27,7 +27,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
  * ViewHelper
  * @internal
  */
-class DownloadExtensionViewHelper extends AbstractFormViewHelper
+final class DownloadExtensionViewHelper extends AbstractFormViewHelper
 {
     /**
      * @var string

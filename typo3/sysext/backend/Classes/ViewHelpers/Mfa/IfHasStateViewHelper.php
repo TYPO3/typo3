@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *
  * @internal
  */
-class IfHasStateViewHelper extends AbstractConditionViewHelper
+final class IfHasStateViewHelper extends AbstractConditionViewHelper
 {
     public function initializeArguments(): void
     {

@@ -82,9 +82,10 @@ class TypolinkViewHelperTest extends UnitTestCase
      */
     public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration): void
     {
-        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
-        $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, []);
+        $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, &$result) {
+            $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, []);
+        }, null, TypolinkViewHelper::class);
+        $mock(new TypolinkViewHelper());
         self::assertSame($decodedConfiguration, $result);
     }
 
@@ -179,11 +180,12 @@ class TypolinkViewHelperTest extends UnitTestCase
      * @test
      * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
      */
-    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expected): void
+    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expectation): void
     {
-        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
-        $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, $viewHelperArguments);
-        self::assertSame($expected, $result);
+        $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, $viewHelperArguments, &$result) {
+            $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, $viewHelperArguments);
+        }, null, TypolinkViewHelper::class);
+        $mock(new TypolinkViewHelper());
+        self::assertSame($expectation, $result);
     }
 }

@@ -67,7 +67,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *      <li>1234567890: Some error message</li>
  *    </ul>
  */
-class ValidationResultsViewHelper extends AbstractViewHelper
+final class ValidationResultsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

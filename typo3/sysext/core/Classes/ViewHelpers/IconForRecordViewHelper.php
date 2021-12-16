@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *         </span>
  *     </span>
  */
-class IconForRecordViewHelper extends AbstractViewHelper
+final class IconForRecordViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

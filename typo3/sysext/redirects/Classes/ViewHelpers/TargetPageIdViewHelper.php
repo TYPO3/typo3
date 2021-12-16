@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * This ViewHelper checks for such a case and returns the Page ID
  * @internal
  */
-class TargetPageIdViewHelper extends AbstractViewHelper
+final class TargetPageIdViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -42,7 +42,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *         <!-- form content -->
  *     </form>
  */
-class ModuleLinkViewHelper extends AbstractViewHelper
+final class ModuleLinkViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

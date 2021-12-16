@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Utility class for phpinfo()
  * @internal
  */
-class PhpInfoViewHelper extends AbstractViewHelper
+final class PhpInfoViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

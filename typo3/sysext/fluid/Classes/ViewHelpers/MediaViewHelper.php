@@ -66,7 +66,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  *    <video width="400" height="375" controls loop><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
  */
-class MediaViewHelper extends AbstractTagBasedViewHelper
+final class MediaViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

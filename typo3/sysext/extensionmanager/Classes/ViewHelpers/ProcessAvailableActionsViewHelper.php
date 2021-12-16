@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * actions for a given extension.
  * @internal
  */
-class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
+final class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var EventDispatcherInterface

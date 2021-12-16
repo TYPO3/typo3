@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Display a deactivate / activate link
  * @internal
  */
-class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedViewHelper
+final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

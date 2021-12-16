@@ -51,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <link href="typo3conf/ext/another_extension/Resources/Public/css/stylesheet.css" rel="stylesheet" />
  */
-class ResourceViewHelper extends AbstractViewHelper
+final class ResourceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -30,7 +30,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
  *
  * Scope: frontend
  */
-class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
+final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

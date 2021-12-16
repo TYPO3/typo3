@@ -86,7 +86,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * ``someLongText cropped after 10 characters…``
  * Depending on the value of ``{someLongText}``.
  */
-class CropViewHelper extends AbstractViewHelper
+final class CropViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

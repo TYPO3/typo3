@@ -58,7 +58,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * ``--TYPO3---``
  */
-class PaddingViewHelper extends AbstractViewHelper
+final class PaddingViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

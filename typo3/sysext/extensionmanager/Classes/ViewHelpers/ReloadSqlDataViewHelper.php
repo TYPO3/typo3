@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * ViewHelper for update script link
  * @internal
  */
-class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
+final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

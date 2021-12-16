@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Scope: backend
  * @internal
  */
-class MaximumFileSizeViewHelper extends AbstractViewHelper
+final class MaximumFileSizeViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

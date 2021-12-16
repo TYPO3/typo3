@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * </output>
  * @internal
  */
-class ActionViewHelper extends AbstractViewHelper
+final class ActionViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

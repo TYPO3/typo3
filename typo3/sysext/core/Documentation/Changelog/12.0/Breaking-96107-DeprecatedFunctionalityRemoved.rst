@@ -49,6 +49,9 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject`
 
+The following PHP classes have been declared final:
+- All fluid ViewHelpers
+
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
 
 - :php:`\TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface`

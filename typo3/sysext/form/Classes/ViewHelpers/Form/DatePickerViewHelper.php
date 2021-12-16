@@ -36,7 +36,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  *
  * Scope: frontend
  */
-class DatePickerViewHelper extends AbstractFormFieldViewHelper
+final class DatePickerViewHelper extends AbstractFormFieldViewHelper
 {
 
     /**

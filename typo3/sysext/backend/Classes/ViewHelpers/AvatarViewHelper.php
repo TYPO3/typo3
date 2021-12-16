@@ -60,7 +60,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        </span>
  *    </span>
  */
-class AvatarViewHelper extends AbstractViewHelper
+final class AvatarViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

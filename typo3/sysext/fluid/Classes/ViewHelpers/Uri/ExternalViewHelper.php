@@ -44,7 +44,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ``ftp://typo3.org``
  */
-class ExternalViewHelper extends AbstractViewHelper
+final class ExternalViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

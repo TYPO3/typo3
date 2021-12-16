@@ -43,7 +43,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *         </span>
  *     </span>
  */
-class IconForResourceViewHelper extends AbstractViewHelper
+final class IconForResourceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

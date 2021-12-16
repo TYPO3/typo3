@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <input type="password" name="myPassword" value="default value" />
  */
-class PasswordViewHelper extends AbstractFormFieldViewHelper
+final class PasswordViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

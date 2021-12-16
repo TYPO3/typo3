@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * Views sprite icon for a record (object)
  * @internal
  */
-class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
+final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

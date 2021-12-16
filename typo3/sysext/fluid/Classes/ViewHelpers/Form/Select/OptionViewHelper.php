@@ -21,7 +21,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper;
 /**
  * Adds custom :html:`<option>` tags inside an :ref:`<f:form.select> <typo3-fluid-form-select>`.
  */
-class OptionViewHelper extends AbstractFormFieldViewHelper
+final class OptionViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

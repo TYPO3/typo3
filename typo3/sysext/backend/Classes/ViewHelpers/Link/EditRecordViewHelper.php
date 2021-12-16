@@ -57,7 +57,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *        Edit record
  *    </a>
  */
-class EditRecordViewHelper extends AbstractTagBasedViewHelper
+final class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

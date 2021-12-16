@@ -37,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * Page info icon with context menu
  */
-class PageInfoViewHelper extends AbstractBackendViewHelper
+final class PageInfoViewHelper extends AbstractBackendViewHelper
 {
 
     /**

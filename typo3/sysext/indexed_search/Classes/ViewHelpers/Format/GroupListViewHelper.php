@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Group list viewhelper
  * @internal
  */
-class GroupListViewHelper extends AbstractViewHelper
+final class GroupListViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

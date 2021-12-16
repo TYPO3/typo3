@@ -30,7 +30,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *
  * @internal
  */
-class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
+final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var array

@@ -42,7 +42,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <button disabled="disabled" formmethod="post" formnovalidate="formnovalidate" type="reset" name="myForm[buttonName]" value="buttonValue">Cancel</button>
  */
-class ButtonViewHelper extends AbstractFormFieldViewHelper
+final class ButtonViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

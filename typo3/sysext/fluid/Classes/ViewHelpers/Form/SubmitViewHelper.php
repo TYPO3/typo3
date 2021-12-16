@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <input type="submit" name="mySubmit" value="Send Mail" />
  */
-class SubmitViewHelper extends AbstractFormFieldViewHelper
+final class SubmitViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

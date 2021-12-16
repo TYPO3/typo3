@@ -60,7 +60,7 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  * List of "Website user" records with a text property of ``foo`` stored on PID ``1`` and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
  */
-class TableListViewHelper extends AbstractBackendViewHelper
+final class TableListViewHelper extends AbstractBackendViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class LanguageColumnViewHelper extends AbstractViewHelper
+final class LanguageColumnViewHelper extends AbstractViewHelper
 {
     public function initializeArguments()
     {

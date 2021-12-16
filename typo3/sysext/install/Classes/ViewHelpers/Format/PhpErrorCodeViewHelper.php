@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @internal
  */
-class PhpErrorCodeViewHelper extends AbstractViewHelper
+final class PhpErrorCodeViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

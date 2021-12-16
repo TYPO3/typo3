@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * renders the header of the results page
  * @internal
  */
-class PageBrowsingResultsViewHelper extends AbstractViewHelper
+final class PageBrowsingResultsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <textarea name="myTextArea">This is shown inside the textarea</textarea>
  */
-class TextareaViewHelper extends AbstractFormFieldViewHelper
+final class TextareaViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

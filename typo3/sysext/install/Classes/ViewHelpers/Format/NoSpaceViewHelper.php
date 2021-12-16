@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @internal
  */
-class NoSpaceViewHelper extends AbstractViewHelper
+final class NoSpaceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -51,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Localized selectbox.
  */
-class ActionMenuViewHelper extends AbstractTagBasedViewHelper
+final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

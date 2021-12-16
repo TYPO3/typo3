@@ -44,7 +44,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * Text with line breaks replaced by ``<br />``
  */
-class Nl2brViewHelper extends AbstractViewHelper
+final class Nl2brViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

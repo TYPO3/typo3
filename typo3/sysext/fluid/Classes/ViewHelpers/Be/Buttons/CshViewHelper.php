@@ -53,7 +53,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * A link with text "some text to link" to link the help.
  */
-class CshViewHelper extends AbstractBackendViewHelper
+final class CshViewHelper extends AbstractBackendViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

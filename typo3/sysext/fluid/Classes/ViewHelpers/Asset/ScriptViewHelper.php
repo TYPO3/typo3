@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *       alert('hello world');
  *    </f:asset.script>
  */
-class ScriptViewHelper extends AbstractTagBasedViewHelper
+final class ScriptViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * This VH does not produce direct output, thus does not need to be wrapped in an escaping node

@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * @internal
  */
-class SubModuleRenderViewHelper extends AbstractViewHelper
+final class SubModuleRenderViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Renders a given array as tree
  * @internal
  */
-class ArrayBrowserViewHelper extends AbstractViewHelper
+final class ArrayBrowserViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

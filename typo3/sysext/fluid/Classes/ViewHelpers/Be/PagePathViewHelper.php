@@ -36,7 +36,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * Current page path, prefixed with "Path:" and wrapped in a span with the class ``typo3-docheader-pagePath``.
  */
-class PagePathViewHelper extends AbstractBackendViewHelper
+final class PagePathViewHelper extends AbstractBackendViewHelper
 {
 
     /**

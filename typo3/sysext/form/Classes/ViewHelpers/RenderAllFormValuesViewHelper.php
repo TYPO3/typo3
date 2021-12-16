@@ -32,7 +32,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Scope: frontend
  */
-class RenderAllFormValuesViewHelper extends AbstractViewHelper
+final class RenderAllFormValuesViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

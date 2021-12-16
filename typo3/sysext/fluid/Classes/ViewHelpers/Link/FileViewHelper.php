@@ -63,7 +63,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  *    <a href="https://example.com/index.php?eID=dumpFile&t=f&f=123&dl=1&fn=alternative-name.jpg&token=79bce812">Download file</a>
  */
-class FileViewHelper extends AbstractTagBasedViewHelper
+final class FileViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

@@ -87,7 +87,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Depending on routing and page path configuration.
  */
-class TypolinkViewHelper extends AbstractViewHelper
+final class TypolinkViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

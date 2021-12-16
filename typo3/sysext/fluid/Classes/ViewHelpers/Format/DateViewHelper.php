@@ -99,7 +99,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * ``1980-12-13``
  * Depending on the value of ``{dateObject}``.
  */
-class DateViewHelper extends AbstractViewHelper
+final class DateViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

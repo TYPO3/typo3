@@ -54,7 +54,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * Everything inside the :html:`<f:then></f:then>` tag is displayed if frontend user is authenticated.
  * Otherwise, everything inside the :html:`<f:else></f:else>` tag is displayed.
  */
-class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
+final class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
 {
     /**
      * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.

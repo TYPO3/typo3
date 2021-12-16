@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * DateTime viewhelper
  * @internal
  */
-class DateTimeViewHelper extends AbstractViewHelper
+final class DateTimeViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -59,7 +59,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Depending on current page, routing and page path configuration.
  */
-class PageViewHelper extends AbstractViewHelper
+final class PageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

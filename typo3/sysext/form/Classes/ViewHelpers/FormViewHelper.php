@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *
  * Scope: frontend
  */
-class FormViewHelper extends FluidFormViewHelper
+final class FormViewHelper extends FluidFormViewHelper
 {
 
     /**

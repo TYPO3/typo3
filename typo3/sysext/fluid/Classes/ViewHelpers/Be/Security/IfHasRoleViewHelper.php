@@ -60,7 +60,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  * logged in backend user belongs to the specified backend group.
  * Otherwise, everything inside the :html:`<f:else></f:else>` tag is displayed.
  */
-class IfHasRoleViewHelper extends AbstractConditionViewHelper
+final class IfHasRoleViewHelper extends AbstractConditionViewHelper
 {
     /**
      * Initializes the "role" argument.

@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ``423.423,2``
  */
-class NumberViewHelper extends AbstractViewHelper
+final class NumberViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

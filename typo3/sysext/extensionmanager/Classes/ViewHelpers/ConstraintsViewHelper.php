@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @internal
  */
-class ConstraintsViewHelper extends AbstractViewHelper
+final class ConstraintsViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
     {

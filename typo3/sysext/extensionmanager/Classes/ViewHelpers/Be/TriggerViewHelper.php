@@ -33,7 +33,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  *
  * @internal
  */
-class TriggerViewHelper extends AbstractBackendViewHelper
+final class TriggerViewHelper extends AbstractBackendViewHelper
 {
     /**
      * @var bool

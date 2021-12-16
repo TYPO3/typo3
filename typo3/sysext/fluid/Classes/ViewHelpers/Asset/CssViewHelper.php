@@ -36,7 +36,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  *
  * See also :ref:`_changelog-Feature-90522-IntroduceAssetCollector`
  */
-class CssViewHelper extends AbstractTagBasedViewHelper
+final class CssViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * This VH does not produce direct output, thus does not need to be wrapped in an escaping node

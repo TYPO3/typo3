@@ -20,125 +20,64 @@ namespace TYPO3\CMS\Form\Tests\Unit\ViewHelpers\Form;
 use TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DatePickerViewHelperTest extends UnitTestCase
 {
-
-    /**
-     * @var \TYPO3\CMS\Form\ViewHelpers\Form\DatePickerViewHelper
-     */
-    protected $subject;
-
-    /**
-     * Set up
-     */
-    protected function setUp(): void
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider(): array
     {
-        parent::setUp();
-        $this->subject = $this->getAccessibleMock(DatePickerViewHelper::class, [
-            'dummy',
-        ], [], '', false);
+        return [
+            [
+                'd',
+                'dd',
+            ],
+            [
+                'D',
+                'D',
+            ],
+            [
+                'j',
+                'o',
+            ],
+            [
+                'l',
+                'DD',
+            ],
+            [
+                'F',
+                'MM',
+            ],
+            [
+                'm',
+                'mm',
+            ],
+            [
+                'M',
+                'M',
+            ],
+            [
+                'n',
+                'm',
+            ],
+            [
+                'Y',
+                'yy',
+            ],
+            [
+                'y',
+                'y',
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider convertDateFormatToDatePickerFormatReturnsTransformedFormatDataProvider
      */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat01(): void
+    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat(string $input, string $expected): void
     {
-        $input = 'd';
-        $expected = 'dd';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat02(): void
-    {
-        $input = 'D';
-        $expected = 'D';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat03(): void
-    {
-        $input = 'j';
-        $expected = 'o';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat04(): void
-    {
-        $input = 'l';
-        $expected = 'DD';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat05(): void
-    {
-        $input = 'F';
-        $expected = 'MM';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat06(): void
-    {
-        $input = 'm';
-        $expected = 'mm';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat07(): void
-    {
-        $input = 'M';
-        $expected = 'M';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat08(): void
-    {
-        $input = 'n';
-        $expected = 'm';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat09(): void
-    {
-        $input = 'Y';
-        $expected = 'yy';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
-    }
-
-    /**
-     * @test
-     */
-    public function convertDateFormatToDatePickerFormatReturnsTransformedFormat10(): void
-    {
-        $input = 'y';
-        $expected = 'y';
-        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        $mock = \Closure::bind(static function (DatePickerViewHelper $datePickerViewHelper) use ($input, &$result) {
+            $result = $datePickerViewHelper->convertDateFormatToDatePickerFormat($input);
+        }, null, DatePickerViewHelper::class);
+        $mock(new DatePickerViewHelper());
+        self::assertSame($expected, $result);
     }
 }

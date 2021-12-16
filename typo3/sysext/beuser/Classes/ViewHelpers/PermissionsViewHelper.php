@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * is much better performance wise.
  * @internal
  */
-class PermissionsViewHelper extends AbstractViewHelper
+final class PermissionsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

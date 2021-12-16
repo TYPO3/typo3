@@ -69,7 +69,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ``/typo3/record/edit?edit[a_table][17]=new&returnUrl=foo/bar&defVals[a_table][a_field]=value``
  */
-class NewRecordViewHelper extends AbstractTagBasedViewHelper
+final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
     use CompileWithRenderStatic;
 

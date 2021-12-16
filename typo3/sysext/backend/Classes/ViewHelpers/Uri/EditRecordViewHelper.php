@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * ``<a href="/typo3/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">``
  */
-class EditRecordViewHelper extends AbstractViewHelper
+final class EditRecordViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

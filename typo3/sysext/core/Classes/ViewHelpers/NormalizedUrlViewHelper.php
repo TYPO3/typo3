@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *     /typo3/sysext/core/Resources/Public/Images/typo3_black.svg
  * @internal
  */
-class NormalizedUrlViewHelper extends AbstractViewHelper
+final class NormalizedUrlViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

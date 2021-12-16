@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Create detail string from log entry
  * @internal
  */
-class FormatDetailsViewHelper extends AbstractViewHelper
+final class FormatDetailsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

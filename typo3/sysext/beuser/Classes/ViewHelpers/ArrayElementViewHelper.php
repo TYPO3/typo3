@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Get a value from an array by given key.
  * @internal
  */
-class ArrayElementViewHelper extends AbstractViewHelper
+final class ArrayElementViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

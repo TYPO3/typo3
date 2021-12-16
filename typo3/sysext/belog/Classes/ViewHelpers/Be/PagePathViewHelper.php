@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * Get page path string from page id
  * @internal
  */
-class PagePathViewHelper extends AbstractBackendViewHelper
+final class PagePathViewHelper extends AbstractBackendViewHelper
 {
     /**
      * Initializes the arguments

@@ -59,7 +59,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *         alt="alt set in image record"
  *         title="title set in image record"/>
  */
-class ThumbnailViewHelper extends AbstractTagBasedViewHelper
+final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

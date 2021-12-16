@@ -93,7 +93,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *        Edit record
  *    </a>
  */
-class NewRecordViewHelper extends AbstractTagBasedViewHelper
+final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

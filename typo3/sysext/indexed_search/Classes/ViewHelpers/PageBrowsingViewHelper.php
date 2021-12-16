@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * functionality
  * @internal
  */
-class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
+final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string

@@ -46,7 +46,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *
  * CSH label as known from the TYPO3 backend with some custom settings.
  */
-class CshViewHelper extends AbstractBackendViewHelper
+final class CshViewHelper extends AbstractBackendViewHelper
 {
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.

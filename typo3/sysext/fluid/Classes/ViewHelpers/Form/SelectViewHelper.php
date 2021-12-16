@@ -91,7 +91,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  * The ``value`` property now expects a domain object, and tests for object equivalence.
  */
-class SelectViewHelper extends AbstractFormFieldViewHelper
+final class SelectViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

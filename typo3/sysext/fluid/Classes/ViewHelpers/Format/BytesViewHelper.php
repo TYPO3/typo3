@@ -59,7 +59,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * ``123 KB``
  * Depending on the value of ``{fileSize}``.
  */
-class BytesViewHelper extends AbstractViewHelper
+final class BytesViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

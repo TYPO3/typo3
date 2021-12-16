@@ -31,7 +31,7 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  *
  * Scope: frontend
  */
-class TimePickerViewHelper extends AbstractFormFieldViewHelper
+final class TimePickerViewHelper extends AbstractFormFieldViewHelper
 {
 
     /**

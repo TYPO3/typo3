@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * :file:`EXT:your_extension/Resources/Public/JavaScript/Library2.js`
  * will be loaded, plus some inline labels for usage in JS code.
  */
-class PageRendererViewHelper extends AbstractViewHelper
+final class PageRendererViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

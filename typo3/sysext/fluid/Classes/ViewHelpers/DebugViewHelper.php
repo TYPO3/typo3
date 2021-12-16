@@ -51,7 +51,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * [A HTML view of the var_dump]
  */
-class DebugViewHelper extends AbstractViewHelper
+final class DebugViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

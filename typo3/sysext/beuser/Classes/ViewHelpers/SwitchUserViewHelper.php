@@ -29,7 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Displays 'SwitchUser' button to change current backend user to target backend user
  * @internal
  */
-class SwitchUserViewHelper extends AbstractViewHelper
+final class SwitchUserViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

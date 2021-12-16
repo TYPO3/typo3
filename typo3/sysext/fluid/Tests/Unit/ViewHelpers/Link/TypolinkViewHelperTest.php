@@ -218,17 +218,12 @@ class TypolinkViewHelperTest extends UnitTestCase
      * @test
      * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
      */
-    public function mergeTypoLinkConfigurationMergesData(
-        array $decodedConfiguration,
-        array $viewHelperArguments,
-        array $expectation
-    ): void {
-        $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
-        $result = $subject->_call(
-            'mergeTypoLinkConfiguration',
-            $decodedConfiguration,
-            $viewHelperArguments
-        );
+    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expectation): void
+    {
+        $mock = \Closure::bind(static function (TypolinkViewHelper $typolinkViewHelper) use ($decodedConfiguration, $viewHelperArguments, &$result) {
+            $result = $typolinkViewHelper->mergeTypoLinkConfiguration($decodedConfiguration, $viewHelperArguments);
+        }, null, TypolinkViewHelper::class);
+        $mock(new TypolinkViewHelper());
         self::assertSame($expectation, $result);
     }
 }

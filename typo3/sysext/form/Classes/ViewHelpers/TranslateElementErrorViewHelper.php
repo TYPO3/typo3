@@ -31,7 +31,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Scope: frontend / backend
  */
-class TranslateElementErrorViewHelper extends AbstractViewHelper
+final class TranslateElementErrorViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

@@ -47,7 +47,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  * But encoded as ISO-8859-1.
  */
-class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
+final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 

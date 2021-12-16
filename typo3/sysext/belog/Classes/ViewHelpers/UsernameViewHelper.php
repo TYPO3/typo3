@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Get username from backend user id
  * @internal
  */
-class UsernameViewHelper extends AbstractViewHelper
+final class UsernameViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

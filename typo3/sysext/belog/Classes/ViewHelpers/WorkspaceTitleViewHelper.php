@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Get workspace title from workspace id
  * @internal
  */
-class WorkspaceTitleViewHelper extends AbstractViewHelper
+final class WorkspaceTitleViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

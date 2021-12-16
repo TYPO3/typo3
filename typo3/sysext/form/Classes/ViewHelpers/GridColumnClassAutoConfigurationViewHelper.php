@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Scope: frontend
  */
-class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
+final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 

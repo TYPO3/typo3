@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @internal
  */
-class IsArrayViewHelper extends AbstractViewHelper
+final class IsArrayViewHelper extends AbstractViewHelper
 {
     public function initializeArguments()
     {

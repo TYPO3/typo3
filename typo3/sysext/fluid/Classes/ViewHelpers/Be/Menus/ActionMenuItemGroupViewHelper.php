@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper which groups options of an option tag.
@@ -38,12 +39,19 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
  *      </f:be.menus.actionMenuItemGroup>
  *  </f:be.menus.actionMenu>
  */
-class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
+final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
      */
     protected $tagName = 'optgroup';
+
+    /**
+     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
+     *
+     * @var array
+     */
+    protected $childNodes = [];
 
     /**
      * Initialize arguments.
@@ -53,6 +61,7 @@ class ActionMenuItemGroupViewHelper extends ActionMenuViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('defaultController', 'string', 'The default controller to be used');
         $this->registerArgument('label', 'string', 'The label of the option group', false, '');
     }
 

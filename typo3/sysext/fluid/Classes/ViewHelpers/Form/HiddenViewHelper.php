@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  * You can also use the "property" attribute if you have bound an object to the form.
  * See :ref:`<f:form> <typo3-fluid-form>` for more documentation.
  */
-class HiddenViewHelper extends AbstractFormFieldViewHelper
+final class HiddenViewHelper extends AbstractFormFieldViewHelper
 {
     /**
      * @var string

@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * ViewHelper for displaying a remove extension link
  * @internal
  */
-class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
+final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
 {
     /**
      * @var string
