@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,8 +17,11 @@
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
+use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -27,38 +32,50 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
+ * Best practice with EXT: syntax
+ * ------------------------------
+ *
+ * ::
+ *
+ *    <link href="{f:uri.resource(path:'EXT:indexed_search/Resources/Public/Css/Stylesheet.css')}" rel="stylesheet" />
+ *
+ * Output::
+ *
+ *    <link href="typo3/sysext/indexed_search/Resources/Public/Css/Stylesheet.css" rel="stylesheet" />
+ *
+ * Preferred syntax that works in both extbase and non-extbase context.
+ *
  * Defaults
  * --------
  *
  * ::
  *
- *    <link href="{f:uri.resource(path:'css/stylesheet.css')}" rel="stylesheet" />
+ *    <link href="{f:uri.resource(path:'Css/Stylesheet.css')}" rel="stylesheet" />
  *
  * Output::
  *
- *    <link href="typo3conf/ext/example_extension/Resources/Public/css/stylesheet.css" rel="stylesheet" />
+ *    <link href="typo3conf/ext/example_extension/Resources/Public/Css/Stylesheet.css" rel="stylesheet" />
  *
- * Depending on current extension.
+ * Works only in extbase context since it uses the extbase request to find current extension, magically adds 'Resources/Public' to path.
  *
  * With extension name
  * -------------------
  *
  * ::
  *
- *    <link href="{f:uri.resource(path:'css/stylesheet.css', extensionName: 'AnotherExtension')}" rel="stylesheet" />
+ *    <link href="{f:uri.resource(path:'Css/Stylesheet.css', extensionName: 'AnotherExtension')}" rel="stylesheet" />
  *
  * Output::
  *
- *    <link href="typo3conf/ext/another_extension/Resources/Public/css/stylesheet.css" rel="stylesheet" />
+ *    <link href="typo3conf/ext/another_extension/Resources/Public/Css/Stylesheet.css" rel="stylesheet" />
+ *
+ * Magically adds 'Resources/Public' to path.
  */
 final class ResourceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('path', 'string', 'The path and filename of the resource (relative to Public resource directory of the extension).', true);
         $this->registerArgument('extensionName', 'string', 'Target extension name. If not set, the current extension name will be used');
@@ -68,24 +85,101 @@ final class ResourceViewHelper extends AbstractViewHelper
     /**
      * Render the URI to the resource. The filename is used from child content.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string The URI to the resource
+     * @throws InvalidFileException
+     * @throws \RuntimeException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $path = $arguments['path'];
-        $extensionName = $arguments['extensionName'];
-        $absolute = $arguments['absolute'];
-
-        if ($extensionName === null) {
-            $extensionName = $renderingContext->getRequest()->getControllerExtensionName();
-        }
-        $uri = PathUtility::getPublicResourceWebPath('EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path);
-        if ($absolute === true) {
+        $uri = PathUtility::getPublicResourceWebPath(self::resolveExtensionPath($arguments, $renderingContext));
+        if ($arguments['absolute']) {
             $uri = GeneralUtility::locationHeaderUrl($uri);
         }
+
         return $uri;
+    }
+
+    /**
+     * Resolves the extension path, either directly when possible, or from extension name and request
+     *
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    private static function resolveExtensionPath(array $arguments, RenderingContextInterface $renderingContext): string
+    {
+        $path = $arguments['path'];
+        if (PathUtility::isExtensionPath($path)) {
+            return $path;
+        }
+
+        return sprintf(
+            'EXT:%s/Resources/Public/%s',
+            self::resolveExtensionKey($arguments, $renderingContext),
+            ltrim($path, '/')
+        );
+    }
+
+    /**
+     * Resolves extension key either from given extension name argument or from request
+     *
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     */
+    private static function resolveExtensionKey(array $arguments, RenderingContextInterface $renderingContext): string
+    {
+        $extensionName = $arguments['extensionName'];
+        if ($extensionName === null) {
+            return self::resolveValidatedRequest($arguments, $renderingContext)->getControllerExtensionKey();
+        }
+
+        return GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+    }
+
+    /**
+     * Resolves and validates the request from rendering context
+     *
+     * @param array $arguments
+     * @param RenderingContextInterface $renderingContext
+     * @return RequestInterface
+     */
+    private static function resolveValidatedRequest(array $arguments, RenderingContextInterface $renderingContext): RequestInterface
+    {
+        if (!$renderingContext instanceof RenderingContext) {
+            throw new \RuntimeException(
+                sprintf(
+                    'RenderingContext must be instance of "%s", but is instance of "%s"',
+                    RenderingContext::class,
+                    get_class($renderingContext)
+                ),
+                1640095993
+            );
+        }
+        $request = $renderingContext->getRequest();
+        if (!$request instanceof RequestInterface) {
+            throw new \RuntimeException(
+                sprintf(
+                    'ViewHelper f:uri.resource needs an Extbase Request object to resolve extension name for given path "%s".'
+                    . ' If not in Extbase context, either set argument "extensionName",'
+                    . ' or (better) use the standard EXT: syntax for path attribute like \'path="EXT:indexed_search/Resources/Public/Icons/Extension.svg"\'.',
+                    $arguments['path']
+                ),
+                1639672666
+            );
+        }
+        if ($request->getControllerExtensionKey() === '') {
+            throw new \RuntimeException(
+                sprintf(
+                    'Can not resolve extension key for given path "%s".'
+                    . ' If not in Extbase context, either set argument "extensionName",'
+                    . ' or (better) use the standard EXT: syntax for path attribute like \'path="EXT:indexed_search/Resources/Public/Icons/Extension.svg"\'.',
+                    $arguments['path']
+                ),
+                1640097205
+            );
+        }
+
+        return $request;
     }
 }
