@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -47,10 +49,7 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('image', FileInterface::class, 'The original image file', true);
         $this->registerArgument(
@@ -61,18 +60,11 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
+        /** @var FileInterface $image */
         $image = $arguments['image'];
-        if ($image instanceof FileInterface) {
-            self::getContentObjectRenderer()->setCurrentFile($image);
-        }
+        self::getContentObjectRenderer()->setCurrentFile($image);
 
         $objDataBackup = null;
         if ($renderingContext->getVariableProvider()->exists('data')) {
@@ -83,24 +75,18 @@ final class ClickEnlargeViewHelper extends AbstractViewHelper
         $content = $renderChildrenClosure();
         $configuration['enable'] = true;
 
-        $result = self::getContentObjectRenderer()->imageLinkWrap($content, $image, $configuration);
+        $result = self::getContentObjectRenderer()->imageLinkWrap((string)$content, $image, $configuration);
         if ($objDataBackup) {
             self::getContentObjectRenderer()->data = $objDataBackup;
         }
         return $result;
     }
 
-    /**
-     * @return ContentObjectRenderer
-     */
-    protected static function getContentObjectRenderer()
+    protected static function getContentObjectRenderer(): ContentObjectRenderer
     {
         return $GLOBALS['TSFE']->cObj;
     }
 
-    /**
-     * @return TypoScriptService
-     */
     protected static function getTypoScriptService(): TypoScriptService
     {
         return GeneralUtility::makeInstance(TypoScriptService::class);

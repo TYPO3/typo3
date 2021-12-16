@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -37,10 +39,7 @@ final class UploadViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
@@ -50,12 +49,7 @@ final class UploadViewHelper extends AbstractFormFieldViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * Renders the upload field.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $name = $this->getName();
         $allowedFields = ['name', 'type', 'tmp_name', 'error', 'size'];

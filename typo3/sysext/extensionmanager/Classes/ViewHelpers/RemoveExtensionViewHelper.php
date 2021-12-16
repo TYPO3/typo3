@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,15 +19,16 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * ViewHelper for displaying a remove extension link
+ * ViewHelper for displaying a remove extension link.
+ *
  * @internal
  */
 final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
@@ -35,19 +38,14 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', '', true);
     }
 
-    /**
-     * Renders an install link
-     *
-     * @return string the rendered a tag
-     */
-    public function render()
+    public function render(): string
     {
         $extension = $this->arguments['extension'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -60,7 +58,6 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         ) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
         }
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $uriBuilder->reset();
@@ -72,8 +69,15 @@ final class RemoveExtensionViewHelper extends AbstractTagBasedViewHelper
         );
         $this->tag->addAttribute('href', $uri);
         $this->tag->addAttribute('class', $this->arguments['class']);
-        $this->tag->addAttribute('title', LocalizationUtility::translate('extensionList.remove', 'extensionmanager'));
+        $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
+            'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.remove'
+        )));
         $this->tag->setContent($iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render());
         return $this->tag->render();
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

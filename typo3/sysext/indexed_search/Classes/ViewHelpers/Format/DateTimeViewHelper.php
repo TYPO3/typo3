@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * DateTime viewhelper
  * @internal
  */
 final class DateTimeViewHelper extends AbstractViewHelper
@@ -37,16 +38,10 @@ final class DateTimeViewHelper extends AbstractViewHelper
     protected $escapeChildren = false;
 
     /**
-     * Render the given timestamp as date & time
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
+     * Render the given timestamp as date & time.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        return BackendUtility::datetime($renderChildrenClosure());
+        return BackendUtility::datetime((int)$renderChildrenClosure());
     }
 }

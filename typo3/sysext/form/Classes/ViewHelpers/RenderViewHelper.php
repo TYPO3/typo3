@@ -54,26 +54,15 @@ final class RenderViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('persistenceIdentifier', 'string', 'The persistence identifier for the form.', false, null);
+        $this->registerArgument('persistenceIdentifier', 'string', 'The persistence identifier for the form.', false);
         $this->registerArgument('factoryClass', 'string', 'The fully qualified class name of the factory', false, ArrayFormFactory::class);
-        $this->registerArgument('prototypeName', 'string', 'Name of the prototype to use', false, null);
+        $this->registerArgument('prototypeName', 'string', 'Name of the prototype to use', false);
         $this->registerArgument('overrideConfiguration', 'array', 'factory specific configuration', false, []);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): ?string
     {
         $persistenceIdentifier = $arguments['persistenceIdentifier'];
         $factoryClass = $arguments['factoryClass'];

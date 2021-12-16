@@ -46,26 +46,13 @@ final class RenderRenderableViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('renderable', RootRenderableInterface::class, 'A RenderableInterface instance', true);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     * @internal
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-
         /** @var FormRuntime $formRuntime */
         $formRuntime = $renderingContext
             ->getViewHelperVariableContainer()

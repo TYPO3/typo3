@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -107,31 +109,23 @@ final class CaseViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('value', 'string', 'The input value. If not given, the evaluated child nodes will be used.', false, null);
+        $this->registerArgument('value', 'string', 'The input value. If not given, the evaluated child nodes will be used.', false);
         $this->registerArgument('mode', 'string', 'The case to apply, must be one of this\' CASE_* constants. Defaults to uppercase application.', false, self::CASE_UPPER);
     }
 
     /**
      * Changes the case of the input string
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $value = $arguments['value'];
         $mode = $arguments['mode'];
 
         if ($value === null) {
-            $value = $renderChildrenClosure();
+            $value = (string)$renderChildrenClosure();
         }
 
         switch ($mode) {

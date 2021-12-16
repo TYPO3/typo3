@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -36,10 +38,11 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *    <f:be.pageInfo />
  *
  * Page info icon with context menu
+ *
+ * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
  */
 final class PageInfoViewHelper extends AbstractBackendViewHelper
 {
-
     /**
      * This ViewHelper renders HTML, thus output must not be escaped
      *
@@ -47,28 +50,12 @@ final class PageInfoViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Render javascript in header
-     *
-     * @return string the rendered page info icon
-     */
-    public function render()
+    public function render(): string
     {
-        return static::renderStatic(
-            [],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return self::renderStatic([], $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));

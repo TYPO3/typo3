@@ -32,14 +32,7 @@ final class MaximumFileSizeViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     * @internal
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $maxUploadFileSize = GeneralUtility::getMaxUploadFileSize();
         // format according to PHP formatting rules (K = kilobytes instead of kibibytes)

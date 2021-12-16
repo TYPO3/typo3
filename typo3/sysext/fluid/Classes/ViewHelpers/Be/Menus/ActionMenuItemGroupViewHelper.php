@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -46,33 +48,17 @@ final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'optgroup';
 
-    /**
-     * An array of \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode
-     *
-     * @var array
-     */
-    protected $childNodes = [];
-
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('defaultController', 'string', 'The default controller to be used');
+        // @todo: deprecate
+        $this->registerArgument('defaultController', 'string', 'Unused');
         $this->registerArgument('label', 'string', 'The label of the option group', false, '');
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
-        $label = $this->arguments['label'];
-
-        $this->tag->addAttribute('label', $label);
+        $this->tag->addAttribute('label', $this->arguments['label']);
         $options = '';
         foreach ($this->childNodes as $childNode) {
             if ($childNode instanceof ViewHelperNode) {

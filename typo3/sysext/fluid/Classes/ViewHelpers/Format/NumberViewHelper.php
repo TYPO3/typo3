@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -57,34 +59,21 @@ final class NumberViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, '2');
+        $this->registerArgument('decimals', 'int', 'The number of digits after the decimal point', false, 2);
         $this->registerArgument('decimalSeparator', 'string', 'The decimal point character', false, '.');
         $this->registerArgument('thousandsSeparator', 'string', 'The character for grouping the thousand digits', false, ',');
     }
 
     /**
-     * Format the numeric value as a number with grouped thousands, decimal point and
-     * precision.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string The formatted number
+     * Format the numeric value as a number with grouped thousands, decimal point and precision.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $decimals = $arguments['decimals'];
         $decimalSeparator = $arguments['decimalSeparator'];
         $thousandsSeparator = $arguments['thousandsSeparator'];
-
         $stringToFormat = $renderChildrenClosure();
         return number_format((float)$stringToFormat, $decimals, $decimalSeparator, $thousandsSeparator);
     }

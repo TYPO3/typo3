@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -80,16 +82,10 @@ final class StripTagsViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'string', 'string to format');
-        $this->registerArgument('allowedTags', 'string', 'Optional string of allowed tags as required by PHPs strip_tags() f
-unction');
+        $this->registerArgument('allowedTags', 'string', 'Optional string of allowed tags as required by PHPs strip_tags() function');
     }
 
     /**
@@ -100,20 +96,14 @@ unction');
     protected $escapeChildren = false;
 
     /**
-     * Applies strip_tags() on the specified value.
+     * Applies strip_tags() on the specified value if it's string-able.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @see https://www.php.net/manual/function.strip-tags.php
-     * @return string
+     * @return mixed
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $value = $renderChildrenClosure();
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    {
+        $value = $arguments['value'] ?? $renderChildrenClosure();
         $allowedTags = $arguments['allowedTags'];
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;

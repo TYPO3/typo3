@@ -37,40 +37,20 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * @var HashService
-     */
-    protected $hashService;
+    protected HashService $hashService;
+    protected PropertyMapper $propertyMapper;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     */
-    protected $propertyMapper;
-
-    /**
-     * @param HashService $hashService
-     * @internal
-     */
     public function injectHashService(HashService $hashService)
     {
         $this->hashService = $hashService;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @internal
-     */
     public function injectPropertyMapper(PropertyMapper $propertyMapper)
     {
         $this->propertyMapper = $propertyMapper;
     }
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('as', 'string', '');
@@ -81,10 +61,7 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $output = '';
 
@@ -135,10 +112,8 @@ final class UploadedResourceViewHelper extends AbstractFormFieldViewHelper
     /**
      * Return a previously uploaded resource.
      * Return NULL if errors occurred during property mapping for this property.
-     *
-     * @return FileReference|null
      */
-    protected function getUploadedResource()
+    protected function getUploadedResource(): ?FileReference
     {
         if ($this->getMappingResultsForProperty()->hasErrors()) {
             return null;

@@ -35,20 +35,15 @@ final class ConstraintsViewHelper extends AbstractViewHelper
         $this->registerArgument('extension', Extension::class, 'extension to process', true);
     }
 
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): array {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): array
+    {
         $groupedConstraints = [];
-
         foreach ($arguments['extension']->getDependencies() as $dependency) {
             $groupedConstraints[$dependency->getType()][self::getTransformedIdentifier($dependency->getIdentifier())] = [
                 'version' => self::getVersionString($dependency->getLowestVersion(), $dependency->getHighestVersion()),
                 'versionCompatible' => self::isVersionCompatible($dependency),
             ];
         }
-
         return $groupedConstraints;
     }
 
@@ -62,7 +57,6 @@ final class ConstraintsViewHelper extends AbstractViewHelper
     protected static function getVersionString(string $lowestVersion, string $highestVersion): string
     {
         $version = '';
-
         if ($lowestVersion !== '') {
             $version .= '(' . $lowestVersion;
             if ($highestVersion !== '') {
@@ -70,7 +64,6 @@ final class ConstraintsViewHelper extends AbstractViewHelper
             }
             $version .= ')';
         }
-
         return $version;
     }
 

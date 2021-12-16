@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,10 +23,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Page browser for indexed search, and only useful here, as the
- * regular pagebrowser
- * so this is a cleaner "pi_browsebox" but not a real page browser
- * functionality
+ * Page browser for indexed search, and only useful here, as the regular pagebrowser.
+ * This is a cleaner "pi_browsebox" but not a real page browser functionality.
+ *
  * @internal
  */
 final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
@@ -39,10 +40,7 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'ul';
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('maximumNumberOfResultPages', 'int', '', true);
         $this->registerArgument('numberOfResults', 'int', '', true);
@@ -52,10 +50,7 @@ final class PageBrowsingViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function render()
+    public function render(): string
     {
         $maximumNumberOfResultPages = $this->arguments['maximumNumberOfResultPages'];
         $numberOfResults = $this->arguments['numberOfResults'];

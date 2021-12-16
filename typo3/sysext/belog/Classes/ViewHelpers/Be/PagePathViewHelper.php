@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,14 +23,12 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Get page path string from page id
+ *
  * @internal
  */
 final class PagePathViewHelper extends AbstractBackendViewHelper
 {
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('pid', 'int', 'Pid of the page', true);
@@ -37,26 +37,17 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
 
     /**
      * Resolve page id to page path string (with automatic cropping to maximum given length).
-     *
-     * @return string Page path string
      */
-    public function render()
+    public function render(): string
     {
-        return static::renderStatic(
+        return self::renderStatic(
             $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         return BackendUtility::getRecordPath($arguments['pid'], '', $arguments['titleLimit']);
     }

@@ -46,10 +46,7 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('route', 'string', 'The route to link to', true);
         $this->registerArgument('arguments', 'array', 'Additional link arguments', false, []);
@@ -59,11 +56,6 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
 
     /**
      * Render module link with arguments
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
@@ -75,7 +67,6 @@ final class ModuleLinkViewHelper extends AbstractViewHelper
         if ($arguments['currentUrlParameterName'] !== null) {
             $parameters[$arguments['currentUrlParameterName']] = $renderingContext->getRequest()->getAttribute('normalizedParams')->getRequestUri();
         }
-
         return (string)$uriBuilder->buildUriFromRoute($arguments['route'], $parameters);
     }
 }

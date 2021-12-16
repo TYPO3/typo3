@@ -51,20 +51,14 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @var AssetCollector
-     */
-    protected $assetCollector;
+    protected AssetCollector $assetCollector;
 
-    /**
-     * @param AssetCollector $assetCollector
-     */
     public function injectAssetCollector(AssetCollector $assetCollector): void
     {
         $this->assetCollector = $assetCollector;
     }
 
-    public function initialize()
+    public function initialize(): void
     {
         // Add a tag builder, that does not html encode values, because rendering with encoding happens in AssetRenderer
         $this->setTagBuilder(
@@ -78,9 +72,6 @@ final class ScriptViewHelper extends AbstractTagBasedViewHelper
         parent::initialize();
     }
 
-    /**
-     * @api
-     */
     public function initializeArguments(): void
     {
         parent::initializeArguments();

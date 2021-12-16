@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,14 +20,15 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Display a deactivate / activate link
+ * Render deactivate / activate extension link.
+ *
  * @internal
  */
 final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedViewHelper
@@ -35,22 +38,14 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
      */
     protected $tagName = 'a';
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
         $this->registerArgument('extension', 'array', '', true);
     }
 
-    /**
-     * Renders an install link
-     *
-     * @return string the rendered a tag
-     */
-    public function render()
+    public function render(): string
     {
         if (Environment::isComposerMode()) {
             return '';
@@ -76,11 +71,18 @@ final class ToggleExtensionInstallationStateViewHelper extends AbstractTagBasedV
         );
         $this->tag->addAttribute('href', $uri);
         $label = $extension['installed'] ? 'deactivate' : 'activate';
-        $this->tag->addAttribute('title', LocalizationUtility::translate('extensionList.' . $label, 'extensionmanager'));
+        $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
+            'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.' . $label
+        )));
         $icon = $extension['installed'] ? 'uninstall' : 'install';
         $this->tag->addAttribute('class', 'onClickMaskExtensionManager btn btn-default');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->tag->setContent($iconFactory->getIcon('actions-system-extension-' . $icon, Icon::SIZE_SMALL)->render());
         return $this->tag->render();
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

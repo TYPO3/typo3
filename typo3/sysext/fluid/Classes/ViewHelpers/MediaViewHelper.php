@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -73,10 +75,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'img';
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -92,12 +91,12 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Render a given media file
+     * Render a given media file.
      *
-     * @return string Rendered tag
      * @throws \UnexpectedValueException
+     * @throws Exception
      */
-    public function render()
+    public function render(): string
     {
         $file = $this->arguments['file'];
         $additionalConfig = (array)$this->arguments['additionalConfig'];
@@ -115,7 +114,11 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         }
 
         if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
-            throw new Exception('The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1619030957);
+            throw new Exception(
+                'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
+                . ' as a valid image file extension and can not be processed.',
+                1619030957
+            );
         }
 
         $fileRenderer = GeneralUtility::makeInstance(RendererRegistry::class)->getRenderer($file);
@@ -137,7 +140,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
      * @param string|null $fileExtension
      * @return string Rendered img tag
      */
-    protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension)
+    protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension): string
     {
         $cropVariant = $this->arguments['cropVariant'] ?: 'default';
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
@@ -185,12 +188,7 @@ final class MediaViewHelper extends AbstractTagBasedViewHelper
         return $this->tag->render();
     }
 
-    /**
-     * Return an instance of ImageService
-     *
-     * @return ImageService
-     */
-    protected function getImageService()
+    protected function getImageService(): ImageService
     {
         return GeneralUtility::makeInstance(ImageService::class);
     }

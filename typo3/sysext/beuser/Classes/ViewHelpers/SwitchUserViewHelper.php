@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,14 +21,15 @@ use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Displays 'SwitchUser' button to change current backend user to target backend user
+ * Displays 'SwitchUser' button to change current backend user to target backend user.
+ *
  * @internal
  */
 final class SwitchUserViewHelper extends AbstractViewHelper
@@ -40,24 +43,15 @@ final class SwitchUserViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('backendUser', BackendUser::class, 'Target backendUser to switch active session to', true);
     }
 
     /**
      * Render link with sprite icon to change current backend user to target
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $targetUser = $arguments['backendUser'];
         $currentUser = self::getBackendUserAuthentication();
@@ -73,7 +67,7 @@ final class SwitchUserViewHelper extends AbstractViewHelper
 
         return '
             <typo3-backend-switch-user targetUser="' . htmlspecialchars((string)$targetUser->getUid()) . '">
-                <button type="button" class="btn btn-default" title="' . htmlspecialchars(LocalizationUtility::translate('switchBackMode', 'beuser') ?? '') . '">'
+                <button type="button" class="btn btn-default" title="' . htmlspecialchars(self::getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:switchBackMode')) . '">'
                     . $iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() .
                 '</button>
             </typo3-switch-user-button>';
@@ -82,5 +76,10 @@ final class SwitchUserViewHelper extends AbstractViewHelper
     protected static function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected static function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

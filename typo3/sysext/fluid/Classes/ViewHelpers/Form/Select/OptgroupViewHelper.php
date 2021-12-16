@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,10 +30,7 @@ final class OptgroupViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'optgroup';
 
-    /**
-     * Initialize additional arguments available for this tag ViewHelper.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerUniversalTagAttributes();
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.');
@@ -40,10 +39,7 @@ final class OptgroupViewHelper extends AbstractFormFieldViewHelper
         $this->registerTagAttribute('disabled', 'boolean', 'If true, option group is rendered as disabled', false, false);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         if ($this->arguments['disabled']) {
             $this->tag->addAttribute('disabled', 'disabled');

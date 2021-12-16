@@ -45,24 +45,12 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('contentElementUid', 'int', 'The uid of a content element');
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     * @internal
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $content = '';
         $contentElementUid = $arguments['contentElementUid'];

@@ -33,14 +33,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 final class FormViewHelper extends FluidFormViewHelper
 {
-
     /**
      * Renders hidden form fields for referrer information about
      * the current request.
      *
      * @return string Hidden fields with referrer information
      */
-    protected function renderHiddenReferrerFields()
+    protected function renderHiddenReferrerFields(): string
     {
         $formRuntime = $this->getFormRuntime();
         $prefix = $this->prefixFieldName($this->getFormObjectName());
@@ -62,11 +61,6 @@ final class FormViewHelper extends FluidFormViewHelper
         return $markup;
     }
 
-    /**
-     * @param string $name
-     * @param string $value
-     * @return string
-     */
     protected function createHiddenInputElement(string $name, string $value): string
     {
         $tagBuilder = GeneralUtility::makeInstance(TagBuilder::class, 'input');
@@ -79,10 +73,8 @@ final class FormViewHelper extends FluidFormViewHelper
     /**
      * We do NOT return NULL as in this case, the Form ViewHelpers do not enter $objectAccessorMode.
      * However, we return the form identifier.
-     *
-     * @return string
      */
-    protected function getFormObjectName()
+    protected function getFormObjectName(): string
     {
         return $this->getFormRuntime()->getFormDefinition()->getIdentifier();
     }

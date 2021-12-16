@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -40,10 +42,7 @@ final class TriggerViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('triggers', 'array', 'Defined triggers to be forwarded to client (e.g. refreshing backend widgets)', false, []);
@@ -52,10 +51,8 @@ final class TriggerViewHelper extends AbstractBackendViewHelper
     /**
      * Loads some JS inline code based on a list of triggers. This is used to reload the main
      * menu when modules are loaded/unloaded.
-     *
-     * @return string This ViewHelper does not return any content
      */
-    public function render()
+    public function render(): string
     {
         $html = '';
         // Handle triggers

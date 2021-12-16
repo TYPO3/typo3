@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +17,7 @@
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -25,6 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Most of that could be done in fluid directly, but this ViewHelper
  * is much better performance wise.
+ *
  * @internal
  */
 final class PermissionsViewHelper extends AbstractViewHelper
@@ -38,40 +41,24 @@ final class PermissionsViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @var array Cached labels for a single permission mask like "Delete page"
-     */
-    protected static $permissionLabels = [];
+    protected static array $cachePermissionLabels = [];
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('permission', 'int', 'Current permission', true);
         $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
         $this->registerArgument('pageId', 'int', '', true);
     }
 
-    /**
-     * Return permissions.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $masks = [1, 16, 2, 4, 8];
 
-        if (empty(static::$permissionLabels)) {
+        if (empty(self::$cachePermissionLabels)) {
             foreach ($masks as $mask) {
-                static::$permissionLabels[$mask] = LocalizationUtility::translate(
+                self::$cachePermissionLabels[$mask] = htmlspecialchars(self::getLanguageService()->sL(
                     'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
-                    'be_user'
-                );
+                ));
             }
         }
 
@@ -85,13 +72,13 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 $mode = 'add';
             }
 
-            $label = static::$permissionLabels[$mask];
+            $label = self::$cachePermissionLabels[$mask];
             $icon .= '<button'
                 . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
                 . ' data-bs-toggle="tooltip"'
-                . ' data-page="' . htmlspecialchars($arguments['pageId']) . '"'
-                . ' data-permissions="' . htmlspecialchars($arguments['permission']) . '"'
+                . ' data-page="' . htmlspecialchars((string)$arguments['pageId']) . '"'
+                . ' data-permissions="' . htmlspecialchars((string)$arguments['permission']) . '"'
                 . ' data-who="' . htmlspecialchars($arguments['scope']) . '"'
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
@@ -99,5 +86,10 @@ final class PermissionsViewHelper extends AbstractViewHelper
         }
 
         return '<span id="' . htmlspecialchars($arguments['pageId'] . '_' . $arguments['scope']) . '">' . $icon . '</span>';
+    }
+
+    protected static function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

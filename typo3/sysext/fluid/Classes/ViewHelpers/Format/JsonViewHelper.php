@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -11,10 +13,6 @@
  * LICENSE.txt file that was distributed with this source code.
  *
  * The TYPO3 project - inspiring people to share!
- */
-
-/*
- * Inspired by and partially taken from the Neos.Form package (www.neos.io)
  */
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
@@ -67,10 +65,7 @@ final class JsonViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'mixed', 'The incoming data to convert, or null if VH children should be used');
         $this->registerArgument('forceObject', 'bool', 'Outputs an JSON object rather than an array', false, false);
@@ -85,11 +80,8 @@ final class JsonViewHelper extends AbstractViewHelper
      * If $forceObject is TRUE a JSON object is outputted even if the value is a non-associative array
      * Example: array('foo', 'bar') as input will not be ["foo","bar"] but {"0":"foo","1":"bar"}
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @see https://www.php.net/manual/function.json-encode.php
-     * @return string
+     * @return string|false
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -33,18 +35,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  */
 final class LinkViewHelper extends AbstractTagBasedViewHelper
 {
-
     /**
      * @var string
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('route', 'string', 'The name of the route', true);
@@ -65,22 +61,16 @@ final class LinkViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * @return string Rendered link
-     */
-    public function render()
+    public function render(): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $route = $this->arguments['route'];
         $parameters = $this->arguments['parameters'];
         $referenceType = $this->arguments['referenceType'];
-
         $uri = $uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
-
         $this->tag->addAttribute('href', $uri);
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
-
         return $this->tag->render();
     }
 }

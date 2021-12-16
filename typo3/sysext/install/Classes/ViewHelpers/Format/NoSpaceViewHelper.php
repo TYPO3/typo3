@@ -30,9 +30,6 @@ final class NoSpaceViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     */
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -40,13 +37,7 @@ final class NoSpaceViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render a string with whitespaces stripped
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
+     * Render a string with whitespaces stripped.
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {

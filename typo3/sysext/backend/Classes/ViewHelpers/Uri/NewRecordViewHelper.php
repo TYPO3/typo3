@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Uri;
 
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -73,7 +74,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'uid < 0 will insert the record after the given uid', false);
         $this->registerArgument('pid', 'int', 'the page id where the record will be created', false);
@@ -83,12 +84,8 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws \InvalidArgumentException
+     * @throws RouteNotFoundException
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
@@ -108,7 +105,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
             'returnUrl' => $arguments['returnUrl'],
         ];
 
-        if (is_array($arguments['defaultValues']) && $arguments['defaultValues'] !== []) {
+        if ($arguments['defaultValues']) {
             $params['defVals'] = $arguments['defaultValues'];
         }
 

@@ -23,7 +23,6 @@ use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
 use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -69,32 +68,22 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @throws Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument(
-            'build',
-            'string',
-            'preset name or class-like name of sanitization builder',
-            false,
-            'default'
-        );
+        $this->registerArgument('build', 'string', 'preset name or class-like name of sanitization builder', false, 'default');
     }
 
     /**
      * @param array{build: string|class-string} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     *
-     * @return string the parsed string.
+     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $value = $renderChildrenClosure();
-        $build = $arguments['build'] ?? 'default';
-        return static::createSanitizer($build)->sanitize((string)$value);
+        $build = $arguments['build'];
+        return self::createSanitizer($build)->sanitize((string)$value);
     }
 
     protected static function createSanitizer(string $build): Sanitizer

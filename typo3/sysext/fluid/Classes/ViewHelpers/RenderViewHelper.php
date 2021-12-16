@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,7 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 final class RenderViewHelper extends \TYPO3Fluid\Fluid\ViewHelpers\RenderViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('debug', 'boolean', 'If true, the admin panel shows debug information if activated,', false, true);

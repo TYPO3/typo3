@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,10 +30,7 @@ final class PhpErrorCodeViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * @var array
-     */
-    protected static $levelNames = [
+    protected static array $levelNames = [
         E_ERROR => 'E_ERROR',
         E_WARNING => 'E_WARNING',
         E_PARSE => 'E_PARSE',
@@ -49,24 +48,15 @@ final class PhpErrorCodeViewHelper extends AbstractViewHelper
         E_USER_DEPRECATED => 'E_USER_DEPRECATED',
     ];
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('phpErrorCode', 'int', '', true);
     }
 
     /**
-     * Render a readable string for PHP error code
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
+     * Render a readable string for PHP error code.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $phpErrorCode = (int)$arguments['phpErrorCode'];
         $levels = [];

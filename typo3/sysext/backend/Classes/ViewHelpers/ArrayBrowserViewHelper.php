@@ -25,6 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders a given array as tree
+ *
  * @internal
  */
 final class ArrayBrowserViewHelper extends AbstractViewHelper
@@ -38,29 +39,19 @@ final class ArrayBrowserViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument('data', 'array', 'Array which should be rendered');
+        $this->registerArgument('data', 'array', 'Array which should be rendered', false, []);
     }
 
     /**
      * Render unordered list for pages
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class);
         $arrayBrowser->dontLinkVar = true;
         $arrayBrowser->expAll = true;
-
         return $arrayBrowser->tree($arguments['data'], '');
     }
 }

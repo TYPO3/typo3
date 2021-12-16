@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -103,10 +105,7 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->imageService = GeneralUtility::makeInstance(ImageService::class);
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -134,14 +133,12 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Resizes a given image (if required) and renders the respective img tag
+     * Resizes a given image (if required) and renders the respective img tag.
      *
      * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Image/
-     *
      * @throws Exception
-     * @return string Rendered tag
      */
-    public function render()
+    public function render(): string
     {
         $src = (string)$this->arguments['src'];
         if (($src === '' && $this->arguments['image'] === null) || ($src !== '' && $this->arguments['image'] !== null)) {
@@ -149,7 +146,11 @@ final class ImageViewHelper extends AbstractTagBasedViewHelper
         }
 
         if ((string)$this->arguments['fileExtension'] && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], (string)$this->arguments['fileExtension'])) {
-            throw new Exception('The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'] as a valid image file extension and can not be processed.', 1618989190);
+            throw new Exception(
+                'The extension ' . $this->arguments['fileExtension'] . ' is not specified in $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\']'
+                . ' as a valid image file extension and can not be processed.',
+                1618989190
+            );
         }
 
         try {

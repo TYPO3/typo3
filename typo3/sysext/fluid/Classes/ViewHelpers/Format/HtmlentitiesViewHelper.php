@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -65,10 +67,7 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'string', 'string to format');
         $this->registerArgument('keepQuotes', 'bool', 'If TRUE, single and double quotes won\'t be replaced (sets ENT_NOQUOTES flag).', false, false);
@@ -80,9 +79,6 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
      * Escapes special characters with their escaped counterparts as needed using PHPs htmlentities() function.
      *
      * @see https://www.php.net/manual/function.htmlentities.php
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return mixed
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)

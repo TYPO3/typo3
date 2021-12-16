@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -52,10 +54,7 @@ final class ExternalViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('uri', 'string', 'The URI that will be put in the href attribute of the rendered link tag', true);
@@ -67,10 +66,7 @@ final class ExternalViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
 
-    /**
-     * @return string Rendered link
-     */
-    public function render()
+    public function render(): string
     {
         $uri = $this->arguments['uri'];
         $defaultScheme = $this->arguments['defaultScheme'];

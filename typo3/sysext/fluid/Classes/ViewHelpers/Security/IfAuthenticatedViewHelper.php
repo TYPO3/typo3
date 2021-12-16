@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -56,13 +58,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  */
 final class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
 {
-    /**
-     * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
-     *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexibility in overriding this method.
-     * @return bool
-     */
-    protected static function evaluateCondition($arguments = null)
+    protected static function evaluateCondition($arguments = null): bool
     {
         return GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'id', 0) > 0;
     }

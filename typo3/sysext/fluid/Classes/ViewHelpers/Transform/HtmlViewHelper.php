@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Html\HtmlWorker;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception as ViewHelperException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -72,35 +71,19 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @throws ViewHelperException
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
-        $this->registerArgument(
-            'selector',
-            'string',
-            'comma separated list of node attributes to be considered',
-            false,
-            'a.href'
-        );
-        $this->registerArgument(
-            'onFailure',
-            'string',
-            'behavior on failure, either `removeTag`, `removeAttr`, `removeEnclosure` or `null`',
-            false,
-            'removeEnclosure'
-        );
+        $this->registerArgument('selector', 'string', 'comma separated list of node attributes to be considered', false, 'a.href');
+        $this->registerArgument('onFailure', 'string', 'behavior on failure, either `removeTag`, `removeAttr`, `removeEnclosure` or `null`', false, 'removeEnclosure');
     }
 
     /**
      * @param array{selector: string} $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     *
      * @return string transformed markup
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $content = $renderChildrenClosure();
         $worker = GeneralUtility::makeInstance(HtmlWorker::class);

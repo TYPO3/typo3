@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -103,10 +105,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected $selectedValue;
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -125,18 +124,13 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('required', 'boolean', 'If set no empty value is allowed.', false, false);
     }
 
-    /**
-     * Render the tag.
-     *
-     * @return string rendered tag.
-     */
-    public function render()
+    public function render(): string
     {
-        if (isset($this->arguments['required']) && $this->arguments['required']) {
+        if ($this->arguments['required']) {
             $this->tag->addAttribute('required', 'required');
         }
         $name = $this->getName();
-        if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
+        if ($this->arguments['multiple']) {
             $this->tag->addAttribute('multiple', 'multiple');
             $name .= '[]';
         }
@@ -153,7 +147,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
         $this->registerFieldNameForFormTokenGeneration($name);
         // in case it is a multi-select, we need to register the field name
         // as often as there are elements in the box
-        if (isset($this->arguments['multiple']) && $this->arguments['multiple']) {
+        if ($this->arguments['multiple']) {
             $content .= $this->renderHiddenFieldForEmptyValue();
             // Register the field name additional times as required by the total number of
             // options. Since we already registered it once above, we start the counter at 1
@@ -193,32 +187,27 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * Render prepended option tag
-     *
-     * @return string rendered prepended empty option
      */
-    protected function renderPrependOptionTag()
+    protected function renderPrependOptionTag(): string
     {
         $output = '';
         if ($this->hasArgument('prependOptionLabel')) {
             $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
             $label = $this->arguments['prependOptionLabel'];
-            $output .= $this->renderOptionTag($value, $label, false) . LF;
+            $output .= $this->renderOptionTag((string)$value, (string)$label, false) . LF;
         }
         return $output;
     }
 
     /**
      * Render the option tags.
-     *
-     * @param array $options the options for the form.
-     * @return string rendered tags.
      */
-    protected function renderOptionTags($options)
+    protected function renderOptionTags(array $options): string
     {
         $output = '';
         foreach ($options as $value => $label) {
             $isSelected = $this->isSelected($value);
-            $output .= $this->renderOptionTag($value, $label, $isSelected) . LF;
+            $output .= $this->renderOptionTag((string)$value, (string)$label, $isSelected) . LF;
         }
         return $output;
     }
@@ -226,9 +215,9 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Render the option tags.
      *
-     * @return array an associative array of options, key will be the value of the option tag
+     * @return array An associative array of options, key will be the value of the option tag
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
             return [];
@@ -282,9 +271,9 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      * Render the option tags.
      *
      * @param mixed $value Value to check for
-     * @return bool TRUE if the value should be marked a s selected; FALSE otherwise
+     * @return bool True if the value should be marked as selected.
      */
-    protected function isSelected($value)
+    protected function isSelected($value): bool
     {
         $selectedValue = $this->getSelectedValue();
         if ($value === $selectedValue || (string)$value === $selectedValue) {
@@ -324,7 +313,7 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      * Get the option value for an object
      *
      * @param mixed $valueElement
-     * @return string
+     * @return string @todo: Does not always return string ...
      */
     protected function getOptionValueScalar($valueElement)
     {
@@ -346,16 +335,16 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
      *
      * @param string $value value attribute of the option tag (will be escaped)
      * @param string $label content of the option tag (will be escaped)
-     * @param bool $isSelected specifies whether or not to add selected attribute
+     * @param bool $isSelected specifies whether to add selected attribute
      * @return string the rendered option tag
      */
-    protected function renderOptionTag($value, $label, $isSelected)
+    protected function renderOptionTag(string $value, string $label, bool $isSelected): string
     {
-        $output = '<option value="' . htmlspecialchars((string)$value) . '"';
+        $output = '<option value="' . htmlspecialchars($value) . '"';
         if ($isSelected) {
             $output .= ' selected="selected"';
         }
-        $output .= '>' . htmlspecialchars((string)$label) . '</option>';
+        $output .= '>' . htmlspecialchars($label) . '</option>';
         return $output;
     }
 }

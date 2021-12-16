@@ -44,12 +44,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize the arguments
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('renderable', RenderableInterface::class, 'A renderable element', true);
         $this->registerArgument('as', 'string', 'The name within the template', false, 'formValue');
@@ -57,13 +52,8 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
 
     /**
      * Return array element by key
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string the rendered form values
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $element = $arguments['renderable'];
 
@@ -95,23 +85,22 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
 
         $as = $arguments['as'];
         $renderingContext->getVariableProvider()->add($as, $data);
-        $output = $renderChildrenClosure();
+        $output = (string)$renderChildrenClosure();
         $renderingContext->getVariableProvider()->remove($as);
 
         return $output;
     }
 
     /**
-     * Converts the given value to a simple type (string or array) considering the underlying FormElement definition
+     * Converts the given value to a simple type (string or array) considering the underlying FormElement definition.
      *
      * @param FormElementInterface $element
      * @param mixed $value
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @internal
      */
-    public static function processElementValue(
+    protected static function processElementValue(
         FormElementInterface $element,
         $value,
         \Closure $renderChildrenClosure,
@@ -119,7 +108,7 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     ) {
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
-        if ($options !== null && is_array($options)) {
+        if (is_array($options)) {
             $properties['options'] = TranslateElementPropertyViewHelper::renderStatic(
                 ['element' => $element, 'property' => 'options'],
                 $renderChildrenClosure,
@@ -137,15 +126,11 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Replaces the given values (=keys) with the corresponding elements in $options
-     * @see mapValueToOption()
+     * Replaces the given values (=keys) with the corresponding elements in $options.
      *
-     * @param array $value
-     * @param array $options
-     * @return array
-     * @internal
+     * @see mapValueToOption()
      */
-    public static function mapValuesToOptions(array $value, array $options): array
+    protected static function mapValuesToOptions(array $value, array $options): array
     {
         $result = [];
         foreach ($value as $key) {
@@ -161,22 +146,20 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
      * @param mixed $value
      * @param array $options
      * @return mixed
-     * @internal
      */
-    public static function mapValueToOption($value, array $options)
+    protected static function mapValueToOption($value, array $options)
     {
         return $options[$value] ?? $value;
     }
 
     /**
-     * Converts the given $object to a string representation considering the $element FormElement definition
+     * Converts the given $object to a string representation considering the $element FormElement definition.
      *
      * @param FormElementInterface $element
      * @param object $object
      * @return string
-     * @internal
      */
-    public static function processObject(FormElementInterface $element, $object): string
+    protected static function processObject(FormElementInterface $element, $object): string
     {
         if ($element instanceof StringableFormElementInterface) {
             return $element->valueToString($object);
@@ -201,23 +184,16 @@ final class RenderFormValueViewHelper extends AbstractViewHelper
         return 'Object [' . get_class($object) . ']';
     }
 
-    /**
-     * @param RenderableInterface $renderable
-     * @return bool
-     * @internal
-     */
-    public static function isEnabled(RenderableInterface $renderable): bool
+    protected static function isEnabled(RenderableInterface $renderable): bool
     {
         if (!$renderable->isEnabled()) {
             return false;
         }
-
         while ($renderable = $renderable->getParentRenderable()) {
             if ($renderable instanceof RenderableInterface && !$renderable->isEnabled()) {
                 return false;
             }
         }
-
         return true;
     }
 }

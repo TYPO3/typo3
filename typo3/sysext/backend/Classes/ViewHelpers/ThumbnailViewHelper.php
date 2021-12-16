@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -74,10 +76,7 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
         $this->imageService = GeneralUtility::makeInstance(ImageService::class);
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -107,9 +106,9 @@ final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @return string Rendered tag
+     * @throws Exception
      */
-    public function render()
+    public function render(): string
     {
         if (($this->arguments['src'] === '' && $this->arguments['image'] === null) || ($this->arguments['src'] !== '' && $this->arguments['image'] !== null)) {
             throw new Exception('You must either specify a string src or a File object.', 1533290762);

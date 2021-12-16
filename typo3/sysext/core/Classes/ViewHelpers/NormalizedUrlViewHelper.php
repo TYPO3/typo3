@@ -44,35 +44,27 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  * Output::
  *
  *     /typo3/sysext/core/Resources/Public/Images/typo3_black.svg
+ *
  * @internal
  */
 final class NormalizedUrlViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('pathOrUrl', 'string', 'Absolute path to file using EXT: syntax or URL.');
     }
 
     /**
-     * Ouputs what is given as URL or extension relative path as absolute URL
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
+     * Output what is given as URL or extension relative path as absolute URL
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $pathOrUrl = $renderChildrenClosure();
+        $pathOrUrl = $arguments['pathOrUrl'] ?? $renderChildrenClosure();
         if (PathUtility::hasProtocolAndScheme($pathOrUrl)) {
             return $pathOrUrl;
         }
-
-        return GeneralUtility::locationHeaderUrl(PathUtility::getPublicResourceWebPath($pathOrUrl));
+        return GeneralUtility::locationHeaderUrl(PathUtility::getPublicResourceWebPath((string)$pathOrUrl));
     }
 }

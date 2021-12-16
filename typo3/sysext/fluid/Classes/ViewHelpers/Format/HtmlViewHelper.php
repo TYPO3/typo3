@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,6 +21,7 @@ use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -73,11 +76,6 @@ final class HtmlViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
-     */
-    protected static $tsfeBackup;
-
-    /**
      * Children must not be escaped, to be able to pass {bodytext} directly to it
      *
      * @var bool
@@ -91,60 +89,49 @@ final class HtmlViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('parseFuncTSPath', 'string', ' path to TypoScript parseFunc setup.', false, 'lib.parseFunc_RTE');
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string the parsed string.
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
         $isBackendRequest = ApplicationType::fromRequest($renderingContext->getRequest())->isBackend();
         if ($isBackendRequest) {
-            self::simulateFrontendEnvironment();
+            $tsfeBackup = self::simulateFrontendEnvironment();
         }
         $value = $renderChildrenClosure();
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObject->start([]);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
         if ($isBackendRequest) {
-            self::resetFrontendEnvironment();
+            self::resetFrontendEnvironment($tsfeBackup);
         }
         return $content;
     }
 
     /**
-     * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
-     * This somewhat hacky work around is currently needed because the parseFunc() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on those variables to be set
+     * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode.
+     * This somewhat hacky work around is currently needed because ContentObjectRenderer->parseFunc() relies on those variables to be set.
+     *
+     * @return ?TypoScriptFrontendController The 'old' backed up $GLOBALS['TSFE'] or null
      */
-    protected static function simulateFrontendEnvironment()
+    protected static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
-        self::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
+        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $GLOBALS['TSFE']->tmpl->setup = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        return $tsfeBackup;
     }
 
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     *
-     * @see simulateFrontendEnvironment()
      */
-    protected static function resetFrontendEnvironment()
+    protected static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
     {
-        $GLOBALS['TSFE'] = self::$tsfeBackup;
+        $GLOBALS['TSFE'] = $tsfeBackup;
     }
 }

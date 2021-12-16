@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Utility class for phpinfo()
+ * Utility ViewHelper for phpinfo()
+ *
  * @internal
  */
 final class PhpInfoViewHelper extends AbstractViewHelper
@@ -37,28 +40,15 @@ final class PhpInfoViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        return self::removeAllHtmlOutsideBody(
-            self::changeHtmlToHtml5(
-                self::getPhpInfo()
-            )
-        );
+        return self::removeAllHtmlOutsideBody(self::changeHtmlToHtml5(self::getPhpInfo()));
     }
 
     /**
-     * Get information about PHP's configuration
-     *
-     * @return string HTML page with the configuration options
+     * Get information about PHP's configuration as HTML string
      */
-    protected static function getPhpInfo()
+    protected static function getPhpInfo(): string
     {
         ob_start();
         phpinfo();
@@ -66,31 +56,25 @@ final class PhpInfoViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Remove all HTML outside the body tag from HTML string
-     *
-     * @param string $html Complete HTML markup for page
-     * @return string Content of the body tag
+     * Remove all HTML outside the body tag from HTML string.
      */
-    protected static function removeAllHtmlOutsideBody($html)
+    protected static function removeAllHtmlOutsideBody(string $html): string
     {
-        // Delete anything outside of the body tag and the body tag itself
+        // Delete anything outside the body tag and the body tag itself
         $html = (string)preg_replace('/^.*?<body.*?>/is', '', $html);
-        $html = (string)preg_replace('/<\/body>.*?$/is', '', $html);
-
-        return $html;
+        return (string)preg_replace('/<\/body>.*?$/is', '', $html);
     }
 
     /**
-     * Change HTML markup to HTML5
+     * Change HTML markup to HTML5.
      *
      * @param string $html HTML markup to be cleaned
      * @return string
      */
-    protected static function changeHtmlToHtml5($html)
+    protected static function changeHtmlToHtml5(string $html): string
     {
         // Delete obsolete attributes
         $html = (string)preg_replace('#\s(cellpadding|border|width)="[^"]+"#', '', $html);
-
         // Replace font tag with span
         return str_replace(['<font', '</font>'], ['<span', '</span>'], $html);
     }

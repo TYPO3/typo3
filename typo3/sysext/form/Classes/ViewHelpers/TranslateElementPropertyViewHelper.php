@@ -35,12 +35,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
         $this->registerArgument('property', 'mixed', 'Property to translate', false);
@@ -57,7 +52,7 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        static::assertArgumentTypes($arguments);
+        self::assertArgumentTypes($arguments);
 
         $element = $arguments['element'];
 
@@ -84,9 +79,6 @@ final class TranslateElementPropertyViewHelper extends AbstractViewHelper
         return GeneralUtility::makeInstance(TranslationService::class)->translateFormElementValue($element, $propertyParts, $formRuntime);
     }
 
-    /**
-     * @param array $arguments
-     */
     protected static function assertArgumentTypes(array $arguments)
     {
         foreach (['property', 'renderingOptionProperty'] as $argumentName) {

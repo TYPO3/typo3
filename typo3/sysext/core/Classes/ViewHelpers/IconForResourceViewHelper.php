@@ -54,24 +54,15 @@ final class IconForResourceViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('resource', ResourceInterface::class, 'Resource', true);
         $this->registerArgument('size', 'string', 'The icon size', false, Icon::SIZE_SMALL);
         $this->registerArgument('overlay', 'string', 'Overlay identifier', false, null);
         $this->registerArgument('options', 'array', 'An associative array with additional options', false, []);
-        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier', false, null);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative markup identifier', false);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $resource = $arguments['resource'];

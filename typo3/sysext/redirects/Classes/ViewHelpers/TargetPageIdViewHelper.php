@@ -28,16 +28,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * The target of a redirect can contain a t3://page link.
  * This ViewHelper checks for such a case and returns the Page ID
+ *
  * @internal
  */
 final class TargetPageIdViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('target', 'string', 'The target of the redirect.', true);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
@@ -96,18 +97,13 @@ final class TypolinkViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     *
-     * @throws Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('target', 'string', 'Define where to display the linked URL', false, '');
         $this->registerArgument('class', 'string', 'Define classes for the link element', false, '');
         $this->registerArgument('title', 'string', 'Define the title for the link element', false, '');
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
         $this->registerArgument('additionalParams', 'string', 'Additional query parameters to be attached to the resulting URL', false, '');
         $this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes to be added directly to the resulting HTML tag', false, []);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
@@ -118,16 +114,10 @@ final class TypolinkViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Render
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed|string
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $parameter = $arguments['parameter'] ?? '';
         $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
@@ -135,7 +125,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $typoLinkConfiguration = $typoLinkCodec->decode($parameter);
         // Merge the $parameter with other arguments
-        $mergedTypoLinkConfiguration = static::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
+        $mergedTypoLinkConfiguration = self::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
         $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
 
         // expose internal typoLink configuration to Fluid child context
@@ -147,7 +137,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $variableProvider->remove($partsAs);
 
         if ($parameter) {
-            $content = static::invokeContentObjectRenderer($arguments, $typoLinkParameter, $content);
+            $content = self::invokeContentObjectRenderer($arguments, $typoLinkParameter, $content);
         }
         return $content;
     }
@@ -157,7 +147,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
         $absolute = $arguments['absolute'] ?? false;
-        $aTagParams = static::serializeTagParameters($arguments);
+        $aTagParams = self::serializeTagParameters($arguments);
 
         $instructions = [
             'parameter' => $typoLinkParameter,
@@ -195,10 +185,6 @@ final class TypolinkViewHelper extends AbstractViewHelper
 
     /**
      * Merges view helper arguments with typolink parts.
-     *
-     * @param array $typoLinkConfiguration
-     * @param array $arguments
-     * @return array
      */
     protected static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
     {

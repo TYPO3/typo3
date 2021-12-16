@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,7 +19,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
@@ -60,12 +61,7 @@ final class UrlencodeViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     *
-     * @throws Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'string', 'string to format');
     }
@@ -74,15 +70,11 @@ final class UrlencodeViewHelper extends AbstractViewHelper
      * Escapes special characters with their escaped counterparts as needed using PHPs rawurlencode() function.
      *
      * @see https://www.php.net/manual/function.rawurlencode.php
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
      * @return mixed
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $renderChildrenClosure();
+        $value = $arguments['value'] ?? $renderChildrenClosure();
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }

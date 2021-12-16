@@ -32,10 +32,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
  */
 final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 {
-    /**
-     * @var array
-     */
-    public $viewHelperMapping = [
+    protected array $viewHelperMapping = [
         'int' => 'renderIntegerField',
         'int+' => 'renderPositiveIntegerField',
         'integer' => 'renderIntegerField',
@@ -56,10 +53,7 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
      */
     public $tagName = 'input';
 
-    /**
-     * Initialize arguments of this ViewHelper
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
@@ -76,17 +70,12 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     /**
      * Create a fresh instance of $this->tag each time this VH is called.
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->setTagBuilder(new TagBuilder($this->tagName));
         parent::initialize();
     }
 
-    /**
-     * Render
-     *
-     * @return string the rendered tag
-     */
     public function render(): string
     {
         /** @var array $configuration */
@@ -96,15 +85,11 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         } else {
             $input = $this->{$this->viewHelperMapping['default']}($configuration);
         }
-
         return $input;
     }
 
     /**
      * Render field of type color picker
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderColorPicker(array $configuration): string
     {
@@ -135,9 +120,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "offset"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderOffsetField(array $configuration): string
     {
@@ -154,9 +136,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "wrap"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderWrapField(array $configuration): string
     {
@@ -173,9 +152,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "option"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderOptionSelect(array $configuration): string
     {
@@ -199,9 +175,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "int+"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderPositiveIntegerField(array $configuration): string
     {
@@ -219,9 +192,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "integer"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderIntegerField(array $configuration): string
     {
@@ -238,9 +208,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "text"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderTextField(array $configuration): string
     {
@@ -257,9 +224,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "small text"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderSmallTextField(array $configuration): string
     {
@@ -268,11 +232,8 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "checkbox"
-     *
-     * @param array $configuration
-     * @return string
      */
-    public function renderCheckbox(array $configuration): string
+    protected function renderCheckbox(array $configuration): string
     {
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('class', 'form-check-input');
@@ -288,9 +249,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render field of type "userFunc"
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderUserFunction(array $configuration): string
     {
@@ -305,9 +263,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Get Field Name
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function getFieldName(array $configuration): string
     {
@@ -316,9 +271,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * Render a hidden field for empty values
-     *
-     * @param array $configuration
-     * @return string
      */
     protected function renderHiddenFieldForEmptyValue(array $configuration): string
     {
@@ -342,17 +294,15 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @return LanguageService|null Returns null if we are in the install tool standalone mode
+     * @return LanguageService|null Null if we are in the install tool standalone mode @todo: still valid?
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
      * Build and add id-attribute from $configuration
-     *
-     * @param array $configuration
      */
     protected function addIdAttribute(array $configuration): void
     {

@@ -13,7 +13,7 @@
     <tbody>
         <f:for each="{extensions}" as="extension">
             <tr>
-                <td><em:downloadExtension extension="{extension}" /></td>
+                <td><em:downloadExtension class="download" extension="{extension}" /></td>
                 <td>{extension.title}</th>
                 <td>{extension.version}</td>
                 <td><f:format.nl2br>{extension.updateComment}</f:format.nl2br></td>

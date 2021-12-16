@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,15 +19,16 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * ViewHelper for update script link
+ * Renders a link to re-import the static SQL data of an extension.
+ *
  * @internal
  */
 final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
@@ -44,12 +47,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('extension', 'array', 'Extension key', true);
     }
 
-    /**
-     * Renders a link to re-import the static SQL data of an extension
-     *
-     * @return string The rendered a tag
-     */
-    public function render()
+    public function render(): string
     {
         $extension = $this->arguments['extension'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -60,7 +58,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $oldMd5Hash = $registry->get(static::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
+        $oldMd5Hash = $registry->get(self::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
 
         $md5HashIsEqual = true;
         // We used to only store "1" in the database when data was imported
@@ -78,7 +76,6 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
             $languageKey = 'extensionList.databaseImport';
         }
 
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $uriBuilder->reset();
@@ -88,9 +85,16 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
             'Action'
         );
         $this->tag->addAttribute('href', $uri);
-        $this->tag->addAttribute('title', LocalizationUtility::translate($languageKey, 'extensionmanager'));
+        $this->tag->addAttribute('title', htmlspecialchars($this->getLanguageService()->sL(
+            'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:' . $languageKey
+        )));
         $this->tag->setContent($iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render());
 
         return $this->tag->render();
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

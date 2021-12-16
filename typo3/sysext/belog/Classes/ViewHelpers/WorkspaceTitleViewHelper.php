@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,15 +18,15 @@
 namespace TYPO3\CMS\Belog\ViewHelpers;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get workspace title from workspace id
+ *
  * @internal
  */
 final class WorkspaceTitleViewHelper extends AbstractViewHelper
@@ -33,52 +35,40 @@ final class WorkspaceTitleViewHelper extends AbstractViewHelper
 
     /**
      * First level cache of workspace titles
-     *
-     * @var array
      */
-    protected static $workspaceTitleRuntimeCache = [];
+    protected static array $workspaceTitleRuntimeCache = [];
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'UID of the workspace', true);
     }
 
     /**
-     * Resolve workspace title from UID.
+     * Return resolved workspace title or empty string if it can not be resolved.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string workspace title or UID
      * @throws \InvalidArgumentException
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        if (!$renderingContext instanceof RenderingContext) {
-            throw new \InvalidArgumentException('The given rendering context is not of type "TYPO3\CMS\Fluid\Core\Rendering\RenderingContext"', 1468363946);
-        }
-
         $uid = $arguments['uid'];
-        if (isset(static::$workspaceTitleRuntimeCache[$uid])) {
-            return static::$workspaceTitleRuntimeCache[$uid];
+        if (isset(self::$workspaceTitleRuntimeCache[$uid])) {
+            return self::$workspaceTitleRuntimeCache[$uid];
         }
-
         if ($uid === 0) {
-            static::$workspaceTitleRuntimeCache[$uid] = LocalizationUtility::translate(
-                'live',
-                $renderingContext->getRequest()->getControllerExtensionName()
-            );
+            self::$workspaceTitleRuntimeCache[$uid] = htmlspecialchars(self::getLanguageService()->sL(
+                'LLL:EXT:belog/Resources/Private/Language/locallang.xlf:live'
+            ));
         } elseif (!ExtensionManagementUtility::isLoaded('workspaces')) {
-            static::$workspaceTitleRuntimeCache[$uid] = '';
+            self::$workspaceTitleRuntimeCache[$uid] = '';
         } else {
             $workspace = BackendUtility::getRecord('sys_workspace', $uid);
-            static::$workspaceTitleRuntimeCache[$uid] = $workspace['title'] ?? '';
+            self::$workspaceTitleRuntimeCache[$uid] = $workspace['title'] ?? '';
         }
+        return self::$workspaceTitleRuntimeCache[$uid];
+    }
 
-        return static::$workspaceTitleRuntimeCache[$uid];
+    protected static function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

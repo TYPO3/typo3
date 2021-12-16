@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Shows the version numbers of the TYPO3 dependency, if any
+ * Shows the version numbers of the TYPO3 dependency, if any.
  *
  * @internal
  */
@@ -44,20 +44,8 @@ final class Typo3DependencyViewHelper extends AbstractViewHelper
         $this->registerArgument('extension', Extension::class, '', true);
     }
 
-    /**
-     * Finds and returns the suitable TYPO3 versions of an extension
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    {
         $dependency = $arguments['extension']->getTypo3Dependency();
         if ($dependency === null) {
             return '';

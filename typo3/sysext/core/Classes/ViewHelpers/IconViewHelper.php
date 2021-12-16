@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -64,27 +66,19 @@ final class IconViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('identifier', 'string', 'Identifier of the icon as registered in the Icon Registry.', true);
         $this->registerArgument('size', 'string', 'Desired size of the icon. All values of the Icons.sizes enum are allowed, these are: "small", "default", "large" and "overlay".', false, Icon::SIZE_SMALL);
-        $this->registerArgument('overlay', 'string', 'Identifier of an overlay icon as registered in the Icon Registry.', false, null);
+        $this->registerArgument('overlay', 'string', 'Identifier of an overlay icon as registered in the Icon Registry.', false);
         $this->registerArgument('state', 'string', 'Sets the state of the icon. All values of the Icons.states enum are allowed, these are: "default" and "disabled".', false, IconState::STATE_DEFAULT);
-        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative icon identifier. Takes precedence over the identifier if supported by the IconProvider.', false, null);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'Alternative icon identifier. Takes precedence over the identifier if supported by the IconProvider.', false);
     }
 
     /**
      * Prints icon html for $identifier key
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $identifier = $arguments['identifier'];
         $size = $arguments['size'];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -67,10 +69,7 @@ final class RadioViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -90,12 +89,7 @@ final class RadioViewHelper extends AbstractFormFieldViewHelper
         );
     }
 
-    /**
-     * Renders the checkbox.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $checked = $this->arguments['checked'];
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -53,9 +55,8 @@ final class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
      * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
      *
      * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexibility in overriding this method.
-     * @return bool
      */
-    protected static function evaluateCondition($arguments = null)
+    protected static function evaluateCondition($arguments = null): bool
     {
         return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->user['uid'] > 0;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,16 +24,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get a value from an array by given key.
+ *
  * @internal
  */
 final class ArrayElementViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('array', 'array', 'Array to search in', true);
         $this->registerArgument('key', 'string', 'Key to return its value', true);
@@ -41,19 +41,15 @@ final class ArrayElementViewHelper extends AbstractViewHelper
     /**
      * Return array element by key. Accessed values must be scalar (string, int, float or double)
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @throws Exception
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $array = $arguments['array'];
         $key = $arguments['key'];
         $subKey = $arguments['subKey'];
         $result = '';
-        if (is_array($array) && isset($array[$key])) {
+        if (isset($array[$key])) {
             $result = $array[$key];
             if (is_array($result) && $subKey && isset($result[$subKey])) {
                 $result = $result[$subKey];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -35,10 +37,11 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *    <f:be.pagePath />
  *
  * Current page path, prefixed with "Path:" and wrapped in a span with the class ``typo3-docheader-pagePath``.
+ *
+ * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
  */
 final class PagePathViewHelper extends AbstractBackendViewHelper
 {
-
     /**
      * This ViewHelper renders HTML, thus output must not be escaped
      *
@@ -46,28 +49,12 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Renders the current page path
-     *
-     * @return string the rendered page path
-     */
-    public function render()
+    public function render(): string
     {
-        return static::renderStatic(
-            [],
-            $this->buildRenderChildrenClosure(),
-            $this->renderingContext
-        );
+        return self::renderStatic([], $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
@@ -78,7 +65,7 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
             $title = (string)$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
         // Setting the path of the page
-        $pagePath = htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
+        $pagePath = htmlspecialchars(self::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path')) . ': <span class="typo3-docheader-pagePath">';
         // crop the title to title limit (or 50, if not defined)
         $cropLength = empty($GLOBALS['BE_USER']->uc['titleLen']) ? 50 : $GLOBALS['BE_USER']->uc['titleLen'];
         $cropLength = (int)$cropLength;
@@ -92,11 +79,8 @@ final class PagePathViewHelper extends AbstractBackendViewHelper
         return $pagePath;
     }
 
-    /**
-     * @return LanguageService|null
-     */
-    protected static function getLanguageService(): ?LanguageService
+    protected static function getLanguageService(): LanguageService
     {
-        return $GLOBALS['LANG'] ?? null;
+        return $GLOBALS['LANG'];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -60,37 +62,28 @@ final class TypolinkViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
-        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false, null);
+        $this->registerArgument('language', 'string', 'link to a specific language - defaults to the current language, use a language ID or "current" to enforce a specific language', false);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the URL', false, false);
         $this->registerArgument('addQueryStringExclude', 'string', 'Define parameters to be excluded from the query string (only active if addQueryString is set)', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $parameter = $arguments['parameter'];
 
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $typoLinkConfiguration = $typoLinkCodec->decode($parameter);
-        $mergedTypoLinkConfiguration = static::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
+        $mergedTypoLinkConfiguration = self::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
         $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
 
         $content = '';
         if ($parameter) {
-            $content = static::invokeContentObjectRenderer($arguments, $typoLinkParameter);
+            $content = self::invokeContentObjectRenderer($arguments, $typoLinkParameter);
         }
         return $content;
     }
@@ -121,10 +114,6 @@ final class TypolinkViewHelper extends AbstractViewHelper
 
     /**
      * Merges view helper arguments with typolink parts.
-     *
-     * @param array $typoLinkConfiguration
-     * @param array $arguments
-     * @return array
      */
     protected static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
     {

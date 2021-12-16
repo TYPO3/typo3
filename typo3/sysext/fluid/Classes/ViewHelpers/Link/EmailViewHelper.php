@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -61,10 +63,7 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    /**
-     * Arguments initialization
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('email', 'string', 'The email address to be turned into a link', true);
@@ -75,10 +74,7 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
 
-    /**
-     * @return string Rendered email link
-     */
-    public function render()
+    public function render(): string
     {
         $email = $this->arguments['email'];
         if (ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()) {

@@ -40,7 +40,6 @@ final class IfHasStateViewHelper extends AbstractConditionViewHelper
     {
         $stateMethod = 'is' . ucfirst($arguments['state']);
         $provider = $arguments['provider'];
-
         $propertyManager = MfaProviderPropertyManager::create($provider, $GLOBALS['BE_USER']);
         return is_callable([$provider, $stateMethod]) && $provider->{$stateMethod}($propertyManager);
     }

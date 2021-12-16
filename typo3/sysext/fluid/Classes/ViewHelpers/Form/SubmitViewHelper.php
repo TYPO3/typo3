@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -50,10 +52,7 @@ final class SubmitViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute(
@@ -64,12 +63,7 @@ final class SubmitViewHelper extends AbstractFormFieldViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * Renders the submit button.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);

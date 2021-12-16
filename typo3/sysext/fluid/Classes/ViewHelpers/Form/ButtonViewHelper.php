@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -49,12 +51,7 @@ final class ButtonViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'button';
 
-    /**
-     * Initialize the arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute(
@@ -97,12 +94,7 @@ final class ButtonViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('type', 'string', 'Specifies the type of button (e.g. "button", "reset" or "submit")', false, 'submit');
     }
 
-    /**
-     * Renders the button.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $type = $this->arguments['type'];
         $name = $this->getName();

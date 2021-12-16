@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,33 +32,24 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class RenderViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes additional arguments available for this ViewHelper.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('debug', 'boolean', 'If true, the admin panel shows debug information if activated,', false, true);
-        $this->registerArgument('section', 'string', 'Section to render - combine with partial to render section in partial', false, null);
-        $this->registerArgument('partial', 'string', 'Partial to render, with or without section', false, null);
+        $this->registerArgument('section', 'string', 'Section to render - combine with partial to render section in partial', false);
+        $this->registerArgument('partial', 'string', 'Partial to render, with or without section', false);
         $this->registerArgument('arguments', 'array', 'Array of variables to be transferred. Use {_all} for all variables', false, []);
         $this->registerArgument('optional', 'boolean', 'If TRUE, considers the *section* optional. Partial never is.', false, false);
-        $this->registerArgument('default', 'mixed', 'Value (usually string) to be displayed if the section or partial does not exist', false, null);
-        $this->registerArgument('contentAs', 'string', 'If used, renders the child content and adds it as a template variable with this name for use in the partial/section', false, null);
+        $this->registerArgument('default', 'mixed', 'Value (usually string) to be displayed if the section or partial does not exist', false);
+        $this->registerArgument('contentAs', 'string', 'If used, renders the child content and adds it as a template variable with this name for use in the partial/section', false);
     }
 
-    /**
-     * Renders the content.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $isDebug = $this->arguments['debug'];
         $section = $this->arguments['section'];
@@ -79,9 +72,9 @@ final class RenderViewHelper extends AbstractViewHelper
         }
         // Replace empty content with default value. If default is
         // not set, NULL is returned and cast to a new, empty string
-        // outside of this ViewHelper.
+        // outside this ViewHelper.
         if ($content === '') {
-            $content = $this->arguments['default'] ?? $tagContent;
+            $content = $this->arguments['default'] ?? (string)$tagContent;
         }
 
         // if debug is disabled, return content

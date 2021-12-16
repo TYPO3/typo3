@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -69,12 +71,7 @@ final class DebugViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('title', 'string', 'optional custom title for the debug output');
         $this->registerArgument('maxDepth', 'int', 'Sets the max recursion depth of the dump (defaults to 8). De- or increase the number according to your needs and memory limit.', false, 8);
@@ -87,15 +84,18 @@ final class DebugViewHelper extends AbstractViewHelper
 
     /**
      * A wrapper for \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump().
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        return DebuggerUtility::var_dump($renderChildrenClosure(), $arguments['title'], $arguments['maxDepth'], (bool)$arguments['plainText'], (bool)$arguments['ansiColors'], (bool)$arguments['inline'], $arguments['blacklistedClassNames'], $arguments['blacklistedPropertyNames']);
+        return DebuggerUtility::var_dump(
+            $renderChildrenClosure(),
+            $arguments['title'],
+            $arguments['maxDepth'],
+            $arguments['plainText'],
+            $arguments['ansiColors'],
+            $arguments['inline'],
+            $arguments['blacklistedClassNames'],
+            $arguments['blacklistedPropertyNames']
+        );
     }
 }

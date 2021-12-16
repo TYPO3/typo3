@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -86,10 +88,7 @@ final class ImageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('src', 'string', 'src', false, '');
         $this->registerArgument('treatIdAsReference', 'bool', 'given src argument is a sys_file_reference record', false, false);
@@ -110,13 +109,9 @@ final class ImageViewHelper extends AbstractViewHelper
     /**
      * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $src = (string)$arguments['src'];
         $image = $arguments['image'];
@@ -173,12 +168,7 @@ final class ImageViewHelper extends AbstractViewHelper
         }
     }
 
-    /**
-     * Return an instance of ImageService using object manager
-     *
-     * @return ImageService
-     */
-    protected static function getImageService()
+    protected static function getImageService(): ImageService
     {
         return GeneralUtility::makeInstance(ImageService::class);
     }

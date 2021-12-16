@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -69,25 +71,14 @@ final class TableListViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('tableName', 'string', 'name of the database table', true);
@@ -101,17 +92,16 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('readOnly', 'bool', 'if TRUE, the edit icons won\'t be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!', false, false);
         $this->registerArgument('enableClickMenu', 'bool', 'enables context menu', false, true);
         $this->registerArgument('enableControlPanels', 'bool', 'enables control panels', false, false);
-        $this->registerArgument('clickTitleMode', 'string', 'one of "edit", "show" (only pages, tt_content), "info');
+        $this->registerArgument('clickTitleMode', 'string', 'one of "edit", "show" (only pages, tt_content), "info', false, '');
     }
 
     /**
      * Renders a record list as known from the TYPO3 list module
      * Note: This feature is experimental!
      *
-     * @return string the rendered record list
      * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
      */
-    public function render()
+    public function render(): string
     {
         $tableName = $this->arguments['tableName'];
         $fieldList = $this->arguments['fieldList'];
@@ -136,29 +126,29 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         // We need to include the language file, since DatabaseRecordList is heavily using ->getLL
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
-        $pageinfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dblist->pageRow = $pageinfo;
+        $pageInfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->pageRow = $pageInfo;
         if ($readOnly) {
-            $dblist->setIsEditable(false);
+            $dbList->setIsEditable(false);
         } else {
-            $dblist->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageinfo));
+            $dbList->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageInfo));
         }
-        $dblist->disableSingleTableView = true;
-        $dblist->clickTitleMode = $clickTitleMode;
-        $dblist->clickMenuEnabled = $enableClickMenu;
+        $dbList->disableSingleTableView = true;
+        $dbList->clickTitleMode = $clickTitleMode;
+        $dbList->clickMenuEnabled = $enableClickMenu;
         if ($storagePid === null) {
             $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             $storagePid = $frameworkConfiguration['persistence']['storagePid'];
         }
-        $dblist->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
+        $dbList->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
         // Column selector is disabled since fields are defined by the "fieldList" argument
-        $dblist->displayColumnSelector = false;
-        $dblist->setFields = [$tableName => $fieldList];
-        $dblist->noControlPanels = !$enableControlPanels;
-        $dblist->sortField = $sortField;
-        $dblist->sortRev = $sortDescending;
-        return $dblist->generateList();
+        $dbList->displayColumnSelector = false;
+        $dbList->setFields = [$tableName => $fieldList];
+        $dbList->noControlPanels = !$enableControlPanels;
+        $dbList->sortField = $sortField;
+        $dbList->sortRev = $sortDescending;
+        return $dbList->generateList();
     }
 
     protected function getLanguageService(): LanguageService

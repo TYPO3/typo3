@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -72,12 +74,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
         $this->registerArgument('title', 'string', 'The title of the info box');
@@ -86,14 +83,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $this->registerArgument('disableIcon', 'bool', 'If set to TRUE, the icon is not rendered.', false, false);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $title = $arguments['title'];
         $message = $renderChildrenClosure();

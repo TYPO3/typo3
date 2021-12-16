@@ -41,12 +41,7 @@ final class RenderAllFormValuesViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('renderable', RootRenderableInterface::class, 'A RootRenderableInterface instance', true);
         $this->registerArgument('as', 'string', 'The name within the template', false, 'formValue');
@@ -54,13 +49,8 @@ final class RenderAllFormValuesViewHelper extends AbstractViewHelper
 
     /**
      * Return array element by key.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string the rendered form values
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $renderable = $arguments['renderable'];
 

@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 final class LanguageColumnViewHelper extends AbstractViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('languageColumn', LanguageColumn::class, 'Language column object which is context for column', true);
         $this->registerArgument('columnNumber', 'int', 'Number (colPos) of column within LanguageColumn to be returned', true);

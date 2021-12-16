@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -51,30 +53,20 @@ final class IconForRecordViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('table', 'string', 'the table for the record icon', true);
         $this->registerArgument('row', 'array', 'the record row', true);
         $this->registerArgument('size', 'string', 'the icon size', false, Icon::SIZE_SMALL);
-        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'alternative markup identifier', false, null);
+        $this->registerArgument('alternativeMarkupIdentifier', 'string', 'alternative markup identifier', false);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $table = $arguments['table'];
         $size = $arguments['size'];
         $row = $arguments['row'];
         $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
-        /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIconForRecord($table, $row, $size)->render($alternativeMarkupIdentifier);
     }

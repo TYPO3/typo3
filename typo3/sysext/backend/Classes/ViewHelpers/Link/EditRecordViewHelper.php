@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -64,7 +65,7 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
      */
     protected $tagName = 'a';
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -75,8 +76,8 @@ final class EditRecordViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws \InvalidArgumentException
+     * @throws RouteNotFoundException
      */
     public function render(): string
     {

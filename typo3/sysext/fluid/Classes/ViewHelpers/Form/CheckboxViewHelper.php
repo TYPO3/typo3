@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -65,10 +67,7 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute(
@@ -89,13 +88,7 @@ final class CheckboxViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('multiple', 'bool', 'Specifies whether this checkbox belongs to a multivalue (is part of a checkbox group)', false, false);
     }
 
-    /**
-     * Renders the checkbox.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $checked = $this->arguments['checked'];
         $multiple = $this->arguments['multiple'];

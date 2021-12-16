@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -86,12 +88,7 @@ final class CurrencyViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('currencySign', 'string', 'The currency sign, eg $ or €.', false, '');
         $this->registerArgument('decimalSeparator', 'string', 'The separator for the decimal point.', false, ',');
@@ -102,16 +99,7 @@ final class CurrencyViewHelper extends AbstractViewHelper
         $this->registerArgument('useDash', 'bool', 'Use the dash instead of decimal 00', false, false);
     }
 
-    /**
-     * Formats a float to currency formatting
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string the formatted amount
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $currencySign = $arguments['currencySign'];
         $decimalSeparator = $arguments['decimalSeparator'];

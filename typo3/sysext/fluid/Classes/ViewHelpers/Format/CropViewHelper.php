@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -97,12 +99,7 @@ final class CropViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('maxCharacters', 'int', 'Place where to truncate the string', true);
         $this->registerArgument('append', 'string', 'What to append, if truncation happened', false, '&hellip;');
@@ -110,15 +107,7 @@ final class CropViewHelper extends AbstractViewHelper
         $this->registerArgument('respectHtml', 'bool', 'If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()', false, true);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $maxCharacters = $arguments['maxCharacters'];
         $append = $arguments['append'];
@@ -130,7 +119,6 @@ final class CropViewHelper extends AbstractViewHelper
         // It would be possible to retrieve the "current" content object via ConfigurationManager->getContentObject(),
         // but both crop() and cropHTML() are "nearly" static and do not depend on current content object settings, so
         // it is safe to use a fresh instance here directly.
-        /** @var ContentObjectRenderer $contentObject */
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         if ($respectHtml) {
             $content = $contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);

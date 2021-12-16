@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,18 +22,15 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Returns a string meant to be used as css class stating whether an extension is
- * available or installed
+ * Returns a string meant to be used as css class stating whether an extension is available or installed.
+ *
  * @internal
  */
 final class InstallationStateCssClassViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('needle', 'string', '', true);
         $this->registerArgument('haystack', 'array', '', true);
@@ -42,14 +41,8 @@ final class InstallationStateCssClassViewHelper extends AbstractViewHelper
      * 'installed' => if an extension is installed
      * 'available' => if an extension is available in the system
      * '' (empty string) => if neither installed nor available
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string the rendered a tag
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $needle = $arguments['needle'];
         $haystack = $arguments['haystack'];

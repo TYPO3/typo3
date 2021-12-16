@@ -35,26 +35,13 @@ final class TranslateElementErrorViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initialize arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'Form Element to translate', true);
         $this->registerArgument('error', Error::class, 'Error', true);
     }
 
-    /**
-     * Return array element by key.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $element = $arguments['element'];
         $error = $arguments['error'];

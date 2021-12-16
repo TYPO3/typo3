@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,6 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Get username from backend user id
+ *
  * @internal
  */
 final class UsernameViewHelper extends AbstractViewHelper
@@ -38,29 +41,22 @@ final class UsernameViewHelper extends AbstractViewHelper
     /**
      * Initializes the arguments
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('uid', 'int', 'Uid of the user', true);
     }
 
     /**
-     * Resolve user name from backend user id.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string Username or an empty string if there is no user with that UID
+     * Resolve user name from backend user id. Can return empty string if there is no user with that UID.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $uid = $arguments['uid'];
-        if (isset(static::$usernameRuntimeCache[$uid])) {
-            return static::$usernameRuntimeCache[$uid];
+        if (isset(self::$usernameRuntimeCache[$uid])) {
+            return self::$usernameRuntimeCache[$uid];
         }
-
         $user = BackendUtility::getRecord('be_users', $uid);
-        static::$usernameRuntimeCache[$uid] = $user['username'] ?? '';
-        return static::$usernameRuntimeCache[$uid];
+        self::$usernameRuntimeCache[$uid] = $user['username'] ?? '';
+        return self::$usernameRuntimeCache[$uid];
     }
 }

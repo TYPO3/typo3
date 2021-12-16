@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -38,13 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class UriViewHelper extends AbstractBackendViewHelper
 {
-
-    /**
-     * Arguments initialization
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('route', 'string', 'The name of the route', true);
@@ -58,18 +54,13 @@ final class UriViewHelper extends AbstractBackendViewHelper
         );
     }
 
-    /**
-     * @return string Rendered link
-     */
-    public function render()
+    public function render(): string
     {
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $route = $this->arguments['route'];
         $parameters = $this->arguments['parameters'];
         $referenceType = $this->arguments['referenceType'];
         $uri = $uriBuilder->buildUriFromRoute($route, $parameters, $referenceType);
-
         return (string)$uri;
     }
 }

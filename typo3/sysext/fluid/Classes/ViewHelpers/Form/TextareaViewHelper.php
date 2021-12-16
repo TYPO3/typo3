@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -38,10 +40,7 @@ final class TextareaViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'textarea';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('autofocus', 'string', 'Specifies that a text area should automatically get focus when the page loads');
@@ -55,14 +54,9 @@ final class TextareaViewHelper extends AbstractFormFieldViewHelper
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * Renders the textarea.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
-        $required = $this->arguments['required'] ?? false;
+        $required = $this->arguments['required'];
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
         $this->setRespectSubmittedDataValue(true);

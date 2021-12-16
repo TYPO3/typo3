@@ -33,9 +33,6 @@ final class SubModuleRenderViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
     public function initializeArguments(): void
     {
         $this->registerArgument(
@@ -49,19 +46,12 @@ final class SubModuleRenderViewHelper extends AbstractViewHelper
 
     /**
      * Resolve user name from backend user id.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string Username or an empty string if there is no user with that UID
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ): string {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    {
+        /** @var ContentProviderInterface $module */
         $module = $arguments['module'];
-        /** @var \TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection $data */
+        /** @var ModuleDataStorageCollection $data */
         $data = $arguments['data'];
         $moduleData = $data->contains($module) ? $data->offsetGet($module) : new ModuleData();
         return $module->getContent($moduleData);

@@ -34,27 +34,13 @@ final class GridColumnClassAutoConfigurationViewHelper extends AbstractViewHelpe
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('element', RootRenderableInterface::class, 'A RootRenderableInterface instance', true);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    {
         $formElement = $arguments['element'];
 
         $gridRowElement = $formElement->getParentRenderable();

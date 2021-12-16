@@ -38,21 +38,13 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 final class DatePickerViewHelper extends AbstractFormFieldViewHelper
 {
-
     /**
      * @var string
      */
     protected $tagName = 'input';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     */
-    protected $propertyMapper;
+    protected PropertyMapper $propertyMapper;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @internal
-     */
     public function injectPropertyMapper(PropertyMapper $propertyMapper)
     {
         $this->propertyMapper = $propertyMapper;
@@ -61,7 +53,7 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
     /**
      * Initialize the arguments.
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('size', 'int', 'The size of the input field');
@@ -78,10 +70,8 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
 
     /**
      * Renders the text field, hidden field and required javascript
-     *
-     * @return string
      */
-    public function render()
+    public function render(): string
     {
         $enableDatePicker = $this->arguments['enableDatePicker'];
         $dateFormat = $this->arguments['dateFormat'];
@@ -128,17 +118,13 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->tag->addAttribute('id', $id);
 
         $this->setErrorClassAttribute();
-        $content = '';
-        $content .= $this->tag->render();
+        $content = $this->tag->render();
         $content .= '<input type="hidden" name="' . htmlspecialchars($name) . '[dateFormat]" value="' . htmlspecialchars($dateFormat) . '" />';
 
         return $content;
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    protected function getSelectedDate()
+    protected function getSelectedDate(): ?\DateTime
     {
         /** @var FormRuntime $formRuntime */
         $formRuntime = $this->renderingContext
@@ -163,10 +149,6 @@ final class DatePickerViewHelper extends AbstractFormFieldViewHelper
         return null;
     }
 
-    /**
-     * @param string $dateFormat
-     * @return string
-     */
     protected function convertDateFormatToDatePickerFormat(string $dateFormat): string
     {
         $replacements = [

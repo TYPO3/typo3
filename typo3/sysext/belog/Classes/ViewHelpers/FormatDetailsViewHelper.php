@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,16 +25,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Create detail string from log entry
+ *
  * @internal
  */
 final class FormatDetailsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('logEntry', LogEntry::class, '', true);
     }
@@ -45,14 +45,8 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
      * with the substitutions.
      * Furthermore, possible files in logData are stripped to their basename if
      * the action logged was a file action
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string Formatted details
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         /** @var LogEntry $logEntry */
         $logEntry = $arguments['logEntry'];
@@ -67,17 +61,13 @@ final class FormatDetailsViewHelper extends AbstractViewHelper
             $detailString = vsprintf($detailString, $substitutes);
         }
         // Remove possible pending other %s
-        $detailString = str_replace('%s', '', $detailString);
-        return $detailString;
+        return str_replace('%s', '', $detailString);
     }
 
     /**
      * Strips path from array of file names
-     *
-     * @param array $files
-     * @return array
      */
-    protected static function stripPathFromFilenames(array $files = [])
+    protected static function stripPathFromFilenames(array $files = []): array
     {
         foreach ($files as $key => $file) {
             $files[$key] = PathUtility::basename($file);

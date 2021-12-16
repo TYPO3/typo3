@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -28,10 +30,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'option';
 
-    /**
-     * Initialize additional arguments available for this tag ViewHelper.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerUniversalTagAttributes();
         $this->registerArgument('selected', 'boolean', 'If set, overrides automatic detection of selected state for this option.');
@@ -40,10 +39,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
         $this->registerTagAttribute('value', 'mixed', 'Value to be inserted in HTML tag - must be convertible to string!');
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $childContent = $this->renderChildren();
         $this->tag->setContent($childContent);
@@ -65,10 +61,6 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
         return $this->tag->render();
     }
 
-    /**
-     * @param string $value
-     * @return bool
-     */
     protected function isValueSelected(string $value): bool
     {
         $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');

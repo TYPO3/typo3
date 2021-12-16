@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -65,10 +67,7 @@ final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initialize ViewHelper arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('value', 'string', 'string to format');
@@ -80,13 +79,8 @@ final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
      * @see https://www.php.net/html_entity_decode
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $value = $renderChildrenClosure();
         $encoding = $arguments['encoding'];

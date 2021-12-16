@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -39,10 +41,7 @@ final class HiddenViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerUniversalTagAttributes();
@@ -55,16 +54,11 @@ final class HiddenViewHelper extends AbstractFormFieldViewHelper
         );
     }
 
-    /**
-     * Renders the hidden field.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
-        $this->setRespectSubmittedDataValue((bool)($this->arguments['respectSubmittedDataValue'] ?? true));
+        $this->setRespectSubmittedDataValue($this->arguments['respectSubmittedDataValue']);
 
         $this->tag->addAttribute('type', 'hidden');
         $this->tag->addAttribute('name', $name);

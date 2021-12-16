@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,6 +25,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Views sprite icon for a record (object)
+ *
  * @internal
  */
 final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
@@ -34,10 +37,7 @@ final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('table', 'string', '', true);
@@ -46,29 +46,18 @@ final class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 
     /**
      * Displays spriteIcon for database table and object
-     *
-     * @return string
-     * @see IconFactory::getIconForRecord()
      */
-    public function render()
+    public function render(): string
     {
-        return static::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
+        return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $object = $arguments['object'];
         $table = $arguments['table'];
 
-        if (!is_object($object) || !method_exists($object, 'getUid')) {
+        if (!method_exists($object, 'getUid')) {
             return '';
         }
         $row = [

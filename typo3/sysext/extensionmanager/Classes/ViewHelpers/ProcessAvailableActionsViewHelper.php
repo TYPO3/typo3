@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,39 +22,30 @@ use TYPO3\CMS\Extensionmanager\Event\AvailableActionsForExtensionEvent;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * ViewHelper to let 3rd-party extensions process the list of available
- * actions for a given extension.
+ * ViewHelper to let 3rd-party extensions process the list of available actions for a given extension.
+ *
  * @internal
  */
 final class ProcessAvailableActionsViewHelper extends AbstractTagBasedViewHelper
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('extension', 'array', '', true);
     }
 
-    /**
-     * Processes the list of actions.
-     *
-     * @return string the rendered list of actions
-     */
-    public function render()
+    public function render(): string
     {
         $html = $this->renderChildren();
         $actions = preg_split('#\\n\\s*#s', trim($html));
         $actions = is_array($actions) ? $actions : [];
-
         $event = new AvailableActionsForExtensionEvent($this->arguments['extension']['key'], $this->arguments['extension'], $actions);
         $this->eventDispatcher->dispatch($event);
         return implode(' ', $event->getActions());

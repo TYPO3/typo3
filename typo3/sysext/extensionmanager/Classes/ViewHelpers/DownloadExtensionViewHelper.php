@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,15 +18,16 @@
 namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 
 /**
- * ViewHelper
+ * Render a link to download an extension.
+ *
  * @internal
  */
 final class DownloadExtensionViewHelper extends AbstractFormViewHelper
@@ -34,40 +37,21 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
      */
     protected $tagName = 'form';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-     */
-    protected $extensionService;
+    protected ExtensionService $extensionService;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
-     */
-    public function injectExtensionService(ExtensionService $extensionService)
+    public function injectExtensionService(ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
     }
 
-    /**
-     * Initialize arguments.
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('extension', Extension::class, '', true);
-        $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
-        $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
-        $this->registerTagAttribute('name', 'string', 'Name of form');
-        $this->registerTagAttribute('onreset', 'string', 'JavaScript: On reset of the form');
-        $this->registerTagAttribute('onsubmit', 'string', 'JavaScript: On submit of the form');
         $this->registerUniversalTagAttributes();
     }
 
-    /**
-     * Renders a download link
-     *
-     * @return string the rendered a tag
-     */
-    public function render()
+    public function render(): string
     {
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
@@ -79,12 +63,11 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         foreach ($installPaths as $installPathType => $installPath) {
             /** @var string $installPathType */
             $pathSelector .= '<li>
-				<input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getFieldNamePrefix()) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
-				<label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
-			</li>';
+                <input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getDefaultFieldNamePrefix()) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
+                <label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
+            </li>';
         }
         $pathSelector .= '</ul>';
-        /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->renderingContext->getRequest());
         $action = 'checkDependencies';
@@ -97,57 +80,36 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
 
         $automaticInstallation = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
         $labelKeySuffix = $automaticInstallation ? '' : '.downloadOnly';
+        $titleAndValue = $this->getLanguageService()->sL(
+            'LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.downloadViewHelper.submit' . $labelKeySuffix
+        );
         $label = '
-			<div class="btn-group">
-				<button
-					title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit' . $labelKeySuffix, 'extensionmanager') . '"
-					type="submit"
-					class="btn btn-default"
-					value="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit' . $labelKeySuffix, 'extensionmanager') . '"
-				>
-					<span class="t3-icon fa fa-cloud-download"></span>
-				</button>
-			</div>';
+            <div class="btn-group">
+                <button
+                    title="' . htmlspecialchars($titleAndValue) . '"
+                    type="submit"
+                    class="btn btn-default"
+                    value="' . htmlspecialchars($titleAndValue) . '"
+                >
+                    <span class="t3-icon fa fa-cloud-download"></span>
+                </button>
+            </div>';
 
         $this->tag->setContent($label . $pathSelector);
-        $this->tag->addAttribute('class', 'download');
+        $this->tag->addAttribute('class', $this->arguments['class']);
         return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
     }
 
     /**
-     * Get the field name prefix
-     *
-     * @return string
+     * Retrieves the field name prefix for this form
      */
-    protected function getFieldNamePrefix()
+    protected function getDefaultFieldNamePrefix(): string
     {
-        if ($this->hasArgument('fieldNamePrefix')) {
-            return $this->arguments['fieldNamePrefix'];
-        }
-        return $this->getDefaultFieldNamePrefix();
+        return $this->extensionService->getPluginNamespace('Extensionmanager', 'tools_ExtensionmanagerExtensionmanager');
     }
 
-    /**
-     * Retrieves the default field name prefix for this form
-     *
-     * @return string default field name prefix
-     */
-    protected function getDefaultFieldNamePrefix()
+    protected function getLanguageService(): LanguageService
     {
-        $request = $this->renderingContext->getRequest();
-        if ($this->hasArgument('extensionName')) {
-            $extensionName = $this->arguments['extensionName'];
-        } else {
-            $extensionName = $request->getControllerExtensionName();
-        }
-        if ($this->hasArgument('pluginName')) {
-            $pluginName = $this->arguments['pluginName'];
-        } else {
-            $pluginName = $request->getPluginName();
-        }
-        if ($extensionName !== null && $pluginName != null) {
-            return $this->extensionService->getPluginNamespace($extensionName, $pluginName);
-        }
-        return '';
+        return $GLOBALS['LANG'];
     }
 }

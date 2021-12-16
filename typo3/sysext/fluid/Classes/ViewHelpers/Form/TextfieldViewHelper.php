@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -36,12 +38,7 @@ final class TextfieldViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
-    /**
-     * Initialize the arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('autofocus', 'string', 'Specifies that an input should automatically get focus when the page loads');
@@ -57,15 +54,10 @@ final class TextfieldViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('type', 'string', 'The field type, e.g. "text", "email", "url" etc.', false, 'text');
     }
 
-    /**
-     * Renders the textfield.
-     *
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
-        $required = $this->arguments['required'] ?? false;
-        $type = $this->arguments['type'] ?? null;
+        $required = $this->arguments['required'];
+        $type = $this->arguments['type'];
 
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);

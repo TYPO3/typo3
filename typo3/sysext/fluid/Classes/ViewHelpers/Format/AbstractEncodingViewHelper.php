@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * This is the base class for ViewHelpers that work with encodings.
- * Currently that are format.htmlentities, format.htmlentitiesDecode and format.htmlspecialchars
+ * Currently, that are format.htmlentities and format.htmlentitiesDecode
  */
 abstract class AbstractEncodingViewHelper extends AbstractViewHelper
 {
@@ -30,10 +32,8 @@ abstract class AbstractEncodingViewHelper extends AbstractViewHelper
 
     /**
      * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.
-     *
-     * @return string the encoding
      */
-    protected static function resolveDefaultEncoding()
+    protected static function resolveDefaultEncoding(): string
     {
         if (self::$defaultEncoding === null) {
             self::$defaultEncoding = 'UTF-8';

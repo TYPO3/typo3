@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -69,12 +71,7 @@ final class PaddingViewHelper extends AbstractViewHelper
      */
     protected $escapeChildren = false;
 
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('value', 'string', 'string to format');
         $this->registerArgument('padLength', 'int', 'Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.', true);
@@ -83,14 +80,9 @@ final class PaddingViewHelper extends AbstractViewHelper
     }
 
     /**
-     * Pad a string to a certain length with another string
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @return string The formatted value
+     * Pad a string to a certain length with another string.
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $value = $renderChildrenClosure();
         $padTypes = [
@@ -103,6 +95,6 @@ final class PaddingViewHelper extends AbstractViewHelper
             $padType = 'right';
         }
 
-        return StringUtility::multibyteStringPad((string)$value, $arguments['padLength'], $arguments['padString'], $padTypes[$padType]);
+        return StringUtility::multibyteStringPad((string)$value, (int)$arguments['padLength'], (string)$arguments['padString'], $padTypes[$padType]);
     }
 }

@@ -33,32 +33,19 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  */
 final class TimePickerViewHelper extends AbstractFormFieldViewHelper
 {
-
     /**
      * @var string
      */
     protected $tagName = 'select';
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     */
-    protected $propertyMapper;
+    protected PropertyMapper $propertyMapper;
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
-     * @internal
-     */
     public function injectPropertyMapper(PropertyMapper $propertyMapper)
     {
         $this->propertyMapper = $propertyMapper;
     }
 
-    /**
-     * Initialize the arguments.
-     *
-     * @internal
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerTagAttribute('size', 'int', 'The size of the select field');
@@ -71,11 +58,9 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
     }
 
     /**
-     * Renders the select fields for hour & minute
-     *
-     * @return string
+     * Renders the select fields for hour & minute.
      */
-    public function render()
+    public function render(): string
     {
         $name = $this->getName();
         $this->registerFieldNameForFormTokenGeneration($name);
@@ -85,7 +70,6 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $this->setErrorClassAttribute();
 
         $content = '';
-
         if ($this->arguments['timeType'] === 'hour') {
             $content .= $this->buildHourSelector($date);
         } else {
@@ -95,10 +79,7 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         return $content;
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    protected function getSelectedDate()
+    protected function getSelectedDate(): ?\DateTime
     {
         /** @var FormRuntime $formRuntime */
         $formRuntime = $this->renderingContext
@@ -123,10 +104,6 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         return null;
     }
 
-    /**
-     * @param \DateTime $date
-     * @return string
-     */
     protected function buildHourSelector(\DateTime $date = null): string
     {
         $value = $date !== null ? $date->format('H') : null;
@@ -142,10 +119,6 @@ final class TimePickerViewHelper extends AbstractFormFieldViewHelper
         return $hourSelector->render();
     }
 
-    /**
-     * @param \DateTime $date
-     * @return string
-     */
     protected function buildMinuteSelector(\DateTime $date = null): string
     {
         $value = $date !== null ? $date->format('i') : null;

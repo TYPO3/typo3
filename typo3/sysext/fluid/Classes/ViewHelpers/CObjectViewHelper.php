@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -103,17 +105,7 @@ final class CObjectViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
-     */
-    protected static $tsfeBackup;
-
-    /**
-     * Initialize arguments.
-     *
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('data', 'mixed', 'the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used');
         $this->registerArgument('typoscriptObjectPath', 'string', 'the TypoScript setup path of the TypoScript object to render', true);
@@ -124,21 +116,18 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * Renders the TypoScript object in the given TypoScript setup path.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return mixed
-     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $data = $renderChildrenClosure();
+        $data = $arguments['data'] ?? $renderChildrenClosure();
         $typoscriptObjectPath = $arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
-        $contentObjectRenderer = static::getContentObjectRenderer($renderingContext->getRequest());
+        $contentObjectRenderer = self::getContentObjectRenderer($renderingContext->getRequest());
+        $tsfeBackup = null;
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            static::simulateFrontendEnvironment();
+            $tsfeBackup = self::simulateFrontendEnvironment();
         }
         $currentValue = null;
         if (is_object($data)) {
@@ -155,7 +144,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         }
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = (string)array_pop($pathSegments);
-        $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $setup = self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
                 throw new Exception(
@@ -173,7 +162,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         }
         $content = self::renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-            static::resetFrontendEnvironment();
+            self::resetFrontendEnvironment($tsfeBackup);
         }
         return $content;
     }
@@ -208,10 +197,6 @@ final class CObjectViewHelper extends AbstractViewHelper
         return GeneralUtility::getContainer()->get(ConfigurationManagerInterface::class);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ContentObjectRenderer
-     */
     protected static function getContentObjectRenderer(ServerRequestInterface $request): ContentObjectRenderer
     {
         if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController) {
@@ -239,20 +224,19 @@ final class CObjectViewHelper extends AbstractViewHelper
     /**
      * \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->cObjGetSingle() relies on $GLOBALS['TSFE']
      */
-    protected static function simulateFrontendEnvironment()
+    protected static function simulateFrontendEnvironment(): ?TypoScriptFrontendController
     {
-        static::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
+        $tsfeBackup = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        return $tsfeBackup;
     }
 
     /**
      * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
-     *
-     * @see simulateFrontendEnvironment()
      */
-    protected static function resetFrontendEnvironment()
+    protected static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
     {
-        $GLOBALS['TSFE'] = static::$tsfeBackup;
+        $GLOBALS['TSFE'] = $tsfeBackup;
     }
 }
