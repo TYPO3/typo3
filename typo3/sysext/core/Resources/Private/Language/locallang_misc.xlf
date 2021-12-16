@@ -3,9 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="shortcutDescription" resname="shortcutDescription">
-				<source>This is the shortcuts menu. You do not have any shortcuts added yet, you can do so by clicking the shortcut icon %icon%, which you can find on each page in the backend.</source>
-			</trans-unit>
 			<trans-unit id="shortcut_edit" resname="shortcut_edit">
 				<source>Edit</source>
 			</trans-unit>
@@ -88,7 +85,7 @@
 				<source>Go to Workspace Module</source>
 			</trans-unit>
 			<trans-unit id="bookmark_description" resname="bookmark_description">
-				<source>This is the bookmarks menu. You do not have any bookmarks added yet, you can do so by clicking the bookmark icon %s, which you can find on each page in the backend.</source>
+				<source>This is the bookmarks menu. You do not have any bookmarks added yet. You can add one by clicking the bookmark icon %s, which you can find on all pages in the backend.</source>
 			</trans-unit>
 			<trans-unit id="bookmark_edit" resname="bookmark_edit">
 				<source>Edit</source>

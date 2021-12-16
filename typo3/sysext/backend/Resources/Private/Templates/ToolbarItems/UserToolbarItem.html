@@ -1,11 +1,12 @@
 <html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
-
 <span class="toolbar-item-avatar"><be:avatar backendUser="{currentUser.uid}"/></span>
 <f:if condition="{switchUserMode}">
     <f:then>
-        <span class="toolbar-item-name"
-                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtouser')} {currentUser.username}">
-            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtousershort') -> f:format.raw()}
+        <span
+            class="toolbar-item-name"
+            title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtouser')} {currentUser.username}"
+        >
+            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:switchtousershort')}
             {f:if(condition: '{currentUser.realName}', then: '{currentUser.realName} ({currentUser.username})', else: '{currentUser.username}')}
         </span>
     </f:then>

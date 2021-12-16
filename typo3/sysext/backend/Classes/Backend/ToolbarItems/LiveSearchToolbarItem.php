@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,113 +19,71 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Adds backend live search to the toolbar by adding JavaScript and adding an input search field
  */
 class LiveSearchToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * Loads the needed JavaScript file, ands includes it to the page renderer
-     */
-    public function __construct()
-    {
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LiveSearch');
+    protected BackendModuleRepository $backendModuleRepository;
+
+    public function __construct(
+        BackendModuleRepository $backendModuleRepository
+    ) {
+        $this->backendModuleRepository = $backendModuleRepository;
     }
 
     /**
-     * Checks whether the user has access to this toolbar item,
-     * only allowed when the list module is available.
-     * Live search is heavily dependent on the list module and only available when that module is.
-     *
-     * @return bool TRUE if user has access, FALSE if not
+     * Checks whether the user has access to this toolbar item.
+     * Live search depends on the list module and only available when that module is allowed.
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
-        $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-        $listModule = $backendModuleRepository->findByModuleName('web_list');
+        $listModule = $this->backendModuleRepository->findByModuleName('web_list');
         return $listModule !== null && $listModule !== false;
     }
 
     /**
-     * Render search field
-     *
-     * @return string Live search form HTML
+     * Render search field.
      */
-    public function getItem()
+    public function getItem(): string
     {
-        return $this->getFluidTemplateObject('LiveSearchToolbarItem.html')->render();
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        return $view->render('ToolbarItems/LiveSearchToolbarItem');
     }
 
     /**
-     * This item needs to additional attributes
-     *
-     * @return array
+     * This item needs additional attributes.
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return ['class' => 'toolbar-item-search t3js-toolbar-item-search'];
     }
 
     /**
-     * This item has no drop down
-     *
-     * @return bool
+     * This item has no drop-down.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return false;
     }
 
     /**
-     * No drop down here
-     *
-     * @return string
+     * No drop-down here.
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         return '';
     }
 
     /**
-     * Position relative to others, live search should be very right
-     *
-     * @return int
+     * Position relative to others, live search should be very right.
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 90;
-    }
-
-    /**
-     * Returns current PageRenderer
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
-
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
-        return $view;
     }
 }

@@ -1,5 +1,10 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:render partial="ToolbarItem" arguments="{
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/Toolbar/SystemInformationMenu'
+    }"
+/>
+<f:render partial="ToolbarItems/ToolbarItem" arguments="{
     title: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo',
     icon: '{core:icon(identifier: \'actions-system-list-open\', size: \'small\', alternativeMarkupIdentifier: \'inline\')}'
 }" />

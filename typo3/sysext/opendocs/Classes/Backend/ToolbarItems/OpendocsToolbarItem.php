@@ -23,34 +23,29 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
- * Main functionality to render a list of all open documents in the top bar of the TYPO3 Backend
+ * Main functionality to render a list of all open documents in the top bar of the Backend.
+ *
  * @internal This class is a specific hook implementation and is not part of the TYPO3's Core API.
  */
 class OpendocsToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var OpenDocumentService
-     */
-    protected $documentService;
+    protected OpenDocumentService $documentService;
+    protected UriBuilder $uriBuilder;
 
-    /**
-     * Set up dependencies
-     *
-     * @param OpenDocumentService|null $documentService
-     */
-    public function __construct(OpenDocumentService $documentService = null)
-    {
-        $this->documentService = $documentService ?: GeneralUtility::makeInstance(OpenDocumentService::class);
+    public function __construct(
+        OpenDocumentService $documentService,
+        UriBuilder $uriBuilder
+    ) {
+        $this->documentService = $documentService;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /**
-     * Checks whether the user has access to this toolbar item
-     *
-     * @return bool TRUE if user has access, FALSE if not
+     * Checks whether the user has access to this toolbar item.
      */
     public function checkAccess(): bool
     {
@@ -59,70 +54,56 @@ class OpendocsToolbarItem implements ToolbarItemInterface
 
     /**
      * Render toolbar icon via Fluid
-     *
-     * @return string HTML
      */
-    public function getItem()
+    public function getItem(): string
     {
-        $view = $this->getFluidTemplateObject('ToolbarItem.html');
-
-        return $view->render();
+        $view = $this->getFluidTemplateObject();
+        return $view->render('ToolbarItems/ToolbarItem');
     }
 
     /**
-     * This item has a drop down
-     *
-     * @return bool
+     * This item has a drop-down.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
 
     /**
-     * Render drop down via Fluid
-     *
-     * @return string HTML
+     * Render drop-down.
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
-        $view = $this->getFluidTemplateObject('DropDown.html');
+        $view = $this->getFluidTemplateObject();
         $view->assignMultiple([
             'openDocuments' => $this->getMenuEntries($this->documentService->getOpenDocuments()),
             // If there are "recent documents" in the list, add them
             'recentDocuments' => $this->getMenuEntries($this->documentService->getRecentDocuments()),
         ]);
-
-        return $view->render();
+        return $view->render('ToolbarItems/DropDown');
     }
 
     /**
      * No additional attributes
-     *
-     * @return array List of attributes
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
      * Position relative to others
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 30;
     }
 
     /**
-     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function to change
-     * the number of opened documents
-     *
-     * @param array $params
+     * Called as a hook in \TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode, calls a JS function
+     * to change the number of opened documents.
      */
-    public function updateNumberOfOpenDocsHook(array &$params)
+    public function updateNumberOfOpenDocsHook(array &$params): void
     {
         $params['html'] = ImmediateActionElement::dispatchCustomEvent(
             'typo3:opendocs:updateRequested',
@@ -132,23 +113,17 @@ class OpendocsToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Get menu entries for all eligible records
-     *
-     * @param array $documents
-     * @return array
+     * Get menu entries for all eligible records.
      */
     protected function getMenuEntries(array $documents): array
     {
         $entries = [];
-
         foreach ($documents as $identifier => $document) {
             $menuEntry = $this->getMenuEntry($document, $identifier);
-
             if (!empty($menuEntry)) {
                 $entries[] = $menuEntry;
             }
         }
-
         return $entries;
     }
 
@@ -174,9 +149,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $result['table'] = $table;
         $result['record'] = $record;
         $result['label'] = strip_tags(htmlspecialchars_decode($document[0]));
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uri = (string)$uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
+        $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
         $pid = (int)$document[3]['pid'];
 
         if ($document[3]['table'] === 'pages') {
@@ -190,30 +163,13 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         return $result;
     }
 
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:opendocs/Resources/Private/Layouts']);
-        $view->setPartialRootPaths([
-            'EXT:backend/Resources/Private/Partials/ToolbarItems',
-            'EXT:opendocs/Resources/Private/Partials/ToolbarItems',
-        ]);
-        $view->setTemplateRootPaths(['EXT:opendocs/Resources/Private/Templates/ToolbarItems']);
-        $view->setTemplate($filename);
-        $view->getRequest()->setControllerExtensionName('Opendocs');
-
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:opendocs/Resources/Private/Templates']);
         return $view;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

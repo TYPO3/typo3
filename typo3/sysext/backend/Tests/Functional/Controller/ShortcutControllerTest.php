@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
+use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\Controller\ShortcutController;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -37,28 +40,27 @@ class ShortcutControllerTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->subject = new ShortcutController();
+        $this->subject = new ShortcutController(
+            $this->getContainer()->get(ShortcutToolbarItem::class),
+            $this->getContainer()->get(ShortcutRepository::class),
+            $this->getContainer()->get(ModuleLoader::class)
+        );
         $this->request = (new ServerRequest())->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
 
     /**
      * @dataProvider addShortcutTestDataProvide
      * @test
-     *
-     * @param array $parsedBody
-     * @param array $queryParams
-     * @param string $expectedResponseBody
      */
-    public function addShortcutTest(array $parsedBody, array $queryParams, string $expectedResponseBody): void
+    public function addShortcutTest(array $parsedBody, string $expectedResponseBody): void
     {
-        $request = $this->request->withParsedBody($parsedBody)->withQueryParams($queryParams);
+        $request = $this->request->withParsedBody($parsedBody);
         self::assertEquals($expectedResponseBody, $this->subject->addAction($request)->getBody());
     }
 
     public function addShortcutTestDataProvide(): \Generator
     {
         yield 'No route defined' => [
-            [],
             [],
             'missingRoute',
         ];
@@ -67,19 +69,9 @@ class ShortcutControllerTest extends FunctionalTestCase
                 'routeIdentifier' => 'web_layout',
                 'arguments' => '{"id":"123"}',
             ],
-            [],
-            'alreadyExists',
-        ];
-        yield 'Existing data as query parameters' => [
-            [],
-            [
-                'routeIdentifier' => 'web_layout',
-                'arguments' => '{"id":"123"}',
-            ],
             'alreadyExists',
         ];
         yield 'Invalid route identifier' => [
-            [],
             [
                 'routeIdentifier' => 'invalid_route_identifier',
             ],
@@ -89,15 +81,6 @@ class ShortcutControllerTest extends FunctionalTestCase
             [
                 'routeIdentifier' => 'web_list',
                 'arguments' => '{"id":"123","GET":{"clipBoard":"1"}}',
-            ],
-            [],
-            'success',
-        ];
-        yield 'New data as query parameters' => [
-            [],
-            [
-                'routeIdentifier' => 'web_list',
-                'arguments' => '{"id":"321","GET":{"clipBoard":"1"}}',
             ],
             'success',
         ];

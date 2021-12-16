@@ -22,8 +22,8 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Count latest exceptions for the system information menu.
@@ -71,7 +71,7 @@ final class SystemInformationController
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $systemInformationToolbarItem->addSystemMessage(
                 sprintf(
-                    LocalizationUtility::translate('systemmessage.errorsInPeriod', 'belog') ?? '',
+                    $this->getLanguageService()->sL('LLL:EXT:belog/Resources/Private/Language/locallang.xlf:systemmessage.errorsInPeriod'),
                     $count,
                     (string)$uriBuilder->buildUriFromRoute(
                         'system_BelogLog',
@@ -97,5 +97,10 @@ final class SystemInformationController
         }
 
         return (int)$systemInformationUc['system_BelogLog']['lastAccess'];
+    }
+
+    private function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

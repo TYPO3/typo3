@@ -1,14 +1,16 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<span class="systeminformationtoolbaritem-container t3js-systeminformation-container" data-count="{count}"
-            data-severityclass="{severityBadgeClass}"></span>
+<span
+    class="systeminformationtoolbaritem-container t3js-systeminformation-container"
+    data-count="{count}"
+    data-severityclass="{severityBadgeClass}"></span>
 
 <h3 class="dropdown-headline">
-    <f:translate key="systemmessage.header"/>
+    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.header"/>
 </h3>
 <f:if condition="{environmentToolUrl}">
     <p class="dropdown-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
         <f:format.raw>
-            <f:translate key="systemmessage.intro" arguments="{0: environmentToolUrl}"/>
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.intro" arguments="{0: environmentToolUrl}"/>
         </f:format.raw>
     </p>
 </f:if>
@@ -63,7 +65,7 @@
     <f:else>
         <p class="dropdown-text text-success">
             <f:format.nl2br>
-                <f:translate key="systemmessage.allgood"/>
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:systemmessage.allgood"/>
             </f:format.nl2br>
         </p>
     </f:else>

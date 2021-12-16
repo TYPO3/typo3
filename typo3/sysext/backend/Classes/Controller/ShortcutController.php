@@ -25,47 +25,34 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Controller for shortcut processing
+ * Controller for shortcut processing.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ShortcutController
 {
-    /**
-     * @var ShortcutToolbarItem
-     */
-    protected $shortcutToolbarItem;
+    protected ShortcutToolbarItem $shortcutToolbarItem;
+    protected ShortcutRepository $shortcutRepository;
+    protected ModuleLoader $moduleLoader;
 
-    /**
-     * @var ShortcutRepository
-     */
-    protected $shortcutRepository;
-
-    /**
-     * @var ModuleLoader
-     */
-    protected $moduleLoader;
-
-    /**
-     * Set up dependencies
-     */
-    public function __construct()
-    {
-        $this->shortcutToolbarItem = GeneralUtility::makeInstance(ShortcutToolbarItem::class);
-        $this->shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
+    public function __construct(
+        ShortcutToolbarItem $shortcutToolbarItem,
+        ShortcutRepository $shortcutRepository,
+        ModuleLoader $moduleLoader
+    ) {
+        $this->shortcutToolbarItem = $shortcutToolbarItem;
+        $this->shortcutRepository = $shortcutRepository;
         // Needed to get the correct icons when reloading the menu after saving it
-        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
-        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
+        $moduleLoader->load($GLOBALS['TBE_MODULES']);
+        $this->moduleLoader = $moduleLoader;
     }
 
     /**
-     * Renders the menu so that it can be returned as response to an AJAX call
-     *
-     * @return ResponseInterface
+     * Renders the menu so that it can be returned as response to an AJAX call.
      */
     public function menuAction(): ResponseInterface
     {
@@ -73,19 +60,14 @@ class ShortcutController
     }
 
     /**
-     * Creates a shortcut through an AJAX call
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * Creates a shortcut through an AJAX call.
      */
     public function addAction(ServerRequestInterface $request): ResponseInterface
     {
         $result = 'success';
         $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $routeIdentifier = $parsedBody['routeIdentifier'] ?? $queryParams['routeIdentifier'] ?? '';
-        $arguments = $parsedBody['arguments'] ?? $queryParams['arguments'] ?? '';
-
+        $routeIdentifier = $parsedBody['routeIdentifier'] ?? '';
+        $arguments = $parsedBody['arguments'] ?? '';
         if ($routeIdentifier === '') {
             $result = 'missingRoute';
         } elseif ($this->shortcutRepository->shortcutExists($routeIdentifier, $arguments)) {
@@ -97,105 +79,63 @@ class ShortcutController
                 $result = 'failed';
             }
         }
-
         return new HtmlResponse($result);
     }
 
     /**
-     * Fetches the available shortcut groups, renders a form so it can be saved later on, called via AJAX
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface the full HTML for the form
+     * Fetches the available shortcut groups, renders a form so it can be saved later on, called via AJAX.
      */
     public function showEditFormAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-
-        $selectedShortcutId = (int)($parsedBody['shortcutId'] ?? $queryParams['shortcutId']);
-        $selectedShortcutGroupId = (int)($parsedBody['shortcutGroup'] ?? $queryParams['shortcutGroup']);
+        $selectedShortcutId = (int)($queryParams['shortcutId'] ?? 0);
+        $selectedShortcutGroupId = (int)($queryParams['shortcutGroup'] ?? '');
         $selectedShortcut = $this->shortcutRepository->getShortcutById($selectedShortcutId);
         $shortcutGroups = $this->shortcutRepository->getShortcutGroups();
-
-        $editFormView = $this->getFluidTemplateObject('EditForm.html');
-        $editFormView->assign('selectedShortcutId', $selectedShortcutId);
-        $editFormView->assign('selectedShortcutGroupId', $selectedShortcutGroupId);
-        $editFormView->assign('selectedShortcut', $selectedShortcut);
-        $editFormView->assign('shortcutGroups', $shortcutGroups);
-
-        return new HtmlResponse($editFormView->render());
+        $editFormView = $this->getFluidTemplateObject();
+        $editFormView->assignMultiple([
+            'selectedShortcutId' => $selectedShortcutId,
+            'selectedShortcutGroupId' => $selectedShortcutGroupId,
+            'selectedShortcut' => $selectedShortcut,
+            'shortcutGroups' => $shortcutGroups,
+        ]);
+        return new HtmlResponse($editFormView->render('ToolbarItems/ShortcutToolbarItemEditForm'));
     }
 
     /**
      * Gets called when a shortcut is changed, checks whether the user has
-     * permissions to do so and saves the changes if everything is ok
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * permissions to do so and saves the changes if everything is ok.
      */
     public function updateAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $shortcutId = (int)($parsedBody['shortcutId'] ?? $queryParams['shortcutId'] ?? 0);
-        $shortcutTitle = strip_tags($parsedBody['shortcutTitle'] ?? $queryParams['shortcutTitle'] ?? '');
-        $shortcutGroupId = (int)($parsedBody['shortcutGroup'] ?? $queryParams['shortcutGroup'] ?? 0);
-
+        $shortcutId = (int)($parsedBody['shortcutId'] ?? 0);
+        $shortcutTitle = strip_tags($parsedBody['shortcutTitle'] ?? '');
+        $shortcutGroupId = (int)($parsedBody['shortcutGroup'] ?? 0);
         $success = $this->shortcutRepository->updateShortcut($shortcutId, $shortcutTitle, $shortcutGroupId);
-
         return new HtmlResponse($success ? $shortcutTitle : 'failed');
     }
 
     /**
-     * Deletes a shortcut through an AJAX call
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * Deletes a shortcut through an AJAX call.
      */
     public function removeAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $shortcutId = (int)($parsedBody['shortcutId'] ?? $queryParams['shortcutId'] ?? 0);
-        $success = $this->shortcutRepository->removeShortcut($shortcutId);
-
+        $success = $this->shortcutRepository->removeShortcut((int)($request->getParsedBody()['shortcutId'] ?? 0));
         return new JsonResponse(['success' => $success]);
     }
 
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @param string $templateFilename
-     * @return StandaloneView
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     * @throws \InvalidArgumentException
-     * @internal param string $templateFile
-     */
-    protected function getFluidTemplateObject(string $templateFilename): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ShortcutToolbarItem']);
-        $view->setTemplate($templateFilename);
-        $view->getRequest()->setControllerExtensionName('Backend');
-
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

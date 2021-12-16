@@ -1,4 +1,13 @@
-<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/SwitchUser'
+    }"
+/>
 <h3 class="dropdown-headline">
     {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}
 </h3>
@@ -26,13 +35,17 @@
     <hr>
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
-    <h3 class="dropdown-headline"><f:translate key="usermodule.su.list" /></h3>
+    <h3 class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.list" /></h3>
     <div class="dropdown-table">
         <f:for each="{recentUsers}" as="user">
             <div class="dropdown-table-row">
                 <div class="dropdown-table-column dropdown-table-title">
                     <typo3-backend-switch-user mode="switch" targetUser="{user.uid}">
-                        <button type="button" class="modulemenu-action" title="{f:translate(key: 'usermodule.su.tooltip', arguments: '{0: user.username}')}">
+                        <button
+                            type="button"
+                            class="modulemenu-action"
+                            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:usermodule.su.tooltip', arguments: '{0: user.username}')}"
+                        >
                             <be:avatar backendUser="{user.uid}" size="32" />&nbsp;{f:if(condition: user.realName, then: user.realName, else: user.username)}
                         </button>
                     </typo3-backend-switch-user>
@@ -52,10 +65,10 @@
         </typo3-backend-switch-user>
     </f:then>
     <f:else>
-        <a href="{logoutUrl}" class="btn btn-danger pull-left" target="_top">
+        <f:be.link route="logout" class="btn btn-danger pull-left" target="_top">
             <core:icon identifier="actions-logout" size="small" alternativeMarkupIdentifier="inline"/>
             {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.logout')}
-        </a>
+        </f:be.link>
     </f:else>
 </f:if>
 </html>

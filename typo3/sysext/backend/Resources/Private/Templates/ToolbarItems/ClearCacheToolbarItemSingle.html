@@ -1,5 +1,10 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/Toolbar/ClearCacheMenu'
+    }"
+/>
 <a href="{link}" class="toolbar-cache-flush-action toolbar-item-link" title="{f:translate(key: title, default: title)}">
-    <f:render partial="ToolbarItem" arguments="{title: title, icon: '{core:icon(identifier: iconIdentifier, size: \'small\')}'}"/>
+    <f:render partial="ToolbarItems/ToolbarItem" arguments="{title: title, icon: '{core:icon(identifier: iconIdentifier, size: \'small\')}'}"/>
 </a>
 </html>

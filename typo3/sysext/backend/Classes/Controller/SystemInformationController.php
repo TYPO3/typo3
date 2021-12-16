@@ -20,22 +20,27 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Controller for system information processing
+ * Controller for system information processing. Used as ajax end point to update drop down
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class SystemInformationController
 {
+    protected SystemInformationToolbarItem $systemInformationToolbarItem;
+
+    public function __construct(
+        SystemInformationToolbarItem $systemInformationToolbarItem
+    ) {
+        $this->systemInformationToolbarItem = $systemInformationToolbarItem;
+    }
+
     /**
      * Renders the menu for AJAX calls
-     *
-     * @return ResponseInterface
      */
     public function renderMenuAction(): ResponseInterface
     {
-        $toolbarItem = GeneralUtility::makeInstance(SystemInformationToolbarItem::class);
-        return new HtmlResponse($toolbarItem->getDropDown());
+        return new HtmlResponse($this->systemInformationToolbarItem->getDropDown());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,85 +19,57 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Class to render the shortcut menu
+ * Class to render the shortcut menu toolbar.
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class ShortcutToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var ShortcutRepository
-     */
-    protected $shortcutRepository;
+    protected ShortcutRepository $shortcutRepository;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->shortcutRepository = GeneralUtility::makeInstance(ShortcutRepository::class);
-
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ShortcutMenu');
-        $languageService = $this->getLanguageService();
-        $languageFile = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf';
-        $pageRenderer->addInlineLanguageLabelArray([
-            'bookmark.delete' => $languageService->sL($languageFile . ':toolbarItems.bookmarksDelete'),
-            'bookmark.confirmDelete' => $languageService->sL($languageFile . ':toolbarItems.confirmBookmarksDelete'),
-            'bookmark.create' => $languageService->sL($languageFile . ':toolbarItems.createBookmark'),
-            'bookmark.savedTitle' => $languageService->sL($languageFile . ':toolbarItems.bookmarkSavedTitle'),
-            'bookmark.savedMessage' => $languageService->sL($languageFile . ':toolbarItems.bookmarkSavedMessage'),
-        ]);
+    public function __construct(
+        ShortcutRepository $shortcutRepository
+    ) {
+        $this->shortcutRepository = $shortcutRepository;
     }
 
     /**
-     * Checks whether the user has access to this toolbar item
-     *
-     * @return bool TRUE if user has access, FALSE if not
+     * Checks whether the user has access to this toolbar item.
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return (bool)($this->getBackendUser()->getTSConfig()['options.']['enableBookmarks'] ?? false);
     }
 
     /**
-     * Render shortcut icon
-     *
-     * @return string HTML
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     * @throws \InvalidArgumentException
+     * Render shortcut icon.
      */
-    public function getItem()
+    public function getItem(): string
     {
-        return $this->getFluidTemplateObject('Item.html')->render();
+        return $this->getFluidTemplateObject()->render('ToolbarItems/ShortcutToolbarItemItem');
     }
 
     /**
-     * This item has a drop down
-     *
-     * @return bool
+     * This item has a drop-down.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
 
     /**
-     * Render drop down content
-     *
-     * @return string HTML
+     * Render drop-down content
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $shortcutMenu = [];
         $groups = $this->shortcutRepository->getGroupsFromShortcuts();
         arsort($groups, SORT_NUMERIC);
-
         foreach ($groups as $groupId => $groupLabel) {
             $shortcutMenu[] = [
                 'id' => (int)$groupId,
@@ -103,69 +77,36 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 'shortcuts' => $this->shortcutRepository->getShortcutsByGroup($groupId),
             ];
         }
-
-        $dropDownView = $this->getFluidTemplateObject('DropDown.html');
+        $dropDownView = $this->getFluidTemplateObject();
         $dropDownView->assign('shortcutMenu', $shortcutMenu);
-
-        return $dropDownView->render();
+        return $dropDownView->render('ToolbarItems/ShortcutToolbarItemDropDown');
     }
 
     /**
-     * This toolbar item needs no additional attributes
-     *
-     * @return array
+     * This toolbar item needs no additional attributes.
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * Position relative to others, live search should be very right
-     *
-     * @return int
+     * Position relative to others.
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 20;
     }
 
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @param string $templateFilename
-     * @return StandaloneView
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     * @throws \InvalidArgumentException
-     * @internal param string $templateFile
-     */
-    protected function getFluidTemplateObject(string $templateFilename): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ShortcutToolbarItem']);
-        $view->setTemplate($templateFilename);
-        $view->getRequest()->setControllerExtensionName('Backend');
-
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
     }
 }

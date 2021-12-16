@@ -34,6 +34,9 @@ services:
     arguments:
       - !tagged_iterator backend.contextmenu.itemprovider
 
+  TYPO3\CMS\Backend\Module\ModuleLoader:
+    public: true
+
   TYPO3\CMS\Backend\Template\ModuleTemplate:
     shared: false
     public: true
@@ -108,7 +111,13 @@ services:
   TYPO3\CMS\Backend\Controller\SiteConfigurationController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\ShortcutController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\SwitchUserController:
+    tags: ['backend.controller']
+
+  TYPO3\CMS\Backend\Controller\SystemInformationController:
     tags: ['backend.controller']
 
   TYPO3\CMS\Backend\Controller\ColumnSelectorController:
@@ -149,6 +158,12 @@ services:
     public: true
 
   TYPO3\CMS\Backend\Backend\ToolbarItems\ClearCacheToolbarItem:
+    public: true
+
+  TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem:
+    public: true
+
+  TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem:
     public: true
 
   TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap:

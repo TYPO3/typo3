@@ -12,10 +12,10 @@
  */
 
 import $ from 'jquery';
-import Viewport = require('./Viewport');
-import Icons = require('./Icons');
+import Viewport = require('../Viewport');
+import Icons = require('../Icons');
 import 'jquery/autocomplete';
-import './Input/Clearable';
+import '../Input/Clearable';
 import {html, render, TemplateResult} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {renderHTML} from 'TYPO3/CMS/Core/lit-helper';
@@ -44,9 +44,9 @@ interface Suggestion {
 }
 
 /**
- * Module: TYPO3/CMS/Backend/LiveSearch
+ * Module: TYPO3/CMS/Backend/Toolbar/LiveSearch
  * Global search to deal with everything in the backend that is search-related
- * @exports TYPO3/CMS/Backend/LiveSearch
+ * @exports TYPO3/CMS/Backend/Toolbar/LiveSearch
  */
 class LiveSearch {
   private url: string = TYPO3.settings.ajaxUrls.livesearch;

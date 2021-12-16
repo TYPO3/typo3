@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -29,59 +29,45 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var array
-     */
-    protected $availableWorkspaces;
+    protected array $availableWorkspaces;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $currentWorkspace = $this->getBackendUser()->workspace;
-        $this->availableWorkspaces = GeneralUtility::makeInstance(WorkspaceService::class)
-            ->getAvailableWorkspaces();
-
-        $pageRenderer = $this->getPageRenderer();
-        $pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
+    public function __construct(
+        WorkspaceService $workspaceService
+    ) {
+        $this->availableWorkspaces = $workspaceService->getAvailableWorkspaces();
     }
 
     /**
-     * Checks whether the user has access to this toolbar item
-     *
-     * @return bool TRUE if user has access, FALSE if not
+     * Checks whether the user has access to this toolbar item.
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return count($this->availableWorkspaces) > 1;
     }
 
     /**
-     * Render item
-     *
-     * @return string HTML
+     * Render item.
      */
-    public function getItem()
+    public function getItem(): string
     {
         if (empty($this->availableWorkspaces)) {
             return '';
         }
-        return $this->getFluidTemplateObject('ToolbarItem.html')->render();
+        $currentWorkspace = $this->getBackendUser()->workspace;
+        $view = $this->getFluidTemplateObject();
+        $view->assign('workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
+        return $this->getFluidTemplateObject()->render('ToolbarItems/ToolbarItem');
     }
 
     /**
-     * Get drop down
-     *
-     * @return string
+     * Render drop-down.
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $topItem = null;
         $additionalItems = [];
         $backendUser = $this->getBackendUser();
-        $view = $this->getFluidTemplateObject('DropDown.html');
+        $view = $this->getFluidTemplateObject();
         $activeWorkspace = (int)$backendUser->workspace;
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
@@ -98,86 +84,49 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
                 $additionalItems[] = $item;
             }
         }
-
-        // Add the "Go to workspace module" link
-        // if there is at least one icon on top and if the access rights are there
+        // Add the "Go to workspace module" link if there is at least one icon on top and if the access rights are there
         if ($topItem !== null && $backendUser->check('modules', 'web_WorkspacesWorkspaces')) {
             $view->assign('showLinkToModule', true);
         }
         $view->assign('topItem', $topItem);
         $view->assign('additionalItems', $additionalItems);
-        return $view->render();
+        return $view->render('ToolbarItems/DropDown');
     }
 
     /**
-     * This toolbar needs no additional attributes
-     *
-     * @return array
+     * This toolbar needs no additional attributes.
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * This item has a drop down
-     *
-     * @return bool
+     * This item has a drop-down.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return !empty($this->availableWorkspaces);
     }
 
     /**
      * Position relative to others
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 40;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getFluidTemplateObject(): BackendTemplateView
+    {
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
+        return $view;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns current PageRenderer
-     *
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
-        $view->setPartialRootPaths([
-            'EXT:backend/Resources/Private/Partials/ToolbarItems',
-            'EXT:workspaces/Resources/Private/Partials/ToolbarItems',
-        ]);
-        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates/ToolbarItems']);
-
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Workspaces');
-        return $view;
     }
 }

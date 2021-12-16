@@ -1,5 +1,13 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:render partial="ToolbarItem" arguments="{
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu'
+    }"
+    addJsInlineLabels="{
+        'Workspaces.workspaceTitle': workspaceTitle
+    }"
+/>
+<f:render partial="ToolbarItems/ToolbarItem" arguments="{
     title: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.workspace',
     icon: '{core:icon(identifier: \'apps-toolbar-menu-workspace\', size: \'small\', alternativeMarkupIdentifier: \'inline\')}'
 }" />

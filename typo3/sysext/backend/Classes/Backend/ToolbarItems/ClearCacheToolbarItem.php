@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,37 +22,23 @@ use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Render cache clearing toolbar item
- * Adds a dropdown if there are more than one item to clear (usually for admins to render the flush all caches)
- *
- * The dropdown items can be extended via a hook named "cacheActions".
+ * Render cache clearing toolbar item.
+ * Adds a dropdown if there are more than one item to clear (usually for admins to render the flush all caches).
+ * The dropdown items can be manipulated using ModifyClearCacheActionsEvent.
  */
 class ClearCacheToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var array
-     */
-    protected $cacheActions = [];
+    protected array $cacheActions = [];
+    protected array $optionValues = [];
 
-    /**
-     * @var array
-     */
-    protected $optionValues = [];
-
-    /**
-     * @throws \UnexpectedValueException
-     */
     public function __construct(
-        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu');
         $isAdmin = $this->getBackendUser()->isAdmin();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
 
@@ -89,11 +77,9 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Checks whether the user has access to this toolbar item
-     *
-     * @return bool TRUE if user has access, FALSE if not
+     * Checks whether the user has access to this toolbar item.
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin()) {
@@ -109,92 +95,66 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
 
     /**
      * Render clear cache icon, based on the option if there is more than one icon or just one.
-     *
-     * @return string Icon HTML
      */
-    public function getItem()
+    public function getItem(): string
     {
         if ($this->hasDropDown()) {
-            return $this->getFluidTemplateObject('ClearCacheToolbarItem.html')->render();
+            return $this->getFluidTemplateObject()->render('ToolbarItems/ClearCacheToolbarItem');
         }
-        $view = $this->getFluidTemplateObject('ClearCacheToolbarItemSingle.html');
+        $view = $this->getFluidTemplateObject();
         $cacheAction = end($this->cacheActions);
         $view->assignMultiple([
                 'link'  => $cacheAction['href'],
                 'title' => $cacheAction['title'],
                 'iconIdentifier'  => $cacheAction['iconIdentifier'],
             ]);
-        return $view->render();
+        return $view->render('ToolbarItems/ClearCacheToolbarItemSingle');
     }
 
     /**
-     * Render drop down
-     *
-     * @return string Drop down HTML
+     * Render drop-down.
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
-        $view = $this->getFluidTemplateObject('ClearCacheToolbarItemDropDown.html');
+        $view = $this->getFluidTemplateObject();
         $view->assign('cacheActions', $this->cacheActions);
-        return $view->render();
+        return $view->render('ToolbarItems/ClearCacheToolbarItemDropDown');
     }
 
     /**
      * No additional attributes needed.
-     *
-     * @return array
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * This item has a drop down if there is more than one cache action available for the current Backend user.
-     *
-     * @return bool
+     * This item has a drop-down, if there is more than one cache action available for the current Backend user.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return count($this->cacheActions) > 1;
     }
 
     /**
      * Position relative to others
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 25;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        return $GLOBALS['BE_USER'];
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        return $view;
     }
 
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
+    protected function getBackendUser(): BackendUserAuthentication
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
-
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
-        return $view;
+        return $GLOBALS['BE_USER'];
     }
 }

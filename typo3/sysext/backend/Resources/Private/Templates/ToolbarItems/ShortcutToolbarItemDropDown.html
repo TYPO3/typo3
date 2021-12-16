@@ -1,0 +1,59 @@
+<h3 class="dropdown-headline">
+    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarks')}
+</h3>
+<hr>
+<f:if condition="{f:count(subject: '{shortcutMenu}')} == 0">
+    <f:then>
+        <f:comment>No shortcuts added yet, show a small help message how to add shortcuts</f:comment>
+        <f:alias
+            map="{inlineIcon: '{core:icon(identifier: \'actions-share-alt\', alternativeMarkupIdentifier: \'inline\')}', inlineIconTitle: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarks\')}'}">
+            <p>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:bookmark_description', arguments:'{0: \'<span title="{inlineIconTitle}">{inlineIcon -> f:format.raw()}</span>\'}') -> f:format.raw()}</p>
+        </f:alias>
+    </f:then>
+    <f:else>
+        <f:for each="{shortcutMenu}" as="group" iteration="iterator">
+            <f:if condition="!{iterator.isFirst}">
+                <hr>
+            </f:if>
+            <f:if condition="{group.title}">
+                <h3 class="dropdown-headline" id="shortcut-group-{group.id}">{group.title}</h3>
+            </f:if>
+            <div class="dropdown-table" data-shortcutgroup="{group.id}">
+                <f:for each="{group.shortcuts}" as="shortcut">
+                    <div class="dropdown-table-row t3js-topbar-shortcut" data-shortcutid="{shortcut.raw.uid}" data-shortcutgroup="{group.id}">
+                        <div class="dropdown-table-column dropdown-table-title">
+                            <a
+                                href="{shortcut.href}"
+                                class="dropdown-table-title-ellipsis t3js-shortcut-jump"
+                                data-module="{shortcut.module}"
+                                data-route="{shortcut.route}"
+                                data-pageid="{shortcut.pageId}"
+                            >
+                                <span title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.shortcut')}">
+                                    <f:format.raw>{shortcut.icon}</f:format.raw>
+                                </span>
+                                {shortcut.label}
+                            </a>
+                        </div>
+                        <div class="dropdown-table-column dropdown-table-actions">
+                            <a
+                                href="#"
+                                class="dropdown-table-actions-btn dropdown-table-actions-btn-edit t3js-shortcut-edit"
+                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksEdit')}"
+                            >
+                                <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
+                            </a>
+                            <a
+                                href="#"
+                                class="dropdown-table-actions-btn dropdown-table-actions-btn-delete t3js-shortcut-delete"
+                                title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.bookmarksDelete')}"
+                            >
+                                <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
+                            </a>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </f:for>
+    </f:else>
+</f:if>

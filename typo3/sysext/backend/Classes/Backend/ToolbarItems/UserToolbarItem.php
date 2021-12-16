@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,59 +18,55 @@
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * User toolbar item
+ * User toolbar item and drop-down.
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class UserToolbarItem implements ToolbarItemInterface
 {
+    protected BackendModuleRepository $backendModuleRepository;
+
+    public function __construct(BackendModuleRepository $backendModuleRepository)
+    {
+        $this->backendModuleRepository = $backendModuleRepository;
+    }
+
     /**
-     * Item is always enabled
-     *
-     * @return bool TRUE
+     * Item is always enabled.
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return true;
     }
 
     /**
-     * Render username and an icon
-     *
-     * @return string HTML
+     * Render username and an icon.
      */
-    public function getItem()
+    public function getItem(): string
     {
         $backendUser = $this->getBackendUser();
-        $view = $this->getFluidTemplateObject('UserToolbarItem.html');
+        $view = $this->getFluidTemplateObject();
         $view->assignMultiple([
             'currentUser' => $backendUser->user,
             'switchUserMode' => (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
         ]);
-        return $view->render();
+        return $view->render('ToolbarItems/UserToolbarItem');
     }
 
     /**
-     * Render drop down
-     *
-     * @return string HTML
+     * Render drop-down content.
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
         $backendUser = $this->getBackendUser();
-
-        /** @var BackendModuleRepository $backendModuleRepository */
-        $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $mostRecentUsers = [];
         if ($backendUser->isAdmin()
@@ -103,29 +101,23 @@ class UserToolbarItem implements ToolbarItemInterface
             }
         }
 
-        GeneralUtility::makeInstance(PageRenderer::class)
-            ->loadRequireJsModule('TYPO3/CMS/Backend/SwitchUser');
-
         $modules = null;
-        if ($userModule = $backendModuleRepository->findByModuleName('user')) {
+        if ($userModule = $this->backendModuleRepository->findByModuleName('user')) {
             $modules = $userModule->getChildren();
         }
-        $view = $this->getFluidTemplateObject('UserToolbarItemDropDown.html');
+        $view = $this->getFluidTemplateObject();
         $view->assignMultiple([
             'modules' => $modules,
-            'logoutUrl' => (string)$uriBuilder->buildUriFromRoute('logout'),
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
             'recentUsers' => $mostRecentUsers,
         ]);
-        return $view->render();
+        return $view->render('ToolbarItems/UserToolbarItemDropDown');
     }
 
     /**
-     * Returns an additional class if user is in "switch user" mode
-     *
-     * @return array
+     * Returns an additional class if user is in "switch user" mode.
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         $result = [
             'class' => 'toolbar-item-user',
@@ -137,52 +129,30 @@ class UserToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * This item has a drop down
-     *
-     * @return bool
+     * This item has a drop-down.
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
 
     /**
-     * Position relative to others
-     *
-     * @return int
+     * Position relative to others.
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 80;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     *
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
-
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 }

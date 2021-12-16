@@ -20,41 +20,30 @@ namespace TYPO3\CMS\Opendocs\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Opendocs\Backend\ToolbarItems\OpendocsToolbarItem;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
- * Controller for documents processing
+ * Controller for documents processing.
+ * Contains AJAX endpoints of the open docs toolbar item click actions.
  *
- * Contains AJAX endpoints of the open docs toolbar item click actions
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class OpenDocumentController
 {
-    /**
-     * @var OpenDocumentService
-     */
-    protected $documents;
+    protected OpenDocumentService $documents;
+    protected OpendocsToolbarItem $toolbarItem;
 
-    /**
-     * @var OpendocsToolbarItem
-     */
-    protected $toolbarItem;
-
-    /**
-     * Set up dependencies
-     */
-    public function __construct()
-    {
-        $this->documents = GeneralUtility::makeInstance(OpenDocumentService::class);
-        $this->toolbarItem = GeneralUtility::makeInstance(OpendocsToolbarItem::class);
+    public function __construct(
+        OpenDocumentService $documents,
+        OpendocsToolbarItem $toolbarItem
+    ) {
+        $this->documents = $documents;
+        $this->toolbarItem = $toolbarItem;
     }
 
     /**
-     * Renders the menu so that it can be returned as response to an AJAX call
-     *
-     * @return ResponseInterface
+     * Renders the menu so that it can be returned as response to an AJAX call.
      */
     public function renderMenu(): ResponseInterface
     {
@@ -62,21 +51,16 @@ class OpenDocumentController
     }
 
     /**
-     * Closes a document and returns the updated menu
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * Closes a document and returns the updated menu.
      */
     public function closeDocument(ServerRequestInterface $request): ResponseInterface
     {
         $identifier = $request->getParsedBody()['md5sum'] ?? $request->getQueryParams()['md5sum'] ?? null;
-
         if ($identifier) {
             $this->documents->closeDocument($identifier);
         } else {
             $this->documents->closeAllDocuments();
         }
-
         return $this->renderMenu();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,24 +21,18 @@ use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Help toolbar item
+ * Help toolbar item - The question mark icon in toolbar
  */
 class HelpToolbarItem implements ToolbarItemInterface
 {
-    /**
-     * @var BackendModule
-     */
-    protected $helpModuleMenu;
+    protected ?BackendModule $helpModuleMenu = null;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
+    public function __construct(
+        BackendModuleRepository $backendModuleRepository
+    ) {
         $helpModuleMenu = $backendModuleRepository->findByModuleName('help');
         if ($helpModuleMenu && $helpModuleMenu->getChildren()->count() > 0) {
             $this->helpModuleMenu = $helpModuleMenu;
@@ -45,81 +41,63 @@ class HelpToolbarItem implements ToolbarItemInterface
 
     /**
      * Users see this if a module is available
-     *
-     * @return bool TRUE
      */
-    public function checkAccess()
+    public function checkAccess(): bool
     {
         return (bool)$this->helpModuleMenu;
     }
 
     /**
      * Render help icon
-     *
-     * @return string toolbar item for the help icon
      */
-    public function getItem()
+    public function getItem(): string
     {
-        return $this->getFluidTemplateObject('HelpToolbarItem.html')->render();
+        return $this->getFluidTemplateObject()->render('ToolbarItems/HelpToolbarItem');
     }
 
     /**
      * Render drop down
-     *
-     * @return string
      */
-    public function getDropDown()
+    public function getDropDown(): string
     {
-        $view = $this->getFluidTemplateObject('HelpToolbarItemDropDown.html');
+        if (!$this->helpModuleMenu instanceof BackendModule) {
+            // checkAccess() is called before and prevents call to getDropDown() if there is no help.
+            throw new \RuntimeException('No HelpModuleMenu found.', 1641993564);
+        }
+        $view = $this->getFluidTemplateObject();
         $view->assign('modules', $this->helpModuleMenu->getChildren());
-        return $view->render();
+        return $view->render('ToolbarItems/HelpToolbarItemDropDown');
     }
 
     /**
      * No additional attributes needed.
-     *
-     * @return array
      */
-    public function getAdditionalAttributes()
+    public function getAdditionalAttributes(): array
     {
         return [];
     }
 
     /**
-     * This item has a drop down
-     *
-     * @return bool
+     * This item has a drop-down
      */
-    public function hasDropDown()
+    public function hasDropDown(): bool
     {
         return true;
     }
 
     /**
      * Position relative to others
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): int
     {
         return 70;
     }
 
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/ToolbarItems']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/ToolbarItems']);
-        $view->setTemplate($filename);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 }
