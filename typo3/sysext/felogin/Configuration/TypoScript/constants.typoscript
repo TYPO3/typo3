@@ -65,11 +65,11 @@ plugin {
   tx_felogin_login {
     view {
       # cat=Frontend Login/02_Template/102; type=string; label= Path to template root (FE)
-      templateRootPath = EXT:felogin/Resources/Private/Templates/
+      templateRootPath =
       # cat=Frontend Login/02_Template/103; type=string; label= Path to template partials (FE)
-      partialRootPath = EXT:felogin/Resources/Private/Partials/
+      partialRootPath =
       # cat=Frontend Login/02_Template/104; type=string; label= Path to template layouts (FE)
-      layoutRootPath = EXT:felogin/Resources/Private/Layouts/
+      layoutRootPath =
     }
   }
 }
