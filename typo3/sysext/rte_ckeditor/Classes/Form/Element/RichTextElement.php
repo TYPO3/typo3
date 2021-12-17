@@ -161,7 +161,7 @@ class RichTextElement extends AbstractFormElement
 
         $resultArray['html'] = implode(LF, $html);
 
-        $this->rteConfiguration = $config['richtextConfiguration']['editor'];
+        $this->rteConfiguration = $config['richtextConfiguration']['editor'] ?? [];
         $resultArray['requireJsModules'][] = $this->loadCkEditorRequireJsModule($fieldId);
 
         return $resultArray;
@@ -347,7 +347,7 @@ class RichTextElement extends AbstractFormElement
             'customConfig' => '',
         ];
 
-        if (is_array($this->rteConfiguration['config'])) {
+        if (is_array($this->rteConfiguration['config'] ?? null)) {
             $configuration = array_replace_recursive($configuration, $this->rteConfiguration['config']);
         }
 
