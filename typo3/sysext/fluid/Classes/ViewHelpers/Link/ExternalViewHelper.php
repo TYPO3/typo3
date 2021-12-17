@@ -62,7 +62,7 @@ final class ExternalViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('defaultScheme', 'string', 'Scheme the href attribute will be prefixed with if specified $uri does not contain a scheme already', false, 'https');
         $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
-        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
+        $this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', false, 'noopener noreferrer');
         $this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
         $this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
     }
