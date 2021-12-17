@@ -1,6 +1,5 @@
 <div class="row row-cols-auto align-items-start t3js-linkvalidator-settings">
     <div class="col">
-        <input type="hidden" name="id" value="{pageId}" />
         <h4><f:render section="OptionsTitle" /></h4>
         <div>
             <table class="table table-striped table-hover">
@@ -15,8 +14,8 @@
                     <tr>
                         <td>
                             <div class="form-check form-switch">
-                                {optionByType.checkbox -> f:format.raw()}
-                                {optionByType.label -> f:format.raw()}
+                                <input type="checkbox" class="form-check-input mt-1" value="1" id="{optionByType.id}" name="{optionByType.name}" {optionByType.checked}/>
+                                <label class="form-check-label lh-lg" for="{optionByType.id}">{optionByType.label}</label>
                             </div>
                         </td>
                         <td class="text-end"><span class="badge">{optionByType.count}</span></td>

@@ -9,6 +9,9 @@ services:
     # Tasks require EXT:scheduler to be installed, ignore for now.
     exclude: '../Classes/Task'
 
+  TYPO3\CMS\Linkvalidator\Controller\LinkValidatorController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Linkvalidator\LinkAnalyzer:
     public: true
 
