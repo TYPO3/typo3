@@ -2500,7 +2500,7 @@ class DatabaseRecordList
             $hookObject->getDBlistQuery($table, $pageId, $addWhere, $selFieldList, $this);
         }
         if (!empty($addWhere)) {
-            $queryBuilder->andWhere([QueryHelper::stripLogicalOperatorPrefix($addWhere)]);
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($addWhere));
         }
         $fields = GeneralUtility::trimExplode(',', $selFieldList, true);
         if ($fields === []) {
