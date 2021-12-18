@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-namespace TYPO3\CMS\Styleguide\ViewHelpers;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +14,9 @@ namespace TYPO3\CMS\Styleguide\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace TYPO3\CMS\Styleguide\ViewHelpers;
+
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -22,19 +24,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class InitialsViewHelper extends AbstractViewHelper
 {
-
-    /**
-     * Initializes the arguments
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('text', 'string', 'the text to trim into initials', true);
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         return substr($this->arguments['text'], 0, 1) . strtolower(substr($this->arguments['text'], 1, 1));
     }
