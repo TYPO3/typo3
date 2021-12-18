@@ -6000,7 +6000,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if ($storagePid === 'this') {
                         $storagePid = $this->getTypoScriptFrontendController()->id;
                     }
-                    if ($storagePid > 0) {
+                    if (MathUtility::canBeInterpretedAsInteger($storagePid) && $storagePid > 0) {
                         $storagePid = -$storagePid;
                     }
                 });
