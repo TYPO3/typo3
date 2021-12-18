@@ -198,6 +198,17 @@ class ContentObjectRendererTest extends FunctionalTestCase
                     'SELECT' => 'DISTINCT crdate',
                 ],
             ],
+            'testing #96321: pidInList=root does not raise PHP 8 warning' => [
+                'tt_content',
+                [
+                    'selectFields' => '*',
+                    'recursive' => '5',
+                    'pidInList' => 'root',
+                ],
+                [
+                    'SELECT' => '*',
+                ],
+            ],
         ];
     }
 
