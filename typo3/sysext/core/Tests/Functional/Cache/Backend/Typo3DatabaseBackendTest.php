@@ -29,6 +29,23 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class Typo3DatabaseBackendTest extends FunctionalTestCase
 {
     use \Prophecy\PhpUnit\ProphecyTrait;
+
+    /**
+     * @var array
+     */
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    // Set pages cache database backend, testing-framework sets this to NullBackend by default.
+                    'pages' => [
+                        'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     /**
      * @test
      */

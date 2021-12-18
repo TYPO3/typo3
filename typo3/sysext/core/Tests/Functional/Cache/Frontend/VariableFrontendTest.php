@@ -26,6 +26,22 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class VariableFrontendTest extends FunctionalTestCase
 {
+    /**
+     * @var array
+     */
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    // Set pages cache database backend, testing-framework sets this to NullBackend by default.
+                    'pages' => [
+                        'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
     public function insertSerializedArrayIntoLobAndRetrieveItDataProvider(): array
     {
         $arrayToSerialize = [

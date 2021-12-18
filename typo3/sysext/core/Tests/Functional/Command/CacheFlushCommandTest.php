@@ -29,6 +29,22 @@ use TYPO3\CMS\Core\Package\PackageManager;
 class CacheFlushCommandTest extends AbstractCommandTest
 {
     /**
+     * @var array
+     */
+    protected $configurationToUseInTestInstance = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    // Set pages cache database backend, testing-framework sets this to NullBackend by default.
+                    'pages' => [
+                        'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    /**
      * @test
      */
     public function cachesCanBeFlushed(): void
