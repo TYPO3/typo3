@@ -60,7 +60,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        target="_blank"
  *        class="ico-class" title="some title"
  *        additionalAttributes="{type:'button'}"
- *        useCacheHash="true"
  *    >
  *       Linktext
  *    </f:link.typolink>
