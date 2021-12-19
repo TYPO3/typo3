@@ -45,9 +45,6 @@
 			<trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll">
 				<source>Show All</source>
 			</trans-unit>
-			<trans-unit id="filter.destination" resname="filter.destination">
-				<source>Destination (Path or Page ID)</source>
-			</trans-unit>
 			<trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode">
 				<source>Status Code</source>
 			</trans-unit>
@@ -64,26 +61,14 @@
 			<trans-unit id="record_disabled" resname="record_disabled">
 				<source>Redirect is not activated!</source>
 			</trans-unit>
-			<trans-unit id="source_host" resname="source_host">
-				<source>Source Host</source>
-			</trans-unit>
-			<trans-unit id="source_path" resname="source_path">
-				<source>Source Path</source>
-			</trans-unit>
 			<trans-unit id="source_path.placeholder" resname="source_path.placeholder">
 				<source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
-			</trans-unit>
-			<trans-unit id="destination" resname="destination">
-				<source>Destination</source>
 			</trans-unit>
 			<trans-unit id="pageID" resname="pageID">
 				<source>Page ID</source>
 			</trans-unit>
 			<trans-unit id="destination_status_code" resname="destination_status_code">
 				<source>Status Code</source>
-			</trans-unit>
-			<trans-unit id="hits" resname="hits">
-				<source># Hits</source>
 			</trans-unit>
 			<trans-unit id="hit_text" resname="hit_text">
 				<source>%s hit</source>
@@ -99,9 +84,6 @@
 			</trans-unit>
 			<trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content">
 				<source>Are you sure you want to reset the hitcounter of this record?</source>
-			</trans-unit>
-			<trans-unit id="hit_last" resname="hit_last">
-				<source>Last Hit on</source>
 			</trans-unit>
 			<trans-unit id="hit_last_never" resname="hit_last_never">
 				<source>Never</source>
