@@ -217,7 +217,7 @@ class SchemaMigrator
 
             foreach ((array)$perTableStatements as $statement) {
                 try {
-                    $connection->executeUpdate($statement);
+                    $connection->executeStatement($statement);
                     $result[$statement] = '';
                 } catch (DBALException $e) {
                     $result[$statement] = $e->getPrevious()->getMessage();

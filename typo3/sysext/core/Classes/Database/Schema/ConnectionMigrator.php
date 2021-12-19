@@ -190,7 +190,7 @@ class ConnectionMigrator
 
         foreach ($statements as $statement) {
             try {
-                $this->connection->executeUpdate($statement);
+                $this->connection->executeStatement($statement);
                 $result[$statement] = '';
             } catch (DBALException $e) {
                 $result[$statement] = $e->getPrevious()->getMessage();

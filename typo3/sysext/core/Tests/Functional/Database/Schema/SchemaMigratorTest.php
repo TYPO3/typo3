@@ -253,7 +253,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $toSchema,
             $connection->getDatabasePlatform()
         );
-        $connection->executeUpdate($statements[0]);
+        $connection->executeStatement($statements[0]);
         self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
 
         $statements = $this->readFixtureFile('newTable');

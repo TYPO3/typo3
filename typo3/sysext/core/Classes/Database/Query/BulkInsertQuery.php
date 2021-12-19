@@ -200,7 +200,7 @@ class BulkInsertQuery
             );
         }
 
-        return $this->connection->executeUpdate($this->getSQL(), $this->parameters, $this->types);
+        return $this->connection->executeStatement($this->getSQL(), $this->parameters, $this->types);
     }
 
     /**
