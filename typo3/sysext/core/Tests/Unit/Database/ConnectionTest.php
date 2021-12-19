@@ -241,7 +241,7 @@ class ConnectionTest extends UnitTestCase
     public function bulkInsert(): void
     {
         $this->connection->expects(self::once())
-            ->method('executeUpdate')
+            ->method('executeStatement')
             ->with('INSERT INTO "aTestTable" ("aField") VALUES (?), (?)', ['aValue', 'anotherValue'])
             ->willReturn(2);
 
@@ -508,7 +508,7 @@ class ConnectionTest extends UnitTestCase
     public function truncateQuery(): void
     {
         $this->connection->expects(self::once())
-            ->method('executeUpdate')
+            ->method('executeStatement')
             ->with('TRUNCATE "aTestTable"')
             ->willReturn(0);
 

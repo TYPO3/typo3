@@ -338,7 +338,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function truncate(string $tableName, bool $cascade = false): int
     {
-        return $this->executeUpdate(
+        return $this->executeStatement(
             $this->getDatabasePlatform()->getTruncateTableSQL(
                 $this->quoteIdentifier($tableName),
                 $cascade
