@@ -24,20 +24,20 @@ parameters:
   reportUnmatchedIgnoredErrors: true
 
   scanDirectories:
-    - %currentWorkingDirectory%/typo3/sysext/
+    - typo3/sysext/
   paths:
-    - %currentWorkingDirectory%/typo3/sysext/
+    - typo3/sysext/
 
   earlyTerminatingMethodCalls:
       TYPO3\CMS\Core\Resource\InaccessibleFolder:
         - throwInaccessibleException
 
   excludes_analyse:
-    - %currentWorkingDirectory%/typo3/sysext/*/Tests/*
-    - %currentWorkingDirectory%/typo3/sysext/*/Documentation/*
-    - %currentWorkingDirectory%/typo3/sysext/*/Resources/*
-    - %currentWorkingDirectory%/typo3/sysext/*/Configuration/*
-    - %currentWorkingDirectory%/typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
+    - typo3/sysext/*/Tests/*
+    - typo3/sysext/*/Documentation/*
+    - typo3/sysext/*/Resources/*
+    - typo3/sysext/*/Configuration/*
+    - typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
   ignoreErrors:
     - "#^Parameter \\#1 \\$disable of function libxml_disable_entity_loader expects bool, bool\\|null given\\.$#"
@@ -74,10 +74,10 @@ parameters:
     - '#Variable \$_EXTKEY might not be defined\.#'
     -
       message: '#Instantiated class Composer\\Util\\Filesystem not found\.#'
-      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Composer/CliEntryPoint.php
+      path: typo3/sysext/core/Classes/Composer/CliEntryPoint.php
     -
       message: '#Parameter \$event of method [\w\\]+::\w+\(\) has invalid typehint type Composer\\Script\\Event\.#'
-      path: %currentWorkingDirectory%/typo3/sysext/*/Classes/Composer/*
+      path: typo3/sysext/*/Classes/Composer/*
     -
       message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\)\\:\\:__default\\.$#"
       count: 1
