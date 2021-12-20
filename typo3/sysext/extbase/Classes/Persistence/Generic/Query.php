@@ -141,7 +141,7 @@ class Query implements QueryInterface, ForwardCompatibleQueryInterface
     }
 
     /**
-     * @param ?QueryInterface $parentQuery
+     * @param QueryInterface|null $parentQuery
      * @internal
      */
     public function setParentQuery(?QueryInterface $parentQuery): void

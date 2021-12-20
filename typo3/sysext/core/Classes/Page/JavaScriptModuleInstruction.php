@@ -42,7 +42,7 @@ class JavaScriptModuleInstruction implements \JsonSerializable
 
     /**
      * @param string $name RequireJS module name
-     * @param ?string $exportName (optional) name used internally to export the module
+     * @param string|null $exportName (optional) name used internally to export the module
      * @return static
      */
     public static function forRequireJS(string $name, string $exportName = null): self
