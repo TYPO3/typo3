@@ -31,6 +31,8 @@ final class PageRendererRenderPreProcess
     {
         // @todo: Add an event to PageRenderer for registration of RequireJS configuration, see #93236
         if ($pageRenderer->getApplicationType() === 'BE') {
+            // @todo: Unused in TYPO3 core, but kept for requirejs compatibility in backend modules.
+            //        Remove/deprecate when requirejs is deprecated.
             $pageRenderer->addRequireJsConfiguration([
                 'shim' => [
                     'ckeditor' => ['exports' => 'CKEDITOR'],

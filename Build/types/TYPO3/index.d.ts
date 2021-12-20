@@ -138,7 +138,6 @@ interface Window {
  * Needed type declarations for provided libs
  */
 declare module 'muuri';
-declare module 'ckeditor';
 declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';

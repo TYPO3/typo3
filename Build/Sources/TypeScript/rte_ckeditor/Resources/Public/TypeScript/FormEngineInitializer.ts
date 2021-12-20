@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {loadCKEditor} from 'TYPO3/CMS/RteCkeditor/CKEditorLoader';
 import $ from 'jquery';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 
@@ -31,7 +32,7 @@ interface CKEditorExternalPlugin {
  */
 export class FormEngineInitializer {
   public static initializeCKEditor(options: CKEditorOptions): void {
-    import('ckeditor').then(({default: CKEDITOR}) => {
+    loadCKEditor().then((CKEDITOR) => {
       CKEDITOR.timestamp += '-' + options.configurationHash;
       options.externalPlugins
         .forEach((item: CKEditorExternalPlugin) => CKEDITOR.plugins.addExternal(item.name, item.resource, ''));
