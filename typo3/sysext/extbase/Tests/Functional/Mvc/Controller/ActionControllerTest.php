@@ -142,8 +142,6 @@ class ActionControllerTest extends FunctionalTestCase
         // Assertions
         $reflectionMethod = $reflectionClass->getProperty('view');
         $reflectionMethod->setAccessible(true);
-        $reflectionMethod->getValue($this->subject);
-
         $view = $reflectionMethod->getValue($this->subject);
         self::assertInstanceOf(JsonView::class, $view);
     }
