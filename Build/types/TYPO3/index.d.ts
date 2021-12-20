@@ -39,12 +39,24 @@ declare namespace TYPO3 {
 
     export namespace Backend {
       export class FormEngineValidation {
+        public USmode: number;
         public readonly errorClass: string;
         public markFieldAsChanged(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery): void;
+        public trimExplode(delimiter: string, string: string): Array<string>;
+        public parseInt(value: number|string|boolean): number;
+        public parseDouble(value: number|string|boolean): string;
+        public ltrim(value: string): string;
+        public btrim(value: string): string;
+        public getYear(timeObj: Date): number|null;
+        public getDate(timeObj: Date): number;
+        public splitStr(theStr1: string, delim: string, index: number): Array<string>;
         public initializeInputFields(): void;
         public registerCustomEvaluation(name: string, handler: Function): void;
+        public formatValue(type: string, value: string|number, config: Object): string;
         public validate(section?: Element): void;
         public validateField(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery, value?: string): void;
+        public processValue(command: string, value: string, config: Object): string;
+        public initialize(): void;
       }
 
       export namespace FormEngine {

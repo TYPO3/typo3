@@ -152,7 +152,7 @@ define([
    * Format field value
    *
    * @param {String} type
-   * @param {String} value
+   * @param {String|Number} value
    * @param {Object} config
    * @returns {String}
    */

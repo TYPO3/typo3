@@ -1,77 +1,13 @@
-define(['jquery', 'bootstrap', 'TYPO3/CMS/Backend/Popover'], function($, bootstrap, Popover) {
-  'use strict';
-
-  describe('TYPO3/CMS/Backend/PopoverTest:', function() {
-    /**
-     * @test
-     */
-    describe('initialize', function() {
-      var $body = $('body');
-      var $element = $('<div data-bs-toggle="popover">');
-      $body.append($element);
-      it('works with default selector', function() {
-        Popover.initialize();
-        expect($element[0].outerHTML).toBe('<div data-bs-toggle="popover" data-bs-original-title="" title=""></div>');
-      });
-
-      var $element2 = $('<div data-bs-toggle="popover" data-title="foo">');
-      $body.append($element2);
-      it('works with default selector and title attribute', function() {
-        Popover.initialize();
-        expect($element2[0].outerHTML).toBe('<div data-bs-toggle="popover" data-title="foo" data-bs-original-title="" title=""></div>');
-      });
-
-      var $element3 = $('<div data-bs-toggle="popover" data-bs-content="foo">');
-      $body.append($element3);
-      it('works with default selector and content attribute', function() {
-        Popover.initialize();
-        expect($element3[0].outerHTML).toBe('<div data-bs-toggle="popover" data-bs-content="foo" data-bs-original-title="" title=""></div>');
-      });
-
-      var $element4 = $('<div class="t3js-popover">');
-      $body.append($element4);
-      it('works with custom selector', function() {
-        Popover.initialize('.t3js-popover');
-        expect($element4[0].outerHTML).toBe('<div class="t3js-popover" data-bs-original-title="" title=""></div>');
-      });
-    });
-
-    describe('call setOptions', function() {
-      var $body = $('body');
-      var $element = $('<div class="t3js-test-set-options" data-title="foo-title" data-bs-content="foo-content">');
-      $body.append($element);
-      it('can set title', function() {
-        Popover.initialize('.t3js-test-set-options');
-        expect($element.attr('data-title')).toBe('foo-title');
-        expect($element.attr('data-bs-content')).toBe('foo-content');
-        expect($element.attr('data-bs-original-title')).toBe('');
-        expect($element.attr('title')).toBe('');
-        Popover.setOptions($element, {
-          'title': 'bar-title'
-        });
-        expect($element.attr('data-title')).toBe('foo-title');
-        expect($element.attr('data-bs-content')).toBe('foo-content');
-        expect($element.attr('data-bs-original-title')).toBe('bar-title');
-        expect($element.attr('title')).toBe('');
-      });
-      var $element2 = $('<div class="t3js-test-set-options2" data-title="foo-title" data-bs-content="foo-content">');
-      $body.append($element2);
-      it('can set content', function() {
-        Popover.initialize('.t3js-test-set-options2');
-        // Popover must be visible before the content can be updated manually via setOptions()
-        Popover.show($element2);
-        expect($element2.attr('data-title')).toBe('foo-title');
-        expect($element2.attr('data-bs-content')).toBe('foo-content');
-        expect($element2.attr('data-bs-original-title')).toBe('');
-        expect($element2.attr('title')).toBe('');
-        Popover.setOptions($element2, {
-          'content': 'bar-content'
-        });
-        expect($element2.attr('data-title')).toBe('foo-title');
-        expect($element2.attr('data-bs-content')).toBe('bar-content');
-        expect($element2.attr('data-bs-original-title')).toBe('foo-title');
-        expect($element2.attr('title')).toBe('');
-      });
-    });
-  });
-});
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+var __importDefault=this&&this.__importDefault||function(t){return t&&t.__esModule?t:{default:t}};define(["require","exports","jquery","TYPO3/CMS/Backend/Popover"],(function(t,e,o,a){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),o=__importDefault(o),describe("TYPO3/CMS/Backend/PopoverTest:",()=>{describe("initialize",()=>{const t=o.default("body"),e=o.default('<div data-bs-toggle="popover">');t.append(e),it("works with default selector",()=>{a.initialize(),expect(e[0].outerHTML).toBe('<div data-bs-toggle="popover" data-bs-original-title="" title=""></div>')});const i=o.default('<div data-bs-toggle="popover" data-title="foo">');t.append(i),it("works with default selector and title attribute",()=>{a.initialize(),expect(i[0].outerHTML).toBe('<div data-bs-toggle="popover" data-title="foo" data-bs-original-title="" title=""></div>')});const l=o.default('<div data-bs-toggle="popover" data-bs-content="foo">');t.append(l),it("works with default selector and content attribute",()=>{a.initialize(),expect(l[0].outerHTML).toBe('<div data-bs-toggle="popover" data-bs-content="foo" data-bs-original-title="" title=""></div>')});const s=o.default('<div class="t3js-popover">');t.append(s),it("works with custom selector",()=>{a.initialize(".t3js-popover"),expect(s[0].outerHTML).toBe('<div class="t3js-popover" data-bs-original-title="" title=""></div>')})}),describe("call setOptions",()=>{const t=o.default("body"),e=o.default('<div class="t3js-test-set-options" data-title="foo-title" data-bs-content="foo-content">');t.append(e),it("can set title",()=>{a.initialize(".t3js-test-set-options"),expect(e.attr("data-title")).toBe("foo-title"),expect(e.attr("data-bs-content")).toBe("foo-content"),expect(e.attr("data-bs-original-title")).toBe(""),expect(e.attr("title")).toBe(""),a.setOptions(e,{title:"bar-title"}),expect(e.attr("data-title")).toBe("foo-title"),expect(e.attr("data-bs-content")).toBe("foo-content"),expect(e.attr("data-bs-original-title")).toBe("bar-title"),expect(e.attr("title")).toBe("")});const i=o.default('<div class="t3js-test-set-options2" data-title="foo-title" data-bs-content="foo-content">');t.append(i),it("can set content",()=>{a.initialize(".t3js-test-set-options2"),a.show(i),expect(i.attr("data-title")).toBe("foo-title"),expect(i.attr("data-bs-content")).toBe("foo-content"),expect(i.attr("data-bs-original-title")).toBe(""),expect(i.attr("title")).toBe(""),a.setOptions(i,{content:"bar-content"}),expect(i.attr("data-title")).toBe("foo-title"),expect(i.attr("data-bs-content")).toBe("bar-content"),expect(i.attr("data-bs-original-title")).toBe("foo-title"),expect(i.attr("title")).toBe("")})})})}));
