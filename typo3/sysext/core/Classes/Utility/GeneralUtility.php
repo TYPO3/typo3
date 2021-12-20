@@ -905,7 +905,7 @@ class GeneralUtility
             return false;
         }
         if (isset($parsedUrl['host']) && !preg_match('/^[a-z0-9.\\-]*$/i', $parsedUrl['host'])) {
-            $host = (string)idn_to_ascii($parsedUrl['host']);
+            $host = idn_to_ascii($parsedUrl['host']);
             if ($host === false) {
                 return false;
             }
