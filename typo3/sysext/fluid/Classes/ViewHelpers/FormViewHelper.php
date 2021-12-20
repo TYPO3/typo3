@@ -396,28 +396,6 @@ class FormViewHelper extends AbstractFormViewHelper
     }
 
     /**
-     * Add the URI arguments after postprocessing to the request hash as well.
-     * @param array $arguments
-     * @param array $results
-     * @param string $currentPrefix
-     * @param int $level
-     */
-    protected function postProcessUriArgumentsForRequestHash($arguments, &$results, $currentPrefix = '', $level = 0)
-    {
-        if (count($arguments)) {
-            foreach ($arguments as $argumentName => $argumentValue) {
-                $argumentName = (string)$argumentName;
-                if (is_array($argumentValue)) {
-                    $prefix = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
-                    $this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level + 1);
-                } else {
-                    $results[] = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
-                }
-            }
-        }
-    }
-
-    /**
      * Retrieves the default field name prefix for this form
      *
      * @return string default field name prefix
