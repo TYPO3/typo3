@@ -1,6 +1,5 @@
 <f:layout name="DocHeader" />
 <f:section name="Content">
-    <f:flashMessages />
     <f:if condition="{url}">
         <div class="viewpage-item">
             <div class="viewpage-topbar t3js-viewpage-topbar">
@@ -18,11 +17,11 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="viewpage-topbar-preset-button">
                         <li>
-                            <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'maximized')}" data-width data-height>
+                            <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}" data-width data-height>
                                 <span class="viewpage-preset-item">
                                     <span class="viewpage-preset-item-icon">{icons.fullscreen -> f:format.raw()}</span>
                                     <span class="viewpage-preset-item-label">
-                                        {f:translate(key: 'maximized')}
+                                        {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}
                                     </span>
                                     <span class="viewpage-preset-item-size">
                                         100%/100%
@@ -31,11 +30,11 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'custom')}" data-width="{custom.width}" data-height="{custom.height}">
+                            <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}" data-width="{custom.width}" data-height="{custom.height}">
                                 <span class="viewpage-preset-item">
                                     <span class="viewpage-preset-item-icon">{icons.expand -> f:format.raw()}</span>
                                     <span class="viewpage-preset-item-label t3js-preset-custom-label">
-                                        {f:translate(key: 'custom')}
+                                        {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}
                                     </span>
                                     <span class="viewpage-preset-item-size">
                                         <span class="t3js-preset-custom-width">{custom.width}</span>px/<span class="t3js-preset-custom-height">{custom.height}</span>px

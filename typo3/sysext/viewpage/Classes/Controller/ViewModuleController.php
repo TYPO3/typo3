@@ -83,7 +83,7 @@ class ViewModuleController
     {
         $this->view->getRequest()->setControllerExtensionName('Viewpage');
         $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates/ViewModule']);
+        $this->view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates']);
         $this->view->setPartialRootPaths(['EXT:viewpage/Resources/Private/Partials']);
         $this->view->setLayoutRootPaths(['EXT:viewpage/Resources/Private/Layouts']);
     }
