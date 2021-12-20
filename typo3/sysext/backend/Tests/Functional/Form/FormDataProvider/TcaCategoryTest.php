@@ -191,15 +191,30 @@ class TcaCategoryTest extends FunctionalTestCase
                 'expectedStartingPoints' => '42,4711,12',
                 'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => 4711]]),
             ],
-            'one setting, multiple categories' => [
+            'one setting, multiple categories as array' => [
                 'inputStartingPoints' => '###SITE:categories.contentCategories###',
                 'expectedStartingPoints' => '4711,4712,42',
                 'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategories' => [4711, 4712, 42]]]),
+            ],
+            'one setting, multiple categories as csv' => [
+                'inputStartingPoints' => '###SITE:categories.contentCategories###',
+                'expectedStartingPoints' => '4711,4712,42',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategories' => '4711,4712,42']]),
             ],
             'two settings' => [
                 'inputStartingPoints' => '42,###SITE:categories.contentCategory###,12,###SITE:foobar###',
                 'expectedStartingPoints' => '42,4711,12,1',
                 'site' => new Site('some-site', 1, ['rootPageId' => 1, 'foobar' => 1, 'categories' => ['contentCategory' => 4711]]),
+            ],
+            'one invalid settings' => [
+                'inputStartingPoints' => '42,12,###SITE:invalid###',
+                'expectedStartingPoints' => '42,12',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1]),
+            ],
+            'one valid and one invalid setting' => [
+                'inputStartingPoints' => '42,###SITE:invalid###,12,###SITE:categories.contentCategory###',
+                'expectedStartingPoints' => '42,12,4711,4712',
+                'site' => new Site('some-site', 1, ['rootPageId' => 1, 'categories' => ['contentCategory' => '4711,4712']]),
             ],
         ];
     }
