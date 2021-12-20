@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
-				<source>List of database-records</source>
+				<source>List of database records</source>
 			</trans-unit>
 			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
 				<source>The Web&gt;List module provides low level access to records appearing on a page.</source>

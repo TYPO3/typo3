@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 CMS Recordlist',
-    'description' => 'List of database-records in the TYPO3 backend module Web>List.',
+    'description' => 'List of database records in the TYPO3 backend module Web>List.',
     'category' => 'module',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
