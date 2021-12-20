@@ -968,14 +968,19 @@ abstract class AbstractItemProvider
         $parsedSiteConfiguration = $this->parseSiteConfiguration($result['site'], $fieldConfig['config']['treeConfig']['startingPoints']);
         if ($parsedSiteConfiguration !== []) {
             // $this->quoteParsedSiteConfiguration() is omitted on purpose, all values are cast to integers
-            $parsedSiteConfiguration = array_unique(array_map(static function ($value) {
+            $parsedSiteConfiguration = array_unique(array_map(static function ($value): string {
                 if (is_array($value)) {
                     return implode(',', array_map('intval', $value));
                 }
 
-                return (int)$value;
+                return implode(',', GeneralUtility::intExplode(',', $value, true));
             }, $parsedSiteConfiguration));
-            $fieldConfig['config']['treeConfig']['startingPoints'] = $this->replaceParsedSiteConfiguration($fieldConfig['config']['treeConfig']['startingPoints'], $parsedSiteConfiguration);
+            $resolvedStartingPoins = $this->replaceParsedSiteConfiguration($fieldConfig['config']['treeConfig']['startingPoints'], $parsedSiteConfiguration);
+            // Add the resolved starting points while removing empty values
+            $fieldConfig['config']['treeConfig']['startingPoints'] = implode(
+                ',',
+                GeneralUtility::trimExplode(',', $resolvedStartingPoins, true)
+            );
         }
 
         return $fieldConfig;
