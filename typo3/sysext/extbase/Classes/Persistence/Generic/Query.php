@@ -137,7 +137,7 @@ class Query implements QueryInterface
     }
 
     /**
-     * @param ?QueryInterface $parentQuery
+     * @param QueryInterface|null $parentQuery
      * @internal
      */
     public function setParentQuery(?QueryInterface $parentQuery): void

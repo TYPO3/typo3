@@ -251,7 +251,7 @@ class Blog extends AbstractEntity
     }
 
     /**
-     * @param ?string $subtitle
+     * @param string|null $subtitle
      */
     public function setSubtitle($subtitle): void
     {

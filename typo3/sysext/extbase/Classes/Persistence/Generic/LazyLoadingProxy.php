@@ -56,7 +56,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
      * @param DomainObjectInterface $parentObject The object instance this proxy is part of
      * @param string $propertyName The name of the proxied property in it's parent
      * @param mixed $fieldValue The raw field value.
-     * @param ?DataMapper $dataMapper
+     * @param DataMapper|null $dataMapper
      */
     public function __construct($parentObject, $propertyName, $fieldValue, ?DataMapper $dataMapper = null)
     {

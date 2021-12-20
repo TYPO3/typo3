@@ -50,7 +50,7 @@ class MetaDataTest extends UnitTestCase
     }
 
     /**
-     * @param ?string $type
+     * @param string|null $type
      * @param bool $isExtension
      * @param bool $isFramework
      * @test
