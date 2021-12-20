@@ -69,10 +69,9 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
      * Implementing the access checks that the TYPO3 CMS bootstrap script does before a user is ever logged in.
      * Used in the frontend.
      *
-     * @param bool|null $proceedIfNoUserIsLoggedIn
      * @return bool Returns TRUE if access is OK
      */
-    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = null)
+    public function backendCheckLogin()
     {
         if (empty($this->user['uid'])) {
             return false;

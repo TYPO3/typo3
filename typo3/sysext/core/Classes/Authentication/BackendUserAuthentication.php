@@ -2110,24 +2110,17 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      * If no user is logged in the default behaviour is to exit with an error message.
      * This function is called right after ->start() in fx. the TYPO3 Bootstrap.
      *
-     * @param bool|null $proceedIfNoUserIsLoggedIn if this option is set, then there won't be a redirect to the login screen of the Backend - used for areas in the backend which do not need user rights like the login page.
      * @throws \RuntimeException
      * @todo deprecate
      */
-    public function backendCheckLogin($proceedIfNoUserIsLoggedIn = null)
+    public function backendCheckLogin()
     {
         if (empty($this->user['uid'])) {
-            if ($proceedIfNoUserIsLoggedIn === null) {
-                $proceedIfNoUserIsLoggedIn = false;
-            } else {
-                trigger_error('Calling $BE_USER->backendCheckLogin() with a first input argument will not work anymore in TYPO3 v12.0.', E_USER_DEPRECATED);
-            }
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0. and handle this functionality in the calling code
-            if ($proceedIfNoUserIsLoggedIn === false) {
-                $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
-                throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
-            }
-        } elseif ($this->isUserAllowedToLogin()) {
+            $url = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl() . TYPO3_mainDir;
+            throw new ImmediateResponseException(new RedirectResponse($url, 303), 1607271747);
+        }
+        if ($this->isUserAllowedToLogin()) {
             $this->initializeBackendLogin();
         } else {
             // @todo: throw a proper AccessDeniedException in TYPO3 v12.0.

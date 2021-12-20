@@ -377,6 +377,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-95320-VariousMethodArgumentsInAuthenticationObjects.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isInWebMount' => [

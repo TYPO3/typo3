@@ -178,6 +178,7 @@ The following PHP class methods changed signature according to previous deprecat
 - :php:`\TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->checkAuthentication()` (argument 1 always required)
 - :php:`\TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication->checkAuthentication()` (argument 1 always required)
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->isInWebMount()` (argument 3 removed)
+- :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->backendCheckLogin()` (argument 1 removed)
 - :php:`\TYPO3\CMS\Core\Core\ApplicationInterface->run()` (argument 1 is removed)
 - :php:`\TYPO3\CMS\Core\Database\RelationHandler->writeForeignField()` (argument 4 removed)
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile->getPublicUrl()` (argument 1 is removed)
@@ -410,7 +411,7 @@ The following JavaScript functions have been removed:
 - :js:`FormEngine.requestConfirmationOnFieldChange()`
 - :js:`TBE_EDITOR.fieldChanged()`
 
-The following JavaScript methods bahaviour has changed:
+The following JavaScript methods behaviour has changed:
 
 - :js:`show()` and :js:`hide()` of :js:`TYPO3/CMS/Backend/Tooltip` do no longer allow JQuery objects passed as first argument
 - :js:`FormEngine.setSelectOptionFromExternalSource()` does no longer allow JQuery objects passed as sixth argument

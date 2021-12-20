@@ -549,11 +549,10 @@ class Bootstrap
      * Initializes and ensures authenticated access
      *
      * @internal This is not a public API method, do not use in own extensions
-     * @param bool $proceedIfNoUserIsLoggedIn if set to TRUE, no forced redirect to the login page will be done
      */
-    public static function initializeBackendAuthentication($proceedIfNoUserIsLoggedIn = false)
+    public static function initializeBackendAuthentication()
     {
-        $GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
+        $GLOBALS['BE_USER']->backendCheckLogin();
     }
 
     /**
