@@ -60,11 +60,6 @@ class BackendController
      */
     protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
 
-    /**
-     * @var string
-     */
-    protected $partialPath = 'EXT:backend/Resources/Private/Partials/';
-
     protected BackendModuleRepository $backendModuleRepository;
     protected PageRenderer $pageRenderer;
     protected IconFactory $iconFactory;
@@ -203,7 +198,7 @@ class BackendController
      */
     protected function renderTopbar()
     {
-        $view = $this->getFluidTemplateObject($this->partialPath . 'Backend/Topbar.html');
+        $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Topbar.html');
 
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
@@ -442,7 +437,7 @@ class BackendController
      */
     protected function generateModuleMenu()
     {
-        $view = $this->getFluidTemplateObject($this->templatePath . 'ModuleMenu/Main.html');
+        $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/ModuleMenu.html');
         $view->assign('modules', $this->moduleStorage);
         return $view->render();
     }
