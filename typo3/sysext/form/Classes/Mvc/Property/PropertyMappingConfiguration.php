@@ -79,7 +79,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
             }
 
             $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
-            foreach ($processingRule->getValidators() as $validator) {
+            foreach (clone $processingRule->getValidators() as $validator) {
                 if (!($validator instanceof NotEmptyValidator)) {
                     $validators[] = $validator;
                     $processingRule->removeValidator($validator);
