@@ -94,7 +94,10 @@ class RecordsContentObject extends AbstractContentObject
                 $cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
                 $this->cObj->currentRecordNumber = 0;
                 foreach ($this->itemArray as $val) {
-                    $row = $this->data[$val['table']][$val['id']];
+                    $row = $this->data[$val['table']][$val['id']] ?? null;
+                    if ($row === null) {
+                        continue;
+                    }
                     // Perform overlays if necessary (records coming from category collections are already overlaid)
                     if ($source) {
                         // Versioning preview
