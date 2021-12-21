@@ -96,7 +96,10 @@ class RecordsContentObject extends AbstractContentObject
                 // @deprecated since v11, will be removed in v12. Drop together with ContentObjectRenderer->currentRecordTotal
                 $this->cObj->currentRecordTotal = $itemArrayCount;
                 foreach ($this->itemArray as $val) {
-                    $row = $this->data[$val['table']][$val['id']];
+                    $row = $this->data[$val['table']][$val['id']] ?? null;
+                    if ($row === null) {
+                        continue;
+                    }
                     // Perform overlays if necessary (records coming from category collections are already overlaid)
                     if ($source) {
                         // Versioning preview
