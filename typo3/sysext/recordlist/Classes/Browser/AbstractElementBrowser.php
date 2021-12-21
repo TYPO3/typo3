@@ -63,7 +63,7 @@ abstract class AbstractElementBrowser
      *
      * @var string
      */
-    protected $bparams;
+    protected $bparams = '';
 
     protected ?ServerRequestInterface $request = null;
 
