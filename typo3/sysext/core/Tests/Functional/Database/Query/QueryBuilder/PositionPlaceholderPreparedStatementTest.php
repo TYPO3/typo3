@@ -17,14 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\QueryBuilder;
 
-use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\UnsupportedPreparedStatementParameterTypeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -254,7 +252,7 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        // prepare should result in exception, thus no forther execution with it
+        // prepare should result in exception, thus no further execution with it
         $queryBuilder
             ->select(...['*'])
             ->from('pages')
@@ -269,39 +267,5 @@ class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
             // and version does it by itself, but not all.
             ->addOrderBy('uid', 'ASC')
             ->prepare();
-    }
-
-    /**
-     * @test
-     * @dataProvider invalidParameterTypesForPreparedStatements
-     */
-    public function preparedStatementThrowsDoctrineExceptionIfInvalidParameterTypeIsUsedOnBindValue(int $arrayParameterType, string $arrayParameterName, array $arrayValues): void
-    {
-        // expected exception
-        $this->expectException(DriverException::class);
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        // prepare should result in exception, thus no forther execution with it
-        $statement = $queryBuilder
-            ->select(...['*'])
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->in(
-                    'pid',
-                    $queryBuilder->createPositionalParameter(QueryHelper::implodeToIntQuotedValueList($arrayValues, $queryBuilder->getConnection()))
-                )
-            )
-            ->orderBy('sorting', 'ASC')
-            // add deterministic sort order as last sorting information, which many dbms
-            // and version does it by itself, but not all.
-            ->addOrderBy('uid', 'ASC')
-            ->prepare();
-
-        $statement->bindValue(1, $arrayValues, $arrayParameterType);
     }
 }
