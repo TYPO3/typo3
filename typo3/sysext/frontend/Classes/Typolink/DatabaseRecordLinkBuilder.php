@@ -34,8 +34,8 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $tsfe = $this->getTypoScriptFrontendController();
         $pageTsConfig = $tsfe->getPagesTSconfig();
         $configurationKey = $linkDetails['identifier'] . '.';
-        $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'];
-        $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'];
+        $configuration = $tsfe->tmpl->setup['config.']['recordLinks.'] ?? [];
+        $linkHandlerConfiguration = $pageTsConfig['TCEMAIN.']['linkHandler.'] ?? [];
 
         if (!isset($configuration[$configurationKey], $linkHandlerConfiguration[$configurationKey])) {
             throw new UnableToLinkException(
@@ -48,7 +48,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $typoScriptConfiguration = $configuration[$configurationKey]['typolink.'];
         $linkHandlerConfiguration = $linkHandlerConfiguration[$configurationKey]['configuration.'];
 
-        if ($configuration[$configurationKey]['forceLink']) {
+        if ($configuration[$configurationKey]['forceLink'] ?? false) {
             $record = $tsfe->sys_page->getRawRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
         } else {
             $record = $tsfe->sys_page->checkRecord($linkHandlerConfiguration['table'], $linkDetails['uid']);
@@ -67,9 +67,9 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         unset($conf['parameter.']);
 
         $typoLinkCodecService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $parameterFromDb = $typoLinkCodecService->decode($conf['parameter']);
+        $parameterFromDb = $typoLinkCodecService->decode($conf['parameter'] ?? '');
         unset($parameterFromDb['url']);
-        $parameterFromTypoScript = $typoLinkCodecService->decode($typoScriptConfiguration['parameter']);
+        $parameterFromTypoScript = $typoLinkCodecService->decode($typoScriptConfiguration['parameter'] ?? '');
         $parameter = array_replace_recursive($parameterFromTypoScript, array_filter($parameterFromDb));
         $typoScriptConfiguration['parameter'] = $typoLinkCodecService->encode($parameter);
 
