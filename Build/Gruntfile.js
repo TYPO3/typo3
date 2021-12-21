@@ -499,6 +499,7 @@ module.exports = function (grunt) {
         files: {
           'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js',
           'JavaScript/Contrib/chartjs.js': 'chart.js/dist/Chart.min.js',
+          'JavaScript/Contrib/web-animate.js': 'web-animate/dist/web-animate.min.js',
           'Css/Contrib/chart.css': 'chart.js/dist/Chart.min.css'
         }
       },

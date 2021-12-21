@@ -9437,6 +9437,11 @@ wcwidth@^1.0.0:
   dependencies:
     defaults "^1.0.3"
 
+web-animate@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/web-animate/-/web-animate-0.4.1.tgz#3567c6e5c8152af33dd06ae31d996f6fcc73024c"
+  integrity sha512-19egpU7SyDOp76Uw4CUlH20CEeXFFQC4HRmdERXlwGV37960ywZXvEcljnRgAoyWeXuppbyqOqFjQukCSnO+mw==
+
 websocket-driver@>=0.5.1:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/websocket-driver/-/websocket-driver-0.7.4.tgz#89ad5295bbf64b480abcba31e4953aca706f5760"

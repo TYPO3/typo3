@@ -113,6 +113,7 @@
     "source-sans-pro": "^3.6.0",
     "tablesort": "^5.2.1",
     "taboverride": "^4.0.3",
-    "tagsort": "^1.4.0"
+    "tagsort": "^1.4.0",
+    "web-animate": "^0.4.1"
   }
 }
