@@ -164,7 +164,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
 
             if ($resetValidators) {
                 $processingRule = $this->getRootForm()->getProcessingRule($this->getIdentifier());
-                foreach ($this->getValidators() as $validator) {
+                foreach (clone $this->getValidators() as $validator) {
                     $processingRule->removeValidator($validator);
                 }
                 $configurationHashes = [];
