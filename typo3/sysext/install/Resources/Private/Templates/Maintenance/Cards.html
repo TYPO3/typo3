@@ -4,7 +4,7 @@
 
 <div class="card-container">
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Flush TYPO3 and PHP Cache', subtitle: 'Caching', icon: 'Icons/modules/install-clear-cache.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Flush TYPO3 and PHP Cache', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-cache.svg'}" />
         <div class="card-body">
             <p class="card-text">This action directly clears all registered caches including opcode and dependency injection cache.</p>
         </div>
@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Analyze Database Structure', subtitle: 'Database', icon: 'Icons/modules/install-database-analyze.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Analyze Database Structure', subtitle: 'Database', icon: 'EXT:install/Resources/Public/Icons/modules/install-database-analyze.svg'}" />
         <div class="card-body">
             <p class="card-text">Compare and update the database table and field definitions of your installation against the specification defined for every activated extension.</p>
         </div>
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Remove Temporary Assets', subtitle: 'Caching', icon: 'Icons/modules/install-clear-files.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Remove Temporary Assets', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-files.svg'}" />
         <div class="card-body">
             <p class="card-text">Clears temporary files including concatenated JS/CSS files and processed images.</p>
         </div>
@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
-        <f:render partial="Card/Header" arguments="{ title: 'Rebuild PHP Autoload Information', subtitle: 'Caching', icon: 'Icons/modules/install-clear-autoload.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Rebuild PHP Autoload Information', subtitle: 'Caching', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-autoload.svg'}" />
         <div class="card-body">
             <p class="card-text">Resets autoload information for all active third party extensions.</p>
         </div>
@@ -50,7 +50,7 @@
         </f:if>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Clear Persistent Database Tables', subtitle: 'Database', icon: 'Icons/modules/install-clear-database.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Clear Persistent Database Tables', subtitle: 'Database', icon: 'EXT:install/Resources/Public/Icons/modules/install-clear-database.svg'}" />
         <div class="card-body">
             <p class="card-text">Truncates persistent database tables, which are not related to caching.</p>
         </div>
@@ -59,7 +59,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Create Administrative User', subtitle: 'Backend Users', icon: 'Icons/modules/install-create-admin.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Create Administrative User', subtitle: 'Backend Users', icon: 'EXT:install/Resources/Public/Icons/modules/install-create-admin.svg'}" />
         <div class="card-body">
             <p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>
         </div>
@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Reset Backend User Preferences', subtitle: 'Backend Users', icon: 'Icons/modules/install-reset-user.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Reset Backend User Preferences', subtitle: 'Backend Users', icon: 'EXT:install/Resources/Public/Icons/modules/install-reset-user.svg'}" />
         <div class="card-body">
             <p class="card-text">Clears preferences and settings for all backend users. The <code>uc</code> field is then set to an empty string.</p>
         </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="card card-size-fixed-small">
-        <f:render partial="Card/Header" arguments="{ title: 'Manage Language Packs', subtitle: 'Language', icon: 'Icons/modules/install-manage-language.svg'}" />
+        <f:render partial="Card/Header" arguments="{ title: 'Manage Language Packs', subtitle: 'Language', icon: 'EXT:install/Resources/Public/Icons/modules/install-manage-language.svg'}" />
         <div class="card-body">
             <p class="card-text">Download and update language packs for installed extensions.</p>
         </div>

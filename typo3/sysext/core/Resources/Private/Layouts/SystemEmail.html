@@ -355,10 +355,10 @@
                                             <img src="{typo3.systemConfiguration.backend.loginLogo -> core:normalizedUrl()}" alt="TYPO3 Logo" height="41" width="150" />
                                         </f:then>
                                         <f:else if="{typo3.systemConfiguration.backend.loginHighlightColor}">
-                                            <img src="{normalizedParams.siteUrl}{f:uri.resource(extensionName: 'core', path: 'Images/typo3_black.svg')}" alt="TYPO3 Logo" height="41" width="150" />
+                                            <img src="{normalizedParams.siteUrl}{f:uri.resource(path: 'EXT:core/Resources/Public/Images/typo3_black.svg')}" alt="TYPO3 Logo" height="41" width="150" />
                                         </f:else>
                                         <f:else>
-                                            <img src="{normalizedParams.siteUrl}{f:uri.resource(extensionName: 'core', path: 'Images/typo3_orange.svg')}" alt="TYPO3 Logo" height="41" width="150" />
+                                            <img src="{normalizedParams.siteUrl}{f:uri.resource(path: 'EXT:core/Resources/Public/Images/typo3_orange.svg')}" alt="TYPO3 Logo" height="41" width="150" />
                                         </f:else>
                                     </f:if>
                                 </td>
