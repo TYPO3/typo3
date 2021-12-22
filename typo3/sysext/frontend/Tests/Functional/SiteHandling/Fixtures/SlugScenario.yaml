@@ -107,6 +107,9 @@ entities:
                 - self: {id: 1521, title: 'Current Year', slug: '/my-acme/forecasts/current-year'}
                 - self: {id: 1522, title: 'Next Year', slug: '/my-acme/forecasts/next-year'}
                 - self: {id: 1523, title: 'Five Years', slug: '/my-acme/forecasts/five-years'}
+            - self: {id: 1530, title: 'Employees', slug: '/my-acme/employees', type: *pageShortcut, shortcut: 'first' }
+              children:
+                - self: {id: 1531, title: 'Employee of the year', visitorGroups: -2, slug: '/my-acme/employees/employee-of-the-year'}
         - self: {id: 1600, title: 'About us', slug: '/about'}
         - self: {id: 1700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 1800, title: 'Work in progress', hidden: 1, slug: '/never-visible-working-on-it' }

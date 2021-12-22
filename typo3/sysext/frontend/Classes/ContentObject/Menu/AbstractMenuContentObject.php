@@ -1201,7 +1201,7 @@ abstract class AbstractMenuContentObject
         $attrs = [];
         $runtimeCache = $this->getRuntimeCache();
         $MP_var = $this->getMPvar($key);
-        $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . json_encode($this->menuArr[$key]));
+        $cacheId = 'menu-generated-links-' . md5($key . $altTarget . $typeOverride . $MP_var . ((string)($this->mconf['showAccessRestrictedPages'] ?? '_')) . json_encode($this->menuArr[$key]));
         $runtimeCachedLink = $runtimeCache->get($cacheId);
         if ($runtimeCachedLink !== false) {
             return $runtimeCachedLink;
@@ -1209,6 +1209,15 @@ abstract class AbstractMenuContentObject
 
         $tsfe = $this->getTypoScriptFrontendController();
 
+        $SAVED_link_to_restricted_pages = '';
+        $SAVED_link_to_restricted_pages_additional_params = '';
+        // links to a specific page
+        if ($this->mconf['showAccessRestrictedPages'] ?? false) {
+            $SAVED_link_to_restricted_pages = $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false;
+            $SAVED_link_to_restricted_pages_additional_params = $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? null;
+            $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] = $this->mconf['showAccessRestrictedPages'];
+            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] = $this->mconf['showAccessRestrictedPages.']['addParams'] ?? '';
+        }
         // If a user script returned the value overrideId in the menu array we use that as page id
         if (($this->mconf['overrideId'] ?? false) || ($this->menuArr[$key]['overrideId'] ?? false)) {
             $overrideId = (int)($this->mconf['overrideId'] ?: $this->menuArr[$key]['overrideId']);
@@ -1242,8 +1251,6 @@ abstract class AbstractMenuContentObject
             $LD['target'] = $this->menuArr[$key]['target'];
         }
 
-        // Manipulation in case of access restricted pages:
-        $this->changeLinksForAccessRestrictedPages($LD, $this->menuArr[$key], $mainTarget, $typeOverride);
         // Overriding URL / Target if set to do so:
         if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
             $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
@@ -1257,6 +1264,13 @@ abstract class AbstractMenuContentObject
         $attrs['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
         $attrs['TARGET'] = $LD['target'] ?? '';
         $runtimeCache->set($cacheId, $attrs);
+
+        // End showAccessRestrictedPages
+        if ($this->mconf['showAccessRestrictedPages'] ?? false) {
+            $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] = $SAVED_link_to_restricted_pages;
+            $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] = $SAVED_link_to_restricted_pages_additional_params;
+        }
+
         return $attrs;
     }
 
@@ -1288,34 +1302,6 @@ abstract class AbstractMenuContentObject
         }
 
         return $page;
-    }
-
-    /**
-     * Will change $LD (passed by reference) if the page is access restricted
-     *
-     * @param array $LD The array from the linkData() function
-     * @param array $page Page array
-     * @param string $mainTarget Main target value
-     * @param string $typeOverride Type number override if any
-     */
-    protected function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride)
-    {
-        // If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-        if (($this->mconf['showAccessRestrictedPages'] ?? false) && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$this->getTypoScriptFrontendController()->checkPageGroupAccess($page)) {
-            $thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
-            $addParams = str_replace(
-                [
-                    '###RETURN_URL###',
-                    '###PAGE_ID###',
-                ],
-                [
-                    rawurlencode($LD['totalURL']),
-                    $page['uid'],
-                ],
-                $this->mconf['showAccessRestrictedPages.']['addParams']
-            );
-            $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride);
-        }
     }
 
     /**
@@ -1677,7 +1663,6 @@ abstract class AbstractMenuContentObject
         if ($page['sectionIndex_uid'] ?? false) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
-        $conf['linkAccessRestrictedPages'] = !empty($this->mconf['showAccessRestrictedPages']);
         $this->parent_cObj->typoLink('|', $conf);
         $LD = $this->parent_cObj->lastTypoLinkLD;
         $LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
