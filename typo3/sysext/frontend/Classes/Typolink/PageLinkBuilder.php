@@ -270,7 +270,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     rawurlencode($url),
                     $page['uid'],
                 ],
-                $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams']
+                $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
             );
             $url = $this->contentObjectRenderer->getTypoLink_URL($thePage['uid'] . ($pageType ? ',' . $pageType : ''), $addParams, $target);
             $url = $this->forceAbsoluteUrl($url, $conf);
@@ -342,7 +342,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return $page;
         }
         $shortcutMode = (int)($page['shortcut_mode'] ?? PageRepository::SHORTCUT_MODE_NONE);
+        $savedWhereGroupAccess = '';
         try {
+            if ($disableGroupAccessCheck) {
+                $savedWhereGroupAccess = $pageRepository->where_groupAccess;
+                $pageRepository->where_groupAccess = '';
+            }
             $shortcut = $pageRepository->getPageShortcut(
                 $page['shortcut'] ?? '',
                 $shortcutMode,
@@ -357,7 +362,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $page['_SHORTCUT_PAGE_UID'] = $page['uid'];
             }
         } catch (\Exception $e) {
-            return $page;
+            // Keep the existing page record if shortcut could not be resolved
+        }
+        if ($disableGroupAccessCheck) {
+            $pageRepository->where_groupAccess = $savedWhereGroupAccess;
         }
         return $page;
     }

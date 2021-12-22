@@ -437,7 +437,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter without access protected setting' => [
                 [
                     'parameter' => 1,
-                    'linkAccessRestrictedPages' => false,
                 ],
                 [
                     'showAccessRestrictedPages' => false,
@@ -450,7 +449,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
                 ],
                 [
                     'showAccessRestrictedPages' => true,
@@ -463,7 +461,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting "NONE" casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
                 ],
                 [
                     'showAccessRestrictedPages' => 'NONE',
@@ -476,7 +473,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting (int)67 casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
                 ],
                 [
                     'showAccessRestrictedPages' => 67,
@@ -490,7 +486,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 1,
                     'target' => '_blank',
-                    'linkAccessRestrictedPages' => false,
                 ],
                 [
                     'showAccessRestrictedPages' => false,
@@ -503,7 +498,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'parameter with typeOverride=10' => [
                 [
                     'parameter' => '10,10',
-                    'linkAccessRestrictedPages' => false,
                 ],
                 [
                     'showAccessRestrictedPages' => false,
@@ -516,7 +510,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'parameter with target and typeOverride=10' => [
                 [
                     'parameter' => '10,10',
-                    'linkAccessRestrictedPages' => false,
                     'target' => '_self',
                 ],
                 [
@@ -530,7 +523,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'parameter with invalid value in typeOverride=foobar ignores typeOverride' => [
                 [
                     'parameter' => 20,
-                    'linkAccessRestrictedPages' => false,
                     'target' => '_self',
                 ],
                 [
@@ -546,7 +538,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 10,
                     'target' => '_blank',
-                    'linkAccessRestrictedPages' => false,
                     'section' => 'section-name',
                 ],
                 [
@@ -563,7 +554,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with additional parameters' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => false,
                     'section' => 'section-name',
                     'additionalParams' => '&test=foobar',
                 ],
@@ -581,7 +571,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'overridden page array uid value gets used as parameter' => [
                 [
                     'parameter' => 99,
-                    'linkAccessRestrictedPages' => false,
                     'section' => 'section-name',
                 ],
                 [

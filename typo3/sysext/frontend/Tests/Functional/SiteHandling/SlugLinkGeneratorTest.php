@@ -964,6 +964,96 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
+    public function directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider(): array
+    {
+        return [
+            'All restricted pages are linked to welcome page' => [
+                'https://acme.us/',
+                1100,
+                1500,
+                1100,
+                0,
+                0,
+                [
+                    [
+                        'title' => 'Whitepapers',
+                        'link' => '/welcome',
+                    ],
+                    [
+                        'title' => 'Forecasts',
+                        'link' => '/welcome',
+                    ],
+                    [
+                        // Shortcut page, which resolves the shortcut and then the next page
+                        'title' => 'Employees',
+                        'link' => '/welcome',
+                    ],
+                ],
+            ],
+            'Inherited restricted pages are linked' => [
+                'https://acme.us/',
+                1100,
+                1520,
+                1100,
+                0,
+                0,
+                [
+                    [
+                        'title' => 'Current Year',
+                        // Should be
+                        // 'link' => '/welcome',
+                        // see https://forge.typo3.org/issues/16561
+                        'link' => '/my-acme/forecasts/current-year',
+                    ],
+                    [
+                        'title' => 'Next Year',
+                        // Should be
+                        // 'link' => '/welcome',
+                        // see https://forge.typo3.org/issues/16561
+                        'link' => '/my-acme/forecasts/next-year',
+                    ],
+                    [
+                        'title' => 'Five Years',
+                        // Should be
+                        // 'link' => '/welcome',
+                        // see https://forge.typo3.org/issues/16561
+                        'link' => '/my-acme/forecasts/five-years',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider directoryMenuToAccessRestrictedPagesIsGeneratedDataProvider
+     */
+    public function directoryMenuToAccessRestrictedPagesIsGenerated(string $hostPrefix, int $sourcePageId, int $directoryMenuParentPage, int $loginPageId, int $backendUserId, int $workspaceId, array $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'special' => 'directory',
+                        'special.' => [
+                            'value' => $directoryMenuParentPage,
+                        ],
+                        'levels' => 1,
+                        'showAccessRestrictedPages' => $loginPageId,
+                    ]),
+                ]),
+            (new InternalRequestContext())
+                ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
+                ->withBackendUserId($backendUserId)
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json);
+
+        self::assertSame($expectation, $json);
+    }
+
     public function listMenuIsGeneratedDataProvider(): array
     {
         return [
