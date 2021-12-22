@@ -545,6 +545,7 @@ abstract class ActionController implements ControllerInterface
             $this->request->getControllerActionName(),
             $this->request->getFormat()
         );
+        $this->setViewConfiguration($view);
         if ($view instanceof AbstractTemplateView) {
             $renderingContext = $view->getRenderingContext();
             if ($renderingContext instanceof RenderingContext) {
@@ -554,8 +555,6 @@ abstract class ActionController implements ControllerInterface
             $templatePaths->fillDefaultsByPackageName($this->request->getControllerExtensionKey());
             $templatePaths->setFormat($this->request->getFormat());
         }
-
-        $this->setViewConfiguration($view);
         if (method_exists($view, 'injectSettings')) {
             $view->injectSettings($this->settings);
         }
