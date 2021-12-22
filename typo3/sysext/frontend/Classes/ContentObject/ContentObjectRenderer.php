@@ -4917,7 +4917,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         if (is_array($urlParameters)) {
             if (!empty($urlParameters)) {
-                $conf['additionalParams'] .= HttpUtility::buildQueryString($urlParameters, '&');
+                $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . HttpUtility::buildQueryString($urlParameters, '&');
             }
         } else {
             $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . $urlParameters;
