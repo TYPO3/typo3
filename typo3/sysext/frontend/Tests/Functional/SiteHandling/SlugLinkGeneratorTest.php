@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -72,6 +73,10 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $this->writeSiteConfiguration(
             'common-collection',
             $this->buildSiteConfiguration(7000, 'https://common.acme.com/')
+        );
+        $this->writeSiteConfiguration(
+            'usual-collection',
+            $this->buildSiteConfiguration(8000, 'https://usual.acme.com/')
         );
 
         $this->withDatabaseSnapshot(function () {
@@ -1063,6 +1068,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 [1100, 1600, 1700, 1800, 1520],
                 0,
                 0,
+                [],
                 [
                     [
                         'title' => 'EN: Welcome',
@@ -1084,6 +1090,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 [1100, 1600, 1700, 1800, 1520],
                 1,
                 1,
+                [],
                 [
                     [
                         'title' => 'EN: Welcome to ACME Inc',
@@ -1099,6 +1106,58 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     ],
                 ],
             ],
+            'Folder as base directory, needs to set excludeDoktypes in order to show the folder itself' => [
+                'https://acme.us/',
+                1100,
+                [7000],
+                0,
+                0,
+                [
+                    'levels' => 2,
+                    'expandAll' => 1,
+                    'excludeDoktypes' => PageRepository::DOKTYPE_BE_USER_SECTION,
+                ],
+                [
+                    [
+                        'title' => 'Common Collection',
+                        // @todo Folders should not be linked in frontend menus, as they are not accessible there.
+                        // @todo Folder as rootpage - reconsider if this should be a valid use/test case, as marking
+                        //       it as root_page is not possible if page is doktype sysfolder first.
+                        'link' => 'https://common.acme.com/common',
+                        'children' => [
+                            [
+                                'title' => 'Announcements & News',
+                                'link' => 'https://common.acme.com/common/news',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Non-Rootpage Sysfolder, needs to set excludeDoktypes in order to show the folder itself' => [
+                'https://acme.us/',
+                1100,
+                [8000],
+                0,
+                0,
+                [
+                    'levels' => 2,
+                    'expandAll' => 1,
+                    'excludeDoktypes' => PageRepository::DOKTYPE_BE_USER_SECTION,
+                ],
+                [
+                    [
+                        'title' => 'Usual Collection Non-Root',
+                        'link' => 'https://usual.acme.com/usual',
+                        'children' => [
+                            [
+                                'title' => 'Announcements & News',
+                                // @todo Folders should not be linked in frontend menus, as they are not accessible there.
+                                'link' => 'https://usual.acme.com/usual/news-folder',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1106,19 +1165,19 @@ class SlugLinkGeneratorTest extends AbstractTestCase
      * @test
      * @dataProvider listMenuIsGeneratedDataProvider
      */
-    public function listMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $menuPageIds, int $backendUserId, int $workspaceId, array $expectation): void
+    public function listMenuIsGenerated(string $hostPrefix, int $sourcePageId, array $menuPageIds, int $backendUserId, int $workspaceId, array $additionalMenuConfiguration, array $expectation): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($hostPrefix))
                 ->withPageId($sourcePageId)
                 ->withInstructions([
-                    $this->createHierarchicalMenuProcessorInstruction([
+                    $this->createHierarchicalMenuProcessorInstruction(array_replace_recursive([
                         'special' => 'list',
                         'special.' => [
                             'value' => implode(',', $menuPageIds),
                         ],
                         'titleField' => 'title',
-                    ]),
+                    ], $additionalMenuConfiguration)),
                 ]),
             (new InternalRequestContext())
                 ->withWorkspaceId($backendUserId !== 0 ? $workspaceId : 0)
