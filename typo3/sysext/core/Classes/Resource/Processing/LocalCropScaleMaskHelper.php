@@ -82,12 +82,13 @@ class LocalCropScaleMaskHelper
             // check if it is a json object
             $cropData = json_decode($configuration['crop']);
             if ($cropData) {
-                $crop = implode(',', [(int)$cropData->x, (int)$cropData->y, (int)$cropData->width, (int)$cropData->height]);
+                $offsetLeft = (int)($cropData->x ?? 0);
+                $offsetTop = (int)($cropData->y ?? 0);
+                $newWidth = (int)($cropData->width ?? 0);
+                $newHeight = (int)($cropData->height ?? 0);
             } else {
-                $crop = $configuration['crop'];
+                [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $configuration['crop'], 4);
             }
-
-            [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $crop, 4);
 
             $backupPrefix = $gifBuilder->filenamePrefix;
             $gifBuilder->filenamePrefix = 'crop_';
