@@ -111,7 +111,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             }
             // ATagBeforeWrap processing:
             if ($this->I['val']['ATagBeforeWrap'] ?? false) {
-                $wrapPartsBefore = explode('|', $this->I['val']['linkWrap']);
+                $wrapPartsBefore = explode('|', $this->I['val']['linkWrap'] ?? '');
                 $wrapPartsAfter = ['', ''];
             } else {
                 $wrapPartsBefore = ['', ''];
