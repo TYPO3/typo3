@@ -169,3 +169,10 @@ entities:
             - self: {id: 7110, title: 'Markets', slug: '/common/markets'}
             - self: {id: 7120, title: 'Products', slug: '/common/products'}
             - self: {id: 7130, title: 'Partners', slug: '/common/partners'}
+    - self: {id: 8000, title: 'Usual Collection Non-Root', root: true, slug: '/usual'}
+      children:
+        - self: {id: 8100, title: 'Announcements & News', type: *pageFolder, slug: '/usual/news-folder'}
+          children:
+            - self: {id: 8110, title: 'Markets', slug: '/usual/markets'}
+            - self: {id: 8120, title: 'Products', slug: '/usual/products'}
+            - self: {id: 8130, title: 'Partners', slug: '/usual/partners'}
