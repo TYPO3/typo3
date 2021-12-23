@@ -28,7 +28,12 @@
 		"platform": {
 			"php": "7.2.5"
 		},
-		"sort-packages": true
+		"sort-packages": true,
+		"allow-plugins": {
+			"composer/package-versions-deprecated": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
 	},
 	"require": {
 		"php": "^7.2",
