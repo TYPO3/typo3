@@ -988,6 +988,70 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
+    public function hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider(): array
+    {
+        return [
+            'no banned IDs in default language' => [
+                'language' => 0,
+                'banned IDs' => '',
+                'expected menu items' => 13,
+            ],
+            'no banned IDs in FR' => [
+                'language' => 1,
+                'banned IDs' => '',
+                'expected menu items' => 13,
+            ],
+            'banned IDs in default language' => [
+                'language' => 0,
+                'banned IDs' => '1100,1200,1300,1400,403,404',
+                'expected menu items' => 7,
+            ],
+            'banned IDs in FR language' => [
+                'language' => 1,
+                'banned IDs' => '1100,1200,1300,1400,403,404',
+                'expected menu items' => 7,
+            ],
+            'banned translated IDs in default language' => [
+                'language' => 0,
+                'banned IDs' => '1101,1200,1300,1400,403,404',
+                'expected menu items' => 8,
+            ],
+            'banned translated IDs in FR language' => [
+                'language' => 1,
+                'banned IDs' => '1101,1200,1300,1400,403,404',
+                'expected menu items' => 7,
+            ],
+        ];
+    }
+
+    /**
+     * Checks that excludeUidList checks against translated pages and default-language page IDs.
+     *
+     * @test
+     * @dataProvider hierarchicalMenuAlwaysResolvesToDefaultLanguageDataProvider
+     */
+    public function hierarchicalMenuAlwaysResolvesToDefaultLanguage(int $languageId, string $excludedUidList, int $expectedMenuItems): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest('https://acme.us/'))
+                ->withPageId(1100)
+                ->withLanguageId($languageId)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'levels' => 1,
+                        'entryLevel' => 0,
+                        'excludeUidList' => $excludedUidList,
+                        'expandAll' => 1,
+                        'includeSpacer' => 1,
+                        'titleField' => 'title',
+                    ]),
+                ])
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        self::assertSame($expectedMenuItems, count($json));
+    }
+
     public function directoryMenuIsGeneratedDataProvider(): array
     {
         return [

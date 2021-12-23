@@ -1109,7 +1109,11 @@ abstract class AbstractMenuContentObject
         if (in_array((int)($data['doktype'] ?? 0), $this->excludedDoktypes, true)) {
             return false;
         }
-        // PageID should not be banned
+        $languageId = $this->getCurrentLanguageAspect()->getId();
+        // PageID should not be banned (check for default language pages as well)
+        if (($data['_PAGES_OVERLAY_UID'] ?? 0) > 0 && in_array((int)($data['_PAGES_OVERLAY_UID'] ?? 0), $banUidArray, true)) {
+            return false;
+        }
         if (in_array((int)($data['uid'] ?? 0), $banUidArray, true)) {
             return false;
         }
@@ -1122,10 +1126,10 @@ abstract class AbstractMenuContentObject
             return false;
         }
         // Checking if the link should point to the default language so links to non-accessible pages will not happen
-        if ($this->getCurrentLanguageAspect()->getId() > 0 && !empty($this->conf['protectLvar'])) {
+        if ($languageId > 0 && !empty($this->conf['protectLvar'])) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
             if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
-                $olRec = $this->sys_page->getPageOverlay($data['uid'], $this->getCurrentLanguageAspect()->getId());
+                $olRec = $this->sys_page->getPageOverlay($data['uid'], $languageId);
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
                     // the language pointed to, therefore we protect the link by linking to the default language
@@ -1478,8 +1482,11 @@ abstract class AbstractMenuContentObject
             if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $languageId > 0 && !($theRec['_PAGES_OVERLAY'] ?? false)) {
                 continue;
             }
-            // No valid subpage if the subpage is banned by excludeUidList
-            if (in_array((int)$theRec['uid'], $bannedUids, true)) {
+            // No valid subpage if the subpage is banned by excludeUidList (check for default language pages as well)
+            if (($theRec['_PAGES_OVERLAY_UID'] ?? 0) > 0 && in_array((int)($theRec['_PAGES_OVERLAY_UID'] ?? 0), $bannedUids, true)) {
+                continue;
+            }
+            if (in_array((int)($theRec['uid'] ?? 0), $bannedUids, true)) {
                 continue;
             }
             $hasSubPages = true;
