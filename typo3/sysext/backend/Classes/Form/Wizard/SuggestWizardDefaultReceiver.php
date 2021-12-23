@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Wizard;
 
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -111,10 +111,7 @@ class SuggestWizardDefaultReceiver
         if (isset($config['pidList'])) {
             $pageIds = GeneralUtility::intExplode(',', (string)$config['pidList'], true);
             $depth = (int)($config['pidDepth'] ?? 0);
-            $availablePageIds = [];
-            foreach ($pageIds as $pageId) {
-                $availablePageIds[] = $this->getAvailablePageIds($pageId, $depth);
-            }
+            $availablePageIds = $this->getAvailablePageIds($pageIds, $depth);
             $this->allowedPages = array_unique(array_merge($this->allowedPages, ...$availablePageIds));
         }
         if (isset($config['maxItemsInResultList'])) {
@@ -277,22 +274,22 @@ class SuggestWizardDefaultReceiver
     /**
      * Get array of page ids from given page id and depth
      *
-     * @param int $id Page id.
+     * @param array $entryPointPageIds List of possible page IDs.
      * @param int $depth Depth to go down.
      * @return array of all page ids
      */
-    protected function getAvailablePageIds(int $id, int $depth = 0): array
+    protected function getAvailablePageIds(array $entryPointPageIds, int $depth = 0): array
     {
         if ($depth === 0) {
-            return [$id];
+            return $entryPointPageIds;
         }
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init();
-        $tree->getTree($id, $depth);
-        $tree->makeHTML = 0;
-        $tree->fieldArray = ['uid'];
-        $tree->ids[] = $id;
-        return $tree->ids;
+        $pageIds = [];
+        $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
+        $pages = $repository->getFlattenedPages($entryPointPageIds, $depth);
+        foreach ($pages as $page) {
+            $pageIds[] = (int)$page['uid'];
+        }
+        return $pageIds;
     }
 
     /**

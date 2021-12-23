@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Belog\Domain\Repository;
 
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Authentication\GroupResolver;
@@ -113,12 +113,12 @@ class LogEntryRepository extends Repository
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
-            $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
-            $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
-            $pageTree->makeHTML = 0;
-            $pageTree->fieldArray = ['uid'];
-            $pageTree->getTree($constraint->getPageId(), $constraint->getDepth());
-            $pageIds = $pageTree->ids;
+            $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
+            $repository->setAdditionalWhereClause($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+            $pages = $repository->getFlattenedPages([$constraint->getPageId()], $constraint->getDepth());
+            foreach ($pages as $page) {
+                $pageIds[] = (int)$page['uid'];
+            }
         }
         if (!empty($constraint->getPageId())) {
             $pageIds[] = $constraint->getPageId();

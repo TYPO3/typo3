@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -95,15 +95,18 @@ class LiveSearch
      */
     protected function getPageIdList(): array
     {
-        $pageList = [];
         if ($this->getBackendUser()->isAdmin()) {
-            return $pageList;
+            return [];
         }
         $mounts = $this->getBackendUser()->returnWebmounts();
-        foreach ($mounts as $pageId) {
-            $pageList[] = $this->getAvailablePageIds($pageId, self::RECURSIVE_PAGE_LEVEL);
+        $pageList = $mounts;
+        $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
+        $repository->setAdditionalWhereClause($this->userPermissions);
+        $pages = $repository->getFlattenedPages([$mounts], self::RECURSIVE_PAGE_LEVEL);
+        foreach ($pages as $page) {
+            $pageList[] = (int)$page['uid'];
         }
-        return array_unique(explode(',', implode(',', $pageList)));
+        return $pageList;
     }
 
     /**
@@ -448,29 +451,6 @@ class LiveSearch
     public function setQueryString($queryString)
     {
         $this->queryString = $queryString;
-    }
-
-    /**
-     * Creates an instance of \TYPO3\CMS\Backend\Tree\View\PageTreeView which will select a
-     * page tree to $depth and return the object. In that object we will find the ids of the tree.
-     *
-     * @param int $id Page id.
-     * @param int $depth Depth to go down.
-     * @return string Comma separated list of uids
-     */
-    protected function getAvailablePageIds($id, $depth)
-    {
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init('AND ' . $this->userPermissions);
-        $tree->makeHTML = 0;
-        $tree->fieldArray = ['uid', 'php_tree_stop'];
-        if ($depth) {
-            $tree->getTree($id, $depth);
-        }
-        $tree->ids[] = $id;
-        // add workspace pid - workspace permissions are taken into account by where clause later
-        $tree->ids[] = -1;
-        return implode(',', $tree->ids);
     }
 
     protected function getBackendUser(): BackendUserAuthentication

@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListTableActionsEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Event\ModifyDatabaseQueryForRecordListingEvent;
@@ -2765,32 +2765,29 @@ class DatabaseRecordList
      *
      * @param int $id Page id
      * @param int $depth Depth to go down
-     * @param string $perms_clause select clause
      * @return int[]
      */
-    protected function getSearchableWebmounts($id, $depth, $perms_clause)
+    protected function getSearchableWebmounts(int $id, int $depth): array
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $perms_clause);
+        $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $this->perms_clause);
         $idList = $runtimeCache->get($hash);
         if ($idList === false) {
             $backendUser = $this->getBackendUserAuthentication();
-            $tree = GeneralUtility::makeInstance(PageTreeView::class);
-            $tree->init('AND ' . $perms_clause);
-            $tree->makeHTML = 0;
-            $tree->fieldArray = ['uid', 'php_tree_stop'];
-            $idList = [];
 
-            $allowedMounts = !$backendUser->isAdmin() && $id === 0
-                ? $backendUser->returnWebmounts()
-                : [$id];
-
-            foreach ($allowedMounts as $allowedMount) {
-                $idList[] = $allowedMount;
-                if ($depth) {
-                    $tree->getTree($allowedMount, $depth);
-                }
-                $idList = array_merge($idList, $tree->ids);
+            if (!$backendUser->isAdmin() && $id === 0) {
+                $mountPoints = array_map('intval', $backendUser->returnWebmounts());
+                $mountPoints = array_unique($mountPoints);
+            } else {
+                $mountPoints = [$id];
+            }
+            // Add the initial mount points to the pids
+            $idList = $mountPoints;
+            $repository = GeneralUtility::makeInstance(PageTreeRepository::class);
+            $repository->setAdditionalWhereClause($this->perms_clause);
+            $pages = $repository->getFlattenedPages($mountPoints, $depth);
+            foreach ($pages as $page) {
+                $idList[] = (int)$page['uid'];
             }
             $runtimeCache->set($hash, $idList);
         }
@@ -2833,7 +2830,7 @@ class DatabaseRecordList
                 )
             );
         } elseif ($searchLevels > 0) {
-            $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
+            $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     $tableName . '.pid',

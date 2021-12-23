@@ -478,12 +478,14 @@ class TreeController
             $additionalQueryRestrictions[] = GeneralUtility::makeInstance(DocumentTypeExclusionRestriction::class, $excludedDocumentTypes);
         }
 
-        return GeneralUtility::makeInstance(
+        $repository = GeneralUtility::makeInstance(
             PageTreeRepository::class,
             $backendUser->workspace,
             [],
             $additionalQueryRestrictions
         );
+        $repository->setAdditionalWhereClause($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        return $repository;
     }
 
     /**
@@ -538,7 +540,7 @@ class TreeController
 
         if ($entryPointIds === null) {
             if ($query !== '') {
-                $rootRecord = $repository->getTree(0, null, $mountPoints, true);
+                $rootRecord = $repository->getTree(0, null, $mountPoints);
             } else {
                 $rootRecord = $repository->getTreeLevels($rootRecord, $this->levelsToFetch, $mountPoints);
             }
@@ -572,7 +574,7 @@ class TreeController
                 if ($query === '') {
                     $entryPointRecord = $repository->getTreeLevels($entryPointRecord, $this->levelsToFetch);
                 } else {
-                    $entryPointRecord = $repository->getTree($entryPointRecord['uid'], null, $entryPointIds, true);
+                    $entryPointRecord = $repository->getTree($entryPointRecord['uid'], null, $entryPointIds);
                 }
 
                 if (is_array($entryPointRecord) && !empty($entryPointRecord)) {

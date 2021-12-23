@@ -98,6 +98,8 @@ class PageTreeRepository
      */
     protected $additionalQueryRestrictions = [];
 
+    protected ?string $additionalWhereClause = null;
+
     /**
      * @param int $workspaceId the workspace ID to be checked for.
      * @param array $additionalFieldsToQuery an array with more fields that should be accessed.
@@ -115,23 +117,26 @@ class PageTreeRepository
         }
     }
 
+    public function setAdditionalWhereClause(string $additionalWhereClause): void
+    {
+        $this->additionalWhereClause = $additionalWhereClause;
+    }
+
     /**
      * Main entry point for this repository, to fetch the tree data for a page.
      * Basically the page record, plus all child pages and their child pages recursively, stored within "_children" item.
      *
      * @param int $entryPoint the page ID to fetch the tree for
-     * @param callable $callback a callback to be used to check for permissions and filter out pages not to be included.
+     * @param callable|null $callback a callback to be used to check for permissions and filter out pages not to be included.
      * @param array $dbMounts
-     * @param bool $resolveUserPermissions
      * @return array
      */
     public function getTree(
         int $entryPoint,
         callable $callback = null,
-        array $dbMounts = [],
-        $resolveUserPermissions = false
+        array $dbMounts = []
     ): array {
-        $this->fetchAllPages($dbMounts, $resolveUserPermissions);
+        $this->fetchAllPages($dbMounts);
         if ($entryPoint === 0) {
             $tree = $this->fullPageTree;
         } else {
@@ -197,6 +202,25 @@ class PageTreeRepository
         return $pageTree;
     }
 
+    /**
+     * Useful to get a list of pages, with a specific depth, e.g. to limit
+     * a query to another table to a list of page IDs.
+     */
+    public function getFlattenedPages(array $entryPointIds, int $depth): array
+    {
+        $allPageRecords = $this->getPageRecords($entryPointIds);
+        $parentPageIds = $entryPointIds;
+        for ($i = 0; $i < $depth; $i++) {
+            if (empty($parentPageIds)) {
+                break;
+            }
+            $pageRecords = $this->getChildPageRecords($parentPageIds);
+            $parentPageIds = array_column($pageRecords, 'uid');
+            $allPageRecords = array_merge($allPageRecords, $pageRecords);
+        }
+        return $allPageRecords;
+    }
+
     protected function getChildPageRecords(array $parentPageIds): array
     {
         return $this->getPageRecords([], $parentPageIds);
@@ -230,12 +254,15 @@ class PageTreeRepository
             ->where(
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
-            )
             // ensure deterministic sorting
             ->orderBy('sorting', 'ASC')
             ->addOrderBy('uid', 'ASC');
+
+        if (!empty($this->additionalWhereClause)) {
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix($this->additionalWhereClause)
+            );
+        }
 
         if (count($pageIds) > 0) {
             $queryBuilder->andWhere(
@@ -324,13 +351,13 @@ class PageTreeRepository
     }
 
     /**
-     * Fetch all non-deleted pages, regardless of permissions. That's why it's internal.
+     * Fetch all non-deleted pages, regardless of permissions (however, considers additionalQueryRestrictions and additionalWhereClause).
+     * That's why it's internal.
      *
      * @param array $dbMounts
-     * @param bool $resolveUserPermissions
      * @return array the full page tree of the whole installation
      */
-    protected function fetchAllPages(array $dbMounts, bool $resolveUserPermissions = false): array
+    protected function fetchAllPages(array $dbMounts): array
     {
         if (!empty($this->fullPageTree)) {
             return $this->fullPageTree;
@@ -356,9 +383,9 @@ class PageTreeRepository
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
 
-        if ($resolveUserPermissions) {
-            $query->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW))
+        if (!empty($this->additionalWhereClause)) {
+            $queryBuilder->andWhere(
+                QueryHelper::stripLogicalOperatorPrefix($this->additionalWhereClause)
             );
         }
 
