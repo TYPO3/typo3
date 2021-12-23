@@ -69,17 +69,13 @@ class ValidatorTask extends AbstractTask
 
     /**
      * Level of pages the task should check
-     *
-     * @var int
      */
-    protected $depth = 0;
+    protected int $depth = 0;
 
     /**
      * UID of the start page for this task
-     *
-     * @var int
      */
-    protected $page = 0;
+    protected int $page = 0;
 
     /**
      * Languages to check for broken links
@@ -100,7 +96,7 @@ class ValidatorTask extends AbstractTask
      *
      * @var bool
      */
-    protected $emailOnBrokenLinkOnly = true;
+    protected bool $emailOnBrokenLinkOnly = true;
 
     /**
      * Default language file of the extension linkvalidator
@@ -148,12 +144,11 @@ class ValidatorTask extends AbstractTask
     /**
      * Get the value of the protected property emailOnBrokenLinkOnly
      *
-     * @todo type cast needed for backwards compatibility - should be removed in v12
      * @return bool Whether to send an email, if new broken links were found
      */
     public function getEmailOnBrokenLinkOnly(): bool
     {
-        return (bool)$this->emailOnBrokenLinkOnly;
+        return $this->emailOnBrokenLinkOnly;
     }
 
     /**
@@ -171,12 +166,11 @@ class ValidatorTask extends AbstractTask
     /**
      * Get the value of the protected property page
      *
-     * @todo type cast needed for backwards compatibility - should be removed in v12
      * @return int UID of the start page for this task
      */
     public function getPage(): int
     {
-        return (int)$this->page;
+        return $this->page;
     }
 
     /**
@@ -216,12 +210,11 @@ class ValidatorTask extends AbstractTask
     /**
      * Get the value of the protected property depth
      *
-     * @todo type cast needed for backwards compatibility - should be removed in v12
      * @return int Level of pages the task should check
      */
     public function getDepth(): int
     {
-        return (int)$this->depth;
+        return $this->depth;
     }
 
     /**
@@ -287,11 +280,6 @@ class ValidatorTask extends AbstractTask
      */
     public function execute(): bool
     {
-        // @todo type cast needed for backwards compatibility - should be removed in v12
-        $this->page = (int)$this->page;
-        $this->depth = (int)$this->depth;
-        $this->emailOnBrokenLinkOnly = (bool)$this->emailOnBrokenLinkOnly;
-
         if ($this->page === 0) {
             return false;
         }

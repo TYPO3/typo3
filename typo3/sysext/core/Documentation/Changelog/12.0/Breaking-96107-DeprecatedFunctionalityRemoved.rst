@@ -68,6 +68,7 @@ The following PHP interfaces that have previously been marked as deprecated for 
 The following PHP interfaces changed:
 
 - :php:`TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
+- :php:`TYPO3\CMS\Core\Resource\FolderInterface` (method :php:`getFile()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalAnd` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalOr` (all three arguments are now type hinted as `ConstraintInterface`)
@@ -208,10 +209,12 @@ The following PHP static class methods changed signature according to previous d
 
 The following PHP class methods changed signature according to previous deprecations in v11 and are now type hinted:
 
+- :php:`\TYPO3\CMS\Core\Database\Query\QueryBuilder->quote()` (second argument requires an integer)
 - :php:`\TYPO3\CMS\Core\TimeTracker\TimeTracker->setTSlogMessage()` (second argument requires a string)
 - :php:`\TYPO3\CMS\Backend\Tree\View\AbstractTreeView->getIcon()` (first argument is now type hinted `array`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalAnd()` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\Generic\Query->logicalOr()` (all three arguments are now type hinted as `ConstraintInterface`)
+- :php:`\TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->linkUrlMail()` (all arguments are now type hinted as `string`)
 
 The following PHP class methods changed signature according to previous deprecations:
 

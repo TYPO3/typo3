@@ -345,7 +345,7 @@ class Import extends ImportExport
                         // isOnline flag depending on the outcome.
                         $storageRecordWithUid0 = $storageRecord;
                         $storageRecordWithUid0['uid'] = 0;
-                        $storageObject = $this->getStorageRepository()->createStorageObject($storageRecordWithUid0);
+                        $storageObject = $this->getStorageRepository()->createFromRecord($storageRecordWithUid0);
                         if (!$storageObject->isOnline()) {
                             $configuration = $storageObject->getConfiguration();
                             $this->addError(

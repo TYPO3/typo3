@@ -36,11 +36,9 @@ class ModuleLoader
      * After the init() function this array will contain the structure of available modules for the backend user.
      *
      * @var array<string, array|bool|string>
-     * @todo Restrict property visibility to `protected` in TYPO3 v12.0
-     * @internal
      * @private
      */
-    public $modules = [];
+    protected array $modules = [];
 
     /**
      * This array will hold the elements that should go into the select-list of modules for groups...

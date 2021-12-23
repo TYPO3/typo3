@@ -471,9 +471,8 @@ class StorageRepository implements LoggerAwareInterface
      * @param array $storageRecord
      * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
      * @return ResourceStorage
-     * @internal this method is only public for having access to ResourceFactory->createStorageObject(). In TYPO3 v12 this method can be changed to protected again.
      */
-    public function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
+    protected function createStorageObject(array $storageRecord, array $storageConfiguration = null): ResourceStorage
     {
         if (!$storageConfiguration && !empty($storageRecord['configuration'])) {
             $storageConfiguration = $this->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);

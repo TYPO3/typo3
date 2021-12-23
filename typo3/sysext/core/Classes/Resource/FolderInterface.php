@@ -65,12 +65,11 @@ interface FolderInterface extends ResourceInterface
 
     /**
      * Fetches a file from a folder, must be a direct descendant of a folder.
-     * @todo enable this method in TYPO3 v12 with a Breaking.rst as the interface changes
      *
      * @param string $fileName
      * @return File|ProcessedFile|null
      */
-    //public function getFile(string $fileName);
+    public function getFile(string $fileName);
 
     /**
      * Renames this folder.

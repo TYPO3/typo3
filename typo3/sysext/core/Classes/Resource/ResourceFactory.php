@@ -172,19 +172,6 @@ class ResourceFactory implements SingletonInterface
     }
 
     /**
-     * Creates a storage object from a storage database row.
-     *
-     * @param array $storageRecord
-     * @param array|null $storageConfiguration Storage configuration (if given, this won't be extracted from the FlexForm value but the supplied array used instead)
-     * @return ResourceStorage
-     * @internal It is recommended to use the StorageRepository in the future, and this is only kept as backwards-compat layer
-     */
-    public function createStorageObject(array $storageRecord, array $storageConfiguration = null)
-    {
-        return $this->storageRepository->createStorageObject($storageRecord, $storageConfiguration);
-    }
-
-    /**
      * Creates a folder to directly access (a part of) a storage.
      *
      * @param ResourceStorage $storage The storage the folder belongs to
