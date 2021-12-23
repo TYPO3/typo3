@@ -620,17 +620,13 @@ abstract class AbstractMenuContentObject
             } else {
                 $iState = $currentLanguageId === $sUid ? 'ACT' : 'NO';
             }
-            $getVars = '';
-            if ($this->conf['addQueryString'] ?? false) {
-                $getVars = $this->parent_cObj->getQueryArguments($this->conf['addQueryString.']);
-            }
             // Adding menu item:
             $menuItems[] = array_merge(
                 array_merge($currentPageWithNoOverlay, $lRecs),
                 [
                     '_PAGES_OVERLAY_REQUESTEDLANGUAGE' => $sUid,
                     'ITEM_STATE' => $iState,
-                    '_ADD_GETVARS' => $getVars,
+                    '_ADD_GETVARS' => $this->conf['addQueryString'] ?? false,
                     '_SAFE' => true,
                 ]
             );
@@ -1126,15 +1122,15 @@ abstract class AbstractMenuContentObject
         if (!$this->sys_page->isPageSuitableForLanguage($data, $this->getCurrentLanguageAspect())) {
             return false;
         }
-        // Checking if "&L" should be modified so links to non-accessible pages will not happen.
+        // Checking if the link should point to the default language so links to non-accessible pages will not happen
         if ($this->getCurrentLanguageAspect()->getId() > 0 && !empty($this->conf['protectLvar'])) {
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['l18n_cfg'] ?? 0));
             if ($this->conf['protectLvar'] === 'all' || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                 $olRec = $this->sys_page->getPageOverlay($data['uid'], $this->getCurrentLanguageAspect()->getId());
                 if (empty($olRec)) {
                     // If no page translation record then page can NOT be accessed in
-                    // the language pointed to by "&L" and therefore we protect the link by setting "&L=0"
-                    $data['_ADD_GETVARS'] .= '&L=0';
+                    // the language pointed to, therefore we protect the link by linking to the default language
+                    $data['_PAGES_OVERLAY_REQUESTEDLANGUAGE'] = '0';
                 }
             }
         }
@@ -1239,10 +1235,9 @@ abstract class AbstractMenuContentObject
         $addParams = ($this->mconf['addParams'] ?? '') . $MP_params;
         if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
             $thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
-            $addParams .= $this->menuArr[$key]['_ADD_GETVARS'];
             $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride, $overrideId);
         } else {
-            $addParams .= ($this->I['val']['additionalParams'] ?? '') . ($this->menuArr[$key]['_ADD_GETVARS'] ?? '');
+            $addParams .= ($this->I['val']['additionalParams'] ?? '');
             $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         }
         // Override default target configuration if the DB field "pages.target" = $this->menuArr[$key]['target'] is filled
@@ -1649,6 +1644,11 @@ abstract class AbstractMenuContentObject
         }
         if ($addParams) {
             $conf['additionalParams'] = $addParams;
+        }
+        // Used only for special=language
+        if ($page['_ADD_GETVARS'] ?? false) {
+            $conf['addQueryString'] = 1;
+            $conf['addQueryString.'] = $this->conf['addQueryString.'] ?? [];
         }
 
         // Ensure that the typolink gets an info which language was actually requested. The $page record could be the record
