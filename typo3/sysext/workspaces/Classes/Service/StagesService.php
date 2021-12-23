@@ -94,7 +94,7 @@ class StagesService implements SingletonInterface
                 continue;
             }
             foreach ($items as $item) {
-                $usedStages[$item['t3ver_stage']] = true;
+                $usedStages[$item['t3ver_stage'] ?? 0] = true;
             }
         }
         foreach ($availableStagesForWS as $stage) {
@@ -105,7 +105,7 @@ class StagesService implements SingletonInterface
             }
         }
         foreach ($availableStagesForWSUser as $userWS) {
-            if ($previousStage['uid'] == $userWS['uid']) {
+            if ($previousStage && $previousStage['uid'] == $userWS['uid']) {
                 $found = true;
                 break;
             }
@@ -142,7 +142,7 @@ class StagesService implements SingletonInterface
                 continue;
             }
             foreach ($items as $item) {
-                $usedStages[$item['t3ver_stage']] = true;
+                $usedStages[$item['t3ver_stage'] ?? 0] = true;
             }
         }
         foreach ($availableStagesForWS as $stage) {

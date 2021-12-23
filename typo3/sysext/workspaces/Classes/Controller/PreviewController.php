@@ -203,10 +203,10 @@ class PreviewController
             'enablePreviousStageButton' => $this->isValidStage($previousStage),
             'enableNextStageButton' => $this->isValidStage($nextStage),
             'enableDiscardStageButton' => $this->isValidStage($nextStage) || $this->isValidStage($previousStage),
-            'nextStage' => $nextStage['title'],
-            'nextStageId' => $nextStage['uid'],
-            'prevStage' => $previousStage['title'],
-            'prevStageId' => $previousStage['uid'],
+            'nextStage' => $nextStage['title'] ?? '',
+            'nextStageId' => $nextStage['uid'] ?? 0,
+            'prevStage' => $previousStage['title'] ?? '',
+            'prevStageId' => $previousStage['uid'] ?? 0,
         ]);
 
         $this->moduleTemplate->setContent($this->view->render());
