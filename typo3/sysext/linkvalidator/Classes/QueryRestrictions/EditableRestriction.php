@@ -222,7 +222,7 @@ class EditableRestriction implements QueryRestrictionInterface
                 ),
                 $expressionBuilder->in(
                     'tx_linkvalidator_link.element_type',
-                    QueryHelper::implodeToStringQuotedValueList(array_unique(current($field) ?: []), $this->queryBuilder->getConnection())
+                    $this->queryBuilder->quoteArrayBasedValueListToStringList(array_unique(current($field) ?: []))
                 )
             );
             $additionalWhere[] = $expressionBuilder->neq(

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Linkvalidator\Repository;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\QueryRestrictions\EditableRestriction;
 
@@ -101,14 +100,14 @@ class BrokenLinkRepository
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->in(
                                 'record_uid',
-                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                                $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                         ),
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->in(
                                 'record_pid',
-                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                                $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->neq('table_name', $queryBuilder->quote('pages'))
                         )
@@ -191,14 +190,14 @@ class BrokenLinkRepository
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->in(
                                 'record_uid',
-                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                                $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                         ),
                         $queryBuilder->expr()->andX(
                             $queryBuilder->expr()->in(
                                 'record_pid',
-                                QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                                $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->neq(
                                 'table_name',
@@ -208,7 +207,7 @@ class BrokenLinkRepository
                     ),
                     $queryBuilder->expr()->in(
                         'link_type',
-                        QueryHelper::implodeToStringQuotedValueList($linkTypes, $queryBuilder->getConnection())
+                        $queryBuilder->quoteArrayBasedValueListToStringList($linkTypes)
                     )
                 )
                 ->execute();
@@ -256,28 +255,28 @@ class BrokenLinkRepository
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->in(
                             'record_uid',
-                            QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                         ),
                         $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                     ),
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->in(
                             'record_pid',
-                            QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $queryBuilder->getConnection())
+                            $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                         ),
                         $queryBuilder->expr()->neq('table_name', $queryBuilder->quote('pages'))
                     )
                 ),
                 $queryBuilder->expr()->in(
                     'link_type',
-                    QueryHelper::implodeToStringQuotedValueList($linkTypes, $queryBuilder->getConnection())
+                    $queryBuilder->quoteArrayBasedValueListToStringList($linkTypes)
                 ),
             ];
 
             if ($languages !== []) {
                 $constraints[] = $queryBuilder->expr()->in(
                     'language',
-                    QueryHelper::implodeToIntQuotedValueList($languages, $queryBuilder->getConnection())
+                    $queryBuilder->quoteArrayBasedValueListToIntegerList($languages)
                 );
             }
 

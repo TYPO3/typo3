@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
@@ -176,7 +175,7 @@ class LinkAnalyzer
                 $statement->where(
                     $statement->expr()->in(
                         ($table === 'pages' ? 'uid' : 'pid'),
-                        QueryHelper::implodeToIntQuotedValueList($pageIdsChunk, $statement->getConnection())
+                        $statement->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                     )
                 );
                 $result = $statement->execute();
