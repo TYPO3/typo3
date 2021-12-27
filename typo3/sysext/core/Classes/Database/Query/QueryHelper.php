@@ -247,6 +247,8 @@ class QueryHelper
      *
      * Return value should only be used as value list for database query 'IN()' or 'NOTIN()' .
      *
+     * Will be removed in v12, use QueryHelper::quoteArrayBasedValueListToIntegerList() instead.
+     *
      * @param array $values
      * @param Connection $connection
      * @return string
@@ -277,6 +279,8 @@ class QueryHelper
      * there are use cases in some (system) areas which reaches placeholder limit really fast.
      *
      * Return value should only be used as value list for database query 'IN()' or 'NOTIN()' .
+     *
+     * Will be removed in v12, use QueryHelper::quoteArrayBasedValueListToStringList() instead.
      *
      * @param array $values
      * @param Connection $connection

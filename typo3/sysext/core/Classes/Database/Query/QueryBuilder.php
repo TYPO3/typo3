@@ -1221,6 +1221,74 @@ class QueryBuilder
     }
 
     /**
+     * Implode array to comma separated list with database int-quoted values to be used as direct
+     * value list for database 'in(...)' or  'notIn(...') expressions. Empty array will return 'NULL'
+     * as string to avoid database query failure, as 'IN()' is invalid, but 'IN(NULL)' is fine.
+     *
+     * This method should be used with care, the preferred way is to use placeholders. It is however
+     * useful when dealing with potentially many values, which could reach placeholder limit quickly.
+     *
+     * When working with prepared statement from QueryBuilder, use this method to proper quote array
+     * with integer values.
+     *
+     * The method can not be used in queries that re-bind a prepared statement to change values for
+     * subsequent execution due to a PDO limitation.
+     *
+     * Return value should only be used as value list for database queries 'in()' and 'notIn()' .
+     */
+    public function quoteArrayBasedValueListToIntegerList(array $values): string
+    {
+        if (empty($values)) {
+            return 'NULL';
+        }
+
+        // Ensure values are all integer
+        $values = GeneralUtility::intExplode(',', implode(',', $values));
+
+        // Ensure all values are quoted as int for used dbms
+        $connection = $this;
+        array_walk($values, static function (&$value) use ($connection) {
+            $value = $connection->quote($value, Connection::PARAM_INT);
+        });
+
+        return implode(',', $values);
+    }
+
+    /**
+     * Implode array to comma separated list with database string-quoted values to be used as direct
+     * value list for database 'in(...)' or  'notIn(...') expressions. Empty array will return 'NULL'
+     * as string to avoid database query failure, as 'IN()' is invalid, but 'IN(NULL)' is fine.
+     *
+     * This method should be used with care, the preferred way is to use placeholders. It is however
+     * useful when dealing with potentially many values, which could reach placeholder limit quickly.
+     *
+     * When working with prepared statement from QueryBuilder, use this method to proper quote array
+     * with integer values.
+     *
+     * The method can not be used in queries that re-bind a prepared statement to change values for
+     * subsequent execution due to a PDO limitation.
+     *
+     * Return value should only be used as value list for database queries 'in()' and 'notIn()' .
+     */
+    public function quoteArrayBasedValueListToStringList(array $values): string
+    {
+        if (empty($values)) {
+            return 'NULL';
+        }
+
+        // Ensure values are all strings
+        $values = GeneralUtility::trimExplode(',', implode(',', $values));
+
+        // Ensure all values are quoted as string values for used dbmns
+        $connection = $this;
+        array_walk($values, static function (&$value) use ($connection) {
+            $value = $connection->quote($value, Connection::PARAM_STR);
+        });
+
+        return implode(',', $values);
+    }
+
+    /**
      * Creates a cast of the $fieldName to a text datatype depending on the database management system.
      *
      * @param string $fieldName The fieldname will be quoted and casted according to database platform automatically
