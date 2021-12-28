@@ -177,7 +177,7 @@ class PageTreeRepository
 
         if (count($entryPointIds) > 0) {
             $pageRecords = $this->getPageRecords($entryPointIds);
-            $groupedAndSortedPagesByPid = $this->groupAndSortPages($pageRecords, $groupedAndSortedPagesByPid, 0);
+            $groupedAndSortedPagesByPid[$pageTree['uid']] = $pageRecords;
             $parentPageIds = $entryPointIds;
         } else {
             $parentPageIds = [$pageTree['uid']];
@@ -713,16 +713,12 @@ class PageTreeRepository
      *
      * @param array $pages
      * @param array $groupedAndSortedPagesByPid
-     * @param int|null $forcePid
      * @return array
      */
-    protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = [], ?int $forcePid = null): array
+    protected function groupAndSortPages(array $pages, $groupedAndSortedPagesByPid = []): array
     {
         foreach ($pages as $key => $pageRecord) {
             $parentPageId = (int)$pageRecord['pid'];
-            if ($forcePid !== null) {
-                $parentPageId = $forcePid;
-            }
             $sorting = (int)$pageRecord['sorting'];
             while (isset($groupedAndSortedPagesByPid[$parentPageId][$sorting])) {
                 $sorting++;
