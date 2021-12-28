@@ -715,6 +715,16 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         ],
                     ],
                     ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region'],
+                    [
+                        'title' => 'Divider',
+                        'link' => '/divider',
+                        'children' => [
+                            [
+                                'title' => 'EN: Subpage of Spacer',
+                                'link' => '/divider/subpage-of-spacer',
+                            ],
+                        ],
+                    ],
                     ['title' => 'Internal', 'link' => '/my-acme'],
                     ['title' => 'About us', 'link' => '/about'],
                     [
