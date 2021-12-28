@@ -92,8 +92,8 @@ export = (function() {
   /**
    * Returns the parent document object
    */
-  FormEngineLinkBrowserAdapter.getParent = function(): void {
-    let opener;
+  FormEngineLinkBrowserAdapter.getParent = function(): Window {
+    let opener: Window;
     if (
       typeof window.parent !== 'undefined' &&
       typeof window.parent.document.list_frame !== 'undefined' &&

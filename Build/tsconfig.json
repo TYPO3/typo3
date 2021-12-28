@@ -19,6 +19,7 @@
         "alwaysStrict": true,
         "downlevelIteration": true,
         "experimentalDecorators": true,
+        "useDefineForClassFields": false,
         "noImplicitAny": true,
         "noImplicitThis": true,
         "noImplicitReturns": true,

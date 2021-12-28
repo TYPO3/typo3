@@ -1,4 +1,4 @@
-module.exports = {
+{
   "env": {
     "browser": true,
     "es6": true
@@ -19,9 +19,9 @@ module.exports = {
         "public-field",
         "protected-field",
         "private-field",
-        'public-static-method',
-        'protected-static-method',
-        'private-static-method',
+        "public-static-method",
+        "protected-static-method",
+        "private-static-method",
         "constructor",
         "public-instance-method",
         "protected-instance-method",
@@ -30,8 +30,8 @@ module.exports = {
     }],
     "@typescript-eslint/naming-convention": ["error",
       {
-        selector: "class",
-        format: ["PascalCase"]
+        "selector": "class",
+        "format": ["PascalCase"]
       }
     ],
     "@typescript-eslint/no-explicit-any": "off",
@@ -41,9 +41,9 @@ module.exports = {
     "@typescript-eslint/quotes": ["error", "single"],
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/typedef": ["error", {
-        parameter: true,
-        propertyDeclaration: true,
-        memberVariableDeclaration: false
+        "parameter": true,
+        "propertyDeclaration": true,
+        "memberVariableDeclaration": false
     }],
     "curly": "error",
     "default-case": "error",
@@ -65,4 +65,4 @@ module.exports = {
     "radix": "error",
     "semi": "off"
   }
-};
+}

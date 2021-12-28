@@ -24,11 +24,9 @@ export const componentName = 'typo3-iframe-module';
 @customElement(componentName)
 export class IframeModuleElement extends LitElement {
 
-  @property({type: String})
-  endpoint: string = '';
+  @property({type: String}) endpoint: string = '';
 
-  @query('iframe', true)
-  iframe: HTMLIFrameElement;
+  @query('iframe', true) iframe: HTMLIFrameElement;
 
   public createRenderRoot(): HTMLElement | ShadowRoot {
     // Disable shadow root as <iframe> needs to be accessible

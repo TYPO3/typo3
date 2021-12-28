@@ -32,23 +32,17 @@ const alwaysUpdate = (newVal: string, oldVal: string) => true;
 @customElement('typo3-backend-module-router')
 export class ModuleRouter extends LitElement {
 
-  @property({type: String, hasChanged: alwaysUpdate})
-  module: string = '';
+  @property({type: String, hasChanged: alwaysUpdate}) module: string = '';
 
-  @property({type: String, hasChanged: alwaysUpdate})
-  endpoint: string = '';
+  @property({type: String, hasChanged: alwaysUpdate}) endpoint: string = '';
 
-  @property({type: String, attribute: 'state-tracker'})
-  stateTrackerUrl: string;
+  @property({type: String, attribute: 'state-tracker'}) stateTrackerUrl: string;
 
-  @property({type: String, attribute: 'sitename'})
-  sitename: string;
+  @property({type: String, attribute: 'sitename'}) sitename: string;
 
-  @property({type: Boolean, attribute: 'sitename-first'})
-  sitenameFirst: boolean;
+  @property({type: Boolean, attribute: 'sitename-first'}) sitenameFirst: boolean;
 
-  @query('slot', true)
-  slotElement: HTMLSlotElement;
+  @query('slot', true) slotElement: HTMLSlotElement;
 
   public static styles = css`
     :host {

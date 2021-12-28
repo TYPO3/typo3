@@ -195,7 +195,7 @@ module.exports = function (grunt) {
       options: {
         cache: true,
         cacheLocation: './.cache/eslintcache/',
-        configFile: 'eslintrc.js'
+        overrideConfigFile: 'eslintrc.json'
       },
       files: {
         src: [

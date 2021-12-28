@@ -63,4 +63,4 @@ var __decorate=this&&this.__decorate||function(e,t,i,r){var o,n=arguments.length
     :host([size=mega]) {
       font-size: 64px;
     }
-  `,__decorate([r.property({type:String})],s.prototype,"size",void 0),__decorate([r.property({type:String})],s.prototype,"variant",void 0),s=__decorate([r.customElement("typo3-backend-spinner")],s),t.SpinnerElement=s}));
+  `,__decorate([(0,r.property)({type:String})],s.prototype,"size",void 0),__decorate([(0,r.property)({type:String})],s.prototype,"variant",void 0),s=__decorate([(0,r.customElement)("typo3-backend-spinner")],s),t.SpinnerElement=s}));

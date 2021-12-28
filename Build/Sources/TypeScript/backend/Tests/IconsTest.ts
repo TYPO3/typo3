@@ -45,7 +45,7 @@ describe('TYPO3/CMS/Backend/IconsTest:', () => {
    */
   describe('tests for Icons::putInCache', () => {
     it('works for simply identifier and markup', () => {
-      const promise = new Promise((reveal) => reveal());
+      const promise = new Promise<void>((reveal) => reveal());
       (Icons as any).putInPromiseCache('foo', promise);
       expect((Icons as any).getFromPromiseCache('foo')).toBe(promise);
       expect((Icons as any).isPromiseCached('foo')).toBe(true);

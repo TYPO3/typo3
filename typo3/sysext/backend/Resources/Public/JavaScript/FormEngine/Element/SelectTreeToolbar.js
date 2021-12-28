@@ -16,18 +16,18 @@ var __decorate=this&&this.__decorate||function(e,t,l,i){var o,n=arguments.length
           <span class="input-group-addon input-group-icon filter">
             <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
           </span>
-          <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${n.lll("tcatree.findItem")}" @input="${e=>this.filter(e)}">
+          <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${(0,n.lll)("tcatree.findItem")}" @input="${e=>this.filter(e)}">
         </div>
         <div class="btn-group">
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${n.lll("tcatree.expandAll")}" @click="${()=>this.expandAll()}">
+          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.expandAllBtn}" title="${(0,n.lll)("tcatree.expandAll")}" @click="${()=>this.expandAll()}">
             <typo3-backend-icon identifier="apps-pagetree-category-expand-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${n.lll("tcatree.collapseAll")}" @click="${e=>this.collapseAll(e)}">
+          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.collapseAllBtn}" title="${(0,n.lll)("tcatree.collapseAll")}" @click="${e=>this.collapseAll(e)}">
             <typo3-backend-icon identifier="apps-pagetree-category-collapse-all" size="small"></typo3-backend-icon>
           </button>
-          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${n.lll("tcatree.toggleHideUnchecked")}" @click="${()=>this.toggleHideUnchecked()}">
+          <button type="button" data-bs-toggle="tooltip" class="btn btn-default ${this.settings.toggleHideUnchecked}" title="${(0,n.lll)("tcatree.toggleHideUnchecked")}" @click="${()=>this.toggleHideUnchecked()}">
             <typo3-backend-icon identifier="apps-pagetree-category-toggle-hide-checked" size="small"></typo3-backend-icon>
           </button>
         </div>
       </div>
-    `}collapseAll(e){e.preventDefault(),this.tree.nodes.forEach(e=>{e.parents.length&&this.tree.hideChildren(e)}),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}expandAll(){this.tree.expandAll()}filter(e){const t=e.target;this.tree.filter(t.value.trim())}toggleHideUnchecked(){this.hideUncheckedState=!this.hideUncheckedState,this.hideUncheckedState?this.tree.nodes.forEach(e=>{e.checked?(this.tree.showParents(e),e.expanded=!0,e.hidden=!1):(e.hidden=!0,e.expanded=!1)}):this.tree.nodes.forEach(e=>e.hidden=!1),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}};a=__decorate([o.customElement("typo3-backend-form-selecttree-toolbar")],a),t.SelectTreeToolbar=a}));
+    `}collapseAll(e){e.preventDefault(),this.tree.nodes.forEach(e=>{e.parents.length&&this.tree.hideChildren(e)}),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}expandAll(){this.tree.expandAll()}filter(e){const t=e.target;this.tree.filter(t.value.trim())}toggleHideUnchecked(){this.hideUncheckedState=!this.hideUncheckedState,this.hideUncheckedState?this.tree.nodes.forEach(e=>{e.checked?(this.tree.showParents(e),e.expanded=!0,e.hidden=!1):(e.hidden=!0,e.expanded=!1)}):this.tree.nodes.forEach(e=>e.hidden=!1),this.tree.prepareDataForVisibleNodes(),this.tree.updateVisibleNodes()}};a=__decorate([(0,o.customElement)("typo3-backend-form-selecttree-toolbar")],a),t.SelectTreeToolbar=a}));

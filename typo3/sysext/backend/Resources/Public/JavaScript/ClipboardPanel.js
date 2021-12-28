@@ -16,7 +16,7 @@ var __decorate=this&&this.__decorate||function(e,t,i,a){var n,l=arguments.length
       </div>
     `}createRenderRoot(){return this}render(){return i.html`
       <div class="clipboard-panel">
-        ${n.until(this.renderPanel(),s.renderLoader())}
+        ${(0,n.until)(this.renderPanel(),s.renderLoader())}
       </div>
     `}renderPanel(){return new r(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then(async e=>{const t=await e.resolve();if(!0===t.success&&t.data){const e=t.data;return i.html`
             <div class="row">
@@ -74,13 +74,13 @@ var __decorate=this&&this.__decorate||function(e,t,i,a){var n,l=arguments.length
       ${t.current===e.identifier&&e.items?e.items.map(i=>this.renderTabItem(i,e.identifier,t)):i.html``}
     `}renderTabItem(e,t,a){return i.html`
       <tr>
-        <td class="col-icon nowrap ${o.classMap({"ps-4":!e.identifier})}">
-          ${l.unsafeHTML(e.icon)}
+        <td class="col-icon nowrap ${(0,o.classMap)({"ps-4":!e.identifier})}">
+          ${(0,l.unsafeHTML)(e.icon)}
         </td>
         <td class="nowrap" style="width: 95%">
-          ${l.unsafeHTML(e.title)}
+          ${(0,l.unsafeHTML)(e.title)}
           ${"normal"===t?i.html`<strong>(${a.copyMode===d.copy?i.html`${a.labels.copy}`:i.html`${a.labels.cut}`})</strong>`:i.html``}
-          ${e.thumb?i.html`<div class="d-block">${l.unsafeHTML(e.thumb)}</div>`:i.html``}
+          ${e.thumb?i.html`<div class="d-block">${(0,l.unsafeHTML)(e.thumb)}</div>`:i.html``}
         </td>
         <td class="col-control nowrap">
           <div class="btn-group">
@@ -101,4 +101,4 @@ var __decorate=this&&this.__decorate||function(e,t,i,a){var n,l=arguments.length
             `:i.html``}
           </div>
         </td>
-      </tr>`}updateClipboard(e,t){e.preventDefault();const i=e.currentTarget;new r(top.TYPO3.settings.Clipboard.moduleUrl).post(t).then(async e=>{const a=await e.resolve();!0===a.success?(i.dataset.action&&i.dispatchEvent(new CustomEvent("typo3:clipboard:"+i.dataset.action,{detail:{payload:t,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):c.error("Clipboard data could not be updated")}).catch(()=>{c.error("An error occured while updating clipboard data")})}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload(!0)}};__decorate([a.property({type:String,attribute:"return-url"})],p.prototype,"returnUrl",void 0),__decorate([a.property({type:String})],p.prototype,"table",void 0),p=s=__decorate([a.customElement("typo3-backend-clipboard-panel")],p),t.ClipboardPanel=p}));
+      </tr>`}updateClipboard(e,t){e.preventDefault();const i=e.currentTarget;new r(top.TYPO3.settings.Clipboard.moduleUrl).post(t).then(async e=>{const a=await e.resolve();!0===a.success?(i.dataset.action&&i.dispatchEvent(new CustomEvent("typo3:clipboard:"+i.dataset.action,{detail:{payload:t,response:a},bubbles:!0,cancelable:!1})),this.reloadModule()):c.error("Clipboard data could not be updated")}).catch(()=>{c.error("An error occured while updating clipboard data")})}reloadModule(){this.returnUrl?this.ownerDocument.location.href=this.returnUrl:this.ownerDocument.location.reload()}};__decorate([(0,a.property)({type:String,attribute:"return-url"})],p.prototype,"returnUrl",void 0),__decorate([(0,a.property)({type:String})],p.prototype,"table",void 0),p=s=__decorate([(0,a.customElement)("typo3-backend-clipboard-panel")],p),t.ClipboardPanel=p}));
