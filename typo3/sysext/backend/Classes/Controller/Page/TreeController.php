@@ -494,6 +494,14 @@ class TreeController
             } else {
                 $rootRecord = $repository->getTreeLevels($rootRecord, $this->levelsToFetch, $mountPoints);
             }
+
+            $mountPointOrdering = array_flip($mountPoints);
+            if (isset($rootRecord['_children'])) {
+                usort($rootRecord['_children'], static function ($a, $b) use ($mountPointOrdering) {
+                    return ($mountPointOrdering[$a['uid']] ?? 0) <=> ($mountPointOrdering[$b['uid']] ?? 0);
+                });
+            }
+
             $entryPointRecords[] = $rootRecord;
         } else {
             $hiddenRecords = $this->hiddenRecords;
