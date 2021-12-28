@@ -2,6 +2,7 @@ __variables:
   - &pageStandard 0
   - &pageShortcut 4
   - &pageMount 7
+  - &pageSpacer 199
   - &pageFolder 254
   - &contentText 'text'
   - &idAcmeRootPage 1000
@@ -92,6 +93,9 @@ entities:
               languageVariants:
                 - self: {id: 1411, title: 'FR: Groups', language: 1, slug: '/acme-dans-votre-region/groupes'}
                 - self: {id: 1412, title: 'FR-CA: Groups', language: 2, slug: '/acme-dans-votre-quebec/groupes'}
+        - self: {id: 1450, type: *pageSpacer, title: 'Divider', slug: '/divider'}
+          children:
+            - self: {id: 1460, title: 'EN: Subpage of Spacer', slug: '/divider/subpage-of-spacer' }
         - self: {id: 1500, title: 'Internal', slug: '/my-acme'}
           children:
             - self: {id: 1510, title: 'Whitepapers', visitorGroups: -2, extendToSubpages: true, slug: '/my-acme/whitepapers'}

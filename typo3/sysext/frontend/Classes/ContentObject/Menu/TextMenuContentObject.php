@@ -191,8 +191,11 @@ class TextMenuContentObject extends AbstractMenuContentObject
      */
     protected function extProc_afterLinking($key)
     {
-        // Add part to the accumulated result + fetch submenus
-        if (!$this->I['spacer']) {
+        $explicitSpacerRenderingEnabled = ($this->mconf['SPC'] ?? false);
+        $isSpacerPage = $this->I['spacer'] ?? false;
+        // If rendering of SPACERs is enabled, also allow rendering submenus with Spacers
+        if (!$isSpacerPage || $explicitSpacerRenderingEnabled) {
+            // Add part to the accumulated result + fetch submenus
             $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix'] ?? '');
         }
         $part = $this->WMcObj->stdWrapValue('wrapItemAndSub', $this->I['val']);
