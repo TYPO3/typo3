@@ -319,4 +319,474 @@ class RedirectServiceTest extends FunctionalTestCase
         self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
     }
+
+    public function samePathWithSameDomainT3TargetDataProvider(): array
+    {
+        return [
+            'flat' => [
+                'https://acme.com/flat-samehost-1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'flat - with query parameters' => [
+                'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/',
+                301,
+                'https://acme.com/flat-samehost-1',
+                1,
+            ],
+            'flat keep_query_parameters' => [
+                'https://acme.com/flat-samehost-2',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-2?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters' => [
+                'https://acme.com/flat-samehost-3',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'flat respect_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://acme.com/flat-samehost-3',
+                3,
+            ],
+            'flat respect_query_parameters and keep_query_parameters' => [
+                'https://acme.com/flat-samehost-4',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters and keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-4?param1=value1&cHash=caa2156411affc2d7c8c5169652c6e13',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp' => [
+                'https://acme.com/regexp-samehost-1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'regexp - with query parameters' => [
+                'https://acme.com/regexp-samehost-1?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://acme.com/regexp-samehost-1',
+                5,
+            ],
+            'regexp keep_query_parameters' => [
+                'https://acme.com/regexp-samehost-2',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp keep_query_parameters - with query parameters' => [
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'regexp keep_query_parameters - with query parameters but without cHash' => [
+                'https://acme.com/regexp-samehost-2?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                6,
+            ],
+            'regexp respect_query_parameters' => [
+                'https://acme.com/regexp-samehost-3',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'regexp respect_query_parameters - with query parameters but without cHash' => [
+                'https://acme.com/regexp-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://acme.com/regexp-samehost-3',
+                7,
+            ],
+            'same host as external target with query arguments in another order than target should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-3?param1=value1&param2=value2&param3=&cHash=69f1b01feb7ed14b95b85cbc66ee2a3a',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'same host as external target with fragment should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-4',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider samePathWithSameDomainT3TargetDataProvider
+     */
+    public function samePathWithSameDomainT3Target(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathWithSameDomainT3Target.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, $baseUri)
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url),
+            null,
+            false
+        );
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        if ($expectedRedirectUri) {
+            self::assertIsArray($response->getHeader('X-Redirect-By'));
+            self::assertIsArray($response->getHeader('location'));
+            self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+            self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
+        }
+    }
+
+    public function samePathWithSameDomainAndRelativeTargetDataProvider(): array
+    {
+        return [
+            'flat' => [
+                'https://acme.com/flat-samehost-1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'flat - with query parameters' => [
+                'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/',
+                301,
+                '/flat-samehost-1',
+                1,
+            ],
+            'flat keep_query_parameters' => [
+                'https://acme.com/flat-samehost-2',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-2?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters' => [
+                'https://acme.com/flat-samehost-3',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'flat respect_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                '/flat-samehost-3',
+                3,
+            ],
+            'flat respect_query_parameters and keep_query_parameters' => [
+                'https://acme.com/flat-samehost-4',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters and keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-4?param1=value1&cHash=caa2156411affc2d7c8c5169652c6e13',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp' => [
+                'https://acme.com/regexp-samehost-1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'regexp - with query parameters' => [
+                'https://acme.com/regexp-samehost-1?param1=value1',
+                'https://acme.com/',
+                301,
+                '/regexp-samehost-1',
+                5,
+            ],
+            'regexp keep_query_parameters' => [
+                'https://acme.com/regexp-samehost-2',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp keep_query_parameters - with query parameters' => [
+                'https://acme.com/regexp-samehost-2?param1=value1&cHash=feced69fa13ce7d3bf0483c21ff03064',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp keep_query_parameters - with query parameters but without cHash' => [
+                'https://acme.com/regexp-samehost-2?param1=value1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'regexp respect_query_parameters' => [
+                'https://acme.com/regexp-samehost-3',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            // this should redirect and not pass through
+            'regexp respect_query_parameters - with query parameters but without cHash' => [
+                'https://acme.com/regexp-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                '/regexp-samehost-3',
+                7,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider samePathWithSameDomainAndRelativeTargetDataProvider
+     */
+    public function samePathWithSameDomainAndRelativeTarget(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathWithSameDomainAndRelativeTarget.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, $baseUri)
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url),
+            null,
+            false
+        );
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        if ($expectedRedirectUri) {
+            self::assertIsArray($response->getHeader('X-Redirect-By'));
+            self::assertIsArray($response->getHeader('location'));
+            self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+            self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
+        }
+    }
+
+    public function samePathRedirectsWithExternalTargetDataProvider(): array
+    {
+        return [
+            'flat' => [
+                'https://acme.com/flat-samehost-1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-1',
+                1,
+            ],
+            'flat - with query parameters' => [
+                'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-1',
+                1,
+            ],
+            'flat keep_query_parameters' => [
+                'https://acme.com/flat-samehost-2',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-2',
+                2,
+            ],
+            'flat keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-2?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-2?param1=value1',
+                2,
+            ],
+            // following will not match at all, so it is expected to be resolved with 200
+            'flat respect_query_parameters' => [
+                'https://acme.com/flat-samehost-3',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-3',
+                3,
+            ],
+            // following will not match at all, so it is expected to be resolved with 200
+            'flat respect_query_parameters and keep_query_parameters' => [
+                'https://acme.com/flat-samehost-4',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'flat respect_query_parameters and keep_query_parameters - with query parameters' => [
+                'https://acme.com/flat-samehost-4?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/flat-samehost-4?param1=value1',
+                4,
+            ],
+            'regexp' => [
+                'https://acme.com/regexp-samehost-1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-1',
+                5,
+            ],
+            'regexp - with query parameters' => [
+                'https://acme.com/regexp-samehost-1?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-1',
+                5,
+            ],
+            'regexp keep_query_parameters' => [
+                'https://acme.com/regexp-samehost-2',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-2',
+                6,
+            ],
+            'regexp keep_query_parameters - with query parameters' => [
+                'https://acme.com/regexp-samehost-2?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-2?param1=value1',
+                6,
+            ],
+            'regexp respect_query_parameters' => [
+                'https://acme.com/regexp-samehost-3',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-3',
+                7,
+            ],
+            // this should redirect and not pass through
+            'regexp respect_query_parameters - with query parameters but without cHash' => [
+                'https://acme.com/regexp-samehost-3?param1=value1',
+                'https://acme.com/',
+                301,
+                'https://external.acme.com/regexp-samehost-3',
+                7,
+            ],
+            'same host as external target with port should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-1',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'same host as external target with userinfo should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-2',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'same host as external target with query arguments in another order than target should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-3?param1=value1&param2=value2&param3=',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+            'same host as external target with fragment should pass instead of redirect' => [
+                'https://acme.com/sanatize-samehost-4',
+                'https://acme.com/',
+                200,
+                null,
+                null,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider samePathRedirectsWithExternalTargetDataProvider
+     */
+    public function samePathRedirectsWithExternalTarget(string $url, string $baseUri, int $expectedStatusCode, ?string $expectedRedirectUri, ?int $expectedRedirectUid): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_samePathRedirectsWithExternalTarget.csv');
+        $this->writeSiteConfiguration(
+            'acme-com',
+            $this->buildSiteConfiguration(1, $baseUri)
+        );
+        $this->setUpFrontendRootPage(
+            1,
+            ['typo3/sysext/redirects/Tests/Functional/Service/Fixtures/Redirects.typoscript']
+        );
+
+        $response = $this->executeFrontendSubRequest(
+            new InternalRequest($url),
+            null,
+            false
+        );
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        if ($expectedRedirectUri) {
+            self::assertIsArray($response->getHeader('X-Redirect-By'));
+            self::assertIsArray($response->getHeader('location'));
+            self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
+            self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
+        }
+    }
 }
