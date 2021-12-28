@@ -165,7 +165,10 @@ return [
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'sys_workspace_stage',
-                'appearance' => 'useSortable,expandSingle',
+                'appearance' => [
+                    'useSortable' => true,
+                    'expandSingle' => true,
+                ],
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'minitems' => 0
