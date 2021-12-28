@@ -30,6 +30,7 @@ enum Selectors {
   createNewRecordButtonSelector = '.t3js-create-new-button',
   createNewRecordBySelectorSelector = '.t3js-create-new-selector',
   deleteRecordButtonSelector = '.t3js-editform-delete-inline-record',
+  createNewRecordPresetSelector = '.t3js-create-new-preset'
 }
 
 enum States {
@@ -130,7 +131,7 @@ class SiteLanguageContainer extends HTMLElement {
     }
 
     if (index === -1) {
-      index = 0;
+      index = 1;
     } else if (index < options.length) {
       index++;
     }
@@ -167,6 +168,7 @@ class SiteLanguageContainer extends HTMLElement {
 
   private registerEvents(): void {
     this.registerCreateRecordButton();
+    this.registerCreateRecordByPresetSelector();
     this.registerCreateRecordBySelector();
     this.registerRecordToggle();
     this.registerDeleteButton();
@@ -185,8 +187,31 @@ class SiteLanguageContainer extends HTMLElement {
         objectId += Separators.structureSeparator + this.dataset.recordUid;
       }
 
-      me.importRecord([objectId, (me.container.querySelector(Selectors.createNewRecordBySelectorSelector) as HTMLInputElement)?.value], this.dataset.recordUid ?? null);
+      me.importRecord([objectId], this.dataset.recordUid ?? null);
     }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
+  }
+
+  private registerCreateRecordByPresetSelector(): void {
+    const me = this;
+    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const selector = (me.container.querySelector(Selectors.createNewRecordPresetSelector) as HTMLSelectElement);
+      const presetValue = selector?.value;
+      if (presetValue === '') {
+        return;
+      }
+
+      let objectId = me.container.dataset.objectGroup;
+      if (typeof this.dataset.recordUid !== 'undefined') {
+        objectId += Separators.structureSeparator + this.dataset.recordUid;
+      }
+
+      selector.value = '';
+
+      me.importRecord([objectId, '', presetValue], this.dataset.recordUid ?? null);
+    }).delegateTo(this.container, Selectors.createNewRecordPresetSelector);
   }
 
   private registerCreateRecordBySelector(): void {
@@ -197,6 +222,9 @@ class SiteLanguageContainer extends HTMLElement {
 
       const selectTarget = <HTMLSelectElement>this;
       const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
+      if (recordUid === '') {
+        return;
+      }
 
       me.importRecord([me.container.dataset.objectGroup, recordUid]);
     }).delegateTo(this.container, Selectors.createNewRecordBySelectorSelector);

@@ -7,19 +7,24 @@
     <div {formGroupAttributes -> f:format.raw()}>
         <f:format.raw>{fieldInformation}</f:format.raw>
         <div class="form-group t3js-formengine-validation-marker">
-            <div class="typo3-newRecordLink" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.createNew')}">
+            <div class="typo3-newRecordLink mt-2 mb-2" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.createNew')}">
                 <button type="button" class="btn btn-default t3js-create-new-button">
                     <core:icon identifier="actions-plus" size="small" />
                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.createNew" />
                 </button>
+                <select id="{presetOptions.identifier}" name="preset" class="form-select t3js-create-new-preset me-2 ms-2 d-inline-block w-auto">
+                    <option value=""><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.choosePreset"/></option>
+                    <f:for each="{presetOptions.options}" as="option">
+                        <option value="{option.value}">{option.label}</option>
+                    </f:for>
+                </select>
+                <select id="{selectorConfiguration.identifier}" class="form-select t3js-create-new-selector d-inline-block w-auto">
+                    <option value=""><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages.chooseExistingFromOtherSite"/></option>
+                    <f:for each="{selectorConfiguration.options}" as="option">
+                        <option value="{option.value}">{option.label}</option>
+                    </f:for>
+                </select>
             </div>
-        </div>
-        <div class="input-group form-group t3js-formengine-validation-marker">
-            <select id="{selectorConfigutation.identifier}" class="form-select t3js-create-new-selector" size="{selectorConfigutation.size}">
-                <f:for each="{selectorConfigutation.options}" as="option">
-                    <option value="{option.value}">{option.label}</option>
-                </f:for>
-            </select>
         </div>
         <div class="panel-group panel-hover" id="{inlineRecords.identifier}" data-title="{inlineRecords.title}">
             <f:format.raw>{inlineRecords.records}</f:format.raw>

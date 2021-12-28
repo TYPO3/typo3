@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Site\SiteLanguagePresets;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
@@ -121,7 +122,7 @@ class SiteLanguageContainer extends AbstractContainer
             $possibleRecordsUidToTitle[$possibleRecord['value']] = $possibleRecord['label'];
         }
         $this->inlineData['unique'][$nameObject . '-' . self::FOREIGN_TABLE] = [
-            // Usually "max" would the the number of possible records. However, since
+            // Usually "max" would be the number of possible records. However, since
             // we also allow new languages to be created, we just use the maxitems value.
             'max' => $config['maxitems'],
             // "used" must be a string array
@@ -182,9 +183,8 @@ class SiteLanguageContainer extends AbstractContainer
                 'data-appearance' => (string)json_encode($config['appearance'] ?? ''),
             ], true),
             'fieldInformation' => $fieldInformationResult['html'],
-            'selectorConfigutation' => [
+            'selectorConfiguration' => [
                 'identifier' => $nameObject . '-' . self::FOREIGN_TABLE . '_selector',
-                'size' => $config['size'] ?? 4,
                 'options' =>  $selectorOptions,
             ],
             'inlineRecords' => [
@@ -198,6 +198,10 @@ class SiteLanguageContainer extends AbstractContainer
                 'minitems' => $config['minitems'] ?? null,
                 'maxitems' => $config['maxitems'] ?? null,
             ]),
+            'presetOptions' => [
+                'identifier' => $nameObject . '_preset',
+                'options' => GeneralUtility::makeInstance(SiteLanguagePresets::class)->getAllForSelector(),
+            ],
         ]);
 
         $resultArray['html'] = $view->render('Form/SiteLanguageContainer');

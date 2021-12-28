@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\SiteLanguagePresets;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -115,6 +116,10 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                 // to create new records besides the ones, defined in the selector.
                 // The correct UID will then be calculated by the controller.
                 $childChildUid = PHP_INT_MAX;
+
+                if (!empty($ajaxArguments[2])) {
+                    $defaultDatabaseRow = GeneralUtility::makeInstance(SiteLanguagePresets::class)->getPresetDetailsForLanguage($ajaxArguments[2]) ?? [];
+                }
             }
         }
 

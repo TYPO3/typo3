@@ -24,6 +24,14 @@
 			<trans-unit id="site.languages" resname="site.languages">
 				<source>Available Languages for this Site</source>
 			</trans-unit>
+			<trans-unit id="site.languages.choosePreset" resname="site.languages.choosePreset">
+				<source>Choose a preset...</source>
+				<note>First select option of site language preset single select drop down</note>
+			</trans-unit>
+			<trans-unit id="site.languages.chooseExistingFromOtherSite" resname="site.languages.chooseExistingFromOtherSite">
+				<source>Use Language from existing site...</source>
+				<note>First select option of site language preset single select drop down</note>
+			</trans-unit>
 			<trans-unit id="site.languages.description" resname="site.languages.description">
 				<source>Select an already existing language from another site or create a new one.</source>
 			</trans-unit>
