@@ -437,6 +437,40 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getAllEntryPointPageTreesWithMountPointPreservesOrdering(): void
+    {
+        $this->backendUser->setWebmounts([1210, 1100]);
+        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->sortTreeArray($actual);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expected = [
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' =>[
+                    [
+                        'uid' => 1210,
+                        'title' => 'EN: Frontend Editing',
+                        '_children' => [
+                        ],
+                    ],
+                    [
+                        'uid' => 1100,
+                        'title' => 'EN: Welcome',
+                        '_children' => [
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function getAllEntryPointPageTreesInWorkspace(): void
     {
         $this->setWorkspace(1);
