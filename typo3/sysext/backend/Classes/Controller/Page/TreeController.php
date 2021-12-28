@@ -519,18 +519,26 @@ class TreeController
                 $permClause
             );
         }
+        $rootRecord = [
+            'uid' => 0,
+            'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
+        ];
         $entryPointRecords = [];
+        $mountPoints = [];
         if ($entryPointIds === null) {
-            $rootRecord = [
-                'uid' => 0,
-                'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?: 'TYPO3',
-            ];
-
             //watch out for deleted pages returned as webmount
             $mountPoints = array_map('intval', $backendUser->returnWebmounts());
             $mountPoints = array_unique($mountPoints);
             $mountPoints = array_filter($mountPoints, fn ($id) => !in_array($id, $this->hiddenRecords, true));
 
+            // Switch to multiple-entryPoint-mode if the rootPage is to be mounted.
+            // (other mounts would appear duplicated in the pid = 0 tree otherwise)
+            if (in_array(0, $mountPoints, true)) {
+                $entryPointIds = $mountPoints;
+            }
+        }
+
+        if ($entryPointIds === null) {
             if ($query !== '') {
                 $rootRecord = $repository->getTree(0, null, $mountPoints, true);
             } else {
@@ -541,13 +549,17 @@ class TreeController
             $entryPointIds = array_filter($entryPointIds, fn ($id) => !in_array($id, $this->hiddenRecords, true));
             $this->calculateBackgroundColors($entryPointIds);
             foreach ($entryPointIds as $k => $entryPointId) {
-                $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);
+                if ($entryPointId === 0) {
+                    $entryPointRecord = $rootRecord;
+                } else {
+                    $entryPointRecord = BackendUtility::getRecordWSOL('pages', $entryPointId, '*', $permClause);
 
-                if ($entryPointRecord !== null && !$backendUser->isInWebMount($entryPointId)) {
-                    $entryPointRecord = null;
-                }
-                if ($entryPointRecord === null) {
-                    continue;
+                    if ($entryPointRecord !== null && !$backendUser->isInWebMount($entryPointId)) {
+                        $entryPointRecord = null;
+                    }
+                    if ($entryPointRecord === null) {
+                        continue;
+                    }
                 }
 
                 $entryPointRecord['uid'] = (int)$entryPointRecord['uid'];
