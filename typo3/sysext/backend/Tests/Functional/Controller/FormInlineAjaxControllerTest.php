@@ -196,10 +196,6 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
                     'localize' => true,
                 ],
             ],
-            'behaviour' => [
-                'localizationMode' => 'none',
-                'localizeChildrenAtParentLocalization' => true,
-            ],
             'default' => '',
             'inline' => [
                 'parentSysLanguageUid' => $sysLanguageUid,
