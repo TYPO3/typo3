@@ -168,13 +168,13 @@ class LegacyLinkNotationConverter
         } elseif (str_contains($data, '&')) {
             [$data, $result['parameters']] = explode('&', $data, 2);
         }
+        $data = rtrim($data, ',');
         if (empty($data)) {
             $result['pageuid'] = 'current';
         } elseif ($data[0] === '#') {
             $result['pageuid'] = 'current';
             $result['fragment'] = substr($data, 1);
         } elseif (str_contains($data, ',')) {
-            $data = rtrim($data, ',');
             [$result['pageuid'], $result['pagetype']] = explode(',', $data, 2);
         } elseif (str_contains($data, '/')) {
             $data = explode('/', trim($data, '/'));

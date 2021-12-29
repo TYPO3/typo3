@@ -55,6 +55,14 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 // final unified URN
                 't3://page?uid=13',
             ],
+            'simple page - old style with appended comma' => [
+                '13,',
+                [
+                    'type' => LinkService::TYPE_PAGE,
+                    'pageuid' => 13,
+                ],
+                't3://page?uid=13',
+            ],
             'page with type - old style' => [
                 '13,31',
                 [
