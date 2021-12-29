@@ -44,13 +44,13 @@ class CachingFrameworkGarbageCollectionTask extends AbstractTask
     public function execute()
     {
         // Global sub-array with all configured caches
-        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? null;
         if (is_array($cacheConfigurations)) {
             // Iterate through configured caches and call garbage collection if
             // backend is within selected backends in additional field of task
             foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
                 // The cache backend used for this cache
-                $usedCacheBackend = $cacheConfiguration['backend'];
+                $usedCacheBackend = $cacheConfiguration['backend'] ?? null;
                 if (in_array($usedCacheBackend, $this->selectedBackends)) {
                     GeneralUtility::makeInstance(CacheManager::class)->getCache($cacheName)->collectGarbage();
                 }
