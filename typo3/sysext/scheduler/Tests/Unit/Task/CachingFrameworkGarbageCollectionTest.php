@@ -78,6 +78,9 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
                 'frontend' => VariableFrontend::class,
                 'backend' => AbstractBackend::class,
             ],
+            'another_cache' => [
+                'frontend' => 'foo',
+            ],
         ];
         /** @var CachingFrameworkGarbageCollectionTask|MockObject $subject */
         $subject = $this->getMockBuilder(CachingFrameworkGarbageCollectionTask::class)
