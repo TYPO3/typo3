@@ -95,7 +95,7 @@ class InputDateTimeElement extends AbstractFormElement
             $format = 'timesec';
         } else {
             throw new \RuntimeException(
-                'Field "' . $fieldName . '" in table "' . $table . '" with renderType "inputDataTime" needs'
+                'Field "' . $fieldName . '" in table "' . $table . '" with renderType "inputDateTime" needs '
                 . '"eval" set to either "date", "datetime", "time" or "timesec"',
                 1483823746
             );
