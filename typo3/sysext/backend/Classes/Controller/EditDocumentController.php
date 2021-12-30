@@ -857,7 +857,7 @@ class EditDocumentController
         // map record data to GET parameters
         if (isset($previewConfiguration['fieldToParameterMap.'])) {
             foreach ($previewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
-                $value = $recordArray[$field];
+                $value = $recordArray[$field] ?? '';
                 if ($field === 'uid') {
                     $value = $recordId;
                 }
