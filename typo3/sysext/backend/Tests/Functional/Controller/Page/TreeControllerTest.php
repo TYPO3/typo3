@@ -217,6 +217,120 @@ class TreeControllerTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getAllEntryPointPageTreesWithRootPageAsMountPoint(): void
+    {
+        $this->backendUser->setWebMounts([0, 7000]);
+        $actual = $this->subject->_call('getAllEntryPointPageTrees');
+        $keepProperties = array_flip(['uid', 'title', '_children']);
+        $actual = $this->sortTreeArray($actual);
+        $actual = $this->normalizeTreeArray($actual, $keepProperties);
+
+        $expected = [
+            [
+                'uid' => 0,
+                'title' => 'New TYPO3 site',
+                '_children' => [
+                    [
+                        'uid' => 1000,
+                        'title' => 'ACME Inc',
+                        '_children' => [
+                            [
+                                'uid' => 1100,
+                                'title' => 'EN: Welcome',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1200,
+                                'title' => 'EN: Features',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1400,
+                                'title' => 'EN: ACME in your Region',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1500,
+                                'title' => 'Internal',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1700,
+                                'title' => 'Announcements & News',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 404,
+                                'title' => 'Page not found',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1930,
+                                'title' => 'Our Blog',
+                                '_children' => [
+                                ],
+                            ],
+                            [
+                                'uid' => 1990,
+                                'title' => 'Storage',
+                                '_children' => [
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'uid' => 7000,
+                        'title' => 'Common Collection',
+                        '_children' => [
+                            [
+                                'uid' => 7100,
+                                'title' => 'Announcements & News',
+                                '_children' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'uid' => 7000,
+                'title' => 'Common Collection',
+                '_children' => [
+                    [
+                        'uid' => 7100,
+                        'title' => 'Announcements & News',
+                        '_children' => [
+                            [
+                                'uid' => 7110,
+                                'title' => 'Markets',
+                                '_children' => [],
+                            ],
+                            [
+                                'uid' => 7120,
+                                'title' => 'Products',
+                                '_children' => [],
+                            ],
+                            [
+                                'uid' => 7130,
+                                'title' => 'Partners',
+                                '_children' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function getAllEntryPointPageTreesWithSearch()
     {
         $actual = $this->subject->_call('getAllEntryPointPageTrees', 0, 'Groups');
