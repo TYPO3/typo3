@@ -420,7 +420,7 @@ class PasswordReset implements LoggerAwareInterface
             'error' => $error,
             'details_nr' => 1,
             'details' => $message,
-            'log_data' => serialize($data),
+            'log_data' => json_encode($data),
             'tablename' => 'be_users',
             'recuid' => $userId,
             'IP' => (string)$ipAddress,
@@ -486,7 +486,7 @@ class PasswordReset implements LoggerAwareInterface
             ->where(
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(SystemLogType::LOGIN)),
                 $queryBuilder->expr()->eq('action', $queryBuilder->createNamedParameter(SystemLogLoginAction::PASSWORD_RESET_REQUEST)),
-                $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter(serialize(['email' => $email]))),
+                $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter(json_encode(['email' => $email]))),
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($since->getTimestamp(), \PDO::PARAM_INT))
             )
             ->executeQuery()

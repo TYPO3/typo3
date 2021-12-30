@@ -30,9 +30,9 @@ trait LogDataTrait
     protected function unserializeLogData(mixed $logData): ?array
     {
         // The @ symbol avoids an E_NOTICE when unserialize() fails
-        $cleanedUpData = @unserialize($logData, ['allowed_classes' => false]);
+        $cleanedUpData = @unserialize((string)$logData, ['allowed_classes' => false]);
         if ($cleanedUpData === false) {
-            $cleanedUpData = json_decode($logData, true);
+            $cleanedUpData = json_decode((string)$logData, true);
         }
         return is_array($cleanedUpData) ? $cleanedUpData : null;
     }

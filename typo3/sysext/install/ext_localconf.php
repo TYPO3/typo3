@@ -13,6 +13,7 @@ use TYPO3\CMS\Install\Updates\FeLoginModeExtractionUpdate;
 use TYPO3\CMS\Install\Updates\ShortcutRecordsMigration;
 use TYPO3\CMS\Install\Updates\SvgFilesSanitization;
 use TYPO3\CMS\Install\Updates\SysLogChannel;
+use TYPO3\CMS\Install\Updates\SysLogSerializationUpdate;
 
 defined('TYPO3') or die();
 
@@ -28,6 +29,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChanne
 
 // v11->v12 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feLoginModeExtension'] = FeLoginModeExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerialization'] = SysLogSerializationUpdate::class;
 
 // Register report module additions
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = InstallStatusReport::class;

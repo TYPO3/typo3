@@ -272,7 +272,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                     'level' => $severity,
                     'details_nr' => 0,
                     'details' => str_replace('%', '%%', $logMessage),
-                    'log_data' => empty($data) ? '' : serialize($data),
+                    'log_data' => empty($data) ? '' : json_encode($data),
                     'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'workspace' => $workspace,
