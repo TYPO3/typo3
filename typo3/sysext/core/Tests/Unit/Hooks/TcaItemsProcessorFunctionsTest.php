@@ -546,6 +546,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'aItemValue',
                                         null,
                                         null,
+                                        '',
                                         'EXPL_ALLOW',
                                     ],
                                     // 1 is not selectable as allow and is always allowed
@@ -558,6 +559,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'cItemValue',
                                         null,
                                         null,
+                                        '',
                                         'EXPL_ALLOW',
                                     ],
                                 ],
@@ -602,6 +604,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'aItemValue',
                                         null,
                                         null,
+                                        '',
                                         'EXPL_DENY',
                                     ],
                                     // 1 is not selectable as allow and is always allowed
@@ -614,6 +617,7 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                                         'cItemValue',
                                         null,
                                         null,
+                                        '',
                                         'EXPL_DENY',
                                     ],
                                 ],

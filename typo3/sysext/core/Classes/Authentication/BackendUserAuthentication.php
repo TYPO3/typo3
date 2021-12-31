@@ -662,8 +662,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     $items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
                     if (is_array($items)) {
                         foreach ($items as $iCfg) {
-                            if ((string)$iCfg[1] === (string)$value && $iCfg[4]) {
-                                switch ((string)$iCfg[4]) {
+                            if ((string)$iCfg[1] === (string)$value && ($iCfg[5] ?? '')) {
+                                switch ((string)($iCfg[5] ?? '')) {
                                     case 'EXPL_ALLOW':
                                         if (!GeneralUtility::inList(
                                             $this->groupData['explicit_allowdeny'],
