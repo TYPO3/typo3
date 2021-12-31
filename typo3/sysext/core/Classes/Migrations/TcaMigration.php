@@ -63,6 +63,7 @@ class TcaMigration
         $tca = $this->migrateFileFolderConfiguration($tca);
         $tca = $this->migrateLevelLinksPosition($tca);
         $tca = $this->migrateRootUidToStartingPoints($tca);
+        $tca = $this->migrateSelectAuthModeIndividualItemsKeywordToNewPosition($tca);
 
         return $tca;
     }
@@ -509,6 +510,40 @@ class TcaMigration
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets '
                     . '[treeConfig][rootUid], which is superseded by [treeConfig][startingPoints].'
                     . 'The TCA configuration should be adjusted accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * If a column has authMode=individual and items with the corresponding key on position 5
+     * defined, migrate the key to position 6, since position 5 is used for the description.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function migrateSelectAuthModeIndividualItemsKeywordToNewPosition(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'select' || ($fieldConfig['config']['authMode'] ?? '') !== 'individual') {
+                    continue;
+                }
+
+                foreach ($fieldConfig['config']['items'] ?? [] as $index => $item) {
+                    if (in_array($item[4] ?? '', ['EXPL_ALLOW', 'EXPL_DENY'], true)) {
+                        $tca[$table]['columns'][$fieldName]['config']['items'][$index][5] = $item[4];
+                        $tca[$table]['columns'][$fieldName]['config']['items'][$index][4] = '';
+
+                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets ' . $item[4]
+                            . ' at position 5 of the items array. This option has been shifted to position 6 and should be adjusted accordingly.';
+                    }
+                }
             }
         }
 

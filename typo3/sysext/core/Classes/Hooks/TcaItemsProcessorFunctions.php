@@ -488,10 +488,10 @@ class TcaItemsProcessorFunctions
                             $allowDenyMode = 'DENY';
                             break;
                         case 'individual':
-                            if ($item[4] ?? false) {
-                                if ($item[4] === 'EXPL_ALLOW') {
+                            if ($item[5] ?? false) {
+                                if ($item[5] === 'EXPL_ALLOW') {
                                     $allowDenyMode = 'ALLOW';
-                                } elseif ($item[4] === 'EXPL_DENY') {
+                                } elseif ($item[5] === 'EXPL_DENY') {
                                     $allowDenyMode = 'DENY';
                                 }
                             }
