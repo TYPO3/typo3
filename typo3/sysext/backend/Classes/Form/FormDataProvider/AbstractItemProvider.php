@@ -966,10 +966,12 @@ abstract class AbstractItemProvider
                                         $iMode = 'DENY';
                                         break;
                                     case 'individual':
-                                        if (isset($iVal[4]) && $iVal[4] === 'EXPL_ALLOW') {
-                                            $iMode = 'ALLOW';
-                                        } elseif (isset($iVal[4]) && $iVal[4] === 'EXPL_DENY') {
-                                            $iMode = 'DENY';
+                                        if ($iVal[5] ?? false) {
+                                            if ($iVal[5] === 'EXPL_ALLOW') {
+                                                $iMode = 'ALLOW';
+                                            } elseif ($iVal[5] === 'EXPL_DENY') {
+                                                $iMode = 'DENY';
+                                            }
                                         }
                                         break;
                                 }

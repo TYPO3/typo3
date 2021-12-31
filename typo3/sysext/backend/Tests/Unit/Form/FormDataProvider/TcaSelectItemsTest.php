@@ -964,6 +964,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'aItemValue',
                                     null,
                                     null,
+                                    '',
                                     'EXPL_ALLOW',
                                 ],
                                 // 1 is not selectable as allow and is always allowed
@@ -976,6 +977,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'cItemValue',
                                     null,
                                     null,
+                                    '',
                                     'EXPL_ALLOW',
                                 ],
                             ]
@@ -1059,6 +1061,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'aItemValue',
                                     null,
                                     null,
+                                    '',
                                     'EXPL_DENY',
                                 ],
                                 // 1 is not selectable as allow and is always allowed
@@ -1071,6 +1074,7 @@ class TcaSelectItemsTest extends UnitTestCase
                                     'cItemValue',
                                     null,
                                     null,
+                                    '',
                                     'EXPL_DENY',
                                 ],
                             ]
