@@ -24,7 +24,6 @@ in the "IRRE Tutorial" module. The script looks for a page alias "irre_tutorial_
 successfully found, this branch from your TYPO3 installation.
 
 
-
 -----------------------------
  2. Usage
 ---------------------------
@@ -33,18 +32,8 @@ You can just do, what ever you'd like to. The ext_tables.php and tca.php have a 
 their filenames. This should help you to find the case you're looking fore faster. See the following
 description what these strings (e.g. like "tx_irretutorial_<string>_hotel or tca.<string>.php) mean:
 
-	* mnasym: m:n bidirectional asymmetric relations using intermediate table
-	* mnsym: m:n bidirectional symmetric relations using intermediate table
 	* mnattr: m:n bidirectional asymmetric attributed relations using intermediate table
 	* mnmmasym: m:n bidirectional asymmetric relations using the default MM feature of TYPO3
-
-
-
------------------------------
- 3. To-Do
----------------------------
-...
-
 
 
 -----------------------------

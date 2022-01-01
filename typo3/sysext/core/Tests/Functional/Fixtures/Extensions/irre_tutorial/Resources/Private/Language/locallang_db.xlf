@@ -29,12 +29,6 @@
 			<trans-unit id="tx_irretutorial_mnasym_price" resname="tx_irretutorial_mnasym_price">
 				<source>m:n ASym: Prices</source>
 			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnsym_hotel" resname="tx_irretutorial_mnsym_hotel">
-				<source>m:n Sym: Hotels</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnsym_hotel_rel" resname="tx_irretutorial_mnsym_hotel_rel">
-				<source>m:n Sym: Hotels&lt;-&gt;Hotels</source>
-			</trans-unit>
 			<trans-unit id="tx_irretutorial_mnattr_hotel" resname="tx_irretutorial_mnattr_hotel">
 				<source>m:n Attr: Hotels</source>
 			</trans-unit>

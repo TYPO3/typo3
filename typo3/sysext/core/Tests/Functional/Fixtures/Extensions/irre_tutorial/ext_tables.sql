@@ -48,31 +48,6 @@ CREATE TABLE tx_irretutorial_mnasym_price
 	price varchar(255) DEFAULT '0.00' NOT NULL
 );
 
-#######################################################################################################################
-# mnsym: m:n bidirectional symmetric relations using intermediate table
-#######################################################################################################################
-
-#
-# Table structure for table 'tx_irretutorial_mnsym_hotel'
-#
-CREATE TABLE tx_irretutorial_mnsym_hotel
-(
-	title tinytext NOT NULL,
-	branches int(11) DEFAULT '0' NOT NULL
-);
-
-
-
-#
-# Table structure for table 'tx_irretutorial_mnsym_hotel_rel'
-#
-CREATE TABLE tx_irretutorial_mnsym_hotel_rel
-(
-	hotelid int(11) DEFAULT '0' NOT NULL,
-	branchid int(11) DEFAULT '0' NOT NULL,
-	hotelsort int(10) DEFAULT '0' NOT NULL,
-	branchsort int(10) DEFAULT '0' NOT NULL
-);
 
 #######################################################################################################################
 # mnattr: m:n bidirectional (anti-)symmetric attributed relations using intermediate table

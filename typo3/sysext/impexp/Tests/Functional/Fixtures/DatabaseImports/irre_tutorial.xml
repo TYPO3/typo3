@@ -644,7 +644,7 @@
 		<offers>0</offers>
         <sorting>512</sorting>
 	</tx_testirremm_price>
-	<tx_irretutorial_mnsym_hotel>
+	<tx_testirremnsymmetric_hotel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -657,8 +657,8 @@
 		<title>Hotel 1 (mm sym)</title>
 		<branches>2</branches>
         <sorting>128</sorting>
-	</tx_irretutorial_mnsym_hotel>
-	<tx_irretutorial_mnsym_hotel>
+	</tx_testirremnsymmetric_hotel>
+	<tx_testirremnsymmetric_hotel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -671,8 +671,8 @@
 		<title>Hotel Branch 1.1 (mm sym)</title>
 		<branches>1</branches>
         <sorting>256</sorting>
-	</tx_irretutorial_mnsym_hotel>
-	<tx_irretutorial_mnsym_hotel>
+	</tx_testirremnsymmetric_hotel>
+	<tx_testirremnsymmetric_hotel>
 		<uid>3</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -685,8 +685,8 @@
 		<title>Hotel branch 1.2 (mm sym)</title>
 		<branches>0</branches>
         <sorting>512</sorting>
-	</tx_irretutorial_mnsym_hotel>
-	<tx_irretutorial_mnsym_hotel_rel>
+	</tx_testirremnsymmetric_hotel>
+	<tx_testirremnsymmetric_hotel_rel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -699,8 +699,8 @@
 		<branchid>2</branchid>
 		<hotelsort>1</hotelsort>
 		<branchsort>1</branchsort>
-	</tx_irretutorial_mnsym_hotel_rel>
-	<tx_irretutorial_mnsym_hotel_rel>
+	</tx_testirremnsymmetric_hotel_rel>
+	<tx_testirremnsymmetric_hotel_rel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -713,5 +713,5 @@
 		<branchid>3</branchid>
 		<hotelsort>2</hotelsort>
 		<branchsort>0</branchsort>
-	</tx_irretutorial_mnsym_hotel_rel>
+	</tx_testirremnsymmetric_hotel_rel>
 </dataset>
