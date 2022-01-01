@@ -195,7 +195,7 @@ return [
         'price',
         'offers',
     ],
-    'tx_irretutorial_mnsym_hotel' => [
+    'tx_testirremnsymmetric_hotel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -205,7 +205,7 @@ return [
         'title',
         'branches',
     ],
-    'tx_irretutorial_mnsym_hotel_rel' => [
+    'tx_testirremnsymmetric_hotel_rel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',

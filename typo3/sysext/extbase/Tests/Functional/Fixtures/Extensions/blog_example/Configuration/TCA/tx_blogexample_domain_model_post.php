@@ -219,7 +219,7 @@ return [
                 // @todo: Broken. A symmetric MM can not have MM_opposite_field pointing to itself. A symmetric MM
                 //        is probably not supported at all and also has no functional test coverage. We should play
                 //        around with this scenario, but it's probably better to switch to inline symmetric, see
-                //        tx_irretutorial_mnsym_hotel for an example.
+                //        tx_testirremnsymmetric_hotel for an example.
                 'MM' => 'tx_blogexample_post_post_mm',
                 'MM_opposite_field' => 'related_posts',
             ],

@@ -231,6 +231,82 @@
 					<softrefs type="array"/>
 				</rec>
 			</table>
+			<table index="tx_testirremnsymmetric_hotel" type="array">
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>Hotel Branch 1.1 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="3" type="array">
+					<uid>3</uid>
+					<pid>1</pid>
+					<title>Hotel branch 1.2 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>Hotel 1 (mm sym)</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
+			<table index="tx_testirremnsymmetric_hotel_rel" type="array">
+				<rec index="1" type="array">
+					<uid>1</uid>
+					<pid>1</pid>
+					<title>1</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel:2" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+				<rec index="2" type="array">
+					<uid>2</uid>
+					<pid>1</pid>
+					<title>2</title>
+					<relations index="rels" type="array">
+						<element index="tx_testirremnsymmetric_hotel:1" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+						<element index="tx_testirremnsymmetric_hotel:3" type="array">
+							<id>3</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+					<softrefs type="array"></softrefs>
+				</rec>
+			</table>
 			<table index="tx_testirreforeignfield_hotel" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
@@ -521,82 +597,6 @@
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_mnsym_hotel" type="array">
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>Hotel Branch 1.1 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel_rel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="3" type="array">
-					<uid>3</uid>
-					<pid>1</pid>
-					<title>Hotel branch 1.2 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel_rel:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>Hotel 1 (mm sym)</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel_rel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-						<element index="tx_irretutorial_mnsym_hotel_rel:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
-			<table index="tx_irretutorial_mnsym_hotel_rel" type="array">
-				<rec index="1" type="array">
-					<uid>1</uid>
-					<pid>1</pid>
-					<title>1</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-						<element index="tx_irretutorial_mnsym_hotel:2" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-				<rec index="2" type="array">
-					<uid>2</uid>
-					<pid>1</pid>
-					<title>2</title>
-					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnsym_hotel:1" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-						<element index="tx_irretutorial_mnsym_hotel:3" type="array">
-							<id>3</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-					<softrefs type="array"></softrefs>
-				</rec>
-			</table>
 		</records>
 		<pid_lookup type="array">
 			<page_contents index="0" type="array">
@@ -635,6 +635,15 @@
 					<item index="3">1</item>
 					<item index="2">1</item>
 					<item index="1">1</item>
+				</table>
+				<table index="tx_testirremnsymmetric_hotel" type="array">
+					<item index="2">1</item>
+					<item index="3">1</item>
+					<item index="1">1</item>
+				</table>
+				<table index="tx_testirremnsymmetric_hotel_rel" type="array">
+					<item index="1">1</item>
+					<item index="2">1</item>
 				</table>
 				<table index="tx_testirreforeignfield_hotel" type="array">
 					<item index="1">1</item>
@@ -675,15 +684,6 @@
 					<item index="2">1</item>
 				</table>
 				<table index="tx_irretutorial_mnattr_offer" type="array">
-					<item index="1">1</item>
-					<item index="2">1</item>
-				</table>
-				<table index="tx_irretutorial_mnsym_hotel" type="array">
-					<item index="2">1</item>
-					<item index="3">1</item>
-					<item index="1">1</item>
-				</table>
-				<table index="tx_irretutorial_mnsym_hotel_rel" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
 				</table>
@@ -1098,7 +1098,155 @@
 			</fieldlist>
 			<related index="rels" type="array"/>
 		</tablerow>
-
+		<tablerow index="tx_testirremnsymmetric_hotel:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">64</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel Branch 1.1 (mm sym)</field>
+				<field index="branches" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel:3" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">3</field>
+				<field index="pid" type="integer">1</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">128</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel branch 1.2 (mm sym)</field>
+				<field index="branches" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sorting" type="integer">256</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="title">Hotel 1 (mm sym)</field>
+				<field index="branches" type="integer">2</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="branches" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+						<element index="1" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel_rel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel_rel:1" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">1</field>
+				<field index="pid" type="integer">1</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="hotelid" type="integer">1</field>
+				<field index="branchid" type="integer">2</field>
+				<field index="hotelsort" type="integer">1</field>
+				<field index="branchsort" type="integer">1</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="branchid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>2</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
+		<tablerow index="tx_testirremnsymmetric_hotel_rel:2" type="array">
+			<fieldlist index="data" type="array">
+				<field index="uid" type="integer">2</field>
+				<field index="pid" type="integer">1</field>
+				<field index="cruser_id" type="integer">1</field>
+				<field index="deleted" type="integer">0</field>
+				<field index="hidden" type="integer">0</field>
+				<field index="sys_language_uid" type="integer">0</field>
+				<field index="l18n_parent" type="integer">0</field>
+				<field index="hotelid" type="integer">1</field>
+				<field index="branchid" type="integer">3</field>
+				<field index="hotelsort" type="integer">2</field>
+				<field index="branchsort" type="integer">0</field>
+			</fieldlist>
+			<related index="rels" type="array">
+				<field index="hotelid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>1</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+				<field index="branchid" type="array">
+					<type>db</type>
+					<relations index="itemArray" type="array">
+						<element index="0" type="array">
+							<id>3</id>
+							<table>tx_testirremnsymmetric_hotel</table>
+						</element>
+					</relations>
+				</field>
+			</related>
+		</tablerow>
 		<tablerow index="tx_testirreforeignfield_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
@@ -1689,155 +1837,6 @@
 						<element index="0" type="array">
 							<id>2</id>
 							<table>tx_irretutorial_mnattr_hotel_offer_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">64</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel Branch 1.1 (mm sym)</field>
-				<field index="branches" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel:3" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">3</field>
-				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">128</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel branch 1.2 (mm sym)</field>
-				<field index="branches" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sorting" type="integer">256</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="title">Hotel 1 (mm sym)</field>
-				<field index="branches" type="integer">2</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="branches" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-						<element index="1" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel_rel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel_rel:1" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">1</field>
-				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="hotelid" type="integer">1</field>
-				<field index="branchid" type="integer">2</field>
-				<field index="hotelsort" type="integer">1</field>
-				<field index="branchsort" type="integer">1</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="branchid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>2</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-				</field>
-			</related>
-		</tablerow>
-		<tablerow index="tx_irretutorial_mnsym_hotel_rel:2" type="array">
-			<fieldlist index="data" type="array">
-				<field index="uid" type="integer">2</field>
-				<field index="pid" type="integer">1</field>
-				<field index="cruser_id" type="integer">1</field>
-				<field index="deleted" type="integer">0</field>
-				<field index="hidden" type="integer">0</field>
-				<field index="sys_language_uid" type="integer">0</field>
-				<field index="l18n_parent" type="integer">0</field>
-				<field index="hotelid" type="integer">1</field>
-				<field index="branchid" type="integer">3</field>
-				<field index="hotelsort" type="integer">2</field>
-				<field index="branchsort" type="integer">0</field>
-			</fieldlist>
-			<related index="rels" type="array">
-				<field index="hotelid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>1</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
-						</element>
-					</relations>
-				</field>
-				<field index="branchid" type="array">
-					<type>db</type>
-					<relations index="itemArray" type="array">
-						<element index="0" type="array">
-							<id>3</id>
-							<table>tx_irretutorial_mnsym_hotel</table>
 						</element>
 					</relations>
 				</field>

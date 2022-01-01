@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_irre_mnsymmetric">
+		<header/>
+		<body>
+			<trans-unit id="tabs.general" resname="tabs.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+				<source>Visibility</source>
+			</trans-unit>
+
+			<trans-unit id="tx_testirremnsymmetric_hotel" resname="tx_testirremnsymmetric_hotel">
+				<source>m:n Sym: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel" resname="tx_testirremnsymmetric_hotel_rel">
+				<source>m:n Sym: Hotels&lt;-&gt;Hotels</source>
+			</trans-unit>
+
+			<trans-unit id="tx_testirremnsymmetric_hotel.title" resname="tx_testirremnsymmetric_hotel.title">
+				<source>Title:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnsymmetric_hotel.branches" resname="tx_testirremnsymmetric_hotel.branches">
+				<source>Branches:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel" resname="tx_testirremnsymmetric_hotel_rel">
+				<source>Hotels&lt;-&gt;Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel.hotelid" resname="tx_testirremnsymmetric_hotel_rel.hotelid">
+				<source>Hotel:</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel.branchid" resname="tx_testirremnsymmetric_hotel_rel.branchid">
+				<source>Branch:</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

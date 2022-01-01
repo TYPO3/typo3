@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_mnsym_hotel_rel',
+        'title' => 'LLL:EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf:tx_testirremnsymmetric_hotel_rel',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -17,7 +17,7 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_hotel_rel.gif',
+        'iconfile' => 'EXT:test_irre_mnsymmetric/Resources/Public/Icons/icon_hotel_rel.gif',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
@@ -38,8 +38,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_irretutorial_mnsym_hotel_rel',
-                'foreign_table_where' => 'AND {#tx_irretutorial_mnsym_hotel_rel}.{#pid}=###CURRENT_PID### AND {#tx_irretutorial_mnsym_hotel_rel}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_testirremnsymmetric_hotel_rel',
+                'foreign_table_where' => 'AND {#tx_testirremnsymmetric_hotel_rel}.{#pid}=###CURRENT_PID### AND {#tx_testirremnsymmetric_hotel_rel}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -58,21 +58,21 @@ return [
             ],
         ],
         'hotelid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_rel.hotelid',
+            'label' => 'LLL:EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf:tx_testirremnsymmetric_hotel_rel.hotelid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_irretutorial_mnsym_hotel',
+                'foreign_table' => 'tx_testirremnsymmetric_hotel',
                 'maxitems' => 1,
                 'default' => 0,
             ],
         ],
         'branchid' => [
-            'label' => 'LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_rel.branchid',
+            'label' => 'LLL:EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf:tx_irretutorial_hotel_rel.branchid',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_irretutorial_mnsym_hotel',
+                'foreign_table' => 'tx_testirremnsymmetric_hotel',
                 'maxitems' => 1,
                 'default' => 0,
             ],
@@ -90,8 +90,8 @@ return [
     ],
     'types' => [
         '0' => ['showitem' =>
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.general, title, hotelid, branchid,' .
-            '--div--;LLL:EXT:irre_tutorial/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort',
+            '--div--;LLL:EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf:tabs.general, title, hotelid, branchid,' .
+            '--div--;LLL:EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf:tabs.visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, hotelsort, branchsort',
         ],
     ],
     'palettes' => [
