@@ -389,17 +389,17 @@ class TimeTracker implements SingletonInterface
             $keyValue = $data['value'];
             $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
             if ($this->printConf['allTime']) {
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['starttime']) . '</td>';
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
+                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['starttime']) . '</td>';
+                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['owntime']) . '</td>';
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '+' . $data['subtime'] : '')) . '</td>';
                 $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '=' . $data['deltatime'] : '')) . '</td>';
             } else {
-                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
+                $item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw((string)$data['owntime']) . '</td>';
             }
             // Messages:
             $msgArr = [];
             $msg = '';
-            if ($flag_messages && is_array($data['message'])) {
+            if ($flag_messages && is_array($data['message'] ?? null)) {
                 foreach ($data['message'] as $v) {
                     $msgArr[] = nl2br($v);
                 }
@@ -536,9 +536,10 @@ class TimeTracker implements SingletonInterface
         if ($pointer > 0) {
             end($arr);
             $k = key($arr);
-            if (is_array($arr[(int)$k . '.'] ?? null)) {
-                $this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
+            if (!is_array($arr[(int)$k . '.'] ?? null)) {
+                $arr[(int)$k . '.'] = [];
             }
+            $this->createHierarchyArray($arr[(int)$k . '.'], $pointer - 1, $uniqueId);
         } else {
             $arr[] = $uniqueId;
         }
