@@ -89,6 +89,9 @@ class PreviewModuleTest extends UnitTestCase
         $configurationService->getConfigurationOption('preview', 'showFluidDebug')->willReturn('0');
         $configurationService->getConfigurationOption('preview', 'simulateUserGroup')->willReturn('1');
         $context = $this->prophesize(Context::class);
+        $context->hasAspect('frontend.preview')->willReturn(false);
+        $context->setAspect('date', Argument::any())->hasReturnVoid();
+        $context->setAspect('visibility', Argument::any())->hasReturnVoid();
         GeneralUtility::setSingletonInstance(Context::class, $context->reveal());
 
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService->reveal());
@@ -97,5 +100,6 @@ class PreviewModuleTest extends UnitTestCase
         $previewModule->enrich($request->reveal());
 
         $context->setAspect('frontend.user', Argument::any())->shouldHaveBeenCalled();
+        $context->setAspect('frontend.preview', Argument::any())->shouldHaveBeenCalled();
     }
 }

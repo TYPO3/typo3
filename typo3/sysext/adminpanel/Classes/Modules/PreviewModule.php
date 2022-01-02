@@ -168,9 +168,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $context = GeneralUtility::makeInstance(Context::class);
         $this->clearPreviewSettings($context);
 
-        // Set preview flag
-        $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
-
         // Modify visibility settings (hidden pages + hidden content)
         $context->setAspect(
             'visibility',
@@ -209,9 +206,13 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                 )
             );
         }
-        if (!$simulateUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
-            $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
+        $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords;
+        if ($context->hasAspect('frontend.preview')) {
+            $existingPreviewAspect = $context->getAspect('frontend.preview');
+            $isPreview = $existingPreviewAspect->isPreview() || $isPreview;
         }
+        $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
+        $context->setAspect('frontend.preview', $previewAspect);
     }
 
     /**
