@@ -4649,9 +4649,9 @@ class DataHandler implements LoggerAwareInterface
             BackendUtility::workspaceOL($table, $parentRecord);
         }
 
-        $field = $command['field'];
-        $language = $command['language'];
-        $action = $command['action'];
+        $field = $command['field'] ?? '';
+        $language = $command['language'] ?? 0;
+        $action = $command['action'] ?? '';
         $ids = $command['ids'] ?? [];
 
         if (!$field || !($action === 'localize' || $action === 'synchronize') && empty($ids) || !isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
