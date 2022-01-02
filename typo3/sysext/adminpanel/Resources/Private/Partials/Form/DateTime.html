@@ -1,10 +1,13 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{label} && {name}">
-    <div class="typo3-adminPanel-form-group">
+    <div class="typo3-adminPanel-form-checkbox">
+        <input type="checkbox" id="typo3-adminPanel-simulate-date-toggle" value="1" class="typo3-adminPanel-form-checkbox-input" {f:if(condition: value, then:' checked="checked"')} />
+        <label for="typo3-adminPanel-simulate-date-toggle" class="typo3-adminPanel-form-checkbox-label">
+            <f:translate key="{label}" default="{label}" extensionName="adminpanel" languageKey="{languageKey}" />
+        </label>
+    </div>
+    <div class="typo3-adminPanel-form-group {f:if(condition: value, then: '', else: ' typo3-adminPanel-group-disable')}" id="typo3-adminPanel-{name}">
         <div class="typo3-adminPanel-form-datetime">
-            <label for="{name}" class="typo3-adminPanel-form-datetime-label">
-                <f:translate key="{label}" default="{label}" extensionName="adminpanel" languageKey="{languageKey}"/>
-            </label>
             <div class="typo3-adminPanel-form-datetime-input-group">
                 <input type="date" id="{name}-date-hr" class="typo3-adminPanel-form-datetime-input" data-bs-target="{name}"/>
                 <input type="time" id="{name}-time-hr" class="typo3-adminPanel-form-datetime-input" data-bs-target="{name}"/>
