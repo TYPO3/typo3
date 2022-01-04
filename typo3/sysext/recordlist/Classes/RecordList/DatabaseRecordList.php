@@ -2588,11 +2588,11 @@ class DatabaseRecordList
                 );
                 if (is_array($fieldConfig['search'] ?? null)) {
                     $searchConfig = $fieldConfig['search'];
-                    if (in_array('case', $searchConfig, true)) {
+                    if ($searchConfig['case'] ?? false) {
                         // Replace case insensitive default constraint
                         $searchConstraint = $expressionBuilder->andX($expressionBuilder->like($fieldName, $like));
                     }
-                    if (in_array('pidonly', $searchConfig, true) && $currentPid > 0) {
+                    if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
                         $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
                     }
                     if ($searchConfig['andWhere'] ?? false) {
