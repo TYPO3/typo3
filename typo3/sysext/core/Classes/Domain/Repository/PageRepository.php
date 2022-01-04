@@ -97,6 +97,7 @@ class PageRepository implements LoggerAwareInterface
         '_MP_PARAM',
         '_ORIG_uid',
         '_ORIG_pid',
+        '_SHORTCUT_ORIGINAL_PAGE_UID',
         '_PAGES_OVERLAY',
         '_PAGES_OVERLAY_UID',
         '_PAGES_OVERLAY_LANGUAGE',
@@ -990,7 +991,16 @@ class PageRepository implements LoggerAwareInterface
                     self::DOKTYPE_RECYCLER,
                     self::DOKTYPE_BE_USER_SECTION,
                 ];
+                $savedWhereGroupAccess = '';
+                // "getMenu()" does not allow to hand over $disableGroupCheck, for this reason it is manually disabled and re-enabled afterwards.
+                if ($disableGroupCheck) {
+                    $savedWhereGroupAccess = $this->where_groupAccess;
+                    $this->where_groupAccess = '';
+                }
                 $pageArray = $this->getMenu($idArray[0] ?: $thisUid, '*', 'sorting', 'AND pages.doktype NOT IN (' . implode(', ', $excludedDoktypes) . ')');
+                if ($disableGroupCheck) {
+                    $this->where_groupAccess = $savedWhereGroupAccess;
+                }
                 $pO = 0;
                 if ($shortcutMode == self::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
                     $pO = (int)random_int(0, count($pageArray) - 1);
@@ -1039,6 +1049,52 @@ class PageRepository implements LoggerAwareInterface
         return $page;
     }
 
+    /**
+     * Check if page is a shortcut, then resolve the target page directly.
+     * This is a better method than "getPageShortcut()" and should be used instead, as this automatically checks for $page records
+     * and returns the shortcut pages directly.
+     *
+     * This method also provides a runtime cache around resolving the shortcut resolving, in order to speed up link generation
+     * to the same shortcut page.
+     *
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageAndRootline()
+     */
+    public function resolveShortcutPage(array $page, bool $resolveRandomSubpages = false, bool $disableGroupAccessCheck = false): array
+    {
+        if ((int)($page['doktype'] ?? 0) !== self::DOKTYPE_SHORTCUT) {
+            return $page;
+        }
+        $shortcutMode = (int)($page['shortcut_mode'] ?? self::SHORTCUT_MODE_NONE);
+        $shortcutTarget = (string)($page['shortcut'] ?? '');
+
+        $cacheIdentifier = 'shortcuts_resolved_' . ($disableGroupAccessCheck ? '1' : '0') . '_' . $page['uid'] . '_' . $this->sys_language_uid . '_' . $page['sys_language_uid'];
+        // Only use the runtime cache if we do not support the random subpages functionality
+        if ($resolveRandomSubpages === false) {
+            $cachedResult = $this->getRuntimeCache()->get($cacheIdentifier);
+            if (is_array($cachedResult)) {
+                return $cachedResult;
+            }
+        }
+        $shortcut = $this->getPageShortcut(
+            $shortcutTarget,
+            $shortcutMode,
+            $page['uid'],
+            20,
+            [],
+            $disableGroupAccessCheck,
+            $resolveRandomSubpages
+        );
+        if (!empty($shortcut)) {
+            $page = $shortcut;
+            $page['_SHORTCUT_ORIGINAL_PAGE_UID'] = $page['uid'];
+        }
+
+        if ($resolveRandomSubpages === false) {
+            $this->getRuntimeCache()->set($cacheIdentifier, $page);
+        }
+
+        return $page;
+    }
     /**
      * Returns the redirect URL for the input page row IF the doktype is set to 3.
      *
