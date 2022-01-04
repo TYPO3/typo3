@@ -51,7 +51,7 @@ module.exports = function (grunt) {
       sources: 'Sources/',
       root: '../',
       sass: '<%= paths.sources %>Sass/',
-      typescript: '<%= paths.sources %>/TypeScript/',
+      typescript: '<%= paths.sources %>TypeScript/',
       sysext: '<%= paths.root %>typo3/sysext/',
       form: '<%= paths.sysext %>form/Resources/',
       dashboard: '<%= paths.sysext %>dashboard/Resources/',
@@ -756,17 +756,12 @@ module.exports = function (grunt) {
    * this task updates the tsconfig.json file with modules paths for all sysexts
    */
   grunt.task.registerTask('tsconfig', function () {
-    var config = grunt.file.readJSON("tsconfig.json");
+    const config = grunt.file.readJSON("tsconfig.json");
+    const typescriptPath = grunt.config.get('paths.typescript');
     config.compilerOptions.paths = {};
-    var sysext = grunt.config.get('paths.sysext');
-    grunt.file.expand(sysext + '*/Resources/Public/JavaScript').forEach(function (dir) {
-      var extname = ('_' + dir.match(/sysext\/(.*?)\//)[1]).replace(/_./g, function (match) {
-        return match.charAt(1).toUpperCase();
-      });
-      var namespace = 'TYPO3/CMS/' + extname + '/*';
-      var path = dir + "/*";
-      var extensionTypeScriptPath = path.replace('Public/JavaScript', 'Public/TypeScript').replace(sysext, '');
-      config.compilerOptions.paths[namespace] = [path, extensionTypeScriptPath];
+    grunt.file.expand(typescriptPath + '*/Resources/Public/TypeScript').map(dir => dir.replace(typescriptPath, '')).forEach((path) => {
+      const extname = ('_' + path.match(/^([^\/]+?)\//)[1]).replace(/_./g, (match) => match.charAt(1).toUpperCase());
+      config.compilerOptions.paths['TYPO3/CMS/' + extname + '/*'] = [path + '/*'];
     });
 
     grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4) + '\n');
