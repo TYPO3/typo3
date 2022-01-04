@@ -1100,7 +1100,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // whether a translation of the page overwrites the shortcut
             // target and we need to follow the new target
             $this->originalShortcutPage = $this->page;
-            $this->page = $this->sys_page->getPageShortcut($this->page['shortcut'], $this->page['shortcut_mode'], $this->page['uid']);
+            $this->page = $this->sys_page->resolveShortcutPage($this->page, true);
             $this->id = $this->page['uid'];
         }
         // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
@@ -2005,7 +2005,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
                 // the translation of the original shortcut page has a different shortcut target!
                 // set the correct page and id
-                $shortcut = $this->sys_page->getPageShortcut($originalShortcutPageOverlay['shortcut'], $originalShortcutPageOverlay['shortcut_mode'], $originalShortcutPageOverlay['uid']);
+                $shortcut = $this->sys_page->resolveShortcutPage($originalShortcutPageOverlay, true);
                 $this->id = ($this->contentPid = $shortcut['uid']);
                 $this->page = $this->sys_page->getPage($this->id);
                 // Fix various effects on things like menus f.e.

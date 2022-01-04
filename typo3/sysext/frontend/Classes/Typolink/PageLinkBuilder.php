@@ -120,8 +120,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         // Mount pages are always local and never link to another domain,
         $addMountPointParameters = !empty($MPvarAcc);
         // Add "&MP" var, only if the original page was NOT a shortcut to another domain
-        if ($addMountPointParameters && !empty($page['_SHORTCUT_PAGE_UID'])) {
-            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['_SHORTCUT_PAGE_UID']);
+        if ($addMountPointParameters && !empty($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
+            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['_SHORTCUT_ORIGINAL_PAGE_UID']);
             $currentSite = $this->getCurrentSite();
             if ($siteOfTargetPage !== $currentSite) {
                 $addMountPointParameters = false;
@@ -334,34 +334,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     protected function resolveShortcutPage(array $page, PageRepository $pageRepository, bool $disableGroupAccessCheck): array
     {
-        if ((int)($page['doktype'] ?? 0) !== PageRepository::DOKTYPE_SHORTCUT) {
-            return $page;
-        }
-        $shortcutMode = (int)($page['shortcut_mode'] ?? PageRepository::SHORTCUT_MODE_NONE);
-        $savedWhereGroupAccess = '';
         try {
-            if ($disableGroupAccessCheck) {
-                $savedWhereGroupAccess = $pageRepository->where_groupAccess;
-                $pageRepository->where_groupAccess = '';
-            }
-            $shortcut = $pageRepository->getPageShortcut(
-                $page['shortcut'] ?? '',
-                $shortcutMode,
-                $page['uid'],
-                20,
-                [],
-                $disableGroupAccessCheck,
-                false
-            );
-            if (!empty($shortcut)) {
-                $page = $shortcut;
-                $page['_SHORTCUT_PAGE_UID'] = $page['uid'];
-            }
+            $page = $pageRepository->resolveShortcutPage($page, false, $disableGroupAccessCheck);
         } catch (\Exception $e) {
             // Keep the existing page record if shortcut could not be resolved
-        }
-        if ($disableGroupAccessCheck) {
-            $pageRepository->where_groupAccess = $savedWhereGroupAccess;
         }
         return $page;
     }

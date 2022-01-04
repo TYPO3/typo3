@@ -824,6 +824,86 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
+    public function hierarchicalMenuSetsActiveStateProperlyDataProvider(): array
+    {
+        return [
+            'regular page' => [
+                'https://acme.us/',
+                1310,
+                '1300',
+                [
+                    [
+                        'title' => 'EN: Products',
+                        'link' => 'https://products.acme.com/products',
+                        'active' => 1,
+                        'current' => 0,
+                        'children' => [
+                            [
+                                'title' => 'EN: Planets',
+                                'link' => 'https://products.acme.com/products/planets',
+                                'active' => 1,
+                                'current' => 1,
+                            ],
+                            [
+                                'title' => 'EN: Spaceships',
+                                'link' => 'https://products.acme.com/products/spaceships',
+                                'active' => 0,
+                                'current' => 0,
+                            ],
+                            [
+                                'title' => 'EN: Dark Matter',
+                                'link' => 'https://products.acme.com/products/dark-matter',
+                                'active' => 0,
+                                'current' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'resolved shortcut' => [
+                'https://blog.acme.com/',
+                2100,
+                '1930',
+                [
+                    [
+                        'title' => 'Our Blog',
+                        'link' => '/authors',
+                        'active' => 1,
+                        'current' => 1,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider hierarchicalMenuSetsActiveStateProperlyDataProvider
+     */
+    public function hierarchicalMenuSetsActiveStateProperly(string $hostPrefix, int $sourcePageId, string $menuPageIds, array $expectation): void
+    {
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest($hostPrefix))
+                ->withPageId($sourcePageId)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'levels' => 2,
+                        'special' => 'list',
+                        'special.' => [
+                            'value' => $menuPageIds,
+                        ],
+                        'includeSpacer' => 1,
+                        'titleField' => 'title',
+                    ]),
+                ]),
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json, ['title', 'active', 'current', 'link']);
+
+        self::assertSame($expectation, $json);
+    }
+
     public function directoryMenuIsGeneratedDataProvider(): array
     {
         return [

@@ -1233,7 +1233,7 @@ abstract class AbstractMenuContentObject
         }
         // Creating link:
         $addParams = ($this->mconf['addParams'] ?? '') . $MP_params;
-        if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
+        if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key] ?? [], $this->getMPvar($key))) {
             $thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
             $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride, $overrideId);
         } else {
@@ -1376,36 +1376,69 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Returns TRUE if the page with UID $uid is active (in the current rootline)
+     * Returns TRUE if the given page is active (in the current rootline)
      *
-     * @param int $uid Page uid to evaluate.
+     * @param array $page Page record to evaluate.
      * @param string $MPvar MPvar for the current position of item.
-     * @return bool TRUE if page with $uid is active
+     * @return bool TRUE if $page is active
      */
-    protected function isActive($uid, $MPvar)
+    protected function isActive(array $page, $MPvar)
     {
-        // Check for always active PIDs:
-        if (in_array((int)$uid, $this->alwaysActivePIDlist, true)) {
+        // Check for always active PIDs
+        $uid = (int)($page['uid'] ?? 0);
+        if (in_array($uid, $this->alwaysActivePIDlist, true)) {
             return true;
         }
         $testUid = $uid . ($MPvar ? ':' . $MPvar : '');
         if ($uid && in_array('ITEM:' . $testUid, $this->rL_uidRegister, true)) {
             return true;
         }
+        try {
+            $page = $this->sys_page->resolveShortcutPage($page);
+            $shortcutPage = (int)($page['_SHORTCUT_ORIGINAL_PAGE_UID'] ?? 0);
+            if ($shortcutPage) {
+                if (in_array($shortcutPage, $this->alwaysActivePIDlist, true)) {
+                    return true;
+                }
+                $testUid = $shortcutPage . ($MPvar ? ':' . $MPvar : '');
+                if (in_array('ITEM:' . $testUid, $this->rL_uidRegister, true)) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            // Shortcut could not be resolved
+            return false;
+        }
         return false;
     }
 
     /**
-     * Returns TRUE if the page with UID $uid is the CURRENT page (equals $this->getTypoScriptFrontendController()->id)
+     * Returns TRUE if the page is the CURRENT page (equals $this->getTypoScriptFrontendController()->id)
      *
-     * @param int $uid Page uid to evaluate.
+     * @param array $page Page record to evaluate.
      * @param string $MPvar MPvar for the current position of item.
-     * @return bool TRUE if page $uid = $this->getTypoScriptFrontendController()->id
+     * @return bool TRUE if resolved page ID = $this->getTypoScriptFrontendController()->id
      */
-    protected function isCurrent($uid, $MPvar)
+    protected function isCurrent(array $page, $MPvar)
     {
-        $testUid = $uid . ($MPvar ? ':' . $MPvar : '');
-        return $uid && end($this->rL_uidRegister) === 'ITEM:' . $testUid;
+        $testUid = ($page['uid'] ?? 0) . ($MPvar ? ':' . $MPvar : '');
+        if (($page['uid'] ?? 0) && end($this->rL_uidRegister) === 'ITEM:' . $testUid) {
+            return true;
+        }
+        try {
+            $page = $this->sys_page->resolveShortcutPage($page);
+            $shortcutPage = (int)($page['_SHORTCUT_ORIGINAL_PAGE_UID'] ?? 0);
+            if ($shortcutPage) {
+                $testUid = $shortcutPage . ($MPvar ? ':' . $MPvar : '');
+                if (end($this->rL_uidRegister) === 'ITEM:' . $testUid) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            // Shortcut could not be resolved
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -1492,16 +1525,16 @@ abstract class AbstractMenuContentObject
                     $natVal = $this->isSubMenu($this->menuArr[$key]['uid'] ?? 0);
                     break;
                 case 'ACT':
-                    $natVal = $this->isActive(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key));
+                    $natVal = $this->isActive(($this->menuArr[$key] ?? []), $this->getMPvar($key));
                     break;
                 case 'ACTIFSUB':
-                    $natVal = $this->isActive(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+                    $natVal = $this->isActive(($this->menuArr[$key] ?? []), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
                     break;
                 case 'CUR':
-                    $natVal = $this->isCurrent(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key));
+                    $natVal = $this->isCurrent(($this->menuArr[$key] ?? []), $this->getMPvar($key));
                     break;
                 case 'CURIFSUB':
-                    $natVal = $this->isCurrent(($this->menuArr[$key]['uid'] ?? 0), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
+                    $natVal = $this->isCurrent(($this->menuArr[$key] ?? []), $this->getMPvar($key)) && $this->isSubMenu($this->menuArr[$key]['uid']);
                     break;
                 case 'USR':
                     $natVal = (bool)$this->menuArr[$key]['fe_group'];
