@@ -119,8 +119,8 @@ class RenderFormValueViewHelper extends AbstractViewHelper
     ) {
         $properties = $element->getProperties();
         $options = $properties['options'] ?? null;
-        if ($options !== null && is_array($options)) {
-            $properties['options'] = TranslateElementPropertyViewHelper::renderStatic(
+        if (is_array($options)) {
+            $options = (array)TranslateElementPropertyViewHelper::renderStatic(
                 ['element' => $element, 'property' => 'options'],
                 $renderChildrenClosure,
                 $renderingContext
