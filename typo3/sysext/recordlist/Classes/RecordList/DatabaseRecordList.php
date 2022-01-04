@@ -2641,7 +2641,7 @@ class DatabaseRecordList
                 }
                 $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
+                $evalRules = ($fieldConfig['eval'] ?? false) ?: '';
                 if ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int')) {
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
