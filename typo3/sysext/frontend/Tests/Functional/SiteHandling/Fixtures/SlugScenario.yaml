@@ -157,6 +157,10 @@ entities:
             - self: {id: 2120, title: 'Jane Doe', slug: '/jane'}
               children:
                 - self: {id: 2121, title: 'About', slug: '/about-jane'}
+            - self: {id: 2130, title: 'Malloy Doe', slug: '/malloy'}
+              children:
+                - self: {id: 2131, title: 'About Malloy - Hidden', hidden: 1, 'slug': '/malloy/about'}
+                - self: {id: 2132, title: 'Malloys History - Hidden', hidden: 1, 'slug': '/malloy/history'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 2800, title: 'What is a blog on Wikipedia ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/wiki/Blog', slug: '/what-is-a-blog', target: 'a_new_tab' }
         - self: {id: 2900, title: 'What is Wikipedia in a separate window ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/', slug: '/wikipedia' }

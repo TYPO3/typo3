@@ -783,6 +783,10 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                                 'link' => 'https://blog.acme.com/jane/jane',
                                 'target' => '',
                             ],
+                            [
+                                'title' => 'Malloy Doe',
+                                'link' => '/malloy',
+                            ],
                         ],
                     ],
                     1 =>
@@ -843,6 +847,62 @@ class SlugLinkGeneratorTest extends AbstractTestCase
 
         $json = json_decode((string)$response->getBody(), true);
         $json = $this->filterMenu($json, ['title', 'link', 'target']);
+
+        self::assertSame($expectation, $json);
+    }
+
+    /**
+     * @test
+     */
+    public function hierarchicalMenuDoesNotShowHiddenPagesAsSubMenu(): void
+    {
+        $expectation = [
+            [
+                'title' => 'John Doe',
+                'link' => 'https://blog.acme.com/john/john',
+                'hasSubpages' => 1,
+                'children' => [
+                    [
+                        'title' => 'About',
+                        'link' => 'https://blog.acme.com/john/about-john',
+                        'hasSubpages' => 0,
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Jane Doe',
+                'link' => 'https://blog.acme.com/jane/jane',
+                'hasSubpages' => 1,
+                'children' => [
+                    [
+                        'title' => 'About',
+                        'link' => 'https://blog.acme.com/jane/about-jane',
+                        'hasSubpages' => 0,
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Malloy Doe',
+                'link' => '/malloy',
+                'hasSubpages' => 0,
+            ],
+        ];
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest('https://blog.acme.com/'))
+                ->withPageId(2130)
+                ->withInstructions([
+                    $this->createHierarchicalMenuProcessorInstruction([
+                        'levels' => 2,
+                        'entryLevel' => 1,
+                        'expandAll' => 1,
+                        'includeSpacer' => 1,
+                        'titleField' => 'title',
+                    ]),
+                ])
+        );
+
+        $json = json_decode((string)$response->getBody(), true);
+        $json = $this->filterMenu($json, ['title', 'link', 'hasSubpages']);
 
         self::assertSame($expectation, $json);
     }
