@@ -680,75 +680,88 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 'https://acme.us/',
                 1100,
                 [
-                    ['title' => 'EN: Welcome', 'link' => '/welcome'],
+                    ['title' => 'EN: Welcome', 'link' => '/welcome', 'target' => ''],
                     [
                         'title' => 'ZH-CN: Welcome Default',
                         // Symfony UrlGenerator, which is used for uri generation, rawurlencodes the url internally.
                         'link' => '/%E7%AE%80-bienvenue',
+                        'target' => '',
                     ],
                     [
                         'title' => 'EN: Features',
                         'link' => '/features',
+                        'target' => '',
                         'children' => [
                             [
                                 'title' => 'EN: Frontend Editing',
                                 'link' => '/features/frontend-editing/',
+                                'target' => '',
                             ],
                         ],
                     ],
                     [
                         'title' => 'EN: Products',
                         'link' => 'https://products.acme.com/products',
+                        'target' => '',
                         'children' => [
                             [
                                 'title' => 'EN: Planets',
                                 'link' => 'https://products.acme.com/products/planets',
+                                'target' => '',
                             ],
                             [
                                 'title' => 'EN: Spaceships',
                                 'link' => 'https://products.acme.com/products/spaceships',
+                                'target' => '',
                             ],
                             [
                                 'title' => 'EN: Dark Matter',
                                 'link' => 'https://products.acme.com/products/dark-matter',
+                                'target' => '',
                             ],
                         ],
                     ],
-                    ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region'],
+                    ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region', 'target' => ''],
                     [
                         'title' => 'Divider',
                         'link' => '/divider',
+                        'target' => '',
                         'children' => [
                             [
                                 'title' => 'EN: Subpage of Spacer',
                                 'link' => '/divider/subpage-of-spacer',
+                                'target' => '',
                             ],
                         ],
                     ],
-                    ['title' => 'Internal', 'link' => '/my-acme'],
-                    ['title' => 'About us', 'link' => '/about'],
+                    ['title' => 'Internal', 'link' => '/my-acme', 'target' => ''],
+                    ['title' => 'About us', 'link' => '/about', 'target' => ''],
                     [
                         'title' => 'Announcements & News',
                         'link' => '/news',
+                        'target' => '',
                         'children' => [
                             [
                                 'title' => 'Markets',
                                 'link' => '/news/common/markets',
+                                'target' => '',
                             ],
                             [
                                 'title' => 'Products',
                                 'link' => '/news/common/products',
+                                'target' => '',
                             ],
                             [
                                 'title' => 'Partners',
                                 'link' => '/news/common/partners',
+                                'target' => '_blank',
                             ],
                         ],
                     ],
-                    ['title' => 'That page is forbidden to you', 'link' => '/403'],
-                    ['title' => 'That page was not found', 'link' => '/404'],
-                    ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/authors'],
-                    ['title' => 'Cross Site Shortcut', 'link' => 'https://blog.acme.com/authors'],
+                    ['title' => 'That page is forbidden to you', 'link' => '/403', 'target' => ''],
+                    ['title' => 'That page was not found', 'link' => '/404', 'target' => ''],
+                    ['title' => 'Our Blog', 'link' => 'https://blog.acme.com/authors', 'target' => ''],
+                    ['title' => 'Cross Site Shortcut', 'link' => 'https://blog.acme.com/authors', 'target' => ''],
                 ],
             ],
             'ACME Blog' => [
@@ -758,14 +771,17 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     [
                         'title' => 'Authors',
                         'link' => '/authors',
+                        'target' => '',
                         'children' => [
                             [
                                 'title' => 'John Doe',
                                 'link' => 'https://blog.acme.com/john/john',
+                                'target' => '',
                             ],
                             [
                                 'title' => 'Jane Doe',
                                 'link' => 'https://blog.acme.com/jane/jane',
+                                'target' => '',
                             ],
                         ],
                     ],
@@ -773,22 +789,29 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         [
                             'title' => 'Announcements & News',
                             'link' => '/news',
+                            'target' => '',
                             'children' => [
                                 [
                                     'title' => 'Markets',
                                     'link' => '/news/common/markets',
+                                    'target' => '',
                                 ],
                                 [
                                     'title' => 'Products',
                                     'link' => '/news/common/products',
+                                    'target' => '',
                                 ],
                                 [
                                     'title' => 'Partners',
                                     'link' => '/news/common/partners',
+                                    'target' => '_blank',
                                 ],
                             ],
                         ],
-                    ['title' => 'ACME Inc', 'link' => 'https://acme.us/welcome'],
+                    ['title' => 'What is a blog on Wikipedia', 'link' => 'https://en.wikipedia.org/wiki/Blog', 'target' => 'a_new_tab'],
+                    // target is empty because no fluid_styled_content typoscript with config.extTarget is active
+                    ['title' => 'What is Wikipedia in a separate window', 'link' => 'https://en.wikipedia.org/', 'target' => ''],
+                    ['title' => 'ACME Inc', 'link' => 'https://acme.us/welcome', 'target' => ''],
                 ],
             ],
         ];
@@ -819,7 +842,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         $json = json_decode((string)$response->getBody(), true);
-        $json = $this->filterMenu($json);
+        $json = $this->filterMenu($json, ['title', 'link', 'target']);
 
         self::assertSame($expectation, $json);
     }
