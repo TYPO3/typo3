@@ -36,8 +36,8 @@
 			<trans-unit id="cancel" resname="cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="all" resname="all">
-				<source>All:</source>
+			<trans-unit id="entireWorkspace" resname="entireWorkspace">
+				<source>Entire workspace:</source>
 			</trans-unit>
 			<trans-unit id="chooseMassAction" resname="chooseMassAction">
 				<source>Choose mass action</source>
