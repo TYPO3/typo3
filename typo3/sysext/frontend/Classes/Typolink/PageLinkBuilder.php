@@ -215,6 +215,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if ((int)$page['doktype'] === PageRepository::DOKTYPE_LINK) {
                 $conf['parameter'] = $page['url'];
                 unset($conf['parameter.']);
+                // Use "pages.target" as this is the requested field for external links as well
+                if (!isset($conf['extTarget'])) {
+                    $conf['extTarget'] = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
+                }
                 $this->contentObjectRenderer->typoLink($linkText, $conf);
                 $target = $this->contentObjectRenderer->lastTypoLinkTarget;
                 $url = $this->contentObjectRenderer->lastTypoLinkUrl;

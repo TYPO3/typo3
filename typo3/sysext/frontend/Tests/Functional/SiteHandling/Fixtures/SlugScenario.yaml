@@ -1,5 +1,6 @@
 __variables:
   - &pageStandard 0
+  - &pageExternalUrl 3
   - &pageShortcut 4
   - &pageMount 7
   - &pageSpacer 199
@@ -151,6 +152,8 @@ entities:
               children:
                 - self: {id: 2121, title: 'About', slug: '/about-jane'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
+        - self: {id: 2800, title: 'What is a blog on Wikipedia ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/wiki/Blog', slug: '/what-is-a-blog', target: 'a_new_tab' }
+        - self: {id: 2900, title: 'What is Wikipedia in a separate window ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/', slug: '/wikipedia' }
         - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000, slug: '/acme'}
     - self: {id: 3000, title: 'ACME Archive', root: true, slug: '/'}
       languageVariants:
@@ -172,7 +175,7 @@ entities:
           children:
             - self: {id: 7110, title: 'Markets', slug: '/common/markets'}
             - self: {id: 7120, title: 'Products', slug: '/common/products'}
-            - self: {id: 7130, title: 'Partners', slug: '/common/partners'}
+            - self: {id: 7130, title: 'Partners', slug: '/common/partners', target: '_blank' }
     - self: {id: 8000, title: 'Usual Collection Non-Root', root: true, slug: '/usual'}
       children:
         - self: {id: 8100, title: 'Announcements & News', type: *pageFolder, slug: '/usual/news-folder'}

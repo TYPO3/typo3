@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -1225,12 +1224,8 @@ abstract class AbstractMenuContentObject
             // Mount points:
             $MP_params = $MP_var ? '&MP=' . rawurlencode($MP_var) : '';
         }
-        // Setting main target:
-        if ($altTarget) {
-            $mainTarget = $altTarget;
-        } else {
-            $mainTarget = (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
-        }
+        // Setting main target
+        $mainTarget = $altTarget ?: (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
         // Creating link:
         $addParams = ($this->mconf['addParams'] ?? '') . $MP_params;
         if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key] ?? [], $this->getMPvar($key))) {
@@ -1240,12 +1235,6 @@ abstract class AbstractMenuContentObject
             $addParams .= ($this->I['val']['additionalParams'] ?? '');
             $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         }
-        // Override default target configuration if the DB field "pages.target" = $this->menuArr[$key]['target'] is filled
-        // but do not set this for type email or external URLs
-        if (($this->menuArr[$key]['target'] ?? false) && !in_array($LD['type'], [LinkService::TYPE_EMAIL, LinkService::TYPE_URL], true)) {
-            $LD['target'] = $this->menuArr[$key]['target'];
-        }
-
         // Overriding URL / Target if set to do so:
         if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
             $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
