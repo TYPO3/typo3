@@ -112,7 +112,7 @@ class QueryBuilder
     /**
      * @return QueryRestrictionContainerInterface
      */
-    public function getRestrictions()
+    public function getRestrictions(): QueryRestrictionContainerInterface
     {
         return $this->restrictionContainer;
     }
@@ -120,7 +120,7 @@ class QueryBuilder
     /**
      * @param QueryRestrictionContainerInterface $restrictionContainer
      */
-    public function setRestrictions(QueryRestrictionContainerInterface $restrictionContainer)
+    public function setRestrictions(QueryRestrictionContainerInterface $restrictionContainer): void
     {
         foreach ($this->additionalRestrictions as $restrictionClass => $options) {
             if (empty($options['disabled'])) {
@@ -145,7 +145,7 @@ class QueryBuilder
     /**
      * Re-apply default restrictions
      */
-    public function resetRestrictions()
+    public function resetRestrictions(): void
     {
         $this->setRestrictions(GeneralUtility::makeInstance(DefaultRestrictionContainer::class));
     }
@@ -771,7 +771,7 @@ class QueryBuilder
      * Sets a new value for a column in a bulk update query.
      *
      * @param string $key The column to set.
-     * @param string $value The value, expression, placeholder, etc.
+     * @param mixed $value The value, expression, placeholder, etc.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
      * @param int $type
      *
@@ -886,7 +886,7 @@ class QueryBuilder
      * Sets a value for a column in an insert query.
      *
      * @param string $column The column into which the value should be inserted.
-     * @param string $value The value that should be inserted into the column.
+     * @param mixed $value The value that should be inserted into the column.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
      *
      * @return QueryBuilder This QueryBuilder instance.
@@ -1041,7 +1041,7 @@ class QueryBuilder
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function resetQueryPart($queryPartName): QueryBuilder
+    public function resetQueryPart(string $queryPartName): QueryBuilder
     {
         $this->concreteQueryBuilder->resetQueryPart($queryPartName);
 
