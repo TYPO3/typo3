@@ -152,7 +152,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $contentPid = 0;
 
     /**
-     * Gets set when we are processing a page of type mounpoint with enabled overlay in getPageAndRootline()
+     * Gets set when we are processing a page of type mountpoint with enabled overlay in getPageAndRootline()
      * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
      * should be redirected to.
      *
@@ -162,11 +162,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Gets set when we are processing a page of type shortcut in the early stages
-     * of the request when we do not know about languages yet, used later in the request
-     * to determine the correct shortcut in case a translation changes the shortcut
-     * target
+     * of the request, used later in the request to resolve the shortcut and redirect again.
+     *
      * @var array|null
-     * @see checkTranslatedShortcut()
      */
     protected $originalShortcutPage;
 
@@ -1873,10 +1871,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $pageTranslationVisibility = new PageTranslationVisibility((int)($this->page['l18n_cfg'] ?? 0));
         // If sys_language_uid is set to another language than default:
         if ($languageAspect->getId() > 0) {
-            // check whether a shortcut is overwritten by a translated page
-            // we can only do this now, as this is the place where we get
-            // to know about translations
-            $this->checkTranslatedShortcut($languageAspect->getId(), $request);
             // Request the overlay record for the sys_language_uid:
             $olRec = $this->sys_page->getPageOverlay($this->id, $languageAspect->getId());
             if (empty($olRec)) {
@@ -1987,31 +1981,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
         } catch (RootLineException $e) {
             $this->rootLine = [];
-        }
-    }
-
-    /**
-     * Checks whether a translated shortcut page has a different shortcut
-     * target than the original language page.
-     * If that is the case, things get corrected to follow that alternative
-     * shortcut
-     * @param int $languageId
-     * @param ServerRequestInterface $request
-     */
-    protected function checkTranslatedShortcut(int $languageId, ServerRequestInterface $request)
-    {
-        if ($this->originalShortcutPage !== null) {
-            $originalShortcutPageOverlay = $this->sys_page->getPageOverlay($this->originalShortcutPage['uid'], $languageId);
-            if (!empty($originalShortcutPageOverlay['shortcut']) && $originalShortcutPageOverlay['shortcut'] != $this->id) {
-                // the translation of the original shortcut page has a different shortcut target!
-                // set the correct page and id
-                $shortcut = $this->sys_page->resolveShortcutPage($originalShortcutPageOverlay, true);
-                $this->id = ($this->contentPid = $shortcut['uid']);
-                $this->page = $this->sys_page->getPage($this->id);
-                // Fix various effects on things like menus f.e.
-                $this->fetch_the_id($request);
-                $this->tmpl->rootLine = array_reverse($this->rootLine);
-            }
         }
     }
 

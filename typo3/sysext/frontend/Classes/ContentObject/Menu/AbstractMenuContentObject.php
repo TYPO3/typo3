@@ -393,7 +393,6 @@ abstract class AbstractMenuContentObject
         $begin = is_array($beginConf) ? $this->parent_cObj->stdWrap($begin, $beginConf) : $begin;
         $this->menuArr = [];
         foreach ($menuItems as &$data) {
-            $data = $this->determineOriginalShortcutPage($data);
             $data['isSpacer'] = ($data['isSpacer'] ?? false) || (int)($data['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER || ($data['ITEM_STATE'] ?? '') === 'SPC';
         }
         $menuItems = $this->removeInaccessiblePages($menuItems);
@@ -1254,36 +1253,6 @@ abstract class AbstractMenuContentObject
         }
 
         return $attrs;
-    }
-
-    /**
-     * Determines original shortcut destination in page overlays.
-     *
-     * Since the pages records used for menu rendering are overlaid by default,
-     * the original 'shortcut' value is lost, if a translation did not define one.
-     *
-     * @param array $page
-     * @return array
-     */
-    protected function determineOriginalShortcutPage(array $page)
-    {
-        // Check if modification is required
-        if (
-            $this->getCurrentLanguageAspect()->getId() > 0
-            && empty($page['shortcut'])
-            && !empty($page['uid'])
-            && !empty($page['_PAGES_OVERLAY'])
-            && !empty($page['_PAGES_OVERLAY_UID'])
-        ) {
-            // Using raw record since the record was overlaid and is correct already:
-            $originalPage = $this->sys_page->getRawRecord('pages', $page['uid']);
-
-            if ($originalPage['shortcut_mode'] === $page['shortcut_mode'] && !empty($originalPage['shortcut'])) {
-                $page['shortcut'] = $originalPage['shortcut'];
-            }
-        }
-
-        return $page;
     }
 
     /**
