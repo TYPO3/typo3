@@ -199,6 +199,11 @@ class MenuProcessor implements DataProcessorInterface
                     'value' => '0',
                     'wrap' => ',"spacer":|',
                 ],
+                '60' => 'TEXT',
+                '60.' => [
+                    'value' => '0',
+                    'wrap' => ',"hasSubpages":|',
+                ],
             ],
         ],
     ];
@@ -396,16 +401,19 @@ class MenuProcessor implements DataProcessorInterface
             }
             $this->menuConfig[$i . '.']['IFSUB'] = '1';
             $this->menuConfig[$i . '.']['IFSUB.'] = $this->menuConfig[$i . '.']['NO.'];
+            $this->menuConfig[$i . '.']['IFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
             $this->menuConfig[$i . '.']['ACT'] = '1';
             $this->menuConfig[$i . '.']['ACT.'] = $this->menuConfig[$i . '.']['NO.'];
             $this->menuConfig[$i . '.']['ACT.']['stdWrap.']['cObject.']['30.']['value'] = '1';
             $this->menuConfig[$i . '.']['ACTIFSUB'] = '1';
             $this->menuConfig[$i . '.']['ACTIFSUB.'] = $this->menuConfig[$i . '.']['ACT.'];
+            $this->menuConfig[$i . '.']['ACTIFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
             $this->menuConfig[$i . '.']['CUR'] = '1';
             $this->menuConfig[$i . '.']['CUR.'] = $this->menuConfig[$i . '.']['ACT.'];
             $this->menuConfig[$i . '.']['CUR.']['stdWrap.']['cObject.']['40.']['value'] = '1';
             $this->menuConfig[$i . '.']['CURIFSUB'] = '1';
             $this->menuConfig[$i . '.']['CURIFSUB.'] = $this->menuConfig[$i . '.']['CUR.'];
+            $this->menuConfig[$i . '.']['CURIFSUB.']['stdWrap.']['cObject.']['60.']['value'] = '1';
             if (($this->menuConfig['special'] ?? '') === 'language') {
                 $this->menuConfig[$i . '.']['USERDEF1'] = $this->menuConfig[$i . '.']['NO'];
                 $this->menuConfig[$i . '.']['USERDEF1.'] = $this->menuConfig[$i . '.']['NO.'];
