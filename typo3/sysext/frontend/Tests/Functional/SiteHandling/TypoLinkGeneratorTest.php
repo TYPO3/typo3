@@ -627,6 +627,62 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public function linkWithoutAnchorIsGeneratedDataProvider(): array
+    {
+        return [
+            'empty parameter does not create a link' => [
+                [
+                    'parameter' => '',
+                ],
+                'no link',
+                'no link',
+            ],
+            'empty parameter with additional ATagParams does not create a link' => [
+                [
+                    'parameter' => '',
+                    'ATagParams' => 'data-any="where"',
+                ],
+                'no link',
+                'no link',
+            ],
+            'empty parameter with additional ATagParams with id creates a link' => [
+                [
+                    'parameter' => '',
+                    'ATagParams' => 'id="c13" data-any="where"',
+                ],
+                'a link',
+                '<a id="c13" data-any="where">a link</a>',
+            ],
+            'empty parameter with additional ATagParams with id creates a link and adds title' => [
+                [
+                    'parameter' => '',
+                    'ATagParams' => 'id="c13" data-any="where"',
+                    'title' => 'custom title',
+                ],
+                'a link',
+                '<a title="custom title" id="c13" data-any="where">a link</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider linkWithoutAnchorIsGeneratedDataProvider
+     */
+    public function linkWithoutAnchorIsGenerated(array $instructions, string $linkText, string $expectation): void
+    {
+        $sourcePageId = 1100;
+        $request = (new InternalRequest('https://acme.us/'))
+            ->withPageId($sourcePageId)
+            ->withInstructions(
+                [
+                    $this->createTypoLinkInstruction($instructions, $linkText),
+                ]
+            );
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     /**
      * @param string $parameter
      * @param AbstractInstruction ...$instructions
