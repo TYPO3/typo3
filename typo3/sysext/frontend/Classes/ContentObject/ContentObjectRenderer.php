@@ -3610,11 +3610,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($conf['userFunc'] ?? false) {
                             $data = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'] ?? [], $data);
                         }
-                        // Makelinks: (Before search-words as we need the links to be generated when searchwords go on...!)
-                        if ($conf['makelinks'] ?? false) {
-                            $data = $this->http_makelinks($data, $conf['makelinks.']['http.']);
-                            $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
-                        }
                         // Search Words:
                         // @deprecated since TYPO3 v11, will be removed in TYPO3 v12.0.
                         if (($tsfe->no_cache ?? false) && ($conf['sword'] ?? false) && is_array($tsfe->sWordList) && $tsfe->sWordRegEx) {
@@ -3662,6 +3657,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 break;
                             }
                         }
+                    }
+                    if (!is_array($currentTag) && ($conf['makelinks'] ?? false)) {
+                        $data = $this->http_makelinks($data, $conf['makelinks.']['http.'] ?? []);
+                        $data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.'] ?? []);
                     }
                     $contentAccum[$contentAccumP] = isset($contentAccum[$contentAccumP])
                         ? $contentAccum[$contentAccumP] . $data
@@ -3899,7 +3898,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Finds URLS in text and makes it to a real link.
+     * Finds URLs in text and makes it to a real link.
      * Will find all strings prefixed with "http://" and "https://" in the $data string and make them into a link,
      * linking to the URL we should have found.
      *
@@ -3911,7 +3910,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function http_makelinks($data, $conf)
     {
         $parts = [];
-        $aTagParams = $this->getATagParams($conf);
         foreach (['http://', 'https://'] as $scheme) {
             $textpieces = explode($scheme, $data);
             $pieces = count($textpieces);
@@ -3926,7 +3924,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     // Included '\/' 3/12
                     $parts[0] = substr($textpieces[$i], 0, $len);
                     $parts[1] = substr($textpieces[$i], $len);
-                    $keep = $conf['keep'];
+                    $keep = $conf['keep'] ?? '';
                     $linkParts = parse_url($scheme . $parts[0]);
                     $linktxt = '';
                     if (str_contains($keep, 'scheme')) {
@@ -3942,22 +3940,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             $linktxt = substr($linktxt, 0, -1);
                         }
                     }
-                    $target = (string)$this->stdWrapValue('extTarget', $conf, $this->getTypoScriptFrontendController()->extTarget);
-
-                    // check for jump URLs or similar
-                    $linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf) ?? '';
-
-                    $res = '<a href="' . htmlspecialchars($linkUrl) . '"'
-                        . ($target !== '' ? ' target="' . htmlspecialchars($target) . '"' : '')
-                        . $aTagParams . '>';
-
-                    $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-                    if ((string)($conf['ATagBeforeWrap'] ?? '') !== '') {
-                        $res .= $this->wrap($linktxt, $wrap) . '</a>';
-                    } else {
-                        $res = $this->wrap($res . $linktxt . '</a>', $wrap);
-                    }
-                    $textstr .= $res . $parts[1];
+                    $typolinkConfiguration = $conf;
+                    $typolinkConfiguration['parameter'] = $parts[0];
+                    $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
                 } else {
                     $textstr .= $scheme . $textpieces[$i];
                 }
@@ -3980,12 +3965,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $conf = (array)$conf;
         $parts = [];
-        // http-split
-        $aTagParams = $this->getATagParams($conf);
+        // split by mailto logic
         $textpieces = explode('mailto:', $data);
         $pieces = count($textpieces);
         $textstr = $textpieces[0];
-        $tsfe = $this->getTypoScriptFrontendController();
         for ($i = 1; $i < $pieces; $i++) {
             $len = strcspn($textpieces[$i], chr(32) . "\t" . CRLF);
             if (trim(substr($textstr, -1)) === '' && $len) {
@@ -3996,18 +3979,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $parts[0] = substr($textpieces[$i], 0, $len);
                 $parts[1] = substr($textpieces[$i], $len);
                 $linktxt = (string)preg_replace('/\\?.*/', '', $parts[0]);
-                [$mailToUrl, $linktxt, $attributes] = $this->getMailTo($parts[0], $linktxt);
-                $mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
-                $mailtoAttrs = GeneralUtility::implodeAttributes($attributes ?? [], true);
-                $aTagParams .= ($mailtoAttrs !== '' ? ' ' . $mailtoAttrs : '');
-                $res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
-                $wrap = (string)$this->stdWrapValue('wrap', $conf);
-                if ((string)$conf['ATagBeforeWrap'] !== '') {
-                    $res = $res . $this->wrap($linktxt, $wrap) . '</a>';
-                } else {
-                    $res = $this->wrap($res . $linktxt . '</a>', $wrap);
-                }
-                $textstr .= $res . $parts[1];
+                $typolinkConfiguration = $conf;
+                $typolinkConfiguration['parameter'] = 'mailto:' . $parts[0];
+                $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
             } else {
                 $textstr .= 'mailto:' . $textpieces[$i];
             }
