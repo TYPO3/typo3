@@ -48,15 +48,15 @@
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","sorting","deleted","hidden","parentid","title","price",,
 ,1,1,1,0,0,1,0,0,1,"Price 2 1:1 (m:n ASym)",45.00,,
 ,2,1,1,0,0,1,0,0,2,"Price 1 1:2 (m:n ASym)",678.00,,
-"tx_irretutorial_mnattr_hotel",,,,,,,,,,,,,
+"tx_testirremnattributesimple_hotel",,,,,,,,,,,,,
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","sorting","deleted","hidden","title","offers",,,
 ,1,1,1,0,0,256,0,0,"Hotel 2 (m:n Attr)",1,,,
 ,2,1,1,0,0,128,0,0,"Hotel 1 (m:n Attr)",1,,,
-"tx_irretutorial_mnattr_hotel_offer_rel",,,,,,,,,,,,,
+"tx_testirremnattributesimple_hotel_offer_rel",,,,,,,,,,,,,
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","deleted","hidden","hotelid","offerid","hotelsort","offersort","quality","allincl"
 ,1,1,1,0,0,0,0,1,1,1,1,4,0
 ,2,1,1,0,0,0,0,2,2,1,1,2,1
-"tx_irretutorial_mnattr_offer",,,,,,,,,,,,,
+"tx_testirremnattributesimple_offer",,,,,,,,,,,,,
 ,"uid","pid","cruser_id","sys_language_uid","l18n_parent","sorting","deleted","hidden","title","hotels",,,
 ,1,1,1,0,0,256,0,0,"Offer 2 (m:n Attr)",1,,,
 ,2,1,1,0,0,128,0,0,"Offer 1 (m:n Attr)",1,,,

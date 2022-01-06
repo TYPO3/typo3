@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:test_irre_mnattributesimple/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_irre_mnattributesimple">
+		<header/>
+		<body>
+			<trans-unit id="tabs.general" resname="tabs.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+				<source>Visibility</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnattributesimple_hotel" resname="tx_testirremnattributesimple_hotel">
+				<source>m:n Attr: Hotels</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnattributesimple_hotel_offer_rel" resname="tx_testirremnattributesimple_hotel_offer_rel">
+				<source>m:n Attr: Hotels&lt;-&gt;Offers</source>
+			</trans-unit>
+			<trans-unit id="tx_testirremnattributesimple_offer" resname="tx_testirremnattributesimple_offer">
+				<source>m:n Attr: Offers</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

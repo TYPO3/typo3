@@ -396,7 +396,7 @@
 		<price>45.00</price>
         <sorting>256</sorting>
 	</tx_irretutorial_mnasym_price>
-	<tx_irretutorial_mnattr_hotel>
+	<tx_testirremnattributesimple_hotel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -409,8 +409,8 @@
 		<title>Hotel 1 (m:n Attr)</title>
 		<offers>1</offers>
         <sorting>128</sorting>
-	</tx_irretutorial_mnattr_hotel>
-	<tx_irretutorial_mnattr_hotel>
+	</tx_testirremnattributesimple_hotel>
+	<tx_testirremnattributesimple_hotel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -423,8 +423,8 @@
 		<title>Hotel 2 (m:n Attr)</title>
 		<offers>1</offers>
         <sorting>256</sorting>
-	</tx_irretutorial_mnattr_hotel>
-	<tx_irretutorial_mnattr_hotel_offer_rel>
+	</tx_testirremnattributesimple_hotel>
+	<tx_testirremnattributesimple_hotel_offer_rel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -439,8 +439,8 @@
 		<offersort>0</offersort>
 		<quality>2</quality>
 		<allincl>1</allincl>
-	</tx_irretutorial_mnattr_hotel_offer_rel>
-	<tx_irretutorial_mnattr_hotel_offer_rel>
+	</tx_testirremnattributesimple_hotel_offer_rel>
+	<tx_testirremnattributesimple_hotel_offer_rel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -455,8 +455,8 @@
 		<offersort>0</offersort>
 		<quality>4</quality>
 		<allincl>0</allincl>
-	</tx_irretutorial_mnattr_hotel_offer_rel>
-	<tx_irretutorial_mnattr_offer>
+	</tx_testirremnattributesimple_hotel_offer_rel>
+	<tx_testirremnattributesimple_offer>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -469,8 +469,8 @@
 		<title>Offer 1 (m:n Attr)</title>
 		<hotels>0</hotels>
         <sorting>128</sorting>
-	</tx_irretutorial_mnattr_offer>
-	<tx_irretutorial_mnattr_offer>
+	</tx_testirremnattributesimple_offer>
+	<tx_testirremnattributesimple_offer>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -483,7 +483,7 @@
 		<title>Offer 2 (m:n Attr)</title>
 		<hotels>0</hotels>
         <sorting>256</sorting>
-	</tx_irretutorial_mnattr_offer>
+	</tx_testirremnattributesimple_offer>
 	<tx_testirremm_hotel>
 		<uid>1</uid>
 		<pid>1</pid>
