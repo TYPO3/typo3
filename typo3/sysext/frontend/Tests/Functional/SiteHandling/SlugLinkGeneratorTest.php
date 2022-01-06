@@ -786,6 +786,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             [
                                 'title' => 'Malloy Doe',
                                 'link' => '/malloy',
+                                'target' => '',
                             ],
                         ],
                     ],
