@@ -54,6 +54,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
+        $linkResultType = LinkService::TYPE_PAGE;
         $tsfe = $this->getTypoScriptFrontendController();
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
             // If no id is given
@@ -226,6 +227,10 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 $this->contentObjectRenderer->typoLink($linkText, $conf);
                 $target = $this->contentObjectRenderer->lastTypoLinkTarget;
                 $url = $this->contentObjectRenderer->lastTypoLinkUrl;
+                // If the page external URL is resolved into a URL or email, this should be taken into account when compiling the final link result object
+                if ($this->contentObjectRenderer->lastTypoLinkResult) {
+                    $linkResultType = $this->contentObjectRenderer->lastTypoLinkResult->getType();
+                }
                 if (empty($url)) {
                     throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
                 }
@@ -282,7 +287,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Setting title if blank value to link
         $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
-        $result = new LinkResult(LinkService::TYPE_PAGE, $url);
+        $result = new LinkResult($linkResultType, $url);
         return $result
             ->withLinkConfiguration($conf)
             ->withTarget($target)

@@ -164,6 +164,8 @@ entities:
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 2800, title: 'What is a blog on Wikipedia ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/wiki/Blog', slug: '/what-is-a-blog', target: 'a_new_tab' }
         - self: {id: 2900, title: 'What is Wikipedia in a separate window ', type: *pageExternalUrl, url: 'https://en.wikipedia.org/', slug: '/wikipedia' }
+          children:
+            - self: {id: 2910, title: 'Contact wikipedia', type: *pageExternalUrl, url: 'mailto:you-never-get-an-answer', nav_hide: 1, slug: '/wikipedia/send-an-email' }
         - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000, slug: '/acme'}
     - self: {id: 3000, title: 'ACME Archive', root: true, slug: '/'}
       languageVariants:
