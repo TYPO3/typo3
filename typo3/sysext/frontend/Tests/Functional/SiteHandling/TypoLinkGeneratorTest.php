@@ -252,6 +252,116 @@ class TypoLinkGeneratorTest extends AbstractTestCase
         self::assertSame($expectation, (string)$response->getBody());
     }
 
+    public function ATagParamsAreAddedInOrderDataProvider(): array
+    {
+        return [
+            'No ATag Params' => [
+                [
+                    'ATagParams' => '',
+                ],
+                '',
+                'text',
+                '<a href="/welcome">text</a>',
+            ],
+            'specific ATagParams' => [
+                [
+                    'ATagParams' => 'data-any="where"',
+                ],
+                '',
+                'text',
+                '<a href="/welcome" data-any="where">text</a>',
+            ],
+            'specific ATagParams with a target' => [
+                [
+                    'ATagParams' => 'data-any="where" target="from-a-tags"',
+                ],
+                '',
+                'text',
+                '<a href="/welcome" data-any="where" target="from-a-tags">text</a>',
+            ],
+            'specific ATagParams with target in parameter' => [
+                [
+                    'parameter' => '1100 from-parameter',
+                    'ATagParams' => 'data-any="where"',
+                ],
+                '',
+                'text',
+                '<a href="/welcome" target="from-parameter" data-any="where">text</a>',
+            ],
+            'specific ATagParams with a target and target in parameter' => [
+                [
+                    'parameter' => '1100 from-parameter',
+                    'ATagParams' => 'data-any="where" target="from-a-tags"',
+                ],
+                '',
+                'text',
+                '<a href="/welcome" target="from-a-tags" data-any="where">text</a>',
+            ],
+            'specific ATagParams with a target and target as option' => [
+                [
+                    'parameter' => '1100 from-parameter',
+                    'ATagParams' => 'data-any="where" target="from-a-tags"',
+                    'target' => 'from-option',
+                ],
+                '',
+                'text',
+                '<a href="/welcome" target="from-a-tags" data-any="where">text</a>',
+            ],
+            'specific ATagParams with a target and target in parameter and global attributes' => [
+                [
+                    'parameter' => '1100 from-parameter',
+                    'ATagParams' => 'data-any="where" target="from-a-tags"',
+                ],
+                'tabindex="from-global"',
+                'text',
+                '<a href="/welcome" target="from-a-tags" tabindex="from-global" data-any="where">text</a>',
+            ],
+            'specific ATagParams with global attributes and local ATagParams overridden mixed, and href removed' => [
+                [
+                    'ATagParams' => 'data-any="where" target="from-a-tags"',
+                ],
+                'tabindex="from-global" target="_blank" data-any="global" data-global="1" href="#"',
+                'text',
+                '<a href="/welcome" tabindex="from-global" target="from-a-tags" data-any="where" data-global="1">text</a>',
+            ],
+            /** currently skipped because TYPO3 cannot handle no-value attributes
+            'specific ATagParams with global attributes and local ATagParams overridden and no-value attributes' => [
+                [
+                    'ATagParams' => 'tabindex="23"',
+                ],
+                'tabindex="from-global" target="_blank" data-link',
+                'text',
+                '<a href="/welcome" tabindex="23" target="_blank" data-link>text</a>',
+            ],
+            */
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider ATagParamsAreAddedInOrderDataProvider
+     */
+    public function ATagParamsAreAddedInOrder(array $instructions, string $globalATagParams, string $linkText, string $expectation): void
+    {
+        $sourcePageId = 1100;
+        $instructions['parameter'] = $instructions['parameter'] ?? $sourcePageId;
+        $request = (new InternalRequest('https://acme.us/'))
+            ->withPageId($sourcePageId)
+            ->withInstructions(
+                [
+                    $this->createTypoLinkInstruction($instructions, $linkText),
+                    (new TypoScriptInstruction(TemplateService::class))
+                        ->withTypoScript([
+                            'config.' => [
+                                'ATagParams' => $globalATagParams,
+                            ],
+                        ]),
+                ],
+            );
+        $response = $this->executeFrontendSubRequest($request);
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     /**
      * @return array
      */
@@ -554,16 +664,17 @@ class TypoLinkGeneratorTest extends AbstractTestCase
 
     /**
      * @param array $typoLink
+     * @param string|null $linkText
      * @return ArrayValueInstruction
      */
-    private function createTypoLinkInstruction(array $typoLink): ArrayValueInstruction
+    private function createTypoLinkInstruction(array $typoLink, ?string $linkText = null): ArrayValueInstruction
     {
         return (new ArrayValueInstruction(LinkHandlingController::class))
             ->withArray([
                 '10' => 'TEXT',
-                '10.' => [
+                '10.' => array_merge([
                     'typolink.' => $typoLink,
-                ],
+                ], ($linkText ? ['value' => $linkText] : [])),
             ]);
     }
 
