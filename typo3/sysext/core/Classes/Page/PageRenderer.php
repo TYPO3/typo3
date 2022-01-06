@@ -1534,26 +1534,24 @@ class PageRenderer implements SingletonInterface
                 $this->requireJsConfig
             );
         }
-        $requireJS = RequireJS::create(
-            $this->processJsFile($this->requireJsPath . 'require.js'),
-            $requireJsConfig
-        );
+        $requireJsUri = $this->processJsFile($this->requireJsPath . 'require.js');
         // add (probably filtered) RequireJS configuration
         if ($this->getApplicationType() === 'BE') {
             $html .= sprintf(
                 '<script src="%s"></script>' . "\n",
-                htmlspecialchars($requireJS->getUri())
+                htmlspecialchars($requireJsUri)
             );
-            // (using dedicated instance of JavaScriptRenderer)
-            $javaScriptRenderer = JavaScriptRenderer::create();
-            $javaScriptRenderer->loadRequireJS($requireJS);
-            $html .= $javaScriptRenderer->render();
+            $html .= sprintf(
+                '<script src="%s">/* %s */</script>' . "\n",
+                htmlspecialchars($this->processJsFile('EXT:core/Resources/Public/JavaScript/RequireJSConfigHandler.js')),
+                (string)json_encode($requireJsConfig, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG)
+            );
         } else {
-            $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJS->getConfig())) . LF;
+            $html .= GeneralUtility::wrapJS('var require = ' . json_encode($requireJsConfig)) . LF;
             // directly after that, include the require.js file
             $html .= sprintf(
                 '<script src="%s"></script>' . "\n",
-                htmlspecialchars($requireJS->getUri())
+                htmlspecialchars($requireJsUri)
             );
         }
         // use (anonymous require.js loader), e.g. used when not having a valid TYP3 backend user session

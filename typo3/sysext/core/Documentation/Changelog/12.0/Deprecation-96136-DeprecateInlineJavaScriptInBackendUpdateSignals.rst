@@ -86,7 +86,7 @@ allow to dispatch actions, without actually using inline JavaScript.
 * :php:`\TYPO3\CMS\Core\Page\JavaScriptModuleInstruction` rendered using
   :php:`\TYPO3\CMS\Core\Page\JavaScriptRenderer::render`, which uses a script helper
   that loads JavaScript modules and invokes a method or assigns variables globally, e.g.
-  :html:`<script src="/typo3/sysext/core/Resources/Public/JavaScript/JavaScriptHandler.js" ...>`
+  :html:`<script src="/typo3/sysext/core/Resources/Public/JavaScript/JavaScriptItemHandler.js" ...>`
 
 **Side-note**: Just using markup like :html:`<script>alert(1)</script>`
 is **not** considered a good solution as it still contains inline JavaScript.

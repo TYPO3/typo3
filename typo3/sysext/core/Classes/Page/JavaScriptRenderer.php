@@ -24,12 +24,11 @@ class JavaScriptRenderer
 {
     protected string $handlerUri;
     protected JavaScriptItems $items;
-    protected ?RequireJS $requireJS = null;
 
     public static function create(string $uri = null): self
     {
         $uri ??= PathUtility::getAbsoluteWebPath(
-            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/JavaScriptHandler.js')
+            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/JavaScriptItemHandler.js')
         );
         return GeneralUtility::makeInstance(static::class, $uri);
     }
@@ -38,11 +37,6 @@ class JavaScriptRenderer
     {
         $this->handlerUri = $handlerUri;
         $this->items = GeneralUtility::makeInstance(JavaScriptItems::class);
-    }
-
-    public function loadRequireJS(RequireJS $requireJS): void
-    {
-        $this->requireJS = $requireJS;
     }
 
     public function addGlobalAssignment(array $payload): void
@@ -64,17 +58,7 @@ class JavaScriptRenderer
         if ($this->isEmpty()) {
             return [];
         }
-        $items = [];
-        if ($this->requireJS !== null) {
-            $items[] = [
-                'type' => 'loadRequireJs',
-                'payload' => $this->requireJS,
-            ];
-        }
-        foreach ($this->items->toArray() as $item) {
-            $items[] = $item;
-        }
-        return $items;
+        return $this->items->toArray();
     }
 
     public function render(): string
@@ -84,13 +68,13 @@ class JavaScriptRenderer
         }
         return $this->createScriptElement([
             'src' => $this->handlerUri,
-            'data-process-text-content' => 'processItems',
+            'async' => 'async',
         ], $this->jsonEncode($this->toArray()));
     }
 
     protected function isEmpty(): bool
     {
-        return $this->requireJS === null && $this->items->isEmpty();
+        return $this->items->isEmpty();
     }
 
     protected function createScriptElement(array $attributes, string $textContent = ''): string

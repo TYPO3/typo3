@@ -96,7 +96,7 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Renders `<script src="JavaScriptHandler.js">...</script>` for loading
+     * Renders `<script src="JavaScriptItemHandler.js">...</script>` for loading
      * corresponding module. Using `JavaScriptRenderer` makes this independent
      * from `PageRenderer` and its current application state.
      */

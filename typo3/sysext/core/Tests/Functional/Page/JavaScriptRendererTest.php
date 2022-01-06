@@ -37,7 +37,7 @@ class JavaScriptRendererTest extends FunctionalTestCase
         );
         $subject->addGlobalAssignment(['section*/' => ['key*/' => 'value*/']]);
         self::assertSame(
-            '<script src="anything.js" data-process-text-content="processItems">'
+            '<script src="anything.js" async="async">'
                 . '/* [{"type":"globalAssignment","payload":{"section*\/":{"key*\/":"value*\/"}}},'
                 . '{"type":"javaScriptModuleInstruction","payload":{"name":"TYPO3\/CMS\/Test*\/","exportName":null,'
                 . '"flags":1,"items":[{"type":"invoke","method":"test*\/","args":["arg*\/"]}]}}] */</script>',

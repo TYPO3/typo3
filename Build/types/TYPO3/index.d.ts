@@ -30,14 +30,6 @@ declare namespace TYPO3 {
   export const lang: { [key: string]: string };
   export const configuration: any;
   export namespace CMS {
-    export namespace Core {
-      export class JavaScriptHandler {
-        public processItems(data: string|any[], isParsed?: boolean): void;
-        public globalAssignment(data: string|any, isParsed?: boolean): void;
-        public javaScriptModuleInstruction(data: string|any, isParsed?: boolean): void;
-      }
-    }
-
     export namespace Backend {
       export class FormEngineValidation {
         public USmode: number;
@@ -122,11 +114,6 @@ declare namespace TBE_EDITOR {
 /**
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */
-
-declare module 'TYPO3/CMS/Core/JavaScriptHandler' {
-  const _exported: TYPO3.CMS.Core.JavaScriptHandler;
-  export = _exported;
-}
 
 declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
   const _exported: TYPO3.CMS.Backend.FormEngineValidation;
