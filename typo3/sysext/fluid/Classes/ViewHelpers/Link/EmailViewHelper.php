@@ -81,15 +81,29 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
     public function render()
     {
         $email = $this->arguments['email'];
+        $linkHref = 'mailto:' . $email;
+        $attributes = [];
+        $linkText = htmlspecialchars($email);
+        $escapeSpecialCharacters = true;
         if (ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()) {
             /** @var TypoScriptFrontendController $frontend */
             $frontend = $GLOBALS['TSFE'];
-            [$linkHref, $linkText, $attributes] = $frontend->cObj->getMailTo($email, '');
-            $escapeSpecialCharacters = !isset($frontend->spamProtectEmailAddresses) || $frontend->spamProtectEmailAddresses !== 'ascii';
-        } else {
-            $linkHref = 'mailto:' . $email;
-            $linkText = htmlspecialchars($email);
-            $escapeSpecialCharacters = true;
+            $frontend->cObj->typoLink($email, ['parameter' => $linkHref]);
+            $linkResult = $frontend->cObj->lastTypoLinkResult;
+            if ($linkResult) {
+                $escapeSpecialCharacters = false;
+                $linkHref = $linkResult->getUrl();
+                $linkText = (string)$linkResult->getLinkText();
+                $attributes = $linkResult->getAttributes();
+                unset($attributes['href']);
+                if ($frontend->spamProtectEmailAddresses !== 'ascii') {
+                    if (PHP_VERSION_ID < 80100) {
+                        $linkText = htmlspecialchars($linkText, ENT_COMPAT | ENT_SUBSTITUTE, 'utf-8', false);
+                    } else {
+                        $linkText = htmlspecialchars($linkText, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'utf-8', false);
+                    }
+                }
+            }
         }
         $tagContent = $this->renderChildren();
         if ($tagContent !== null) {
@@ -98,7 +112,7 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setContent($linkText);
         $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
         $this->tag->forceClosingTag(true);
-        $this->tag->addAttributes($attributes ?? []);
+        $this->tag->addAttributes($attributes, false);
         return $this->tag->render();
     }
 }
