@@ -21,10 +21,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -670,38 +668,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         self::assertSame($expectation, (string)$response->getBody());
-    }
-
-    /**
-     * @test
-     */
-    public function linkIsGeneratedForExternalUrlOfEmailWithSpamProtectedEmailAddressesSetToAscii(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('https://blog.acme.com/'))
-                ->withPageId(2100)
-                ->withInstructions([
-                    (new TypoScriptInstruction(TemplateService::class))
-                        ->withTypoScript([
-                            'config.' => [
-                                'spamProtectEmailAddresses' => 'ascii',
-                            ],
-                        ]),
-                    (new ArrayValueInstruction(LinkHandlingController::class))
-                        ->withArray([
-                            '10' => 'TEXT',
-                            '10.' => [
-                                'typolink.' => [
-                                    'parameter' => 2910,
-                                ],
-                            ],
-                        ]),
-                ]),
-        );
-
-        $result = (string)$response->getBody();
-        $expectation = '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#111;&#117;&#45;&#110;&#101;&#118;&#101;&#114;&#45;&#103;&#101;&#116;&#45;&#97;&#110;&#45;&#97;&#110;&#115;&#119;&#101;&#114;">Contact wikipedia</a>';
-        self::assertSame($expectation, $result);
     }
 
     /**

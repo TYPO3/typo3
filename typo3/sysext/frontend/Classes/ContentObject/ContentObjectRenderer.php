@@ -4708,11 +4708,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $JSwindowParams = implode(',', $JSwindow_paramsArr);
         }
 
-        if (!$JSwindowParams && $linkedResult->getType() === LinkService::TYPE_EMAIL && $tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses === 'ascii') {
-            $tagAttributes['href'] = $finalTagParts['url'];
-        } else {
-            $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
-        }
+        $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
         if (!empty($title)) {
             $tagAttributes['title'] = htmlspecialchars($title);
             $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('title', $title);
@@ -5016,14 +5012,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($mailToUrl === $originalMailToUrl) {
             $tsfe = $this->getTypoScriptFrontendController();
             if ($tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses) {
-                $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
-                if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
-                    $attributes = [
-                        'data-mailto-token' => $mailToUrl,
-                        'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
-                    ];
-                    $mailToUrl = '#';
-                }
+                $mailToUrl = $this->encryptEmail($mailToUrl, (int)$tsfe->spamProtectEmailAddresses);
+                $attributes = [
+                    'data-mailto-token' => $mailToUrl,
+                    'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
+                ];
+                $mailToUrl = '#';
                 $atLabel = '(at)';
                 if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
                     $atLabel = $atLabelFromConfig;
@@ -5050,35 +5044,28 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
      *
      * @param string $string Input string to en/decode: "mailto:some@example.com
-     * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
+     * @param int $type a number between -10 and 10, taken from config.spamProtectEmailAddresses
      * @return string encoded version of $string
      */
-    protected function encryptEmail(string $string, $type): string
+    protected function encryptEmail(string $string, int $type): string
     {
         $out = '';
-        // obfuscates using the decimal HTML entity references for each character
-        if ($type === 'ascii') {
-            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
-                $out .= '&#' . mb_ord($char) . ';';
-            }
-        } else {
-            // like str_rot13() but with a variable offset and a wider character range
-            $len = strlen($string);
-            $offset = (int)$type;
-            for ($i = 0; $i < $len; $i++) {
-                $charValue = ord($string[$i]);
-                // 0-9 . , - + / :
-                if ($charValue >= 43 && $charValue <= 58) {
-                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
-                } elseif ($charValue >= 64 && $charValue <= 90) {
-                    // A-Z @
-                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
-                } elseif ($charValue >= 97 && $charValue <= 122) {
-                    // a-z
-                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
-                } else {
-                    $out .= $string[$i];
-                }
+        // like str_rot13() but with a variable offset and a wider character range
+        $len = strlen($string);
+        $offset = $type;
+        for ($i = 0; $i < $len; $i++) {
+            $charValue = ord($string[$i]);
+            // 0-9 . , - + / :
+            if ($charValue >= 43 && $charValue <= 58) {
+                $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
+            } elseif ($charValue >= 64 && $charValue <= 90) {
+                // A-Z @
+                $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
+            } elseif ($charValue >= 97 && $charValue <= 122) {
+                // a-z
+                $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
+            } else {
+                $out .= $string[$i];
             }
         }
         return $out;

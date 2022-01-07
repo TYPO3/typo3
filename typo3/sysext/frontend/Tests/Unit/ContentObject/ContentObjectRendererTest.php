@@ -2160,7 +2160,7 @@ class ContentObjectRendererTest extends UnitTestCase
         return [
             'plain mail without mailto scheme' => [
                 [
-                    'spamProtectEmailAddresses' => '',
+                    'spamProtectEmailAddresses' => 0,
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
                 ],
@@ -2170,7 +2170,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'plain mail with mailto scheme' => [
                 [
-                    'spamProtectEmailAddresses' => '',
+                    'spamProtectEmailAddresses' => 0,
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
                 ],
@@ -2180,7 +2180,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'plain with at and dot substitution' => [
                 [
-                    'spamProtectEmailAddresses' => '0',
+                    'spamProtectEmailAddresses' => 0,
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
                 ],
@@ -2190,7 +2190,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'mono-alphabetic substitution offset +1' => [
                 [
-                    'spamProtectEmailAddresses' => '1',
+                    'spamProtectEmailAddresses' => 1,
                     'spamProtectEmailAddresses_atSubst' => '',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
                 ],
@@ -2200,7 +2200,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'mono-alphabetic substitution offset +1 with at substitution' => [
                 [
-                    'spamProtectEmailAddresses' => '1',
+                    'spamProtectEmailAddresses' => 1,
                     'spamProtectEmailAddresses_atSubst' => '@',
                     'spamProtectEmailAddresses_lastDotSubst' => '',
                 ],
@@ -2210,7 +2210,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'mono-alphabetic substitution offset +1 with at and dot substitution' => [
                 [
-                    'spamProtectEmailAddresses' => '1',
+                    'spamProtectEmailAddresses' => 1,
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
                 ],
@@ -2220,7 +2220,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'mono-alphabetic substitution offset -1 with at and dot substitution' => [
                 [
-                    'spamProtectEmailAddresses' => '-1',
+                    'spamProtectEmailAddresses' => -1,
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
                 ],
@@ -2230,33 +2230,13 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
             'mono-alphabetic substitution offset 2 with at and dot substitution and encoded subject' => [
                 [
-                    'spamProtectEmailAddresses' => '2',
+                    'spamProtectEmailAddresses' => 2,
                     'spamProtectEmailAddresses_atSubst' => '(at)',
                     'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org?subject=foo%20bar',
                 '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body@test.typo3.org</a>',
-            ],
-            'entity substitution with at and dot substitution' => [
-                [
-                    'spamProtectEmailAddresses' => 'ascii',
-                    'spamProtectEmailAddresses_atSubst' => '',
-                    'spamProtectEmailAddresses_lastDotSubst' => '',
-                ],
-                'some.body@test.typo3.org',
-                'mailto:some.body@test.typo3.org',
-                '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3.org</a>',
-            ],
-            'entity substitution with at and dot substitution with at and dot substitution' => [
-                [
-                    'spamProtectEmailAddresses' => 'ascii',
-                    'spamProtectEmailAddresses_atSubst' => '(at)',
-                    'spamProtectEmailAddresses_lastDotSubst' => '(dot)',
-                ],
-                'some.body@test.typo3.org',
-                'mailto:some.body@test.typo3.org',
-                '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3(dot)org</a>',
             ],
         ];
     }
@@ -7560,50 +7540,6 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = StringUtility::getUniqueId();
         $this->subject->setUserObjectType($value);
         self::assertEquals($value, $this->subject->getUserObjectType());
-    }
-
-    /**
-     * Data provider for emailSpamProtectionWithTypeAscii
-     *
-     * @return array [$content, $expect]
-     */
-    public function emailSpamProtectionWithTypeAsciiDataProvider(): array
-    {
-        return [
-            'Simple email address' => [
-                'test@email.tld',
-                '&#116;&#101;&#115;&#116;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;',
-            ],
-            'Simple email address with unicode characters' => [
-                'matthäus@email.tld',
-                '&#109;&#97;&#116;&#116;&#104;&#228;&#117;&#115;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;',
-            ],
-            'Susceptible email address' => [
-                '"><script>alert(\'emailSpamProtection\')</script>',
-                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#101;&#109;&#97;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#101;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;',
-
-            ],
-            'Susceptible email address with unicode characters' => [
-                '"><script>alert(\'ȅmǡilSpamProtȅction\')</script>',
-                '&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#517;&#109;&#481;&#105;&#108;&#83;&#112;&#97;&#109;&#80;&#114;&#111;&#116;&#517;&#99;&#116;&#105;&#111;&#110;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;',
-            ],
-        ];
-    }
-
-    /**
-     * Check if email spam protection processes all UTF-8 characters properly
-     *
-     * @test
-     * @dataProvider emailSpamProtectionWithTypeAsciiDataProvider
-     * @param string $content The parameter $content.
-     * @param string $expected The expected output.
-     */
-    public function mailSpamProtectionWithTypeAscii(string $content, string $expected): void
-    {
-        self::assertSame(
-            $expected,
-            $this->subject->_call('encryptEmail', $content, 'ascii')
-        );
     }
 
     public function getGlobalDataProvider(): array

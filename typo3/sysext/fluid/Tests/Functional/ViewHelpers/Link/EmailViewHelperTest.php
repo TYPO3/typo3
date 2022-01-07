@@ -66,11 +66,6 @@ class EmailViewHelperTest extends FunctionalTestCase
                 1,
                 '<a href="#" data-mailto-token="nbjmup+tpnfAfnbjm/ume" data-mailto-vector="1">some(at)email.tld</a>',
             ],
-            'Plain email with ascii spam protection' => [
-                '<f:link.email email="some@email.tld" />',
-                'ascii',
-                '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;">some(at)email.tld</a>',
-            ],
             'Susceptible email' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
                 0,
@@ -92,17 +87,6 @@ class EmailViewHelperTest extends FunctionalTestCase
                     ? '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(\'fnbjm\')&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>'
                     // for php 8.1
                     : '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(&#039;fnbjm&#039;)&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>'),
-            ],
-            'Susceptible email with ascii spam protection' => [
-                '<f:link.email email="\"><script>alert(\'email\')</script>" />',
-                'ascii',
-                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
-                // @todo remove conditional values when php 8.1 is min requirement
-                (PHP_VERSION_ID < 80100
-                    // before php 8.1 - remove this for >php8.1 only
-                    ? '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#101;&#109;&#97;&#105;&#108;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>'
-                    // for php 8.1
-                    : '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#34;&#62;&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#101;&#109;&#97;&#105;&#108;&#39;&#41;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>'),
             ],
         ];
     }

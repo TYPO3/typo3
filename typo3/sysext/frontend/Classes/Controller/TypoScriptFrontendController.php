@@ -357,9 +357,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * If set, typolink() function encrypts email addresses.
-     * @var string|int
+     * @var int
      */
-    public $spamProtectEmailAddresses = 0;
+    public int $spamProtectEmailAddresses = 0;
 
     /**
      * Absolute Reference prefix
@@ -2440,10 +2440,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->intTarget = (string)($this->config['config']['intTarget'] ?? '');
         $this->extTarget = (string)($this->config['config']['extTarget'] ?? '');
         $this->fileTarget = (string)($this->config['config']['fileTarget'] ?? '');
-        $this->spamProtectEmailAddresses = $this->config['config']['spamProtectEmailAddresses'] ?? 0;
-        if ($this->spamProtectEmailAddresses !== 'ascii') {
-            $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
+        if (($this->config['config']['spamProtectEmailAddresses'] ?? '') === 'ascii') {
+            $this->logDeprecatedTyposcript('config.spamProtectEmailAddresses = ascii', 'This setting has no effect anymore. Change it to a number between -10 and 10 or remove it completely');
+            $this->config['config']['spamProtectEmailAddresses'] = 0;
         }
+        $this->spamProtectEmailAddresses = (int)($this->config['config']['spamProtectEmailAddresses'] ?? 0);
+        $this->spamProtectEmailAddresses = MathUtility::forceIntegerInRange($this->spamProtectEmailAddresses, -10, 10, 0);
         // calculate the absolute path prefix
         if (!empty($this->absRefPrefix = trim($this->config['config']['absRefPrefix'] ?? ''))) {
             if ($this->absRefPrefix === 'auto') {

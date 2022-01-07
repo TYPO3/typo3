@@ -111,13 +111,6 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
                 '<a href="tel:123456789" role="button">value</a>',
                 '<a href="tel:123456789" role="button">value</a>',
             ],
-            '#057' => [
-                // config.spamProtectEmailAddresses = ascii
-                '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#46;&#98;&#111;&#100;&#121;&#64;&#116;&#101;&#115;&#116;&#46;&#116;&#121;&#112;&#111;&#51;&#46;&#111;&#114;&#103;">some.body(at)test.typo3(dot)org</a>',
-                // HTML entity encoding is not really a "protection", `Masterminds/html5-php` per default
-                // decodes those entities, which is good to have normalized attr values
-                '<a href="mailto:some.body@test.typo3.org">some.body(at)test.typo3(dot)org</a>',
-            ],
             '#090' => [
                 '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>',
                 '<p data-bool><span data-bool><strong data-bool>value</strong></span></p>',
