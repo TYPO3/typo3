@@ -79,83 +79,14 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             /** @var TypolinkModifyLinkConfigForPageLinksHookInterface $hookObject */
             $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
         }
-        $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf ?? []);
+        $conf['additionalParams'] ??= '';
 
-        $sectionMark = trim((string)$this->contentObjectRenderer->stdWrapValue('section', $conf ?? []));
-        if ($sectionMark === '' && isset($linkDetails['fragment'])) {
-            $sectionMark = $linkDetails['fragment'];
-        }
-        if ($sectionMark !== '') {
-            $sectionMark = '#' . (MathUtility::canBeInterpretedAsInteger($sectionMark) ? 'c' : '') . $sectionMark;
-        }
-        // Overruling 'type'
-        $pageType = $linkDetails['pagetype'] ?? '';
-
-        if (isset($linkDetails['parameters'])) {
-            $conf['additionalParams'] ??= '';
-            $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
-        }
-        // MountPoints, look for closest MPvar:
-        $MPvarAcc = [];
-        if (!($tsfe->config['config']['MP_disableTypolinkClosestMPvalue'] ?? false)) {
-            $temp_MP = $this->getClosestMountPointValueForPage($page['uid']);
-            if ($temp_MP) {
-                $MPvarAcc['closest'] = $temp_MP;
-            }
-        }
-        // Look for overlay Mount Point:
-        $mount_info = $tsfe->sys_page->getMountPointInfo($page['uid'], $page);
-        if (is_array($mount_info) && $mount_info['overlay']) {
-            $page = $tsfe->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
-            if (empty($page)) {
-                throw new UnableToLinkException('Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1490987337, null, $linkText);
-            }
-            $MPvarAcc['re-map'] = $mount_info['MPvar'];
-        }
-        // Query Params:
-        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
-        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
-        if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
-            $addQueryParams = '';
-        }
-        // Mount pages are always local and never link to another domain,
-        $addMountPointParameters = !empty($MPvarAcc);
-        // Add "&MP" var, only if the original page was NOT a shortcut to another domain
-        if ($addMountPointParameters && !empty($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
-            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['_SHORTCUT_ORIGINAL_PAGE_UID']);
-            $currentSite = $this->getCurrentSite();
-            if ($siteOfTargetPage !== $currentSite) {
-                $addMountPointParameters = false;
-            }
-        }
-        if ($addMountPointParameters) {
-            $addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
-        }
-
-        // get config.linkVars and prepend them before the actual GET parameters
-        $queryParameters = [];
-        parse_str($addQueryParams, $queryParameters);
-        if ($tsfe->linkVars) {
-            $globalQueryParameters = [];
-            parse_str($tsfe->linkVars, $globalQueryParameters);
-            $queryParameters = array_replace_recursive($globalQueryParameters, $queryParameters);
-        }
-        // Disable "?id=", for pages with no site configuration, this is added later-on anyway
-        unset($queryParameters['id']);
-
-        // Override language property if not being set already, supporting historically 'L' and
-        // modern '_language' arguments, giving '_language' the precedence.
-        if (isset($queryParameters['_language'])) {
-            if (!isset($conf['language'])) {
-                $conf['language'] = (int)$queryParameters['_language'];
-            }
-            unset($queryParameters['_language']);
-        }
-        if (isset($queryParameters['L'])) {
-            if (!isset($conf['language'])) {
-                $conf['language'] = (int)$queryParameters['L'];
-            }
-            unset($queryParameters['L']);
+        $fragment = $this->calculateUrlFragment($conf, $linkDetails);
+        $queryParameters = $this->calculateQueryParameters($conf, $linkDetails);
+        // Add MP parameter
+        $mountPointParameter = $this->calculateMountPointParameters($page, $disableGroupAccessCheck, $linkText);
+        if ($mountPointParameter !== null) {
+            $queryParameters['MP'] = $mountPointParameter;
         }
 
         // Check if the target page has a site configuration
@@ -167,99 +98,231 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $siteOfTargetPage = null;
             $currentSite = null;
         }
-
-        // Link to a page that has a site configuration
-        if ($siteOfTargetPage !== null) {
-            try {
-                $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
-            } catch (UnableToLinkException $e) {
-                throw new UnableToLinkException($e->getMessage(), $e->getCode(), $e, $linkText);
-            }
-            $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguageOfTargetPage);
-
-            // Now overlay the page in the target language, in order to have valid title attributes etc.
-            if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
-                $context = clone GeneralUtility::makeInstance(Context::class);
-                $context->setAspect('language', $languageAspect);
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-                $page = $pageRepository->getPageOverlay($page);
-                // Check if the translated page is a shortcut, but the default page wasn't a shortcut, so this is
-                // resolved as well, see ScenarioDTest in functional tests.
-                // Currently not supported: When this is the case (only a translated page is a shortcut),
-                //                          but the page links to a different site.
-                $shortcutPage = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
-                if (!empty($shortcutPage)) {
-                    $page = $shortcutPage;
-                }
-            }
-            // Check if the target page can be access depending on l18n_cfg
-            if (!$tsfe->sys_page->isPageSuitableForLanguage($page, $languageAspect)) {
-                $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
-                if ($siteLanguageOfTargetPage->getLanguageId() === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
-                    throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
-                }
-                // If the requested language is not the default language and the page has no overlay for this language
-                // generating a link would cause a 404 error when using this like if one of those conditions apply:
-                //  - The page is set to be hidden if it is not translated (evaluated in TSFE)
-                //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
-                if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
-                    throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
-                }
-            }
-
-            if ($pageType) {
-                $queryParameters['type'] = (int)$pageType;
-            }
-
-            $treatAsExternalLink = true;
-            // External links are resolved via calling Typolink again (could be anything, really)
-            if ((int)$page['doktype'] === PageRepository::DOKTYPE_LINK) {
-                $conf['parameter'] = $page['url'];
-                unset($conf['parameter.']);
-                // Use "pages.target" as this is the requested field for external links as well
-                if (!isset($conf['extTarget'])) {
-                    $conf['extTarget'] = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
-                }
-                $this->contentObjectRenderer->typoLink($linkText, $conf);
-                $target = $this->contentObjectRenderer->lastTypoLinkTarget;
-                $url = $this->contentObjectRenderer->lastTypoLinkUrl;
-                // If the page external URL is resolved into a URL or email, this should be taken into account when compiling the final link result object
-                if ($this->contentObjectRenderer->lastTypoLinkResult) {
-                    $linkResultType = $this->contentObjectRenderer->lastTypoLinkResult->getType();
-                }
-                if (empty($url)) {
-                    throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
-                }
-            } else {
-                // Generate the URL
-                $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $sectionMark, $conf);
-                // no scheme => always not external
-                if (!$url->getScheme() || !$url->getHost()) {
-                    $treatAsExternalLink = false;
-                } else {
-                    // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
-                    // is on the same site pagetree. If this is the case, we'll treat it as internal
-                    // @todo: currently this does not check if the target page is a mounted page in a different site,
-                    // so it is treating this as an absolute URL, which is wrong
-                    if ($currentSite instanceof Site && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
-                        $treatAsExternalLink = false;
-                    }
-                }
-                $url = (string)$url;
-            }
-            if ($treatAsExternalLink) {
-                $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
-            } else {
-                $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
-                if (empty($target)) {
-                    $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
-                }
-            }
-        } else {
+        if ($siteOfTargetPage == null) {
             throw new UnableToLinkException('Could not link to page with ID: ' . $page['uid'], 1546887172, null, $linkText);
         }
 
-        // If link is to an access restricted page which should be redirected, then find new URL:
+        try {
+            $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
+        } catch (UnableToLinkException $e) {
+            throw new UnableToLinkException($e->getMessage(), $e->getCode(), $e, $linkText);
+        }
+        $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguageOfTargetPage);
+        $pageRepository = $this->buildPageRepository($languageAspect);
+
+        // Now overlay the page in the target language, in order to have valid title attributes etc.
+        if ($siteLanguageOfTargetPage->getLanguageId() > 0) {
+            $page = $pageRepository->getPageOverlay($page);
+            // Check if the translated page is a shortcut, but the default page wasn't a shortcut, so this is
+            // resolved as well, see ScenarioDTest in functional tests.
+            // Currently not supported: When this is the case (only a translated page is a shortcut),
+            //                          but the page links to a different site.
+            $shortcutPage = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
+            if (!empty($shortcutPage)) {
+                $page = $shortcutPage;
+            }
+        }
+        // Check if the target page can be access depending on l18n_cfg
+        if (!$pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($page['l18n_cfg'] ?? 0));
+            if ($siteLanguageOfTargetPage->getLanguageId() === 0 && $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()) {
+                throw new UnableToLinkException('Default language of page  "' . $linkDetails['typoLinkParameter'] . '" is hidden, so "' . $linkText . '" was not linked.', 1551621985, null, $linkText);
+            }
+            // If the requested language is not the default language and the page has no overlay for this language
+            // generating a link would cause a 404 error when using this like if one of those conditions apply:
+            //  - The page is set to be hidden if it is not translated (evaluated in TSFE)
+            //  - The site configuration has a "strict" fallback set (evaluated in the Router - very early)
+            if ($siteLanguageOfTargetPage->getLanguageId() > 0 && !isset($page['_PAGES_OVERLAY']) && ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() || $siteLanguageOfTargetPage->getFallbackType() === 'strict')) {
+                throw new UnableToLinkException('Fallback to default language of page "' . $linkDetails['typoLinkParameter'] . '" is disabled, so "' . $linkText . '" was not linked.', 1551621996, null, $linkText);
+            }
+        }
+
+        $treatAsExternalLink = true;
+        // External links are resolved via calling Typolink again (could be anything, really)
+        if ((int)$page['doktype'] === PageRepository::DOKTYPE_LINK) {
+            $conf['parameter'] = $page['url'];
+            unset($conf['parameter.']);
+            // Use "pages.target" as this is the requested field for external links as well
+            if (!isset($conf['extTarget'])) {
+                $conf['extTarget'] = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
+            }
+            $this->contentObjectRenderer->typoLink($linkText, $conf);
+            $target = $this->contentObjectRenderer->lastTypoLinkTarget;
+            $url = $this->contentObjectRenderer->lastTypoLinkUrl;
+            // If the page external URL is resolved into a URL or email, this should be taken into account when compiling the final link result object
+            if ($this->contentObjectRenderer->lastTypoLinkResult) {
+                $linkResultType = $this->contentObjectRenderer->lastTypoLinkResult->getType();
+            }
+            if (empty($url)) {
+                throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
+            }
+        } else {
+            // Generate the URL
+            $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $fragment, $conf);
+            // no scheme => always not external
+            if (!$url->getScheme() || !$url->getHost()) {
+                $treatAsExternalLink = false;
+            } else {
+                // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
+                // is on the same site pagetree. If this is the case, we'll treat it as internal
+                // @todo: currently this does not check if the target page is a mounted page in a different site,
+                // so it is treating this as an absolute URL, which is wrong
+                if ($currentSite && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
+                    $treatAsExternalLink = false;
+                }
+            }
+            $url = (string)$url;
+        }
+
+        $target = $this->calculateTargetAttribute($page, $conf, $treatAsExternalLink, $target);
+
+        // If link is to an access-restricted page which should be redirected, then find new URL
+        $url = $this->modifyUrlForAccessRestrictedPage($url, $page, $linkDetails['pagetype'] ?? '', $conf);
+
+        // Setting title if blank value to link
+        $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title'] ?? '');
+        $result = new LinkResult($linkResultType, $url);
+        return $result
+            ->withLinkConfiguration($conf)
+            ->withTarget($target)
+            ->withLinkText($linkText);
+    }
+
+    /**
+     * Checks for the stdWrap "section" which returns the fragment for the generated URL.
+     *
+     * Detail: When using a section as an integer, a "c" is added, which referes to a tt_content element.
+     * see https://forge.typo3.org/issues/19832 for further work on this limitation.
+     */
+    protected function calculateUrlFragment(array $conf, array $linkDetails): string
+    {
+        $fragment = trim((string)$this->contentObjectRenderer->stdWrapValue('section', $conf, $linkDetails['fragment'] ?? ''));
+        return ($fragment && MathUtility::canBeInterpretedAsInteger($fragment) ? 'c' : '') . $fragment;
+    }
+
+    /**
+     * Takes all given options into account to calculate the additional GET parameters for the link,
+     * and returns them as a clean array without duplicates.
+     *
+     * - addQueryString
+     * - additionalParams (+ the ones added from "parameter")
+     * - config.linkVars
+     * - type (from "parameter")
+     * - no_cache
+     *
+     * This also does a transformation to remove "L" and "_language" arguments and put this into the $conf array.
+     *
+     * Mount Points are added later-on.
+     */
+    protected function calculateQueryParameters(array &$conf, array $linkDetails): array
+    {
+        if (isset($linkDetails['parameters'])) {
+            $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
+        }
+
+        $queryParameters = [];
+        $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
+        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
+        if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
+            $addQueryParams = '';
+        }
+        parse_str($addQueryParams, $queryParameters);
+        // get config.linkVars and prepend them before the actual GET parameters
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe->linkVars) {
+            $globalQueryParameters = [];
+            parse_str($tsfe->linkVars, $globalQueryParameters);
+            $queryParameters = array_replace_recursive($globalQueryParameters, $queryParameters);
+        }
+        // Disable "?id=", for pages with no site configuration, this is added later-on anyway
+        unset($queryParameters['id']);
+        if ($linkDetails['pagetype'] ?? '') {
+            $queryParameters['type'] = $linkDetails['pagetype'];
+        }
+        $conf['no_cache'] = (string)$this->contentObjectRenderer->stdWrapValue('no_cache', $conf);
+        if ($conf['no_cache'] ?? false) {
+            $queryParameters['no_cache'] = 1;
+        }
+        // Override language property if not being set already, supporting historically 'L' and
+        // modern '_language' arguments, giving '_language' the precedence.
+        if (isset($queryParameters['_language'])) {
+            if (!isset($conf['language'])) {
+                $conf['language'] = $queryParameters['_language'];
+            }
+            unset($queryParameters['_language']);
+        }
+        if (isset($queryParameters['L'])) {
+            if (!isset($conf['language'])) {
+                $conf['language'] = $queryParameters['L'];
+            }
+            unset($queryParameters['L']);
+        }
+        return $queryParameters;
+    }
+
+    /**
+     * Calculates a possible "&MP=" GET parameter for this link when using mount points.
+     */
+    protected function calculateMountPointParameters(array &$page, bool $disableGroupAccessCheck, string $linkText): ?string
+    {
+        // MountPoints, look for closest MPvar:
+        $mountPointPairs = [];
+        $tsfe = $this->getTypoScriptFrontendController();
+        if (!($tsfe->config['config']['MP_disableTypolinkClosestMPvalue'] ?? false)) {
+            $temp_MP = $this->getClosestMountPointValueForPage((int)$page['uid']);
+            if ($temp_MP) {
+                $mountPointPairs['closest'] = $temp_MP;
+            }
+        }
+        // Look for overlay Mount Point:
+        $mount_info = $tsfe->sys_page->getMountPointInfo($page['uid'], $page);
+        if (is_array($mount_info) && $mount_info['overlay']) {
+            $page = $tsfe->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
+            if (empty($page)) {
+                throw new UnableToLinkException('Mount point "' . $mount_info['mount_pid'] . '" was not available, so "' . $linkText . '" was not linked.', 1490987337, null, $linkText);
+            }
+            $mountPointPairs['re-map'] = $mount_info['MPvar'];
+        }
+        // Mount pages are always local and never link to another domain,
+        $addMountPointParameters = !empty($mountPointPairs);
+        // Add "&MP" var, only if the original page was NOT a shortcut to another domain
+        if ($addMountPointParameters && !empty($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
+            $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['_SHORTCUT_ORIGINAL_PAGE_UID']);
+            $currentSite = $this->getCurrentSite();
+            if ($siteOfTargetPage !== $currentSite) {
+                $addMountPointParameters = false;
+            }
+        }
+        if ($addMountPointParameters) {
+            return rawurlencode(implode(',', $mountPointPairs));
+        }
+        return null;
+    }
+
+    /**
+     * Returns the final "target" attribute for a link.
+     */
+    protected function calculateTargetAttribute(array $page, array $conf, bool $treatAsExternalLink, string $target): string
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($treatAsExternalLink) {
+            $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
+        } else {
+            $target = (isset($page['target']) && trim($page['target'])) ? $page['target'] : $target;
+            if (empty($target)) {
+                $target = $this->resolveTargetAttribute($conf, 'target', true, $tsfe->intTarget);
+            }
+        }
+        return $target;
+    }
+
+    /**
+     * If the target page is access restricted, and globally configured to be linked to a different page (e.g. login page)
+     * via config.typolinkLinkAccessRestrictedPages = 123 then the URL is modified.
+     */
+    protected function modifyUrlForAccessRestrictedPage(string $url, array $page, string $overridePageType, array $conf): string
+    {
+        $tsfe = $this->getTypoScriptFrontendController();
         if (empty($conf['linkAccessRestrictedPages'])
             && ($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
             && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
@@ -277,21 +340,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 ],
                 $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
             );
-            $url = $this->contentObjectRenderer->getTypoLink_URL($thePage['uid'] . ($pageType ? ',' . $pageType : ''), $addParams, $target);
-            $url = $this->forceAbsoluteUrl($url, $conf);
+            $url = $this->contentObjectRenderer->getTypoLink_URL($thePage['uid'] . ($overridePageType ? ',' . $overridePageType : ''), $addParams);
         }
-
-        // Setting title if blank value to link
-        $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $page['title']);
-        $result = new LinkResult($linkResultType, $url);
-        return $result
-            ->withLinkConfiguration($conf)
-            ->withTarget($target)
-            ->withLinkText($linkText);
+        return $url;
     }
 
     /**
-     * Resolves page and if a translated page was found, resolves that to it
+     * Resolves page and if a translated page was found, resolves that to its
      * language parent, adjusts `$linkDetails['pageuid']` (for hook processing)
      * and modifies `$configuration['language']` (for language URL generation).
      *
@@ -339,7 +394,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     }
 
     /**
-     * Check if page is a shortcut, then resolve the target page directly
+     * Checks if page is a shortcut, then resolves the target page directly
      */
     protected function resolveShortcutPage(array $page, PageRepository $pageRepository, bool $disableGroupAccessCheck): array
     {
@@ -421,10 +476,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         $targetPageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $queryParameters['_language'] = $siteLanguageOfTargetPage;
 
-        if ($conf['no_cache'] ?? false) {
-            $queryParameters['no_cache'] = 1;
-        }
-
         if ($fragment
             && $useAbsoluteUrl === false
             && $currentSiteLanguage === $siteLanguageOfTargetPage
@@ -464,7 +515,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * @param int $pageId page id
      * @return string MP value, prefixed with &MP= (depending on $raw)
      */
-    protected function getClosestMountPointValueForPage($pageId)
+    protected function getClosestMountPointValueForPage(int $pageId): string
     {
         $tsfe = $this->getTypoScriptFrontendController();
         if (empty($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) || !$tsfe->MP) {
@@ -520,7 +571,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * @param int $pageId Page id to return MPvar value for.
      * @return string
      */
-    public function getMountPointParameterFromRootPointMaps(int $pageId)
+    public function getMountPointParameterFromRootPointMaps(int $pageId): string
     {
         // Create map if not found already
         $config = $this->getTypoScriptFrontendController()->config;
@@ -588,7 +639,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
      * @param int $level Recursion brake. Incremented for each recursive call. 20 is the limit.
      * @see getMountPointParameterFromRootPointMaps()
      */
-    protected function populateMountPointMapForPageRecursively(array &$mountPointMap, int $id, $MP_array = [], $level = 0)
+    protected function populateMountPointMapForPageRecursively(array &$mountPointMap, int $id, array $MP_array = [], int $level = 0): void
     {
         if ($id <= 0) {
             return;
@@ -710,21 +761,18 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     /**
      * Builds PageRepository instance without depending on global context, e.g.
      * not automatically overlaying records based on current request language.
-     *
-     * @return PageRepository
      */
-    protected function buildPageRepository(): PageRepository
+    protected function buildPageRepository(LanguageAspect $languageAspect = null): PageRepository
     {
         // clone global context object (singleton)
         $context = clone GeneralUtility::makeInstance(Context::class);
         $context->setAspect(
             'language',
-            GeneralUtility::makeInstance(LanguageAspect::class)
+            $languageAspect ?? GeneralUtility::makeInstance(LanguageAspect::class)
         );
-        $pageRepository = GeneralUtility::makeInstance(
+        return GeneralUtility::makeInstance(
             PageRepository::class,
             $context
         );
-        return $pageRepository;
     }
 }
