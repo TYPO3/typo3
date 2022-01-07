@@ -90,10 +90,11 @@ class FinisherOptionGenerator extends AbstractProcessor
         }
 
         if (empty($optionValue)) {
-            $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $this->languageService->getLL('default'), $this->languageService->getLL('empty'));
-        } else {
-            $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $this->languageService->getLL('default'));
+            $optionValue = $this->languageService->getLL('empty');
+        } elseif (is_array($optionValue)) {
+            $optionValue = implode(',', $optionValue);
         }
+        $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $this->languageService->getLL('default'), $optionValue);
 
         if (isset($elementConfiguration['config'])) {
             $elementConfiguration['config']['default'] = $optionValue;
