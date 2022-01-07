@@ -570,7 +570,7 @@ class LinkValidatorReport
             </span>
             ' . (($row['headline'] ?? false) ? htmlspecialchars($row['headline']) : '<i>' . htmlspecialchars($languageService->getLL('list.no.headline')) . '</i>') . '
             ' . htmlspecialchars(sprintf($languageService->getLL('list.field'), (!empty($fieldName) ? $fieldName : $row['field'])));
-        $variables['path'] = BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
+        $variables['path'] = BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0);
         $variables['link_title'] = $row['link_title'];
         $variables['linktarget'] = $hookObj->getBrokenUrl($row);
         $response = $row['url_response'];
