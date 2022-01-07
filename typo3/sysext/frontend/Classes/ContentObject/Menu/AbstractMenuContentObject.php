@@ -1244,6 +1244,9 @@ abstract class AbstractMenuContentObject
         // and blank URLs might appear when the realurl encoding is used and a link to the frontpage is generated.
         $attrs['HREF'] = (string)$LD['totalURL'] !== '' ? $LD['totalURL'] : $tsfe->baseUrl;
         $attrs['TARGET'] = $LD['target'] ?? '';
+        $attrs = array_merge($attrs, $LD['ATagParams']);
+        // @todo: prefer to use lower-case href / target to be consistent
+        unset($attrs['href'], $attrs['target']);
         $runtimeCache->set($cacheId, $attrs);
 
         // End showAccessRestrictedPages
@@ -1552,7 +1555,7 @@ abstract class AbstractMenuContentObject
      */
     protected function setATagParts()
     {
-        $params = trim($this->I['val']['ATagParams']) . ($this->I['accessKey']['code'] ?? '');
+        $params = trim($this->I['accessKey']['code'] ?? '');
         $params = $params !== '' ? ' ' . $params : '';
         $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . $params . '>';
         $this->I['A2'] = '</a>';
@@ -1652,12 +1655,19 @@ abstract class AbstractMenuContentObject
         if ($oTarget) {
             $conf['target'] = $oTarget;
         }
+        // $this->I['val'] contains the configuration of the ItemState (e.g. NO / SPC) etc, which should be handed in
+        // to this method instead of accessed directly in the future.
+        if (isset($this->I['val']['ATagParams']) || isset($this->I['val']['ATagParams.'])) {
+            $conf['ATagParams'] = $this->I['val']['ATagParams'] ?? '';
+            $conf['ATagParams.'] = $this->I['val']['ATagParams.'] ?? [];
+        }
         if ($page['sectionIndex_uid'] ?? false) {
             $conf['section'] = $page['sectionIndex_uid'];
         }
         $this->parent_cObj->typoLink('|', $conf);
         $LD = $this->parent_cObj->lastTypoLinkLD;
         $LD['totalURL'] = $this->parent_cObj->lastTypoLinkUrl;
+        $LD['ATagParams'] = $this->parent_cObj->lastTypoLinkResult ? $this->parent_cObj->lastTypoLinkResult->getAttributes() : [];
         return $LD;
     }
 

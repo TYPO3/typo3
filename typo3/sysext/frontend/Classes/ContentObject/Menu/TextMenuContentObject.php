@@ -84,7 +84,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $this->I['accessKey'] = [];
             }
             // Make link tag
-            $this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
             $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
             $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
             if (empty($this->I['linkHREF'])) {
