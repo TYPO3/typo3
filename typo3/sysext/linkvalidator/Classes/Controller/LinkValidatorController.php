@@ -472,7 +472,7 @@ class LinkValidatorController
             'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
             'headline' => $row['headline'],
             'label' => sprintf($languageService->getLL('list.field'), $fieldLabel),
-            'path' => BackendUtility::getRecordPath($row['record_pid'], '', 0),
+            'path' => BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
             'linkTitle' => $row['link_title'],
             'linkTarget' => $hookObj->getBrokenUrl($row),
             'linkStatus' => (bool)($row['url_response']['valid'] ?? false),
