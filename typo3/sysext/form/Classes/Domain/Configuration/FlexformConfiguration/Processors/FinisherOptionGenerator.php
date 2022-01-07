@@ -79,13 +79,11 @@ class FinisherOptionGenerator extends AbstractProcessor
         $languageService = $this->getLanguageService();
         $elementConfiguration['label'] = (string)($elementConfiguration['label'] ?? '');
         if (empty($optionValue)) {
-            $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $languageService->getLL('default'), $languageService->getLL('empty'));
-        } else {
-            if (is_array($optionValue)) {
-                $optionValue = implode(',', $optionValue);
-            }
-            $elementConfiguration['label'] .= sprintf(' (%s: "' . $optionValue . '")', $languageService->getLL('default'));
+            $optionValue = $languageService->getLL('empty');
+        } elseif (is_array($optionValue)) {
+            $optionValue = implode(',', $optionValue);
         }
+        $elementConfiguration['label'] .= sprintf(' (%s: "%s")', $languageService->getLL('default'), $optionValue);
 
         $sheetElements = $this->converterDto->getResult();
         if ($elementConfiguration['section'] ?? false) {
