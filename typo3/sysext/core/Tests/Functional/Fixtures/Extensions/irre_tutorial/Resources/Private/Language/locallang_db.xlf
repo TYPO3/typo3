@@ -17,28 +17,6 @@
 				<source>IRRE Tutorial Test Page</source>
 			</trans-unit>
 
-			<trans-unit id="tx_irretutorial_mnasym_hotel" resname="tx_irretutorial_mnasym_hotel">
-				<source>m:n ASym: Hotels</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnasym_hotel_offer_rel" resname="tx_irretutorial_mnasym_hotel_offer_rel">
-				<source>m:n ASym: Hotels&lt;-&gt;Offers</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnasym_offer" resname="tx_irretutorial_mnasym_offer">
-				<source>m:n ASym: Offers</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnasym_price" resname="tx_irretutorial_mnasym_price">
-				<source>m:n ASym: Prices</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnattr_hotel" resname="tx_irretutorial_mnattr_hotel">
-				<source>m:n Attr: Hotels</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnattr_hotel_offer_rel" resname="tx_irretutorial_mnattr_hotel_offer_rel">
-				<source>m:n Attr: Hotels&lt;-&gt;Offers</source>
-			</trans-unit>
-			<trans-unit id="tx_irretutorial_mnattr_offer" resname="tx_irretutorial_mnattr_offer">
-				<source>m:n Attr: Offers</source>
-			</trans-unit>
-
 			<trans-unit id="tx_irretutorial_hotel.title" resname="tx_irretutorial_hotel.title">
 				<source>Title:</source>
 			</trans-unit>

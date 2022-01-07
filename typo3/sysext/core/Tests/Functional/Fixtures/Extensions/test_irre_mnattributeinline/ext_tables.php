@@ -7,5 +7,5 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 defined('TYPO3') or die();
 
 ExtensionManagementUtility::allowTableOnStandardPages(
-    'tx_irretutorial_mnasym_hotel,tx_irretutorial_mnasym_hotel_offer_rel,tx_irretutorial_mnasym_offer,tx_irretutorial_mnasym_price'
+    'tx_testirremnattributeinline_hotel,tx_testirremnattributeinline_hotel_offer_rel,tx_testirremnattributeinline_offer,tx_testirremnattributeinline_price'
 );

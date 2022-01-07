@@ -3,9 +3,9 @@
 #######################################################################################################################
 
 #
-# Table structure for table 'tx_irretutorial_mnasym_hotel'
+# Table structure for table 'tx_testirremnattributeinline_hotel'
 #
-CREATE TABLE tx_irretutorial_mnasym_hotel
+CREATE TABLE tx_testirremnattributeinline_hotel
 (
 	title tinytext NOT NULL,
 	offers int(11) DEFAULT '0' NOT NULL
@@ -14,9 +14,9 @@ CREATE TABLE tx_irretutorial_mnasym_hotel
 
 
 #
-# Table structure for table 'tx_irretutorial_mnasym_hotel_offer_rel'
+# Table structure for table 'tx_testirremnattributeinline_hotel_offer_rel'
 #
-CREATE TABLE tx_irretutorial_mnasym_hotel_offer_rel
+CREATE TABLE tx_testirremnattributeinline_hotel_offer_rel
 (
 	hotelid int(11) DEFAULT '0' NOT NULL,
 	offerid int(11) DEFAULT '0' NOT NULL,
@@ -28,9 +28,9 @@ CREATE TABLE tx_irretutorial_mnasym_hotel_offer_rel
 
 
 #
-# Table structure for table 'tx_irretutorial_mnasym_offer'
+# Table structure for table 'tx_testirremnattributeinline_offer'
 #
-CREATE TABLE tx_irretutorial_mnasym_offer
+CREATE TABLE tx_testirremnattributeinline_offer
 (
 	title tinytext NOT NULL,
 	hotels int(11) DEFAULT '0' NOT NULL
@@ -39,9 +39,9 @@ CREATE TABLE tx_irretutorial_mnasym_offer
 
 
 #
-# Table structure for table 'tx_irretutorial_mnasym_price'
+# Table structure for table 'tx_testirremnattributeinline_price'
 #
-CREATE TABLE tx_irretutorial_mnasym_price
+CREATE TABLE tx_testirremnattributeinline_price
 (
 	parentid int(11) DEFAULT '0' NOT NULL,
 	title tinytext NOT NULL,
