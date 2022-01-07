@@ -90,17 +90,16 @@ class SelectSingleElement extends AbstractFormElement
         /** @var InlineStackProcessor $inlineStackProcessor */
         $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $uniqueIds = null;
+        $uniqueIds = [];
         if (($this->data['isInlineChild'] ?? false) && ($this->data['inlineParentUid'] ?? false)) {
-            // @todo: At least parts of this if is dead and/or broken: $uniqueIds is filled but never used.
-            // See InlineControlContainer where 'inlineData' 'unique' 'used' is set. What exactly is
-            // this if supposed to do and when should it kick in and what for?
+            // If config[foreign_unique] is set for the parent inline field, all
+            // already used unique ids must be excluded from the select items.
             $inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
             if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
                 && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $field
             ) {
                 $classList[] = 't3js-inline-unique';
-                $uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
+                $uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'] ?? [];
             }
             // hide uid of parent record for symmetric relations
             if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
@@ -111,6 +110,7 @@ class SelectSingleElement extends AbstractFormElement
             ) {
                 $uniqueIds[] = $this->data['inlineParentUid'];
             }
+            $uniqueIds = array_map(static fn ($item) => (int)$item, $uniqueIds);
         }
 
         // Initialization:
@@ -142,6 +142,8 @@ class SelectSingleElement extends AbstractFormElement
         }
 
         foreach ($selectItems as $item) {
+            $selected = $selectedValue === (string)$item[1];
+
             if ($item[1] === '--div--') {
                 // IS OPTGROUP
                 if ($selectItemCounter !== 0) {
@@ -150,10 +152,9 @@ class SelectSingleElement extends AbstractFormElement
                 $selectItemGroups[$selectItemGroupCount]['header'] = [
                     'title' => $item[0],
                 ];
-            } else {
+            } elseif ($selected || !in_array((int)$item[1], $uniqueIds, true)) {
                 // IS ITEM
                 $icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $item[0], $item[0]) : '';
-                $selected = $selectedValue === (string)$item[1];
 
                 if ($selected) {
                     $selectedIcon = $icon;
