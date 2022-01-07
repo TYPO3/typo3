@@ -87,7 +87,7 @@ return [
         'title',
         'price',
     ],
-    'tx_irretutorial_mnasym_hotel' => [
+    'tx_testirremnattributeinline_hotel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -97,7 +97,7 @@ return [
         'title',
         'offers',
     ],
-    'tx_irretutorial_mnasym_hotel_offer_rel' => [
+    'tx_testirremnattributeinline_hotel_offer_rel' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -109,7 +109,7 @@ return [
         'offersort',
         'prices',
     ],
-    'tx_irretutorial_mnasym_offer' => [
+    'tx_testirremnattributeinline_offer' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',
@@ -119,7 +119,7 @@ return [
         'title',
         'hotels',
     ],
-    'tx_irretutorial_mnasym_price' => [
+    'tx_testirremnattributeinline_price' => [
         'cruser_id',
         'sys_language_uid',
         'l18n_parent',

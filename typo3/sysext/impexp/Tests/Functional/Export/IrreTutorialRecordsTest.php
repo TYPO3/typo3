@@ -32,7 +32,7 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mm',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnsymmetric',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
-        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributeinline',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
     ];
 

@@ -294,7 +294,7 @@
 		<price>5467567.00</price>
         <sorting>1024</sorting>
 	</tx_testirreforeignfield_price>
-	<tx_irretutorial_mnasym_hotel>
+	<tx_testirremnattributeinline_hotel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -307,8 +307,8 @@
 		<title>Hotel 1 (m:n ASym)</title>
 		<offers>2</offers>
         <sorting>128</sorting>
-	</tx_irretutorial_mnasym_hotel>
-	<tx_irretutorial_mnasym_hotel_offer_rel>
+	</tx_testirremnattributeinline_hotel>
+	<tx_testirremnattributeinline_hotel_offer_rel>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -322,8 +322,8 @@
 		<hotelsort>2</hotelsort>
 		<offersort>1</offersort>
 		<prices>1</prices>
-	</tx_irretutorial_mnasym_hotel_offer_rel>
-	<tx_irretutorial_mnasym_hotel_offer_rel>
+	</tx_testirremnattributeinline_hotel_offer_rel>
+	<tx_testirremnattributeinline_hotel_offer_rel>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -337,8 +337,8 @@
 		<hotelsort>1</hotelsort>
 		<offersort>1</offersort>
 		<prices>1</prices>
-	</tx_irretutorial_mnasym_hotel_offer_rel>
-	<tx_irretutorial_mnasym_offer>
+	</tx_testirremnattributeinline_hotel_offer_rel>
+	<tx_testirremnattributeinline_offer>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -351,8 +351,8 @@
 		<title>Offer 1 (m:n ASym)</title>
 		<hotels>1</hotels>
         <sorting>128</sorting>
-	</tx_irretutorial_mnasym_offer>
-	<tx_irretutorial_mnasym_offer>
+	</tx_testirremnattributeinline_offer>
+	<tx_testirremnattributeinline_offer>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -365,8 +365,8 @@
 		<title>Offer 2 (m:n ASym)</title>
 		<hotels>1</hotels>
         <sorting>256</sorting>
-	</tx_irretutorial_mnasym_offer>
-	<tx_irretutorial_mnasym_price>
+	</tx_testirremnattributeinline_offer>
+	<tx_testirremnattributeinline_price>
 		<uid>1</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -380,8 +380,8 @@
 		<title>Price 1 1:2 (m:n ASym)</title>
 		<price>678.00</price>
         <sorting>128</sorting>
-	</tx_irretutorial_mnasym_price>
-	<tx_irretutorial_mnasym_price>
+	</tx_testirremnattributeinline_price>
+	<tx_testirremnattributeinline_price>
 		<uid>2</uid>
 		<pid>1</pid>
 		<cruser_id>1</cruser_id>
@@ -395,7 +395,7 @@
 		<title>Price 2 1:1 (m:n ASym)</title>
 		<price>45.00</price>
         <sorting>256</sorting>
-	</tx_irretutorial_mnasym_price>
+	</tx_testirremnattributeinline_price>
 	<tx_testirremnattributesimple_hotel>
 		<uid>1</uid>
 		<pid>1</pid>

@@ -409,41 +409,41 @@
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_mnasym_hotel" type="array">
+			<table index="tx_testirremnattributeinline_hotel" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>Hotel 1 (m:n ASym)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel_offer_rel:2" type="array">
+						<element index="tx_testirremnattributeinline_hotel_offer_rel:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
-						<element index="tx_irretutorial_mnasym_hotel_offer_rel:1" type="array">
+						<element index="tx_testirremnattributeinline_hotel_offer_rel:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_mnasym_hotel_offer_rel" type="array">
+			<table index="tx_testirremnattributeinline_hotel_offer_rel" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
 					<title>1</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel:1" type="array">
+						<element index="tx_testirremnattributeinline_hotel:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel</table>
+							<table>tx_testirremnattributeinline_hotel</table>
 						</element>
-						<element index="tx_irretutorial_mnasym_offer:2" type="array">
+						<element index="tx_testirremnattributeinline_offer:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_offer</table>
+							<table>tx_testirremnattributeinline_offer</table>
 						</element>
-						<element index="tx_irretutorial_mnasym_price:1" type="array">
+						<element index="tx_testirremnattributeinline_price:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_price</table>
+							<table>tx_testirremnattributeinline_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -453,31 +453,31 @@
 					<pid>1</pid>
 					<title>2</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel:1" type="array">
+						<element index="tx_testirremnattributeinline_hotel:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel</table>
+							<table>tx_testirremnattributeinline_hotel</table>
 						</element>
-						<element index="tx_irretutorial_mnasym_offer:1" type="array">
+						<element index="tx_testirremnattributeinline_offer:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_offer</table>
+							<table>tx_testirremnattributeinline_offer</table>
 						</element>
-						<element index="tx_irretutorial_mnasym_price:2" type="array">
+						<element index="tx_testirremnattributeinline_price:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_price</table>
+							<table>tx_testirremnattributeinline_price</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_mnasym_offer" type="array">
+			<table index="tx_testirremnattributeinline_offer" type="array">
 				<rec index="2" type="array">
 					<uid>2</uid>
 					<pid>1</pid>
 					<title>Offer 2 (m:n ASym)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel_offer_rel:1" type="array">
+						<element index="tx_testirremnattributeinline_hotel_offer_rel:1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
@@ -487,15 +487,15 @@
 					<pid>1</pid>
 					<title>Offer 1 (m:n ASym)</title>
 					<relations index="rels" type="array">
-						<element index="tx_irretutorial_mnasym_hotel_offer_rel:2" type="array">
+						<element index="tx_testirremnattributeinline_hotel_offer_rel:2" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 					<softrefs type="array"></softrefs>
 				</rec>
 			</table>
-			<table index="tx_irretutorial_mnasym_price" type="array">
+			<table index="tx_testirremnattributeinline_price" type="array">
 				<rec index="1" type="array">
 					<uid>1</uid>
 					<pid>1</pid>
@@ -660,18 +660,18 @@
 					<item index="4">1</item>
 					<item index="2">1</item>
 				</table>
-				<table index="tx_irretutorial_mnasym_hotel" type="array">
+				<table index="tx_testirremnattributeinline_hotel" type="array">
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_mnasym_hotel_offer_rel" type="array">
+				<table index="tx_testirremnattributeinline_hotel_offer_rel" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
 				</table>
-				<table index="tx_irretutorial_mnasym_offer" type="array">
+				<table index="tx_testirremnattributeinline_offer" type="array">
 					<item index="2">1</item>
 					<item index="1">1</item>
 				</table>
-				<table index="tx_irretutorial_mnasym_price" type="array">
+				<table index="tx_testirremnattributeinline_price" type="array">
 					<item index="1">1</item>
 					<item index="2">1</item>
 				</table>
@@ -1467,7 +1467,7 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_hotel:1" type="array">
+		<tablerow index="tx_testirremnattributeinline_hotel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -1486,17 +1486,17 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 						<element index="1" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:1" type="array">
+		<tablerow index="tx_testirremnattributeinline_hotel_offer_rel:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -1517,7 +1517,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel</table>
+							<table>tx_testirremnattributeinline_hotel</table>
 						</element>
 					</relations>
 				</field>
@@ -1526,7 +1526,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_offer</table>
+							<table>tx_testirremnattributeinline_offer</table>
 						</element>
 					</relations>
 				</field>
@@ -1535,13 +1535,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_price</table>
+							<table>tx_testirremnattributeinline_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_hotel_offer_rel:2" type="array">
+		<tablerow index="tx_testirremnattributeinline_hotel_offer_rel:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -1562,7 +1562,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel</table>
+							<table>tx_testirremnattributeinline_hotel</table>
 						</element>
 					</relations>
 				</field>
@@ -1571,7 +1571,7 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_offer</table>
+							<table>tx_testirremnattributeinline_offer</table>
 						</element>
 					</relations>
 				</field>
@@ -1580,13 +1580,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_price</table>
+							<table>tx_testirremnattributeinline_price</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_offer:2" type="array">
+		<tablerow index="tx_testirremnattributeinline_offer:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
@@ -1605,13 +1605,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>1</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_offer:1" type="array">
+		<tablerow index="tx_testirremnattributeinline_offer:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -1630,13 +1630,13 @@
 					<relations index="itemArray" type="array">
 						<element index="0" type="array">
 							<id>2</id>
-							<table>tx_irretutorial_mnasym_hotel_offer_rel</table>
+							<table>tx_testirremnattributeinline_hotel_offer_rel</table>
 						</element>
 					</relations>
 				</field>
 			</related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_price:1" type="array">
+		<tablerow index="tx_testirremnattributeinline_price:1" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">1</field>
 				<field index="pid" type="integer">1</field>
@@ -1652,7 +1652,7 @@
 			</fieldlist>
 			<related index="rels" type="array"></related>
 		</tablerow>
-		<tablerow index="tx_irretutorial_mnasym_price:2" type="array">
+		<tablerow index="tx_testirremnattributeinline_price:2" type="array">
 			<fieldlist index="data" type="array">
 				<field index="uid" type="integer">2</field>
 				<field index="pid" type="integer">1</field>
