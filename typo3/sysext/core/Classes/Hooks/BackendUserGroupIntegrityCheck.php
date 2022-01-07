@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -57,7 +56,6 @@ class BackendUserGroupIntegrityCheck
                     );
                     /** @var FlashMessageService $flashMessageService */
                     $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                    /** @var FlashMessageQueue $defaultFlashMessageQueue */
                     $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
                     $defaultFlashMessageQueue->enqueue($flashMessage);
                 }

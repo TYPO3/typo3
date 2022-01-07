@@ -338,8 +338,6 @@ class ClassSchema
             $docComment = is_string($docComment) ? $docComment : '';
 
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
-                /* @var \ReflectionParameter $reflectionParameter */
-
                 $parameterName = $reflectionParameter->getName();
 
                 $ignoreValidationParameters = array_filter($annotations, static function ($annotation) use ($parameterName) {

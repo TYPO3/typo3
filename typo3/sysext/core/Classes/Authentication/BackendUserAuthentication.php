@@ -1696,7 +1696,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 }
             }
             if (!$uploadFolder instanceof Folder) {
-                /** @var ResourceStorage $storage */
                 foreach ($this->getFileStorages() as $storage) {
                     if ($storage->isWritable()) {
                         try {

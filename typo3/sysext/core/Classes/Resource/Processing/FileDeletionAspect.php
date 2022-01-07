@@ -119,7 +119,6 @@ final class FileDeletionAspect
             return;
         }
 
-        /** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFile */
         foreach ($this->getProcessedFileRepository()->findAllByOriginalFile($fileObject) as $processedFile) {
             if ($processedFile->exists()) {
                 $processedFile->delete(true);

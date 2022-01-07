@@ -412,7 +412,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
-        /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
@@ -465,7 +464,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {
-        /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();

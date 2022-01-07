@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -573,7 +572,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             }
         }
 
-        /** @var Site[] $newSites */
         $newSites = array_diff_key($siteConfiguration->resolveAllExistingSites(false), $existingSites);
         $importedPages = [];
         if ($import instanceof Import) {

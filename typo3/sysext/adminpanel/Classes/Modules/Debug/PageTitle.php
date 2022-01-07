@@ -77,7 +77,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
             ];
 
             $log = InMemoryLogWriter::$log;
-            /** @var \TYPO3\CMS\Core\Log\LogRecord $logEntry */
             foreach ($log as $logEntry) {
                 if ($logEntry->getComponent() === self::LOG_COMPONENT) {
                     if (isset($logEntry->getData()['orderedTitleProviders'])) {

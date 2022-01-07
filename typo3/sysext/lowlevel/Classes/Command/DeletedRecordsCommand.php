@@ -25,7 +25,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -143,7 +142,6 @@ class DeletedRecordsCommand extends Command
      */
     protected function findAllFlaggedRecordsInPage(int $pageId, int $depth, array $deletedRecords = []): array
     {
-        /** @var QueryBuilder $queryBuilderForPages */
         $queryBuilderForPages = $this->connectionPool
             ->getQueryBuilderForTable('pages');
         $queryBuilderForPages->getRestrictions()->removeAll();

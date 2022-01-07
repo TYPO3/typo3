@@ -190,7 +190,6 @@ class GifBuilder extends GraphicalFunctions
                                     $this->setup[$theKey . '.']['file'] = $fileInfo['processedFile']->getForLocalProcessing(false);
                                 } elseif (!isset($fileInfo['origFile']) && $fileInfo['originalFile'] instanceof File) {
                                     // Use FAL file with getForLocalProcessing to circumvent problems with umlauts, if it is a FAL file (origFile not set)
-                                    /** @var File $originalFile */
                                     $originalFile = $fileInfo['originalFile'];
                                     $this->setup[$theKey . '.']['file'] = $originalFile->getForLocalProcessing(false);
                                 } else {
@@ -213,7 +212,6 @@ class GifBuilder extends GraphicalFunctions
                                         if (($maskInfo['processedFile'] ?? null) instanceof ProcessedFile) {
                                             $this->setup[$theKey . '.']['mask'] = $maskInfo['processedFile']->getForLocalProcessing(false);
                                         } elseif (!isset($maskInfo['origFile']) && $maskInfo['originalFile'] instanceof File) {
-                                            /** @var File $originalFile */
                                             $originalFile = $maskInfo['originalFile'];
                                             $this->setup[$theKey . '.']['mask'] = $originalFile->getForLocalProcessing(false);
                                         } else {

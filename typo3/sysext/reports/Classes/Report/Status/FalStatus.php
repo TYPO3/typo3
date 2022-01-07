@@ -59,7 +59,6 @@ class FalStatus implements StatusProviderInterface
         $storageObjects = $storageRepository->findAll();
         $storages = [];
 
-        /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject */
         foreach ($storageObjects as $storageObject) {
 
             // We only check missing files for storages that are online

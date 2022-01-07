@@ -1402,7 +1402,6 @@ class LocalDriverTest extends BaseTestCase
             'targetFolder' => [],
         ]);
         $subject = $this->createDriver();
-        /** @var LocalDriver $subject */
         $subject->moveFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'someFolder');
         self::assertFileExists($this->getUrlInMount('/targetFolder/someFolder/'));
         self::assertEquals($fileContents, file_get_contents($this->getUrlInMount('/targetFolder/someFolder/file')));

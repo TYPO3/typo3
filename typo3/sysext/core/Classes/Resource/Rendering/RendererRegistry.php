@@ -70,7 +70,6 @@ class RendererRegistry implements SingletonInterface
             // priority in the same order as they were added to the registry.
             $classNames = array_reverse($this->classNames);
             foreach ($classNames as $className) {
-                /** @var FileRendererInterface $object */
                 $object = $this->createRendererInstance($className);
                 $this->instances[] = $object;
             }
@@ -118,7 +117,6 @@ class RendererRegistry implements SingletonInterface
     {
         $matchingFileRenderer = null;
 
-        /** @var FileRendererInterface $fileRenderer */
         foreach ($this->getRendererInstances() as $fileRenderer) {
             if ($fileRenderer->canRender($file)) {
                 $matchingFileRenderer = $fileRenderer;

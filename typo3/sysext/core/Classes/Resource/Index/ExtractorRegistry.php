@@ -65,7 +65,6 @@ class ExtractorRegistry implements SingletonInterface
 
             $extractors = array_reverse($this->extractors);
             foreach ($extractors as $className) {
-                /** @var ExtractorInterface $object */
                 $object = $this->createExtractorInstance($className);
                 $this->instances[] = $object;
             }

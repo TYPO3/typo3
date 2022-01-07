@@ -822,7 +822,6 @@ class PackageManager implements SingletonInterface
             throw new InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1436201329);
         }
 
-        /** @var PackageInterface $package */
         $package = $this->packages[$packageKey];
         $packagePath = $package->getPackagePath();
         $newPackage = new Package($this, $packageKey, $packagePath);
