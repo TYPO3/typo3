@@ -68,7 +68,10 @@ class ListModule extends AbstractNode
         if (isset($options['pid'])) {
             // pid configured in options - use it
             $pid = $options['pid'];
-        } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) && (int)$GLOBALS['TCA'][$table]['ctrl'] === 1) {
+        } elseif (
+            isset($GLOBALS['TCA'][$table]['ctrl']['rootLevel'])
+            && (int)$GLOBALS['TCA'][$table]['ctrl']['rootLevel'] === 1
+        ) {
             // Target table can only exist on root level - set 0 as pid
             $pid = 0;
         }
