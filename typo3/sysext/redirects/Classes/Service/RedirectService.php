@@ -86,23 +86,30 @@ class RedirectService implements LoggerAwareInterface
                 continue;
             }
 
-            $possibleRedirects = [];
-            // check if a flat redirect matches
-            if (!empty($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
-                $possibleRedirects = $allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'];
-            }
             // check if a flat redirect matches with the Query applied
             if (!empty($query)) {
                 $pathWithQuery = rtrim($path, '/') . '?' . ltrim($query, '?');
                 if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery])) {
-                    $possibleRedirects = $allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery];
+                    if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery])) {
+                        return $matchedRedirect;
+                    }
                 } else {
                     $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . ltrim($query, '?');
                     if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash])) {
-                        $possibleRedirects = $allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash];
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                            return $matchedRedirect;
+                        }
                     }
                 }
             }
+
+            // check if a flat redirect matches
+            if (!empty($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
+                if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
+                    return $matchedRedirect;
+                }
+            }
+
             // check all redirects that are registered as regex
             if (!empty($allRedirects[$domainName]['regexp'])) {
                 $allRegexps = array_keys($allRedirects[$domainName]['regexp']);
@@ -113,7 +120,9 @@ class RedirectService implements LoggerAwareInterface
                 foreach ($allRegexps as $regexp) {
                     $matchResult = @preg_match((string)$regexp, $regExpPath);
                     if ($matchResult > 0) {
-                        $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['regexp'][$regexp])) {
+                            return $matchedRedirect;
+                        }
                         continue;
                     }
 
@@ -130,17 +139,12 @@ class RedirectService implements LoggerAwareInterface
                     if (!empty($query)) {
                         $matchResult = preg_match((string)$regexp, $path);
                         if ($matchResult > 0) {
-                            $possibleRedirects += $allRedirects[$domainName]['regexp'][$regexp];
+                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['regexp'][$regexp])) {
+                                return $matchedRedirect;
+                            }
                             continue;
                         }
                     }
-                }
-            }
-
-            foreach ($possibleRedirects as $possibleRedirect) {
-                // check starttime and endtime for all existing records
-                if ($this->isRedirectActive($possibleRedirect)) {
-                    return $possibleRedirect;
                 }
             }
         }
@@ -404,5 +408,19 @@ class RedirectService implements LoggerAwareInterface
             }
         }
         return $linkDetails;
+    }
+
+    /**
+     * Checks all possible redirects and return the first possible and active redirect if available.
+     */
+    protected function getFirstActiveRedirectFromPossibleRedirects(array $possibleRedirects): ?array
+    {
+        foreach ($possibleRedirects as $possibleRedirect) {
+            if ($this->isRedirectActive($possibleRedirect)) {
+                return $possibleRedirect;
+            }
+        }
+
+        return null;
     }
 }
