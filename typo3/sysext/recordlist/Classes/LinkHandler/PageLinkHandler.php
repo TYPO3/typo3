@@ -178,7 +178,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             foreach ($contentElements as &$contentElement) {
                 BackendUtility::workspaceOL('tt_content', $contentElement);
                 $contentElement['url'] = $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId, 'fragment' => $contentElement['uid']]);
-                $contentElement['isSelected'] = !empty($this->linkParts) && (int)$this->linkParts['url']['fragment'] === (int)$contentElement['uid'];
+                $contentElement['isSelected'] = (int)($this->linkParts['url']['fragment'] ?? 0) === (int)$contentElement['uid'];
                 $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, Icon::SIZE_SMALL)->render();
                 $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
             }
