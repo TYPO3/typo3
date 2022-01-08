@@ -461,7 +461,7 @@ options.partialRootPaths
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
 
 :aspect:`Description`
-      Fluid layout paths.
+      Fluid partial paths.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.layoutrootpaths:
@@ -488,7 +488,7 @@ options.layoutRootPaths
       - :ref:`"Email finisher"<apireference-finisheroptions-emailfinisher>`
 
 :aspect:`Description`
-      Fluid partial paths.
+      Fluid layout paths.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.emailtoreceiver.options.variables:
