@@ -498,14 +498,14 @@ class SearchController extends ActionController
                 $copiedRow = $row;
                 unset($copiedRow['static_page_arguments']);
                 $title = $this->linkPageATagWrap(
-                    $title,
+                    htmlspecialchars($title),
                     $this->linkPage($row['page_id'], $copiedRow)
                 );
             }
         } else {
             // Else the page
             $title = $this->linkPageATagWrap(
-                $title,
+                htmlspecialchars($title),
                 $this->linkPage($row['data_page_id'], $row)
             );
         }
@@ -1613,7 +1613,7 @@ class SearchController extends ActionController
     /**
      * Create a tag for "path" key in search result
      *
-     * @param string $linkText Link text (nodeValue)
+     * @param string $linkText Link text (nodeValue) (should be hsc'ed already)
      * @param array $linkData
      * @return string HTML <A> tag wrapped title string.
      */
@@ -1628,7 +1628,7 @@ class SearchController extends ActionController
         return sprintf(
             '<a %s>%s</a>',
             GeneralUtility::implodeAttributes($attributes, true),
-            htmlspecialchars($linkText, ENT_QUOTES | ENT_HTML5)
+            $linkText
         );
     }
 
