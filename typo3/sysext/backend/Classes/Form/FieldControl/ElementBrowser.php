@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -76,14 +78,80 @@ class ElementBrowser extends AbstractNode
         // Remove any white-spaces from the allowed extension lists
         $elementBrowserAllowed = implode(',', GeneralUtility::trimExplode(',', $allowed, true));
 
+        // Initialize link attributes
+        $linkAttributes = [
+            'class' => 't3js-element-browser',
+            'data-mode' => htmlspecialchars($elementBrowserType),
+            'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix),
+        ];
+
+        // Add the default entry point - if found
+        $linkAttributes = $this->addEntryPoint($table, $fieldName, $config, $linkAttributes);
+
         return [
             'iconIdentifier' => 'actions-insert-record',
             'title' => $title,
-            'linkAttributes' => [
-                'class' => 't3js-element-browser',
-                'data-mode' => htmlspecialchars($elementBrowserType),
-                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $objectPrefix),
-            ],
+            'linkAttributes' => $linkAttributes,
         ];
+    }
+
+    /**
+     * Try to resolve a configured default entry point - page / folder
+     * to be expanded - and add it to the link attributes if found.
+     */
+    protected function addEntryPoint(string $table, string $fieldName, array $fieldConfig, array $linkAttributes): array
+    {
+        if (!isset($fieldConfig['entryPoints']) || !is_array($fieldConfig['entryPoints'])) {
+            // Early return in case no entry points are defined
+            return $linkAttributes;
+        }
+
+        // Fetch the configured default entry point (which might be a marker)
+        $entryPoint = (string)($fieldConfig['entryPoints']['_default'] ?? '');
+
+        // In case no default entry point is given, check if we deal with type=db and only one allowed table
+        if ($entryPoint === '') {
+            if (($fieldConfig['internal_type'] ?? '') === 'folder') {
+                // Return for internal type folder as this requires the "_default" key to be set
+                return $linkAttributes;
+            }
+            // Check for the allowed tables, if only one table is allowed check if an entry point is defined for it
+            $allowed = GeneralUtility::trimExplode(',', $fieldConfig['allowed'] ?? '', true);
+            if (count($allowed) === 1 && isset($fieldConfig['entryPoints'][$allowed[0]])) {
+                // Use the entry point for the single table as default
+                $entryPoint = (string)$fieldConfig['entryPoints'][$allowed[0]];
+            }
+            if ($entryPoint === '') {
+                // Return if still empty
+                return $linkAttributes;
+            }
+        }
+
+        // Check and resolve possible marker
+        if (str_starts_with($entryPoint, '###') && str_ends_with($entryPoint, '###')) {
+            if ($entryPoint === '###CURRENT_PID###') {
+                // Use the current pid
+                $entryPoint = (string)$this->data['effectivePid'];
+            } elseif ($entryPoint === '###SITEROOT###' && ($this->data['site'] ?? null) instanceof Site) {
+                // Use the root page id from the current site
+                $entryPoint = (string)$this->data['site']->getRootPageId();
+            } else {
+                // Check for special TSconfig marker
+                $TSconfig = BackendUtility::getTCEFORM_TSconfig($table, ['pid' => $this->data['effectivePid']]);
+                $keyword = substr($entryPoint, 3, -3);
+                if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
+                    $entryPoint = (string)($TSconfig[$fieldName][$keyword] ?? '');
+                } else {
+                    $entryPoint = (string)($TSconfig['_' . $keyword] ?? '');
+                }
+            }
+        }
+
+        // Add the entry point to the link attribute - if resolved
+        if ($entryPoint !== '') {
+            $linkAttributes['data-entry-point'] = htmlspecialchars($entryPoint);
+        }
+
+        return $linkAttributes;
     }
 }

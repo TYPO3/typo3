@@ -15,77 +15,43 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldControl;
+namespace TYPO3\CMS\Backend\Tests\Unit\Form\FieldWizard;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Backend\Form\FieldControl\ElementBrowser;
+use TYPO3\CMS\Backend\Form\FieldWizard\TableList;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class ElementBrowserTest extends UnitTestCase
+class TableListTest extends UnitTestCase
 {
     use ProphecyTrait;
 
     /**
      * @test
-     */
-    public function renderTrimsAllowedValuesFromConfigSection(): void
-    {
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
-            'fieldName' => 'somefield',
-            'isInlineChild' => false,
-            'tableName' => 'tt_content',
-            'inlineStructure' => [],
-            'parameterArray' => [
-                'itemFormElName' => '',
-                'fieldConf' => [
-                    'config' => [
-                        'allowed' => 'be_users, be_groups',
-                    ],
-                ],
-            ],
-        ]);
-
-        $result = $elementBrowser->render();
-        self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
-    }
-
-    /**
-     * @test
-     */
-    public function renderTrimsAllowedValuesFromAppearanceSection(): void
-    {
-        $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
-            'fieldName' => 'somefield',
-            'isInlineChild' => false,
-            'tableName' => 'tt_content',
-            'inlineStructure' => [],
-            'parameterArray' => [
-                'itemFormElName' => '',
-                'fieldConf' => [
-                    'config' => [
-                        'appearance' => [
-                            'elementBrowserAllowed' => 'be_users, be_groups',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-        $result = $elementBrowser->render();
-        self::assertSame($result['linkAttributes']['data-params'], '|||be_users,be_groups|');
-    }
-
-    /**
-     * @test
      * @dataProvider renderResolvesEntryPointDataProvider
      */
-    public function renderResolvesEntryPoint(array $config, string $expected): void
+    public function renderResolvesEntryPoint(array $config, array $expected): void
     {
+        $GLOBALS['TCA'] = [];
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturn('');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+
+        $iconProphecy = $this->prophesize(Icon::class);
+        $iconProphecy->render(Argument::any())->willReturn('icon html');
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
+
         $nodeFactory = $this->prophesize(NodeFactory::class);
-        $elementBrowser = new ElementBrowser($nodeFactory->reveal(), [
+        $tableList = new TableList($nodeFactory->reveal(), [
             'fieldName' => 'somefield',
             'isInlineChild' => false,
             'effectivePid' => 123,
@@ -99,8 +65,15 @@ class ElementBrowserTest extends UnitTestCase
                 ],
             ],
         ]);
-        $result = $elementBrowser->render();
-        self::assertEquals($expected, $result['linkAttributes']['data-entry-point'] ?? '');
+        $result = $tableList->render();
+
+        if ($expected === []) {
+            self::assertStringNotContainsString('data-entry-point', $result['html']);
+        }
+
+        foreach ($expected as $value) {
+            self::assertStringContainsString($value, $result['html']);
+        }
     }
 
     public function renderResolvesEntryPointDataProvider(): \Generator
@@ -112,7 +85,7 @@ class ElementBrowserTest extends UnitTestCase
                     '_default' => 123,
                 ],
             ],
-            '123',
+            [],
         ];
         yield 'One table' => [
             [
@@ -121,7 +94,9 @@ class ElementBrowserTest extends UnitTestCase
                     'pages' => 123,
                 ],
             ],
-            '123',
+            [
+                'data-params="|||pages" data-entry-point="123"',
+            ],
         ];
         yield 'One table with default' => [
             [
@@ -130,7 +105,9 @@ class ElementBrowserTest extends UnitTestCase
                     '_default' => 123,
                 ],
             ],
-            '123',
+            [
+                'data-params="|||pages" data-entry-point="123"',
+            ],
         ];
         yield 'One table with default and table definition' => [
             [
@@ -140,7 +117,9 @@ class ElementBrowserTest extends UnitTestCase
                     'pages' => 124,
                 ],
             ],
-            '123',
+            [
+                'data-params="|||pages" data-entry-point="124"',
+            ],
         ];
         yield 'One table with invalid configuration' => [
             [
@@ -149,9 +128,15 @@ class ElementBrowserTest extends UnitTestCase
                     'some_table' => 123,
                 ],
             ],
-            '',
+            [],
         ];
-        yield 'Two tables without _defualt' => [
+        yield 'One table without entry point configuration' => [
+            [
+                'allowed' => 'pages',
+            ],
+            [],
+        ];
+        yield 'Two tables without _default' => [
             [
                 'allowed' => 'pages,some_table',
                 'entryPoints' => [
@@ -159,9 +144,24 @@ class ElementBrowserTest extends UnitTestCase
                     'some_table' => 124,
                 ],
             ],
-            '',
+            [
+                'data-params="|||pages" data-entry-point="123"',
+                'data-params="|||some_table" data-entry-point="124"',
+            ],
         ];
-        yield 'Two tables with _defualt' => [
+        yield 'Two tables with just _default' => [
+            [
+                'allowed' => 'pages,some_table',
+                'entryPoints' => [
+                    '_default' => 123,
+                ],
+            ],
+            [
+                'data-params="|||pages" data-entry-point="123"',
+                'data-params="|||some_table" data-entry-point="123"',
+            ],
+        ];
+        yield 'Two tables with _default' => [
             [
                 'allowed' => 'pages,some_table',
                 'entryPoints' => [
@@ -170,52 +170,42 @@ class ElementBrowserTest extends UnitTestCase
                     'some_table' => 125,
                 ],
             ],
-            '123',
-        ];
-        yield 'Folder' => [
             [
-                'internal_type' => 'folder',
-                'entryPoints' => [
-                    '_default' => '1:/storage/',
-                ],
+                'data-params="|||pages" data-entry-point="124"',
+                'data-params="|||some_table" data-entry-point="125"',
             ],
-            '1:/storage/',
-        ];
-        yield 'Folder without mandatory _default' => [
-            [
-                'internal_type' => 'folder',
-                'entryPoints' => [
-                    'file' => 123,
-                ],
-            ],
-            '',
         ];
         yield 'Entry point is escaped' => [
             [
-                'internal_type' => 'folder',
+                'allowed' => 'pages',
                 'entryPoints' => [
-                    '_default' => '1:/<script>alert(1)</script>/',
+                    'pages' => '<script>alert(1)</script>',
                 ],
+            ], [
+                'data-params="|||pages" data-entry-point="&lt;script&gt;alert(1)&lt;/script&gt;"',
             ],
-            '1:/&lt;script&gt;alert(1)&lt;/script&gt;/',
         ];
         yield 'Pid placeholder is resolved' => [
             [
-                'allowed' => '*',
+                'allowed' => 'pages',
                 'entryPoints' => [
                     '_default' => '###CURRENT_PID###',
                 ],
             ],
-            '123',
+            [
+                'data-params="|||pages" data-entry-point="123"',
+            ],
         ];
         yield 'Site placeholder is resolved' => [
             [
-                'allowed' => '*',
+                'allowed' => 'pages',
                 'entryPoints' => [
                     '_default' => '###SITEROOT###',
                 ],
             ],
-            '123',
+            [
+                'data-params="|||pages" data-entry-point="123"',
+            ],
         ];
     }
 }

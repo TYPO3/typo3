@@ -110,11 +110,12 @@ export = (function() {
    *
    * @param {string} mode can be "db" or "file"
    * @param {string} params additional params for the browser window
+   * @param {string} entryPoint the entry point, which should be expanded by default
    */
-  FormEngine.openPopupWindow = function(mode: string, params: string): JQuery {
+  FormEngine.openPopupWindow = function(mode: string, params: string, entryPoint: string): JQuery {
     return Modal.advanced({
       type: Modal.types.iframe,
-      content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
+      content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params + (entryPoint ? ('&' + (mode === 'db' ? 'expandPage' : 'expandFolder') + '=' + entryPoint) : ''),
       size: Modal.sizes.large
     });
   };
@@ -405,8 +406,9 @@ export = (function() {
       const $me = $(e.currentTarget);
       const mode = $me.data('mode');
       const params = $me.data('params');
+      const entryPoint = $me.data('entryPoint');
 
-      FormEngine.openPopupWindow(mode, params);
+      FormEngine.openPopupWindow(mode, params, entryPoint);
     }).on('click', '[data-formengine-field-change-event="click"]', (evt: Event) => {
       const items = JSON.parse((evt.currentTarget as HTMLElement).dataset.formengineFieldChangeItems);
       FormEngine.processOnFieldChange(items, evt);

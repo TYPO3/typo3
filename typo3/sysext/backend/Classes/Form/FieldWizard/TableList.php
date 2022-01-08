@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Form\FieldWizard;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -58,7 +60,7 @@ class TableList extends AbstractNode
                 $allowedTablesHtml[] =  htmlspecialchars($label);
                 $allowedTablesHtml[] = '</span>';
             } else {
-                $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
+                $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? '');
                 $icon = $iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
                 if ((bool)($config['fieldControl']['elementBrowser']['disabled'] ?? false)) {
                     $allowedTablesHtml[] = '<span class="tablelist-item-nolink">';
@@ -66,10 +68,20 @@ class TableList extends AbstractNode
                     $allowedTablesHtml[] =  htmlspecialchars($label);
                     $allowedTablesHtml[] = '</span>';
                 } else {
-                    $allowedTablesHtml[] = '<a href="#" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars($itemName . '|||' . $tableName) . '">';
+                    // Initialize attributes
+                    $attributes = [
+                        'class' => 'btn btn-default t3js-element-browser',
+                        'data-mode' => 'db',
+                        'data-params' => $itemName . '|||' . $tableName,
+                    ];
+
+                    // Add the entry point - if found
+                    $attributes = $this->addEntryPoint($tableName, $config, $attributes);
+
+                    $allowedTablesHtml[] = '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>';
                     $allowedTablesHtml[] =  $icon;
                     $allowedTablesHtml[] =  htmlspecialchars($label);
-                    $allowedTablesHtml[] = '</a>';
+                    $allowedTablesHtml[] = '</button>';
                 }
             }
         }
@@ -81,6 +93,53 @@ class TableList extends AbstractNode
 
         $result['html'] = implode(LF, $html);
         return $result;
+    }
+
+    /**
+     * Try to resolve a configured default entry point - page / folder
+     * to be expanded - and add it to the attributes if found.
+     */
+    protected function addEntryPoint(string $tableName, array $fieldConfig, array $attributes): array
+    {
+        if (!isset($fieldConfig['entryPoints']) || !is_array($fieldConfig['entryPoints'])) {
+            // Early return in case no entry points are defined
+            return $attributes;
+        }
+
+        // Fetch the configured value (which might be a marker) - falls back to _default
+        $entryPoint = (string)($fieldConfig['entryPoints'][$tableName] ?? $fieldConfig['entryPoints']['_default'] ?? '');
+
+        if ($entryPoint === '') {
+            // In case no entry point exists for the given table and also no default is defined, return
+            return $attributes;
+        }
+
+        // Check and resolve possible marker
+        if (str_starts_with($entryPoint, '###') && str_ends_with($entryPoint, '###')) {
+            if ($entryPoint === '###CURRENT_PID###') {
+                // Use the current pid
+                $entryPoint = (string)$this->data['effectivePid'];
+            } elseif ($entryPoint === '###SITEROOT###' && ($this->data['site'] ?? null) instanceof Site) {
+                // Use the root page id from the current site
+                $entryPoint = (string)$this->data['site']->getRootPageId();
+            } else {
+                // Check for special TSconfig marker
+                $TSconfig = BackendUtility::getTCEFORM_TSconfig($this->data['tableName'], ['pid' => $this->data['effectivePid']]);
+                $keyword = substr($entryPoint, 3, -3);
+                if (str_starts_with($keyword, 'PAGE_TSCONFIG_')) {
+                    $entryPoint = (string)($TSconfig[$this->data['fieldName']][$keyword] ?? '');
+                } else {
+                    $entryPoint = (string)($TSconfig['_' . $keyword] ?? '');
+                }
+            }
+        }
+
+        // Add the entry point to the attribute - if resolved
+        if ($entryPoint !== '') {
+            $attributes['data-entry-point'] = $entryPoint;
+        }
+
+        return $attributes;
     }
 
     /**
