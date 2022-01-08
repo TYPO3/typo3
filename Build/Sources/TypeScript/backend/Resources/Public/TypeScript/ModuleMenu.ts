@@ -379,20 +379,14 @@ class ModuleMenu {
    * @returns {JQueryDeferred<TriggerRequest>}
    */
   private openInNavFrame(url: string, params: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
-    const navUrl = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
+    const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
     const currentUrl = Viewport.NavigationContainer.getUrl();
     const deferred = Viewport.NavigationContainer.setUrl(
-      url,
+      urlToLoad,
       new TriggerRequest('typo3.openInNavFrame', interactionRequest),
     );
-    if (currentUrl !== navUrl) {
-      // if deferred is already resolved, execute directly
-      if (deferred.state() === 'resolved') {
-        Viewport.NavigationContainer.refresh();
-        // otherwise hand in future callback
-      } else {
-        deferred.then(Viewport.NavigationContainer.refresh);
-      }
+    if (currentUrl === urlToLoad) {
+      deferred.then(Viewport.NavigationContainer.refresh);
     }
     return deferred;
   }
