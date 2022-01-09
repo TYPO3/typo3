@@ -152,9 +152,11 @@ class ElementBrowserPageTreeView extends BrowseTreeView
      */
     public function PM_ATagWrap($bMark = '', $isOpen = false)
     {
+        $bMark = htmlspecialchars((string)$bMark);
+        $anchor = $bMark ? '#' . $bMark : '';
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
         return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed')
-            . '" href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . '"' . htmlspecialchars($name) . '><i class="fa"></i></a>';
+            . '" href="' . htmlspecialchars($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . $anchor . '"' . $name . '><i class="fa"></i></a>';
     }
 }
