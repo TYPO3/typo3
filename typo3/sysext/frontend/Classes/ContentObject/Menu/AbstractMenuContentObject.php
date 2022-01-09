@@ -317,7 +317,7 @@ abstract class AbstractMenuContentObject
             if (($this->conf['special'] ?? '') === 'directory') {
                 $value = $this->parent_cObj->stdWrapValue('value', $this->conf['special.'] ?? [], null);
                 if ($value === '') {
-                    $value = $tsfe->page['uid'];
+                    $value = (string)$tsfe->id;
                 }
                 $directoryLevel = (int)$tsfe->tmpl->getRootlineLevel($value);
             }
@@ -587,7 +587,7 @@ abstract class AbstractMenuContentObject
         $menuItems = [];
         // Getting current page record NOT overlaid by any translation:
         $tsfe = $this->getTypoScriptFrontendController();
-        $currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $tsfe->page['uid']);
+        $currentPageWithNoOverlay = $this->sys_page->getRawRecord('pages', $tsfe->id);
 
         if ($specialValue === 'auto') {
             $site = $this->getCurrentSite();
@@ -604,12 +604,12 @@ abstract class AbstractMenuContentObject
         foreach ($languageItems as $sUid) {
             // Find overlay record:
             if ($sUid) {
-                $lRecs = $this->sys_page->getPageOverlay($tsfe->page['uid'], $sUid);
+                $lRecs = $this->sys_page->getPageOverlay($currentPageWithNoOverlay, $sUid);
             } else {
                 $lRecs = [];
             }
             // Checking if the "disabled" state should be set.
-            $pageTranslationVisibility = new PageTranslationVisibility((int)($tsfe->page['l18n_cfg'] ?? 0));
+            $pageTranslationVisibility = new PageTranslationVisibility((int)($currentPageWithNoOverlay['l18n_cfg'] ?? 0));
             if ($pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists() && $sUid &&
                 empty($lRecs) || $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() &&
                 (!$sUid || empty($lRecs)) ||
@@ -645,9 +645,9 @@ abstract class AbstractMenuContentObject
         $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         if ($specialValue == '') {
-            $specialValue = $tsfe->page['uid'];
+            $specialValue = $tsfe->id;
         }
-        $items = GeneralUtility::intExplode(',', $specialValue);
+        $items = GeneralUtility::intExplode(',', (string)$specialValue);
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
         foreach ($items as $id) {
             $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps($id);
@@ -737,9 +737,9 @@ abstract class AbstractMenuContentObject
         $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
         if ($specialValue == '') {
-            $specialValue = $tsfe->page['uid'];
+            $specialValue = $tsfe->id;
         }
-        $items = GeneralUtility::intExplode(',', $specialValue);
+        $items = GeneralUtility::intExplode(',', (string)$specialValue);
         if (MathUtility::canBeInterpretedAsInteger($this->conf['special.']['depth'] ?? null)) {
             $depth = MathUtility::forceIntegerInRange($this->conf['special.']['depth'], 1, 20);
         } else {
@@ -804,7 +804,7 @@ abstract class AbstractMenuContentObject
         $menuItems = [];
         [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
-            $specialValue = $tsfe->page['uid'];
+            $specialValue = $tsfe->id;
         }
         if (($this->conf['special.']['setKeywords'] ?? false) || ($this->conf['special.']['setKeywords.'] ?? false)) {
             $kw = (string)$this->parent_cObj->stdWrapValue('setKeywords', $this->conf['special.'] ?? []);
@@ -900,7 +900,7 @@ abstract class AbstractMenuContentObject
 
             $result = $queryBuilder->execute();
             while ($row = $result->fetchAssociative()) {
-                $tsfe->sys_page->versionOL('pages', $row, true);
+                $this->sys_page->versionOL('pages', $row, true);
                 if (is_array($row)) {
                     $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
                 }
