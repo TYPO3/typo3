@@ -583,4 +583,10 @@ return [
             'Feature-96526-PSR-14EventForModifyingPageModuleContent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'typolinkProcessing\'][\'typolinkModifyParameterForPageLinks\']' => [
+        'restFiles' => [
+            'Breaking-87616-RemovedHookForAlteringPageLinks.rst',
+            'Feature-87616-PSR-14EventForModifyingPageLinkGeneration.rst',
+        ],
+    ],
 ];

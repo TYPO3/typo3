@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -40,8 +41,8 @@ use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Frontend\ContentObject\TypolinkModifyLinkConfigForPageLinksHookInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\ModifyPageLinkConfigurationEvent;
 
 /**
  * Builds a TypoLink to a certain page
@@ -52,6 +53,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         $linkResultType = LinkService::TYPE_PAGE;
         $tsfe = $this->getTypoScriptFrontendController();
+        $conf['additionalParams'] ??= '';
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
             // If no id is given
             $linkDetails['pageuid'] = $tsfe->id;
@@ -71,16 +73,6 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             throw new UnableToLinkException('Page id "' . $linkDetails['typoLinkParameter'] . '" was not found, so "' . $linkText . '" was not linked.', 1490987336, null, $linkText);
         }
 
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks'] ?? [] as $classData) {
-            $hookObject = GeneralUtility::makeInstance($classData);
-            if (!$hookObject instanceof TypolinkModifyLinkConfigForPageLinksHookInterface) {
-                throw new \UnexpectedValueException('$hookObject must implement interface ' . TypolinkModifyLinkConfigForPageLinksHookInterface::class, 1483114905);
-            }
-            /** @var TypolinkModifyLinkConfigForPageLinksHookInterface $hookObject */
-            $conf = $hookObject->modifyPageLinkConfiguration($conf, $linkDetails, $page);
-        }
-        $conf['additionalParams'] ??= '';
-
         $fragment = $this->calculateUrlFragment($conf, $linkDetails);
         $queryParameters = $this->calculateQueryParameters($conf, $linkDetails);
         // Add MP parameter
@@ -88,6 +80,13 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($mountPointParameter !== null) {
             $queryParameters['MP'] = $mountPointParameter;
         }
+
+        $event = new ModifyPageLinkConfigurationEvent($conf, $linkDetails, $page, $queryParameters, $fragment);
+        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        $conf = $event->getConfiguration();
+        $page = $event->getPage();
+        $queryParameters = $event->getQueryParameters();
+        $fragment = $event->getFragment();
 
         // Check if the target page has a site configuration
         try {

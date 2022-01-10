@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 /**
  * interface for classes which hook into \TYPO3\CMS\Frontend\ContentObjectRenderer and wish to modify the typolink
  * configuration of the page link.
+ * @deprecated not in use anymore since TYPO3 v12, will be removed in TYPO3 13. Only stays for adding compatibility for TYPO3 v11+v12 compatible extensions
  */
 interface TypolinkModifyLinkConfigForPageLinksHookInterface
 {
