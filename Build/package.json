@@ -72,7 +72,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@claviska/jquery-minicolors": "^2.3.5",
+    "@claviska/jquery-minicolors": "^2.3.6",
     "@typo3/icons": "^2.0.4",
     "autosize": "^4.0.2",
     "broadcastchannel-polyfill": "^1.0.0",
