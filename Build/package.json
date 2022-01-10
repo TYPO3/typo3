@@ -114,5 +114,8 @@
     "taboverride": "^4.0.3",
     "tagsort": "^1.4.0",
     "web-animate": "^0.4.1"
+  },
+  "resolutions": {
+    "colors": "<1.4.1"
   }
 }
