@@ -19,6 +19,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -143,15 +145,21 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // Defined global here!
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
+        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
+        $hasFirstTemplate = is_array($this->templateRow);
+        // No explicitly selected template on this page was found, so we behave like the Frontend (e.g. when a template is hidden but on the page above)
+        if (!$hasFirstTemplate) {
+            // Re-initiatlize the templateService but do not include hidden templates
+            $context = clone GeneralUtility::makeInstance(Context::class);
+            $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+            $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class, $context);
+        }
         // Gets the rootLine
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
         $rootLine = $rootlineUtility->get();
         // This generates the constants/config + hierarchy info for the template.
         $this->templateService->runThroughTemplates($rootLine, $template_uid);
-
-        // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
-        return is_array($this->templateRow);
+        return $hasFirstTemplate;
     }
 
     /**
