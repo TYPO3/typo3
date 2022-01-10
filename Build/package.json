@@ -114,5 +114,8 @@
     "tablesort": "^5.2.1",
     "taboverride": "^4.0.3",
     "tagsort": "^1.4.0"
+  },
+  "resolutions": {
+    "colors": "<1.4.1"
   }
 }
