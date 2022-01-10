@@ -21,12 +21,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * Checks mount points, shortcuts and redirects to the target.
@@ -34,8 +38,10 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal this middleware might get removed in TYPO3 v10.x.
  */
-class ShortcutAndMountPointRedirect implements MiddlewareInterface
+class ShortcutAndMountPointRedirect implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $exposeInformation = $GLOBALS['TYPO3_CONF_VARS']['FE']['exposeRedirectInformation'] ?? false;
@@ -60,20 +66,30 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
         // See if the current page is of doktype "External URL", if so, do a redirect as well.
         /** @var TypoScriptFrontendController */
         $controller = $request->getAttribute('frontend.controller');
-        if (empty($controller->config['config']['disablePageExternalUrl'] ?? null)
-            && PageRepository::DOKTYPE_LINK === (int)$controller->page['doktype']) {
+        if ((int)$controller->page['doktype'] === PageRepository::DOKTYPE_LINK) {
             $externalUrl = $this->prefixExternalPageUrl(
                 $controller->page['url'],
                 $request->getAttribute('normalizedParams')->getSiteUrl()
             );
+            $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $controller->page['uid'] : '');
             if (!empty($externalUrl)) {
-                $message = 'TYPO3 External URL' . ($exposeInformation ? ' at page with ID ' . $controller->page['uid'] : '');
                 return new RedirectResponse(
                     $externalUrl,
                     303,
                     ['X-Redirect-By' => $message]
                 );
             }
+            $this->logger->error(
+                'Page of type "External URL" could not be resolved properly',
+                [
+                    'page' => $controller->page,
+                ]
+            );
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'Page of type "External URL" could not be resolved properly',
+                $controller->getPageAccessFailureReasons(PageAccessFailureReasons::INVALID_EXTERNAL_URL)
+            );
         }
 
         return $handler->handle($request);

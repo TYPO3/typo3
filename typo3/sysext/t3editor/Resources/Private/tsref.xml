@@ -320,11 +320,6 @@ Use this feature in templates supplying other content-types than HTML. That coul
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="disablePageExternalUrl" type="boolean">
-			<description><![CDATA[If set, pages with doktype "External Url" will not trigger jumpUrl in TSFE. This may help you to have external urls open inside you framesets.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="disablePrefixComment" type="boolean">
 			<description><![CDATA[If set, the stdWrap property "prefixComment" will be disabled, thus preventing any revealing and spaceconsuming comments in the HTML source code.]]></description>
 			<default><![CDATA[

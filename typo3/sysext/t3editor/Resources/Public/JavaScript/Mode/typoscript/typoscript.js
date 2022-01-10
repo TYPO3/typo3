@@ -263,7 +263,6 @@
         'disableItems': kw('disableItems'),
         'disableNewContentElementWizard': kw('disableNewContentElementWizard'),
         'disableNoMatchingValueElement': kw('disableNoMatchingValueElement'),
-        'disablePageExternalUrl': kw('disablePageExternalUrl'),
         'disablePrefixComment': kw('disablePrefixComment'),
         'disablePrependAtCopy': kw('disablePrependAtCopy'),
         'disableSearchBox': kw('disableSearchBox'),

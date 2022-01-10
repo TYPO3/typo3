@@ -27,6 +27,7 @@ final class PageAccessFailureReasons
     public const NO_PAGES_FOUND = 'page.database.empty';
     public const PAGE_NOT_FOUND = 'page';
     public const ROOTLINE_BROKEN = 'page.rootline';
+    public const INVALID_EXTERNAL_URL = 'page.invalid_external_url';
 
     // Page configuration issues
     public const RENDERING_INSTRUCTIONS_NOT_FOUND = 'rendering_instructions';
@@ -58,9 +59,10 @@ final class PageAccessFailureReasons
      *
      * @var string[]
      */
-    protected $messages = [
+    protected array $messages = [
         self::NO_PAGES_FOUND => 'No page on rootlevel found',
         self::PAGE_NOT_FOUND => 'The requested page does not exist',
+        self::INVALID_EXTERNAL_URL => 'Page of type "External URL" could not be resolved properly',
 
         self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript template found',
         self::RENDERING_INSTRUCTIONS_NOT_CONFIGURED => 'The page is not configured',
