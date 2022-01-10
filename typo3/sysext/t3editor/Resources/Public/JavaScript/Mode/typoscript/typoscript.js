@@ -653,7 +653,6 @@
         'preCObject': kw('preCObject'),
         'prefix': kw('prefix'),
         'prefixComment': kw('prefixComment'),
-        'prefixLocalAnchors': kw('prefixLocalAnchors'),
         'prefixRelPathWith': kw('prefixRelPathWith'),
         'preIfEmptyListNum': kw('preIfEmptyListNum'),
         'preLineBlanks': kw('preLineBlanks'),

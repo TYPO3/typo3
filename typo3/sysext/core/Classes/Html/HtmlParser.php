@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Html;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Functions for parsing HTML.
@@ -554,18 +553,6 @@ class HtmlParser
                                             }
                                             if ((string)($params['removeIfEquals'] ?? '') !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
                                                 unset($tagAttrib[0][$attr]);
-                                            }
-                                            if ($params['prefixLocalAnchors'] ?? false) {
-                                                if ($tagAttrib[0][$attr][0] === '#') {
-                                                    if ($params['prefixLocalAnchors'] == 2) {
-                                                        /** @var ContentObjectRenderer $contentObjectRenderer */
-                                                        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                                                        $prefix = $contentObjectRenderer->getUrlToCurrentLocation();
-                                                    } else {
-                                                        $prefix = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-                                                    }
-                                                    $tagAttrib[0][$attr] = $prefix . $tagAttrib[0][$attr];
-                                                }
                                             }
                                             if ($params['prefixRelPathWith'] ?? false) {
                                                 $urlParts = parse_url($tagAttrib[0][$attr]);

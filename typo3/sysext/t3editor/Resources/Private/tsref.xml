@@ -3080,17 +3080,6 @@ Is the value "global" then true nesting in relation to other tags marked for "gl
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="prefixLocalAnchors" type="integer">
-			<description><![CDATA[If the first char is a "#" character (anchor of fx. <a> tags) this will prefix either a relative or absolute path.
-If the value is "1" you will get the absolute path ($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUrl())
-If the value is "2" you will get the relative path (stripping of $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl())
-
-Example:
-
-...fixAttrib.href.prefixLocalAnchors = 1]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="prefixRelPathWith" type="string">
 			<description><![CDATA[If the value of the attribute seems to be a relative URL (no scheme like "http" and no "/" as first char) then that value of this property will be prefixed the attribute.
 
