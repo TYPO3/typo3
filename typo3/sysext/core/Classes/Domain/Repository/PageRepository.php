@@ -1622,60 +1622,6 @@ class PageRepository implements LoggerAwareInterface
     }
 
     /**
-     * Returns the PID of the new (moved) location within a version, when a $liveUid is given.
-     *
-     * Please note: This is only performed within a workspace.
-     * This was previously stored in the move placeholder's PID, but move pointer's PID and move placeholder's PID
-     * are the same since TYPO3 v10, so the MOVE_POINTER is queried.
-     *
-     * @param string $table Table name
-     * @param int $liveUid Record UID of online version
-     * @return int|null If found, the Page ID of the moved record, otherwise null.
-     */
-    protected function getMovedPidOfVersionedRecord(string $table, int $liveUid): ?int
-    {
-        if ($this->versioningWorkspaceId <= 0) {
-            return null;
-        }
-        if (!$this->hasTableWorkspaceSupport($table)) {
-            return null;
-        }
-        // Select workspace version of record
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $row = $queryBuilder->select('pid')
-            ->from($table)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    't3ver_state',
-                    $queryBuilder->createNamedParameter(
-                        (string)VersionState::cast(VersionState::MOVE_POINTER),
-                        \PDO::PARAM_INT
-                    )
-                ),
-                $queryBuilder->expr()->eq(
-                    't3ver_oid',
-                    $queryBuilder->createNamedParameter($liveUid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    't3ver_wsid',
-                    $queryBuilder->createNamedParameter($this->versioningWorkspaceId, \PDO::PARAM_INT)
-                )
-            )
-            ->setMaxResults(1)
-            ->execute()
-            ->fetchAssociative();
-
-        if (is_array($row)) {
-            return (int)$row['pid'];
-        }
-        return null;
-    }
-
-    /**
      * Select the version of a record for a workspace
      *
      * @param int $workspace Workspace ID

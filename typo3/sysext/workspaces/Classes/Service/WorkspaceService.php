@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
@@ -1049,20 +1048,6 @@ class WorkspaceService implements SingletonInterface
         }
 
         return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
-    }
-
-    /**
-     * @param string $tableName
-     * @return QueryBuilder
-     */
-    protected function createQueryBuilderForTable(string $tableName)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        return $queryBuilder;
     }
 
     /**
