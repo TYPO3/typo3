@@ -1885,4 +1885,11 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Frontend\ContentObject\Menu\AbstractMenuFilterPagesHookInterface' => [
+        'restFiles' => [
+            'Deprecation-92508-UnusedInterfaceForFilterMenuPagesHook.rst',
+            'Breaking-92508-RemovedHookForFilteringHMENUItems.rst',
+            'Feature-92508-PSR-14EventForModifyingMenuItems.rst',
+        ],
+    ],
 ];

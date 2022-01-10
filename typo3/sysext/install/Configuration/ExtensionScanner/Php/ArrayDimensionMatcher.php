@@ -565,4 +565,10 @@ return [
             'Breaking-96333-AutoConfigurationOfContextMenuItemProviders.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/tslib/class.tslib_menu.php\'][\'filterMenuPages\']' => [
+        'restFiles' => [
+            'Breaking-92508-RemovedHookForFilteringHMENUItems.rst',
+            'Feature-92508-PSR-14EventForModifyingMenuItems.rst',
+        ],
+    ],
 ];

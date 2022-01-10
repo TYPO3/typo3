@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Event\FilterMenuItemsEvent;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 
 /**
@@ -389,22 +391,21 @@ abstract class AbstractMenuContentObject
         $maxItems = is_array($maxItemsConf) ? $this->parent_cObj->stdWrap($maxItems, $maxItemsConf) : $maxItems;
         $beginConf = $this->mconf['begin.'] ?? $this->conf['begin.'] ?? null;
         $begin = is_array($beginConf) ? $this->parent_cObj->stdWrap($begin, $beginConf) : $begin;
-        $banUidArray = $this->getBannedUids();
-        // Fill in the menuArr with elements that should go into the menu:
         $this->menuArr = [];
-        foreach ($menuItems as $data) {
-            $isSpacerPage = (int)($data['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER || ($data['ITEM_STATE'] ?? '') === 'SPC';
-            // if item is a spacer, $spacer is set
-            if ($this->filterMenuPages($data, $banUidArray, $isSpacerPage)) {
-                $c_b++;
-                // If the beginning item has been reached.
-                if ($begin <= $c_b) {
-                    $this->menuArr[$c] = $this->determineOriginalShortcutPage($data);
-                    $this->menuArr[$c]['isSpacer'] = $isSpacerPage;
-                    $c++;
-                    if ($maxItems && $c >= $maxItems) {
-                        break;
-                    }
+        foreach ($menuItems as &$data) {
+            $data = $this->determineOriginalShortcutPage($data);
+            $data['isSpacer'] = ($data['isSpacer'] ?? false) || (int)($data['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER || ($data['ITEM_STATE'] ?? '') === 'SPC';
+        }
+        $menuItems = $this->removeInaccessiblePages($menuItems);
+        // Fill in the menuArr with elements that should go into the menu
+        foreach ($menuItems as $menuItem) {
+            $c_b++;
+            // If the beginning item has been reached, add the items.
+            if ($begin <= $c_b) {
+                $this->menuArr[$c] = $menuItem;
+                $c++;
+                if ($maxItems && $c >= $maxItems) {
+                    break;
                 }
             }
         }
@@ -470,20 +471,30 @@ abstract class AbstractMenuContentObject
 
     /**
      * Gets an array of page rows and removes all, which are not accessible
-     *
-     * @param array $pages
-     * @return array
      */
-    protected function removeInaccessiblePages(array $pages)
+    protected function removeInaccessiblePages(array $pages): array
     {
         $banned = $this->getBannedUids();
         $filteredPages = [];
         foreach ($pages as $aPage) {
-            if ($this->filterMenuPages($aPage, $banned, (int)$aPage['doktype'] === PageRepository::DOKTYPE_SPACER)) {
-                $filteredPages[$aPage['uid']] = $aPage;
+            $isSpacerPage = ((int)($aPage['doktype'] ?? 0) === PageRepository::DOKTYPE_SPACER) || ($aPage['isSpacer'] ?? false);
+            if ($this->filterMenuPages($aPage, $banned, $isSpacerPage)) {
+                $filteredPages[] = $aPage;
             }
         }
-        return $filteredPages;
+        $event = new FilterMenuItemsEvent(
+            $pages,
+            $filteredPages,
+            $this->mconf,
+            $this->conf,
+            $banned,
+            $this->excludedDoktypes,
+            $this->getCurrentSite(),
+            $this->getTypoScriptFrontendController()->getContext(),
+            $this->getTypoScriptFrontendController()->page
+        );
+        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        return $event->getFilteredMenuItems();
     }
 
     /**
@@ -1087,17 +1098,6 @@ abstract class AbstractMenuContentObject
      */
     public function filterMenuPages(&$data, $banUidArray, $isSpacerPage)
     {
-        $includePage = true;
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof AbstractMenuFilterPagesHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . AbstractMenuFilterPagesHookInterface::class, 1269877402);
-            }
-            $includePage = $includePage && $hookObject->processFilter($data, $banUidArray, $isSpacerPage, $this);
-        }
-        if (!$includePage) {
-            return false;
-        }
         if ($data['_SAFE'] ?? false) {
             return true;
         }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 /**
  * interface for classes which hook into AbstractMenuContentObject
+ * @deprecated in favor of FilterMenuItemsEvent - not in use anymore, and only available for compatibility reasons, will be removed in TYPO3 v13.0
  */
 interface AbstractMenuFilterPagesHookInterface
 {
