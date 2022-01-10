@@ -3004,12 +3004,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return;
         }
         $search = [
+            '"_assets/',
             '"typo3temp/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         $replace = [
+            '"' . $this->absRefPrefix . '_assets/',
             '"' . $this->absRefPrefix . 'typo3temp/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
