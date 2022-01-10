@@ -1230,15 +1230,9 @@ abstract class AbstractMenuContentObject
         }
         // Setting main target
         $mainTarget = $altTarget ?: (string)$this->parent_cObj->stdWrapValue('target', $this->mconf ?? []);
-        // Creating link:
-        $addParams = ($this->mconf['addParams'] ?? '') . $MP_params;
-        if (($this->mconf['collapse'] ?? false) && $this->isActive($this->menuArr[$key] ?? [], $this->getMPvar($key))) {
-            $thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
-            $LD = $this->menuTypoLink($thePage, $mainTarget, $addParams, $typeOverride, $overrideId);
-        } else {
-            $addParams .= ($this->I['val']['additionalParams'] ?? '');
-            $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
-        }
+        // Creating link
+        $addParams = ($this->mconf['addParams'] ?? '') . ($this->I['val']['additionalParams'] ?? '') . $MP_params;
+        $LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, $addParams, $typeOverride, $overrideId);
         // Overriding URL / Target if set to do so:
         if ($this->menuArr[$key]['_OVERRIDE_HREF'] ?? false) {
             $LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
