@@ -358,7 +358,7 @@ class FileList
             if ($fieldName === '_SELECTOR_') {
                 $theData[$fieldName] = $this->renderCheckboxActions();
             } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fieldName)) {
-                $theData[$fieldName] = htmlspecialchars($specialLabel);
+                $theData[$fieldName] = $this->linkWrapSort($fieldName, $specialLabel);
             } elseif ($customLabel = $this->getLanguageService()->getLL('c_' . $fieldName)) {
                 $theData[$fieldName] = $this->linkWrapSort($fieldName, $customLabel);
             } elseif ($fieldName !== 'icon') {
