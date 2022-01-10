@@ -79,7 +79,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@claviska/jquery-minicolors": "^2.3.5",
+    "@claviska/jquery-minicolors": "^2.3.6",
     "@lit/reactive-element": "^1.0.0",
     "@popperjs/core": "^2.10.2",
     "@typo3/icons": "^2.4.1",
