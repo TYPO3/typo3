@@ -81,7 +81,7 @@ class StageChangeNotification implements LoggerAwareInterface
     {
         [$elementTable, $elementUid] = reset($affectedElements);
         $elementUid = (int)$elementUid;
-        $elementRecord = (array)BackendUtility::getRecord($elementTable, $elementUid);
+        $elementRecord = (array)BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
         $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
         $pageUid = $this->findFirstPageId($elementTable, $elementUid, $elementRecord);
         $emailConfig = BackendUtility::getPagesTSconfig($pageUid)['tx_workspaces.']['emails.'] ?? [];
