@@ -5091,4 +5091,11 @@ return [
             'Breaking-96351-UnusedTemplateService-updateRootlineDataMethodRemoved.rst',
         ],
     ],
+    'TTYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getMailTo' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-96500-ContentObjectRenderer-getMailTo.rst',
+        ],
+    ],
 ];

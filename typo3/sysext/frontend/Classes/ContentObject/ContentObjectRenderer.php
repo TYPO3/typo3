@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -75,12 +74,12 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
+use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -4944,152 +4943,16 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Loops over all configured URL modifier hooks (if available) and returns the generated URL or NULL if no URL was generated.
-     *
-     * @param string $context The context in which the method is called (e.g. typoLink).
-     * @param string $url The URL that should be processed.
-     * @param array $typolinkConfiguration The current link configuration array.
-     * @return string|null Returns NULL if URL was not processed or the processed URL as a string.
-     * @throws \RuntimeException if a hook was registered but did not fulfill the correct parameters.
-     */
-    protected function processUrl($context, $url, $typolinkConfiguration = [])
-    {
-        $urlProcessors = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'] ?? [];
-        if (empty($urlProcessors)) {
-            return $url;
-        }
-
-        foreach ($urlProcessors as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException('Missing configuration for URI processor "' . $identifier . '".', 1442050529);
-            }
-            if (!is_string($configuration['processor']) || empty($configuration['processor']) || !class_exists($configuration['processor']) || !is_subclass_of($configuration['processor'], UrlProcessorInterface::class)) {
-                throw new \RuntimeException('The URI processor "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . UrlProcessorInterface::class . '".', 1442050579);
-            }
-        }
-
-        $orderedProcessors = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($urlProcessors);
-        $keepProcessing = true;
-
-        foreach ($orderedProcessors as $configuration) {
-            /** @var UrlProcessorInterface $urlProcessor */
-            $urlProcessor = GeneralUtility::makeInstance($configuration['processor']);
-            $url = $urlProcessor->process($context, $url, $typolinkConfiguration, $this, $keepProcessing);
-            if (!$keepProcessing) {
-                break;
-            }
-        }
-
-        return $url;
-    }
-
-    /**
-     * Creates a href attibute for given $mailAddress.
-     * The function uses spamProtectEmailAddresses for encoding the mailto statement.
-     * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
-     *
-     * Returns an array with three items (numeric index)
-     *   #0: $mailToUrl (string), ready to be inserted into the href attribute of the <a> tag
-     *   #1: $linktxt (string), content between starting and ending `<a>` tag
-     *   #2: $attributes (array<string, string>), additional attributes for `<a>` tag
-     *
      * @param string $mailAddress Email address
      * @param string $linktxt Link text, default will be the email address.
      * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
+     * @deprecated will be removed in TYPO3 v13.0. Use EmailLinkBuilder->processEmailLink() instead.
      */
     public function getMailTo($mailAddress, $linktxt)
     {
-        $mailAddress = (string)$mailAddress;
-        if ((string)$linktxt === '') {
-            $linktxt = htmlspecialchars($mailAddress);
-        }
-
-        $originalMailToUrl = 'mailto:' . $mailAddress;
-        $mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
-        $attributes = [];
-
-        // no processing happened, therefore, the default processing kicks in
-        if ($mailToUrl === $originalMailToUrl) {
-            $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe instanceof TypoScriptFrontendController && $tsfe->spamProtectEmailAddresses) {
-                $mailToUrl = $this->encryptEmail($mailToUrl, (int)$tsfe->spamProtectEmailAddresses);
-                $attributes = [
-                    'data-mailto-token' => $mailToUrl,
-                    'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
-                ];
-                $mailToUrl = '#';
-                $atLabel = '(at)';
-                if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
-                    $atLabel = $atLabelFromConfig;
-                }
-                $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
-                if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
-                    $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
-                    $lastDotLabel = $lastDotLabel ?: '(dot)';
-                    $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
-                    if ($spamProtectedMailAddress === null) {
-                        $this->logger->debug('Error replacing the last dot in email address "{email}"', ['email' => $spamProtectedMailAddress]);
-                        $spamProtectedMailAddress = '';
-                    }
-                }
-                $linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
-                $this->addDefaultFrontendJavaScript();
-            }
-        }
-
-        return [$mailToUrl, $linktxt, $attributes];
-    }
-
-    /**
-     * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
-     *
-     * @param string $string Input string to en/decode: "mailto:some@example.com
-     * @param int $type a number between -10 and 10, taken from config.spamProtectEmailAddresses
-     * @return string encoded version of $string
-     */
-    protected function encryptEmail(string $string, int $type): string
-    {
-        $out = '';
-        // like str_rot13() but with a variable offset and a wider character range
-        $len = strlen($string);
-        $offset = $type;
-        for ($i = 0; $i < $len; $i++) {
-            $charValue = ord($string[$i]);
-            // 0-9 . , - + / :
-            if ($charValue >= 43 && $charValue <= 58) {
-                $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
-            } elseif ($charValue >= 64 && $charValue <= 90) {
-                // A-Z @
-                $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
-            } elseif ($charValue >= 97 && $charValue <= 122) {
-                // a-z
-                $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
-            } else {
-                $out .= $string[$i];
-            }
-        }
-        return $out;
-    }
-
-    /**
-     * Encryption (or decryption) of a single character.
-     * Within the given range the character is shifted with the supplied offset.
-     *
-     * @param int $n Ordinal of input character
-     * @param int $start Start of range
-     * @param int $end End of range
-     * @param int $offset Offset
-     * @return string encoded/decoded version of character
-     */
-    protected function encryptCharcode($n, $start, $end, $offset)
-    {
-        $n = $n + $offset;
-        if ($offset > 0 && $n > $end) {
-            $n = $start + ($n - $end - 1);
-        } elseif ($offset < 0 && $n < $start) {
-            $n = $end - ($start - $n - 1);
-        }
-        return chr($n);
+        trigger_error('ContentObjectRenderer->getMailTo() will be removed in TYPO3 v13.0, Use EmailLinkBuilder->processEmailLink() instead.', E_USER_DEPRECATED);
+        $linkBuilder = GeneralUtility::makeInstance(EmailLinkBuilder::class, $this, $this->getTypoScriptFrontendController());
+        return $linkBuilder->processEmailLink((string)$mailAddress, (string)$linktxt);
     }
 
     /**

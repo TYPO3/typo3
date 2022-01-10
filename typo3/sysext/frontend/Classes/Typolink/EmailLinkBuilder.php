@@ -17,20 +17,142 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Typolink;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
+use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
- * Builds a TypoLink to an email address
+ * Builds a TypoLink to an email address, also takes care of additional functionality for the time being
+ * such as the infamous config.spamProtectedEmailAddresses option.
  */
-class EmailLinkBuilder extends AbstractTypolinkBuilder
+class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInterface
 {
+    use DefaultJavaScriptAssetTrait;
+    use LoggerAwareTrait;
+
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        [$url, $linkText, $attributes] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
+        [$url, $linkText, $attributes] = $this->processEmailLink($linkDetails['email'], $linkText);
         return (new LinkResult(LinkService::TYPE_EMAIL, $url))
             ->withTarget($target)
             ->withLinkConfiguration($conf)
             ->withLinkText($linkText)
             ->withAttributes($attributes);
+    }
+
+    /**
+     * Creates a href attibute for given $mailAddress.
+     * The function uses spamProtectEmailAddresses for encoding the mailto statement.
+     * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
+     *
+     * Returns an array with three items (numeric index)
+     *   #0: $mailToUrl (string), ready to be inserted into the href attribute of the <a> tag
+     *   #1: $linkText (string), content between starting and ending `<a>` tag
+     *   #2: $attributes (array<string, string>), additional attributes for `<a>` tag
+     *
+     * @param string $mailAddress Email address
+     * @param string $linkText Link text, default will be the email address.
+     * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
+     */
+    public function processEmailLink(string $mailAddress, string $linkText): array
+    {
+        $linkText = $linkText ?: htmlspecialchars($mailAddress);
+        $originalMailToUrl = 'mailto:' . $mailAddress;
+        $mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
+        $attributes = [];
+
+        // no processing happened, therefore, the default processing kicks in
+        if ($mailToUrl === $originalMailToUrl) {
+            $tsfe = $this->getTypoScriptFrontendController();
+            if ($tsfe->spamProtectEmailAddresses) {
+                $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
+                if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
+                    $attributes = [
+                        'data-mailto-token' => $mailToUrl,
+                        'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
+                    ];
+                    $mailToUrl = '#';
+                    $this->addDefaultFrontendJavaScript();
+                }
+                $atLabel = '(at)';
+                if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
+                    $atLabel = $atLabelFromConfig;
+                }
+                $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
+                if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
+                    $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+                    $lastDotLabel = $lastDotLabel ?: '(dot)';
+                    $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
+                    if ($spamProtectedMailAddress === null) {
+                        $this->logger->debug('Error replacing the last dot in email address "{email}"', ['email' => $spamProtectedMailAddress]);
+                        $spamProtectedMailAddress = '';
+                    }
+                }
+                $linkText = str_ireplace($mailAddress, $spamProtectedMailAddress, $linkText);
+            }
+        }
+
+        return [$mailToUrl, $linkText, $attributes];
+    }
+
+    /**
+     * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
+     *
+     * @param string $string Input string to en/decode: "mailto:some@example.com
+     * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
+     * @return string encoded version of $string
+     */
+    protected function encryptEmail(string $string, $type): string
+    {
+        $out = '';
+        // obfuscates using the decimal HTML entity references for each character
+        if ($type === 'ascii') {
+            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                $out .= '&#' . mb_ord($char) . ';';
+            }
+        } else {
+            // like str_rot13() but with a variable offset and a wider character range
+            $len = strlen($string);
+            $offset = (int)$type;
+            for ($i = 0; $i < $len; $i++) {
+                $charValue = ord($string[$i]);
+                // 0-9 . , - + / :
+                if ($charValue >= 43 && $charValue <= 58) {
+                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
+                } elseif ($charValue >= 64 && $charValue <= 90) {
+                    // A-Z @
+                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
+                } elseif ($charValue >= 97 && $charValue <= 122) {
+                    // a-z
+                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
+                } else {
+                    $out .= $string[$i];
+                }
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * Encryption (or decryption) of a single character.
+     * Within the given range the character is shifted with the supplied offset.
+     *
+     * @param int $n Ordinal of input character
+     * @param int $start Start of range
+     * @param int $end End of range
+     * @param int $offset Offset
+     * @return string encoded/decoded version of character
+     */
+    protected function encryptCharcode(int $n, int $start, int $end, int $offset): string
+    {
+        $n = $n + $offset;
+        if ($offset > 0 && $n > $end) {
+            $n = $start + ($n - $end - 1);
+        } elseif ($offset < 0 && $n < $start) {
+            $n = $end - ($start - $n - 1);
+        }
+        return chr($n);
     }
 }

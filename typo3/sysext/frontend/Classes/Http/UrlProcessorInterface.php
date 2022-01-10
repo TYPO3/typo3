@@ -33,7 +33,6 @@ interface UrlProcessorInterface
     /**
      * Generates the JumpURL for the given parameters.
      *
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::processUrl()
      * @param string $context The context in which the URL is generated (e.g. "typolink" or one of the constants above).
      * @param string $url The URL that should be processed.
      * @param array $configuration The link configuration.
