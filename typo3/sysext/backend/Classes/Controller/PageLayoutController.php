@@ -211,6 +211,10 @@ class PageLayoutController
         $this->menuConfig($request);
         // Setting sys language from session var
         $this->current_sys_language = (int)$this->MOD_SETTINGS['language'];
+        // Create LanguageMenu
+        $this->makeLanguageMenu();
+        // Make action menu from available actions
+        $this->makeActionMenu();
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/NewContentElementWizardButton');
@@ -615,10 +619,6 @@ class PageLayoutController
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
             $this->initializeClipboard($request);
-            // Create LanguageMenu
-            $this->makeLanguageMenu();
-            // Make action menu from available actions
-            $this->makeActionMenu();
         } else {
             $content .= ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
             $content .= '<h1>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '</h1>';
