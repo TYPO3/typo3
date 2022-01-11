@@ -784,7 +784,7 @@ class QueryBuilder
      * Specifies one or more restrictions to the query result.
      * Replaces any previously specified restrictions, if any.
      *
-     * @param array<int,mixed>|CompositeExpression $predicates
+     * @param string|CompositeExpression ...$predicates
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function where(...$predicates): QueryBuilder
@@ -804,7 +804,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * conjunction with any previously specified restrictions.
      *
-     * @param array<int,string>|CompositeExpression $where The query restrictions.
+     * @param string|CompositeExpression ...$where The query restrictions.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -827,7 +827,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * disjunction with any previously specified restrictions.
      *
-     * @param array<int,string>|CompositeExpression $where The WHERE statement.
+     * @param string|CompositeExpression ...$where The WHERE statement.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -850,7 +850,7 @@ class QueryBuilder
      * Specifies a grouping over the results of the query.
      * Replaces any previously specified groupings, if any.
      *
-     * @param array<int,string> $groupBy The grouping expression.
+     * @param string ...$groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -864,7 +864,7 @@ class QueryBuilder
     /**
      * Adds a grouping expression to the query.
      *
-     * @param array<int,string> $groupBy The grouping expression.
+     * @param string ...$groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -920,7 +920,7 @@ class QueryBuilder
      * Specifies a restriction over the groups of the query.
      * Replaces any previous having restrictions, if any.
      *
-     * @param array<int,string>|CompositeExpression $having The restriction over the groups.
+     * @param mixed ...$having The restriction over the groups.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -934,7 +934,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * conjunction with any existing having restrictions.
      *
-     * @param array<int,string>|CompositeExpression $having The restriction to append.
+     * @param mixed ...$having The restriction to append.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -949,7 +949,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * disjunction with any existing having restrictions.
      *
-     * @param array<int,string>|CompositeExpression $having The restriction to add.
+     * @param mixed ...$having The restriction to add.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
