@@ -1069,7 +1069,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             foreach ($parameterNames as $parameterName) {
                 if (isset($conf[$parameterName . '.'])) {
-                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName . '.'] ?? []);
+                    $conf[$parameterName] = $this->stdWrap($conf[$parameterName] ?? '', $conf[$parameterName . '.'] ?? []);
                 }
                 if (isset($conf[$parameterName]) && $conf[$parameterName]) {
                     $parameters[$parameterName] = $conf[$parameterName];
