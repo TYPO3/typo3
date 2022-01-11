@@ -22,8 +22,8 @@
 		"doctrine/dbal": "~2.10.0 || ~2.11.2 || ~2.13.1",
 		"psr/http-message": "^1.0",
 		"psr/log": "^1.0",
-		"typo3/cms-backend": "10.4.23",
-		"typo3/cms-core": "10.4.23",
+		"typo3/cms-backend": "10.4.*@dev",
+		"typo3/cms-core": "10.4.*@dev",
 		"typo3fluid/fluid": "^2.6.10"
 	},
 	"conflict": {
