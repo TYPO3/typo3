@@ -87,6 +87,7 @@ export abstract class AbstractSortableSelectItems {
       if (originalOption !== null) {
         originalOption.classList.remove('hidden');
         originalOption.disabled = false;
+        FormEngine.enableOptGroup(originalOption);
       }
 
       fieldElement.removeChild(option);

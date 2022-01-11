@@ -146,7 +146,7 @@ define(['jquery',
     $fieldEl = FormEngine.getFieldElement(fieldName);
     originalFieldEl = $fieldEl.get(0);
 
-    if (originalFieldEl === null || value === '--div--') {
+    if (originalFieldEl === null || value === '--div--' || originalFieldEl instanceof HTMLOptGroupElement) {
       return;
     }
 
@@ -165,10 +165,11 @@ define(['jquery',
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
         $fieldEl.find('option').each(function() {
-          $availableFieldEl
-            .find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]')
-            .removeClass('hidden')
-            .prop('disabled', false);
+          const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
+          if ($option) {
+            $option.removeClass('hidden').prop('disabled', false);
+            FormEngine.enableOptGroup($option.get(0));
+          }
         });
         $fieldEl.empty();
       }
@@ -195,6 +196,7 @@ define(['jquery',
           optionEl.closest('select').querySelectorAll('[disabled]').forEach(function (disabledOption) {
             disabledOption.classList.remove('hidden');
             disabledOption.disabled = false;
+            FormEngine.enableOptGroup(disabledOption);
           });
         }
       }
@@ -215,6 +217,14 @@ define(['jquery',
         if (addNewValue && typeof optionEl !== 'undefined') {
           optionEl.classList.add('hidden');
           optionEl.disabled = true;
+          // In case the disabled option was the last active option and is in an optGroup, also disable the optGroup
+          const optGroup = optionEl.parentElement;
+          if (optGroup instanceof HTMLOptGroupElement
+            && optGroup.querySelectorAll('option:not([disabled]):not([hidden]):not(.hidden)').length === 0
+          ) {
+            optGroup.disabled = true;
+            optGroup.classList.add('hidden');
+          }
         }
       }
 
@@ -1149,6 +1159,18 @@ define(['jquery',
         callback(event.target.name, $anchorElement);
       });
   };
+
+  /**
+   * In case the given option is a child of a disabled optGroup, enable the optGroup
+   */
+  FormEngine.enableOptGroup = function (option) {
+    const optGroup = option.parentElement;
+    if (optGroup instanceof HTMLOptGroupElement && optGroup.querySelectorAll('option:not([hidden]):not([disabled]):not(.hidden)').length) {
+      optGroup.hidden = false;
+      optGroup.disabled = false;
+      optGroup.classList.remove('hidden');
+    }
+  }
 
   /**
    * Close current open document
