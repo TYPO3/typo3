@@ -168,22 +168,59 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             }
         }
 
+        $selectableItemCounter = 0;
+        $selectableItemGroupCounter = 0;
+        $selectableItemGroups = [];
         $selectableItemsHtml = [];
+
+        // Initialize groups
         foreach ($possibleItems as $possibleItem) {
-            $disabledAttr = '';
-            $classAttr = '';
+            $disableAttributes = [];
             if (!$itemCanBeSelectedMoreThanOnce && in_array((string)$possibleItem[1], $selectedItems, true)) {
-                $disabledAttr = ' disabled="disabled"';
-                $classAttr = ' class="hidden"';
+                $disableAttributes = [
+                    'disabled' => 'disabled',
+                    'class' => 'hidden',
+                ];
             }
-            $selectableItemsHtml[] =
-                '<option value="'
-                    . htmlspecialchars($possibleItem[1])
-                    . '" title="' . htmlspecialchars($possibleItem[0]) . '"'
-                    . $classAttr . $disabledAttr
-                . '>'
-                    . htmlspecialchars($this->appendValueToLabelInDebugMode($possibleItem[0], $possibleItem[1])) .
-                '</option>';
+            if ($possibleItem[1] === '--div--') {
+                if ($selectableItemCounter !== 0) {
+                    $selectableItemGroupCounter++;
+                }
+                $selectableItemGroups[$selectableItemGroupCounter]['header']['title'] = $possibleItem[0];
+            } else {
+                $selectableItemGroups[$selectableItemGroupCounter]['items'][] = [
+                    'label' => $this->appendValueToLabelInDebugMode($possibleItem[0], $possibleItem[1]),
+                    'attributes' => array_merge(['title' => $possibleItem[0], 'value' => $possibleItem[1]], $disableAttributes),
+                ];
+                // In case the item is not disabled, enable the group (if any)
+                if ($disableAttributes === [] && isset($selectableItemGroups[$selectableItemGroupCounter]['header'])) {
+                    $selectableItemGroups[$selectableItemGroupCounter]['header']['disabled'] = false;
+                }
+                $selectableItemCounter++;
+            }
+        }
+
+        // Process groups
+        foreach ($selectableItemGroups as $selectableItemGroup) {
+            if (!is_array($selectableItemGroup['items'] ?? false) || $selectableItemGroup['items'] === []) {
+                continue;
+            }
+
+            $optionGroup = isset($selectableItemGroup['header']);
+            if ($optionGroup) {
+                $selectableItemsHtml[] = '<optgroup label="' . htmlspecialchars($selectableItemGroup['header']['title']) . '"' . (($selectableItemGroup['header']['disabled'] ?? true) ? 'class="hidden" disabled="disabled"' : '') . '>';
+            }
+
+            foreach ($selectableItemGroup['items'] as $item) {
+                $selectableItemsHtml[] = '
+                    <option ' . GeneralUtility::implodeAttributes($item['attributes'], true) . '>
+                        ' . htmlspecialchars($item['label']) . '
+                    </option>';
+            }
+
+            if ($optionGroup) {
+                $selectableItemsHtml[] = '</optgroup>';
+            }
         }
 
         // Html stuff for filter and select filter on top of right side of multi select boxes

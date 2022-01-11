@@ -149,7 +149,7 @@ export = (function() {
     $fieldEl = FormEngine.getFieldElement(fieldName);
     originalFieldEl = $fieldEl.get(0);
 
-    if (originalFieldEl === null || value === '--div--') {
+    if (originalFieldEl === null || value === '--div--' || originalFieldEl instanceof HTMLOptGroupElement) {
       return;
     }
 
@@ -168,10 +168,11 @@ export = (function() {
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
         $fieldEl.find('option').each((index: number, el: HTMLElement) => {
-          $availableFieldEl
-            .find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]')
-            .removeClass('hidden')
-            .prop('disabled', false);
+          const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
+          if ($option) {
+            $option.removeClass('hidden').prop('disabled', false);
+            FormEngine.enableOptGroup($option.get(0));
+          }
         });
         $fieldEl.empty();
       }
@@ -198,6 +199,7 @@ export = (function() {
           optionEl.closest('select').querySelectorAll('[disabled]').forEach(function (disabledOption: HTMLOptionElement) {
             disabledOption.classList.remove('hidden');
             disabledOption.disabled = false;
+            FormEngine.enableOptGroup(disabledOption);
           });
         }
       }
@@ -218,6 +220,14 @@ export = (function() {
         if (addNewValue && typeof optionEl !== 'undefined') {
           optionEl.classList.add('hidden');
           optionEl.disabled = true;
+          // In case the disabled option was the last active option and is in an optGroup, also disable the optGroup
+          const optGroup = <HTMLOptGroupElement>optionEl.parentElement;
+          if (optGroup instanceof HTMLOptGroupElement
+            && optGroup.querySelectorAll('option:not([disabled]):not([hidden]):not(.hidden)').length === 0
+          ) {
+            optGroup.disabled = true;
+            optGroup.classList.add('hidden');
+          }
         }
       }
 
@@ -1155,6 +1165,18 @@ export = (function() {
       callback((event.target as HTMLButtonElement).name, $anchorElement);
     });
   };
+
+  /**
+   * In case the given option is a child of a disabled optGroup, enable the optGroup
+   */
+  FormEngine.enableOptGroup = function (option: HTMLOptionElement): void {
+    const optGroup = <HTMLOptGroupElement>option.parentElement;
+    if (optGroup instanceof HTMLOptGroupElement && optGroup.querySelectorAll('option:not([hidden]):not([disabled]):not(.hidden)').length) {
+      optGroup.hidden = false;
+      optGroup.disabled = false;
+      optGroup.classList.remove('hidden');
+    }
+  }
 
   /**
    * Close current open document

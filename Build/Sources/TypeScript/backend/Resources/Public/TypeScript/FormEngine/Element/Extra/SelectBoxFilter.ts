@@ -27,6 +27,20 @@ class SelectBoxFilter {
   private filterText: string = '';
   private availableOptions: NodeListOf<HTMLOptionElement> = null;
 
+  private static toggleOptGroup(option: HTMLOptionElement): void {
+    const optGroup = <HTMLOptGroupElement>option.parentElement;
+    if (!(optGroup instanceof HTMLOptGroupElement)) {
+      return;
+    }
+    if (optGroup.querySelectorAll('option:not([hidden]):not([disabled]):not(.hidden)').length === 0) {
+      optGroup.hidden = true;
+    } else {
+      optGroup.hidden = false;
+      optGroup.disabled = false;
+      optGroup.classList.remove('hidden');
+    }
+  }
+
   constructor(selectElement: HTMLSelectElement) {
     this.selectElement = selectElement;
 
@@ -62,6 +76,7 @@ class SelectBoxFilter {
     const matchFilter = new RegExp(filterText, 'i');
     this.availableOptions.forEach((option: HTMLOptionElement): void => {
       option.hidden = filterText.length > 0 && option.textContent.match(matchFilter) === null;
+      SelectBoxFilter.toggleOptGroup(option);
     });
   }
 }
