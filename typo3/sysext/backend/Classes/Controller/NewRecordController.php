@@ -452,11 +452,13 @@ class NewRecordController
                         // Link to page-wizard
                         $newPageLinks[] = $this->renderPageSelectPositionLink();
                     }
-                    $groupedLinksOnTop['pages'] = [
-                        'title' => $lang->getLL('createNewPage'),
-                        'icon' => 'actions-page-new',
-                        'items' => $newPageLinks,
-                    ];
+                    if (!empty($newPageLinks)) {
+                        $groupedLinksOnTop['pages'] = [
+                            'title' => $lang->getLL('createNewPage'),
+                            'icon' => 'actions-page-new',
+                            'items' => $newPageLinks,
+                        ];
+                    }
                 break;
                 case 'tt_content':
                     if (!$this->newContentInto || !$this->isRecordCreationAllowedForTable($table) || !$this->isTableAllowedOnPage($table, $this->pageinfo)) {
