@@ -81,6 +81,8 @@ class VimeoHelperTest extends UnitTestCase
             ['https://typo3.org/', null, null],
             ['https://vimeo.com/', '7215347324', $fileResourceMock],
             ['https://vimeo.com/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
+            ['https://vimeo.com/video/', '7215347324', $fileResourceMock],
+            ['https://vimeo.com/video/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
             ['https://player.vimeo.com/', '7215347324', $fileResourceMock],
             ['https://player.vimeo.com/', '7215347324/hasf8a65sdsa7d', $fileResourceMock],
             ['https://vimeo.com/event/', '7215347324', $fileResourceMock],
