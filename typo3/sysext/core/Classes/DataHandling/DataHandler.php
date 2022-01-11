@@ -2524,7 +2524,7 @@ class DataHandler implements LoggerAwareInterface
         foreach ($evalArray as $func) {
             switch ($func) {
                 case 'trim':
-                    $value = trim($value);
+                    $value = trim((string)$value);
                     break;
                 case 'required':
                     if (!$value) {
@@ -3345,7 +3345,9 @@ class DataHandler implements LoggerAwareInterface
         unset($copyTCE);
         if (!$ignoreLocalization && $language == 0) {
             //repointing the new translation records to the parent record we just created
-            $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
+            if (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
+                $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
+            }
             if (isset($GLOBALS['TCA'][$table]['ctrl']['translationSource'])) {
                 $overrideValues[$GLOBALS['TCA'][$table]['ctrl']['translationSource']] = 0;
             }
