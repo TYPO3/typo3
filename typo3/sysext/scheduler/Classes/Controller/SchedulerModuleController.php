@@ -545,7 +545,7 @@ class SchedulerModuleController
         $task = null;
         $process = 'edit';
 
-        if ($this->submittedData['uid'] > 0) {
+        if (($this->submittedData['uid'] ?? 0) > 0) {
             // If editing, retrieve data for existing task
             try {
                 $taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
@@ -644,7 +644,7 @@ class SchedulerModuleController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
 
         // Start rendering the add/edit form
-        $this->view->assign('uid', htmlspecialchars((string)$this->submittedData['uid']));
+        $this->view->assign('uid', htmlspecialchars((string)($this->submittedData['uid'] ?? '')));
         $this->view->assign('cmd', htmlspecialchars((string)$this->getCurrentAction()));
         $this->view->assign('csh', $this->cshKey);
         $this->view->assign('lang', 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:');
@@ -657,7 +657,7 @@ class SchedulerModuleController
 
         // Task class selector
         // On editing, don't allow changing of the task class, unless it was not valid
-        if ($this->submittedData['uid'] > 0 && !empty($taskInfo['class'])) {
+        if (($this->submittedData['uid'] ?? 0) > 0 && !empty($taskInfo['class'])) {
             $this->view->assign('task_class', $taskInfo['class']);
             $this->view->assign('task_class_title', $registeredClasses[$taskInfo['class']]['title']);
             $this->view->assign('task_class_extension', $registeredClasses[$taskInfo['class']]['extension']);
