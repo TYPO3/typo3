@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\AbstractInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\TypoScriptInstruction;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -30,7 +31,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
-    private const TYPE_EMPTY_PARSEFUNCTSPATH = 'empty-parseFuncTSPath';
     private const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
     ];
@@ -39,7 +39,7 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         'SC_OPTIONS' => [
             'Core/TypoScript/TemplateService' => [
                 'runThroughTemplatesPostProcessing' => [
-                    'FunctionalTest' => \TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Hook\TypoScriptInstructionModifier::class . '->apply',
+                    'FunctionalTest' => TypoScriptInstructionModifier::class . '->apply',
                 ],
             ],
         ],
@@ -125,6 +125,8 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
     }
 
     /**
+     * Uses a custom parseFunc that does not have `parseFunc.htmlSanitize` defined (which is deprecated).
+     *
      * @param string $payload
      * @param string$expectation
      * @test
@@ -137,59 +139,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         ];
         $response = $this->invokeFrontendRendering(...$instructions);
         self::assertSame($expectation, (string)$response->getBody());
-    }
-
-    public static function htmlViewHelperAvoidsCrossSiteScriptingDataProvider(): array
-    {
-        return [
-            '#01 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '01: <script>alert(1)</script>',
-                '01: <script>alert(1)</script>',
-            ],
-            '#03 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '03: <img img="img" alt="alt" onerror="alert(1)">',
-                '03: <img img="img" alt="alt" onerror="alert(1)">',
-            ],
-            '#07 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
-                // expected, with empty parseFunc configuration internal link URN is not resolved
-                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
-            ],
-            '#08 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '08: <meta whatever="whatever">',
-                '08: <meta whatever="whatever">',
-            ],
-            '#09 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '09: <sdfield onmouseover="alert(1)">',
-                '09: <sdfield onmouseover="alert(1)">',
-            ],
-            '#10 ' . self::TYPE_EMPTY_PARSEFUNCTSPATH => [
-                self::TYPE_EMPTY_PARSEFUNCTSPATH,
-                '10: <meta itemprop="type" content="voice">',
-                '10: <meta itemprop="type" content="voice">',
-            ],
-        ];
-    }
-
-    /**
-     * @param string $type
-     * @param string $payload
-     * @param string $expectation
-     * @test
-     * @dataProvider htmlViewHelperAvoidsCrossSiteScriptingDataProvider
-     */
-    public function htmlViewHelperAvoidsCrossSiteScripting(string $type, string $payload, string $expectation): void
-    {
-        $instructions = [
-            $this->createFluidTemplateContentObject($type, $payload),
-        ];
-        $response = $this->invokeFrontendRendering(...$instructions);
-        self::assertSame($expectation, trim((string)$response->getBody(), "\n"));
     }
 
     /**

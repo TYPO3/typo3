@@ -170,7 +170,7 @@ final class HtmlViewHelper extends AbstractViewHelper
             $contentObject->setCurrentVal($data[$currentValueKey]);
         }
 
-        $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
+        $content = $contentObject->parseFunc($value, null, '< ' . $parseFuncTSPath);
 
         if ($isBackendRequest) {
             self::resetFrontendEnvironment($tsfeBackup);

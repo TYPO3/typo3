@@ -1263,7 +1263,7 @@ class AbstractPlugin
      */
     public function pi_RTEcssText($str)
     {
-        $str = $this->cObj->parseFunc($str, [], '< lib.parseFunc_RTE');
+        $str = $this->cObj->parseFunc($str, null, '< lib.parseFunc_RTE');
         return $str;
     }
 

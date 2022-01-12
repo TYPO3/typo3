@@ -3285,27 +3285,25 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Therefore the actual processing of the parseFunc properties goes on in ->_parseFunc()
      *
      * @param string $theValue The value to process.
-     * @param array $conf TypoScript configuration for parseFunc
-     * @param string $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
+     * @param non-empty-array<string, mixed>|null $conf TypoScript configuration for parseFunc
+     * @param non-empty-string|null $ref Reference to get configuration from. Eg. "< lib.parseFunc" which means that the configuration of the object path "lib.parseFunc" will be retrieved and MERGED with what is in $conf!
      * @return string The processed value
      * @see _parseFunc()
      */
-    public function parseFunc($theValue, $conf, $ref = '')
+    public function parseFunc($theValue, ?array $conf, ?string $ref = null)
     {
         // Fetch / merge reference, if any
-        if ($ref) {
+        if (!empty($ref)) {
             $temp_conf = [
                 'parseFunc' => $ref,
-                'parseFunc.' => $conf,
+                'parseFunc.' => $conf ?? [],
             ];
             $temp_conf = $this->mergeTSRef($temp_conf, 'parseFunc');
             $conf = $temp_conf['parseFunc.'];
         }
-        // early return, no processing in case no configuration is given
         if (empty($conf)) {
-            // @deprecated Invoking ContentObjectRenderer::parseFunc without any configuration will trigger an exception in TYPO3 v12.0
-            trigger_error('Invoking ContentObjectRenderer::parseFunc without any configuration will trigger an exception in TYPO3 v12.0', E_USER_DEPRECATED);
-            return $theValue;
+            // `parseFunc` relies on configuration, either given in `$conf` or resolved from `$ref`
+            throw new \LogicException('Invoked ContentObjectRenderer::parseFunc without any configuration', 1641989097);
         }
         // Handle HTML sanitizer invocation
         if (!isset($conf['htmlSanitize'])) {

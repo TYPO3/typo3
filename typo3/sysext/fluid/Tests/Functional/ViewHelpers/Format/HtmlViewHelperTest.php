@@ -33,7 +33,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    public function renderDataProvider(): array
+    public function contentIsRenderedDataProvider(): array
     {
         return [
             'format.html: process lib.parseFunc_RTE by default' => [
@@ -67,9 +67,9 @@ class HtmlViewHelperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @dataProvider renderDataProvider
+     * @dataProvider contentIsRenderedDataProvider
      */
-    public function render(string $template, string $expected): void
+    public function contentIsRendered(string $fluidTemplateSource, string $expected): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->writeSiteConfiguration(
@@ -79,6 +79,51 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 $this->buildDefaultLanguageConfiguration('EN', '/en/'),
             ]
         );
+        $this->createTypoScriptTemplate($fluidTemplateSource);
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(1)
+        );
+        self::assertStringContainsString($expected, (string)$response->getBody());
+    }
+
+    public function invalidInvocationIsDeterminedDataProvider(): array
+    {
+        return [
+            'explicitly empty parseFunc path' => [
+                '<f:format.html parseFuncTSPath="">TYPO3 is a cool CMS</f:format.html>',
+            ],
+            'non-existing parseFunc path' => [
+                '<f:format.html parseFuncTSPath="null.this.does.not.exist">TYPO3 is a cool CMS</f:format.html>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidInvocationIsDeterminedDataProvider
+     */
+    public function invalidInvocationIsDetermined(string $fluidTemplateSource): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ]
+        );
+        $this->createTypoScriptTemplate($fluidTemplateSource);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(1641989097);
+        $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(1)
+        );
+    }
+
+    private function createTypoScriptTemplate(string $fluidTemplateSource): void
+    {
         (new ConnectionPool())->getConnectionForTable('sys_template')
             ->insert(
                 'sys_template',
@@ -117,16 +162,10 @@ page = PAGE
 page.10 = FLUIDTEMPLATE
 page.10 {
     template = TEXT
-    template.value = $template
+    template.value = $fluidTemplateSource
 }
 EOT
                 ]
             );
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(1)
-        );
-
-        self::assertStringContainsString($expected, (string)$response->getBody());
     }
 }
