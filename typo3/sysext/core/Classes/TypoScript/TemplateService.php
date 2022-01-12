@@ -813,9 +813,7 @@ class TemplateService
             $extKey = $package->getPackageKey();
             $packagePath = $package->getPackagePath();
             $filesToCheck = [
-                'ext_typoscript_constants.txt',
                 'ext_typoscript_constants.typoscript',
-                'ext_typoscript_setup.txt',
                 'ext_typoscript_setup.typoscript',
             ];
             $files = [];
@@ -837,14 +835,10 @@ class TemplateService
 
                 if (!empty($files['ext_typoscript_constants.typoscript'])) {
                     $constants = @file_get_contents($files['ext_typoscript_constants.typoscript']);
-                } elseif (!empty($files['ext_typoscript_constants.txt'])) {
-                    $constants = @file_get_contents($files['ext_typoscript_constants.txt']);
                 }
 
                 if (!empty($files['ext_typoscript_setup.typoscript'])) {
                     $config = @file_get_contents($files['ext_typoscript_setup.typoscript']);
-                } elseif (!empty($files['ext_typoscript_setup.txt'])) {
-                    $config = @file_get_contents($files['ext_typoscript_setup.txt']);
                 }
 
                 $this->processTemplate(
