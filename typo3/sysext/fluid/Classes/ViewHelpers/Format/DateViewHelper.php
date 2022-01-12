@@ -144,6 +144,7 @@ final class DateViewHelper extends AbstractViewHelper
         $this->registerArgument('pattern', 'string', 'Format date based on unicode ICO format pattern given see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax. If both "pattern" and "format" arguments are given, pattern will be used.');
         $this->registerArgument('locale', 'string', 'A locale format such as "nl-NL" to format the date in a specific locale, if none given, uses the current locale of the current request. Only works when pattern argument is given');
         $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
+        $this->registerArgument('timezone', 'string', 'Timezone for the date');
     }
 
     /**
@@ -180,6 +181,12 @@ final class DateViewHelper extends AbstractViewHelper
             }
             $date = (new \DateTime())->setTimestamp($dateTimestamp);
         }
+
+        if (!empty($this->arguments['timezone']) && $date instanceof \DateTime) {
+            $timezone = (string)$this->arguments['timezone'];
+            $date->setTimezone(new \DateTimeZone($timezone));
+        }
+
         if ($pattern !== null) {
             $locale = $this->arguments['locale'] ?? self::resolveLocale($this->renderingContext);
             return (new DateFormatter())->format($date, $pattern, $locale);
