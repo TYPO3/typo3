@@ -37,15 +37,20 @@
                                     </be:link.editRecord>
                                 </f:if>
                                 <f:if condition="{note.canBeDeleted}">
-                                    <a href="{be:moduleLink(route:'tce_db', query:'cmd[sys_note][{note.uid}][delete]=1', arguments:'{redirect: returnUrl}')}"
-                                        class="btn btn-default btn-sm t3js-modal-trigger"
-                                        data-severity="warning"
-                                        data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
-                                        data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
-                                        data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                                    >
-                                        <core:icon identifier="actions-edit-delete" />
-                                    </a>
+                                    <form action="{be:moduleLink(route:'tce_db')}" method="post">
+                                        <input type="hidden" name="cmd[sys_note][{note.uid}][delete]" value="1" />
+                                        <input type="hidden" name="redirect" value="{returnUrl}" />
+                                        <button
+                                            type="submit"
+                                            class="btn btn-default btn-sm t3js-modal-trigger"
+                                            data-severity="warning"
+                                            data-title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete')}"
+                                            data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteWarning')}"
+                                            data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                                        >
+                                            <core:icon identifier="actions-edit-delete" />
+                                        </button>
+                                    </form>
                                 </f:if>
                             </span>
                         </span>
