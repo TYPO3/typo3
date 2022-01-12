@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -320,10 +321,11 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function compatVersionConditionMatchesSameRelease(): void
     {
+        $typo3Version = new Typo3Version();
         $subject = $this->getConditionMatcher();
-        self::assertTrue($subject->match('[compatVersion(' . TYPO3_branch . ')]'));
-        self::assertTrue($subject->match('[compatVersion("' . TYPO3_branch . '")]'));
-        self::assertTrue($subject->match('[compatVersion(\'' . TYPO3_branch . '\')]'));
+        self::assertTrue($subject->match('[compatVersion(' . $typo3Version->getBranch() . ')]'));
+        self::assertTrue($subject->match('[compatVersion("' . $typo3Version->getBranch() . '")]'));
+        self::assertTrue($subject->match('[compatVersion(\'' . $typo3Version->getBranch() . '\')]'));
     }
 
     /**

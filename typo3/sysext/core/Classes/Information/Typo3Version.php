@@ -22,19 +22,6 @@ class Typo3Version
     protected const VERSION = '12.0.0-dev';
     protected const BRANCH = '12.0';
 
-    /**
-     * Define constants used up until TYPO3 v10, this constructor can be removed in TYPO3 v12.
-     */
-    public function __construct()
-    {
-        if (!defined('TYPO3_version')) {
-            define('TYPO3_version', $this->getVersion());
-        }
-        if (!defined('TYPO3_branch')) {
-            define('TYPO3_branch', $this->getBranch());
-        }
-    }
-
     public function getVersion(): string
     {
         return static::VERSION;

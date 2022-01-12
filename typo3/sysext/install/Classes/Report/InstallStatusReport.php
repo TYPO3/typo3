@@ -264,7 +264,7 @@ class InstallStatusReport implements StatusProviderInterface
                     // - no ELTS update was released, yet
                     $message = sprintf(
                         $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_elts_information'),
-                        TYPO3_version,
+                        $typoVersion->getVersion(),
                         '<a href="https://typo3.com/elts" target="_blank" rel="noopener">https://typo3.com/elts</a>'
                     );
                     $status = Status::WARNING;

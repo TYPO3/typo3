@@ -21,6 +21,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,7 +74,8 @@ class DefaultFunctionsProvider implements ExpressionFunctionProviderInterface
                 // Not implemented, we only use the evaluator
             },
             static function ($arguments, $str) {
-                return VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) >=
+                $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+                return VersionNumberUtility::convertVersionNumberToInteger($typo3Version->getBranch()) >=
                    VersionNumberUtility::convertVersionNumberToInteger($str);
             }
         );

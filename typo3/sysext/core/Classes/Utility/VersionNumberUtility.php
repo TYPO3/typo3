@@ -60,8 +60,8 @@ class VersionNumberUtility
     }
 
     /**
-     * Wrapper function for TYPO3_version constant to make functions using
-     * the constant unit testable
+     * Wrapper function for the static TYPO3 version to
+     * make functions using the constant unit testable.
      *
      * @return string
      */

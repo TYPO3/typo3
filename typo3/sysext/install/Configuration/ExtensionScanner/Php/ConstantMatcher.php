@@ -184,11 +184,13 @@ return [
     'TYPO3_version' => [
         'restFiles' => [
             'Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_branch' => [
         'restFiles' => [
             'Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.rst',
+            'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3_copyright_year' => [

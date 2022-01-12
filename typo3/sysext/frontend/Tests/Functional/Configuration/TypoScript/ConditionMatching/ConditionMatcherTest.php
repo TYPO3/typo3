@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -357,7 +358,8 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function compatVersionConditionMatchesSameRelease(): void
     {
-        self::assertTrue($this->getConditionMatcher()->match('[compatVersion(' . TYPO3_branch . ')]'));
+        $typo3Version = new Typo3Version();
+        self::assertTrue($this->getConditionMatcher()->match('[compatVersion(' . $typo3Version->getBranch() . ')]'));
     }
 
     /**

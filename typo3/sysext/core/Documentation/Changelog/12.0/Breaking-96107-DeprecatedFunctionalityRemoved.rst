@@ -306,6 +306,7 @@ The following TypoScript options have been removed or adapted:
 
 The following constants have been dropped:
 
+- :php:`TYPO3_branch`
 - :php:`TYPO3_MODE`
 - :php:`TYPO3_REQUESTTYPE`
 - :php:`TYPO3_REQUESTTYPE_AJAX`
@@ -313,6 +314,7 @@ The following constants have been dropped:
 - :php:`TYPO3_REQUESTTYPE_CLI`
 - :php:`TYPO3_REQUESTTYPE_FE`
 - :php:`TYPO3_REQUESTTYPE_INSTALL`
+- :php:`TYPO3_version`
 
 The following class constants have been dropped:
 
