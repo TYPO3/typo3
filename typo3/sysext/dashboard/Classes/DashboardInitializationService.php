@@ -25,6 +25,7 @@ use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\JavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 
 /**
  * @internal
@@ -60,6 +61,7 @@ class DashboardInitializationService
 
     /**
      * @var list<string|list<string>>
+     * @deprecated will be removed in TYPO3 v13.0
      */
     private $requireJsModules = [];
     private $jsFiles = [];
@@ -144,7 +146,7 @@ class DashboardInitializationService
     }
 
     /**
-     * @param array $widgets
+     * @param array<string,WidgetConfigurationInterface> $widgets
      */
     protected function defineResourcesOfWidgets(array $widgets): void
     {
@@ -154,6 +156,7 @@ class DashboardInitializationService
                 $this->defineJavaScriptInstructions($concreteInstance);
             }
             if ($concreteInstance instanceof RequireJsModuleInterface) {
+                trigger_error('Using RequireJsModuleInterface is deprecated and will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
                 $this->defineRequireJsModules($concreteInstance);
             }
             if ($concreteInstance instanceof AdditionalCssInterface) {
@@ -176,6 +179,7 @@ class DashboardInitializationService
      * Add the RequireJS modules needed by some widgets
      *
      * @param RequireJsModuleInterface $widgetInstance
+     * @deprecated will be removed in TYPO3 v13.0
      */
     protected function defineRequireJsModules(RequireJsModuleInterface $widgetInstance): void
     {
@@ -240,10 +244,11 @@ class DashboardInitializationService
 
     /**
      * @return list<string|list<string>>
-     * @internal Deprecate in TYPO3 v12.0
+     * @deprecated will be removed in TYPO3 v13.0
      */
     public function getRequireJsModules(): array
     {
+        trigger_error('DashboardInitializationService::getRequireJsModules is deprecated and will be removed in TYPO3 v13.0', E_USER_DEPRECATED);
         return $this->requireJsModules;
     }
 

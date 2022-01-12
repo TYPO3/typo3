@@ -19,8 +19,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * In case a widget should provide additional requireJS modules, the widget must implement this interface.
- * @todo deprecate in TYPO3 v12.0
- * @internal migrate to JavaScriptInstructionInterface in TYPO3 v12.0
+ * @deprecated will be removed in TYPO3 v13.0, migrate to JavaScriptInterface instead
  */
 interface RequireJsModuleInterface
 {

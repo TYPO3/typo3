@@ -249,7 +249,6 @@ class DashboardController extends AbstractController
         foreach ($this->dashboardInitializationService->getJavaScriptModuleInstructions() as $instruction) {
             $javaScriptRenderer->addJavaScriptModuleInstruction($instruction);
         }
-        // @todo Deprecate `RequireJsModuleInterface` in TYPO3 v12.0
         foreach ($this->dashboardInitializationService->getRequireJsModules() as $requireJsModule) {
             if (is_array($requireJsModule)) {
                 $this->pageRenderer->loadRequireJsModule($requireJsModule[0], $requireJsModule[1]);

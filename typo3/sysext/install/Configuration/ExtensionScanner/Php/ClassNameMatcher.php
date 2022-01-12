@@ -1553,6 +1553,11 @@ return [
             'Breaking-91066-MovedInterfacesOfDashboard.rst',
         ],
     ],
+    '\TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface' => [
+        'restFiles' => [
+            'Deprecation-96524-DeprecateInlineJavaScriptInDashboard.rst',
+        ],
+    ],
     'TYPO3\CMS\Dashboard\Utility\ButtonUtility' => [
         'restFiles' => [
             'Breaking-91066-RemovedButtonUtility.rst',

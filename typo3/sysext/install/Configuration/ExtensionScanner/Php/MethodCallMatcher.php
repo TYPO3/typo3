@@ -550,6 +550,13 @@ return [
             'Deprecation-74156-TemplateServicesortedKeyListAndTemplateService-removeQueryString.rst',
         ],
     ],
+    '\TYPO3\CMS\Dashboard\DashboardInitializationService->getRequireJsModules' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-96524-DeprecateInlineJavaScriptInDashboard.rst',
+        ],
+    ],
     'TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison->getParameterIdentifier' => [
         'numberOfMandatoryArguments' => 0,
         'maximumNumberOfArguments' => 0,
