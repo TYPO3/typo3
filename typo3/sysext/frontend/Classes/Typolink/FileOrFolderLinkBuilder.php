@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
  * Builds a TypoLink to a folder or file
@@ -38,7 +37,6 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
                 $linkText
             );
         }
-
         $linkLocation = $fileOrFolderObject->getPublicUrl();
         if ($linkLocation === null) {
             // set the linkLocation to an empty string if null,
@@ -47,7 +45,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
         }
         // Setting title if blank value to link
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
-        $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf) ?? '';
+        $url = $linkLocation;
         if (!empty($linkDetails['fragment'])) {
             $url .= '#' . $linkDetails['fragment'];
         }

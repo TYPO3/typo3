@@ -132,3 +132,8 @@ services:
     tags:
       - name: frontend.contentobject
         identifier: 'SVG'
+
+  TYPO3\CMS\Frontend\Typolink\LinkFactory:
+    public: true
+    arguments:
+      $runtimeCache: '@cache.runtime'

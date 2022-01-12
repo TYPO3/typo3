@@ -95,7 +95,7 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         $localContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $localContentObjectRenderer->start($record, $databaseTable, $request);
         $localContentObjectRenderer->parameters = $this->contentObjectRenderer->parameters;
-        $link = $localContentObjectRenderer->typoLink($linkText, $typoScriptConfiguration);
+        $link = (string)$localContentObjectRenderer->typoLink($linkText, $typoScriptConfiguration);
 
         $this->contentObjectRenderer->lastTypoLinkLD = $localContentObjectRenderer->lastTypoLinkLD;
         $this->contentObjectRenderer->lastTypoLinkUrl = $localContentObjectRenderer->lastTypoLinkUrl;

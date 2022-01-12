@@ -90,7 +90,7 @@ class RedirectFinisher extends AbstractFinisher
             'parameter' => $pageUid,
             'additionalParams' => $additionalParameters,
         ];
-        $redirectUri = $this->getTypoScriptFrontendController()->cObj->typoLink_URL($typolinkConfiguration);
+        $redirectUri = $this->getTypoScriptFrontendController()->cObj->createUrl($typolinkConfiguration);
         $this->redirectToUri($redirectUri, $statusCode);
     }
 

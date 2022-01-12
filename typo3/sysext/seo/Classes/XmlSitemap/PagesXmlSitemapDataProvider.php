@@ -112,7 +112,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             'forceAbsoluteUrl' => 1,
         ];
 
-        $data['loc'] = $this->cObj->typoLink_URL($typoLinkConfig);
+        $data['loc'] = $this->cObj->createUrl($typoLinkConfig);
 
         return $data;
     }

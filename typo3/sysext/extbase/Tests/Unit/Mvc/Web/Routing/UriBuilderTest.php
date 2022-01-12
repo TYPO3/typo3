@@ -396,7 +396,7 @@ class UriBuilderTest extends UnitTestCase
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['someTypoLinkConfiguration']);
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['someTypoLinkConfiguration']);
+        $this->mockContentObject->expects(self::once())->method('createUrl')->with(['someTypoLinkConfiguration']);
         $uriBuilder->buildFrontendUri();
     }
 
@@ -405,7 +405,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesRelativeUrisByDefault(): void
     {
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->willReturn('relative/uri');
+        $this->mockContentObject->expects(self::once())->method('createUrl')->willReturn('relative/uri');
         $expectedResult = 'relative/uri';
         $actualResult = $this->uriBuilder->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
@@ -416,7 +416,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriDoesNotStripLeadingSlashesFromRelativeUris(): void
     {
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->willReturn('/relative/uri');
+        $this->mockContentObject->expects(self::once())->method('createUrl')->willReturn('/relative/uri');
         $expectedResult = '/relative/uri';
         $actualResult = $this->uriBuilder->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
@@ -431,7 +431,7 @@ class UriBuilderTest extends UnitTestCase
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true])->willReturn('http://baseuri/relative/uri');
+        $this->mockContentObject->expects(self::once())->method('createUrl')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/relative/uri';
         $actualResult = $uriBuilder->buildFrontendUri();
@@ -447,7 +447,7 @@ class UriBuilderTest extends UnitTestCase
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true, 'forceAbsoluteUrl.' => ['scheme' => 'someScheme']])->willReturn('http://baseuri/relative/uri');
+        $this->mockContentObject->expects(self::once())->method('createUrl')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true, 'forceAbsoluteUrl.' => ['scheme' => 'someScheme']])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(true);
         $uriBuilder->setAbsoluteUriScheme('someScheme');
         $expectedResult = 'http://baseuri/relative/uri';
@@ -464,7 +464,7 @@ class UriBuilderTest extends UnitTestCase
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar'])->willReturn('http://baseuri/relative/uri');
+        $this->mockContentObject->expects(self::once())->method('createUrl')->with(['foo' => 'bar'])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(false);
         $uriBuilder->setAbsoluteUriScheme('someScheme');
         $expectedResult = 'http://baseuri/relative/uri';

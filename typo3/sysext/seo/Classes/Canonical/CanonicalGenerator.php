@@ -83,7 +83,7 @@ class CanonicalGenerator
     protected function checkForCanonicalLink(): string
     {
         if (!empty($this->typoScriptFrontendController->page['canonical_link'])) {
-            return $this->typoScriptFrontendController->cObj->typoLink_URL([
+            return $this->typoScriptFrontendController->cObj->createUrl([
                 'parameter' => $this->typoScriptFrontendController->page['canonical_link'],
                 'forceAbsoluteUrl' => true,
             ]);
@@ -100,7 +100,7 @@ class CanonicalGenerator
                 if (!empty($targetPage['canonical_link'])) {
                     $parameter = $targetPage['canonical_link'];
                 }
-                return $this->typoScriptFrontendController->cObj->typoLink_URL([
+                return $this->typoScriptFrontendController->cObj->createUrl([
                     'parameter' => $parameter,
                     'forceAbsoluteUrl' => true,
                 ]);
@@ -123,7 +123,7 @@ class CanonicalGenerator
         $previousMp = $this->typoScriptFrontendController->MP;
         $this->typoScriptFrontendController->MP = '';
 
-        $link = $this->typoScriptFrontendController->cObj->typoLink_URL([
+        $link = $this->typoScriptFrontendController->cObj->createUrl([
             'parameter' => $this->typoScriptFrontendController->id . ',' . $this->typoScriptFrontendController->type,
             'forceAbsoluteUrl' => true,
             'addQueryString' => true,

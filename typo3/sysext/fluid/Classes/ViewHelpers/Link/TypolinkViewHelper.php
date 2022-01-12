@@ -169,7 +169,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $contentObject->stdWrap($content, ['typolink.' => $instructions]);
+        return $contentObject->typoLink($content, $instructions);
     }
 
     protected static function serializeTagParameters(array $arguments): string

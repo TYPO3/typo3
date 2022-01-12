@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -31,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
  * Abstract class to provide proper helper for most types necessary
@@ -60,6 +58,7 @@ abstract class AbstractTypolinkBuilder
      * @param string $target the target to point to
      * @param array $conf the TypoLink configuration array
      * @return LinkResultInterface
+     * @throws UnableToLinkException
      */
     abstract public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface;
 
@@ -186,46 +185,6 @@ abstract class AbstractTypolinkBuilder
             $target = (string)$this->contentObjectRenderer->stdWrap($target, $conf[$name . '.'] ?? []);
         }
         return $target;
-    }
-
-    /**
-     * Loops over all configured URL modifier hooks (if available) and returns the generated URL or NULL if no URL was generated.
-     *
-     * @param string $context The context in which the method is called (e.g. typoLink).
-     * @param string $url The URL that should be processed.
-     * @param array $typolinkConfiguration The current link configuration array.
-     * @return string|null Returns NULL if URL was not processed or the processed URL as a string.
-     * @throws \RuntimeException if a hook was registered but did not fulfill the correct parameters.
-     */
-    protected function processUrl(string $context, string $url, array $typolinkConfiguration = [])
-    {
-        $urlProcessors = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'] ?? false;
-        if (!$urlProcessors) {
-            return $url;
-        }
-
-        foreach ($urlProcessors as $identifier => $configuration) {
-            if (empty($configuration) || !is_array($configuration)) {
-                throw new \RuntimeException('Missing configuration for URI processor "' . $identifier . '".', 1491130459);
-            }
-            if (!is_string($configuration['processor']) || empty($configuration['processor']) || !class_exists($configuration['processor']) || !is_subclass_of($configuration['processor'], UrlProcessorInterface::class)) {
-                throw new \RuntimeException('The URI processor "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . UrlProcessorInterface::class . '".', 1491130460);
-            }
-        }
-
-        $orderedProcessors = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($urlProcessors);
-        $keepProcessing = true;
-
-        foreach ($orderedProcessors as $configuration) {
-            /** @var UrlProcessorInterface $urlProcessor */
-            $urlProcessor = GeneralUtility::makeInstance($configuration['processor']);
-            $url = $urlProcessor->process($context, $url, $typolinkConfiguration, $this->contentObjectRenderer, $keepProcessing);
-            if (!$keepProcessing) {
-                break;
-            }
-        }
-
-        return $url;
     }
 
     public function getTypoScriptFrontendController(): TypoScriptFrontendController

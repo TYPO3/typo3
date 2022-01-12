@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -80,6 +82,8 @@ use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\LinkResult;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -226,12 +230,34 @@ class ContentObjectRendererTest extends UnitTestCase
     // Utility functions
     //////////////////////
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];
+    }
+
+    protected function getLinkFactory(SiteConfiguration $siteConfiguration = null, $linkService = null): LinkFactory
+    {
+        $linkService ??= new LinkService();
+        $typoLinkCodecService = new TypoLinkCodecService();
+        if ($siteConfiguration) {
+            $siteFinder = new SiteFinder($siteConfiguration);
+        } else {
+            $siteFinder = $this->prophesize(SiteFinder::class)->reveal();
+        }
+        $linkFactory = new LinkFactory(
+            $linkService,
+            new class() implements EventDispatcherInterface {
+                public function dispatch(object $event)
+                {
+                    return $event;
+                }
+            },
+            $typoLinkCodecService,
+            new NullFrontend('runtime'),
+            $siteFinder
+        );
+        $linkFactory->setLogger(new NullLogger());
+        return $linkFactory;
     }
 
     /**
@@ -1713,36 +1739,6 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @test
      */
-    public function aTagParamsHasLeadingSpaceIfNotEmpty(): void
-    {
-        $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
-        self::assertEquals(' data-test="testdata"', $aTagParams);
-    }
-
-    /**
-     * @test
-     */
-    public function aTagParamsHaveSpaceBetweenLocalAndGlobalParams(): void
-    {
-        $GLOBALS['TSFE']->config['config']['ATagParams'] = 'data-global="dataglobal"';
-        $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
-        self::assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
-    }
-
-    /**
-     * @test
-     */
-    public function aTagParamsHasNoLeadingSpaceIfEmpty(): void
-    {
-        // make sure global ATagParams are empty
-        $GLOBALS['TSFE']->config['config']['ATagParams'] = '';
-        $aTagParams = $this->subject->getATagParams(['ATagParams' => '']);
-        self::assertEquals('', $aTagParams);
-    }
-
-    /**
-     * @test
-     */
     public function renderingContentObjectThrowsException(): void
     {
         $this->expectException(\LogicException::class);
@@ -1943,36 +1939,43 @@ class ContentObjectRendererTest extends UnitTestCase
                 'Text without tag',
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">Text without tag</p>',
+                false,
             ],
             'Text wrapped with <p> tag remains the same' => [
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
                 $this->getLibParseFunc_RTE(),
                 '<p class="myclass">Text with &lt;p&gt; tag</p>',
+                false,
             ],
             'Text with absolute external link' => [
                 'Text with <link http://example.com/foo/>external link</link>',
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
+                (new LinkResult(LinkService::TYPE_URL, 'http://example.com/foo/'))->withLinkText('external link'),
             ],
             'Empty lines are not duplicated' => [
                 LF,
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>',
+                false,
             ],
             'Multiple empty lines with no text' => [
                 LF . LF . LF,
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+                false,
             ],
             'Empty lines are not duplicated at the end of content' => [
                 'test' . LF . LF,
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+                false,
             ],
             'Empty lines are not trimmed' => [
                 LF . 'test' . LF,
                 $this->getLibParseFunc_RTE(),
                 '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+                false,
             ],
         ];
     }
@@ -1980,12 +1983,14 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @test
      * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
-     * @param string $value
-     * @param array $configuration
-     * @param string $expectedResult
      */
-    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
+    public function stdWrap_parseFuncReturnsParsedHtml(string $value, array $configuration, string $expectedResult, LinkResultInterface|false $linkResult): void
     {
+        if ($linkResult !== false) {
+            $linkFactory = $this->prophesize(LinkFactory::class);
+            $linkFactory->create(Argument::cetera())->willReturn($linkResult);
+            GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
+        }
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
@@ -2300,7 +2305,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'extTarget' => '_blank',
                     'title' => 'Open new window',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" target="_blank" class="url-class" rel="noreferrer" title="Open new window">TYPO3</a>',
             ],
             'Link to url with attributes and custom target name' => [
                 'TYPO3',
@@ -2310,21 +2315,21 @@ class ContentObjectRendererTest extends UnitTestCase
                     'extTarget' => 'someTarget',
                     'title' => 'Open new window',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="someTarget" class="url-class" rel="noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" target="someTarget" class="url-class" rel="noreferrer" title="Open new window">TYPO3</a>',
             ],
             'Link to url with attributes in parameter' => [
                 'TYPO3',
                 [
                     'parameter' => 'http://typo3.org _blank url-class "Open new window"',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" target="_blank" rel="noreferrer" title="Open new window" class="url-class">TYPO3</a>',
             ],
             'Link to url with attributes in parameter and custom target name' => [
                 'TYPO3',
                 [
                     'parameter' => 'http://typo3.org someTarget url-class "Open new window"',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="someTarget" class="url-class" rel="noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" target="someTarget" rel="noreferrer" title="Open new window" class="url-class">TYPO3</a>',
             ],
             'Link to url with script tag' => [
                 '',
@@ -2355,7 +2360,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'ATagParams' => 'class="email-class"',
                     'title' => 'Write an email',
                 ],
-                '<a href="mailto:foo@bar.org" title="Write an email" class="email-class">Email address</a>',
+                '<a href="mailto:foo@bar.org" class="email-class" title="Write an email">Email address</a>',
             ],
             'Link to email with attributes in parameter' => [
                 'Email address',
@@ -2398,21 +2403,18 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
 
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                new class() implements EventDispatcherInterface {
-                    public function dispatch(object $event)
-                    {
-                        return $event;
-                    }
-                },
-                new NullFrontend('dummy')
-            )
+        $siteConfiguration = new SiteConfiguration(
+            Environment::getConfigPath() . '/sites',
+            new class() implements EventDispatcherInterface {
+                public function dispatch(object $event)
+                {
+                    return $event;
+                }
+            },
+            new NullFrontend('dummy')
         );
-
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+        GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory($siteConfiguration));
 
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
@@ -2434,7 +2436,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->getFrontendController()->spamProtectEmailAddresses = $settings['spamProtectEmailAddresses'];
         $this->getFrontendController()->config['config'] = $settings;
         $typoScript = ['parameter' => $mailAddress];
-
+        GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory());
         self::assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
     }
 
@@ -2568,7 +2570,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes and additional href' => [
                 'My file',
@@ -2578,7 +2580,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes and additional href and class' => [
                 'My file',
@@ -2588,7 +2590,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes and additional class and href' => [
                 'My file',
@@ -2598,7 +2600,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes and additional class and href and title' => [
                 'My file',
@@ -2608,7 +2610,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="foo-bar" target="_blank" class="file-class">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes and empty ATagParams' => [
                 'My file',
@@ -2618,14 +2620,14 @@ class ContentObjectRendererTest extends UnitTestCase
                     'fileTarget' => '_blank',
                     'title' => 'Title of the file',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes in parameter' => [
                 'My file',
                 [
                     'parameter' => 'fileadmin/foo.bar _blank file-class "Title of the file"',
                 ],
-                '<a href="fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="fileadmin/foo.bar" target="_blank" title="Title of the file" class="file-class">My file</a>',
             ],
             'Link to file with script tag in name' => [
                 '',
@@ -2670,6 +2672,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+        GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory());
 
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
@@ -2752,7 +2755,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'title' => 'Title of the file',
                 ],
                 '/',
-                '<a href="/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to file with attributes with longer absRefPrefix' => [
                 'My file',
@@ -2763,7 +2766,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="/sub/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with absRefPrefix' => [
                 'My file',
@@ -2774,7 +2777,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'title' => 'Title of the file',
                 ],
                 '/',
-                '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="/images/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with longer absRefPrefix' => [
                 'My file',
@@ -2785,7 +2788,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/images/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="/images/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
             'Link to absolute file with attributes with identical longer absRefPrefix' => [
                 'My file',
@@ -2796,7 +2799,7 @@ class ContentObjectRendererTest extends UnitTestCase
                     'title' => 'Title of the file',
                 ],
                 '/sub/',
-                '<a href="/sub/fileadmin/foo.bar" title="Title of the file" target="_blank" class="file-class">My file</a>',
+                '<a href="/sub/fileadmin/foo.bar" target="_blank" class="file-class" title="Title of the file">My file</a>',
             ],
         ];
     }
@@ -2838,6 +2841,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
         $GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
+        GeneralUtility::addInstance(LinkFactory::class, $this->getLinkFactory());
 
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
@@ -2847,33 +2851,34 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function typolinkOpensInNewWindow(): void
     {
+        $siteConfiguration = new SiteConfiguration(
+            Environment::getConfigPath() . '/sites',
+            new class() implements EventDispatcherInterface {
+                public function dispatch(object $event)
+                {
+                    return $event;
+                }
+            },
+            new NullFrontend('dummy')
+        );
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('runtime'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                new class() implements EventDispatcherInterface {
-                    public function dispatch(object $event)
-                    {
-                        return $event;
-                    }
-                },
-                new NullFrontend('dummy')
-            )
-        );
+        $linkFactory = $this->getLinkFactory($siteConfiguration);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $linkText = 'Nice Text';
         $configuration = [
             'parameter' => 'https://example.com 13x84:target=myexample',
         ];
         $expectedResult = '<a href="https://example.com" target="myexample" data-window-url="https://example.com" data-window-target="myexample" data-window-features="width=13,height=84" rel="noreferrer">Nice Text</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $linkText = 'Nice Text with default window name';
         $configuration = [
             'parameter' => 'https://example.com 13x84',
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         $linkText = 'Nice Text with default window name';
         $configuration = [
@@ -2881,6 +2886,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = '<a href="https://example.com" target="FEopenLink" data-window-url="https://example.com" data-window-target="FEopenLink" data-window-features="width=13,height=84" rel="noreferrer">Nice Text with default window name</a>';
         self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         $GLOBALS['TSFE']->xhtmlDoctype = 'xhtml_strict';
         $linkText = 'Nice Text with default window name';
@@ -2897,9 +2903,9 @@ class ContentObjectRendererTest extends UnitTestCase
     public function typoLinkReturnsOnlyLinkTextIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->prophesize(LinkService::class);
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
         $linkService->resolve('foo')->willThrow(InvalidPathException::class);
-
+        $linkFactory = $this->getLinkFactory(null, $linkService->reveal());
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         self::assertSame('foo', $this->subject->typoLink('foo', ['parameter' => 'foo']));
     }
 
@@ -2909,12 +2915,13 @@ class ContentObjectRendererTest extends UnitTestCase
     public function typoLinkLogsErrorIfNoLinkResolvingIsPossible(): void
     {
         $linkService = $this->prophesize(LinkService::class);
-        GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
         $linkService->resolve('foo')->willThrow(InvalidPathException::class);
-
+        $linkFactory = $this->getLinkFactory(null, $linkService->reveal());
         $logger = $this->prophesize(Logger::class);
         $logger->warning('The link could not be generated', Argument::any())->shouldBeCalled();
-        $this->subject->setLogger($logger->reveal());
+        $linkFactory->setLogger($logger->reveal());
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
+
         $this->subject->typoLink('foo', ['parameter' => 'foo']);
     }
 
@@ -2948,22 +2955,30 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
 
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                $this->prophesize(EventDispatcherInterface::class)->reveal(),
-                new NullFrontend('dummy')
-            )
+        $siteConfiguration = new SiteConfiguration(
+            Environment::getConfigPath() . '/sites',
+            new class() implements EventDispatcherInterface {
+                public function dispatch(object $event)
+                {
+                    return $event;
+                }
+            },
+            new NullFrontend('dummy')
         );
+        $linkFactory = $this->getLinkFactory($siteConfiguration);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
-        $linkResult = $this->subject->typoLink('', [
-            'parameter' => 'https://example.tld',
-            'returnLast' => 'result', ]);
-
-        self::assertTrue(is_a($linkResult, LinkResultInterface::class, true));
+        $linkResult = $this->subject->typoLink(
+            '',
+            [
+                'parameter' => 'https://example.tld',
+                'returnLast' => 'result',
+            ]
+        );
+        /** @phpstan-ignore-next-line */
+        self::assertInstanceOf(LinkResultInterface::class, $linkResult);
         self::assertEquals(json_encode([
             'href' => 'https://example.tld',
             'target' => null,
@@ -3011,20 +3026,18 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
 
-        GeneralUtility::setSingletonInstance(
-            SiteConfiguration::class,
-            new SiteConfiguration(
-                Environment::getConfigPath() . '/sites',
-                new class() implements EventDispatcherInterface {
-                    public function dispatch(object $event)
-                    {
-                        return $event;
-                    }
-                },
-                new NullFrontend('dummy')
-            )
+        $siteConfiguration = new SiteConfiguration(
+            Environment::getConfigPath() . '/sites',
+            new class() implements EventDispatcherInterface {
+                public function dispatch(object $event)
+                {
+                    return $event;
+                }
+            },
+            new NullFrontend('dummy')
         );
-
+        $linkFactory = $this->getLinkFactory($siteConfiguration);
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory);
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
         self::assertEquals($expectedResult, (string)$this->subject->typoLink($linkText, $configuration));
@@ -3531,6 +3544,9 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+        $linkFactory = $this->prophesize(LinkFactory::class);
+        $linkFactory->create(Argument::cetera())->willReturn(new LinkResult('', ''));
+        GeneralUtility::addInstance(LinkFactory::class, $linkFactory->reveal());
 
         $expectExceptions = ['numRows', 'bytes'];
         $count = 0;

@@ -21,7 +21,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
  * Builds a TypoLink to an email address, also takes care of additional functionality for the time being
@@ -55,43 +54,39 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
      * @param string $mailAddress Email address
      * @param string $linkText Link text, default will be the email address.
      * @return array{0: string, 1: string, 2: array<string, string>} A numerical array with three items
+     * @internal this method is not part of TYPO3's public API
      */
     public function processEmailLink(string $mailAddress, string $linkText): array
     {
         $linkText = $linkText ?: htmlspecialchars($mailAddress);
-        $originalMailToUrl = 'mailto:' . $mailAddress;
-        $mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
+        $mailToUrl = 'mailto:' . $mailAddress;
         $attributes = [];
 
         // no processing happened, therefore, the default processing kicks in
-        if ($mailToUrl === $originalMailToUrl) {
-            $tsfe = $this->getTypoScriptFrontendController();
-            if ($tsfe->spamProtectEmailAddresses) {
-                $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
-                if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
-                    $attributes = [
-                        'data-mailto-token' => $mailToUrl,
-                        'data-mailto-vector' => (int)$tsfe->spamProtectEmailAddresses,
-                    ];
-                    $mailToUrl = '#';
-                    $this->addDefaultFrontendJavaScript();
-                }
-                $atLabel = '(at)';
-                if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
-                    $atLabel = $atLabelFromConfig;
-                }
-                $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
-                if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
-                    $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
-                    $lastDotLabel = $lastDotLabel ?: '(dot)';
-                    $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
-                    if ($spamProtectedMailAddress === null) {
-                        $this->logger->debug('Error replacing the last dot in email address "{email}"', ['email' => $spamProtectedMailAddress]);
-                        $spamProtectedMailAddress = '';
-                    }
-                }
-                $linkText = str_ireplace($mailAddress, $spamProtectedMailAddress, $linkText);
+        $tsfe = $this->getTypoScriptFrontendController();
+        if ($tsfe->spamProtectEmailAddresses) {
+            $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
+            $attributes = [
+                'data-mailto-token' => $mailToUrl,
+                'data-mailto-vector' => $tsfe->spamProtectEmailAddresses,
+            ];
+            $mailToUrl = '#';
+            $this->addDefaultFrontendJavaScript();
+            $atLabel = '(at)';
+            if (($atLabelFromConfig = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst'] ?? '')) !== '') {
+                $atLabel = $atLabelFromConfig;
             }
+            $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));
+            if ($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst'] ?? false) {
+                $lastDotLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_lastDotSubst']);
+                $lastDotLabel = $lastDotLabel ?: '(dot)';
+                $spamProtectedMailAddress = preg_replace('/\\.([^\\.]+)$/', $lastDotLabel . '$1', $spamProtectedMailAddress);
+                if ($spamProtectedMailAddress === null) {
+                    $this->logger->debug('Error replacing the last dot in email address "{email}"', ['email' => $spamProtectedMailAddress]);
+                    $spamProtectedMailAddress = '';
+                }
+            }
+            $linkText = str_ireplace($mailAddress, $spamProtectedMailAddress, $linkText);
         }
 
         return [$mailToUrl, $linkText, $attributes];
@@ -101,35 +96,27 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder implements LoggerAwareInt
      * Encryption of email addresses for <A>-tags See the spam protection setup in TS 'config.'
      *
      * @param string $string Input string to en/decode: "mailto:some@example.com
-     * @param mixed  $type - either "ascii" or a number between -10 and 10, taken from config.spamProtectEmailAddresses
+     * @param int $offset a number between -10 and 10, taken from config.spamProtectEmailAddresses
      * @return string encoded version of $string
      */
-    protected function encryptEmail(string $string, $type): string
+    protected function encryptEmail(string $string, int $offset): string
     {
         $out = '';
-        // obfuscates using the decimal HTML entity references for each character
-        if ($type === 'ascii') {
-            foreach (preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY) as $char) {
-                $out .= '&#' . mb_ord($char) . ';';
-            }
-        } else {
-            // like str_rot13() but with a variable offset and a wider character range
-            $len = strlen($string);
-            $offset = (int)$type;
-            for ($i = 0; $i < $len; $i++) {
-                $charValue = ord($string[$i]);
-                // 0-9 . , - + / :
-                if ($charValue >= 43 && $charValue <= 58) {
-                    $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
-                } elseif ($charValue >= 64 && $charValue <= 90) {
-                    // A-Z @
-                    $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
-                } elseif ($charValue >= 97 && $charValue <= 122) {
-                    // a-z
-                    $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
-                } else {
-                    $out .= $string[$i];
-                }
+        // like str_rot13() but with a variable offset and a wider character range
+        $len = strlen($string);
+        for ($i = 0; $i < $len; $i++) {
+            $charValue = ord($string[$i]);
+            // 0-9 . , - + / :
+            if ($charValue >= 43 && $charValue <= 58) {
+                $out .= $this->encryptCharcode($charValue, 43, 58, $offset);
+            } elseif ($charValue >= 64 && $charValue <= 90) {
+                // A-Z @
+                $out .= $this->encryptCharcode($charValue, 64, 90, $offset);
+            } elseif ($charValue >= 97 && $charValue <= 122) {
+                // a-z
+                $out .= $this->encryptCharcode($charValue, 97, 122, $offset);
+            } else {
+                $out .= $string[$i];
             }
         }
         return $out;

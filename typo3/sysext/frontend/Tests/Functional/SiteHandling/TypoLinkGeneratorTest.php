@@ -177,11 +177,11 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '1200,1 target class title &param-a=a',
-                '<a href="/features?param-a=a&amp;type=1&amp;cHash=62ac35c73f425af5e13cfff14c04424e" title="title" target="target" class="class">EN: Features</a>',
+                '<a href="/features?param-a=a&amp;type=1&amp;cHash=62ac35c73f425af5e13cfff14c04424e" target="target" title="title" class="class">EN: Features</a>',
             ],
             [
                 'user@example.org target class title &other=other',
-                '<a href="mailto:user@example.org" title="title" target="target" class="class">user@example.org</a>',
+                '<a href="mailto:user@example.org" target="target" title="title" class="class">user@example.org</a>',
             ],
             // check link with language parameters
             [
@@ -277,7 +277,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 ],
                 '',
                 'text',
-                '<a href="/welcome" data-any="where" target="from-a-tags">text</a>',
+                '<a href="/welcome" target="from-a-tags" data-any="where">text</a>',
             ],
             'specific ATagParams with target in parameter' => [
                 [
@@ -322,7 +322,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 ],
                 'tabindex="from-global" target="_blank" data-any="global" data-global="1" href="#"',
                 'text',
-                '<a href="/welcome" tabindex="from-global" target="from-a-tags" data-any="where" data-global="1">text</a>',
+                '<a href="/welcome" target="from-a-tags" tabindex="from-global" data-any="where" data-global="1">text</a>',
             ],
             /** currently skipped because TYPO3 cannot handle no-value attributes
             'specific ATagParams with global attributes and local ATagParams overridden and no-value attributes' => [
@@ -450,7 +450,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '<good/a="a/"/b="thing(1)"> target class title &other=other',
-                '<a href="/&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;" title="title" target="target" class="class">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>',
+                '<a href="/&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;" target="target" title="title" class="class">&lt;good/a=&quot;a/&quot;/b=&quot;thing(1)&quot;&gt;</a>',
             ],
             [
                 'javascript:good()',
@@ -490,7 +490,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
             ],
             [
                 '</> <"> <"> <">',
-                '<a href="/&lt;/&gt;" title="&lt;&quot;&gt;" target="&lt;&quot;&gt;" class="&lt;&quot;&gt;">&lt;/&gt;</a>',
+                '<a href="/&lt;/&gt;" target="&lt;&quot;&gt;" title="&lt;&quot;&gt;" class="&lt;&quot;&gt;">&lt;/&gt;</a>',
             ],
         ];
         return $this->keysFromTemplate($instructions, '%1$s;');
@@ -660,7 +660,7 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                     'title' => 'custom title',
                 ],
                 'a link',
-                '<a title="custom title" id="c13" data-any="where">a link</a>',
+                '<a id="c13" data-any="where" title="custom title">a link</a>',
             ],
         ];
     }

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -44,14 +43,12 @@ class RedirectFinisherTest extends UnitTestCase
      * @dataProvider pageUidOptionForFinisherAcceptsVariousPageRepresentationsDataProvider
      * @param string|int|null $pageUid
      * @param int $expectedPage
-     * @throws Exception
      */
     public function pageUidOptionForFinisherAcceptsVariousPageRepresentations($pageUid, int $expectedPage): void
     {
         $uriPrefix = 'https://site.test/?id=';
-
         $contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-        $contentObjectRendererProphecy->typoLink_URL(Argument::type('array'))->will(static function ($arguments) use ($uriPrefix) {
+        $contentObjectRendererProphecy->createUrl(Argument::type('array'))->will(static function ($arguments) use ($uriPrefix) {
             return $uriPrefix . $arguments[0]['parameter'];
         });
         $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);

@@ -681,10 +681,7 @@ class UriBuilder
                 $typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
             }
         }
-        // Other than stated in the doc block, typoLink_URL does not always return a string
-        // Thus, we explicitly cast to string here.
-        $uri = (string)$this->contentObject->typoLink_URL($typolinkConfiguration);
-        return $uri;
+        return $this->contentObject->createUrl($typolinkConfiguration);
     }
 
     /**

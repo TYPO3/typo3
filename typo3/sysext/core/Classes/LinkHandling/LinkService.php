@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class LinkService implements SingletonInterface
 {
     const TYPE_PAGE = 'page';
+    const TYPE_INPAGE = 'inpage';
     const TYPE_URL = 'url';
     const TYPE_EMAIL = 'email';
     const TYPE_TELEPHONE = 'telephone';
@@ -82,6 +83,7 @@ class LinkService implements SingletonInterface
      *
      * @param string $linkParameter could be "fileadmin/myfile.jpg", "info@typo3.org", "13" or "http://www.typo3.org"
      * @return array
+     * @throws UnknownLinkHandlerException
      */
     public function resolve(string $linkParameter): array
     {

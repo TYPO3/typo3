@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
  * Builds a TypoLink to a file (relative to fileadmin/ or something)
@@ -35,14 +34,14 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
             // Setting title if blank value to link
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
             $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
-            $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf) ?? '';
+            $url = $linkLocation;
             $url = $this->forceAbsoluteUrl($url, $conf);
             $target = $target ?: $this->resolveTargetAttribute($conf, 'fileTarget', false, $tsfe->fileTarget);
         } elseif ($linkDetails['url']) {
             $linkDetails['type'] = LinkService::TYPE_URL;
             $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
             $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
-            $url = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
+            $url = $linkDetails['url'];
         } else {
             throw new UnableToLinkException('Unknown link detected, so ' . $linkText . ' was not linked.', 1490990031, null, $linkText);
         }

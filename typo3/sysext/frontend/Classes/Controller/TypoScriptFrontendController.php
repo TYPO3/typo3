@@ -1646,7 +1646,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->type) {
             $parameter .= ',' . $this->type;
         }
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->typoLink_URL([
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->createUrl([
             'parameter' => $parameter,
             'addQueryString' => true,
             'addQueryString.' => ['exclude' => 'id,type'],

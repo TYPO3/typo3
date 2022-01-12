@@ -92,7 +92,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             ],
             'full parameter usage' => [
                 '<f:link.typolink parameter="1 _blank css-class \"testtitle with whitespace\" &X=y">This is a testlink</f:link.typolink>',
-                '<a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" title="testtitle with whitespace" target="_blank" class="css-class">This is a testlink</a>',
+                '<a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" target="_blank" title="testtitle with whitespace" class="css-class">This is a testlink</a>',
             ],
             't3:// with extended class' => [
                 '<f:link.typolink parameter="t3://url?url=https://example.org?param=1&other=dude - css-class">This is a testlink</f:link.typolink>',
@@ -153,14 +153,14 @@ EOT
                 [
                     'parameter' => 'http://typo3.org/ "_self" "<CSS>" "<Title>"',
                 ],
-                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>',
+                '<a href="http://typo3.org/" target="_self" title="&lt;Title&gt;" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>',
             ],
             'target does not point to "self", adds noreferrer relationship' => [
                 '<f:link.typolink parameter="{parameter}" parts-as="typoLinkParts">Individual {typoLinkParts.target} {typoLinkParts.class} {typoLinkParts.title}</f:link.typolink>',
                 [
                     'parameter' => 'http://typo3.org/ "<Target>" "<CSS>" "<Title>"',
                 ],
-                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="&lt;Target&gt;" class="&lt;CSS&gt;" rel="noreferrer">Individual &lt;Target&gt; &lt;CSS&gt; &lt;Title&gt;</a>',
+                '<a href="http://typo3.org/" target="&lt;Target&gt;" rel="noreferrer" title="&lt;Title&gt;" class="&lt;CSS&gt;">Individual &lt;Target&gt; &lt;CSS&gt; &lt;Title&gt;</a>',
             ],
             'typoLinkAdditionalAttributesAreRendered' => [
                 '<f:link.typolink parameter="{parameter}" additionalAttributes="{additionalAttributes}">Link Text</f:link.typolink>',
@@ -172,10 +172,10 @@ EOT
                         'data-other' => '\'\'',
                     ],
                 ],
-                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
-                    . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
+                '<a href="http://typo3.org/" target="_self"'
+                    . ' data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
                     . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
-                    . ' data-other="&#039;&#039;">Link Text</a>',
+                    . ' data-other="&#039;&#039;" title="&lt;Title&gt;" class="&lt;CSS&gt;">Link Text</a>',
             ],
         ];
     }

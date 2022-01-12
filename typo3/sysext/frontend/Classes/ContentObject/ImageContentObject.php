@@ -301,7 +301,7 @@ class ImageContentObject extends AbstractContentObject
         $altText = trim((string)$this->cObj->stdWrapValue('altText', $conf ?? []));
         $titleText = trim((string)$this->cObj->stdWrapValue('titleText', $conf ?? []));
         if (isset($conf['longdescURL.']) && $this->getTypoScriptFrontendController()->config['config']['doctype'] !== 'html5') {
-            $longDescUrl = $this->cObj->typoLink_URL($conf['longdescURL.']);
+            $longDescUrl = $this->cObj->createUrl($conf['longdescURL.']);
         } else {
             $longDescUrl = trim($conf['longdescURL'] ?? '');
         }

@@ -139,7 +139,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $this->tag->forceClosingTag(true);
             $result = $this->tag->render();
         } else {
-            $result = $this->renderChildren();
+            $result = (string)$this->renderChildren();
         }
         return $result;
     }

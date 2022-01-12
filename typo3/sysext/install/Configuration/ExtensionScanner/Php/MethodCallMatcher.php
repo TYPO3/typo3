@@ -5260,4 +5260,32 @@ return [
             'Deprecation-97244-CompositeExpressionMethodsAddAndAddMultiple.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getATagParams' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTypoLink_URL' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getUrlToCurrentLocation' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-96641-LinkRelatedFunctionalityInContentObjectRenderer.rst',
+        ],
+    ],
 ];

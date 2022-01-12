@@ -677,4 +677,22 @@ return [
             'Breaking-97265-SimplifiedAccessModeSystem.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'typoLink_PostProc\']' => [
+        'restFiles' => [
+            'Breaking-96641-TypoLinkRelatedHooksRemoved.rst',
+            'Feature-96641-NewPSR-14EventForModifyingLinks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content.php\'][\'getATagParamsPostProc\']' => [
+        'restFiles' => [
+            'Breaking-96641-TypoLinkRelatedHooksRemoved.rst',
+            'Feature-96641-NewPSR-14EventForModifyingLinks.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'urlProcessing\'][\'urlProcessors\']' => [
+        'restFiles' => [
+            'Breaking-96641-TypoLinkRelatedHooksRemoved.rst',
+            'Feature-96641-NewPSR-14EventForModifyingLinks.rst',
+        ],
+    ],
 ];

@@ -336,11 +336,26 @@ class AbstractPlugin
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @return string The resulting URL
      * @see pi_linkToPage()
-     * @see ContentObjectRenderer::getTypoLink()
+     * @see ContentObjectRenderer::createUrl()
      */
     public function pi_getPageLink($id, $target = '', $urlParameters = [])
     {
-        return $this->cObj->getTypoLink_URL($id, $urlParameters, $target);
+        $conf = [
+            'parameter' => $id,
+        ];
+        if ($target) {
+            $conf['target'] = $target;
+            $conf['extTarget'] = $target;
+            $conf['fileTarget'] = $target;
+        }
+        if (is_array($urlParameters)) {
+            if (!empty($urlParameters)) {
+                $conf['additionalParams'] = HttpUtility::buildQueryString($urlParameters, '&');
+            }
+        } else {
+            $conf['additionalParams'] = $urlParameters;
+        }
+        return $this->cObj->createUrl($conf);
     }
 
     /**
@@ -354,11 +369,26 @@ class AbstractPlugin
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @return string The input string wrapped in <a> tags with the URL and target set.
      * @see pi_getPageLink()
-     * @see ContentObjectRenderer::getTypoLink()
+     * @see ContentObjectRenderer::typoLink()
      */
     public function pi_linkToPage($str, $id, $target = '', $urlParameters = [])
     {
-        return $this->cObj->getTypoLink($str, $id, $urlParameters, $target);
+        $conf = [
+            'parameter' => $id,
+        ];
+        if ($target) {
+            $conf['target'] = $target;
+            $conf['extTarget'] = $target;
+            $conf['fileTarget'] = $target;
+        }
+        if (is_array($urlParameters)) {
+            if (!empty($urlParameters)) {
+                $conf['additionalParams'] = HttpUtility::buildQueryString($urlParameters, '&');
+            }
+        } else {
+            $conf['additionalParams'] = $urlParameters;
+        }
+        return $this->cObj->typoLink((string)$str, $conf);
     }
 
     /**
@@ -381,7 +411,7 @@ class AbstractPlugin
         }
         $conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: 'current');
         $conf['additionalParams'] = $this->conf['parent.']['addParams'] . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;
-        return $this->cObj->typoLink($str, $conf);
+        return $this->cObj->typoLink((string)$str, $conf);
     }
 
     /**

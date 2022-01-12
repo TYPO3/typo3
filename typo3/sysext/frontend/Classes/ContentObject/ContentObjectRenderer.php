@@ -38,14 +38,10 @@ use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
 use TYPO3\CMS\Core\Html\SanitizerInitiator;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
 use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -54,7 +50,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -75,9 +70,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
-use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder;
-use TYPO3\CMS\Frontend\Typolink\LinkResult;
+use TYPO3\CMS\Frontend\Typolink\HtmlLinkResult;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3\HtmlSanitizer\Builder\BuilderInterface;
@@ -1062,10 +1057,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             } else {
                 $conf['linkParams.']['directImageLink'] = (bool)($conf['directImageLink'] ?? false);
                 $conf['linkParams.']['parameter'] = $url;
-                $string = $this->typoLink($string, $conf['linkParams.']);
+                $string = (string)$this->typoLink($string, $conf['linkParams.']);
             }
             if (isset($conf['stdWrap.'])) {
-                $string = $this->stdWrap($string, $conf['stdWrap.']);
+                $string = (string)$this->stdWrap($string, $conf['stdWrap.']);
             }
             $content = $a1 . $string . $a2;
         }
@@ -1095,24 +1090,17 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $conf TypoScript configuration properties
      * @return string String containing the parameters to the A tag (if non empty, with a leading space)
-     * @see typolink()
+     * @see typoLink()
+     * @deprecated will be removed in TYPO3 v13.0. Use LinkFactory functionality directly, available since TYPO3 v12.0.
      */
     public function getATagParams($conf)
     {
+        trigger_error('$cObj->getATagParams is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $aTagParams = $this->stdWrapValue('ATagParams', $conf ?? []);
         // Add the global config.ATagParams
-        $globalParams = trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? '');
+        $globalParams = $this->getTypoScriptFrontendController() ? trim($this->getTypoScriptFrontendController()->config['config']['ATagParams'] ?? ''): '';
         $aTagParams = ' ' . trim($globalParams . ' ' . $aTagParams);
         // Extend params
-        $_params = [
-            'conf' => &$conf,
-            'aTagParams' => &$aTagParams,
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'] ?? [] as $className) {
-            $processor = GeneralUtility::makeInstance($className);
-            $aTagParams = $processor->process($_params, $this);
-        }
-
         $aTagParams = trim($aTagParams);
         if (!empty($aTagParams)) {
             $aTagParams = ' ' . $aTagParams;
@@ -2215,7 +2203,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_typolink($content = '', $conf = [])
     {
-        return $this->typoLink($content, $conf['typolink.']);
+        return $this->typoLink((string)$content, $conf['typolink.'] ?? []);
     }
 
     /**
@@ -3783,7 +3771,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $linktxt = (string)preg_replace('/\\?.*/', '', $parts[0]);
                 $typolinkConfiguration = $conf;
                 $typolinkConfiguration['parameter'] = 'mailto:' . $parts[0];
-                $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
+                $textstr .= (string)$this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
             } else {
                 $textstr .= 'mailto:' . $textpieces[$i];
             }
@@ -4454,371 +4442,122 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Link functions (typolink)
      *
      ***********************************************/
-    /**
-     * called from the typoLink() function
-     *
-     * does the magic to split the full "typolink" string like "15,13 _blank myclass &more=1"
-     * into separate parts
-     *
-     * @param string $linkText The string (text) to link
-     * @param string $mixedLinkParameter destination data like "15,13 _blank myclass &more=1" used to create the link
-     * @param array $configuration TypoScript configuration
-     * @return array|string
-     * @see typoLink()
-     *
-     * @todo the functionality of the "file:" syntax + the hook should be marked as deprecated, an upgrade wizard should handle existing links
-     */
-    protected function resolveMixedLinkParameter($linkText, $mixedLinkParameter, &$configuration = [])
-    {
-        // Link parameter value = first part
-        $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($mixedLinkParameter);
-
-        // Check for link-handler keyword
-        $linkHandlerExploded = explode(':', $linkParameterParts['url'], 2);
-        $linkHandlerKeyword = (string)($linkHandlerExploded[0] ?? '');
-
-        if (in_array(strtolower((string)preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
-            // Disallow insecure scheme's like javascript: or data:
-            return $linkText;
-        }
-
-        // additional parameters that need to be set
-        if ($linkParameterParts['additionalParams'] !== '') {
-            $forceParams = $linkParameterParts['additionalParams'];
-            // params value
-            $configuration['additionalParams'] = ($configuration['additionalParams'] ?? '') . $forceParams[0] === '&' ? $forceParams : '&' . $forceParams;
-        }
-
-        return [
-            'href'   => $linkParameterParts['url'],
-            'target' => $linkParameterParts['target'],
-            'class'  => $linkParameterParts['class'],
-            'title'  => $linkParameterParts['title'],
-        ];
-    }
 
     /**
      * Implements the "typolink" property of stdWrap (and others)
-     * Basically the input string, $linktext, is (typically) wrapped in a <a>-tag linking to some page, email address, file or URL based on a parameter defined by the configuration array $conf.
-     * This function is best used from internal functions as is. There are some API functions defined after this function which is more suited for general usage in external applications.
-     * Generally the concept "typolink" should be used in your own applications as an API for making links to pages with parameters and more. The reason for this is that you will then automatically make links compatible with all the centralized functions for URL simulation and manipulation of parameters into hashes and more.
-     * For many more details on the parameters and how they are interpreted, please see the link to TSref below.
+     * Basically the input string, $linkText, is (typically) wrapped in a <a>-tag linking to some page, email address,
+     * file or URL based on a parameter defined by the configuration array $conf.
+     * This function is best used from internal functions as is. There are some API functions defined after this
+     * function which is more suited for general usage in external applications.
      *
-     * the FAL API is handled with the namespace/prefix "file:..."
+     * Generally the concept "typolink" should be used in your own applications as an API for making links to pages with
+     * parameters and more. The reason for this is that you will then automatically make links compatible with all the
+     * centralized functions for URL simulation and manipulation of parameters into hashes and more.
+     *
+     * For many more details on the parameters and how they are interpreted, please see the link to TSref below.
      *
      * @param string $linkText The string (text) to link
      * @param array $conf TypoScript configuration (see link below)
      * @return string A link-wrapped string.
      * @see stdWrap()
-     * @see \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
      */
-    public function typoLink($linkText, $conf)
+    public function typoLink(string $linkText, array $conf)
     {
-        $linkText = (string)$linkText;
-        $tsfe = $this->getTypoScriptFrontendController();
-
-        $linkParameter = trim((string)$this->stdWrapValue('parameter', $conf ?? []));
-        $this->lastTypoLinkUrl = '';
-        $this->lastTypoLinkTarget = '';
-
-        $resolvedLinkParameters = $this->resolveMixedLinkParameter($linkText, $linkParameter, $conf);
-
-        // check if the link handler hook has resolved the link completely already
-        if (!is_array($resolvedLinkParameters)) {
-            return $resolvedLinkParameters;
-        }
-        $linkParameter = $resolvedLinkParameters['href'];
-        $target = $resolvedLinkParameters['target'];
-        $title = $resolvedLinkParameters['title'];
-
-        $linkDetails = [];
-        if (!$linkParameter) {
-            // Support anchors without href value if id or name attribute is present.
-            $aTagParams = (string)$this->stdWrapValue('ATagParams', $conf ?? []);
-            $aTagParams = GeneralUtility::get_tag_attributes($aTagParams);
-            // If it looks like an anchor tag, render it anyway
-            if (isset($aTagParams['id']) || isset($aTagParams['name'])) {
-                $linkDetails = [
-                    'type' => 'inpage',
-                    'url' => '',
-                ];
-            }
-        } else {
-            // Detecting kind of link and resolve all necessary parameters
-            $linkService = GeneralUtility::makeInstance(LinkService::class);
-            try {
-                $linkDetails = $linkService->resolve($linkParameter);
-            } catch (UnknownLinkHandlerException | InvalidPathException $exception) {
-                $this->logger->warning('The link could not be generated', ['exception' => $exception]);
-                return $linkText;
-            }
+        try {
+            $linkResult = $this->createLink($linkText, $conf);
+        } catch (UnableToLinkException $e) {
+            return $e->getLinkText();
         }
 
-        $linkDetails['typoLinkParameter'] = $linkParameter;
-        if (isset($linkDetails['type']) && isset($GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']])) {
-            /** @var AbstractTypolinkBuilder $linkBuilder */
-            $linkBuilder = GeneralUtility::makeInstance(
-                $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
-                $this,
-                // AbstractTypolinkBuilder type hints an optional dependency to TypoScriptFrontendController.
-                // Some core parts however "fake" $GLOBALS['TSFE'] to stdCLass() due to its long list of
-                // dependencies. f:html view helper is such a scenario. This of course crashes if given to typolink builder
-                // classes. For now, we check the instance and hand over 'null', giving the link builders the option
-                // to take care of tsfe themselfs. This scenario is for instance triggered when in BE login when sys_news
-                // records set links.
-                $tsfe instanceof TypoScriptFrontendController ? $tsfe : null
-            );
-            try {
-                $linkedResult = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
-            } catch (UnableToLinkException $e) {
-                $this->logger->debug('Unable to link "{text}"', [
-                    'text' => $e->getLinkText(),
-                    'exception' => $e,
-                ]);
-
-                // Only return the link text directly
-                return $e->getLinkText();
-            }
-        } elseif (isset($linkDetails['url'])) {
-            $linkedResult = new LinkResult($linkDetails['type'], $linkDetails['url']);
-            $linkedResult = $linkedResult
-                ->withTarget($target)
-                ->withLinkConfiguration($conf)
-                ->withLinkText($linkText);
-        } else {
-            return $linkText;
-        }
-
-        $this->lastTypoLinkResult = $linkedResult;
-        $this->lastTypoLinkTarget = $linkedResult->getTarget();
-        $this->lastTypoLinkUrl = $linkedResult->getUrl();
-        $this->lastTypoLinkLD['target'] = htmlspecialchars($linkedResult->getTarget());
-        $this->lastTypoLinkLD['totalUrl'] = $linkedResult->getUrl();
-        $this->lastTypoLinkLD['type'] = $linkedResult->getType();
-
-        // We need to backup the URL because ATagParams might call typolink again and change the last URL.
-        $url = $this->lastTypoLinkUrl;
-        $linkResultAttrs = array_filter(
-            $linkedResult->getAttributes(),
-            static function (string $name): bool {
-                return !in_array($name, ['href', 'target']);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-        $finalTagParts = [
-            'aTagParams' => rtrim($this->getATagParams($conf) . ' ' . GeneralUtility::implodeAttributes($linkResultAttrs, true)),
-            'url'        => $url,
-            'TYPE'       => $linkedResult->getType(),
-        ];
-
-        // Ensure "href" is not in the list of aTagParams to avoid double tags, usually happens within buggy parseFunc settings
-        if (!empty($finalTagParts['aTagParams'])) {
-            $aTagParams = GeneralUtility::get_tag_attributes($finalTagParts['aTagParams'], true);
-            if (isset($aTagParams['href'])) {
-                unset($aTagParams['href']);
-                $finalTagParts['aTagParams'] = GeneralUtility::implodeAttributes($aTagParams, true);
-            }
-        }
-
-        // Building the final <a href=".."> tag
-        $tagAttributes = [];
-
-        // Title attribute
-        if (empty($title)) {
-            $title = $conf['title'] ?? '';
-            if (isset($conf['title.']) && is_array($conf['title.'])) {
-                $title = $this->stdWrap($title, $conf['title.']);
-            }
-        }
-
-        // Check, if the target is coded as a JS open window link:
-        $JSwindowParts = [];
-        $JSwindowParams = '';
-        if ($this->lastTypoLinkResult->getTarget() && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $this->lastTypoLinkResult->getTarget(), $JSwindowParts)) {
-            // Take all pre-configured and inserted parameters and compile parameter list, including width+height:
-            $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower(($conf['JSwindow_params'] ?? '') . ',' . ($JSwindowParts[4] ?? '')), true);
-            $JSwindow_paramsArr = [];
-            $target = $conf['target'] ?? 'FEopenLink';
-            foreach ($JSwindow_tempParamsArr as $JSv) {
-                [$JSp, $JSv] = explode('=', $JSv, 2);
-                // If the target is set as JS param, this is extracted
-                if ($JSp === 'target') {
-                    $target = $JSv;
-                } else {
-                    $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
-                }
-            }
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('target', $target);
-            // Add width/height:
-            $JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
-            $JSwindow_paramsArr['height'] = 'height=' . $JSwindowParts[2];
-            // Imploding into string:
-            $JSwindowParams = implode(',', $JSwindow_paramsArr);
-        }
-
-        $tagAttributes['href'] = htmlspecialchars($finalTagParts['url']);
-        if (!empty($title)) {
-            $tagAttributes['title'] = htmlspecialchars($title);
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('title', $title);
-        }
-
-        // Target attribute
-        if (!empty($this->lastTypoLinkResult->getTarget())) {
-            $tagAttributes['target'] = htmlspecialchars($this->lastTypoLinkResult->getTarget());
-        }
-        if ($JSwindowParams && $tsfe instanceof TypoScriptFrontendController && in_array($tsfe->xhtmlDoctype, ['xhtml_strict', 'xhtml_11'], true)) {
-            // Create TARGET-attribute only if the right doctype is used
-            unset($tagAttributes['target']);
-        }
-
-        if ($JSwindowParams) {
-            $JSwindowAttrs = [
-                'data-window-url' => $tsfe instanceof TypoScriptFrontendController ? $tsfe->baseUrlWrap($finalTagParts['url']) : $finalTagParts['url'],
-                'data-window-target' => $this->lastTypoLinkResult->getTarget(),
-                'data-window-features' => $JSwindowParams,
-            ];
-            $tagAttributes = array_merge($tagAttributes, array_map('htmlspecialchars', $JSwindowAttrs));
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($JSwindowAttrs);
-            $this->addDefaultFrontendJavaScript();
-        }
-
-        if (!empty($resolvedLinkParameters['class'])) {
-            $tagAttributes['class'] = htmlspecialchars($resolvedLinkParameters['class']);
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttribute('class', $tagAttributes['class']);
-        }
-
-        // Prevent trouble with double and missing spaces between attributes and merge params before implode
-        // (skip decoding HTML entities, since `$tagAttributes` are expected to be encoded already)
-        $finalTagAttributes = array_merge($tagAttributes, GeneralUtility::get_tag_attributes($finalTagParts['aTagParams']));
-        $finalTagAttributes = $this->addSecurityRelValues($finalTagAttributes, $this->lastTypoLinkResult->getTarget(), $tagAttributes['href']);
-        $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($finalTagAttributes);
-        $finalAnchorTag = '<a ' . GeneralUtility::implodeAttributes($finalTagAttributes) . '>';
-
-        $this->lastTypoLinkTarget = $this->lastTypoLinkResult->getTarget();
-        // kept for backwards-compatibility in hooks
-        $finalTagParts['targetParams'] = $this->lastTypoLinkResult->getTarget() ? 'target="' . htmlspecialchars($this->lastTypoLinkResult->getTarget()) . '"' : '';
-
-        // Call user function:
-        if ($conf['userFunc'] ?? false) {
-            $finalTagParts['TAG'] = $finalAnchorTag;
-            $finalAnchorTag = $this->callUserFunction($conf['userFunc'], $conf['userFunc.'] ?? [], $finalTagParts);
-            // Ensure to keep the result object up-to-date even after the user func was called
-            $finalAnchorTagParts = GeneralUtility::get_tag_attributes($finalAnchorTag, true);
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult->withAttributes($finalAnchorTagParts, true);
-        }
-
-        // Hook: Call post processing function for link rendering:
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'])) {
-            $_params = [
-                'conf' => &$conf,
-                'linktxt' => &$linkText,
-                'finalTag' => &$finalAnchorTag,
-                'finalTagParts' => &$finalTagParts,
-                'linkDetails' => &$linkDetails,
-                'tagAttributes' => &$finalTagAttributes,
-            ];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
-                $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
-                GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
-            }
-            // Ensure to keep the result object up-to-date even after the user func was called
-            $finalAnchorTagParts = GeneralUtility::get_tag_attributes($finalAnchorTag, true);
-            $this->lastTypoLinkResult = $this->lastTypoLinkResult
-                ->withAttributes($finalAnchorTagParts)
-                ->withLinkText((string)$_params['linktxt']);
-        }
-
-        // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
-        if ($conf['returnLast'] ?? false) {
-            switch ($conf['returnLast']) {
-                case 'url':
-                    return $this->lastTypoLinkUrl;
-                case 'target':
-                    return $this->lastTypoLinkTarget;
-                case 'result':
-                    return $this->lastTypoLinkResult;
-            }
+        // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made
+        // This returns the information without being wrapped in a "HtmlLinkResult" object.
+        switch ($conf['returnLast'] ?? null) {
+            case 'url':
+                return $linkResult->getUrl();
+            case 'target':
+                return $linkResult->getTarget();
+            case 'result':
+                return $linkResult;
         }
 
         $wrap = (string)$this->stdWrapValue('wrap', $conf ?? []);
-
         if ($conf['ATagBeforeWrap'] ?? false) {
-            return $finalAnchorTag . $this->wrap((string)$this->lastTypoLinkResult->getLinkText(), $wrap) . '</a>';
+            $linkResult = $linkResult->withLinkText($this->wrap((string)$linkResult->getLinkText(), $wrap));
+            return (string)(new HtmlLinkResult($linkResult));
         }
-        return $this->wrap($finalAnchorTag . $this->lastTypoLinkResult->getLinkText() . '</a>', $wrap);
-    }
-
-    protected function addSecurityRelValues(array $tagAttributes, ?string $target, string $url): array
-    {
-        $relAttribute = 'noreferrer';
-        if (in_array($target, ['', null, '_self', '_parent', '_top'], true) || $this->isInternalUrl($url)) {
-            return $tagAttributes;
-        }
-
-        if (!isset($tagAttributes['rel'])) {
-            $tagAttributes['rel'] = $relAttribute;
-            return $tagAttributes;
-        }
-
-        $tagAttributes['rel'] = implode(' ', array_unique(array_merge(
-            GeneralUtility::trimExplode(' ', $relAttribute),
-            GeneralUtility::trimExplode(' ', $tagAttributes['rel'])
-        )));
-
-        return $tagAttributes;
+        $result = (string)(new HtmlLinkResult($linkResult));
+        return $this->wrap($result, $wrap);
     }
 
     /**
-     * Checks whether the given url is an internal url.
+     * Similar to ->typoLink(), however it does not evaluate the .wrap and .ATagBeforeWrap
+     * functionality.
      *
-     * It will check the host part only, against all configured sites
-     * whether the given host is any. If so, the url is considered internal
+     * For this reason, it also does not consider the HtmlLinkResult functionality,
+     * and "returnLast" logic, as the whole LinkResult object is available.
      *
-     * @param string $url The url to check.
-     * @return bool
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * It is recommended to use this method when working with PHP and wanting to create
+     * a typolink, but be aware that you need to escape the Link yourself as PHP developer depending
+     * on the needs.
+     *
+     * @param string $linkText the text to be wrapped in a link
+     * @param array $conf the typolink configuration
+     * @return LinkResultInterface
+     * @throws UnableToLinkException
+     * @see typoLink()
+     * @see createUrl()
      */
-    protected function isInternalUrl(string $url): bool
+    public function createLink(string $linkText, array $conf): LinkResultInterface
     {
-        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $parsedUrl = parse_url($url);
-        $foundDomains = 0;
-        if (!isset($parsedUrl['host'])) {
-            return true;
+        $this->lastTypoLinkUrl = '';
+        $this->lastTypoLinkTarget = '';
+        $this->lastTypoLinkResult = null;
+        try {
+            $linkResult = GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, $conf, $this);
+        } catch (UnableToLinkException $e) {
+            // URL could not be generated
+            throw $e;
         }
 
-        $cacheIdentifier = sha1('isInternalDomain' . $parsedUrl['host']);
+        $this->lastTypoLinkResult = $linkResult;
+        // Now populate all legacy values
+        $this->lastTypoLinkTarget = $linkResult->getTarget();
+        $this->lastTypoLinkUrl = $linkResult->getUrl();
+        $this->lastTypoLinkLD['target'] = htmlspecialchars($linkResult->getTarget());
+        $this->lastTypoLinkLD['totalUrl'] = $linkResult->getUrl();
+        $this->lastTypoLinkLD['type'] = $linkResult->getType();
+        return $linkResult;
+    }
 
-        if ($cache->has($cacheIdentifier) === false) {
-            foreach (GeneralUtility::makeInstance(SiteFinder::class)->getAllSites() as $site) {
-                if ($site->getBase()->getHost() === $parsedUrl['host']) {
-                    ++$foundDomains;
-                    break;
-                }
-
-                if ($site->getBase()->getHost() === '' && GeneralUtility::isOnCurrentHost($url)) {
-                    ++$foundDomains;
-                    break;
-                }
-            }
-
-            $cache->set($cacheIdentifier, $foundDomains > 0);
+    /**
+     * This method creates a typoLink() and just returns the information of the "href" attribute
+     * of the link (most of the time, this is the URL).
+     *
+     * @param array $conf the typolink configuration.
+     * @return string The URL
+     * @see typoLink()
+     * @see createLink()
+     */
+    public function createUrl(array $conf): string
+    {
+        try {
+            return $this->createLink('', $conf)->getUrl();
+        } catch (UnableToLinkException $e) {
+            // URL could not be generated
+            return '';
         }
-
-        return (bool)$cache->get($cacheIdentifier);
     }
 
     /**
      * Based on the input "TypoLink" TypoScript configuration this will return the generated URL
      *
-     * @param array $conf TypoScript properties for "typolink
-     * @return string The URL of the link-tag that typolink() would by itself return
+     * @param array $conf TypoScript properties for "typolink"
+     * @return string The URL of the link-tag that typoLink() would by itself return
      * @see typoLink()
      */
     public function typoLink_URL($conf)
     {
-        $this->typoLink('|', $conf);
-        return $this->lastTypoLinkUrl;
+        return $this->createUrl($conf ?? []);
     }
 
     /**
@@ -4833,9 +4572,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $target Specific target set, if any. (Default is using the current)
      * @return string The wrapped $label-text string
      * @see getTypoLink_URL()
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0, use LinkFactory or cObj->typoLink() instead.
      */
     public function getTypoLink($label, $params, $urlParameters = [], $target = '')
     {
+        trigger_error('$cObj->getTypoLink() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $conf = [];
         $conf['parameter'] = $params;
         if ($target) {
@@ -4850,7 +4591,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $conf['additionalParams'] = ($conf['additionalParams'] ?? '') . $urlParameters;
         }
-        $out = $this->typoLink($label, $conf);
+        $out = $this->typoLink((string)$label, $conf);
         return $out;
     }
 
@@ -4860,9 +4601,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param bool $addQueryString Whether additional GET arguments in the query string should be included or not
      * @return string
+     * @deprecated since TYPO3 v12.0. will be removed in TYPO3 v13.0, use LinkFactory or cObj->typoLink() instead.
      */
     public function getUrlToCurrentLocation($addQueryString = true)
     {
+        trigger_error('$cObj->getUrlToCurrentLocation() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
         $conf = [];
         $conf['parameter'] = $this->getTypoScriptFrontendController()->id . ',' . $this->getTypoScriptFrontendController()->type;
         if ($addQueryString) {
@@ -4873,7 +4616,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             ];
         }
 
-        return $this->typoLink_URL($conf);
+        return $this->createUrl($conf);
     }
 
     /**
@@ -4884,10 +4627,27 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $target Specific target set, if any. (Default is using the current)
      * @return string The URL
      * @see getTypoLink()
+     * @deprecated since TYPO3 v12.0, will be removed in TYPO3 v13.0. Use LinkFactory API directly.
      */
     public function getTypoLink_URL($params, $urlParameters = [], $target = '')
     {
-        $this->getTypoLink('', $params, $urlParameters, $target);
+        trigger_error('$cObj->getTypoLink_URL() is deprecated in favor of the unified LinkFactory API for generating links. This method will be removed in TYPO3 v13.0.', E_USER_DEPRECATED);
+        $conf = [
+            'parameter' => $params,
+        ];
+        if ($target) {
+            $conf['target'] = $target;
+            $conf['extTarget'] = $target;
+            $conf['fileTarget'] = $target;
+        }
+        if (is_array($urlParameters)) {
+            if (!empty($urlParameters)) {
+                $conf['additionalParams'] = HttpUtility::buildQueryString($urlParameters, '&');
+            }
+        } else {
+            $conf['additionalParams'] = $urlParameters;
+        }
+        $this->createUrl($conf);
         return $this->lastTypoLinkUrl;
     }
 

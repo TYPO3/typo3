@@ -340,7 +340,12 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 ],
                 $tsfe->config['config']['typolinkLinkAccessRestrictedPages_addParams'] ?? ''
             );
-            $url = $this->contentObjectRenderer->getTypoLink_URL($thePage['uid'] . ($overridePageType ? ',' . $overridePageType : ''), $addParams);
+            $url = $this->contentObjectRenderer->createUrl(
+                [
+                    'parameter' => $thePage['uid'] . ($overridePageType ? ',' . $overridePageType : ''),
+                    'additionalParams' => $addParams,
+                ]
+            );
         }
         return $url;
     }

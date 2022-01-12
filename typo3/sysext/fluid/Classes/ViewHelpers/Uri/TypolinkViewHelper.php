@@ -109,7 +109,7 @@ final class TypolinkViewHelper extends AbstractViewHelper
         }
 
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        return $contentObject->typoLink_URL($instructions);
+        return $contentObject->createUrl($instructions);
     }
 
     /**

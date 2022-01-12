@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Typolink;
 
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 
 /**
  * Builds a TypoLink to an external URL
@@ -27,8 +26,8 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
 {
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): LinkResultInterface
     {
-        $url = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
-        $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
+        $url = $linkDetails['url'] ?? '';
+        $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $url);
         return (new LinkResult(LinkService::TYPE_URL, (string)$url))
             ->withLinkConfiguration($conf)
             ->withTarget(

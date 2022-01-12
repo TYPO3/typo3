@@ -19,7 +19,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Typolink\LinkFactory;
+use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -81,7 +84,6 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
         $linkHref = 'mailto:' . $email;
         $attributes = [];
         $linkText = htmlspecialchars($email);
-        $escapeSpecialCharacters = true;
         $request = $this->renderingContext->getRequest();
         if ($request instanceof ServerRequestInterface
             && ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()
@@ -90,14 +92,12 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
             /** @var TypoScriptFrontendController $frontend */
             $frontend = $GLOBALS['TSFE'];
             // passing HTML encoded link text
-            $frontend->cObj->typoLink($linkText, ['parameter' => $linkHref]);
-            $linkResult = $frontend->cObj->lastTypoLinkResult;
-            if ($linkResult) {
-                $escapeSpecialCharacters = false;
-                $linkHref = $linkResult->getUrl();
+            try {
+                $linkResult = GeneralUtility::makeInstance(LinkFactory::class)->create($linkText, ['parameter' => $linkHref], $frontend->cObj);
                 $linkText = (string)$linkResult->getLinkText();
                 $attributes = $linkResult->getAttributes();
-                unset($attributes['href']);
+            } catch (UnableToLinkException $e) {
+                // Just render the email as is (= Backend Context), if LinkBuilder failed
             }
         }
         $tagContent = $this->renderChildren();
@@ -105,9 +105,9 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
             $linkText = $tagContent;
         }
         $this->tag->setContent($linkText);
-        $this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
+        $this->tag->addAttribute('href', $linkHref);
         $this->tag->forceClosingTag(true);
-        $this->tag->addAttributes($attributes, false);
+        $this->tag->addAttributes($attributes);
         return $this->tag->render();
     }
 }

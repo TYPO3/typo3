@@ -1968,4 +1968,10 @@ return [
             'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Http\UrlProcessorInterface' => [
+        'restFiles' => [
+            'Breaking-96641-TypoLinkRelatedHooksRemoved.rst',
+            'Deprecation-96641-UnusedHookRelatedUrlProcessorInterface.rst',
+        ],
+    ],
 ];
