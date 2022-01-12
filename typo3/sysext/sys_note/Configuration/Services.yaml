@@ -10,3 +10,7 @@ services:
     tags:
       - name: event.listener
         identifier: 'note-to-record-list'
+  TYPO3\CMS\SysNote\Provider\PageModuleProvider:
+    tags:
+      - name: event.listener
+        identifier: 'note-to-page-module'

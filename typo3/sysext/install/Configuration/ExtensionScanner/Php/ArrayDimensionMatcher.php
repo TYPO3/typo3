@@ -571,4 +571,16 @@ return [
             'Feature-92508-PSR-14EventForModifyingMenuItems.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/db_layout.php\'][\'drawHeaderHook\']' => [
+        'restFiles' => [
+            'Breaking-96526-RemovedHooksForModifyingPageModuleContent.rst',
+            'Feature-96526-PSR-14EventForModifyingPageModuleContent.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/layout/db_layout.php\'][\'drawFooterHook\']' => [
+        'restFiles' => [
+            'Breaking-96526-RemovedHooksForModifyingPageModuleContent.rst',
+            'Feature-96526-PSR-14EventForModifyingPageModuleContent.rst',
+        ],
+    ],
 ];

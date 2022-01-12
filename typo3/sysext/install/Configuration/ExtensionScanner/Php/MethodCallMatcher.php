@@ -5105,4 +5105,12 @@ return [
             'Deprecation-96500-ContentObjectRenderer-getMailTo.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Controller\PageLayoutController->getModuleTemplate' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-96526-RemovedHooksForModifyingPageModuleContent.rst',
+            'Feature-96526-PSR-14EventForModifyingPageModuleContent.rst',
+        ],
+    ],
 ];

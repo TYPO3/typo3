@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -159,19 +161,22 @@ class PageLayoutController
     protected UriBuilder $uriBuilder;
     protected PageRepository $pageRepository;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected EventDispatcher $eventDispatcher;
 
     public function __construct(
         IconFactory $iconFactory,
         PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         PageRepository $pageRepository,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        EventDispatcher $eventDispatcher
     ) {
         $this->iconFactory = $iconFactory;
         $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->pageRepository = $pageRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
     /**
      * Injects the request object for the current request or subrequest
@@ -723,31 +728,8 @@ class PageLayoutController
                 </div>';
         }
 
-        // Init the content
-        $content = '';
-        // Additional header content
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawHeaderHook'] ?? [] as $hook) {
-            $params = ['request' => $request];
-            $content .= GeneralUtility::callUserFunction($hook, $params, $this);
-        }
-        $content .= $tableOutput;
-
-        // Additional footer content
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = ['request' => $request];
-            $content .= GeneralUtility::callUserFunction($hook, $params, $this);
-        }
-        return $content;
-    }
-
-    /**
-     * Make the ModuleTemplate public accessible for the use in hooks.
-     *
-     * @return ModuleTemplate
-     */
-    public function getModuleTemplate(): ModuleTemplate
-    {
-        return $this->moduleTemplate;
+        $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $this->moduleTemplate));
+        return $event->getHeaderContent() . $tableOutput . $event->getFooterContent();
     }
 
     /***************************
