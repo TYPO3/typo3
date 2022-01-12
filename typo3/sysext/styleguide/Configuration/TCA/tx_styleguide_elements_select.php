@@ -702,7 +702,7 @@ return [
                     ['item 1', 1, '', 'group1'],
                     ['item 2', 2, '', 'group1'],
                     ['item 3', 3, '', 'group3'],
-                    ['item 4', 3],
+                    ['item 4', 4],
                 ],
                 'itemGroups' => [
                     'group1' => 'Group 1 with items',
