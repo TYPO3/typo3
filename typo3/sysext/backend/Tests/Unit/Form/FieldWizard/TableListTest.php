@@ -81,7 +81,7 @@ class TableListTest extends UnitTestCase
         yield 'Wildcard' => [
             [
                 'allowed' => '*',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                 ],
             ],
@@ -90,7 +90,7 @@ class TableListTest extends UnitTestCase
         yield 'One table' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'pages' => 123,
                 ],
             ],
@@ -101,7 +101,7 @@ class TableListTest extends UnitTestCase
         yield 'One table with default' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                 ],
             ],
@@ -112,7 +112,7 @@ class TableListTest extends UnitTestCase
         yield 'One table with default and table definition' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                     'pages' => 124,
                 ],
@@ -124,7 +124,7 @@ class TableListTest extends UnitTestCase
         yield 'One table with invalid configuration' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'some_table' => 123,
                 ],
             ],
@@ -139,7 +139,7 @@ class TableListTest extends UnitTestCase
         yield 'Two tables without _default' => [
             [
                 'allowed' => 'pages,some_table',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'pages' => 123,
                     'some_table' => 124,
                 ],
@@ -152,7 +152,7 @@ class TableListTest extends UnitTestCase
         yield 'Two tables with just _default' => [
             [
                 'allowed' => 'pages,some_table',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                 ],
             ],
@@ -164,7 +164,7 @@ class TableListTest extends UnitTestCase
         yield 'Two tables with _default' => [
             [
                 'allowed' => 'pages,some_table',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                     'pages' => 124,
                     'some_table' => 125,
@@ -178,7 +178,7 @@ class TableListTest extends UnitTestCase
         yield 'Entry point is escaped' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'pages' => '<script>alert(1)</script>',
                 ],
             ], [
@@ -188,7 +188,7 @@ class TableListTest extends UnitTestCase
         yield 'Pid placeholder is resolved' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '###CURRENT_PID###',
                 ],
             ],
@@ -199,7 +199,7 @@ class TableListTest extends UnitTestCase
         yield 'Site placeholder is resolved' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '###SITEROOT###',
                 ],
             ],

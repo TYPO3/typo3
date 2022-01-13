@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-==============================================================
-Feature: #91077 - Default entry points for TCA type "group"
-==============================================================
+===================================================================
+Feature: #91077 - Element browser entry points for TCA type "group"
+===================================================================
 
 See :issue:`91077`
 
@@ -24,18 +24,18 @@ for this particular page, which might take some time, especially in
 systems with large page trees.
 
 This situation has now been improved by introducing a new TCA field
-configuration `entryPoints` for the TCA type "group". It's a PHP
-:php:`array`, containing table and page id pairs. When opening the
-element browser for a specific table (buttons below the group field),
-the defined page or folder is then always selected by default. There
-is also the special `_default` key, used for the general element browser
-button (on the right side of the group field), which is not dedicated
-to a specific table.
+configuration `elementBrowserEntryPoints` for the TCA type "group".
+It's a PHP :php:`array`, containing `table => id` pairs. When
+opening the element browser for a specific table (buttons below the
+group field), the defined page or folder is then always selected by
+default. There is also the special `_default` key, used for the
+general element browser button (on the right side of the group field),
+which is not dedicated to a specific table.
 
 Making this even more useful, the new configuration also supports the known
 markers `###SITEROOT###`, `###CURRENT_PID###` and `###PAGE_TSCONFIG_<key>###`.
 Additionally, the configuration is also added to FormEngine's "allowOverrideMatrix".
-This means, each "table <=> id" pair can be overridden via page TSconfig.
+This means, each `table => id` pair can be overridden via page TSconfig.
 
 Let's see a simple example for a group field with one allowed table:
 
@@ -46,7 +46,7 @@ Let's see a simple example for a group field with one allowed table:
         'config' => [
             'type' => 'group',
             'allowed' => 'tt_content',
-            'entryPoints' => [
+            'elementBrowserEntryPoints' => [
                 'tt_content' => 123,
             ]
         ]
@@ -56,7 +56,7 @@ This could then be overridden via page TSconfig:
 
 .. code-block:: typoscript
 
-    TCEFORM.my_table.simple_group.config.entryPoints.tt_content = 321
+    TCEFORM.my_table.simple_group.config.elementBrowserEntryPoints.tt_content = 321
 
 Since only one table is allowed, the defined entry point is also automatically
 used for the general element browser button. In case the group field allows
@@ -70,7 +70,7 @@ to be set:
         'config' => [
             'type' => 'group',
             'allowed' => 'tt_content,tx_news_domain_model_news',
-            'entryPoints' => [
+            'elementBrowserEntryPoints' => [
                 '_default' => '###CURRENT_PID###' // E.g. use a special marker
                 'tt_content' => 123,
                 'tx_news_domain_model_news' => 124,
@@ -82,9 +82,9 @@ Of course, the `_default` key can also be overridden via page TSconfig:
 
 .. code-block:: typoscript
 
-    TCEFORM.my_table.extended_group.config.entryPoints._default = 122
+    TCEFORM.my_table.extended_group.config.elementBrowserEntryPoints._default = 122
 
-For `interna_type=folder` one can also define a entry point with the `_default` key:
+For `internal_type=folder` one can also define a entry point with the `_default` key:
 
 .. code-block:: php
 
@@ -93,7 +93,7 @@ For `interna_type=folder` one can also define a entry point with the `_default` 
         'config' => [
             'type' => 'group',
             'internal_type' => 'folder',
-            'entryPoints' => [
+            'elementBrowserEntryPoints' => [
                 '_default' => '1:/styleguide/'
             ]
         ]
@@ -108,7 +108,7 @@ It's also possible to use a special TSconfig key:
         'config' => [
             'type' => 'group',
             'internal_type' => 'folder',
-            'entryPoints' => [
+            'elementBrowserEntryPoints' => [
                 '_default' => '###PAGE_TSCONFIG_ID###'
             ]
         ]
@@ -121,8 +121,8 @@ This key has then to be defined on field level:
     TCEFORM.my_table.folder_group.PAGE_TSCONFIG_ID = 1:/styleguide/subfolder
 
 In case an allowed table has no entry point defined, the `_default` is used.
-In case `_default` is also not set or `entryPoints` is not used at all,
-the previous behaviour applies.
+In case `_default` is also not set or `elementBrowserEntryPoints` is not
+used at all, the previous behaviour applies.
 
 Impact
 ======

@@ -48,7 +48,7 @@ class FormEngineUtility
         'check' => ['cols', 'readOnly'],
         'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig', 'fileFolderConfig'],
         'category' => ['size', 'maxitems', 'minitems', 'readOnly', 'treeConfig'],
-        'group' => ['size', 'autoSizeMax', 'max_size', 'maxitems', 'minitems', 'readOnly', 'entryPoints'],
+        'group' => ['size', 'autoSizeMax', 'max_size', 'maxitems', 'minitems', 'readOnly', 'elementBrowserEntryPoints'],
         'inline' => ['appearance', 'behaviour', 'foreign_label', 'foreign_selector', 'foreign_unique', 'maxitems', 'minitems', 'size', 'autoSizeMax', 'symmetric_label', 'readOnly'],
         'imageManipulation' => ['ratios', 'cropVariants'],
     ];

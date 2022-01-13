@@ -101,13 +101,13 @@ class TableList extends AbstractNode
      */
     protected function addEntryPoint(string $tableName, array $fieldConfig, array $attributes): array
     {
-        if (!isset($fieldConfig['entryPoints']) || !is_array($fieldConfig['entryPoints'])) {
+        if (!isset($fieldConfig['elementBrowserEntryPoints']) || !is_array($fieldConfig['elementBrowserEntryPoints'])) {
             // Early return in case no entry points are defined
             return $attributes;
         }
 
         // Fetch the configured value (which might be a marker) - falls back to _default
-        $entryPoint = (string)($fieldConfig['entryPoints'][$tableName] ?? $fieldConfig['entryPoints']['_default'] ?? '');
+        $entryPoint = (string)($fieldConfig['elementBrowserEntryPoints'][$tableName] ?? $fieldConfig['elementBrowserEntryPoints']['_default'] ?? '');
 
         if ($entryPoint === '') {
             // In case no entry point exists for the given table and also no default is defined, return

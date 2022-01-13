@@ -108,7 +108,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Wildcard' => [
             [
                 'allowed' => '*',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                 ],
             ],
@@ -117,7 +117,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'One table' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'pages' => 123,
                 ],
             ],
@@ -126,7 +126,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'One table with default' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                 ],
             ],
@@ -135,7 +135,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'One table with default and table definition' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                     'pages' => 124,
                 ],
@@ -145,7 +145,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'One table with invalid configuration' => [
             [
                 'allowed' => 'pages',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'some_table' => 123,
                 ],
             ],
@@ -154,7 +154,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Two tables without _defualt' => [
             [
                 'allowed' => 'pages,some_table',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'pages' => 123,
                     'some_table' => 124,
                 ],
@@ -164,7 +164,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Two tables with _defualt' => [
             [
                 'allowed' => 'pages,some_table',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => 123,
                     'pages' => 124,
                     'some_table' => 125,
@@ -175,7 +175,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Folder' => [
             [
                 'internal_type' => 'folder',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '1:/storage/',
                 ],
             ],
@@ -184,7 +184,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Folder without mandatory _default' => [
             [
                 'internal_type' => 'folder',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     'file' => 123,
                 ],
             ],
@@ -193,7 +193,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Entry point is escaped' => [
             [
                 'internal_type' => 'folder',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '1:/<script>alert(1)</script>/',
                 ],
             ],
@@ -202,7 +202,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Pid placeholder is resolved' => [
             [
                 'allowed' => '*',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '###CURRENT_PID###',
                 ],
             ],
@@ -211,7 +211,7 @@ class ElementBrowserTest extends UnitTestCase
         yield 'Site placeholder is resolved' => [
             [
                 'allowed' => '*',
-                'entryPoints' => [
+                'elementBrowserEntryPoints' => [
                     '_default' => '###SITEROOT###',
                 ],
             ],

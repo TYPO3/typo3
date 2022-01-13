@@ -101,13 +101,13 @@ class ElementBrowser extends AbstractNode
      */
     protected function addEntryPoint(string $table, string $fieldName, array $fieldConfig, array $linkAttributes): array
     {
-        if (!isset($fieldConfig['entryPoints']) || !is_array($fieldConfig['entryPoints'])) {
+        if (!isset($fieldConfig['elementBrowserEntryPoints']) || !is_array($fieldConfig['elementBrowserEntryPoints'])) {
             // Early return in case no entry points are defined
             return $linkAttributes;
         }
 
         // Fetch the configured default entry point (which might be a marker)
-        $entryPoint = (string)($fieldConfig['entryPoints']['_default'] ?? '');
+        $entryPoint = (string)($fieldConfig['elementBrowserEntryPoints']['_default'] ?? '');
 
         // In case no default entry point is given, check if we deal with type=db and only one allowed table
         if ($entryPoint === '') {
@@ -117,9 +117,9 @@ class ElementBrowser extends AbstractNode
             }
             // Check for the allowed tables, if only one table is allowed check if an entry point is defined for it
             $allowed = GeneralUtility::trimExplode(',', $fieldConfig['allowed'] ?? '', true);
-            if (count($allowed) === 1 && isset($fieldConfig['entryPoints'][$allowed[0]])) {
+            if (count($allowed) === 1 && isset($fieldConfig['elementBrowserEntryPoints'][$allowed[0]])) {
                 // Use the entry point for the single table as default
-                $entryPoint = (string)$fieldConfig['entryPoints'][$allowed[0]];
+                $entryPoint = (string)$fieldConfig['elementBrowserEntryPoints'][$allowed[0]];
             }
             if ($entryPoint === '') {
                 // Return if still empty
