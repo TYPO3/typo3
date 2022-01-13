@@ -112,6 +112,7 @@ class BackendController
         );
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Module/Router.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ModuleMenu.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/JavaScriptModuleImportEventHandler.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Storage/ModuleStateStorage.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Toolbar.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Notification.js');

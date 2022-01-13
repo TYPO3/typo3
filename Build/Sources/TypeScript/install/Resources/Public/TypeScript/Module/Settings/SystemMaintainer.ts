@@ -15,6 +15,7 @@ import 'bootstrap';
 import $ from 'jquery';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
+import {topLevelModuleImport} from 'TYPO3/CMS/Backend/Utility/TopLevelModuleImport';
 import Modal from 'TYPO3/CMS/Backend/Modal';
 import Notification from 'TYPO3/CMS/Backend/Notification';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
@@ -32,7 +33,7 @@ class SystemMaintainer extends AbstractInteractableModule {
     this.currentModal = currentModal;
     const isInIframe = window.location !== window.parent.location;
     if (isInIframe) {
-      top.require(['TYPO3/CMS/Install/chosen.jquery.min'], (): void => {
+      topLevelModuleImport('TYPO3/CMS/Install/chosen.jquery.min.js').then((): void => {
         this.getList();
       });
     } else {

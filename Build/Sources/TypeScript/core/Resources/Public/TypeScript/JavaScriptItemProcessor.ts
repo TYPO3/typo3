@@ -69,8 +69,17 @@ function loadModule(payload: JavaScriptItemPayload): Promise<any> {
     if (!(payload.flags & FLAG_USE_TOP_WINDOW)) {
       return moduleImporter(payload.name);
     } else {
-      // @todo implement
-      throw new Error('FLAG_USE_TOP_WINDOW is not yet supported for JavaScript modules');
+      const event = new CustomEvent<{ specifier: string; importPromise: null|Promise<any>; }>(
+        'typo3:import-javascript-module',
+        {
+          detail: {
+            specifier: payload.name,
+            importPromise: null
+          }
+        }
+      );
+      top.document.dispatchEvent(event);
+      return event.detail.importPromise || Promise.reject(new Error('Top-level import failed'));
     }
   }
 

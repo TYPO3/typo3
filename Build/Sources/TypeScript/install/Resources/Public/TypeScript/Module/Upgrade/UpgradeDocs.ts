@@ -18,6 +18,7 @@ import '../../Renderable/Clearable';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Notification from 'TYPO3/CMS/Backend/Notification';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
+import {topLevelModuleImport} from 'TYPO3/CMS/Backend/Utility/TopLevelModuleImport';
 import Router from '../../Router';
 import DebounceEvent from 'TYPO3/CMS/Core/Event/DebounceEvent';
 
@@ -52,7 +53,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     this.currentModal = currentModal;
     const isInIframe = (window.location !== window.parent.location);
     if (isInIframe) {
-      top.require(['TYPO3/CMS/Install/chosen.jquery.min'], (): void => {
+      topLevelModuleImport('TYPO3/CMS/Install/chosen.jquery.min.js').then((): void => {
         this.getContent();
       });
     } else {
