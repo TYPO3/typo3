@@ -23,53 +23,38 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Lists all redirects in the TYPO3 Backend as a module
+ * Lists all redirects in the TYPO3 Backend as a module.
+ *
  * @internal This class is a specific TYPO3 Backend controller implementation and is not part of the Public TYPO3 API.
  */
 class ManagementController
 {
-    /**
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    protected ?ModuleTemplate $moduleTemplate = null;
 
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
+    protected UriBuilder $uriBuilder;
     protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
     protected RedirectRepository $redirectRepository;
     protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function __construct(
+        UriBuilder $uriBuilder,
         IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
         RedirectRepository $redirectRepository,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
+        $this->uriBuilder = $uriBuilder;
         $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
         $this->redirectRepository = $redirectRepository;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
@@ -79,25 +64,19 @@ class ManagementController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->request = $request;
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Redirects/RedirectsModule');
-        $this->getLanguageService()->includeLLFile('EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf');
-        $this->initializeView('overview');
-        $this->overviewAction($request);
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Show all redirects, and add a button to create a new redirect
-     */
-    protected function overviewAction(ServerRequestInterface $request): void
-    {
-        $this->getButtons();
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $demand = Demand::fromRequest($request);
-        $this->view->assignMultiple([
+
+        $moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
+        );
+
+        $this->registerDocHeaderButtons($moduleTemplate, $request->getAttribute('normalizedParams')->getRequestUri());
+
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:redirects/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:redirects/Resources/Private/Partials']);
+        $view->assignMultiple([
             'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
             'hosts' => $this->redirectRepository->findHostsOfRedirects(),
             'statusCodes' => $this->redirectRepository->findStatusCodesOfRedirects(),
@@ -105,9 +84,9 @@ class ManagementController
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $this->preparePagination($demand),
         ]);
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
-        );
+
+        $moduleTemplate->setContent($view->render('Management/Overview'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -139,60 +118,44 @@ class ManagementController
         return $pagination;
     }
 
-    protected function initializeView(string $templateName): void
-    {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:redirects/Resources/Private/Templates/Management']);
-        $this->view->setPartialRootPaths(['EXT:redirects/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:redirects/Resources/Private/Layouts']);
-    }
-
     /**
      * Create document header buttons
      */
-    protected function getButtons(): void
+    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate, string $requestUri): void
     {
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $languageService = $this->getLanguageService();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         // Create new
         $newRecordButton = $buttonBar->makeLinkButton()
-            ->setHref((string)$uriBuilder->buildUriFromRoute(
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
                     'edit' => ['sys_redirect' => ['new'],
                 ],
-                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('site_redirects'),
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
             ]
             ))
-            ->setTitle($this->getLanguageService()->getLL('redirect_add_text'))
+            ->setTitle($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_add_text'))
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
         $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
 
         // Reload
         $reloadButton = $buttonBar->makeLinkButton()
-            ->setHref($this->request->getAttribute('normalizedParams')->getRequestUri())
-            ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
+            ->setHref($requestUri)
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
         // Shortcut
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('site_redirects')
-            ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_labels_tablabel'));
+            ->setDisplayName($languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_labels_tablabel'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

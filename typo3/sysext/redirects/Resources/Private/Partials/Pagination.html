@@ -40,13 +40,14 @@
                             <f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" />
                         </f:variable>
                         <form data-on-submit="processNavigate" style="display:inline;">
-                            <f:form.textfield
-                                additionalAttributes="{min: 1, max: pagination.numberOfPages}"
-                                data="{number-of-pages: pagination.numberOfPages, url: gotToPageUrl}"
+                            <input type="number"
+                                value="{pagination.current}"
                                 name="paginator-target-page"
                                 class="form-control form-control-sm paginator-input"
-                                value="{pagination.current}"
-                                type="number" />
+                                min="1"
+                                max="{pagination.numberOfPages}"
+                                data-number-of-pages="{pagination.numberOfPages}"
+                                data-url="{gotToPageUrl}" />
                         </form>
                     / {pagination.numberOfPages}
                 </span>
