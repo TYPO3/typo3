@@ -120,7 +120,7 @@ final class CObjectViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $data = $arguments['data'] ?? $renderChildrenClosure();
+        $data = $renderChildrenClosure();
         $typoscriptObjectPath = $arguments['typoscriptObjectPath'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
@@ -238,5 +238,13 @@ final class CObjectViewHelper extends AbstractViewHelper
     protected static function resetFrontendEnvironment(?TypoScriptFrontendController $tsfeBackup): void
     {
         $GLOBALS['TSFE'] = $tsfeBackup;
+    }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'data';
     }
 }

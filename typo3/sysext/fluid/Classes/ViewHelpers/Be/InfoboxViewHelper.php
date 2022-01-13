@@ -138,4 +138,12 @@ final class InfoboxViewHelper extends AbstractViewHelper
                 '</div>' .
             '</div>';
     }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'message';
+    }
 }

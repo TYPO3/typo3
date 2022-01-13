@@ -97,4 +97,12 @@ final class PaddingViewHelper extends AbstractViewHelper
 
         return StringUtility::multibyteStringPad((string)$value, (int)$arguments['padLength'], (string)$arguments['padString'], $padTypes[$padType]);
     }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'value';
+    }
 }

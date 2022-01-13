@@ -95,4 +95,12 @@ final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
         $flags = $keepQuotes ? ENT_NOQUOTES : ENT_COMPAT;
         return html_entity_decode($value, $flags, $encoding);
     }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'value';
+    }
 }

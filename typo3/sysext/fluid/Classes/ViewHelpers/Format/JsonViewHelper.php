@@ -92,4 +92,12 @@ final class JsonViewHelper extends AbstractViewHelper
         }
         return json_encode($value, $options);
     }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'value';
+    }
 }

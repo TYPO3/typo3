@@ -61,10 +61,18 @@ final class NormalizedUrlViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $pathOrUrl = $arguments['pathOrUrl'] ?? $renderChildrenClosure();
+        $pathOrUrl = $renderChildrenClosure();
         if (PathUtility::hasProtocolAndScheme($pathOrUrl)) {
             return $pathOrUrl;
         }
         return GeneralUtility::locationHeaderUrl(PathUtility::getPublicResourceWebPath((string)$pathOrUrl));
+    }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'pathOrUrl';
     }
 }

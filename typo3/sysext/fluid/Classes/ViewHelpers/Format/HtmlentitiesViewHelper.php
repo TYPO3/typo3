@@ -97,4 +97,12 @@ final class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
         $flags = $keepQuotes ? ENT_NOQUOTES : ENT_QUOTES;
         return htmlentities((string)$value, $flags, $encoding, $doubleEncode);
     }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'value';
+    }
 }

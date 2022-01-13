@@ -74,10 +74,18 @@ final class UrlencodeViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
-        $value = $arguments['value'] ?? $renderChildrenClosure();
+        $value = $renderChildrenClosure();
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
         return rawurlencode((string)$value);
+    }
+
+    /**
+     * Explicitly set argument name to be used as content.
+     */
+    public function resolveContentArgumentName(): string
+    {
+        return 'value';
     }
 }
