@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\SysNote\Hook;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\SysNote\Controller\NoteController;
+use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
 
 /**
  * Hook for the info module.
@@ -28,6 +27,13 @@ use TYPO3\CMS\SysNote\Controller\NoteController;
  */
 class InfoModuleHook
 {
+    protected NoteRenderer $noteRenderer;
+
+    public function __construct(NoteRenderer $noteRenderer)
+    {
+        $this->noteRenderer = $noteRenderer;
+    }
+
     /**
      * Add sys_notes as additional content to the footer of the info module
      */
@@ -35,9 +41,8 @@ class InfoModuleHook
     {
         /** @var ServerRequestInterface $request */
         $request = $params['request'];
-        $controller = GeneralUtility::makeInstance(NoteController::class);
         $id = (int)($request->getQueryParams()['id'] ?? 0);
         $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
-        return $controller->listAction($id, null, $returnUrl);
+        return $this->noteRenderer->renderList($id, null, $returnUrl);
     }
 }

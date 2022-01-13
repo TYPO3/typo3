@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Domain\Repository;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sys_note repository
@@ -31,20 +29,24 @@ class SysNoteRepository
     const SYS_NOTE_POSITION_BOTTOM = 0;
     const SYS_NOTE_POSITION_TOP = 1;
 
+    protected ConnectionPool $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+    }
+
     /**
-     * Find notes by given pids and author
+     * Find notes by given pid and author
      *
-     * @param string $pids Single PID or comma separated list of PIDs
-     * @param int $author author uid
+     * @param int $pid Single pid
+     * @param int $author Author uid
      * @param int|null $position null for no restriction, integer for defined position
      * @return array
      */
-    public function findByPidsAndAuthorId($pids, int $author, int $position = null): array
+    public function findByPidAndAuthorId(int $pid, int $author, int $position = null): array
     {
-        $pids = GeneralUtility::intExplode(',', (string)$pids);
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_note');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_note');
         $queryBuilder->getRestrictions()->removeAll();
         $res = $queryBuilder
             ->select(
@@ -63,7 +65,7 @@ class SysNoteRepository
             )
             ->where(
                 $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->in('sys_note.pid', $queryBuilder->createNamedParameter($pids, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->eq('sys_note.pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))

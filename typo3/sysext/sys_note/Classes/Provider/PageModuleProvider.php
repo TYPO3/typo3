@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\SysNote\Provider;
 
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
-use TYPO3\CMS\SysNote\Controller\NoteController;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
+use TYPO3\CMS\SysNote\Renderer\NoteRenderer;
 
 /**
  * Event listener to render notes in the page module.
@@ -28,11 +28,11 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
  */
 final class PageModuleProvider
 {
-    protected NoteController $noteController;
+    protected NoteRenderer $noteRenderer;
 
-    public function __construct(NoteController $noteController)
+    public function __construct(NoteRenderer $noteRenderer)
     {
-        $this->noteController = $noteController;
+        $this->noteRenderer = $noteRenderer;
     }
 
     /**
@@ -43,7 +43,7 @@ final class PageModuleProvider
         $request = $event->getRequest();
         $id = (int)($request->getQueryParams()['id'] ?? 0);
         $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
-        $event->addHeaderContent($this->noteController->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
-        $event->addFooterContent($this->noteController->listAction($id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
+        $event->addHeaderContent($this->noteRenderer->renderList($id, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
+        $event->addFooterContent($this->noteRenderer->renderList($id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
     }
 }

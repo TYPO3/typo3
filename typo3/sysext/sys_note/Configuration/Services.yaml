@@ -6,6 +6,10 @@ services:
 
   TYPO3\CMS\SysNote\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\SysNote\Hook\InfoModuleHook:
+    public: true
+
   TYPO3\CMS\SysNote\Provider\RecordListProvider:
     tags:
       - name: event.listener

@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\SysNote\Controller;
+namespace TYPO3\CMS\SysNote\Renderer;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -29,14 +29,14 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
  *
  * @internal
  */
-class NoteController
+class NoteRenderer
 {
     protected SysNoteRepository $notesRepository;
     protected array $pagePermissionCache = [];
 
-    public function __construct()
+    public function __construct(SysNoteRepository $sysNoteRepository)
     {
-        $this->notesRepository = GeneralUtility::makeInstance(SysNoteRepository::class);
+        $this->notesRepository = $sysNoteRepository;
     }
 
     /**
@@ -47,7 +47,7 @@ class NoteController
      * @param string $returnUrl Url to return to when editing and closing a notes record again
      * @return string
      */
-    public function listAction(int $pid, int $position = null, string $returnUrl = ''): string
+    public function renderList(int $pid, int $position = null, string $returnUrl = ''): string
     {
         $backendUser = $this->getBackendUser();
         if ($pid <= 0
@@ -57,7 +57,7 @@ class NoteController
             return '';
         }
 
-        $notes = $this->notesRepository->findByPidsAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
+        $notes = $this->notesRepository->findByPidAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
         if (!$notes) {
             return '';
         }
