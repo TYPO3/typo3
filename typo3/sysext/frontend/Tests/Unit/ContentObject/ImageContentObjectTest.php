@@ -52,7 +52,8 @@ class ImageContentObjectTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $GLOBALS['TSFE'] = $tsfe->reveal();
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
-        $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [$contentObjectRenderer]);
+        $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
     /**
@@ -194,7 +195,8 @@ class ImageContentObjectTest extends UnitTestCase
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar']);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [$cObj]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
         self::assertEquals('---bar---', $result);
@@ -264,7 +266,8 @@ class ImageContentObjectTest extends UnitTestCase
             ->method('stdWrap')
             ->willReturnArgument(0);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [$cObj]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
         self::assertEmpty($result);
@@ -396,7 +399,8 @@ class ImageContentObjectTest extends UnitTestCase
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar-file.jpg']);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [$cObj]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
         self::assertEquals($expectedHtml, $result);
@@ -460,7 +464,8 @@ class ImageContentObjectTest extends UnitTestCase
             ],
         ];
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [$cObj]);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', 'data', $configuration, StringUtility::getUniqueId('testImage-'));
 
         self::assertSame($result, 'isGetOneSourceCollectionCalledCallback');

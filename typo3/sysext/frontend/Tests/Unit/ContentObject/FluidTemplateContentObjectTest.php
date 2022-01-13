@@ -93,12 +93,12 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
         $this->contentDataProcessor = new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal());
         $this->contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
         $this->subject = $this->getAccessibleMock(
             FluidTemplateContentObject::class,
             ['initializeStandaloneViewInstance'],
-            [$this->contentObjectRenderer->reveal()]
+            [$this->contentDataProcessor]
         );
+        $this->subject->setContentObjectRenderer($this->contentObjectRenderer->reveal());
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
             ->disableOriginalConstructor()
@@ -124,8 +124,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function constructSetsContentObjectRenderer(): void
     {
         $contentObjectRenderer = new ContentObjectRenderer();
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer);
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer);
         self::assertEquals($contentObjectRenderer, $subject->getContentObjectRenderer());
     }
 
@@ -166,8 +166,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->render(Argument::cetera())->willReturn('');
         $standAloneView->renderSection(Argument::cetera())->willReturn('');
         GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $subject->render($configuration);
 
@@ -185,8 +185,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn('EXT:core/bar.html');
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -215,8 +215,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(7);
         $contentObjectRenderer->cObjGetSingle('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'], 'template')->willReturn('baz');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->render(Argument::cetera())->willReturn('');
@@ -244,8 +244,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplateRootPaths(Argument::cetera())->shouldBeCalled();
@@ -278,8 +278,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('bar');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplateRootPaths(Argument::cetera())->shouldBeCalled();
@@ -304,8 +304,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/bar.html');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -333,8 +333,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -366,8 +366,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrap('FILE', ['file' => 'foo/bar.html'])->shouldBeCalled();
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setLayoutRootPaths(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -411,8 +411,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/main.html');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -440,8 +440,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->willReturn('foo/bar.html');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -478,8 +478,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->render(Argument::cetera())->willReturn('');
         $standAloneView->renderSection(Argument::cetera())->willReturn('');
         GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $subject->render($configuration);
 
@@ -497,8 +497,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         ];
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setPartialRootPaths(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -546,8 +546,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->render(Argument::cetera())->willReturn('');
         $standAloneView->renderSection(Argument::cetera())->willReturn('');
         GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $subject->render($configuration);
 
@@ -573,8 +573,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('format', $configuration)->willReturn('xml');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -599,8 +599,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -628,8 +628,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('pluginName', ['pluginName' => 'foo'])->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
@@ -660,8 +660,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -689,8 +689,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerExtensionName', ['controllerExtensionName' => 'foo'])->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
@@ -721,8 +721,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -750,8 +750,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerName', ['controllerName' => 'foo'])->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
@@ -782,8 +782,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -811,8 +811,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerActionName', ['controllerActionName' => 'foo'])->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();
         $standAloneView->assignMultiple(['data' => [], 'current' => null])->shouldBeCalled();
@@ -842,8 +842,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -892,8 +892,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $standAloneView->render(Argument::cetera())->willReturn('');
         $standAloneView->renderSection(Argument::cetera())->willReturn('');
         GeneralUtility::addInstance(StandaloneView::class, $standAloneView->reveal());
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($this->prophesize(ContentObjectRenderer::class)->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($this->prophesize(ContentObjectRenderer::class)->reveal());
 
         $subject->render($configuration);
 
@@ -954,8 +954,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
         $standAloneView->assignMultiple(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -986,8 +986,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->cObjGetSingle(Argument::cetera())->willReturn('foo');
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename(Argument::cetera())->willReturn(new ReturnTypeNode('void'));
@@ -1056,8 +1056,8 @@ class FluidTemplateContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
-        GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
-        $subject = new FluidTemplateContentObject($contentObjectRenderer->reveal());
+        $subject = new FluidTemplateContentObject($this->contentDataProcessor);
+        $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
 
         $standAloneView = $this->prophesize(StandaloneView::class);
         $standAloneView->setTemplatePathAndFilename('')->shouldBeCalled();

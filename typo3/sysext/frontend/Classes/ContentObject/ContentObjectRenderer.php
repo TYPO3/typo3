@@ -264,13 +264,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     ];
 
     /**
-     * Class names for accordant content object names
-     *
-     * @var array
-     */
-    protected $contentObjectClassMap = [];
-
-    /**
      * Loaded with the current data-record.
      *
      * If the instance of this class is used to render records from the database those records are found in this array.
@@ -428,7 +421,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
-        $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] ?? [];
         $this->container = $container;
     }
 
@@ -486,35 +478,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // We do not derive $this->request from globals here. The request is expected to be injected
         // using setRequest() after deserialization or with start().
         // (A fallback to $GLOBALS['TYPO3_REQUEST'] is available in getRequest() for BC)
-    }
-
-    /**
-     * Allow injecting content object class map.
-     *
-     * This method is private API, please use configuration
-     * $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] to add new content objects
-     *
-     * @internal
-     * @param array $contentObjectClassMap
-     */
-    public function setContentObjectClassMap(array $contentObjectClassMap)
-    {
-        $this->contentObjectClassMap = $contentObjectClassMap;
-    }
-
-    /**
-     * Register a single content object name to class name
-     *
-     * This method is private API, please use configuration
-     * $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] to add new content objects
-     *
-     * @param string $className
-     * @param string $contentObjectName
-     * @internal
-     */
-    public function registerContentObjectClass($className, $contentObjectName)
-    {
-        $this->contentObjectClassMap[$contentObjectName] = $className;
     }
 
     /**
@@ -697,8 +660,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * Returns a new content object of type $name.
-     * This content object needs to be registered as content object
-     * in $this->contentObjectClassMap
      *
      * @param string $name
      * @return AbstractContentObject|null
@@ -706,16 +667,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getContentObject($name)
     {
-        if (!isset($this->contentObjectClassMap[$name])) {
-            return null;
-        }
-        $fullyQualifiedClassName = $this->contentObjectClassMap[$name];
-        $contentObject = GeneralUtility::makeInstance($fullyQualifiedClassName, $this);
-        if (!($contentObject instanceof AbstractContentObject)) {
-            throw new ContentRenderingException(sprintf('Registered content object class name "%s" must be an instance of AbstractContentObject, but is not!', $fullyQualifiedClassName), 1422564295);
-        }
-        $contentObject->setRequest($this->getRequest());
-        return $contentObject;
+        $contentObjectFactory = $this->container
+            ? $this->container->get(ContentObjectFactory::class)
+            : GeneralUtility::makeInstance(ContentObjectFactory::class);
+
+        return $contentObjectFactory->getContentObject($name, $this->getRequest(), $this);
     }
 
     /********************************************

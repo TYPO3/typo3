@@ -14,6 +14,10 @@ services:
   TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor:
     public: true
 
+  TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory:
+    public: true
+    arguments: [!tagged_locator { tag: 'frontend.contentobject', index_by: 'identifier' }]
+
   TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
     public: true
     shared: false
@@ -36,5 +40,90 @@ services:
   TYPO3\CMS\Frontend\Html\HtmlWorker:
     public: true
 
+  TYPO3\CMS\Frontend\DataProcessing\MenuProcessor:
+    public: true
+    shared: false
+
   TYPO3\CMS\Frontend\Typolink\LinkResultFactory:
     public: true
+
+  # Register all available content objects
+  TYPO3\CMS\Frontend\ContentObject\TextContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'TEXT'
+
+  TYPO3\CMS\Frontend\ContentObject\CaseContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'CASE'
+
+  TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'COA'
+
+  TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayInternalContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'COA_INT'
+
+  TYPO3\CMS\Frontend\ContentObject\UserContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'USER'
+
+  TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'USER_INT'
+
+  TYPO3\CMS\Frontend\ContentObject\FilesContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'FILES'
+
+  TYPO3\CMS\Frontend\ContentObject\ImageContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'IMAGE'
+
+  TYPO3\CMS\Frontend\ContentObject\ImageResourceContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'IMG_RESOURCE'
+
+  TYPO3\CMS\Frontend\ContentObject\ContentContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'CONTENT'
+
+  TYPO3\CMS\Frontend\ContentObject\RecordsContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'RECORDS'
+
+  TYPO3\CMS\Frontend\ContentObject\HierarchicalMenuContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'HMENU'
+
+  TYPO3\CMS\Frontend\ContentObject\LoadRegisterContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'LOAD_REGISTER'
+
+  TYPO3\CMS\Frontend\ContentObject\RestoreRegisterContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'RESTORE_REGISTER'
+
+  TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'FLUIDTEMPLATE'
+
+  TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'SVG'

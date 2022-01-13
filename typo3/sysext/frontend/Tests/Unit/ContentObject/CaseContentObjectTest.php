@@ -17,9 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -37,9 +41,6 @@ class CaseContentObjectTest extends UnitTestCase
      */
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var CaseContentObject
-     */
     protected CaseContentObject $subject;
 
     /**
@@ -56,11 +57,24 @@ class CaseContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $contentObjectRenderer->setContentObjectClassMap([
-            'CASE' => CaseContentObject::class,
-            'TEXT' => TextContentObject::class,
-        ]);
-        $this->subject = new CaseContentObject($contentObjectRenderer);
+        $cObjectFactoryProphecy = $this->prophesize(ContentObjectFactory::class);
+
+        $caseContentObject = new CaseContentObject();
+        $caseContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $caseContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('CASE', Argument::cetera())->willReturn($caseContentObject);
+
+        $textContentObject = new TextContentObject();
+        $textContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $textContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('TEXT', Argument::cetera())->willReturn($textContentObject);
+
+        $container = new Container();
+        $container->set(ContentObjectFactory::class, $cObjectFactoryProphecy->reveal());
+        GeneralUtility::setContainer($container);
+
+        $this->subject = new CaseContentObject();
+        $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
     /**

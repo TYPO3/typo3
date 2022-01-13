@@ -594,4 +594,9 @@ return [
             'Breaking-96550-TYPO3_CONF_VARSSYSUSdateFormatRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'ContentObjects\']' => [
+        'restFiles' => [
+            'Breaking-96659-RegistrationOfCObjectsViaTYPO3_CONF_VARS.rst',
+        ],
+    ],
 ];

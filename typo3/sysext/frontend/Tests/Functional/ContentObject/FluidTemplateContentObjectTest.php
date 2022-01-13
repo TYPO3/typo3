@@ -19,10 +19,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectArrayContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
-use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -67,13 +65,11 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
         ];
         $expectedResult = 'ABC';
 
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $contentObjectRenderer->setContentObjectClassMap([
-            'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
-            'TEXT' => TextContentObject::class,
-        ]);
-        $fluidTemplateContentObject = new ContentObjectArrayContentObject(
+        $fluidTemplateContentObject = $this->getContainer()->get(ContentObjectFactory::class)->getContentObject(
+            'COA',
+            $this->prophesize(ServerRequestInterface::class)->reveal(),
             $contentObjectRenderer
         );
         $result = $fluidTemplateContentObject->render($configuration);
@@ -115,13 +111,11 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
         ];
         $expectedResult = 'DefaultLayoutLayoutOverride';
 
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $contentObjectRenderer->setContentObjectClassMap([
-            'FLUIDTEMPLATE' => FluidTemplateContentObject::class,
-            'TEXT' => TextContentObject::class,
-        ]);
-        $fluidTemplateContentObject = new ContentObjectArrayContentObject(
+        $fluidTemplateContentObject = $this->getContainer()->get(ContentObjectFactory::class)->getContentObject(
+            'COA',
+            $this->prophesize(ServerRequestInterface::class)->reveal(),
             $contentObjectRenderer
         );
         $result = preg_replace('/\s+/', '', strip_tags($fluidTemplateContentObject->render($configuration)));

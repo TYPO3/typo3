@@ -5106,11 +5106,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$currentValKey \\(string\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php
-
-		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 5
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/FluidTemplateContentObject.php

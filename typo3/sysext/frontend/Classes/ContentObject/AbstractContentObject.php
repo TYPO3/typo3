@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -24,27 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractContentObject
 {
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $cObj;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected ?PageRenderer $pageRenderer = null;
 
     protected ?ServerRequestInterface $request = null;
 
-    /**
-     * Default constructor.
-     *
-     * @param ContentObjectRenderer $cObj
-     */
-    public function __construct(ContentObjectRenderer $cObj)
-    {
-        $this->cObj = $cObj;
-    }
+    protected ?ContentObjectRenderer $cObj = null;
 
     /**
      * Renders the content object.
@@ -54,12 +40,7 @@ abstract class AbstractContentObject
      */
     abstract public function render($conf = []);
 
-    /**
-     * Getter for current ContentObjectRenderer
-     *
-     * @return ContentObjectRenderer
-     */
-    public function getContentObjectRenderer()
+    public function getContentObjectRenderer(): ContentObjectRenderer
     {
         return $this->cObj;
     }
@@ -69,10 +50,12 @@ abstract class AbstractContentObject
         $this->request = $request;
     }
 
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer()
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
+    }
+
+    protected function getPageRenderer(): PageRenderer
     {
         if ($this->pageRenderer === null) {
             $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);

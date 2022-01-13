@@ -20,9 +20,12 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -62,9 +65,23 @@ class AbstractPluginTest extends UnitTestCase
         $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $contentObjectRenderer->setContentObjectClassMap([
-            'TEXT' => TextContentObject::class,
-        ]);
+
+        $cObjectFactoryProphecy = $this->prophesize(ContentObjectFactory::class);
+
+        $caseContentObject = new CaseContentObject();
+        $caseContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $caseContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('CASE', Argument::cetera())->willReturn($caseContentObject);
+
+        $textContentObject = new TextContentObject();
+        $textContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $textContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('TEXT', Argument::cetera())->willReturn($textContentObject);
+
+        $container = new Container();
+        $container->set(ContentObjectFactory::class, $cObjectFactoryProphecy->reveal());
+        GeneralUtility::setContainer($container);
+
         $this->abstractPlugin->setContentObjectRenderer($contentObjectRenderer);
     }
 

@@ -18,8 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Collection\StaticFileCollection;
 use TYPO3\CMS\Core\Resource\File;
@@ -29,6 +31,8 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\FilesContentObject;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
@@ -74,14 +78,26 @@ class FilesContentObjectTest extends UnitTestCase
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $contentObjectRenderer->setContentObjectClassMap([
-            'FILES' => FilesContentObject::class,
-            'TEXT' => TextContentObject::class,
-        ]);
+        $cObjectFactoryProphecy = $this->prophesize(ContentObjectFactory::class);
+
+        $filesContentObject = new FilesContentObject();
+        $filesContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $filesContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('FILES', Argument::cetera())->willReturn($filesContentObject);
+
+        $textContentObject = new TextContentObject();
+        $textContentObject->setRequest(($this->prophesize(ServerRequestInterface::class)->reveal()));
+        $textContentObject->setContentObjectRenderer($contentObjectRenderer);
+        $cObjectFactoryProphecy->getContentObject('TEXT', Argument::cetera())->willReturn($textContentObject);
+
+        $container = new Container();
+        $container->set(ContentObjectFactory::class, $cObjectFactoryProphecy->reveal());
+        GeneralUtility::setContainer($container);
         $this->subject = $this->getMockBuilder(FilesContentObject::class)
             ->onlyMethods(['getFileCollector'])
-            ->setConstructorArgs([$contentObjectRenderer])
+            ->setConstructorArgs([])
             ->getMock();
+        $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
     /**

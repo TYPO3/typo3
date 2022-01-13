@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectFactory;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -249,17 +250,10 @@ class MenuProcessor implements DataProcessorInterface
      */
     protected $menuTargetVariableName;
 
-    /**
-     * @var ContentDataProcessor
-     */
-    protected $contentDataProcessor;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+    public function __construct(
+        protected ContentDataProcessor $contentDataProcessor,
+        protected ContentObjectFactory $contentObjectFactory
+    ) {
     }
 
     /**
@@ -455,7 +449,7 @@ class MenuProcessor implements DataProcessorInterface
         $this->buildConfiguration();
 
         // Process Configuration
-        $menuContentObject = $cObj->getContentObject('HMENU');
+        $menuContentObject = $this->contentObjectFactory->getContentObject('HMENU', $cObj->getRequest(), $cObj);
         $renderedMenu = $menuContentObject->render($this->menuConfig);
         if (!$renderedMenu) {
             return $processedData;

@@ -32,26 +32,8 @@ class FluidTemplateContentObject extends AbstractContentObject
      */
     protected $view;
 
-    /**
-     * @var ContentDataProcessor
-     */
-    protected $contentDataProcessor;
-
-    /**
-     * @param ContentObjectRenderer $cObj
-     */
-    public function __construct(ContentObjectRenderer $cObj)
+    public function __construct(protected ContentDataProcessor $contentDataProcessor)
     {
-        parent::__construct($cObj);
-        $this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
-    }
-
-    /**
-     * @param ContentDataProcessor $contentDataProcessor
-     */
-    public function setContentDataProcessor($contentDataProcessor)
-    {
-        $this->contentDataProcessor = $contentDataProcessor;
     }
 
     /**
