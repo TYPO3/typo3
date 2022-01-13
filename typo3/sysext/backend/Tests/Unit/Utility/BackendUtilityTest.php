@@ -27,8 +27,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
+use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -1020,12 +1021,12 @@ class BackendUtilityTest extends UnitTestCase
         $expected = ['called.' => ['config']];
         $pageId = 13;
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcherProphecy->dispatch(Argument::any())->willReturn(new ModifyLoadedPageTsConfigEvent([], []));
+        $eventDispatcherProphecy->dispatch(Argument::any())->willReturnArgument();
         $loader = new PageTsConfigLoader($eventDispatcherProphecy->reveal());
-        GeneralUtility::addInstance(PageTsConfigLoader::class, $loader);
         $parserProphecy = $this->prophesize(PageTsConfigParser::class);
         $parserProphecy->parse(Argument::cetera())->willReturn($expected);
-        GeneralUtility::addInstance(PageTsConfigParser::class, $parserProphecy->reveal());
+        $configuration = new PageTsConfig(new NullFrontend('runtimeCache'), $loader, $parserProphecy->reveal());
+        GeneralUtility::addInstance(PageTsConfig::class, $configuration);
 
         $matcherProphecy = $this->prophesize(ConditionMatcher::class);
         GeneralUtility::addInstance(ConditionMatcher::class, $matcherProphecy->reveal());
@@ -1039,8 +1040,6 @@ class BackendUtilityTest extends UnitTestCase
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
-        $cacheHashProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('hash')->willReturn($cacheHashProphecy->reveal());
         $cacheProphecy->has(Argument::cetera())->willReturn(false);
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);

@@ -19,9 +19,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\PageTsConfig;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector;
@@ -127,6 +130,13 @@ class TcaSystemLanguageCollectorTest extends UnitTestCase
         $siteFinder = $this->prophesize(SiteFinder::class);
         $siteFinder->getAllSites()->willReturn([]);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
+        $siteFinder->getSiteByPageId(0)->willThrow(SiteNotFoundException::class);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
+        $conditionMatcher = $this->prophesize(ConditionMatcher::class);
+        GeneralUtility::addInstance(ConditionMatcher::class, $conditionMatcher->reveal());
+        $tsConfig = $this->prophesize(PageTsConfig::class);
+        $tsConfig->getWithUserOverride(Argument::cetera())->willReturn([]);
+        GeneralUtility::addInstance(PageTsConfig::class, $tsConfig->reveal());
 
         $expectedItems = [
             0 => [

@@ -60,6 +60,16 @@ services:
   TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader:
     public: true
 
+  TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser:
+    public: true
+    arguments:
+      $cache: '@cache.hash'
+
+  TYPO3\CMS\Core\Configuration\PageTsConfig:
+    public: true
+    arguments:
+      $cache: '@cache.runtime'
+
   TYPO3\CMS\Core\Database\Schema\SqlReader:
     public: true
 

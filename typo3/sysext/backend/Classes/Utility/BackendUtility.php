@@ -26,8 +26,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
-use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
+use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -55,7 +54,6 @@ use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -696,13 +694,6 @@ class BackendUtility
     public static function getPagesTSconfig($id)
     {
         $id = (int)$id;
-
-        $cache = self::getRuntimeCache();
-        $pagesTsConfigIdToHash = $cache->get('pagesTsConfigIdToHash' . $id);
-        if ($pagesTsConfigIdToHash !== false) {
-            return $cache->get('pagesTsConfigHashToContent' . $pagesTsConfigIdToHash);
-        }
-
         $rootLine = self::BEgetRootLine($id, '', true);
         // Order correctly
         ksort($rootLine);
@@ -712,40 +703,9 @@ class BackendUtility
         } catch (SiteNotFoundException $exception) {
             $site = null;
         }
-
-        // Load PageTS from all pages of the rootLine
-        $pageTs = GeneralUtility::makeInstance(PageTsConfigLoader::class)->load($rootLine);
-
-        // Parse the PageTS into an array, also applying conditions
-        $parser = GeneralUtility::makeInstance(
-            PageTsConfigParser::class,
-            GeneralUtility::makeInstance(TypoScriptParser::class),
-            GeneralUtility::makeInstance(CacheManager::class)->getCache('hash')
-        );
-        $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, null, $id, $rootLine);
-        $tsConfig = $parser->parse($pageTs, $matcher, $site);
-        $cacheHash = md5((string)json_encode($tsConfig));
-
-        // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
-        if (static::getBackendUserAuthentication()) {
-            $userTSconfig = static::getBackendUserAuthentication()->getTSConfig() ?? [];
-        } else {
-            $userTSconfig = [];
-        }
-
-        if (is_array($userTSconfig['page.'] ?? null)) {
-            // Override page TSconfig with user TSconfig
-            ArrayUtility::mergeRecursiveWithOverrule($tsConfig, $userTSconfig['page.']);
-            $cacheHash .= '_user' . static::getBackendUserAuthentication()->user['uid'];
-        }
-
-        // Many pages end up with the same ts config. To reduce memory usage, the cache
-        // entries are a linked list: One or more pids point to content hashes which then
-        // contain the cached content.
-        $cache->set('pagesTsConfigHashToContent' . $cacheHash, $tsConfig, ['pagesTsConfig']);
-        $cache->set('pagesTsConfigIdToHash' . $id, $cacheHash, ['pagesTsConfig']);
-
-        return $tsConfig;
+        $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, GeneralUtility::makeInstance(Context::class), $id, $rootLine);
+        $tsConfig = GeneralUtility::makeInstance(PageTsConfig::class);
+        return $tsConfig->getWithUserOverride($id, $rootLine, $site, $matcher, static::getBackendUserAuthentication());
     }
 
     /*******************************************

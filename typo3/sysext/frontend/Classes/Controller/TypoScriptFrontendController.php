@@ -24,8 +24,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
-use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
-use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
+use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -63,7 +62,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -2966,22 +2964,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @return array
      */
-    public function getPagesTSconfig()
+    public function getPagesTSconfig(): array
     {
         if (!is_array($this->pagesTSconfig)) {
-            $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-            $loader = GeneralUtility::makeInstance(PageTsConfigLoader::class);
-            $tsConfigString = $loader->load(array_reverse($this->rootLine));
-            $parser = GeneralUtility::makeInstance(
-                PageTsConfigParser::class,
-                GeneralUtility::makeInstance(TypoScriptParser::class),
-                $contentHashCache
-            );
-            $this->pagesTSconfig = $parser->parse(
-                $tsConfigString,
-                GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine),
-                $this->site
-            );
+            $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine);
+            $this->pagesTSconfig = GeneralUtility::makeInstance(PageTsConfig::class)
+                ->getForRootLine(
+                    array_reverse($this->rootLine),
+                    $this->site,
+                    $matcher
+                );
         }
         return $this->pagesTSconfig;
     }

@@ -31,15 +31,8 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class PageTsConfigParser
 {
-    /**
-     * @var TypoScriptParser
-     */
-    protected $typoScriptParser;
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $cache;
+    protected TypoScriptParser $typoScriptParser;
+    protected FrontendInterface $cache;
 
     public function __construct(TypoScriptParser $typoScriptParser, FrontendInterface $cache)
     {

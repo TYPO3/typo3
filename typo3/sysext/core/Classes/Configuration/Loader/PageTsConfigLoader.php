@@ -37,10 +37,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PageTsConfigLoader
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
