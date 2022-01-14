@@ -613,14 +613,7 @@ class PageLayoutController
             }
 
             $content .= $this->generateMessagesForCurrentPage();
-
-            // Render the primary module content:
-            $content .= '<form action="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id])) . '" id="PageLayoutController" method="post">';
-            // Page title
-            $content .= '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
-            // All other listings
             $content .= $this->renderContent($request);
-            $content .= '</form>';
             // Setting up the buttons for the docheader
             $this->makeButtons($request);
             $this->initializeClipboard($request);
@@ -679,7 +672,9 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule(ImmediateActionElement::MODULE_NAME);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
-        $tableOutput = '';
+        $title = '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
+        $tableOutput = '<form action="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id])) . '" id="PageLayoutController" method="post">';
+
         $numberOfHiddenElements = 0;
 
         if ($this->context instanceof PageLayoutContext) {
@@ -714,7 +709,7 @@ class PageLayoutController
                     ->invoke('setLanguageOverlayId', $languageOverlayId);
             }
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
-            $tableOutput = GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this->context)->drawContent();
+            $tableOutput .= GeneralUtility::makeInstance(BackendLayoutRenderer::class, $this->context)->drawContent();
         }
 
         if ($this->getBackendUser()->check('tables_select', 'tt_content') && $numberOfHiddenElements > 0) {
@@ -728,8 +723,10 @@ class PageLayoutController
                 </div>';
         }
 
+        $tableOutput .= '</form>';
+
         $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($request, $this->moduleTemplate));
-        return $event->getHeaderContent() . $tableOutput . $event->getFooterContent();
+        return $title . $event->getHeaderContent() . $tableOutput . $event->getFooterContent();
     }
 
     /***************************

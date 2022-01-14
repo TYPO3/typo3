@@ -120,6 +120,9 @@ class PageInformationController
         '</div>'
             . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $request);
 
+        // This is a hack to close the default form created by InfoModuleController so the hook below can have own form tags
+        $theOutput .= '</form>';
+
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
             $params = [
@@ -127,6 +130,9 @@ class PageInformationController
             ];
             $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
+
+        // Open the form again to have valid HTML
+        $theOutput .= '<form action="">';
         return $theOutput;
     }
 
