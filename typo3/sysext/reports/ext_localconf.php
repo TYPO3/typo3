@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Reports\Report\ServicesListReport;
 use TYPO3\CMS\Reports\Report\Status\ConfigurationStatus;
 use TYPO3\CMS\Reports\Report\Status\FalStatus;
 use TYPO3\CMS\Reports\Report\Status\SecurityStatus;
@@ -42,10 +41,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['pr
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = SecurityStatus::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['configuration'][] = ConfigurationStatus::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['fal'][] = FalStatus::class;
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['sv']['services'] = [
-    'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:report_title',
-    'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:report_description',
-    'icon' => 'EXT:reports/Resources/Public/Images/service-reports.png',
-    'report' => ServicesListReport::class,
-];

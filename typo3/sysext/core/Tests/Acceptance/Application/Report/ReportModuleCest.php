@@ -39,11 +39,4 @@ class ReportModuleCest
         $I->selectOption('.t3-js-jumpMenuBox', 'Status Report');
         $I->see('TYPO3 System', 'h2');
     }
-
-    public function seeInstalledServices(ApplicationTester $I): void
-    {
-        $I->amGoingTo('select Installed Services in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Installed Services');
-        $I->see('Configured search paths for external programs', 'h3');
-    }
 }
