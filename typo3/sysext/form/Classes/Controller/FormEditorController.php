@@ -119,6 +119,19 @@ class FormEditorController extends AbstractBackendController
         $formDefinition = $this->transformFormDefinitionForFormEditor($formDefinition);
         $formEditorDefinitions = $this->getFormEditorDefinitions();
 
+        $additionalViewModelJavaScriptModules = array_map(
+            static fn (string $name) => JavaScriptModuleInstruction::create($name),
+            $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules']['additionalViewModelModules'] ?? []
+        );
+        $additionalViewModelRequireJsModules = array_map(
+            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name),
+            $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? []
+        );
+        if (count($additionalViewModelRequireJsModules) > 0) {
+            trigger_error('formEditor.dynamicRequireJsModules has been deprecated. Use formEditor.dynamicJavaScriptModules instead.', E_USER_DEPRECATED);
+            $this->pageRenderer->loadRequireJs();
+        }
+        $additionalViewModelModules = [...$additionalViewModelRequireJsModules, ...$additionalViewModelJavaScriptModules];
         $formEditorAppInitialData = [
             'formEditorDefinitions' => $formEditorDefinitions,
             'formDefinition' => $formDefinition,
@@ -128,12 +141,11 @@ class FormEditorController extends AbstractBackendController
                 'formPageRenderer' => $this->uriBuilder->uriFor('renderFormPage'),
                 'saveForm' => $this->uriBuilder->uriFor('saveForm'),
             ],
-            'additionalViewModelModules' => $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']['additionalViewModelModules'] ?? [],
+            'additionalViewModelModules' => $additionalViewModelModules,
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],
         ];
 
         $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
-        $this->view->assign('dynamicRequireJsModules', $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules']);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $addInlineSettings = [
@@ -151,15 +163,31 @@ class FormEditorController extends AbstractBackendController
             throw new Exception('The form editor app data could not be encoded', 1628677079);
         }
 
-        $requireJsModules = array_filter(
-            $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'],
-            fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
-            ARRAY_FILTER_USE_KEY
+        $javaScriptModules = array_map(
+            static fn (string $name) => JavaScriptModuleInstruction::create($name),
+            array_filter(
+                $this->prototypeConfiguration['formEditor']['dynamicJavaScriptModules'] ?? [],
+                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+                ARRAY_FILTER_USE_KEY
+            )
         );
+        $requireJsModules = array_map(
+            static fn (string $name) => JavaScriptModuleInstruction::forRequireJS($name),
+            array_filter(
+                $this->prototypeConfiguration['formEditor']['dynamicRequireJsModules'] ?? [],
+                fn (string $name) => in_array($name, self::JS_MODULE_NAMES, true),
+                ARRAY_FILTER_USE_KEY
+            )
+        );
+        if (count($requireJsModules)) {
+            trigger_error('formEditor.dynamicRequireJsModules has been deprecated. Use formEditor.dynamicJavaScriptModules instead.', E_USER_DEPRECATED);
+            $this->pageRenderer->loadRequireJs();
+        }
+        $jsModules = $requireJsModules + $javaScriptModules;
         $pageRenderer = $this->pageRenderer;
         $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Form/Backend/Helper', 'Helper')
-                ->invoke('dispatchFormEditor', $requireJsModules, $formEditorAppInitialData)
+            JavaScriptModuleInstruction::create('TYPO3/CMS/Form/Backend/Helper.js', 'Helper')
+                ->invoke('dispatchFormEditor', $jsModules, $formEditorAppInitialData)
         );
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);
         $pageRenderer->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');

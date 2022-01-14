@@ -10,23 +10,10 @@
  * Licensed under the MIT License
  * http://www.opensource.org/licenses/mit-license.php
  */
-(function(factory) {
-  "use strict";
+import $ from 'jquery';
+import 'jquery-ui/sortable.js';
 
-  if (typeof define === "function" && define.amd) {
-
-    // AMD. Register as an anonymous module.
-    define([
-      "jquery",
-      "jquery-ui/sortable"
-    ], factory);
-  } else {
-
-    // Browser globals
-    factory(window.jQuery);
-  }
-}(function($) {
-  "use strict";
+(function ($) {
 
   function isOverAxis(x, reference, size) {
     return (x > reference) && (x < (reference + size));
@@ -908,4 +895,4 @@
     $.ui.sortable.prototype.options,
     $.mjs.nestedSortable.prototype.options
   );
-}));
+})($);

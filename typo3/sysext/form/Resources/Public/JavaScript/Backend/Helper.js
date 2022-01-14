@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export class Helper{static dispatchFormEditor(e,i){window.require([e.app,e.mediator,e.viewModel],(e,r,t)=>{window.TYPO3.FORMEDITOR_APP=e.getInstance(i,r,t).run()})}static dispatchFormManager(e,i){window.require([e.app,e.viewModel],(e,r)=>{window.TYPO3.FORMMANAGER_APP=e.getInstance(i,r).run()})}}
+import{loadModule}from"TYPO3/CMS/Core/JavaScriptItemProcessor.js";export class Helper{static dispatchFormEditor(o,e){Promise.all([loadModule(o.app),loadModule(o.mediator),loadModule(o.viewModel)]).then(o=>((o,a,d)=>{window.TYPO3.FORMEDITOR_APP=o.getInstance(e,a,d).run()})(...o))}static dispatchFormManager(o,e){Promise.all([loadModule(o.app),loadModule(o.viewModel)]).then(o=>((o,a)=>{window.TYPO3.FORMMANAGER_APP=o.getInstance(e,a).run()})(...o))}}

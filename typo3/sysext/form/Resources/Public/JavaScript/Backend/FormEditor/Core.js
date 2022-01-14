@@ -14,9 +14,31 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/Core
  */
-define(['jquery'], function($) {
-  'use strict';
+import $ from 'jquery';
 
+const {
+  getDataBackend,
+  getFactory,
+  getPublisherSubscriber,
+  getRepository,
+  getUtility,
+  getPropertyValidationService,
+  getRunningAjaxRequest,
+  getApplicationStateStack
+} = factory($);
+
+export {
+  getDataBackend,
+  getFactory,
+  getPublisherSubscriber,
+  getRepository,
+  getUtility,
+  getPropertyValidationService,
+  getRunningAjaxRequest,
+  getApplicationStateStack
+};
+
+function factory($) {
   return (function($) {
 
     /**
@@ -2287,4 +2309,4 @@ define(['jquery'], function($) {
       getApplicationStateStack: getApplicationStateStack
     };
   })($);
-});
+}

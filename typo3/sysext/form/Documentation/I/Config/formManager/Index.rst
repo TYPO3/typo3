@@ -14,13 +14,13 @@ Properties
 ==========
 
 
-.. _typo3.cms.form.formmanager.dynamicrequirejsmodules.app:
+.. _typo3.cms.form.formmanager.dynamicjavascriptmodules.app:
 
-dynamicRequireJsModules.app
+dynamicJavaScriptModules.app
 ---------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.dynamicRequireJsModules.app
+      TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.app
 
 :aspect:`Data type`
       string
@@ -36,21 +36,21 @@ dynamicRequireJsModules.app
          :linenos:
          :emphasize-lines: 2
 
-         dynamicRequireJsModules:
+         dynamicJavaScriptModules:
            app: TYPO3/CMS/Form/Backend/FormManager
            viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
 
 :aspect:`Description`
-      Internal setting. RequireJS path for the form manager JavaScript app.
+      Internal setting. ES6 module specifier for the form manager JavaScript app.
 
 
-.. _typo3.cms.form.formmanager.dynamicrequirejsmodules.viewmodel:
+.. _typo3.cms.form.formmanager.dynamicjavascriptmodules.viewmodel:
 
-dynamicRequireJsModules.viewModel
+dynamicJavaScriptModules.viewModel
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.formManager.dynamicRequireJsModules.viewModel
+      TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.viewModel
 
 :aspect:`Data type`
       string
@@ -66,12 +66,12 @@ dynamicRequireJsModules.viewModel
          :linenos:
          :emphasize-lines: 3
 
-         dynamicRequireJsModules:
-           app: TYPO3/CMS/Form/Backend/FormManager
-           viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
+         dynamicJavaScriptModules:
+           app: TYPO3/CMS/Form/Backend/FormManager.js
+           viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel.js
 
 :aspect:`Description`
-      Internal setting. RequireJS path for the form manager JavaScript view model.
+      Internal setting. ES6 module specifier for the form manager JavaScript view model.
 
 
 .. _typo3.cms.form.formmanager.stylesheets:

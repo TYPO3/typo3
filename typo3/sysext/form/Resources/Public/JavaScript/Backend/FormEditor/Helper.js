@@ -14,8 +14,37 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/Helper
  */
-define(['jquery'], function($) {
-  'use strict';
+import $ from 'jquery';
+
+const {
+  bootstrap,
+  buildDomElementSelectorHelper,
+  getDomElementClassName,
+  getDomElementIdName,
+  getDomElementDataAttribute,
+  getDomElementDataAttributeValue,
+  getDomElementDataIdentifierSelector,
+  getDomElementSelector,
+  getTemplate,
+  getTemplatePropertyDomElement,
+  setConfiguration
+} = factory($);
+
+export {
+  bootstrap,
+  buildDomElementSelectorHelper,
+  getDomElementClassName,
+  getDomElementIdName,
+  getDomElementDataAttribute,
+  getDomElementDataAttributeValue,
+  getDomElementDataIdentifierSelector,
+  getDomElementSelector,
+  getTemplate,
+  getTemplatePropertyDomElement,
+  setConfiguration
+};
+
+function factory($) {
 
   return (function($) {
 
@@ -311,4 +340,4 @@ define(['jquery'], function($) {
       setConfiguration: setConfiguration
     };
   })($);
-});
+}

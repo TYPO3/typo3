@@ -14,13 +14,71 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/StageComponent
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper',
-  'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable'
-], function($, Helper, Icons) {
-  'use strict';
+import $ from 'jquery';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import 'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable.js';
 
+const {
+  bootstrap,
+  buildTitleByFormElement,
+  createAndAddAbstractViewFormElementToolbar,
+  createAbstractViewFormElementToolbar,
+  eachTemplateProperty,
+  getAbstractViewFormElementDomElement,
+  getAbstractViewFormElementWithinDomElement,
+  getAbstractViewFormElementIdentifierPathWithinDomElement,
+  getAbstractViewParentFormElementWithinDomElement,
+  getAbstractViewParentFormElementIdentifierPathWithinDomElement,
+  getAbstractViewSiblingFormElementIdentifierPathWithinDomElement,
+  getAllFormElementDomElements,
+  getStageDomElement,
+  getStagePanelDomElement,
+  removeAllStageToolbars,
+  renderAbstractStageArea,
+  renderCheckboxTemplate,
+  renderFileUploadTemplates,
+  renderFormDefinitionPageAsSortableList,
+  renderPagination,
+  renderPreviewStageArea,
+  renderSelectTemplates,
+  renderSimpleTemplate,
+  renderSimpleTemplateWithValidators,
+  renderUndoRedo,
+  setStageHeadline,
+} = factory($, Helper, Icons);
+
+export {
+  bootstrap,
+  buildTitleByFormElement,
+  createAndAddAbstractViewFormElementToolbar,
+  createAbstractViewFormElementToolbar,
+  eachTemplateProperty,
+  getAbstractViewFormElementDomElement,
+  getAbstractViewFormElementWithinDomElement,
+  getAbstractViewFormElementIdentifierPathWithinDomElement,
+  getAbstractViewParentFormElementWithinDomElement,
+  getAbstractViewParentFormElementIdentifierPathWithinDomElement,
+  getAbstractViewSiblingFormElementIdentifierPathWithinDomElement,
+  getAllFormElementDomElements,
+  getStageDomElement,
+  getStagePanelDomElement,
+  removeAllStageToolbars,
+  renderAbstractStageArea,
+  renderCheckboxTemplate,
+  renderFileUploadTemplates,
+  renderFormDefinitionPageAsSortableList,
+  renderPagination,
+  renderPreviewStageArea,
+  renderSelectTemplates,
+  renderSimpleTemplate,
+  renderSimpleTemplateWithValidators,
+  renderUndoRedo,
+  setStageHeadline,
+};
+
+
+function factory($, Helper, Icons) {
   return (function($, Helper, Icons) {
 
     /**
@@ -1170,4 +1228,4 @@ define(['jquery',
       setStageHeadline: setStageHeadline
     };
   })($, Helper, Icons);
-});
+}

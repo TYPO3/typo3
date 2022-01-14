@@ -14,12 +14,19 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Core',
-  'TYPO3/CMS/Backend/Notification'
-], function($, core, Notification) {
-  'use strict';
+import $ from 'jquery';
+import * as Core from 'TYPO3/CMS/Form/Backend/FormEditor/Core.js';
+import Notification from 'TYPO3/CMS/Backend/Notification.js';
 
+const {
+  getInstance
+} = factory($, Core, Notification);
+
+export {
+  getInstance
+};
+
+function factory($, core, Notification) {
   /**
    * Return a static method named "getInstance".
    * Use this method to create the formeditor app.
@@ -1158,4 +1165,4 @@ define(['jquery',
       }
     };
   })(core, Notification);
-});
+}

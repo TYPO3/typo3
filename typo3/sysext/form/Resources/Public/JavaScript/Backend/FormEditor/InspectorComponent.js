@@ -15,16 +15,67 @@
  * Module: TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent
  */
 
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper',
-  'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Backend/Notification',
-  'TYPO3/CMS/Backend/Modal',
-  'TYPO3/CMS/Backend/Utility/MessageUtility',
-  'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable'
-], function($, Helper, Icons, Notification, Modal, MessageUtility) {
-  'use strict';
+import $ from 'jquery';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import Notification from 'TYPO3/CMS/Backend/Notification.js';
+import Modal from 'TYPO3/CMS/Backend/Modal.js';
+import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility.js';
+import 'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable.js';
 
+const {
+  bootstrap,
+  buildTitleByFormElement,
+  getCollectionElementDomElement,
+  getFinishersContainerDomElement,
+  getInspectorDomElement,
+  getValidatorsContainerDomElement,
+  renderCheckboxEditor,
+  renderCollectionElementEditors,
+  renderCollectionElementHeaderEditor,
+  renderFileMaxSizeEditor,
+  renderCollectionElementSelectionEditor,
+  renderEditors,
+  renderFormElementHeaderEditor,
+  renderFormElementSelectorEditorAddition,
+  renderPropertyGridEditor,
+  renderRemoveElementEditor,
+  renderRequiredValidatorEditor,
+  renderSingleSelectEditor,
+  renderMultiSelectEditor,
+  renderTextareaEditor,
+  renderTextEditor,
+  renderTypo3WinBrowserEditor,
+  setFormElementHeaderEditorContent
+} = factory($, Helper, Icons, Notification, Modal, MessageUtility);
+
+export {
+  bootstrap,
+  buildTitleByFormElement,
+  getCollectionElementDomElement,
+  getFinishersContainerDomElement,
+  getInspectorDomElement,
+  getValidatorsContainerDomElement,
+  renderCheckboxEditor,
+  renderCollectionElementEditors,
+  renderCollectionElementHeaderEditor,
+  renderFileMaxSizeEditor,
+  renderCollectionElementSelectionEditor,
+  renderEditors,
+  renderFormElementHeaderEditor,
+  renderFormElementSelectorEditorAddition,
+  renderPropertyGridEditor,
+  renderRemoveElementEditor,
+  renderRequiredValidatorEditor,
+  renderSingleSelectEditor,
+  renderMultiSelectEditor,
+  renderTextareaEditor,
+  renderTextEditor,
+  renderTypo3WinBrowserEditor,
+  setFormElementHeaderEditorContent
+};
+
+function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
   return (function($, Helper, Icons, Notification) {
 
     /**
@@ -390,7 +441,7 @@ define(['jquery',
      */
     function _listenOnElementBrowser() {
       window.addEventListener('message', function (e) {
-        if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+        if (!MessageUtility.verifyOrigin(e.origin)) {
           throw 'Denied message sent by ' + e.origin;
         }
 
@@ -2639,4 +2690,4 @@ define(['jquery',
       setFormElementHeaderEditorContent: setFormElementHeaderEditorContent
     };
   })($, Helper, Icons, Notification);
-});
+}

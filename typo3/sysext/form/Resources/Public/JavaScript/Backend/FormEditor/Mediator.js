@@ -14,11 +14,18 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/Mediator
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper'
-], function($, Helper) {
-  'use strict';
+import $ from 'jquery';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
 
+const {
+  bootstrap
+} = factory($, Helper);
+
+export {
+  bootstrap
+};
+
+function factory($, Helper) {
   return (function($, Helper) {
 
     /**
@@ -1094,4 +1101,4 @@ define(['jquery',
       bootstrap: bootstrap
     };
   })($, Helper);
-});
+}

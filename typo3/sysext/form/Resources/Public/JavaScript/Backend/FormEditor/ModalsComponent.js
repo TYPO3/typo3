@@ -14,14 +14,33 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/ModalsComponent
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper',
-  'TYPO3/CMS/Backend/Modal',
-  'TYPO3/CMS/Backend/Severity',
-  'TYPO3/CMS/Backend/Icons'
-], function($, Helper, Modal, Severity, Icons) {
-  'use strict';
+import $ from 'jquery';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
+import Modal from 'TYPO3/CMS/Backend/Modal.js';
+import Severity from 'TYPO3/CMS/Backend/Severity.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
 
+const {
+  bootstrap,
+  showCloseConfirmationModal,
+  showInsertElementsModal,
+  showInsertPagesModal,
+  showRemoveCollectionElementModal,
+  showRemoveFormElementModal,
+  showValidationErrorsModal,
+} = factory($, Helper, Modal, Severity, Icons);
+
+export {
+  bootstrap,
+  showCloseConfirmationModal,
+  showInsertElementsModal,
+  showInsertPagesModal,
+  showRemoveCollectionElementModal,
+  showRemoveFormElementModal,
+  showValidationErrorsModal,
+};
+
+function factory($, Helper, Modal, Severity, Icons) {
   return (function($, Helper, Modal, Severity, Icons) {
 
     /**
@@ -535,4 +554,4 @@ define(['jquery',
       showValidationErrorsModal: showValidationErrorsModal
     };
   })($, Helper, Modal, Severity, Icons);
-});
+}

@@ -14,16 +14,23 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormManager/ViewModel
  */
-define(['jquery',
-  'TYPO3/CMS/Backend/Modal',
-  'TYPO3/CMS/Backend/Severity',
-  'TYPO3/CMS/Backend/MultiStepWizard',
-  'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Backend/Notification',
-  'TYPO3/CMS/Core/SecurityUtility'
-], function($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility) {
-  'use strict';
+import $ from 'jquery';
+import Modal from 'TYPO3/CMS/Backend/Modal.js';
+import Severity from 'TYPO3/CMS/Backend/Severity.js';
+import MultiStepWizard from 'TYPO3/CMS/Backend/MultiStepWizard.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import Notification from 'TYPO3/CMS/Backend/Notification.js';
+import SecurityUtility from 'TYPO3/CMS/Core/SecurityUtility.js';
 
+const {
+  bootstrap
+} = factory($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility);
+
+export {
+  bootstrap
+};
+
+function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility) {
   return (function($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility) {
 
     var securityUtility = new SecurityUtility();
@@ -870,4 +877,4 @@ define(['jquery',
       bootstrap: bootstrap
     };
   })($, Modal, Severity, MultiStepWizard, Icons, Notification, SecurityUtility);
-});
+}

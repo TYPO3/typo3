@@ -14,17 +14,157 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/TreeComponent',
-  'TYPO3/CMS/Form/Backend/FormEditor/ModalsComponent',
-  'TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent',
-  'TYPO3/CMS/Form/Backend/FormEditor/StageComponent',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper',
-  'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Backend/Notification'
-], function($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification) {
-  'use strict';
+import $ from 'jquery';
+import * as TreeComponent from 'TYPO3/CMS/Form/Backend/FormEditor/TreeComponent.js';
+import * as ModalsComponent from 'TYPO3/CMS/Form/Backend/FormEditor/ModalsComponent.js';
+import * as InspectorComponent from 'TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent.js';
+import * as StageComponent from 'TYPO3/CMS/Form/Backend/FormEditor/StageComponent.js';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import Notification from 'TYPO3/CMS/Backend/Notification.js';
+import {loadModule} from 'TYPO3/CMS/Core/JavaScriptItemProcessor.js';
 
+const {
+  addAbstractViewValidationResults,
+  addStagePanelSelection,
+  addStructureRootElementSelection,
+  addStructureSelection,
+  addStructureValidationResults,
+  bootstrap,
+  closeEditor,
+  createAndAddFormElement,
+  createAndAddPropertyCollectionElement,
+  disableButton,
+  enableButton,
+  getConfiguration,
+  getFormEditorApp,
+  getFormElementDefinition,
+  getHelper,
+  getInspector,
+  getModals,
+  getPreviewMode,
+  getStage,
+  getStructure,
+  getStructureRootElement,
+  hideComponent,
+  moveFormElement,
+  movePropertyCollectionElement,
+  onAbstractViewDndChangeBatch,
+  onAbstractViewDndStartBatch,
+  onAbstractViewDndUpdateBatch,
+  onStructureDndChangeBatch,
+  onStructureDndUpdateBatch,
+  onViewReadyBatch,
+  refreshSelectedElementItemsBatch,
+  removeAllStageElementSelectionsBatch,
+  removeAllStructureSelections,
+  removeButtonActive,
+  removeElementValidationErrorClass,
+  removeFormElement,
+  removePropertyCollectionElement,
+  removeStagePanelSelection,
+  removeStructureRootElementSelection,
+  removeStructureSelection,
+  renderAbstractStageArea,
+  renderInspectorEditors,
+  renderInspectorCollectionElementEditors,
+  renderPagination,
+  renderPreviewStageArea,
+  renewStructure,
+  renderUndoRedo,
+  selectPageBatch,
+  setButtonActive,
+  setElementValidationErrorClass,
+  setInspectorFormElementHeaderEditorContent,
+  setPreviewMode,
+  setStageHeadline,
+  setStructureRootElementTitle,
+  showCloseConfirmationModal,
+  showComponent,
+  showErrorFlashMessage,
+  showInsertElementsModal,
+  showInsertPagesModal,
+  showRemoveFormElementModal,
+  showRemoveCollectionElementModal,
+  showSaveButtonSaveIcon,
+  showSaveButtonSpinnerIcon,
+  showSaveSuccessMessage,
+  showSaveErrorMessage,
+  showValidationErrorsModal,
+
+} = factory($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification);
+
+export {
+  addAbstractViewValidationResults,
+  addStagePanelSelection,
+  addStructureRootElementSelection,
+  addStructureSelection,
+  addStructureValidationResults,
+  bootstrap,
+  closeEditor,
+  createAndAddFormElement,
+  createAndAddPropertyCollectionElement,
+  disableButton,
+  enableButton,
+  getConfiguration,
+  getFormEditorApp,
+  getFormElementDefinition,
+  getHelper,
+  getInspector,
+  getModals,
+  getPreviewMode,
+  getStage,
+  getStructure,
+  getStructureRootElement,
+  hideComponent,
+  moveFormElement,
+  movePropertyCollectionElement,
+  onAbstractViewDndChangeBatch,
+  onAbstractViewDndStartBatch,
+  onAbstractViewDndUpdateBatch,
+  onStructureDndChangeBatch,
+  onStructureDndUpdateBatch,
+  onViewReadyBatch,
+  refreshSelectedElementItemsBatch,
+  removeAllStageElementSelectionsBatch,
+  removeAllStructureSelections,
+  removeButtonActive,
+  removeElementValidationErrorClass,
+  removeFormElement,
+  removePropertyCollectionElement,
+  removeStagePanelSelection,
+  removeStructureRootElementSelection,
+  removeStructureSelection,
+  renderAbstractStageArea,
+  renderInspectorEditors,
+  renderInspectorCollectionElementEditors,
+  renderPagination,
+  renderPreviewStageArea,
+  renewStructure,
+  renderUndoRedo,
+  selectPageBatch,
+  setButtonActive,
+  setElementValidationErrorClass,
+  setInspectorFormElementHeaderEditorContent,
+  setPreviewMode,
+  setStageHeadline,
+  setStructureRootElementTitle,
+  showCloseConfirmationModal,
+  showComponent,
+  showErrorFlashMessage,
+  showInsertElementsModal,
+  showInsertPagesModal,
+  showRemoveFormElementModal,
+  showRemoveCollectionElementModal,
+  showSaveButtonSaveIcon,
+  showSaveButtonSpinnerIcon,
+  showSaveSuccessMessage,
+  showSaveErrorMessage,
+  showValidationErrorsModal,
+};
+
+
+function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification) {
   return (function($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification) {
 
     /**
@@ -327,7 +467,7 @@ define(['jquery',
       if (additionalViewModelModulesLength > 0) {
         loadedAdditionalViewModelModules = 0;
         for (var i = 0; i < additionalViewModelModulesLength; ++i) {
-          require([additionalViewModelModules[i]], function(additionalViewModelModule) {
+          loadModule(additionalViewModelModules[i]).then(function(additionalViewModelModule) {
             assert(
               'function' === $.type(additionalViewModelModule.bootstrap),
               'The module "' + additionalViewModelModules[i] + '" does not implement the method "bootstrap"',
@@ -1837,4 +1977,4 @@ define(['jquery',
       showValidationErrorsModal: showValidationErrorsModal
     };
   })($, TreeComponent, ModalsComponent, InspectorComponent, StageComponent, Helper, Icons, Notification);
-});
+}

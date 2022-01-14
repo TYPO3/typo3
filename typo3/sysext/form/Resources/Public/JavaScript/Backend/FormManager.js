@@ -14,9 +14,17 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormManager
  */
-define(['jquery'], function($) {
-  'use strict';
+import $ from 'jquery';
 
+const {
+  getInstance
+} = factory($);
+
+export {
+  getInstance
+};
+
+function factory($) {
   /**
    * Return a static method named "getInstance".
    * Use this method to create the formmanager app.
@@ -230,4 +238,4 @@ define(['jquery'], function($) {
       }
     };
   })();
-});
+}

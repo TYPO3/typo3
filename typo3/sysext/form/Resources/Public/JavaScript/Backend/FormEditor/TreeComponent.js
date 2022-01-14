@@ -14,12 +14,44 @@
 /**
  * Module: TYPO3/CMS/Form/Backend/FormEditor/TreeComponent
  */
-define(['jquery',
-  'TYPO3/CMS/Form/Backend/FormEditor/Helper',
-  'TYPO3/CMS/Backend/Icons',
-  'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable'
-], function($, Helper, Icons) {
-  'use strict';
+import $ from 'jquery';
+import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
+import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import 'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable.js';
+
+const {
+  bootstrap,
+  buildTitleByFormElement,
+  getAllTreeNodes,
+  getParentTreeNodeWithinDomElement,
+  getParentTreeNodeIdentifierPathWithinDomElement,
+  getSiblingTreeNodeIdentifierPathWithinDomElement,
+  getTreeDomElement,
+  getTreeNode,
+  getTreeNodeWithinDomElement,
+  getTreeNodeIdentifierPathWithinDomElement,
+  renderCompositeFormElementChildsAsSortableList,
+  renew,
+  setTreeNodeTitle
+} = factory($, Helper, Icons);
+
+export {
+  bootstrap,
+  buildTitleByFormElement,
+  getAllTreeNodes,
+  getParentTreeNodeWithinDomElement,
+  getParentTreeNodeIdentifierPathWithinDomElement,
+  getSiblingTreeNodeIdentifierPathWithinDomElement,
+  getTreeDomElement,
+  getTreeNode,
+  getTreeNodeWithinDomElement,
+  getTreeNodeIdentifierPathWithinDomElement,
+  renderCompositeFormElementChildsAsSortableList,
+  renew,
+  setTreeNodeTitle
+};
+
+function factory($, Helper, Icons) {
 
   return (function($, Helper, Icons) {
 
@@ -741,4 +773,4 @@ define(['jquery',
       setTreeNodeTitle: setTreeNodeTitle
     };
   })($, Helper, Icons);
-});
+}

@@ -46,13 +46,13 @@ translationFiles
       Filesystem path(s) to translation files which should be searched for form editor translations.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicrequirejsmodules.app:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.app:
 
-dynamicRequireJsModules.app
+dynamicJavaScriptModules.app
 ---------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicRequireJsModules.app
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.app
 
 :aspect:`Data type`
       string
@@ -69,7 +69,7 @@ dynamicRequireJsModules.app
          :emphasize-lines: 3
 
          formEditor:
-           dynamicRequireJsModules:
+           dynamicJavaScriptModules:
              app: TYPO3/CMS/Form/Backend/FormEditor
              mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
              viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
@@ -78,16 +78,16 @@ dynamicRequireJsModules.app
       - :ref:`"Form editor"<concepts-formeditor>`
 
 :aspect:`Description`
-      RequireJS path for the form editor JavaScript app.
+      ES6 module specifier for the form editor JavaScript app.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicrequirejsmodules.mediator:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.mediator:
 
-dynamicRequireJsModules.mediator
+dynamicJavaScriptModules.mediator
 --------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicRequireJsModules.mediator
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.mediator
 
 :aspect:`Data type`
       string
@@ -104,7 +104,7 @@ dynamicRequireJsModules.mediator
          :emphasize-lines: 4
 
          formEditor:
-           dynamicRequireJsModules:
+           dynamicJavaScriptModules:
              app: TYPO3/CMS/Form/Backend/FormEditor
              mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
              viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
@@ -114,16 +114,16 @@ dynamicRequireJsModules.mediator
       - :ref:`"Form editor"<concepts-formeditor>`
 
 :aspect:`Description`
-      RequireJS path for the form editor JavaScript mediator.
+      ES6 module specifier for the form editor JavaScript mediator.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicrequirejsmodules.viewmodel:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.viewmodel:
 
-dynamicRequireJsModules.viewModel
+dynamicJavaScriptModules.viewModel
 ---------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicRequireJsModules.viewModel
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.viewModel
 
 :aspect:`Data type`
       string
@@ -140,7 +140,7 @@ dynamicRequireJsModules.viewModel
          :emphasize-lines: 5
 
          formEditor:
-           dynamicRequireJsModules:
+           dynamicJavaScriptModules:
              app: TYPO3/CMS/Form/Backend/FormEditor
              mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
              viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
@@ -150,16 +150,16 @@ dynamicRequireJsModules.viewModel
       - :ref:`"Form editor"<concepts-formeditor>`
 
 :aspect:`Description`
-      RequireJS path for the form editor JavaScript view model.
+      ES6 module specifier for the form editor JavaScript view model.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicrequirejsmodules.additionalviewmodelmodules:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
 
-dynamicRequireJsModules.additionalViewModelModules
+dynamicJavaScriptModules.additionalViewModelModules
 --------------------------------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicRequireJsModules.additionalViewModelModules
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.additionalViewModelModules
 
 :aspect:`Data type`
       array
@@ -178,7 +178,7 @@ dynamicRequireJsModules.additionalViewModelModules
       - :ref:`"Register custom JavaScript modules"<concepts-formeditor-basicjavascriptconcepts-registercustomjavascriptmodules>`
 
 :aspect:`Description`
-      Array with RequireJS paths for custom JavaScript modules.
+      Array with ES6 module specifiers for custom JavaScript modules.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.addinlinesettings:

@@ -11,10 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {loadModule, JavaScriptItemPayload} from 'TYPO3/CMS/Core/JavaScriptItemProcessor';
+
 interface ModuleRequirements {
-  app: string;
-  viewModel: string;
-  mediator?: string;
+  app: JavaScriptItemPayload;
+  viewModel: JavaScriptItemPayload;
+  mediator?: JavaScriptItemPayload;
 }
 
 interface FormEditorLike {
@@ -38,20 +40,25 @@ interface ViewModelLike {
  */
 export class Helper {
   public static dispatchFormEditor(requirements: ModuleRequirements, options: any): void {
-    window.require(
-      [requirements.app, requirements.mediator, requirements.viewModel],
-      (app: FormEditorLike, mediator: MediatorLike, viewModel: ViewModelLike) => {
+    Promise.all([
+      loadModule(requirements.app),
+      loadModule(requirements.mediator),
+      loadModule(requirements.viewModel),
+    ]).then((modules: [any, any, any]) =>
+      ((app: FormEditorLike, mediator: MediatorLike, viewModel: ViewModelLike) => {
         window.TYPO3.FORMEDITOR_APP = app.getInstance(options, mediator, viewModel).run();
-      }
+      })(...modules)
     );
   }
 
   public static dispatchFormManager(requirements: ModuleRequirements, options: any): void {
-    window.require(
-      [requirements.app, requirements.viewModel],
-      (app: FormManagerLike, viewModel: ViewModelLike) => {
+    Promise.all([
+      loadModule(requirements.app),
+      loadModule(requirements.viewModel)
+    ]).then((modules: [any, any]) =>
+      ((app: FormManagerLike, viewModel: ViewModelLike) => {
         window.TYPO3.FORMMANAGER_APP = app.getInstance(options, viewModel).run();
-      }
+      })(...modules)
     );
   }
 }

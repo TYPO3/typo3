@@ -3940,7 +3940,7 @@ A simple example that registers a custom ``inspector editor`` called 'Inspector-
          prototypes:
            standard:
              formEditor:
-               dynamicRequireJsModules:
+               dynamicJavaScriptModules:
                  additionalViewModelModules:
                    10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
                formEditorFluidConfiguration:
@@ -4622,9 +4622,9 @@ In this example, 'GenderSelect' is basically a radio button form element with so
          prototypes:
            standard:
              formEditor:
-               dynamicRequireJsModules:
+               dynamicJavaScriptModules:
                  additionalViewModelModules:
-                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel.js'
                formEditorPartials:
                  FormElement-GenderSelect: 'Stage/SelectTemplate'
              formElementsDefinition:

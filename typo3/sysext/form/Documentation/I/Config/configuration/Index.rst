@@ -3767,10 +3767,10 @@ Full default configuration
         formEditor:
           translationFiles:
             10: 'EXT:form/Resources/Private/Language/Database.xlf'
-          dynamicRequireJsModules:
-            app: TYPO3/CMS/Form/Backend/FormEditor
-            mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
-            viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
+          dynamicJavaScriptModules:
+            app: TYPO3/CMS/Form/Backend/FormEditor.js
+            mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator.js
+            viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel.js
           addInlineSettings: {  }
           maximumUndoSteps: 10
           stylesheets:
@@ -4649,9 +4649,9 @@ Full default configuration
                   - tt_content.finishersDefinition.EmailToSender.format.2
                   - plaintext
     formManager:
-      dynamicRequireJsModules:
-        app: TYPO3/CMS/Form/Backend/FormManager
-        viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
+      dynamicJavaScriptModules:
+        app: TYPO3/CMS/Form/Backend/FormManager.js
+        viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel.js
       stylesheets:
         100: 'EXT:form/Resources/Public/Css/form.css'
       translationFiles:

@@ -173,20 +173,24 @@ The following YAML configuration registers an additional JavaScript module.
          prototypes:
            standard:
              formEditor:
-               dynamicRequireJsModules:
+               dynamicJavaScriptModules:
                  additionalViewModelModules:
-                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel'
+                   10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
 
-According to the example shown above, the JavaScript files have to be stored
-within the folder ``my_site_package/Resources/Public/JavaScript/Backend/FormEditor/ViewModel.js``.
-In the TYPO3 backend JavaScript files are loaded via RequireJS which depends
-on a certain convention. The name of the module starts with **TYPO3/CMS**/MySitePackage/Backend/FormEditor/ViewModel
-followed by your extension key TYPO3/CMS/**MySitePackage**/Backend/FormEditor/ViewModel.
-Thus, you have to ensure that the module is stored within a subfolder of ``my_site_package/Resources/Public/JavaScript/``.
-The part TYPO3/CMS/MySitePackage/**Backend/FormEditor**/ViewModel tells you
-that your files have to be stored in my_site_package/Resources/Public/JavaScript/**Backend/FormEditor**/.
-The last section TYPO3/CMS/MySitePackage/Backend/FormEditor/**ViewModel**
-states the name of the JavaScript file without the file extension (.js).
+.. code-block:: php
+   # Configuration/JavaScriptModules.php
+   <?php
+
+   return [
+       'dependencies' => ['form'],
+       'imports' => [
+           '@myvendor/my-site-package/' => 'EXT:my_site_package/Resources/Public/JavaScript/',
+       ],
+   ];
+
+According to the example configuration shown above, the JavaScript files have to
+be stored within the folder
+``my_site_package/Resources/Public/JavaScript/backend/form-editor/view-model.js``.
 
 Check out the following base template which shows you the recommended way
 for setting up your own module.
@@ -194,134 +198,120 @@ for setting up your own module.
 .. code-block:: javascript
 
    /**
-    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    * Module: @my-vendor/my-site-package/backend/form-editor/view-model.js
     */
-   define(['jquery',
-           'TYPO3/CMS/Form/Backend/FormEditor/Helper'
-           ], function($, Helper) {
-           'use strict';
+   import $ from 'jquery';
+   import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js'
 
-       return (function($, Helper) {
+   /**
+    * @private
+    *
+    * @var object
+    */
+   let _formEditorApp = null;
 
-           /**
-            * @private
-            *
-            * @var object
-            */
-           var _formEditorApp = null;
+   /**
+    * @private
+    *
+    * @return object
+    */
+   function getFormEditorApp() {
+       return _formEditorApp;
+   };
 
-           /**
-            * @private
-            *
-            * @return object
-            */
-           function getFormEditorApp() {
-               return _formEditorApp;
-           };
+   /**
+    * @private
+    *
+    * @return object
+    */
+   function getPublisherSubscriber() {
+       return getFormEditorApp().getPublisherSubscriber();
+   };
 
-           /**
-            * @private
-            *
-            * @return object
-            */
-           function getPublisherSubscriber() {
-               return getFormEditorApp().getPublisherSubscriber();
-           };
+   /**
+    * @private
+    *
+    * @return object
+    */
+   function getUtility() {
+       return getFormEditorApp().getUtility();
+   };
 
-           /**
-            * @private
-            *
-            * @return object
-            */
-           function getUtility() {
-               return getFormEditorApp().getUtility();
-           };
+   /**
+    * @private
+    *
+    * @param object
+    * @return object
+    */
+   function getHelper() {
+       return Helper;
+   };
 
-           /**
-            * @private
-            *
-            * @param object
-            * @return object
-            */
-           function getHelper() {
-               return Helper;
-           };
+   /**
+    * @private
+    *
+    * @return object
+    */
+   function getCurrentlySelectedFormElement() {
+       return getFormEditorApp().getCurrentlySelectedFormElement();
+   };
 
-           /**
-            * @private
-            *
-            * @return object
-            */
-           function getCurrentlySelectedFormElement() {
-               return getFormEditorApp().getCurrentlySelectedFormElement();
-           };
+   /**
+    * @private
+    *
+    * @param mixed test
+    * @param string message
+    * @param int messageCode
+    * @return void
+    */
+   function assert(test, message, messageCode) {
+       return getFormEditorApp().assert(test, message, messageCode);
+   };
 
-           /**
-            * @private
-            *
-            * @param mixed test
-            * @param string message
-            * @param int messageCode
-            * @return void
-            */
-           function assert(test, message, messageCode) {
-               return getFormEditorApp().assert(test, message, messageCode);
-           };
+   /**
+    * @private
+    *
+    * @return void
+    * @throws 1491643380
+    */
+   function _helperSetup() {
+       assert('function' === $.type(Helper.bootstrap),
+           'The view model helper does not implement the method "bootstrap"',
+           1491643380
+       );
+       Helper.bootstrap(getFormEditorApp());
+   };
 
-           /**
-            * @private
-            *
-            * @return void
-            * @throws 1491643380
-            */
-           function _helperSetup() {
-               assert('function' === $.type(Helper.bootstrap),
-                   'The view model helper does not implement the method "bootstrap"',
-                   1491643380
-               );
-               Helper.bootstrap(getFormEditorApp());
-           };
+   /**
+    * @private
+    *
+    * @return void
+    */
+   function _subscribeEvents() {
+       getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
+           myCustomCode();
+       });
+   };
 
-           /**
-            * @private
-            *
-            * @return void
-            */
-           function _subscribeEvents() {
-               getPublisherSubscriber().subscribe('some/eventName/you/want/to/handle', function(topic, args) {
-                   myCustomCode();
-               });
-           };
+   /**
+    * @private
+    *
+    * @return void
+    */
+   function myCustomCode() {
+   };
 
-           /**
-            * @private
-            *
-            * @return void
-            */
-           function myCustomCode() {
-           };
-
-           /**
-            * @public
-            *
-            * @param object formEditorApp
-            * @return void
-            */
-           function bootstrap(formEditorApp) {
-               _formEditorApp = formEditorApp;
-               _helperSetup();
-               _subscribeEvents();
-           };
-
-           /**
-            * Publish the public methods.
-            * Implements the "Revealing Module Pattern".
-            */
-           return {
-               bootstrap: bootstrap
-           };
-       })($, Helper);
-   });
+   /**
+    * @public
+    *
+    * @param object formEditorApp
+    * @return void
+    */
+   export function bootstrap(formEditorApp) {
+       _formEditorApp = formEditorApp;
+       _helperSetup();
+       _subscribeEvents();
+   };
 
 
 .. _concepts-formeditor-basicjavascriptconcepts-events:

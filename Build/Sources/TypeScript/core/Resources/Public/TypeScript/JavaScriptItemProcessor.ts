@@ -23,21 +23,21 @@ const FLAG_USE_TOP_WINDOW = 16;
 const deniedProperties = ['__proto__', 'prototype', 'constructor'];
 const allowedJavaScriptItemTypes = ['assign', 'invoke', 'instance'];
 
-interface JavaScriptInstruction {
+export interface JavaScriptInstruction {
   type: string;
   assignments?: object;
   method?: string;
   args: Array<any>;
 }
 
-interface JavaScriptItemPayload {
+export interface JavaScriptItemPayload {
   name: string;
   flags: number;
   exportName?: string;
   items: JavaScriptInstruction[];
 }
 
-interface JavaScriptItem {
+export interface JavaScriptItem {
   type: string;
   payload: JavaScriptItemPayload;
 }
@@ -60,7 +60,7 @@ const moduleImporter = (moduleName: string): Promise<any> => {
   }
 };
 
-function loadModule(payload: JavaScriptItemPayload): Promise<any> {
+export function loadModule(payload: JavaScriptItemPayload): Promise<any> {
   if (!payload.name) {
     throw new Error('JavaScript module name is required');
   }
