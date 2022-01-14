@@ -288,7 +288,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $urlParameters = [
                 'id' => $this->id,
             ];
-            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
             $assigns['moduleUrl'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
@@ -335,8 +334,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            [$theSetup, $theSetupValue] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
-            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? '');
+            [$theSetup] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
+            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', (bool)($this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? false));
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
                 'id' => $this->id,

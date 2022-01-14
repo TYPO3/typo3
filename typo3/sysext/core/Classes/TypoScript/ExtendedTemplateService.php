@@ -160,15 +160,8 @@ class ExtendedTemplateService extends TemplateService
      */
     protected $javaScriptInstructions = [];
 
-    /**
-     * @var \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser
-     */
-    private $constantParser;
+    private ConstantConfigurationParser $constantParser;
 
-    /**
-     * @param Context|null $context
-     * @param \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser $constantParser
-     */
     public function __construct(Context $context = null, ConstantConfigurationParser $constantParser = null)
     {
         parent::__construct($context);
@@ -314,20 +307,17 @@ class ExtendedTemplateService extends TemplateService
      * @param array $arr
      * @param string $depth_in
      * @param string $depthData
-     * @param string $parentType (unused)
-     * @param string $parentValue (unused)
-     * @param string $alphaSort sorts the array keys / tree by alphabet when set to 1
+     * @param bool $alphaSort sorts the array keys / tree by alphabet when set
      * @return string
      */
-    public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0')
+    public function ext_getObjTree($arr, $depth_in, $depthData, bool $alphaSort = false)
     {
         $HTML = '';
-        if ($alphaSort == '1') {
+        if ($alphaSort) {
             ksort($arr);
         }
         $keyArr_num = [];
         $keyArr_alpha = [];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($arr as $key => $value) {
             // Don't do anything with comments / linenumber registrations...
@@ -413,7 +403,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $HTML .= '</span>';
                 if ($deeper) {
-                    $HTML .= $this->ext_getObjTree($arr[$key . '.'] ?? [], $depth, $depthData, '', $arr[$key] ?? '', $alphaSort);
+                    $HTML .= $this->ext_getObjTree($arr[$key . '.'] ?? [], $depth, $depthData, $alphaSort);
                 }
             }
         }
