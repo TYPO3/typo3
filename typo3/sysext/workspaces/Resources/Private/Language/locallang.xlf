@@ -68,6 +68,9 @@
 					menu before you can review and publish changes.
 				</source>
 			</trans-unit>
+			<trans-unit id="moduleOnPageIdZero" resname="moduleOnPageIdZero" xml:space="preserve">
+				<source>Please select a page in the page tree to review and publish changes.</source>
+			</trans-unit>
 			<trans-unit id="admin.noWorkspaceSetup.title" resname="admin.noWorkspaceSetup.title" xml:space="preserve">
 				<source>No workspace set up!</source>
 			</trans-unit>

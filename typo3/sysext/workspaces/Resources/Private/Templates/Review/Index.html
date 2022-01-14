@@ -2,24 +2,31 @@
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:layout name="Module" />
 
-<f:section name="main">
+<f:if condition="{pageTitle}"><h1 class="mb-3">{pageTitle}</h1></f:if>
+
+<main data-workspace-switch-action="{workspaceSwitched -> f:format.raw()}">
     <f:if condition="{showGrid}">
         <f:then>
             <f:render partial="WorkingTable" arguments="{_all}" />
         </f:then>
         <f:else if="{isAdmin} && {customWorkspaceExists} != 1">
             <f:be.infobox state="-1" title="{f:translate(key: 'admin.noWorkspaceSetup.title')}">
-                <p><f:translate key="admin.noWorkspaceSetup.message"/></p>
+                <p><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.message"/></p>
                 <be:link.newRecord class="btn btn-primary" table="sys_workspace" pid="0" returnUrl="{f:be.uri(route: 'web_WorkspacesWorkspaces')}">
-                    <f:translate key="admin.noWorkspaceSetup.buttonCreate"/>
+                    <f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:admin.noWorkspaceSetup.buttonCreate"/>
                 </be:link.newRecord>
             </f:be.infobox>
         </f:else>
+        <f:else if="{pageUid} == 0">
+            <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:moduleOnPageIdZero')}" state="-1" />
+        </f:else>
         <f:else>
-            <f:be.infobox message="{f:translate(key: 'editorInLive')}" state="-1" />
+            <f:be.infobox message="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:editorInLive')}" state="-1" />
         </f:else>
     </f:if>
-</f:section>
+</main>
+
+<f:if condition="{showLegend}"><f:render partial="legend" /></f:if>
+
 </html>

@@ -1,4 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <div id="typo3-topbar">
     <div class="typo3-topbar-container" role="navigation" id="typo3-top-container">
         <div class="typo3-topbar-site">
@@ -24,18 +27,28 @@
                 <f:if condition="{liveUrl}">
                     <f:then>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="t3js-active-preview-mode active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" extensionName="workspaces" /></span>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-default dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <span class="t3js-active-preview-mode active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <f:for each="{splitPreviewModes}" as="mode">
-                                    <li><a href="#" class="dropdown-item" data-preview-mode="{mode}"><span><f:translate key="preview.mode{mode -> f:format.case(mode: 'capital')}" extensionName="workspaces" /></span></a></li>
+                                    <li>
+                                        <a href="#" class="dropdown-item" data-preview-mode="{mode}">
+                                            <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{mode -> f:format.case(mode: 'capital')}" /></span>
+                                        </a>
+                                    </li>
                                 </f:for>
                             </ul>
                         </div>
                     </f:then>
                     <f:else>
-                        <span><f:translate key="info.newpage.detail" extensionName="workspaces" /></span>
+                        <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.newpage.detail" extensionName="workspaces" /></span>
                     </f:else>
                 </f:if>
             </div>

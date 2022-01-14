@@ -14,7 +14,7 @@ ExtensionManagementUtility::addModule(
     'before:info',
     null,
     [
-        'routeTarget' => ReviewController::class . '::indexAction',
+        'routeTarget' => ReviewController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'web_WorkspacesWorkspaces',
         'iconIdentifier' => 'module-workspaces',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -31,7 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -40,27 +42,13 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class ReviewController
 {
-    /**
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    /**
-     * @var int
-     */
-    protected $pageId;
-
     protected WorkspaceService $workspaceService;
     protected StagesService $stagesService;
     protected IconFactory $iconFactory;
     protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected TranslationConfigurationProvider $translationConfigurationProvider;
 
     public function __construct(
         WorkspaceService $workspaceService,
@@ -68,7 +56,8 @@ class ReviewController
         IconFactory $iconFactory,
         PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        TranslationConfigurationProvider $translationConfigurationProvider
     ) {
         $this->workspaceService = $workspaceService;
         $this->stagesService = $stagesService;
@@ -76,13 +65,18 @@ class ReviewController
         $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->translationConfigurationProvider = $translationConfigurationProvider;
     }
 
     /**
-     * Initializes the controller before invoking an action method.
+     * Renders the review module user dependent with all workspaces.
+     * The module will show all records of one workspace.
      */
-    protected function initializeAction()
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $pageUid = (int)($queryParams['id'] ?? 0);
+
         $icons = [
             'language' => $this->iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
             'integrity' => $this->iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
@@ -92,90 +86,137 @@ class ReviewController
             'error' => $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render(),
         ];
         $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
-        $this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
+        $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute(
             trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout')
         ));
-    }
-
-    /**
-     * Renders the review module user dependent with all workspaces.
-     * The module will show all records of one workspace.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function indexAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $queryParams = $request->getQueryParams();
-        $this->pageId = (int)($queryParams['id'] ?? 0);
-
-        $this->initializeAction();
-
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate('Index');
-        // This is only needed for translate VH to resolve 'label only' to default locallang.xlf files
-        $this->view->getRequest()->setControllerExtensionName('Workspaces');
-        $this->view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates/Review']);
-        $this->view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:workspaces/Resources/Private/Layouts']);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Backend');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
 
         $backendUser = $this->getBackendUser();
         $pageTitle = '';
-
-        if ($this->pageId) {
-            $pageRecord = BackendUtility::getRecord('pages', $this->pageId);
+        $pageRecord = [];
+        if ($pageUid) {
+            $pageRecord = BackendUtility::getRecord('pages', $pageUid);
             if ($pageRecord) {
-                $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
                 $pageTitle = BackendUtility::getRecordTitle('pages', $pageRecord);
             }
+        } else {
+            $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '';
         }
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
         $customWorkspaceExists = $this->customWorkspaceExists($availableWorkspaces);
         $activeWorkspace = (int)$backendUser->workspace;
         $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
+        $workspaceSwitched = '';
         if (isset($queryParams['workspace'])) {
             $switchWs = (int)$queryParams['workspace'];
             if (array_key_exists($switchWs, $availableWorkspaces) && $activeWorkspace !== $switchWs) {
                 $activeWorkspace = $switchWs;
                 $backendUser->setWorkspace($activeWorkspace);
                 $activeWorkspaceTitle = WorkspaceService::getWorkspaceTitle($activeWorkspace);
-                $this->view->assign('workspaceSwitched', GeneralUtility::jsonEncodeForHtmlAttribute(['id' => $activeWorkspace, 'title' => $activeWorkspaceTitle]));
+                $workspaceSwitched = GeneralUtility::jsonEncodeForHtmlAttribute(['id' => $activeWorkspace, 'title' => $activeWorkspaceTitle]);
             }
         }
-        $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID;
+        $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID && $pageUid > 0;
 
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
-            $pageTitle
-        );
-
-        $this->view->assignMultiple([
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
+        $view->assignMultiple([
             'isAdmin' => $backendUser->isAdmin(),
             'customWorkspaceExists' => $customWorkspaceExists,
             'showGrid' => $workspaceIsAccessible,
             'showLegend' => $workspaceIsAccessible,
-            'pageUid' => $this->pageId,
+            'pageUid' => $pageUid,
             'pageTitle' => $pageTitle,
             'activeWorkspaceUid' => $activeWorkspace,
             'activeWorkspaceTitle' => $activeWorkspaceTitle,
-            'availableLanguages' => $this->getSystemLanguages($this->pageId),
+            'availableLanguages' => $this->getSystemLanguages($pageUid),
             'availableStages' => $this->stagesService->getStagesForWSUser(),
             'availableSelectStages' => $this->getAvailableSelectStages(),
             'stageActions' => $this->getStageActions(),
             'selectedLanguage' => $this->getLanguageSelection(),
-            'selectedDepth' => $this->getDepthSelection(),
+            'selectedDepth' => $this->getDepthSelection($pageUid),
             'selectedStage' => $this->getStageSelection(),
+            'workspaceSwitched' => $workspaceSwitched,
         ]);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setContent($view->render('Review/Index'));
+        $moduleTemplate->setTitle(
+            $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
+            $pageTitle
+        );
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addWorkspaceSelector($moduleTemplate, $availableWorkspaces, $activeWorkspace, $pageUid);
+        $this->addPreviewLink($moduleTemplate, $pageUid, $activeWorkspace);
+        $this->addEditWorkspaceRecordButton($moduleTemplate, $pageUid, $activeWorkspace);
+        $this->addShortcutButton($moduleTemplate, $activeWorkspaceTitle, $pageTitle, $pageUid);
+        return new HtmlResponse($moduleTemplate->renderContent());
+    }
 
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        if ($this->canCreatePreviewLink($this->pageId, $activeWorkspace)) {
+    /**
+     * Create the workspace selection drop-down menu.
+     */
+    protected function addWorkspaceSelector(ModuleTemplate $moduleTemplate, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
+    {
+        $items = [];
+        $items[] = [
+            'title' => $availableWorkspaces[$activeWorkspace],
+            'active' => true,
+            'url' => $this->getModuleUri($pageUid),
+        ];
+        foreach ($availableWorkspaces as $workspaceId => $workspaceTitle) {
+            if ($workspaceId === $activeWorkspace) {
+                continue;
+            }
+            $items[] = [
+                'title' => $workspaceTitle,
+                'active' => false,
+                'url' => $this->getModuleUri($pageUid, (int)$workspaceId),
+            ];
+        }
+        $actionMenu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu->setIdentifier('workspaceSelector');
+        $actionMenu->setLabel('');
+        foreach ($items as $workspaceData) {
+            $menuItem = $actionMenu
+                ->makeMenuItem()
+                ->setTitle($workspaceData['title'])
+                ->setHref($workspaceData['url']);
+            if ($workspaceData['active']) {
+                $menuItem->setActive(true);
+            }
+            $actionMenu->addMenuItem($menuItem);
+        }
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
+    }
+
+    protected function addShortcutButton(ModuleTemplate $moduleTemplate, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('web_WorkspacesWorkspaces')
+            ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId))
+            ->setArguments(['id' => (int)$pageId]);
+        $buttonBar->addButton($shortcutButton);
+    }
+
+    protected function addPreviewLink(ModuleTemplate $moduleTemplate, int $pageUid, int $activeWorkspace): void
+    {
+        $canCreatePreviewLink = false;
+        if ($pageUid > 0 && $activeWorkspace > 0) {
+            $pageRecord = BackendUtility::getRecord('pages', $pageUid);
+            BackendUtility::workspaceOL('pages', $pageRecord, $activeWorkspace);
+            if (!VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                $canCreatePreviewLink = true;
+            }
+        }
+        if ($canCreatePreviewLink) {
+            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-preview-link')
@@ -184,15 +225,20 @@ class ReviewController
                 ->setIcon($this->iconFactory->getIcon('actions-version-workspaces-preview-link', Icon::SIZE_SMALL));
             $buttonBar->addButton($showButton);
         }
+    }
 
-        if ($backendUser->isAdmin() && $activeWorkspace) {
+    protected function addEditWorkspaceRecordButton(ModuleTemplate $moduleTemplate, int $pageUid, int $activeWorkspace): void
+    {
+        $backendUser = $this->getBackendUser();
+        if ($backendUser->isAdmin() && $activeWorkspace > 0) {
+            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
             $editWorkspaceRecordUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'sys_workspace' => [
                         $activeWorkspace => 'edit',
                     ],
                 ],
-                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', ['id' => $this->pageId]),
+                'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', ['id' => $pageUid]),
             ]);
             $editSettingsButton = $buttonBar->makeLinkButton()
                 ->setHref($editWorkspaceRecordUrl)
@@ -205,84 +251,12 @@ class ReviewController
                 90
             );
         }
-
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('web_WorkspacesWorkspaces')
-            ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $this->pageId))
-            ->setArguments(['id' => (int)$this->pageId]);
-        $buttonBar->addButton($shortcutButton);
-
-        $this->makeActionMenu($this->prepareWorkspaceTabs($availableWorkspaces, $activeWorkspace));
-
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
-    /**
-     * This creates the dropdown menu with the different actions this module is able to provide.
-     *
-     * @param array $availableWorkspaces array with the available actions
-     */
-    protected function makeActionMenu(array $availableWorkspaces): void
-    {
-        $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier('workspaceSelector');
-        $actionMenu->setLabel('');
-        foreach ($availableWorkspaces as $workspaceData) {
-            $menuItem = $actionMenu
-                ->makeMenuItem()
-                ->setTitle($workspaceData['title'])
-                ->setHref($workspaceData['url']);
-            if ($workspaceData['active']) {
-                $menuItem->setActive(true);
-            }
-            $actionMenu->addMenuItem($menuItem);
-        }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
-    }
-
-    /**
-     * Prepares available workspace tabs.
-     *
-     * @param array $workspaceList
-     * @param int $activeWorkspace
-     * @return array
-     */
-    protected function prepareWorkspaceTabs(array $workspaceList, int $activeWorkspace)
-    {
-        $tabs = [];
-        $tabs[] = [
-            'title' => $workspaceList[$activeWorkspace],
-            'itemId' => 'workspace-' . $activeWorkspace,
-            'active' => true,
-            'url' => $this->getModuleUri(),
-        ];
-
-        foreach ($workspaceList as $workspaceId => $workspaceTitle) {
-            if ($workspaceId === $activeWorkspace) {
-                continue;
-            }
-            $tabs[] = [
-                'title' => $workspaceTitle,
-                'itemId' => 'workspace-' . $workspaceId,
-                'active' => false,
-                'url' => $this->getModuleUri((int)$workspaceId),
-            ];
-        }
-
-        return $tabs;
-    }
-
-    /**
-     * Gets the module URI.
-     *
-     * @param int $workspaceId
-     * @return string
-     */
-    protected function getModuleUri(int $workspaceId = null): string
+    protected function getModuleUri(int $pageUid, int $workspaceId = null): string
     {
         $parameters = [
-            'id' => $this->pageId,
+            'id' => $pageUid,
         ];
         if ($workspaceId !== null) {
             $parameters['workspace'] = $workspaceId;
@@ -290,41 +264,16 @@ class ReviewController
         return (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }
 
-    /**
-     * Determine whether this page for the current
-     *
-     * @param int $pageUid
-     * @param int $workspaceUid
-     * @return bool
-     */
-    protected function canCreatePreviewLink(int $pageUid, int $workspaceUid): bool
-    {
-        if ($pageUid > 0 && $workspaceUid > 0) {
-            $pageRecord = BackendUtility::getRecord('pages', $pageUid);
-            BackendUtility::workspaceOL('pages', $pageRecord, $workspaceUid);
-            if (VersionState::cast($pageRecord['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Gets the selected language.
-     *
-     * @return string
-     */
     protected function getLanguageSelection(): string
     {
         $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
         return (string)($moduleData['settings']['language'] ?? 'all');
     }
 
-    protected function getDepthSelection(): int
+    protected function getDepthSelection(int $pageId): int
     {
         $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
-        return (int)($moduleData['settings']['depth'] ?? ($this->pageId === 0 ? 999 : 1));
+        return (int)($moduleData['settings']['depth'] ?? ($pageId === 0 ? 999 : 1));
     }
 
     protected function getStageSelection(): int
@@ -335,9 +284,6 @@ class ReviewController
 
     /**
      * Returns true if at least one custom workspace next to live workspace exists.
-     *
-     * @param array $workspaceList
-     * @return bool
      */
     protected function customWorkspaceExists(array $workspaceList): bool
     {
@@ -350,30 +296,11 @@ class ReviewController
     }
 
     /**
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
      * Gets all available system languages.
-     *
-     * @param int $pageId
-     * @return array
      */
     protected function getSystemLanguages(int $pageId): array
     {
-        $languages = GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId);
+        $languages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
         if (isset($languages[-1])) {
             $languages[-1]['uid'] = 'all';
         }
@@ -392,17 +319,18 @@ class ReviewController
      */
     protected function getStageActions(): array
     {
-        $actions = [];
+        $languageService = $this->getLanguageService();
         $currentWorkspace = $this->workspaceService->getCurrentWorkspace();
         $backendUser = $this->getBackendUser();
+        $actions = [];
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
         if ($massActionsEnabled) {
             $publishAccess = $backendUser->workspacePublishAccess($currentWorkspace);
             if ($publishAccess && !(($backendUser->workspaceRec['publish_access'] ?? 0) & 1)) {
-                $actions[] = ['action' => 'publish', 'title' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_publish')];
+                $actions[] = ['action' => 'publish', 'title' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_publish')];
             }
             if ($currentWorkspace !== WorkspaceService::LIVE_WORKSPACE_ID) {
-                $actions[] = ['action' => 'discard', 'title' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard')];
+                $actions[] = ['action' => 'discard', 'title' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard')];
             }
         }
         return $actions;
@@ -414,13 +342,23 @@ class ReviewController
      */
     protected function getAvailableSelectStages(): array
     {
+        $languageService = $this->getLanguageService();
         $stages = $this->stagesService->getStagesForWSUser();
-
         return array_merge([
             [
                 'uid' => -99,
-                'label' => $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
+                'label' => $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_all'),
             ],
         ], array_filter($stages, static fn (array $stage): bool => (int)($stage['uid'] ?? 0) !== -20));
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

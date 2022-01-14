@@ -19,10 +19,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -34,19 +33,9 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class ActionHandler
 {
-    /**
-     * @var StagesService
-     */
-    protected $stageService;
+    protected StagesService $stageService;
+    protected WorkspaceService $workspaceService;
 
-    /**
-     * @var WorkspaceService
-     */
-    protected $workspaceService;
-
-    /**
-     * Creates this object.
-     */
     public function __construct()
     {
         $this->stageService = GeneralUtility::makeInstance(StagesService::class);
@@ -764,14 +753,12 @@ class ActionHandler
     }
 
     /**
-     * Fetch the current label and visible state of the buttons.
-     *
-     * @param int $id
-     * @return string The pre-rendered HTML for the stage buttons
+     * Fetch the current label and visible state of the stage buttons.
+     * Used when records have been pushed to different stages in the preview module to update the button phalanx.
      */
-    public function updateStageChangeButtons($id)
+    public function updateStageChangeButtons(int $id): string
     {
-        // fetch the next and previous stage
+        // Fetch next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
             -99,
@@ -781,13 +768,9 @@ class ActionHandler
         );
         [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
-
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $extensionPath = ExtensionManagementUtility::extPath('workspaces');
-        $view->setPartialRootPaths(['default' => $extensionPath . 'Resources/Private/Partials']);
-        $view->setTemplatePathAndFilename($extensionPath . 'Resources/Private/Templates/Preview/Ajax/StageButtons.html');
-        $request = $view->getRequest();
-        $request->setControllerExtensionName('workspaces');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
         $view->assignMultiple([
             'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
             'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),
@@ -797,24 +780,7 @@ class ActionHandler
             'prevStage' => $previousStage['title'],
             'prevStageId' => $previousStage['uid'],
         ]);
-        $renderedView = $view->render();
-        return $renderedView;
-    }
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
+        return $view->render('Preview/Ajax/StageButtons');
     }
 
     /**
@@ -846,5 +812,15 @@ class ActionHandler
     protected function getCurrentWorkspace()
     {
         return $this->workspaceService->getCurrentWorkspace();
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
