@@ -48,11 +48,11 @@ class Router {
       e.preventDefault();
 
       const $me = $(e.currentTarget);
-      const requireModule = $me.data('require');
+      const importModule = $me.data('import');
       const inlineState = $me.data('inline');
       const isInline = typeof inlineState !== 'undefined' && parseInt(inlineState, 10) === 1;
       if (isInline) {
-        import(requireModule + '.js').then(({default: aModule}: {default: AbstractInlineModule}): void => {
+        import(importModule).then(({default: aModule}: {default: AbstractInlineModule}): void => {
           aModule.initialize($me);
         });
       } else {
@@ -65,7 +65,7 @@ class Router {
           content: $('<div class="modal-loading">'),
           additionalCssClasses: ['install-tool-modal'],
           callback: (currentModal: any): void => {
-            import(requireModule + '.js').then(({default: aModule}: {default: AbstractInteractableModule}): void => {
+            import(importModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
               aModule.initialize(currentModal);
             });
           },
