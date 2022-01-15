@@ -306,7 +306,7 @@ class LinkAnalyzerResult
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative()['uid'] ?: 0;
 
         if ($localizedPageId) {

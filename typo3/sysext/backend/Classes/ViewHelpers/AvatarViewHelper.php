@@ -97,7 +97,7 @@ final class AvatarViewHelper extends AbstractViewHelper
                         $queryBuilder->createNamedParameter($arguments['backendUser'], \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
         } else {
             $backendUser = $GLOBALS['BE_USER']->user;

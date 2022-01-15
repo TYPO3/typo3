@@ -103,7 +103,7 @@ class AutoPublishCommand extends Command
 
     /**
      * Fetch all sys_workspace records which could fit
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function getAffectedWorkspacesToPublish()
     {
@@ -129,6 +129,6 @@ class AutoPublishCommand extends Command
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
     }
 }

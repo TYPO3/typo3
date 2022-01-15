@@ -184,7 +184,7 @@ class SettingsController extends AbstractController
                 )
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $systemMaintainerList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];
@@ -240,7 +240,7 @@ class SettingsController extends AbstractController
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($newUserList, Connection::PARAM_INT_ARRAY))
                 )
-            )->execute()->fetchAllAssociative();
+            )->executeQuery()->fetchAllAssociative();
 
         $validatedUserList = array_column($validatedUserList, 'uid');
         $validatedUserList = array_map('intval', $validatedUserList);

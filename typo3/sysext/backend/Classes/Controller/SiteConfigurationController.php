@@ -725,7 +725,7 @@ class SiteConfigurationController
             )
             ->orderBy('pid')
             ->addOrderBy('sorting')
-            ->execute();
+            ->executeQuery();
 
         $pages = [];
         while ($row = $statement->fetchAssociative()) {

@@ -293,7 +293,7 @@ class PreviewUriBuilder
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             $languageId = (int)$row['sys_language_uid'];

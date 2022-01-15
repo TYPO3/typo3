@@ -117,10 +117,10 @@ Manual repair suggestions:
                 );
 
             $countQueryBuilder = clone $queryBuilder;
-            $rowCount = $countQueryBuilder->count('uid')->execute()->fetchOne();
+            $rowCount = $countQueryBuilder->count('uid')->executeQuery()->fetchOne();
             if ($rowCount) {
                 $queryBuilder->select('uid')->orderBy('uid');
-                $result = $queryBuilder->execute();
+                $result = $queryBuilder->executeQuery();
 
                 $orphans[$tableName] = [];
                 while ($orphanRecord = $result->fetchAssociative()) {
@@ -182,7 +182,7 @@ Manual repair suggestions:
                             $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
 
                 while ($rowSub = $result->fetchAssociative()) {
                     $allRecords[$tableName][$rowSub['uid']] = $rowSub['uid'];
@@ -216,7 +216,7 @@ Manual repair suggestions:
                     )
                 )
                 ->orderBy('sorting')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
                 $allRecords = $this->findAllConnectedRecordsInPage((int)$row['uid'], $depth, $allRecords);

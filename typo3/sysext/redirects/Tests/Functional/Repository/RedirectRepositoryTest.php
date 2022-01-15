@@ -104,7 +104,7 @@ class RedirectRepositoryTest extends FunctionalTestCase
         return (int)$queryBuilder
             ->count('uid')
             ->from('sys_redirect')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 

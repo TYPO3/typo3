@@ -253,9 +253,14 @@ If you want to get more detailed information, use the --verbose option.')
                     )
                 )
                 ->orderBy('sorting', 'DESC')
-                ->execute();
+                // @todo Executing and not assigning and use the result looks weired, at least with the
+                //       circumstance that the same QueryBuilder is reused as count query and executed
+                //       directly afterwards - must be rechecked and either solved or proper commented
+                //       why this mystery is needed here as this is not obvious and against general
+                //       recommendation to not reuse the QueryBuilder.
+                ->executeQuery();
 
-            $rowCount = $queryBuilder->count('hash')->execute()->fetchOne();
+            $rowCount = $queryBuilder->count('hash')->executeQuery()->fetchOne();
             // We conclude that the file is lost
             if ($rowCount === 0) {
                 $lostFiles[] = $value;

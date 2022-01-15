@@ -99,7 +99,7 @@ class RecyclerUtility
                 ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
-            $row = $queryBuilder->execute()->fetchAssociative();
+            $row = $queryBuilder->executeQuery()->fetchAssociative();
             if ($row !== false) {
                 BackendUtility::workspaceOL('pages', $row);
                 if (is_array($row)) {
@@ -151,7 +151,7 @@ class RecyclerUtility
             ->select('deleted')
             ->from('pages')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (bool)$deleted;
@@ -173,7 +173,7 @@ class RecyclerUtility
             ->select('pid')
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (int)$pid;

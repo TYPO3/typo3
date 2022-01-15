@@ -182,7 +182,7 @@ If you want to get more detailed information, use the --verbose option.')
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
             )
-            ->execute();
+            ->executeQuery();
 
         // Traverse the files and put into a large table
         $allReferencesToFiles = [];

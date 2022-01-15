@@ -89,7 +89,7 @@ class RelationTest extends FunctionalTestCase
                     'blog',
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
-            )->execute()
+            )->executeQuery()
             ->fetchOne();
 
         $newPostTitle = 'sdufhisdhuf';
@@ -110,7 +110,7 @@ class RelationTest extends FunctionalTestCase
                     'blog',
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
-            )->execute()
+            )->executeQuery()
             ->fetchOne();
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
@@ -124,7 +124,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame($newPostTitle, $post['title']);
         self::assertEquals($countPostsOriginal + 1, $post['sorting']);
@@ -143,7 +143,7 @@ class RelationTest extends FunctionalTestCase
         $countPostsOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $queryBuilder->resetQueryParts();
@@ -156,7 +156,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(10, $post['sorting']);
 
@@ -173,7 +173,7 @@ class RelationTest extends FunctionalTestCase
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
@@ -187,7 +187,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($latestPost->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertNull($post['uid'] ?? null);
 
@@ -201,7 +201,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame('Post9', $post['title']);
         self::assertEquals(9, $post['sorting']);
@@ -220,7 +220,7 @@ class RelationTest extends FunctionalTestCase
         $countPostsOriginal = $queryBuilder
         ->count('*')
         ->from('tx_blogexample_domain_model_post')
-        ->execute()
+        ->executeQuery()
         ->fetchOne();
 
         $newPost = new Post();
@@ -245,7 +245,7 @@ class RelationTest extends FunctionalTestCase
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countPostsOriginal + 1, $countPosts);
 
@@ -260,7 +260,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame('Post10', $post['title']);
         self::assertEquals(11, $post['sorting']);
@@ -276,7 +276,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($newPost->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame($newPostTitle, $post['title']);
         self::assertEquals(6, $post['sorting']);
@@ -295,7 +295,7 @@ class RelationTest extends FunctionalTestCase
         $countPostsOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $posts = clone $this->blog->getPosts();
@@ -312,7 +312,7 @@ class RelationTest extends FunctionalTestCase
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countPostsOriginal - 1, $countPosts);
 
@@ -326,7 +326,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame('Post10', $post['title']);
         self::assertEquals(10, $post['sorting']);
@@ -345,7 +345,7 @@ class RelationTest extends FunctionalTestCase
         $countPostsOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $posts = clone $this->blog->getPosts();
@@ -371,7 +371,7 @@ class RelationTest extends FunctionalTestCase
         $countPosts = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_post')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countPostsOriginal, $countPosts);
 
@@ -385,7 +385,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->blog->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame('Post9', $post['title']);
         self::assertEquals(10, $post['sorting']);
@@ -403,7 +403,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT))
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertSame('MOVED POST Post10', $post['title']);
         self::assertEquals(10, $post['uid']);
@@ -422,7 +422,7 @@ class RelationTest extends FunctionalTestCase
         $countOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $newTagTitle = 'sdufhisdhuf';
@@ -440,7 +440,7 @@ class RelationTest extends FunctionalTestCase
         $count = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countOriginal + 1, $count);
 
@@ -456,7 +456,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
@@ -474,7 +474,7 @@ class RelationTest extends FunctionalTestCase
         $countOriginal = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -494,7 +494,7 @@ class RelationTest extends FunctionalTestCase
         $countTags = $queryBuilder
             ->count('*')
             ->from('tx_blogexample_domain_model_tag')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countOriginal, $countTags);
 
@@ -510,7 +510,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(9, $tag['uid_foreign']);
 
@@ -530,7 +530,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertNull($tag['uid_foreign'] ?? null);
     }
@@ -551,7 +551,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -581,7 +581,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals($countTagsOriginal + 1, $countTags);
 
@@ -595,7 +595,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
 
@@ -612,7 +612,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT))
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals($newTag->getUid(), $tag['uid_foreign']);
     }
@@ -633,7 +633,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(10, $countTags);
 
@@ -658,7 +658,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(9, $countTags);
 
@@ -672,7 +672,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
         self::assertEquals(10, $tag['sorting']);
@@ -690,7 +690,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->expr()->eq('sorting', $queryBuilder->createNamedParameter(5, \PDO::PARAM_INT))
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertNull($tag['uid_foreign'] ?? null);
     }
@@ -711,7 +711,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(10, $countTags);
 
@@ -746,7 +746,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(10, $countTags);
 
@@ -760,7 +760,7 @@ class RelationTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($post->getUid(), \PDO::PARAM_INT)
                 )
             )->orderBy('sorting', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(9, $tag['uid_foreign']);
         self::assertEquals(10, $tag['sorting']);
@@ -782,7 +782,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(10, $tag['uid_foreign']);
     }
@@ -803,7 +803,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         $postRepository = $this->getContainer()->get(PostRepository::class);
@@ -820,7 +820,7 @@ class RelationTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertTrue($rawPost2['tstamp'] > $rawPost['tstamp']);
     }
@@ -861,7 +861,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(4, $countCategories);
 
@@ -909,7 +909,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(4, $countCategories);
 
@@ -941,7 +941,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(5, $countCategories);
     }
@@ -987,7 +987,7 @@ class RelationTest extends FunctionalTestCase
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         // one category is hidden, so the expected count has to be one less

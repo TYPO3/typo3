@@ -46,7 +46,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->quoteIdentifier('aField'), true)
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -117,7 +117,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('match'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -154,7 +154,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', (string)2)
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -191,7 +191,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild%card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -228,7 +228,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild[card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -265,7 +265,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild]card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -302,7 +302,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild[]card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -339,7 +339,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild[foo]card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -376,7 +376,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('wild[%]card'))
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -418,7 +418,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->quoteIdentifier('aField'), true)
             )
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $expected = [
             0 => [
@@ -548,19 +548,19 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->count('uid')
             ->from('tx_expressionbuildertest');
         // Count all rows
-        self::assertEquals(40, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(40, $queryBuilder->executeQuery()->fetchOne());
 
         // Count the ones not in set
         $queryBuilder->where(
             $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('match')),
         );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
 
         // Count the ones in set
         $queryBuilder->where(
             $queryBuilder->expr()->inSet('aCsvField', $queryBuilder->expr()->literal('match')),
         );
-        self::assertEquals(4, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(4, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -576,7 +576,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', (string)2)
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -592,7 +592,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild%card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -608,7 +608,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -624,7 +624,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild]card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -640,7 +640,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[]card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -656,7 +656,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[foo]card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 
     /**
@@ -672,6 +672,6 @@ class ExpressionBuilderTest extends FunctionalTestCase
             ->where(
                 $queryBuilder->expr()->notInSet('aCsvField', $queryBuilder->expr()->literal('wild[%]card'))
             );
-        self::assertEquals(36, $queryBuilder->execute()->fetchOne());
+        self::assertEquals(36, $queryBuilder->executeQuery()->fetchOne());
     }
 }

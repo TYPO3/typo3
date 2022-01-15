@@ -76,7 +76,7 @@ class PreviewUserAuthentication extends BackendUserAuthentication
                         ))
                         ->orderBy('title')
                         ->setMaxResults(1)
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
             }
         }

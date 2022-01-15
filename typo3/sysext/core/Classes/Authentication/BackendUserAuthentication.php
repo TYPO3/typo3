@@ -726,7 +726,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                         $queryBuilder->createNamedParameter($pointerValue, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
 
             foreach ($recordLocalizations as $recordLocalization) {
@@ -1247,7 +1247,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $readablePagesOfWebMounts = array_column(($readablePagesOfWebMounts ?: []), 'uid', 'uid');
         foreach ($allWebMounts as $key => $mountPointUid) {
@@ -1412,7 +1412,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 $queryBuilder->addOrderBy(...$fieldAndDirection);
             }
 
-            $fileMountRecords = $queryBuilder->execute()->fetchAllAssociative();
+            $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
             if ($fileMountRecords !== false) {
                 foreach ($fileMountRecords as $fileMount) {
                     $fileMountRecordCache[$fileMount['base'] . $fileMount['path']] = $fileMount;
@@ -1432,7 +1432,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     $queryBuilder->expr()->eq('is_default', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             $readOnlyMountPointArray = GeneralUtility::trimExplode(',', $readOnlyMountPoints);
@@ -1858,7 +1858,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                             ))
                             ->orderBy('title')
                             ->setMaxResults(1)
-                            ->execute()
+                            ->executeQuery()
                             ->fetchAssociative();
                     }
             }
@@ -1998,7 +1998,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $result = $queryBuilder->select('*')
             ->from('sys_workspace')
             ->orderBy('title')
-            ->execute();
+            ->executeQuery();
         while ($workspaceRecord = $result->fetchAssociative()) {
             if ($this->checkWorkspace($workspaceRecord)) {
                 $defaultWorkspace = (int)$workspaceRecord['uid'];
@@ -2246,7 +2246,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                     ),
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
         }
         return $isUserAllowedToLogin;

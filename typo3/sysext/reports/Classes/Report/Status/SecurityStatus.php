@@ -163,7 +163,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
                     $queryBuilder->createNamedParameter('admin', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!empty($row)) {

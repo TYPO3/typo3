@@ -116,7 +116,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         $rows = $queryBuilder->orderBy($sortField)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         foreach ($rows as $row) {

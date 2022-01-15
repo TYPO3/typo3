@@ -159,7 +159,7 @@ class MySql extends AbstractPlatform
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         if (!in_array($defaultDatabaseCharset, $this->databaseCharsetToCheck, true)) {

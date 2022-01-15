@@ -112,7 +112,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         $collectionRecord['table_name'] = $tableName;
@@ -188,7 +188,7 @@ class CategoryCollection extends AbstractRecordCollection implements EditableCol
         $relatedRecords = [];
 
         $queryBuilder = $this->getCollectedRecordsQueryBuilder();
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
 
         while ($record = $result->fetchAssociative()) {
             $relatedRecords[] = $record;

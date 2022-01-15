@@ -77,7 +77,7 @@ class ContentFetcher
         if (empty($this->fetchedContentRecords)) {
             $isLanguageMode = $this->context->getDrawingConfiguration()->getLanguageMode();
             $queryBuilder = $this->getQueryBuilder();
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
             $records = $this->getResult($result);
             foreach ($records as $record) {
                 $recordLanguage = (int)$record['sys_language_uid'];

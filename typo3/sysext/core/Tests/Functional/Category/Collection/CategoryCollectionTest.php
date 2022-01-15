@@ -138,7 +138,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             ->select('*')
             ->from('tx_test_test')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)))
-            ->execute();
+            ->executeQuery();
         $record = $statement->fetchAssociative();
         $collection->rewind();
         self::assertEquals($record, $collection->current());

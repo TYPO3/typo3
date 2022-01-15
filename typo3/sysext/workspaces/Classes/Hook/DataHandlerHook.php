@@ -845,7 +845,7 @@ class DataHandlerHook
             $queryBuilder->addSelect($translationSourceFieldName);
         }
 
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $updateFields = [];
             $dataTypes = [\PDO::PARAM_INT];
@@ -1058,7 +1058,7 @@ class DataHandlerHook
             $queryBuilder->addSelect($translationSourceFieldName);
         }
 
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $dataHandler->updateRefIndex($table, $record['uid']);
         }
@@ -1127,7 +1127,7 @@ class DataHandlerHook
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeStatement();
             }
         }
     }
@@ -1168,7 +1168,7 @@ class DataHandlerHook
                         )
                     )
                     ->orderBy('uid')
-                    ->execute();
+                    ->executeQuery();
 
                 while (($recordId = $result->fetchOne()) !== false) {
                     $command[$tcaTable][$recordId]['version']['action'] = 'flush';
@@ -1276,7 +1276,7 @@ class DataHandlerHook
                         ),
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
-                    ->execute();
+                    ->executeQuery();
 
                 while ($row = $statement->fetchAssociative()) {
                     $elementData[$table][] = [$row['uid'], $row['offlineUid']];
@@ -1332,7 +1332,7 @@ class DataHandlerHook
                         $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
                     )
                     ->groupBy('A.uid')
-                    ->execute();
+                    ->executeQuery();
 
                 while ($row = $statement->fetchAssociative()) {
                     $elementList[$table][] = $row['uid'];
@@ -1387,7 +1387,7 @@ class DataHandlerHook
                 $queryBuilder->expr()->eq('A.t3ver_oid', $queryBuilder->quoteIdentifier('B.uid'))
             )
             ->groupBy('B.pid')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $pageIdList[] = $row['pid'];

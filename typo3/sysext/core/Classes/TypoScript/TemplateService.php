@@ -542,7 +542,7 @@ class TemplateService
                 ->orderBy('root', 'DESC')
                 ->addOrderBy('sorting')
                 ->setMaxResults(1)
-                ->execute();
+                ->executeQuery();
             if ($row = $queryResult->fetchAssociative()) {
                 $this->versionOL($row);
                 if (is_array($row)) {
@@ -645,7 +645,7 @@ class TemplateService
                             $queryBuilder->createNamedParameter($basedOnIds, Connection::PARAM_INT_ARRAY)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 // make it an associative array with the UID as key
                 $subTemplates = [];
                 while ($rowItem = $queryResult->fetchAssociative()) {

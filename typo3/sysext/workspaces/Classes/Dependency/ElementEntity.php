@@ -246,7 +246,7 @@ class ElementEntity
                     )
                 )
                 ->orderBy('sorting')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
                 if ($row['ref_table'] !== '_FILE' && $row['ref_table'] !== '_STRING') {
@@ -308,7 +308,7 @@ class ElementEntity
                     )
                 )
                 ->orderBy('sorting')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
                 $arguments = [
@@ -433,7 +433,7 @@ class ElementEntity
                         $queryBuilder->createNamedParameter($this->getId(), \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if (is_array($row)) {

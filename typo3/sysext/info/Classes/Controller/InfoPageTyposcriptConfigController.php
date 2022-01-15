@@ -276,7 +276,7 @@ class InfoPageTyposcriptConfigController
                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $pageArray = [];
 

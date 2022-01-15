@@ -208,7 +208,7 @@ class LiveSearch
     protected function getRecordArray($queryBuilder, $tableName)
     {
         $collect = [];
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {

@@ -113,7 +113,7 @@ class Scheduler implements SingletonInterface
                 ),
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeQuery();
         $maxDuration = $this->extConf['maxLifetime'] * 60;
         while ($row = $result->fetchAssociative()) {
             $executions = [];
@@ -342,7 +342,7 @@ class Scheduler implements SingletonInterface
             );
         }
 
-        $row = $queryBuilder->execute()->fetchAssociative();
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
         if (empty($row)) {
             if (empty($uid)) {
                 // No uid was passed and no overdue task was found
@@ -394,7 +394,7 @@ class Scheduler implements SingletonInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         // If the task is not found, throw an exception
@@ -436,7 +436,7 @@ class Scheduler implements SingletonInterface
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
         }
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             /** @var Task\AbstractTask $task */
             $task = unserialize($row['serialized_task_object']);

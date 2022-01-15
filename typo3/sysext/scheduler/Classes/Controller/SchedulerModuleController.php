@@ -858,7 +858,7 @@ class SchedulerModuleController
                 $queryBuilder->expr()->eq('t.deleted', 0)
             )
             ->orderBy('g.sorting')
-            ->execute();
+            ->executeQuery();
 
         $schedulerModuleData = $this->getBackendUser()->getModuleData('scheduler') ?? [];
 
@@ -1319,7 +1319,7 @@ class SchedulerModuleController
             ->select('*')
             ->from('tx_scheduler_task_group')
             ->orderBy('sorting')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 

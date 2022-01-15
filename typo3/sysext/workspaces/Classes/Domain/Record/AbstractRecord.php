@@ -42,7 +42,7 @@ abstract class AbstractRecord
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         if (empty($record)) {
             throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found', 1476122008);

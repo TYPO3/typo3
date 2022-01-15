@@ -1899,7 +1899,7 @@ class EditDocumentController
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -1922,7 +1922,7 @@ class EditDocumentController
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -2181,7 +2181,7 @@ class EditDocumentController
                                     $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], \PDO::PARAM_INT)
                                 )
                             )
-                            ->execute();
+                            ->executeQuery();
 
                         while ($row = $result->fetchAssociative()) {
                             if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
@@ -2298,7 +2298,7 @@ class EditDocumentController
                         $queryBuilder->createNamedParameter($origUid, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
             if (is_array($localizedRecord)) {
@@ -2362,7 +2362,7 @@ class EditDocumentController
                         $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             $availableLanguages = [];
 

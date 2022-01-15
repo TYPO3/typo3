@@ -1089,7 +1089,7 @@ class Import extends ImportExport
                     $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         return is_array($databaseRecord) ? $databaseRecord : null;

@@ -99,7 +99,7 @@ class FileRepository extends AbstractRepository
                     )
                 )
                 ->orderBy('sorting_foreign')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = $row['uid'];

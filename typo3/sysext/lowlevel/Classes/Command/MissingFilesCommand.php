@@ -180,7 +180,7 @@ If you want to get more detailed information, use the --verbose option.')
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNull('softref_key')
             )
-            ->execute();
+            ->executeQuery();
 
         // Traverse the references and check if the files exists
         while ($record = $result->fetchAssociative()) {
@@ -213,7 +213,7 @@ If you want to get more detailed information, use the --verbose option.')
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->isNotNull('softref_key')
             )
-            ->execute();
+            ->executeQuery();
 
         // Traverse the references and check if the files exists
         while ($record = $result->fetchAssociative()) {

@@ -173,7 +173,7 @@ class DeletedRecords
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
 
             // split the limit
@@ -239,7 +239,7 @@ class DeletedRecords
                     )
                 )
                 ->orderBy('uid')
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
 
             if ($recordsToCheck !== false) {
@@ -445,7 +445,7 @@ class DeletedRecords
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         if ($record) {
             $pages[] = $record['uid'];
@@ -541,7 +541,7 @@ class DeletedRecords
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                     QueryHelper::stripLogicalOperatorPrefix($permsClause)
                 )
-                ->execute();
+                ->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList[] = $row['uid'];

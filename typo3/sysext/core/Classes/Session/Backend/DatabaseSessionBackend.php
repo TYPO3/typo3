@@ -95,7 +95,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query->select('*')
             ->from($this->configuration['table'])
             ->where($query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)));
-        $result = $query->execute()->fetchAssociative();
+        $result = $query->executeQuery()->fetchAssociative();
         if (!is_array($result)) {
             throw new SessionNotFoundException(
                 'The session with identifier ' . $sessionId . ' was not found ',
@@ -122,7 +122,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
                 )
             );
 
-        return (bool)$query->execute();
+        return (bool)$query->executeStatement();
     }
 
     /**
@@ -205,14 +205,14 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query->delete($this->configuration['table'])
             ->where($query->expr()->lt('ses_tstamp', (int)($GLOBALS['EXEC_TIME'] - (int)$maximumLifetime)))
             ->andWhere($this->hasAnonymousSessions ? $query->expr()->neq('ses_userid', 0) : ' 1 = 1');
-        $query->execute();
+        $query->executeStatement();
 
         if ($maximumAnonymousLifetime > 0 && $this->hasAnonymousSessions) {
             $query = $this->getQueryBuilder();
             $query->delete($this->configuration['table'])
                 ->where($query->expr()->lt('ses_tstamp', (int)($GLOBALS['EXEC_TIME'] - (int)$maximumAnonymousLifetime)))
                 ->andWhere($query->expr()->eq('ses_userid', 0));
-            $query->execute();
+            $query->executeStatement();
         }
     }
 
@@ -225,7 +225,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
     {
         $query = $this->getQueryBuilder();
         $query->select('*')->from($this->configuration['table']);
-        return $query->execute()->fetchAllAssociative();
+        return $query->executeQuery()->fetchAllAssociative();
     }
 
     /**

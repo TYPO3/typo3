@@ -93,7 +93,7 @@ class DefaultAvatarProvider implements AvatarProviderInterface
                     $queryBuilder->createNamedParameter((int)$backendUserId, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (int)$fileUid;

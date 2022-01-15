@@ -117,7 +117,7 @@ class IpAnonymizationTask extends AbstractTask
                     )
                 )
                 ->from($table)
-                ->execute();
+                ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
                 $ip = (string)$row[$configuration['ipField']];

@@ -101,7 +101,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
             ->from('pages')
             ->where(...$constraints)
             ->orderBy('uid', 'ASC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $pages;

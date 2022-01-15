@@ -258,7 +258,7 @@ class SlugHelper
         $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
         $this->applyWorkspaceConstraint($queryBuilder, $state);
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $records = $this->resolveVersionOverlays(
             $statement->fetchAllAssociative()
@@ -291,7 +291,7 @@ class SlugHelper
         $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
         $this->applyWorkspaceConstraint($queryBuilder, $state);
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $records = $this->resolveVersionOverlays(
             $statement->fetchAllAssociative()
@@ -351,7 +351,7 @@ class SlugHelper
         $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
         $this->applyWorkspaceConstraint($queryBuilder, $state);
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $records = $this->resolveVersionOverlays(
             $statement->fetchAllAssociative()

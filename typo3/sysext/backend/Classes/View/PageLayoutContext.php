@@ -326,7 +326,7 @@ class PageLayoutContext
                     $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                 )
             );
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
         }

@@ -142,7 +142,7 @@ class ResourceFactory implements SingletonInterface
                             $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
                 if (empty($recordData)) {
                     throw new \InvalidArgumentException('No collection found for given UID: "' . $uid . '"', 1314085992);
@@ -491,7 +491,7 @@ class ResourceFactory implements SingletonInterface
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
         }
         return $fileReferenceData;

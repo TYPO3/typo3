@@ -167,7 +167,7 @@ class BackendLayoutView implements SingletonInterface
                             $queryBuilder->createNamedParameter(abs($data['pid']), \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
             } else {
                 $pageId = $data['pid'];
@@ -463,7 +463,7 @@ class BackendLayoutView implements SingletonInterface
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $page);
 

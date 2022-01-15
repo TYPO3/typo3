@@ -288,7 +288,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
                     )
                 )
                 ->set('current_version', 1)
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -325,7 +325,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
                 $queryBuilder->expr()->isNull('b.extension_key')
             )
             ->orderBy('a.uid')
-            ->execute();
+            ->executeQuery();
 
         $extensionUids = [];
         while ($row = $queryResult->fetchAssociative()) {

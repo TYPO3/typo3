@@ -68,7 +68,7 @@ class RedirectCacheService
         $statement = $queryBuilder
             ->select('*')
             ->from('sys_redirect')
-            ->execute();
+            ->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             $host = $row['source_host'] ?: '*';
             if ($row['is_regexp']) {

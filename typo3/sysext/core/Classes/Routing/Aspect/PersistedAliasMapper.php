@@ -202,7 +202,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
                 'uid',
                 $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
             ))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         return $result !== false ? $result : null;
     }
@@ -231,7 +231,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $results = $queryBuilder
             ->select(...$this->persistenceFieldNames)
             ->where(...$constraints)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         // limit results to be contained in rootPageId of current Site
         // (which is defining the route configuration currently being processed)

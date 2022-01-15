@@ -51,7 +51,7 @@ class FileSearchQuery
     private $additionalRestrictions = [];
 
     /**
-     * @var Result|int
+     * @var Result
      */
     private $result;
 
@@ -173,11 +173,14 @@ class FileSearchQuery
         $this->additionalRestrictions[get_class($additionalRestriction)] = $additionalRestriction;
     }
 
+    /**
+     * @return Result
+     */
     public function execute()
     {
         if ($this->result === null) {
             $this->initializeQueryBuilder();
-            $this->result = $this->queryBuilder->execute();
+            $this->result = $this->queryBuilder->executeQuery();
         }
 
         return $this->result;

@@ -216,7 +216,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
                 'uid',
                 $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
             ))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         return $result !== false ? $result : null;
     }
@@ -229,7 +229,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         $results = $queryBuilder
             ->select('*')
             ->where(...$this->createRouteFieldConstraints($queryBuilder, $values))
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         // limit results to be contained in rootPageId of current Site
         // (which is defining the route configuration currently being processed)

@@ -133,7 +133,7 @@ class DatabaseIntegrityCheck
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         }
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         // Traverse the records selected
         while ($row = $result->fetchAssociative()) {
             $newID = $row['uid'];
@@ -204,7 +204,7 @@ class DatabaseIntegrityCheck
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, \PDO::PARAM_INT))
             );
         }
-        $queryResult = $queryBuilder->execute();
+        $queryResult = $queryBuilder->executeQuery();
         // Traverse selected
         while ($row = $queryResult->fetchAssociative()) {
             $newID = $row['uid'];
@@ -252,7 +252,7 @@ class DatabaseIntegrityCheck
                             $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 $lostIdList = [];
                 while ($row = $queryResult->fetchAssociative()) {
                     $this->lRecords[$table][$row['uid']] = [
@@ -324,7 +324,7 @@ class DatabaseIntegrityCheck
                             $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
                 if ($count) {
                     $list[$table] = $count;
@@ -343,7 +343,7 @@ class DatabaseIntegrityCheck
                             $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
                 if ($count) {
                     $list_n[$table] = $count;
@@ -445,7 +445,7 @@ class DatabaseIntegrityCheck
                     );
                 }
             }
-            $queryResult = $queryBuilder->orWhere(...$whereClause)->execute();
+            $queryResult = $queryBuilder->orWhere(...$whereClause)->executeQuery();
 
             while ($row = $queryResult->fetchAssociative()) {
                 foreach ($fields as $field) {
@@ -522,7 +522,7 @@ class DatabaseIntegrityCheck
                                 $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
                             )
                         )
-                        ->execute();
+                        ->executeQuery();
                     while ($row = $queryResult->fetchAssociative()) {
                         if (isset($dbArr[$row['uid']])) {
                             unset($dbArr[$row['uid']]);

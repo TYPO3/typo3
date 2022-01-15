@@ -68,7 +68,7 @@ class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
                     $queryBuilder->createNamedParameter($admin ? 1 : 0, Connection::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 }

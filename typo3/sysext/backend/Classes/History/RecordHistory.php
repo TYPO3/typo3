@@ -231,7 +231,7 @@ class RecordHistory
                             $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 while ($row = $result->fetchAssociative()) {
                     // if there is history data available, merge it into changelog
                     $newChangeLog = $this->getHistoryDataForRecord($tablename, $row['uid'], $lastHistoryEntry);
@@ -309,7 +309,7 @@ class RecordHistory
             ->select('uid', 'tablename', 'recuid')
             ->from('sys_history')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($lastHistoryEntry, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (empty($record)) {
@@ -377,7 +377,7 @@ class RecordHistory
     protected function prepareEventDataFromQueryBuilder(QueryBuilder $queryBuilder): array
     {
         $events = [];
-        $result = $queryBuilder->orderBy('tstamp', 'DESC')->execute();
+        $result = $queryBuilder->orderBy('tstamp', 'DESC')->executeQuery();
         while ($row = $result->fetchAssociative()) {
             $identifier = (int)$row['uid'];
             $actionType = (int)$row['actiontype'];

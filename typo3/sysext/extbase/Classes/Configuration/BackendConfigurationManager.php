@@ -179,7 +179,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
                 $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('sorting')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (empty($rootPage)) {
@@ -212,7 +212,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
                 $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT))
             )
             ->orderBy('crdate')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (empty($rootTemplate)) {
@@ -296,7 +296,7 @@ class BackendConfigurationManager extends AbstractConfigurationManager
                     $permsClause
                 )
                 ->orderBy('uid')
-                ->execute();
+                ->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $children[] = (int)$row['uid'];

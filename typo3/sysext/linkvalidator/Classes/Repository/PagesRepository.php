@@ -65,7 +65,7 @@ class PagesRepository
                     $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if ($row !== false) {
@@ -113,7 +113,7 @@ class PagesRepository
                 ),
                 QueryHelper::stripLogicalOperatorPrefix($permsClause)
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             $subpageId = (int)$row['uid'];
@@ -177,7 +177,7 @@ class PagesRepository
             ->select('uid', 'title', 'hidden')
             ->from(self::TABLE)
             ->where(...$constraints)
-            ->execute();
+            ->executeQuery();
 
         $translatedPages = [];
         while ($row = $result->fetchAssociative()) {

@@ -72,10 +72,10 @@ class AdministrationRepository
                     $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
         $numberOfRows = $queryBuilder
             ->count('uniqid')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         $allRows = [];
         while ($row = $result->fetchAssociative()) {
@@ -103,7 +103,7 @@ class AdministrationRepository
                     $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -125,7 +125,7 @@ class AdministrationRepository
                     $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -170,7 +170,7 @@ class AdministrationRepository
                 'freeIndexSetId'
             )
             ->orderBy('item_type')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $res->fetchAssociative()) {
             $this->addAdditionalInformation($row);
@@ -191,7 +191,7 @@ class AdministrationRepository
                             $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 while ($row2 = $res2->fetchAssociative()) {
                     $this->addAdditionalInformation($row2);
                     $result[] = $row2;
@@ -222,7 +222,7 @@ class AdministrationRepository
             $recordList[$tableName] = $queryBuilder
                 ->count('*')
                 ->from($tableName)
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
         }
         return $recordList;
@@ -253,7 +253,7 @@ class AdministrationRepository
             ->from('index_phash')
             ->groupBy('item_type')
             ->orderBy('item_type')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $res->fetchAssociative()) {
             $itemType = $row['item_type'];
@@ -286,7 +286,7 @@ class AdministrationRepository
                 )
             )
             ->groupBy('phash_grouping')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return count($items);
@@ -310,7 +310,7 @@ class AdministrationRepository
                     $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -354,7 +354,7 @@ class AdministrationRepository
                 'freeIndexSetId'
             )
             ->orderBy('data_page_id')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $res->fetchAssociative()) {
             $this->addAdditionalInformation($row);
@@ -374,7 +374,7 @@ class AdministrationRepository
                             $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 while ($row2 = $res2->fetchAssociative()) {
                     $this->addAdditionalInformation($row2);
                     $result[] = $row2;
@@ -414,12 +414,12 @@ class AdministrationRepository
             $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($additionalWhere));
         }
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         $countQueryBuilder = clone $queryBuilder;
         $countQueryBuilder->resetQueryPart('orderBy');
         $count = (int)$countQueryBuilder
             ->count('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         $result->free();
 
@@ -438,7 +438,7 @@ class AdministrationRepository
             );
         }
 
-        return $queryBuilder->execute()->fetchAllAssociative();
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
@@ -499,6 +499,7 @@ class AdministrationRepository
                 // Adds a display row:
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_rel');
+
                 $wordCountResult = $queryBuilder->count('index_words.baseword')
                     ->from('index_rel')
                     ->from('index_words')
@@ -510,11 +511,16 @@ class AdministrationRepository
                         $queryBuilder->expr()->eq('index_words.wid', $queryBuilder->quoteIdentifier('index_rel.wid'))
                     )
                     ->groupBy('index_words.baseword')
-                    ->execute();
+                    // @todo Executing and not use the assigned result looks weired, at least with the
+                    //       circumstance that the same QueryBuilder is reused as count query and executed
+                    //       directly afterwards - must be rechecked and either solved or proper commented
+                    //       why this mystery is needed here as this is not obvious and against general
+                    //       recommendation to not reuse the QueryBuilder.
+                    ->executeQuery();
 
                 $row['wordCount'] = $queryBuilder
                     ->count('index_rel.wid')
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
                 $wordCountResult->free();
 
@@ -530,7 +536,7 @@ class AdministrationRepository
                             )
                         )
                         ->setMaxResults(1)
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
 
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -550,7 +556,7 @@ class AdministrationRepository
                         )
                         ->groupBy('index_words.baseword')
                         ->orderBy('index_words.baseword')
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAllAssociative();
 
                     if (is_array($wordRecords)) {
@@ -647,7 +653,7 @@ class AdministrationRepository
             ->orderBy('IP.item_type')
             ->addOrderBy('IP.tstamp')
             ->setMaxResults(11)
-            ->execute();
+            ->executeQuery();
 
         $usedResults = [];
         // Collecting phash values (to remove local indexing for)
@@ -698,7 +704,7 @@ class AdministrationRepository
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeQuery();
 
         $pageIds = [];
         while ($row = $result->fetchAssociative()) {
@@ -749,7 +755,7 @@ class AdministrationRepository
                             $queryBuilder->createNamedParameter($phash, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 while ($row = $res->fetchAssociative()) {
                     $idList[] = (int)$row['page_id'];
                 }
@@ -798,7 +804,7 @@ class AdministrationRepository
                         $queryBuilder->createNamedParameter($wid, \PDO::PARAM_INT)
                     )
                 )
-                ->execute();
+                ->executeStatement();
         }
     }
 

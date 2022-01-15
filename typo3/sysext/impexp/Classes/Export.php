@@ -441,9 +441,9 @@ class Export extends ImportExport
      *
      * @param int $pid Page ID to select from
      * @param string $table Table to select from
-     * @return Result|int Query statement
+     * @return Result Query statement
      */
-    protected function execListQueryPid(int $pid, string $table)
+    protected function execListQueryPid(int $pid, string $table): Result
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
@@ -478,7 +478,7 @@ class Export extends ImportExport
             $queryBuilder->addOrderBy('uid', 'ASC');
         }
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**

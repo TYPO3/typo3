@@ -90,7 +90,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
         $queryBuilderProphet->from(Argument::cetera())->willReturn($queryBuilderProphet);
         $queryBuilderProphet->where(Argument::cetera())->willReturn($queryBuilderProphet);
         $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturn(Argument::type('string'));
-        $queryBuilderProphet->execute()->willReturn($databaseStatementProphet);
+        $queryBuilderProphet->executeQuery()->willReturn($databaseStatementProphet);
         $queryBuilderProphet->expr()->willReturn($expressionBuilderProphet->reveal());
         $connectionPoolProphet = $this->prophesize(ConnectionPool::class);
         $connectionPoolProphet->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilderProphet->reveal());

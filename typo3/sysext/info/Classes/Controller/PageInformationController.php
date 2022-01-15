@@ -236,7 +236,7 @@ class PageInformationController
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                 $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
         // If there was found a page:
@@ -362,8 +362,8 @@ class PageInformationController
         }
 
         if ($depth >= 0) {
-            $result = $queryBuilder->execute();
-            $rowCount = $queryBuilder->count('uid')->execute()->fetchOne();
+            $result = $queryBuilder->executeQuery();
+            $rowCount = $queryBuilder->count('uid')->executeQuery()->fetchOne();
             $count = 0;
             while ($row = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('pages', $row);
@@ -546,7 +546,7 @@ class PageInformationController
                 ->where(
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
         }
 

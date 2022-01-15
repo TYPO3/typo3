@@ -248,7 +248,7 @@ class RootlineUtility
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->in('t3ver_wsid', $queryBuilder->createNamedParameter([0, $this->workspaceUid], Connection::PARAM_INT_ARRAY))
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             if (empty($row)) {
                 throw new PageNotFoundException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
@@ -475,7 +475,7 @@ class RootlineUtility
                 )
             )
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
 
         $record = $statement->fetchAssociative();
         return $record ?: null;
@@ -511,7 +511,7 @@ class RootlineUtility
                     $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $movePointerId = $statement->fetchOne();
         return $movePointerId ? (int)$movePointerId : null;

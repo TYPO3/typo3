@@ -109,7 +109,7 @@ class Typo3DbBackendTest extends UnitTestCase
         $queryResultProphet = $this->prophesize(Result::class);
         $queryResultProphet->fetchOne(Argument::cetera())->willReturn($expectedUid);
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-        $queryBuilderProphet->execute()->willReturn($queryResultProphet->reveal());
+        $queryBuilderProphet->executeQuery()->willReturn($queryResultProphet->reveal());
         $queryBuilderProphet->expr()->willReturn($expressionBuilderProphet->reveal());
         $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
         $queryBuilderProphet->select('uid')->willReturn($queryBuilderProphet->reveal());

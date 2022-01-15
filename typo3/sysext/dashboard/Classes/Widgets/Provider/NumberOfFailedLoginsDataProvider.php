@@ -52,7 +52,7 @@ class NumberOfFailedLoginsDataProvider implements NumberWithIconDataProviderInte
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'] - $secondsBack, Connection::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 }

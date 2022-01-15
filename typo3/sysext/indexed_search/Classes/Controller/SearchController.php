@@ -309,7 +309,7 @@ class SearchController extends ActionController
                                 $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
                             )
                         )
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
                     $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
                     $categoryTitle = $categoryTitle ?: $indexCfgRec['title'];
@@ -745,7 +745,7 @@ class SearchController extends ActionController
                             $queryBuilder->createNamedParameter($row['phash'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
                 if ($ftdrow !== false) {
                     // Cut HTTP references after some length
@@ -1195,7 +1195,7 @@ class SearchController extends ActionController
                             $queryBuilder->createNamedParameter($uidList, Connection::PARAM_INT_ARRAY)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
 
                 while ($row = $result->fetchAssociative()) {
                     $indexId = (int)$row['uid'];

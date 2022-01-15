@@ -52,6 +52,6 @@ final class IncrementHitCount
             )
             ->set('hitcount', $queryBuilder->quoteIdentifier('hitcount') . '+1', false)
             ->set('lasthiton', $GLOBALS['EXEC_TIME'])
-            ->execute();
+            ->executeStatement();
     }
 }

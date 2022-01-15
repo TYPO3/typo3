@@ -1076,7 +1076,7 @@ class AbstractPlugin
             }
         }
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**
@@ -1183,7 +1183,7 @@ class AbstractPlugin
             }
         }
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         $outArr = [];
         while ($row = $result->fetchAssociative()) {
             $outArr[$row['uid']] = $row;

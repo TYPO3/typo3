@@ -200,11 +200,11 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                     $queryBuilder->createNamedParameter([1, 2], Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $actualErrorLogEntries = (int)$queryBuilder
             ->count('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $entryMessages = array_map(

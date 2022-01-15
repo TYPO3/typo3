@@ -86,7 +86,7 @@ class AbstractRepositoryTest extends UnitTestCase
         $queryBuilderProphet->from('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where(Argument::cetera())->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->createNamedParameter(Argument::cetera())->willReturnArgument(0);
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         $this->subject->findByUid('123');
     }

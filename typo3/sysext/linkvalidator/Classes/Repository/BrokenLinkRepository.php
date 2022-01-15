@@ -55,7 +55,7 @@ class BrokenLinkRepository
                 ->where(...$constraints);
 
             return (bool)$queryBuilder
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
         } catch (TableNotFoundException $e) {
             return false;
@@ -120,7 +120,7 @@ class BrokenLinkRepository
                     )
                 )
                 ->groupBy('link_type')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $statement->fetchAssociative()) {
                 if (!isset($result[$row['link_type']])) {
@@ -150,7 +150,7 @@ class BrokenLinkRepository
                 )
             )
             ->set('needs_recheck', 1)
-            ->execute();
+            ->executeStatement();
     }
 
     public function removeBrokenLinksForRecord(string $tableName, int $recordUid): void
@@ -169,7 +169,7 @@ class BrokenLinkRepository
                     $queryBuilder->createNamedParameter($tableName)
                 )
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -216,7 +216,7 @@ class BrokenLinkRepository
                         $queryBuilder->quoteArrayBasedValueListToStringList($linkTypes)
                     )
                 )
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -301,7 +301,7 @@ class BrokenLinkRepository
                 ->where(...$constraints)
                 ->orderBy('tx_linkvalidator_link.record_uid')
                 ->addOrderBy('tx_linkvalidator_link.uid')
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
             foreach ($records as &$record) {
                 $response = json_decode($record['url_response'], true);

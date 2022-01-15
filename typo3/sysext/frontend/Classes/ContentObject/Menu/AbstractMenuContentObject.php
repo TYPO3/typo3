@@ -908,7 +908,7 @@ abstract class AbstractMenuContentObject
                 $queryBuilder->orderBy($sortField, 'desc');
             }
 
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
             while ($row = $result->fetchAssociative()) {
                 $this->sys_page->versionOL('pages', $row, true);
                 if (is_array($row)) {

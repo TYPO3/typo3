@@ -92,7 +92,7 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
                     $queryBuilder->createNamedParameter($end, Connection::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 

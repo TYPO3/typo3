@@ -78,7 +78,7 @@ class FrontendUserRepository
                 $queryBuilder->expr()->eq('felogin_forgotHash', $queryBuilder->createNamedParameter($forgotPasswordHash))
             )
         ;
-        $query->execute();
+        $query->executeStatement();
     }
 
     /**
@@ -102,7 +102,7 @@ class FrontendUserRepository
             )
         ;
 
-        return (bool)$query->execute()->fetchOne();
+        return (bool)$query->executeQuery()->fetchOne();
     }
 
     /**
@@ -124,7 +124,7 @@ class FrontendUserRepository
             )
             ->set('felogin_forgotHash', $hash)
         ;
-        $query->execute();
+        $query->executeStatement();
     }
 
     /**
@@ -148,7 +148,7 @@ class FrontendUserRepository
                 )
             )
         ;
-        $result = $query->execute()->fetchAssociative();
+        $result = $query->executeQuery()->fetchAssociative();
         if (!is_array($result)) {
             $result = [];
         }
@@ -183,7 +183,7 @@ class FrontendUserRepository
             $query->andWhere($queryBuilder->expr()->in('pid', $pages));
         }
 
-        $column = $query->execute()->fetchOne();
+        $column = $query->executeQuery()->fetchOne();
         return $column === false || $column === '' ? null : (string)$column;
     }
 
@@ -210,7 +210,7 @@ class FrontendUserRepository
             ->setMaxResults(1)
         ;
 
-        $row = $query->execute()->fetchAssociative();
+        $row = $query->executeQuery()->fetchAssociative();
         return is_array($row) ? $row : null;
     }
 
@@ -238,7 +238,7 @@ class FrontendUserRepository
             ->setMaxResults(1)
         ;
 
-        $column = $query->execute()->fetchOne();
+        $column = $query->executeQuery()->fetchOne();
         return $column === false ? null : (int)$column;
     }
 }

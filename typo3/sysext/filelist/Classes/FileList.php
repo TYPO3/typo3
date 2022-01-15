@@ -763,7 +763,7 @@ class FileList
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $translations = [];
@@ -1156,7 +1156,7 @@ class FileList
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return $this->generateReferenceToolTip($referenceCount, $fileOrFolderObject);

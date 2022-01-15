@@ -683,7 +683,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                         'doktype',
                         $queryBuilder->createNamedParameter(PageRepository::DOKTYPE_BE_USER_SECTION, \PDO::PARAM_INT)
                     )
-                )->execute();
+                )->executeQuery();
             while ($row = $queryResult->fetchAssociative()) {
                 // Find mount point if any:
                 $next_id = (int)$row['uid'];

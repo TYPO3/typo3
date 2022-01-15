@@ -263,7 +263,7 @@ class NewMultiplePagesController
                 )
             )
             ->orderBy('sorting')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 

@@ -76,7 +76,7 @@ class ListSysLogCommand extends Command
                 )
             )
             ->orderBy('tstamp', 'DESC')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $rowIterator->fetchAssociative()) {
             $logData = unserialize($row['log_data'], ['allowed_classes' => false]) ?: [];

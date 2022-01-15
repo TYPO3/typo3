@@ -147,7 +147,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         $content = '';
         if (!empty($cacheRow)) {
@@ -182,7 +182,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return (bool)$count;
     }
@@ -238,7 +238,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 )
             )
             ->groupBy($this->cacheTable . '.identifier')
-            ->execute();
+            ->executeQuery();
         $identifiers = $result->fetchFirstColumn();
         return array_combine($identifiers, $identifiers);
     }
@@ -306,15 +306,15 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 ->where('tag IN (' . implode(',', $quotedTagList) . ')')
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
-                ->execute();
+                ->executeQuery();
             $cacheEntryIdentifiers = $result->fetchFirstColumn();
             $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
             $queryBuilder->delete($this->cacheTable)
                 ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->execute();
+                ->executeStatement();
             $queryBuilder->delete($this->tagsTable)
                 ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -354,15 +354,15 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 ->where('tag = ' . $quotedTag)
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
-                ->execute();
+                ->executeQuery();
             $cacheEntryIdentifiers = $result->fetchFirstColumn();
             $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
             $queryBuilder->delete($this->cacheTable)
                 ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->execute();
+                ->executeStatement();
             $queryBuilder->delete($this->tagsTable)
                 ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -403,7 +403,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 ))
                 // group by is like DISTINCT and used here to suppress possible duplicate identifiers
                 ->groupBy('identifier')
-                ->execute();
+                ->executeQuery();
 
             // Get identifiers of expired cache entries
             $cacheEntryIdentifiers = $result->fetchFirstColumn();
@@ -412,14 +412,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
                 $queryBuilder->delete($this->tagsTable)
                     ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                    ->execute();
+                    ->executeStatement();
             }
             $queryBuilder->delete($this->cacheTable)
                 ->where($queryBuilder->expr()->lt(
                     'expires',
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 ))
-                ->execute();
+                ->executeStatement();
 
             // Find out which "orphaned" tags rows exists that have no cache row and delete those, too.
             $queryBuilder = $connection->createQueryBuilder();
@@ -433,14 +433,14 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
                 )
                 ->where($queryBuilder->expr()->isNull('cache.identifier'))
                 ->groupBy('tags.identifier')
-                ->execute();
+                ->executeQuery();
             $tagsEntryIdentifiers = $result->fetchFirstColumn();
 
             if (!empty($tagsEntryIdentifiers)) {
                 $quotedIdentifiers = $queryBuilder->createNamedParameter($tagsEntryIdentifiers, Connection::PARAM_STR_ARRAY);
                 $queryBuilder->delete($this->tagsTable)
                     ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                    ->execute();
+                    ->executeStatement();
             }
         }
     }

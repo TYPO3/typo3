@@ -184,7 +184,7 @@ class PlainDataResolver
                     $queryBuilder->createNamedParameter($this->workspaceId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while ($version = $result->fetchAssociative()) {
             $liveReferenceId = $version['t3ver_oid'];
@@ -241,7 +241,7 @@ class PlainDataResolver
                     $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while ($movedRecord = $result->fetchAssociative()) {
             $liveReferenceId = (int)$movedRecord['t3ver_oid'];
@@ -310,7 +310,7 @@ class PlainDataResolver
         // We thus add a general explicit order by uid here to force deterministic row returns.
         $queryBuilder->addOrderBy('uid');
 
-        $sortedIds = $queryBuilder->execute()->fetchAllAssociative();
+        $sortedIds = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return array_map('intval', array_column($sortedIds, 'uid'));
     }
@@ -346,7 +346,7 @@ class PlainDataResolver
                     $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $versionIds = [];
         while ($record = $result->fetchAssociative()) {

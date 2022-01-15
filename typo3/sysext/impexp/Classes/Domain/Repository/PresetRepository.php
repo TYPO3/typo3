@@ -67,7 +67,7 @@ final class PresetRepository
                 )
             );
         }
-        $presets = $queryBuilder->execute();
+        $presets = $queryBuilder->executeQuery();
         // @todo: View should handle default option and data details parsing, not repository.
         $options = [''];
         while ($presetCfg = $presets->fetchAssociative()) {
@@ -174,7 +174,7 @@ final class PresetRepository
         $preset = $queryBuilder->select('*')
             ->from(self::PRESET_TABLE)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         if (!is_array($preset)) {
             throw new PresetNotFoundException(

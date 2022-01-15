@@ -194,7 +194,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 'workspace',
                 $queryBuilder->createNamedParameter($this->getWorkspaceId(), \PDO::PARAM_INT)
             )
-        )->execute();
+        )->executeQuery();
         $currentRelationHashes = [];
         while ($relation = $queryResult->fetchAssociative()) {
             $currentRelationHashes[$relation['hash']] = true;
@@ -259,7 +259,7 @@ class ReferenceIndex implements LoggerAwareInterface
                                     $queryBuilder->createNamedParameter($chunk, Connection::PARAM_STR_ARRAY)
                                 )
                             )
-                            ->execute();
+                            ->executeStatement();
                     }
                 }
             }
@@ -289,7 +289,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     'ref_uid',
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
-            )->execute()->fetchOne();
+            )->executeQuery()->fetchOne();
     }
 
     /**
@@ -657,7 +657,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $queryBuilder->expr()->eq('hash', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             // Check if reference existed.
@@ -683,7 +683,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if (is_array($record)) {
@@ -972,7 +972,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     ->select(...$fields)
                     ->from($tableName)
                     ->orderBy('uid')
-                    ->execute();
+                    ->executeQuery();
             } catch (DBALException $e) {
                 // Table exists in TCA but does not exist in the database
                 $this->logger->error('Table {table_name} exists in TCA but does not exist in the database. You should run the Database Analyzer in the Install Tool to fix this.', [
@@ -1069,7 +1069,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     ),
                     'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
 
             if ($lostIndexes > 0) {
@@ -1088,7 +1088,7 @@ class ReferenceIndex implements LoggerAwareInterface
                             ),
                             'NOT EXISTS (' . $subQueryBuilder->getSQL() . ')'
                         )
-                        ->execute();
+                        ->executeStatement();
                 }
             }
         }
@@ -1138,7 +1138,7 @@ class ReferenceIndex implements LoggerAwareInterface
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
         // There are no "hidden" workspaces, which wouldn't make much sense anyways.
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $result = $queryBuilder->select('uid')->from('sys_workspace')->orderBy('uid')->execute();
+        $result = $queryBuilder->select('uid')->from('sys_workspace')->orderBy('uid')->executeQuery();
         // "0", plus non-deleted workspaces are active
         $activeWorkspaces = [0];
         while ($row = $result->fetchFirstColumn()) {
@@ -1164,7 +1164,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return (int)$numberOfInvalidWorkspaceRecords;
     }
@@ -1183,7 +1183,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($activeWorkspaces, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeStatement();
     }
 
     protected function getAmountOfUnusedTablesInReferenceIndex(array $tableNames): int
@@ -1199,7 +1199,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     'tablename',
                     $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
                 )
-            )->execute()
+            )->executeQuery()
             ->fetchOne();
         return (int)$lostTables;
     }
@@ -1214,7 +1214,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     'tablename',
                     $queryBuilder->createNamedParameter($tableNames, Connection::PARAM_STR_ARRAY)
                 )
-            )->execute();
+            )->executeStatement();
     }
 
     /**
@@ -1263,7 +1263,7 @@ class ReferenceIndex implements LoggerAwareInterface
                 )
             );
         }
-        return $queryBuilder->execute()->fetchAssociative();
+        return $queryBuilder->executeQuery()->fetchAssociative();
     }
 
     /**

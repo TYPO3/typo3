@@ -102,7 +102,7 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
                 $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         return is_array($row) ? $row : null;
     }
@@ -151,6 +151,6 @@ class WorkspaceNewPlaceholderRemovalMigration implements RowUpdaterInterface, Lo
                 );
             }
         }
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 }

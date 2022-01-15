@@ -240,7 +240,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $queryBuilder->setMaxResults($query->getLimit());
             }
             try {
-                $rows = $queryBuilder->execute()->fetchAllAssociative();
+                $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074485, $e);
             }
@@ -269,7 +269,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         // this directly is possible
         if ($realStatement instanceof QueryBuilder) {
             try {
-                $result = $realStatement->execute();
+                $result = $realStatement->executeQuery();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472064721, $e);
             }
@@ -341,7 +341,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceUid));
 
             try {
-                $count = $queryBuilder->execute()->fetchOne();
+                $count = $queryBuilder->executeQuery()->fetchOne();
             } catch (DBALException $e) {
                 throw new SqlErrorException($e->getPrevious()->getMessage(), 1472074379, $e);
             }
@@ -396,7 +396,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
         try {
             $uid = (int)$queryBuilder
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             if ($uid > 0) {
                 return $uid;
@@ -584,7 +584,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($rows[0]['uid'], \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         if (!empty($movedRecords)) {
             $rows = $movedRecords;

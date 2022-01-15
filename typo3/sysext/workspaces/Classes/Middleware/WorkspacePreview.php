@@ -293,7 +293,7 @@ class WorkspacePreview implements MiddlewareInterface
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
     }
 
@@ -381,7 +381,7 @@ class WorkspacePreview implements MiddlewareInterface
                     $queryBuilder->createNamedParameter($workspaceId, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return (string)($title !== false ? $title : '');
     }

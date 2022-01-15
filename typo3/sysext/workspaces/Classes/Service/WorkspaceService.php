@@ -68,7 +68,7 @@ class WorkspaceService implements SingletonInterface
             ->select('uid', 'title', 'adminusers', 'members')
             ->from('sys_workspace')
             ->orderBy('title')
-            ->execute();
+            ->executeQuery();
 
         while ($workspace = $result->fetchAssociative()) {
             if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
@@ -398,7 +398,7 @@ class WorkspaceService implements SingletonInterface
             ->from($table, 'B')
             ->where(...$constraints)
             ->orderBy('B.uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $rows;
@@ -519,7 +519,7 @@ class WorkspaceService implements SingletonInterface
             ->from($table)
             ->where(...$constraints)
             ->orderBy('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -620,7 +620,7 @@ class WorkspaceService implements SingletonInterface
             ->from($table, 'C')
             ->where(...$constraints)
             ->orderBy('C.uid')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $rows;
@@ -688,7 +688,7 @@ class WorkspaceService implements SingletonInterface
                     )
                 )
                 ->orderBy('uid')
-                ->execute();
+                ->executeQuery();
 
             $movedAwayPages = [];
             while ($row = $result->fetchAssociative()) {
@@ -724,7 +724,7 @@ class WorkspaceService implements SingletonInterface
                     )
                 )
                 ->orderBy('uid')
-                ->execute();
+                ->executeQuery();
 
             $pages = [];
             while ($row = $result->fetchAssociative()) {
@@ -772,7 +772,7 @@ class WorkspaceService implements SingletonInterface
                     $queryBuilder->expr()->eq('sys_language_uid', 0),
                     $permsClause
                 )
-                ->execute();
+                ->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $children[] = (int)$row['uid'];
@@ -879,7 +879,7 @@ class WorkspaceService implements SingletonInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($row !== false) {
@@ -1028,7 +1028,7 @@ class WorkspaceService implements SingletonInterface
                     )
                 )
                 ->groupBy('pid')
-                ->execute();
+                ->executeQuery();
 
             $pageIds = [];
             while ($row = $result->fetchAssociative()) {

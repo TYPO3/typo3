@@ -247,7 +247,7 @@ class PageTreeRepository
         }
 
         $pageRecords = $queryBuilder
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // This is necessary to resolve all IDs in a workspace
@@ -284,7 +284,7 @@ class PageTreeRepository
                     ->where(
                         $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordIds, Connection::PARAM_INT_ARRAY))
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAllAssociative();
 
                 foreach ($pageRecords as &$pageRecord) {
@@ -356,7 +356,7 @@ class PageTreeRepository
             );
         }
 
-        $pageRecords = $query->execute()->fetchAllAssociative();
+        $pageRecords = $query->executeQuery()->fetchAllAssociative();
 
         $ids = array_column($pageRecords, 'uid');
         foreach ($dbMounts as $mount) {
@@ -405,7 +405,7 @@ class PageTreeRepository
                 ->where(
                     $queryBuilder->expr()->in('uid', $recordIds)
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
         }
 
@@ -548,7 +548,7 @@ class PageTreeRepository
 
         $queryBuilder->andWhere($searchParts);
         $pageRecords = $queryBuilder
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $livePagePids = [];
@@ -590,7 +590,7 @@ class PageTreeRepository
                     );
                 $queryBuilder->andWhere($searchParts);
                 $pageRecords = $queryBuilder
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAllAssociative();
             }
         }

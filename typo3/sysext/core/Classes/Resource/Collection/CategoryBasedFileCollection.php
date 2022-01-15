@@ -82,7 +82,7 @@ class CategoryBasedFileCollection extends AbstractFileCollection
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
                 )
             )
-            ->execute();
+            ->executeQuery();
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         while ($record = $statement->fetchAssociative()) {
             $this->add($resourceFactory->getFileObject((int)$record['file']));

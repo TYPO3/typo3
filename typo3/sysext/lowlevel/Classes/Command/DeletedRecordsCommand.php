@@ -160,10 +160,15 @@ class DeletedRecordsCommand extends Command
                         $queryBuilderForPages->expr()->neq('deleted', 0)
                     )
                 )
-                ->execute();
+                // @todo Executing and not assigning and use the result looks weired, at least with the
+                //       circumstance that the same QueryBuilder is reused as count query and executed
+                //       directly afterwards - must be rechecked and either solved or proper commented
+                //       why this mystery is needed here as this is not obvious and against general
+                //       recommendation to not reuse the QueryBuilder.
+                ->executeQuery();
             $rowCount = $queryBuilderForPages
                 ->count('uid')
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             // Register if page itself is deleted
             if ($rowCount > 0) {
@@ -189,7 +194,7 @@ class DeletedRecordsCommand extends Command
                         $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             while ($recordOnPage = $result->fetchAssociative()) {
                 // Register record as deleted
@@ -225,7 +230,7 @@ class DeletedRecordsCommand extends Command
                     $queryBuilderForPages->expr()->eq('pid', $pageId)
                 )
                 ->orderBy('sorting')
-                ->execute();
+                ->executeQuery();
 
             while ($subPage = $result->fetchAssociative()) {
                 $deletedRecords = $this->findAllFlaggedRecordsInPage($subPage['uid'], $depth, $deletedRecords);

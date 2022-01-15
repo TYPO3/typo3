@@ -225,7 +225,7 @@ class SlugService implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('uid', 'ASC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // if the language is not the default language, resolve the language related records.
@@ -239,7 +239,7 @@ class SlugService implements LoggerAwareInterface
                     $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT))
                 )
                 ->orderBy('uid', 'ASC')
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
         }
         $results = [];

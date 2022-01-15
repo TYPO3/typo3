@@ -157,7 +157,7 @@ class CacheService implements SingletonInterface
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     )
                 )
-                ->execute();
+                ->executeQuery();
             if ($row = $result->fetchAssociative()) {
                 $storagePage = $row['pid'];
                 $pageIdsToClear[] = $storagePage;

@@ -657,7 +657,7 @@ class ExtendedTemplateService extends TemplateService
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
             );
         }
-        $row = $queryBuilder->execute()->fetchAssociative();
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
         BackendUtility::workspaceOL('sys_template', $row);
 
         return $row;
@@ -674,7 +674,7 @@ class ExtendedTemplateService extends TemplateService
         if (empty($pid)) {
             return [];
         }
-        $result = $this->getTemplateQueryBuilder($pid)->execute();
+        $result = $this->getTemplateQueryBuilder($pid)->executeQuery();
         $outRes = [];
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('sys_template', $row);
