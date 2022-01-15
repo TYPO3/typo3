@@ -111,67 +111,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   describe('tests for formatValue', () => {
     using(formatValueDataProvider, function(testCase: FormatValueData) {
       it(testCase.description, () => {
-        FormEngineValidation.USmode = 0;
-        FormEngineValidation.initialize();
-        const result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
-        expect(result).toBe(testCase.result);
-      });
-    });
-  });
-
-  const formatValueUsModeDataProvider: Array<FormatValueData> = [
-    {
-      'description': 'works for type date with timestamp in US mode',
-      'type': 'date',
-      'value': 10000000,
-      'config': {},
-      'result': '04-26-1970'
-    },
-    {
-      'description': 'works for type date with iso date in US mode',
-      'type': 'date',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '12-02-2016'
-    },
-    {
-      'description': 'works for type datetime with timestamp in US mode',
-      'type': 'datetime',
-      'value': 10000000,
-      'config': {},
-      'result': '17:46 04-26-1970'
-    },
-    {
-      'description': 'works for type datetime with iso date in US mode',
-      'type': 'datetime',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '11:16 12-02-2016'
-    },
-    {
-      'description': 'works for type time with timestamp in US mode',
-      'type': 'time',
-      'value': 10000000,
-      'config': {},
-      'result': '17:46'
-    },
-    {
-      'description': 'works for type time with iso date in US mode',
-      'type': 'time',
-      'value': '2016-12-02T11:16:06+00:00',
-      'config': {},
-      'result': '11:16'
-    }
-  ];
-
-  /**
-   * @dataProvider formatValueUsModeDataProvider
-   * @test
-   */
-  describe('tests for formatValue in US Mode', () => {
-    using(formatValueUsModeDataProvider, function(testCase: FormatValueData) {
-      it(testCase.description, () => {
-        FormEngineValidation.USmode = 1;
         FormEngineValidation.initialize();
         const result = FormEngineValidation.formatValue(testCase.type, testCase.value, testCase.config);
         expect(result).toBe(testCase.result);

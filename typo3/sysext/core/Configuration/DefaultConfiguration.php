@@ -87,7 +87,6 @@ return [
         'devIPmask' => '127.0.0.1,::1',
         'ddmmyy' => 'd-m-y',
         'hhmm' => 'H:i',
-        'USdateFormat' => false,
         'loginCopyrightWarrantyProvider' => '',
         'loginCopyrightWarrantyURL' => '',
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf,yaml,yml',

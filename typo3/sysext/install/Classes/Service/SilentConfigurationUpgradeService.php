@@ -167,6 +167,8 @@ class SilentConfigurationUpgradeService
         'FE/loginSecurityLevel',
         // #94871
         'SYS/features/form.legacyUploadMimeTypes',
+        // #96550
+        'SYS/USdateFormat',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

@@ -28,7 +28,7 @@ export = (function() {
   /**
    * The main FormEngineValidation object
    *
-   * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, USmode: number, passwordDummy: string}}
+   * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, passwordDummy: string}}
    * @exports TYPO3/CMS/Backend/FormEngineValidation
    */
   const FormEngineValidation: any = {
@@ -41,7 +41,6 @@ export = (function() {
     lastYear: 0,
     lastDate: 0,
     lastTime: 0,
-    USmode: 0,
     passwordDummy: '********'
   };
 
@@ -92,14 +91,6 @@ export = (function() {
         FormEngineValidation.initializeInputField(fieldName);
       }
     });
-  };
-
-  /**
-   *
-   * @param {Number} mode
-   */
-  FormEngineValidation.setUsMode = function(mode: number): void {
-    FormEngineValidation.USmode = mode;
   };
 
   /**
@@ -164,11 +155,7 @@ export = (function() {
         // poor man’s ISO-8601 detection: if we have a "-" in it, it apparently is not an integer.
         if (value.toString().indexOf('-') > 0) {
           const date = moment.utc(value);
-          if (FormEngineValidation.USmode) {
-            theString = date.format('MM-DD-YYYY');
-          } else {
-            theString = date.format('DD-MM-YYYY');
-          }
+          theString = date.format('DD-MM-YYYY');
         } else {
           // @ts-ignore
           parsedInt = value * 1;
@@ -179,11 +166,7 @@ export = (function() {
           const day = (theTime.getUTCDate()).toString(10).padStart(2, '0');
           const month = (theTime.getUTCMonth() + 1).toString(10).padStart(2, '0');
           const year = this.getYear(theTime);
-          if (FormEngineValidation.USmode) {
-            theString = month + '-' + day + '-' + year;
-          } else {
-            theString = day + '-' + month + '-' + year;
-          }
+          theString = day + '-' + month + '-' + year;
         }
         break;
       case 'datetime':
@@ -730,11 +713,8 @@ export = (function() {
     }
 
     const year = (values.values[3]) ? FormEngineValidation.parseInt(values.values[3]) : FormEngineValidation.getYear(today);
-    let usMode = FormEngineValidation.USmode ? 1 : 2;
-    const month = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCMonth() + 1;
-    usMode = FormEngineValidation.USmode ? 2 : 1;
-
-    const day = (values.values[usMode]) ? FormEngineValidation.parseInt(values.values[usMode]) : today.getUTCDate();
+    const month = (values.values[2]) ? FormEngineValidation.parseInt(values.values[2]) : today.getUTCMonth() + 1;
+    const day = (values.values[1]) ? FormEngineValidation.parseInt(values.values[1]) : today.getUTCDate();
     const theTime = moment.utc();
     // eslint-disable-next-line radix
     theTime.year(parseInt(year)).month(parseInt(month) - 1).date(parseInt(day)).hour(0).minute(0).second(0);

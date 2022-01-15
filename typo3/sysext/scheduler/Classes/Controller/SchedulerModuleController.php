@@ -689,7 +689,7 @@ class SchedulerModuleController
         $this->view->assign('registeredTaskGroups', $registeredTaskGroups);
 
         // Start date/time field
-        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
+        $dateFormat = '%H:%M %d-%m-%Y';
         // @todo Replace deprecated strftime in php 8.1. Suppress warning in v11.
         $this->view->assign('start_value_hr', ($taskInfo['start'] > 0 ? @strftime($dateFormat, $taskInfo['start']) : ''));
         $this->view->assign('start_value', $taskInfo['start']);

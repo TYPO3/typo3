@@ -85,9 +85,7 @@ class PreviewController
         $this->pageRenderer->addInlineSetting(
             'DateTimePicker',
             'DateFormat',
-            ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ?? false)
-                ? ['MM-DD-Y', 'HH:mm MM-DD-Y']
-                : ['DD-MM-Y', 'HH:mm DD-MM-Y']
+            ['DD-MM-Y', 'HH:mm DD-MM-Y']
         );
         // @todo Most likely the inline configuration can be removed. Seems to be unused in the JavaScript module
         $this->pageRenderer->addInlineSetting('TYPO3', 'configuration', [

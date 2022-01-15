@@ -180,8 +180,7 @@ class FormResultCompiler
         $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine')
                 ->invoke(
                     'initialize',
-                    (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
-                    (int)(bool)($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ?? false)
+                    (string)$uriBuilder->buildUriFromRoute('wizard_element_browser')
                 );
         $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineReview');
 
@@ -191,7 +190,7 @@ class FormResultCompiler
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
+        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');

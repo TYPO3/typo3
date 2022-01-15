@@ -32,7 +32,6 @@ declare namespace TYPO3 {
   export namespace CMS {
     export namespace Backend {
       export class FormEngineValidation {
-        public USmode: number;
         public readonly errorClass: string;
         public markFieldAsChanged(field: HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement|JQuery): void;
         public trimExplode(delimiter: string, string: string): Array<string>;

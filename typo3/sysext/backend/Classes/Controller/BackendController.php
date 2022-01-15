@@ -301,7 +301,7 @@ class BackendController
     {
         $beUser = $this->getBackendUser();
         // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-Y', 'HH:mm MM-DD-Y'] : ['DD-MM-Y', 'HH:mm DD-MM-Y']);
+        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
         $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
         $t3Configuration = [

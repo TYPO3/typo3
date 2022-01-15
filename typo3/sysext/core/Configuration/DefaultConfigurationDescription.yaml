@@ -96,9 +96,6 @@ SYS:
         hhmm:
             type: text
             description: 'Format of Hours-Minutes - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
-        USdateFormat:
-            type: bool
-            description: 'If TRUE, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy'
         loginCopyrightWarrantyProvider:
             type: text
             description: 'If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).'

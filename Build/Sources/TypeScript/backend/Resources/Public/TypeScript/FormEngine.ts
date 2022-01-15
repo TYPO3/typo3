@@ -1214,7 +1214,7 @@ export = (function() {
    * @param {String} browserUrl
    * @param {Number} mode
    */
-  FormEngine.initialize = function(browserUrl: string, mode: number): void {
+  FormEngine.initialize = function(browserUrl: string): void {
     DocumentSaveActions.getInstance().addPreSubmitCallback(function() {
       $('[data-active-password]:not([type="password"])').each(function(index: number, element: HTMLElement) {
         element.setAttribute('type', 'password');
@@ -1223,7 +1223,6 @@ export = (function() {
     });
 
     FormEngine.browserUrl = browserUrl;
-    FormEngine.Validation.setUsMode(mode);
 
     $(function() {
       FormEngine.initializeEvents();

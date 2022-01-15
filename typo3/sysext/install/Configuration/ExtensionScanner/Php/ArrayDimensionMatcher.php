@@ -589,4 +589,9 @@ return [
             'Feature-87616-PSR-14EventForModifyingPageLinkGeneration.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'USdateFormat\']' => [
+        'restFiles' => [
+            'Breaking-96550-TYPO3_CONF_VARSSYSUSdateFormatRemoved.rst',
+        ],
+    ],
 ];
