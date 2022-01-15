@@ -563,7 +563,7 @@ class InlineControlContainer extends AbstractContainer
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
                     $item .= '</button>';
 
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/DragUploader')->invoke('initialize');
+                    $this->requireJsModules[] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/DragUploader');
                 }
                 if (!empty($onlineMediaAllowed) && $showByUrl) {
                     $buttonStyle = '';
