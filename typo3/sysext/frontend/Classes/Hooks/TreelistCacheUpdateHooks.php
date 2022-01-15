@@ -261,7 +261,7 @@ class TreelistCacheUpdateHooks
                         $queryBuilder->createNamedParameter($rootLineIds, Connection::PARAM_INT_ARRAY)
                     )
                 )
-                ->execute();
+                ->executeStatement();
         }
     }
 
@@ -280,7 +280,7 @@ class TreelistCacheUpdateHooks
             ->where(
                 $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote($affectedPage))
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -300,7 +300,7 @@ class TreelistCacheUpdateHooks
                 $queryBuilder->expr()->inSet('treelist', $queryBuilder->quote($affectedPage))
             )
             ->set('expires', $expirationTime)
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -318,7 +318,7 @@ class TreelistCacheUpdateHooks
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeStatement();
     }
 
     /**

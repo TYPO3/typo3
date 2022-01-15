@@ -102,7 +102,7 @@ abstract class AbstractContentPagePositionMap
                 );
             }
 
-            $res = $queryBuilder->execute();
+            $res = $queryBuilder->executeQuery();
             $lines[$colPos] = [
                 $this->insertPositionIcon(null, $colPos, $pid),
             ];

@@ -157,11 +157,11 @@ class SuggestWizardDefaultReceiver
             ->from($this->table)
             ->setFirstResult($start)
             ->setMaxResults($maxQueryResults)
-            ->execute();
+            ->executeQuery();
         $allRowsCount = $this->queryBuilder
             ->count('uid')
             ->resetQueryPart('orderBy')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         if ($allRowsCount) {
             while ($row = $result->fetchAssociative()) {

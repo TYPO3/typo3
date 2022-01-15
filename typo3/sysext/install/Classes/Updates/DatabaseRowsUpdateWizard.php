@@ -202,7 +202,7 @@ class DatabaseRowsUpdateWizard implements UpgradeWizardInterface, RepeatableInte
                     $queryBuilder->expr()->gt('uid', $queryBuilder->createNamedParameter($startPosition['uid']))
                 );
             }
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
             $rowCountWithoutUpdate = 0;
             while ($row = $statement->fetchAssociative()) {
                 $rowBefore = $row;

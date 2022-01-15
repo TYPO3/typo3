@@ -64,7 +64,7 @@ final class SystemInformationController
                     $queryBuilder->createNamedParameter([-1, 1, 2], Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         if ($count > 0) {

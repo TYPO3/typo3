@@ -278,7 +278,7 @@ class AdministrationController extends ActionController
                     $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!is_array($pageHashRow)) {
@@ -295,7 +295,7 @@ class AdministrationController extends ActionController
                     $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         $debugInfo = [];
         $lexer = '';
@@ -323,7 +323,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->orderBy('index_words.baseword')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         foreach ($wordRecords as $id => $row) {
             if (isset($keywords[$row['baseword']])) {
@@ -359,7 +359,7 @@ class AdministrationController extends ActionController
                     $queryBuilder->createNamedParameter($pageHash, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // top words
@@ -384,7 +384,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->orderBy('index_rel.count', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // top frequency
@@ -409,7 +409,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->orderBy('index_rel.freq', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $this->view->assignMultiple([
@@ -482,7 +482,7 @@ class AdministrationController extends ActionController
                 )
             )
             ->orderBy('index_rel.freq', 'desc')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $this->view->assignMultiple([

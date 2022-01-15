@@ -258,7 +258,7 @@ class TypoScriptTemplateModuleController
                 ->from('sys_template')
                 ->orderBy('sys_template.pid')
                 ->addOrderBy('sys_template.sorting')
-                ->execute();
+                ->executeQuery();
             $pArray = [];
             while ($record = $result->fetchAssociative()) {
                 BackendUtility::workspaceOL('sys_template', $record, $workspaceId, true);

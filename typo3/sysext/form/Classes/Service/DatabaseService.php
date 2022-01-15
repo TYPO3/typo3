@@ -65,7 +65,7 @@ class DatabaseService
                     $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -130,7 +130,7 @@ class DatabaseService
             ->from('sys_refindex')
             ->where(...$constraints)
             ->groupBy($column)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 }

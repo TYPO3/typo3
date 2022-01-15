@@ -143,7 +143,7 @@ class StorageRepository implements LoggerAwareInterface
                 ->select('*')
                 ->from($this->table)
                 ->orderBy('name')
-                ->execute();
+                ->executeQuery();
 
             $this->storageRowCache = [];
             while ($row = $result->fetchAssociative()) {

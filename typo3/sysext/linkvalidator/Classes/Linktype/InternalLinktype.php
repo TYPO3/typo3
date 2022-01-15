@@ -135,7 +135,7 @@ class InternalLinktype extends AbstractLinktype
                     $queryBuilder->createNamedParameter($page, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         $this->responsePage = true;
         if ($row) {
@@ -182,7 +182,7 @@ class InternalLinktype extends AbstractLinktype
                     $queryBuilder->createNamedParameter($anchor, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         $this->responseContent = true;
         // this content element exists

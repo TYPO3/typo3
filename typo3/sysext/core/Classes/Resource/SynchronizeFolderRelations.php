@@ -67,7 +67,7 @@ class SynchronizeFolderRelations
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storageId, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('folder'))
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $folder = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['folder']) ?? '';
@@ -77,7 +77,7 @@ class SynchronizeFolderRelations
                     ->update('sys_file_collection')
                     ->set('folder', $folder)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['uid'], Connection::PARAM_INT)))
-                    ->execute();
+                    ->executeStatement();
             }
         }
 
@@ -108,7 +108,7 @@ class SynchronizeFolderRelations
                 $queryBuilder->expr()->like('path', $queryBuilder->quote($sourceIdentifier . '%')),
                 $queryBuilder->expr()->eq('base', $queryBuilder->createNamedParameter((string)$storageId))
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $path = preg_replace(sprintf('/^%s/', preg_quote($sourceIdentifier, '/')), $targetIdentifier, $row['path']) ?? '';
@@ -118,7 +118,7 @@ class SynchronizeFolderRelations
                     ->update('sys_filemounts')
                     ->set('path', $path)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['uid'], Connection::PARAM_INT)))
-                    ->execute();
+                    ->executeStatement();
             }
         }
 

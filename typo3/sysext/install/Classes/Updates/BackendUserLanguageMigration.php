@@ -87,13 +87,13 @@ class BackendUserLanguageMigration implements UpgradeWizardInterface
         $queryBuilder = $this->getPreparedQueryBuilder();
         return (bool)$queryBuilder
             ->count('uid')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
     protected function getRecordsToUpdate(): array
     {
-        return $this->getPreparedQueryBuilder()->select(...['uid', 'uc', 'lang'])->execute()->fetchAllAssociative();
+        return $this->getPreparedQueryBuilder()->select(...['uid', 'uc', 'lang'])->executeQuery()->fetchAllAssociative();
     }
 
     protected function getPreparedQueryBuilder(): QueryBuilder

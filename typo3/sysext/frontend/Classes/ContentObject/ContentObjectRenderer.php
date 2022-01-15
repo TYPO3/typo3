@@ -5626,7 +5626,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if (is_array($cacheEntry)) {
@@ -5679,7 +5679,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
             }
 
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
             while ($row = $result->fetchAssociative()) {
                 /** @var VersionState $versionState */
                 $versionState = VersionState::cast($row['t3ver_state']);
@@ -5722,7 +5722,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
                     }
 
-                    $row = $queryBuilder->execute()->fetchAssociative();
+                    $row = $queryBuilder->executeQuery()->fetchAssociative();
                     $tsfe->sys_page->versionOL('pages', $row);
                     if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
                         || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
@@ -6047,7 +6047,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
 
                 try {
-                    $count = $countQueryBuilder->execute()->fetchOne();
+                    $count = $countQueryBuilder->executeQuery()->fetchOne();
                     $conf['max'] = str_ireplace('total', $count, $conf['max']);
                     $conf['begin'] = str_ireplace('total', $count, $conf['begin']);
                 } catch (DBALException $e) {

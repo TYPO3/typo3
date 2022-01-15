@@ -386,7 +386,7 @@ class NewRecordController
         $numberOfPages = $queryBuilder
             ->count('*')
             ->from('pages')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return $numberOfPages > 0;
     }

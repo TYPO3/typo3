@@ -932,7 +932,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreAddedForSelectOnExecute(): void
+    public function queryRestrictionsAreAddedForSelectOnExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -973,13 +973,13 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
      * @test
      */
-    public function queryRestrictionsAreAddedForCountOnExecute(): void
+    public function queryRestrictionsAreAddedForCountOnExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -1020,7 +1020,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
@@ -1073,7 +1073,7 @@ class QueryBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecute(): void
+    public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecuteQuery(): void
     {
         $GLOBALS['TCA']['pages']['ctrl'] = [
             'tstamp' => 'tstamp',
@@ -1114,7 +1114,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
 
         $subject->resetRestrictions();
 
@@ -1122,7 +1122,7 @@ class QueryBuilderTest extends UnitTestCase
         $this->connection->executeQuery($expectedSQL, Argument::cetera())
             ->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
@@ -1500,7 +1500,7 @@ class QueryBuilderTest extends UnitTestCase
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
@@ -1551,7 +1551,7 @@ class QueryBuilderTest extends UnitTestCase
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
@@ -1600,7 +1600,7 @@ class QueryBuilderTest extends UnitTestCase
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 
     /**
@@ -1649,6 +1649,6 @@ class QueryBuilderTest extends UnitTestCase
             Argument::cetera()
         )->willReturn($this->prophesize(Result::class)->reveal());
 
-        $subject->execute();
+        $subject->executeQuery();
     }
 }

@@ -121,7 +121,7 @@ class BackendUtility
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
             }
 
-            $row = $queryBuilder->execute()->fetchAssociative();
+            $row = $queryBuilder->executeQuery()->fetchAssociative();
             if ($row) {
                 return $row;
             }
@@ -322,7 +322,7 @@ class BackendUtility
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($andWhereClause));
             }
 
-            $recordLocalization = $queryBuilder->execute()->fetchAllAssociative();
+            $recordLocalization = $queryBuilder->executeQuery()->fetchAllAssociative();
         }
 
         return $recordLocalization;
@@ -822,7 +822,7 @@ class BackendUtility
             ->select('*')
             ->from($table)
             ->where(QueryHelper::stripLogicalOperatorPrefix($where))
-            ->execute();
+            ->executeQuery();
 
         while ($record = $res->fetchAssociative()) {
             // store the uid, because it might be unset if it's not among the requested $fields
@@ -2814,7 +2814,7 @@ class BackendUtility
                         )
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             $lang = static::getLanguageService();
             while ($row = $result->fetchAssociative()) {
@@ -3160,7 +3160,7 @@ class BackendUtility
                 }
             }
 
-            $count = $queryBuilder->execute()->fetchOne();
+            $count = $queryBuilder->executeQuery()->fetchOne();
         }
 
         if ($count) {
@@ -3201,7 +3201,7 @@ class BackendUtility
                         $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
         }
 
@@ -3287,7 +3287,7 @@ class BackendUtility
                 );
             }
 
-            $rows = $queryBuilder->execute()->fetchAllAssociative();
+            $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
 
             // Add rows to output array:
             if (is_array($rows)) {
@@ -3493,7 +3493,7 @@ class BackendUtility
                             )
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
 
                 return $row;
@@ -3624,7 +3624,7 @@ class BackendUtility
 
             $activeFeGroupId = $queryBuilder->select('uid')
                 ->from('fe_groups')
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
 
             if ($activeFeGroupId) {

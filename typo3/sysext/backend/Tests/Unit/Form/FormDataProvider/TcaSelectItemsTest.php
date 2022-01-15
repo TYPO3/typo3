@@ -152,7 +152,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->andWhere('`pages.uid` = `foreignTable.pid`')
             ->shouldBeCalled()
             ->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()
+        $queryBuilderProphet->executeQuery()
             ->shouldBeCalled()
             ->willReturn($statementProphet->reveal());
 
@@ -1015,7 +1015,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->from('fTable')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->from('pages')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->where(...array_shift($expectedWhere))->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         while ($constraint = array_shift($expectedWhere)) {
             $queryBuilderProphet->andWhere(...$constraint)
@@ -1118,7 +1118,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->where('ftable.uid=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
@@ -1182,7 +1182,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $prevException = new DBALException('Invalid table name', 1476045274);
         $exception = new DBALException('Driver error', 1476045971, $prevException);
 
-        $queryBuilderProphet->execute()->shouldBeCalled()->willThrow($exception);
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willThrow($exception);
 
         // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
@@ -1222,7 +1222,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         return [$connectionPoolProphet, $statementProphet];
     }
@@ -1385,7 +1385,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `sys_file_storage.pid`')
             ->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
@@ -1478,7 +1478,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $queryBuilderProphet->where('')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere(' 1=1')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
         $queryBuilderProphet->andWhere('`pages.uid` = `fTable.pid`')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
-        $queryBuilderProphet->execute()->shouldBeCalled()->willReturn($statementProphet->reveal());
+        $queryBuilderProphet->executeQuery()->shouldBeCalled()->willReturn($statementProphet->reveal());
 
         // Two instances are needed due to the push/pop behavior of addInstance()
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());

@@ -408,7 +408,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
         }
         if (empty($nodeData)) {
@@ -528,7 +528,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
                                 $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                             )
                         )
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAllAssociative();
 
                     if (!empty($records)) {
@@ -572,7 +572,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             );
         }
 
-        $records = $queryBuilder->execute()->fetchAllAssociative();
+        $records = $queryBuilder->executeQuery()->fetchAllAssociative();
         $uidArray = is_array($records) ? array_column($records, 'uid') : [];
 
         return $uidArray;

@@ -297,7 +297,7 @@ class PageRepository implements LoggerAwareInterface
             $this->where_groupAccess = '';
         }
 
-        $row = $queryBuilder->execute()->fetchAssociative();
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
         if ($row) {
             $this->versionOL('pages', $row);
             if (is_array($row)) {
@@ -337,7 +337,7 @@ class PageRepository implements LoggerAwareInterface
         $row = $queryBuilder->select('*')
             ->from('pages')
             ->where($queryBuilder->expr()->eq('uid', (int)$uid))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         $result = [];
@@ -557,7 +557,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter($languageUids, Connection::PARAM_INT_ARRAY)
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             // Create a list of rows ordered by values in $languageUids
             while ($row = $result->fetchAssociative()) {
@@ -653,7 +653,7 @@ class PageRepository implements LoggerAwareInterface
                             )
                         )
                         ->setMaxResults(1)
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
 
                     $this->versionOL($table, $olrow);
@@ -824,7 +824,7 @@ class PageRepository implements LoggerAwareInterface
                 $res->addOrderBy($order[0], $order[1] ?? 'ASC');
             }
         }
-        $result = $res->execute();
+        $result = $res->executeQuery();
 
         $pages = [];
         while ($page = $result->fetchAssociative()) {
@@ -945,7 +945,7 @@ class PageRepository implements LoggerAwareInterface
                     QueryHelper::stripLogicalOperatorPrefix($this->where_groupAccess),
                     QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
 
             if (!$count) {
@@ -1182,7 +1182,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             // Only look for version overlay if page record is not supplied; This assumes
@@ -1215,7 +1215,7 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->createNamedParameter(self::DOKTYPE_RECYCLER, \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             $this->versionOL('pages', $mountRec);
@@ -1268,7 +1268,7 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             $validPageIds[] = (int)$row['uid'];
         }
@@ -1298,7 +1298,7 @@ class PageRepository implements LoggerAwareInterface
             $row = $queryBuilder->select('*')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($row) {
@@ -1316,7 +1316,7 @@ class PageRepository implements LoggerAwareInterface
                                     $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
                                 )
                             )
-                            ->execute()
+                            ->executeQuery()
                             ->fetchOne();
                         if ($numRows > 0) {
                             return $row;
@@ -1351,7 +1351,7 @@ class PageRepository implements LoggerAwareInterface
             $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($row) {
@@ -1650,7 +1650,7 @@ class PageRepository implements LoggerAwareInterface
                 $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fieldNames, true))
                     ->from($table)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['t3ver_oid'], \PDO::PARAM_INT)))
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
             }
             if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
@@ -1801,7 +1801,7 @@ class PageRepository implements LoggerAwareInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             // If version found, check if it could have been selected with enableFields on
@@ -1838,7 +1838,7 @@ class PageRepository implements LoggerAwareInterface
                         )
                     )
                 );
-                if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchOne()) {
+                if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
                     // Return offline version, tested for its enableFields.
                     return $newrow;
                 }
@@ -1850,7 +1850,7 @@ class PageRepository implements LoggerAwareInterface
             $queryBuilder->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
             );
-            if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchOne()) {
+            if ($bypassEnableFieldsCheck || $queryBuilder->executeQuery()->fetchOne()) {
                 // Means search was done, but no version found.
                 return 1;
             }

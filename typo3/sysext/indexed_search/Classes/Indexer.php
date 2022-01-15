@@ -1449,7 +1449,7 @@ class Indexer
                     )
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         if ($count === 0) {
@@ -1483,7 +1483,7 @@ class Indexer
                     $queryBuilder->createNamedParameter($this->conf['id'], \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         if ($count === 0) {
@@ -1837,7 +1837,7 @@ class Indexer
                     $queryBuilder->createNamedParameter($phashArray, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         if ($count !== $wordListArrayCount) {
@@ -1852,7 +1852,7 @@ class Indexer
                         $queryBuilder->createNamedParameter($phashArray, Connection::PARAM_INT_ARRAY)
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             $this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), LogLevel::NOTICE);
             while ($row = $result->fetchAssociative()) {
@@ -1894,7 +1894,7 @@ class Indexer
                 $queryBuilder->expr()->neq('is_stopword', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->groupBy('wid')
-            ->execute();
+            ->executeQuery();
 
         $stopWords = [];
         while ($row = $result->fetchAssociative()) {

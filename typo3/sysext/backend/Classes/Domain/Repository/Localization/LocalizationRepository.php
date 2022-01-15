@@ -83,7 +83,7 @@ class LocalizationRepository
             ->groupBy('tt_content_orig.sys_language_uid');
         $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser(), 'tt_content_orig');
 
-        return $queryBuilder->execute()->fetchAssociative() ?: [];
+        return $queryBuilder->executeQuery()->fetchAssociative() ?: [];
     }
 
     /**
@@ -114,7 +114,7 @@ class LocalizationRepository
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (int)$rowCount;
@@ -145,7 +145,7 @@ class LocalizationRepository
             ->groupBy('sys_language_uid');
 
         $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser());
-        $languages = $queryBuilder->execute()->fetchAllAssociative();
+        $languages = $queryBuilder->executeQuery()->fetchAllAssociative();
         return $languages ?: [];
     }
 
@@ -202,7 +202,7 @@ class LocalizationRepository
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while ($origUid = $originalUidsStatement->fetchOne()) {
             $originalUids[] = (int)$origUid;
@@ -232,7 +232,7 @@ class LocalizationRepository
                 );
         }
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**

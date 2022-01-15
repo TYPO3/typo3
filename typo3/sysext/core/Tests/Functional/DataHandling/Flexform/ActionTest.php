@@ -105,7 +105,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->select('pi_flexform')
             ->from('tt_content')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         self::assertEquals($expected, $flexFormContent);
@@ -187,7 +187,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->select('pi_flexform')
             ->from('tt_content')
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(self::VALUE_ContentId, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         self::assertEquals($expected, $flexFormContent);

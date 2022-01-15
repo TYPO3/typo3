@@ -320,7 +320,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
                 'pi_flexform',
                 $queryBuilder->createNamedParameter('%<value index="vDEF">4</value>%', \PDO::PARAM_STR)
             ))
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         self::assertEquals(1, $originalUidIsNotActualUid);

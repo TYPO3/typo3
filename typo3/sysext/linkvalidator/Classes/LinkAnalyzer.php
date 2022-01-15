@@ -178,7 +178,7 @@ class LinkAnalyzer
                         $statement->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                     )
                 );
-                $result = $statement->execute();
+                $result = $statement->executeQuery();
 
                 // @todo #64091: only select rows that have content in at least one of the relevant fields (via OR)
                 while ($row = $result->fetchAssociative()) {
@@ -290,7 +290,7 @@ class LinkAnalyzer
                     $queryBuilder->createNamedParameter($recordUid, Connection::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!$row) {

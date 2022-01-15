@@ -242,7 +242,7 @@ If you want to get more detailed information, use the --verbose option.')
                 $queryBuilder->expr()->neq('ref_table', $queryBuilder->createNamedParameter('_FILE', \PDO::PARAM_STR)),
                 $queryBuilder->expr()->gt('ref_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeQuery();
 
         $existingRecords = [];
         while ($rec = $rowIterator->fetchAssociative()) {
@@ -272,7 +272,7 @@ If you want to get more detailed information, use the --verbose option.')
                             $queryBuilder->createNamedParameter($rec['ref_uid'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
             }
             // Compile info string for location of reference:

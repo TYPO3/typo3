@@ -68,7 +68,7 @@ class DatabasePageLanguageOverlayRows implements FormDataProviderInterface
                 $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                 $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
             ))
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $rows;

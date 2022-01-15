@@ -431,12 +431,12 @@ class TranslationStatusController
                     $queryBuilder->createNamedParameter($langId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $row = $result->fetchAssociative();
         BackendUtility::workspaceOL('pages', $row);
         if (is_array($row)) {
-            $row['_COUNT'] = $queryBuilder->count('uid')->execute()->fetchOne();
+            $row['_COUNT'] = $queryBuilder->count('uid')->executeQuery()->fetchOne();
             $row['_HIDDEN'] = $row['hidden'] || (int)$row['endtime'] > 0 && (int)$row['endtime'] < $GLOBALS['EXEC_TIME'] || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'];
         }
         $result->free();
@@ -473,7 +473,7 @@ class TranslationStatusController
                     $queryBuilder->createNamedParameter($sysLang, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return $count ?: '-';
     }

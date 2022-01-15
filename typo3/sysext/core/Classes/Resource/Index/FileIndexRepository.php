@@ -94,7 +94,7 @@ class FileIndexRepository implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         return is_array($row) ? $row : false;
@@ -121,7 +121,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storageUid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('identifier_hash', $queryBuilder->createNamedParameter($identifierHash))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         return is_array($row) ? $row : false;
@@ -177,7 +177,7 @@ class FileIndexRepository implements SingletonInterface
             ->where(
                 $queryBuilder->expr()->eq('sha1', $queryBuilder->createNamedParameter($hash, \PDO::PARAM_STR))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $resultRows;
@@ -207,7 +207,7 @@ class FileIndexRepository implements SingletonInterface
                     $queryBuilder->createNamedParameter($folder->getStorage()->getUid(), \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $resultRows = [];
         while ($row = $result->fetchAssociative()) {
@@ -280,7 +280,7 @@ class FileIndexRepository implements SingletonInterface
             $queryBuilder->andWhere($queryBuilder->expr()->eq('missing', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)));
         }
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
 
         $fileRecords = [];
         while ($fileRecord = $result->fetchAssociative()) {
@@ -372,7 +372,7 @@ class FileIndexRepository implements SingletonInterface
             ->count('uid')
             ->from($this->table)
             ->where(...$constraints)
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (bool)$count;
@@ -437,7 +437,7 @@ class FileIndexRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('storage', $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT))
             )
             ->orderBy('tstamp', 'ASC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         return $rows;
@@ -473,7 +473,7 @@ class FileIndexRepository implements SingletonInterface
             );
         }
 
-        $rows = $queryBuilder->execute()->fetchAllAssociative();
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return $rows;
     }

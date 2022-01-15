@@ -77,7 +77,7 @@ class PresetRepository
             );
         }
 
-        $presets = $queryBuilder->execute();
+        $presets = $queryBuilder->executeQuery();
 
         $options = [''];
         while ($presetCfg = $presets->fetchAssociative()) {
@@ -107,7 +107,7 @@ class PresetRepository
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (!is_array($preset)) {

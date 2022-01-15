@@ -191,7 +191,7 @@ class ExtensionService implements SingletonInterface
                         )
                     )
                     ->setMaxResults(2)
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAllAssociative();
 
                 if (count($pages) > 1) {

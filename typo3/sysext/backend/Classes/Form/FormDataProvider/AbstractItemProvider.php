@@ -344,7 +344,7 @@ abstract class AbstractItemProvider
 
         $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
         try {
-            $queryResult = $queryBuilder->execute();
+            $queryResult = $queryBuilder->executeQuery();
         } catch (DBALException $e) {
             $databaseError = $e->getPrevious()->getMessage();
         }

@@ -1368,7 +1368,7 @@ class UpgradeController extends AbstractController
                     $queryBuilder->createNamedParameter('upgradeAnalysisIgnoredFiles', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $hashesMarkedAsRead = [];
         foreach ($filesMarkedAsRead as $file) {
@@ -1384,7 +1384,7 @@ class UpgradeController extends AbstractController
                     $queryBuilder->createNamedParameter('extensionScannerNotAffected', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $hashesMarkedAsNotAffected = [];
         foreach ($fileMarkedAsNotAffected as $file) {

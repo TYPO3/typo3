@@ -416,7 +416,7 @@ class ExtendedFileUtility extends BasicFileUtility
                         $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
             $deleteFile = true;
             if (!empty($refIndexRecords)) {
@@ -564,7 +564,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     'tablename',
                     $queryBuilder->createNamedParameter('sys_file_metadata', \PDO::PARAM_STR)
                 )
-            )->execute()->fetchOne();
+            )->executeQuery()->fetchOne();
 
         $hasReferences = $numberOfReferences > 0;
         if ($hasReferences) {
@@ -602,7 +602,7 @@ class ExtendedFileUtility extends BasicFileUtility
                     $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         return [

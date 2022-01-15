@@ -74,7 +74,7 @@ class DashboardRepository
             ->where(
                 $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($userId))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $results = [];
         foreach ($rows as $row) {
@@ -103,7 +103,7 @@ class DashboardRepository
                 'cruser_id' => $userId,
                 'widgets' => json_encode($widgets),
             ])
-            ->execute();
+            ->executeStatement();
         return $this->getDashboardByIdentifier($identifier);
     }
 
@@ -133,7 +133,7 @@ class DashboardRepository
             $queryBuilder->set($field, $value);
         }
 
-        return (int)$queryBuilder->execute();
+        return $queryBuilder->executeStatement();
     }
 
     /**
@@ -163,7 +163,7 @@ class DashboardRepository
             ->select('*')
             ->from(self::TABLE)
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         if (count($row)) {
             return $this->createFromRow($row[0]);
@@ -182,7 +182,7 @@ class DashboardRepository
             ->update(self::TABLE)
             ->set('widgets', json_encode($widgets))
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($dashboard->getIdentifier())))
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -195,7 +195,7 @@ class DashboardRepository
             ->update(self::TABLE)
             ->set('deleted', 1)
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($dashboard->getIdentifier())))
-            ->execute();
+            ->executeStatement();
     }
 
     /**

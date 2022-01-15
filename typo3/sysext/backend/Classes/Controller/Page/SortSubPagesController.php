@@ -214,7 +214,7 @@ class SortSubPagesController
                 )
             )
             ->orderBy($orderBy)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 

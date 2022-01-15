@@ -923,7 +923,7 @@ class SetupModuleController
                     $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         return (int)$file;
     }
@@ -970,7 +970,7 @@ class SetupModuleController
                     $queryBuilder->createNamedParameter($beUserId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeStatement();
 
         // If Avatar is marked for delete => set it to empty string so it will be updated properly
         if ($fileUid === 'delete') {

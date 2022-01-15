@@ -121,7 +121,7 @@ class IntegrityService
                 $queryBuilder->expr()->eq($this->getPagesLanguageParentFieldName(), $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT)),
             )
         );
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             // @todo Considering only page slug is not complete, as it does not match redirects with file extension,
@@ -159,7 +159,7 @@ class IntegrityService
         $queryBuilder->where(
             $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
         );
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             // @todo Considering only page slug is not complete, as it does not matches redirects with file extension,

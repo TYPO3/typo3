@@ -68,7 +68,7 @@ class FrontendGroupsRepository
             ->where(
                 $beUser->getPagePermsClause(Permission::PAGE_SHOW)
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (int)$optionCount;
@@ -97,7 +97,7 @@ class FrontendGroupsRepository
                 $beUser->getPagePermsClause(Permission::PAGE_SHOW)
             )
             ->orderBy('fe_groups.title')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 

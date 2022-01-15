@@ -86,7 +86,7 @@ class CleanerTask extends AbstractTask
             try {
                 $queryBuilder->delete($tableName)
                     ->where(...$constraints)
-                    ->execute();
+                    ->executeStatement();
             } catch (DBALException $e) {
                 return false;
             }

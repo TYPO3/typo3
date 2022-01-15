@@ -165,7 +165,7 @@ class ShortcutRepository
                 $queryBuilder->expr()->eq('route', $queryBuilder->createNamedParameter($routeIdentifier)),
                 $queryBuilder->expr()->eq('arguments', $queryBuilder->createNamedParameter($arguments))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (bool)$uid;
@@ -281,7 +281,7 @@ class ShortcutRepository
                 'description' => $title ?: 'Shortcut',
                 'sorting' => $GLOBALS['EXEC_TIME'],
             ])
-            ->execute();
+            ->executeStatement();
 
         return $affectedRows === 1;
     }
@@ -322,7 +322,7 @@ class ShortcutRepository
             }
         }
 
-        $affectedRows = $queryBuilder->execute();
+        $affectedRows = $queryBuilder->executeStatement();
 
         return $affectedRows === 1;
     }
@@ -347,7 +347,7 @@ class ShortcutRepository
                         $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                     )
                 )
-                ->execute();
+                ->executeStatement();
 
             if ($affectedRows === 1) {
                 $success = true;
@@ -467,7 +467,7 @@ class ShortcutRepository
             )
             ->orderBy('sc_group')
             ->addOrderBy('sorting')
-            ->execute();
+            ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             $pageId = 0;

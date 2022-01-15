@@ -120,7 +120,7 @@ class MetaDataRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (empty($record)) {

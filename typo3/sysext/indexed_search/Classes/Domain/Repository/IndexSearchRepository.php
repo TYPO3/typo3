@@ -432,7 +432,7 @@ class IndexSearchRepository
      *
      * @param array $searchData Array with search string, boolean indicator, and fulltext index reference
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function execFinalQuery_fulltext($searchData, $freeIndexUid = -1)
     {
@@ -548,7 +548,7 @@ class IndexSearchRepository
             'IP.freeIndexSetId'
         );
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /***********************************
@@ -669,7 +669,7 @@ class IndexSearchRepository
             )
             ->groupBy('IR.phash');
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**
@@ -677,7 +677,7 @@ class IndexSearchRepository
      *
      * @param string $sWord the search word
      * @param int $wildcard Bit-field of Utility\LikeWildcard
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function searchWord($sWord, $wildcard)
     {
@@ -695,7 +695,7 @@ class IndexSearchRepository
      * Search for one distinct word
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function searchDistinct($sWord)
     {
@@ -711,7 +711,7 @@ class IndexSearchRepository
      * Search for a sentence
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function searchSentence($sWord)
     {
@@ -733,14 +733,14 @@ class IndexSearchRepository
                 QueryHelper::stripLogicalOperatorPrefix($this->sectionTableWhere())
             )
             ->groupBy('ISEC.phash')
-            ->execute();
+            ->executeQuery();
     }
 
     /**
      * Search for a metaphone word
      *
      * @param string $sWord the search word
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function searchMetaphone($sWord)
     {
@@ -889,7 +889,7 @@ class IndexSearchRepository
                     $queryBuilder->createNamedParameter($freeIndexUid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (is_array($indexCfgRec)) {
@@ -912,7 +912,7 @@ class IndexSearchRepository
                                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                                 )
                             )
-                            ->execute()
+                            ->executeQuery()
                             ->fetchAssociative();
                         if ($idxRec) {
                             $list[] = $uid;
@@ -926,7 +926,7 @@ class IndexSearchRepository
                                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                                 )
                             )
-                            ->execute();
+                            ->executeQuery();
                         while ($idxRec = $indexCfgRecordsFromPid->fetchAssociative()) {
                             $list[] = $idxRec['uid'];
                         }
@@ -949,7 +949,7 @@ class IndexSearchRepository
      *
      * @param string $list List of phash integers which match the search.
      * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-     * @return \Doctrine\DBAL\Result|int
+     * @return \Doctrine\DBAL\Result
      */
     protected function execFinalQuery($list, $freeIndexUid = -1)
     {
@@ -1116,7 +1116,7 @@ class IndexSearchRepository
             }
         }
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**

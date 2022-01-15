@@ -109,7 +109,7 @@ class TableGarbageCollectionTask extends AbstractTask
         }
 
         try {
-            $queryBuilder->execute();
+            $queryBuilder->executeStatement();
         } catch (DBALException $e) {
             throw new \RuntimeException(self::class . ' failed for table ' . $this->table . ' with error: ' . $e->getMessage(), 1308255491);
         }

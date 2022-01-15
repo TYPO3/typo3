@@ -682,7 +682,7 @@ class ElementInformationController
             ->select('*')
             ->from('sys_refindex')
             ->where(...$predicates)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // Compile information for title tag:
@@ -773,7 +773,7 @@ class ElementInformationController
             ->select('*')
             ->from('sys_refindex')
             ->where(...$predicates)
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         // Compile information for title tag:
@@ -832,7 +832,7 @@ class ElementInformationController
                     $queryBuilder->createNamedParameter($referenceRecord['recuid'], \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         return [

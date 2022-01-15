@@ -436,7 +436,7 @@ class Clipboard
             );
         }
 
-        foreach ($queryBuilder->execute()->fetchAllAssociative() as $record) {
+        foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $record) {
             $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), $this->getBackendUser()->uc['titleLen']));
             if (!$isRequestedTable) {
                 // In case the current table is not the requested table, e.g. "_FILE", wrap title in "muted" style

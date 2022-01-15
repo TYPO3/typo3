@@ -71,7 +71,7 @@ class ConfigurationStatus implements StatusProviderInterface
         $count = $queryBuilder
             ->count('*')
             ->from('sys_refindex')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $registry = GeneralUtility::makeInstance(Registry::class);
@@ -243,7 +243,7 @@ class ConfigurationStatus implements StatusProviderInterface
                 )
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         $severity = ReportStatus::OK;
@@ -262,7 +262,7 @@ class ConfigurationStatus implements StatusProviderInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute();
+                ->executeQuery();
 
             if ($nonUtf8TableCollationsFound->rowCount() > 0) {
                 $message = sprintf($this->getLanguageService()
@@ -297,7 +297,7 @@ class ConfigurationStatus implements StatusProviderInterface
                         )
                     )
                     ->setMaxResults(1)
-                    ->execute();
+                    ->executeQuery();
 
                 if ($wrongCollationTablesFound->rowCount() > 0) {
                     $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);
@@ -320,7 +320,7 @@ class ConfigurationStatus implements StatusProviderInterface
                             )
                         )
                         ->setMaxResults(1)
-                        ->execute();
+                        ->executeQuery();
 
                     if ($wrongCollationColumnsFound->rowCount() > 0) {
                         $message = sprintf($this->getLanguageService()->getLL('status_MysqlDatabaseCharacterSet_MixedCollations'), $charset);

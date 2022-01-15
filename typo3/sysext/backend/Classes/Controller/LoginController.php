@@ -463,7 +463,7 @@ class LoginController
             ->select('uid', 'title', 'content', 'crdate')
             ->from($systemNewsTable)
             ->orderBy('crdate', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         foreach ($systemNewsRecords as $systemNewsRecord) {
             $systemNews[] = [

@@ -500,7 +500,7 @@ class RelationHandler
                     [$fieldName, $order] = $orderPair;
                     $queryBuilder->addOrderBy($fieldName, $order);
                 }
-                $statement = $queryBuilder->execute();
+                $statement = $queryBuilder->executeQuery();
                 while ($row = $statement->fetchAssociative()) {
                     $this->itemArray[] = ['id' => $row['uid'], 'table' => $table];
                     $this->tableArray[$table][] = $row['uid'];
@@ -587,7 +587,7 @@ class RelationHandler
         );
         $queryBuilder->orderBy($sorting_field);
         $queryBuilder->addOrderBy($uidForeign_field);
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             // Default
             if (!$this->MM_is_foreign) {
@@ -680,7 +680,7 @@ class RelationHandler
                 $queryBuilder->andWhere($additionalWhere);
             }
 
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
             $oldMMs = [];
             // This array is similar to $oldMMs but also holds the uid of the MM-records, if any (configured by MM_hasUidField).
             // If the UID is present it will be used to update sorting and delete MM-records.
@@ -752,7 +752,7 @@ class RelationHandler
                         );
                     }
 
-                    $queryBuilder->execute();
+                    $queryBuilder->executeStatement();
                     // Remove the item from the $oldMMs array so after this
                     // foreach loop only the ones that need to be deleted are in there.
                     unset($oldMMs[$oldMMs_index]);
@@ -834,7 +834,7 @@ class RelationHandler
                     $queryBuilder->andWhere($additionalWhere);
                 }
 
-                $queryBuilder->execute();
+                $queryBuilder->executeStatement();
 
                 // Update ref index:
                 foreach ($updateRefIndex_records as $pair) {
@@ -1028,7 +1028,7 @@ class RelationHandler
 
         // Get the rows from storage
         $rows = [];
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             $rows[(int)$row['uid']] = $row;
         }
@@ -1243,7 +1243,7 @@ class RelationHandler
                             QueryHelper::stripLogicalOperatorPrefix($this->additionalWhere[$table])
                         );
                     }
-                    $statement = $queryBuilder->execute();
+                    $statement = $queryBuilder->executeQuery();
                     while ($row = $statement->fetchAssociative()) {
                         $this->results[$table][$row['uid']] = $row;
                     }
@@ -1491,7 +1491,7 @@ class RelationHandler
                     )
                 )
                 ->orderBy('t3ver_state', 'DESC')
-                ->execute();
+                ->executeQuery();
 
             while ($version = $result->fetchAssociative()) {
                 $versionId = $version['uid'];
@@ -1534,7 +1534,7 @@ class RelationHandler
                     )
                 )
                 ->orderBy('t3ver_state', 'DESC')
-                ->execute();
+                ->executeQuery();
 
             while ($version = $result->fetchAssociative()) {
                 $versionId = $version['uid'];
@@ -1587,7 +1587,7 @@ class RelationHandler
                         )
                     )
                 )
-                ->execute();
+                ->executeQuery();
 
             while ($version = $result->fetchAssociative()) {
                 $liveId = $version['t3ver_oid'];

@@ -426,7 +426,7 @@ class RemoteServer
                 )
             )
             ->orderBy('tstamp', 'DESC')
-            ->execute();
+            ->executeQuery();
 
         /** @var Avatar $avatar */
         $avatar = GeneralUtility::makeInstance(Avatar::class);

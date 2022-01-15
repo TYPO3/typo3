@@ -155,7 +155,7 @@ class CleanFlexFormsCommand extends Command
                     ->where(
                         $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
                     )
-                    ->execute();
+                    ->executeQuery();
 
                 while ($rowSub = $result->fetchAssociative()) {
                     // Traverse flexforms
@@ -196,7 +196,7 @@ class CleanFlexFormsCommand extends Command
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
                 )
                 ->orderBy('sorting')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $result->fetchAssociative()) {
                 $dirtyFlexFormFields = $this->findAllDirtyFlexformsInPage($row['uid'], $depth, $dirtyFlexFormFields);
@@ -239,7 +239,7 @@ class CleanFlexFormsCommand extends Command
                     ->where(
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
 
                 if ($fullRecord[$columnName]) {

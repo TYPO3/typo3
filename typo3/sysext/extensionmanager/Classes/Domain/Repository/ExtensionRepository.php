@@ -198,7 +198,7 @@ class ExtensionRepository extends Repository
                 $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )
             ->orderBy('position', 'DESC')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $dataMapper = GeneralUtility::makeInstance(DataMapper::class);

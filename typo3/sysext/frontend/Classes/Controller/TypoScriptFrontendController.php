@@ -879,7 +879,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $queryBuilder->andWhere($constraint);
 
-        $page = $queryBuilder->execute()->fetchAssociative();
+        $page = $queryBuilder->executeQuery()->fetchAssociative();
 
         if ($this->whichWorkspace() > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
@@ -1312,7 +1312,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             ),
                             $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
                         )
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
 
                     // versionOL()?
@@ -3395,7 +3395,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     ),
                     $timeConditions
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($row) {

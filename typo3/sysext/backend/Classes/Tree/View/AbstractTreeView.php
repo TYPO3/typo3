@@ -493,7 +493,7 @@ abstract class AbstractTreeView
                     ),
                     QueryHelper::stripLogicalOperatorPrefix($this->clause)
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
 
         return (int)$count;
@@ -542,7 +542,7 @@ abstract class AbstractTreeView
             $queryBuilder->addOrderBy($fieldName, $order);
         }
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     /**

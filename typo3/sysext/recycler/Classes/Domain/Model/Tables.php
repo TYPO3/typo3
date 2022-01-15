@@ -54,7 +54,7 @@ class Tables
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
 
                 if ($deletedCount) {

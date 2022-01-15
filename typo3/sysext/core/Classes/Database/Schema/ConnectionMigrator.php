@@ -1241,7 +1241,7 @@ class ConnectionMigrator
                     $queryBuilder->createNamedParameter($this->connection->getDatabase(), \PDO::PARAM_STR)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             $index = $row['table'];

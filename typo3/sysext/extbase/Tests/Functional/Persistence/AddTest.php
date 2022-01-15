@@ -77,7 +77,7 @@ class AddTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(1, $newBlogCount);
     }
@@ -106,7 +106,7 @@ class AddTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(0, $newBlogRecord['sys_language_uid']);
     }
@@ -136,7 +136,7 @@ class AddTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertEquals(-1, $newBlogRecord['sys_language_uid']);
     }
@@ -172,7 +172,7 @@ class AddTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($newBlogTitle, \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         self::assertNull($newBlogRecord['subtitle'] ?? null);
     }

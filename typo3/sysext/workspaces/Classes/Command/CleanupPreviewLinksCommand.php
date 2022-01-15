@@ -68,7 +68,7 @@ class CleanupPreviewLinksCommand extends Command
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeStatement();
 
         if ($affectedRows > 0) {
             $io->success('Cleaned up ' . $affectedRows . ' preview links.');

@@ -220,7 +220,7 @@ class LiveSearch
     protected function getRecordArray($queryBuilder, $tableName)
     {
         $collect = [];
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);

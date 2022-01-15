@@ -68,10 +68,8 @@ class FalStatus implements StatusProviderInterface
             }
         }
 
-        $queryBuilder = null;
         if (!empty($storages)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
-
             $count = $queryBuilder
                 ->count('*')
                 ->from('sys_file')
@@ -85,7 +83,7 @@ class FalStatus implements StatusProviderInterface
                         $queryBuilder->createNamedParameter(array_keys($storages), Connection::PARAM_INT_ARRAY)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
         }
 
@@ -93,7 +91,7 @@ class FalStatus implements StatusProviderInterface
             $value = sprintf($this->getLanguageService()->getLL('status_missingFilesCount'), $count);
             $severity = ReportStatus::WARNING;
 
-            $queryBuilder->resetQueryParts();
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
             $files = $queryBuilder
                 ->select('identifier', 'storage')
                 ->from('sys_file')
@@ -108,7 +106,7 @@ class FalStatus implements StatusProviderInterface
                     )
                 )
                 ->setMaxResults($maxFilesToShow)
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
 
             $message = '<p>' . $this->getLanguageService()->getLL('status_missingFilesMessage') . '</p>';

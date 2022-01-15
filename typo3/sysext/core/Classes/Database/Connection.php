@@ -279,7 +279,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $query->setFirstResult($offset);
         }
 
-        return $query->execute();
+        return $query->executeQuery();
     }
 
     /**
@@ -366,7 +366,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             $query->andWhere($query->expr()->eq($identifier, $query->createNamedParameter($value)));
         }
 
-        return (int)$query->execute()->fetchOne();
+        return (int)$query->executeQuery()->fetchOne();
     }
 
     /**

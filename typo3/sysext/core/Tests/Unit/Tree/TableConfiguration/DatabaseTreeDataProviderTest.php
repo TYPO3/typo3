@@ -86,7 +86,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
         $queryBuilderProphecy->expr()
             ->shouldBeCalled()
             ->willReturn($expressionBuilderProphecy->reveal());
-        $queryBuilderProphecy->execute()
+        $queryBuilderProphecy->executeQuery()
             ->shouldBeCalled()
             ->willReturn($statementProphecy->reveal());
 

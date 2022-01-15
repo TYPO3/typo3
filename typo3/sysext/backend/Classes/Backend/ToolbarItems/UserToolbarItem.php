@@ -82,7 +82,7 @@ class UserToolbarItem implements ToolbarItemInterface
                 ->from('be_users')
                 ->where(
                     $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($backendUser->uc['recentSwitchedToUsers'], Connection::PARAM_INT_ARRAY))
-                )->execute();
+                )->executeQuery();
 
             // Flip the array to have a "sorted" list of items
             $mostRecentUsers = array_flip($backendUser->uc['recentSwitchedToUsers']);

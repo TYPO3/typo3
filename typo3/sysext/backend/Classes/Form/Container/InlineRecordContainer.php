@@ -568,7 +568,7 @@ class InlineRecordContainer extends AbstractContainer
                         )
                     )
                     ->setMaxResults(1)
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
                 if (!empty($recordInDatabase)) {
                     $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

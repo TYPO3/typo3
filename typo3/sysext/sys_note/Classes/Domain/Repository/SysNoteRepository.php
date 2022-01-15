@@ -78,6 +78,6 @@ class SysNoteRepository
             );
         }
 
-        return $res->execute()->fetchAllAssociative();
+        return $res->executeQuery()->fetchAllAssociative();
     }
 }

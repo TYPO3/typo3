@@ -133,7 +133,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                         $queryBuilder->createNamedParameter($identifier, \PDO::PARAM_STR)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($databaseRow) {
@@ -163,7 +163,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                     $queryBuilder->createNamedParameter($storage->getUid(), \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 
@@ -243,7 +243,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                     $queryBuilder->createNamedParameter(sha1(serialize($configuration)), \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if (is_array($databaseRow)) {
@@ -276,7 +276,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
                     $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $itemList = [];
         while ($row = $result->fetchAssociative()) {
@@ -309,7 +309,7 @@ class ProcessedFileRepository extends AbstractRepository implements LoggerAwareI
             ->select('*')
             ->from($this->table)
             ->where(...$where)
-            ->execute();
+            ->executeQuery();
 
         $errorCount = 0;
 

@@ -2505,7 +2505,7 @@ class DataHandler implements LoggerAwareInterface
             );
         }
 
-        $result = $queryBuilder->execute()->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return $result;
     }
@@ -3484,7 +3484,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                     $queryBuilder->addOrderBy('uid');
                     try {
-                        $result = $queryBuilder->execute();
+                        $result = $queryBuilder->executeQuery();
                         $rows = [];
                         $movedLiveIds = [];
                         $movedLiveRecords = [];
@@ -3973,14 +3973,14 @@ class DataHandler implements LoggerAwareInterface
         // If $destPid is < 0, get the pid of the record with uid equal to abs($destPid)
         $tscPID = BackendUtility::getTSconfig_pidValue($table, $uid, $destPid) ?? 0;
         // Get the localized records to be copied
-        $l10nRecords = $queryBuilder->execute()->fetchAllAssociative();
+        $l10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
         if (is_array($l10nRecords)) {
             $localizedDestPids = [];
             // If $destPid < 0, then it is the uid of the original language record we are inserting after
             if ($destPid < 0) {
                 // Get the localized records of the record we are inserting after
                 $queryBuilder->setParameter('pointer', abs($destPid), \PDO::PARAM_INT);
-                $destL10nRecords = $queryBuilder->execute()->fetchAllAssociative();
+                $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -4397,7 +4397,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT, ':pointer')
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         if (is_array($l10nRecords)) {
@@ -4406,7 +4406,7 @@ class DataHandler implements LoggerAwareInterface
             if ($originalRecordDestinationPid < 0) {
                 // Get the localized records of the record we are inserting after
                 $queryBuilder->setParameter('pointer', abs($originalRecordDestinationPid), \PDO::PARAM_INT);
-                $destL10nRecords = $queryBuilder->execute()->fetchAllAssociative();
+                $destL10nRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
                 // Index the localized record uids by language
                 if (is_array($destL10nRecords)) {
                     foreach ($destL10nRecords as $record) {
@@ -5144,7 +5144,7 @@ class DataHandler implements LoggerAwareInterface
                     );
                 }
 
-                $statement = $queryBuilder->execute();
+                $statement = $queryBuilder->executeQuery();
 
                 while ($row = $statement->fetchAssociative()) {
                     // Delete any further workspace overlays of the record in question, then delete the record.
@@ -5328,7 +5328,7 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         while ($record = $result->fetchAssociative()) {
             // Ignore workspace delete placeholders. Those records have been marked for
             // deletion before - deleting them again in a workspace would revert that state.
@@ -5671,7 +5671,7 @@ class DataHandler implements LoggerAwareInterface
                     )
                 );
             }
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 $this->discard($table, null, $row);
             }
@@ -5746,7 +5746,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
                 $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             // For each record referencing the to-discard record, see if it is a CSV group field definition.
             // If so, update that record to drop both the possible "uid" and "table_name_uid" variants from the list.
@@ -5778,7 +5778,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->update($row['tablename'])
                         ->set($row['field'], implode(',', $listOfRelatedRecordsWithoutDiscardedRecord))
                         ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($row['recuid'], \PDO::PARAM_INT)))
-                        ->execute();
+                        ->executeStatement();
                 }
             }
         }
@@ -5820,7 +5820,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->expr()->eq($fieldName, $queryBuilder->createNamedParameter($fieldValue, \PDO::PARAM_STR))
             );
         }
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         // refindex treatment for mm relation handling: If the to discard record is foreign side of an mm relation,
         // there may be other refindex rows that become obsolete when that record is discarded. See Modify
@@ -5857,7 +5857,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter((int)$this->BE_USER->workspace, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $this->discard($table, null, $record);
         }
@@ -6017,7 +6017,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($table)
                 ));
             }
-            $queryBuilder->execute();
+            $queryBuilder->executeStatement();
         }
 
         // Update mm table relations of workspace record to uid of live record
@@ -6038,7 +6038,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($table)
                 ));
             }
-            $queryBuilder->execute();
+            $queryBuilder->executeStatement();
 
             if (!$mmRelationIsLocalSide) {
                 // refindex treatment for mm relation handling: If the to publish record is foreign side of an mm relation, we need
@@ -6874,7 +6874,7 @@ class DataHandler implements LoggerAwareInterface
             ));
         }
 
-        $row = $queryBuilder->execute()->fetchAssociative();
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
         $this->runtimeCache->set($cacheId, $row);
 
         return $row;
@@ -6904,7 +6904,7 @@ class DataHandler implements LoggerAwareInterface
             ->from('pages')
             ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
             ->orderBy('sorting')
-            ->execute();
+            ->executeQuery();
         while ($row = $result->fetchAssociative()) {
             // IF admin, then it's OK
             if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $perms)) {
@@ -6975,7 +6975,7 @@ class DataHandler implements LoggerAwareInterface
                 ->select('pid', 'uid', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($destinationId, \PDO::PARAM_INT)))
-                ->execute();
+                ->executeQuery();
             if ($row = $result->fetchAssociative()) {
                 // Ensure that the moved location is used as the PID value
                 BackendUtility::workspaceOL('pages', $row, $this->BE_USER->workspace);
@@ -7056,7 +7056,7 @@ class DataHandler implements LoggerAwareInterface
                     'pid',
                     $queryBuilder->createNamedParameter($page_uid, \PDO::PARAM_INT)
                 ))
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             if ($count) {
                 $tableList[] = $table;
@@ -7088,7 +7088,7 @@ class DataHandler implements LoggerAwareInterface
                 ->select('*')
                 ->from('pages')
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             if ($row) {
                 $this->pageCache[$id] = $row;
@@ -7119,7 +7119,7 @@ class DataHandler implements LoggerAwareInterface
             ->select(...GeneralUtility::trimExplode(',', $fieldList))
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         return $result ?: null;
     }
@@ -7145,7 +7145,7 @@ class DataHandler implements LoggerAwareInterface
             $record = $queryBuilder->select(...$columns)
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             return $record ?: false;
@@ -7166,7 +7166,7 @@ class DataHandler implements LoggerAwareInterface
                     ->select(...$columns)
                     ->from($table)
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAssociative();
                 // If record found, check page as well:
                 if (is_array($output)) {
@@ -7437,7 +7437,7 @@ class DataHandler implements LoggerAwareInterface
                 ->select('*')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if (!empty($row)) {
@@ -7639,7 +7639,7 @@ class DataHandler implements LoggerAwareInterface
                 ->orderBy($sortColumn, 'ASC')
                 ->addOrderBy('uid', 'ASC')
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if (!empty($row)) {
@@ -7667,7 +7667,7 @@ class DataHandler implements LoggerAwareInterface
                     'uid',
                     $queryBuilder->createNamedParameter(abs($pid), \PDO::PARAM_INT)
                 ))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
         // There is a previous record
@@ -7721,7 +7721,7 @@ class DataHandler implements LoggerAwareInterface
                 }
 
                 $subResults = $queryBuilder
-                    ->execute()
+                    ->executeQuery()
                     ->fetchAllAssociative();
                 // Fetches the next record in order to calculate the in-between sortNumber
                 // There was a record afterwards
@@ -7786,7 +7786,7 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->andWhere($queryBuilder->expr()->eq($deleteColumn, 0));
             }
 
-            $queryBuilder->execute();
+            $queryBuilder->executeStatement();
         }
     }
 
@@ -7881,7 +7881,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // If there is a "before" record in source language, see if it is localized to target language.
         // If so, return uid of target language record.
-        if ($previousRow = $queryBuilder->execute()->fetchAssociative()) {
+        if ($previousRow = $queryBuilder->executeQuery()->fetchAssociative()) {
             $previousLocalizedRecord = BackendUtility::getRecordLocalization($table, $previousRow['uid'], $targetLanguage, 'pid=' . (int)$pid);
             if (isset($previousLocalizedRecord[0]) && is_array($previousLocalizedRecord[0])) {
                 $previousLocalizedRecordUid = $previousLocalizedRecord[0]['uid'];
@@ -8013,7 +8013,7 @@ class DataHandler implements LoggerAwareInterface
         $currentRecord = $queryBuilder->select('*')
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         // If the current record exists (which it should...), begin comparison:
         if (is_array($currentRecord)) {
@@ -8176,7 +8176,7 @@ class DataHandler implements LoggerAwareInterface
         $queryBuilder->select('pid')
             ->from($table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
-        if ($row = $queryBuilder->execute()->fetchAssociative()) {
+        if ($row = $queryBuilder->executeQuery()->fetchAssociative()) {
             return $row['pid'];
         }
         return false;
@@ -8237,7 +8237,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter([0, $this->BE_USER->workspace], Connection::PARAM_INT_ARRAY)
                 ));
             }
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
 
             $pages = [];
             while ($row = $result->fetchAssociative()) {
@@ -8493,7 +8493,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq($field, $queryBuilder->createNamedParameter($checkTitle, \PDO::PARAM_STR))
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             if ($rowCount) {
                 return $this->getCopyHeader($table, $pid, $field, $value, $count + 1, $checkTitle);
@@ -8535,7 +8535,7 @@ class DataHandler implements LoggerAwareInterface
                 ->select('pid')
                 ->from($table)
                 ->where($query->expr()->eq('uid', $query->createNamedParameter(abs($pid), \PDO::PARAM_INT)))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             $pid = (int)$row['pid'];
         }
@@ -8583,7 +8583,7 @@ class DataHandler implements LoggerAwareInterface
                         'pid',
                         $query->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                     ))
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
                 if ($count && ($this->tableReadOnly($table) || !$this->checkModifyAccessList($table))) {
                     $disallowedTables[] = $table;
@@ -8720,7 +8720,7 @@ class DataHandler implements LoggerAwareInterface
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_oid', 0)
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             if ($count === 0) {
                 $clearCacheEnabled = false;
@@ -8749,7 +8749,7 @@ class DataHandler implements LoggerAwareInterface
                         $queryBuilder->expr()->eq('B.pid', $queryBuilder->quoteIdentifier('A.pid')),
                         $queryBuilder->expr()->gte('A.pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                     )
-                    ->execute();
+                    ->executeQuery();
 
                 $parentPageId = 0;
                 while ($row_tmp = $siblings->fetchAssociative()) {
@@ -8768,7 +8768,7 @@ class DataHandler implements LoggerAwareInterface
                                 'pid',
                                 $siblingChildrenQuery->createNamedParameter($row_tmp['uid'], \PDO::PARAM_INT)
                             ))
-                            ->execute();
+                            ->executeQuery();
                         while ($row_tmp2 = $siblingChildren->fetchAssociative()) {
                             $pageIdsThatNeedCacheFlush[] = (int)$row_tmp2['uid'];
                         }
@@ -8791,7 +8791,7 @@ class DataHandler implements LoggerAwareInterface
                             'uid',
                             $parentQuery->createNamedParameter($parentPageId, \PDO::PARAM_INT)
                         ))
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
                     if (!empty($row_tmp)) {
                         $pageIdsThatNeedCacheFlush[] = (int)$row_tmp['pid'];
@@ -8813,7 +8813,7 @@ class DataHandler implements LoggerAwareInterface
                             'uid',
                             $parentQuery->createNamedParameter($pageUid, \PDO::PARAM_INT)
                         ))
-                        ->execute()
+                        ->executeQuery()
                         ->fetchAssociative();
                     if (!empty($parentPageRecord)) {
                         $pageIdsThatNeedCacheFlush[] = (int)$parentPageRecord['pid'];
@@ -9017,7 +9017,7 @@ class DataHandler implements LoggerAwareInterface
                 ),
                 $queryBuilder->expr()->neq('error', $queryBuilder->createNamedParameter(SystemLogErrorClassification::MESSAGE, \PDO::PARAM_INT))
             )
-            ->execute();
+            ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
             $log_data = unserialize($row['log_data'], ['allowed_classes' => false]) ?: [];
@@ -9584,11 +9584,11 @@ class DataHandler implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('PGT.tablename', $queryBuilder->quote($tableName))
             )
             ->setMaxResults(1)
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if ($row !== false) {
-            $connection->exec(
+            $connection->executeStatement(
                 sprintf(
                     'SELECT SETVAL(%s, COALESCE(MAX(%s), 0)+1, FALSE) FROM %s',
                     $connection->quote($row['schemaname'] . '.' . $row['relname']),

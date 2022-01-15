@@ -37,13 +37,13 @@ class RedirectRepository
         return $this->getQueryBuilderForDemand($demand)
             ->setMaxResults($demand->getLimit())
             ->setFirstResult($demand->getOffset())
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
     public function countRedirectsByByDemand(Demand $demand): int
     {
-        return $this->getQueryBuilderForDemand($demand)->execute()->rowCount();
+        return $this->getQueryBuilderForDemand($demand)->executeQuery()->rowCount();
     }
 
     /**
@@ -124,7 +124,7 @@ class RedirectRepository
             ->from('sys_redirect')
             ->orderBy('source_host')
             ->groupBy('source_host')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -138,7 +138,7 @@ class RedirectRepository
             ->from('sys_redirect')
             ->orderBy('target_statuscode')
             ->groupBy('target_statuscode')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
     }
 
@@ -188,6 +188,6 @@ class RedirectRepository
                 ->setParameter('path', $demand->getSourcePath(), \PDO::PARAM_STR);
         }
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 }

@@ -131,7 +131,7 @@ class PageSlugCandidateProvider
                     $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $page = $statement->fetchAssociative();
         if (empty($page)) {
@@ -223,7 +223,7 @@ class PageSlugCandidateProvider
             // Sort pages that are not MountPoint pages before mount points
             ->addOrderBy('mount_pid_ol', 'asc')
             ->addOrderBy('mount_pid', 'asc')
-            ->execute();
+            ->executeQuery();
 
         $pages = [];
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);

@@ -885,7 +885,7 @@ class DataMapProcessor
                     $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)
                 )
             )
-            ->execute();
+            ->executeQuery();
 
         $translationValues = [];
         while ($record = $statement->fetchAssociative()) {
@@ -1138,7 +1138,7 @@ class DataMapProcessor
             ->select(...array_values($fieldNames))
             ->from($tableName)
             ->andWhere(...$predicates)
-            ->execute();
+            ->executeQuery();
 
         $dependentElements = [];
         while ($record = $statement->fetchAssociative()) {

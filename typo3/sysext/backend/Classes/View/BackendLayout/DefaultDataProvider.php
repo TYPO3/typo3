@@ -197,7 +197,7 @@ class DefaultDataProvider implements DataProviderInterface
             $queryBuilder->orderBy($GLOBALS['TCA'][$this->tableName]['ctrl']['sortby']);
         }
 
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $results = [];
         while ($record = $statement->fetchAssociative()) {

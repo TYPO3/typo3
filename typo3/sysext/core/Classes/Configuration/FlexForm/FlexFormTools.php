@@ -303,10 +303,10 @@ class FlexFormTools
                             $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 $rowCount = $queryBuilder
                     ->count('uid')
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
                 if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
@@ -647,7 +647,7 @@ class FlexFormTools
                             $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne();
             } elseif ($identifier['type'] === 'tca') {
                 // Handle "tca" type, see getDataStructureIdentifierFromTcaArray

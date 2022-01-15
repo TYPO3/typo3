@@ -592,7 +592,7 @@ class RecordListController
                     $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                 )
             )
-            ->execute();
+            ->executeQuery();
         while ($pageTranslation = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$pageTranslation[$languageField]]);
         }

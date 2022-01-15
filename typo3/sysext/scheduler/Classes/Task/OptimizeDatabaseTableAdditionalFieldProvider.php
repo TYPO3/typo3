@@ -227,7 +227,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             );
         }
 
-        $tables = $queryBuilder->execute()->fetchAllAssociative();
+        $tables = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return array_column($tables, 'Table');
     }

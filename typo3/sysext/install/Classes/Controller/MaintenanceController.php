@@ -832,7 +832,7 @@ class MaintenanceController extends AbstractController
             ->getQueryBuilderForTable('be_users')
             ->update('be_users')
             ->set('uc', '')
-            ->execute();
+            ->executeStatement();
         $messageQueue = new FlashMessageQueue('install');
         $messageQueue->enqueue(new FlashMessage(
             'Preferences of all backend users have been reset',

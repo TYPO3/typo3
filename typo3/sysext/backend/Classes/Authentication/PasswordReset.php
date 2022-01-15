@@ -75,7 +75,7 @@ class PasswordReset implements LoggerAwareInterface
             ->select('uid')
             ->from('be_users')
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
         return (int)$statement->fetchOne() > 0;
     }
 
@@ -95,7 +95,7 @@ class PasswordReset implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($userId, \PDO::PARAM_INT))
             )
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
         return $statement->fetchOne() > 0;
     }
 
@@ -127,7 +127,7 @@ class PasswordReset implements LoggerAwareInterface
             ->andWhere(
                 $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($emailAddress))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         if (!is_array($users) || count($users) === 0) {
             // No user found, do nothing, also no log to sys_log in order avoid log flooding
@@ -289,10 +289,10 @@ class PasswordReset implements LoggerAwareInterface
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->comparison('SHA1(CONCAT(' . $queryBuilder->quoteIdentifier('email') . ', ' . $queryBuilder->quoteIdentifier('uid') . '))', $queryBuilder->expr()::EQ, $queryBuilder->createNamedParameter($identity))
             );
-            $user = $queryBuilder->execute()->fetchAssociative();
+            $user = $queryBuilder->executeQuery()->fetchAssociative();
         } else {
             // no native SHA1/ CONCAT functionality, has to be done in PHP
-            $stmt = $queryBuilder->execute();
+            $stmt = $queryBuilder->executeQuery();
             while ($row = $stmt->fetchAssociative()) {
                 if (hash_equals(hash('sha1', $row['email'] . (string)$row['uid']), $identity)) {
                     $user = $row;
@@ -489,7 +489,7 @@ class PasswordReset implements LoggerAwareInterface
                 $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter(serialize(['email' => $email]))),
                 $queryBuilder->expr()->gte('tstamp', $queryBuilder->createNamedParameter($since->getTimestamp(), \PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 }

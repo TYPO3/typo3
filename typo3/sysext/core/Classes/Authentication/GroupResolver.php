@@ -120,7 +120,7 @@ class GroupResolver
                     )
                 )
             )
-            ->execute();
+            ->executeQuery();
         $groups = [];
         while ($row = $result->fetchAssociative()) {
             $groups[(int)$row['uid']] = $row;
@@ -166,7 +166,7 @@ class GroupResolver
             ->where(
                 $queryBuilder->expr()->orX(...$constraints)
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         return !empty($users) ? $users : [];
     }
@@ -222,7 +222,7 @@ class GroupResolver
             ->where(
                 $queryBuilder->expr()->orX(...$constraints)
             )
-            ->execute();
+            ->executeQuery();
 
         $groups = [];
         while ($row = $result->fetchAssociative()) {

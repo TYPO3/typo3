@@ -262,7 +262,7 @@ class PageLayoutController
                         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
                         $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
                     )
-                )->execute();
+                )->executeQuery();
             while ($pageTranslation = $statement->fetchAssociative()) {
                 $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
                 if (isset($this->availableLanguages[$languageId])) {
@@ -521,7 +521,7 @@ class PageLayoutController
             ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
 
         $links = [];
-        $rows = $queryBuilder->execute()->fetchAllAssociative();
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
         if (!empty($rows)) {
             foreach ($rows as $row) {
                 $linkToPid = $this->uriBuilder->buildUriFromRoute($this->moduleName, ['id' =>  $row['uid']]);
@@ -559,7 +559,7 @@ class PageLayoutController
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             BackendUtility::workspaceOL('pages', $localizedPage);
             return $localizedPage['title'];
@@ -868,7 +868,7 @@ class PageLayoutController
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             BackendUtility::workspaceOL('pages', $overlayRecord, $this->getBackendUser()->workspace);
             // Edit button
@@ -981,7 +981,7 @@ class PageLayoutController
         }
 
         $count = $queryBuilder
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
 
         return (int)$count;

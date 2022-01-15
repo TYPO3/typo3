@@ -85,7 +85,7 @@ class DownloadRecordList
     ): array {
         // Creating the list of fields to include in the SQL query
         $selectFields = $this->recordList->getFieldsToSelect($table, $columnsToRender);
-        $queryResult = $this->recordList->getQueryBuilder($table, $pageId, [], $selectFields, true, 0, 0)->execute();
+        $queryResult = $this->recordList->getQueryBuilder($table, $pageId, [], $selectFields, true, 0, 0)->executeQuery();
         $l10nEnabled = BackendUtility::isTableLocalizable($table);
         $result = [];
         // Render items

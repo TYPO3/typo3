@@ -121,7 +121,7 @@ class FailedLoginAttemptNotification
             ->select('tstamp')
             ->orderBy('tstamp', 'DESC')
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
         if ($lastTimeANotificationWasSent = $statement->fetchOne()) {
             $earliestTimeToCheckForFailures = (int)$lastTimeANotificationWasSent;
         }
@@ -129,7 +129,7 @@ class FailedLoginAttemptNotification
         $previousFailures = $queryBuilder
             ->select('*')
             ->orderBy('tstamp')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         return is_array($previousFailures) ? $previousFailures : [];
     }

@@ -563,7 +563,7 @@ class DatabaseRecordList
         // Finding the total amount of records on the page
         $queryBuilderTotalItems = $this->getQueryBuilder($table, $id, [], ['*'], false, 0, 1);
         $totalItems = (int)$queryBuilderTotalItems->count('*')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         if ($totalItems === 0) {
             return '';
@@ -618,7 +618,7 @@ class DatabaseRecordList
             $queryBuilder = $this->getQueryBuilder($table, $id, [], $selectFields, true, $firstElement, $itemsPerPage);
         }
 
-        $queryResult = $queryBuilder->execute();
+        $queryResult = $queryBuilder->executeQuery();
         $columnsOutput = '';
         $onlyShowRecordsInSingleTableMode = $this->listOnlyInSingleTableMode && !$this->table;
         // Fetch records only if not in single table mode
@@ -3181,7 +3181,7 @@ class DatabaseRecordList
                     )
                 )
             )
-            ->execute();
+            ->executeQuery();
         $allowedTranslationsOnPage = [];
         while ($row = $result->fetchAssociative()) {
             $allowedTranslationsOnPage[] = (int)$row[$languageField];

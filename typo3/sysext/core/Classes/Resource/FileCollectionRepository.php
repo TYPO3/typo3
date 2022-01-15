@@ -60,7 +60,7 @@ class FileCollectionRepository
         $data = $queryBuilder->select('*')
             ->from($this->table)
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)))
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         if (is_array($data)) {
             $object = $this->createDomainObject($data);
@@ -110,7 +110,7 @@ class FileCollectionRepository
             $queryBuilder->where(...$conditions);
         }
 
-        $data = $queryBuilder->execute()->fetchAllAssociative();
+        $data = $queryBuilder->executeQuery()->fetchAllAssociative();
         if (!empty($data)) {
             $result = $this->createMultipleDomainObjects($data);
         }

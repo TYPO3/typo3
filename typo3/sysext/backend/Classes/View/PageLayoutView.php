@@ -860,8 +860,7 @@ class PageLayoutView implements LoggerAwareInterface
         );
 
         // Traverse any selected elements and render their display code:
-        /** @var Result $result */
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeQuery();
         $results = $this->getResult($result);
         $unused = [];
         $hookArray = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['record_is_used'] ?? [];
@@ -1372,7 +1371,7 @@ class PageLayoutView implements LoggerAwareInterface
                     )
                 );
 
-            $result = $queryBuilder->execute();
+            $result = $queryBuilder->executeQuery();
 
             // Flip uids:
             $defaultLanguageUids = array_flip($defaultLanguageUids);
@@ -1515,7 +1514,7 @@ class PageLayoutView implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
                 )
             );
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             unset($availableTranslations[(int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']]]);
         }
@@ -1927,7 +1926,7 @@ class PageLayoutView implements LoggerAwareInterface
                     )
                 )
                 ->setMaxResults(1)
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
             BackendUtility::workspaceOL('pages', $localizedPage);
             return $localizedPage['title'];

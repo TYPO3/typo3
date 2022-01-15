@@ -121,12 +121,12 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
 
     protected function hasRecordsToUpdate(): bool
     {
-        return (bool)$this->getPreparedQueryBuilder()->count('uid')->execute()->fetchOne();
+        return (bool)$this->getPreparedQueryBuilder()->count('uid')->executeQuery()->fetchOne();
     }
 
     protected function getRecordsToUpdate(): array
     {
-        return $this->getPreparedQueryBuilder()->select(...['uid', 'module_name', 'url'])->execute()->fetchAllAssociative();
+        return $this->getPreparedQueryBuilder()->select(...['uid', 'module_name', 'url'])->executeQuery()->fetchAllAssociative();
     }
 
     protected function getPreparedQueryBuilder(): QueryBuilder

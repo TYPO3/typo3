@@ -195,7 +195,7 @@ class LogEntryRepository extends Repository
         }
         return (int)$queryBuilder->delete('sys_log')
             ->where(...$constraints)
-            ->execute();
+            ->executeStatement();
     }
 
     public function getUsedChannels(): array
@@ -208,7 +208,7 @@ class LogEntryRepository extends Repository
             ->distinct()
             ->from('sys_log')
             ->orderBy('channel')
-            ->execute()
+            ->executeQuery()
             ->fetchFirstColumn();
 
         return array_combine($channels, $channels);
@@ -234,7 +234,7 @@ class LogEntryRepository extends Repository
             ->select('level')
             ->distinct()
             ->from('sys_log')
-            ->execute()
+            ->executeQuery()
             ->fetchFirstColumn();
 
         $levelsUsed = array_intersect($allLevels, $levels);

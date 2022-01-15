@@ -367,7 +367,7 @@ class QueryGenerator
                             ->from($this->table)
                             ->where(QueryHelper::stripLogicalOperatorPrefix($queryString));
                         $fullQueryString = $queryBuilder->getSQL();
-                        $dataRows = [$queryBuilder->execute()->fetchOne()];
+                        $dataRows = [$queryBuilder->executeQuery()->fetchOne()];
                     } else {
                         $fullQueryString = $selectQueryString;
                         $dataRows = $connection->executeQuery($selectQueryString)->fetchAllAssociative();
@@ -427,7 +427,7 @@ class QueryGenerator
                         $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                     );
                 }
-                $count = $queryBuilder->orWhere(...$likes)->execute()->fetchOne();
+                $count = $queryBuilder->orWhere(...$likes)->executeQuery()->fetchOne();
 
                 if ($count > 0) {
                     $queryBuilder = $connection->createQueryBuilder();
@@ -442,7 +442,7 @@ class QueryGenerator
                             $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                         );
                     }
-                    $statement = $queryBuilder->orWhere(...$likes)->execute();
+                    $statement = $queryBuilder->orWhere(...$likes)->executeQuery();
                     $lastRow = null;
                     $rowArr = [];
                     while ($row = $statement->fetchAssociative()) {
@@ -499,7 +499,7 @@ class QueryGenerator
                 ->from('sys_action')
                 ->where($queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter(2, \PDO::PARAM_INT)))
                 ->orderBy('title')
-                ->execute();
+                ->executeQuery();
             $opt[] = '<option value="0">__Save to Action:__</option>';
             while ($row = $statement->fetchAssociative()) {
                 $opt[] = '<option value="-' . (int)$row['uid'] . '">' . htmlspecialchars($row['title']
@@ -611,7 +611,8 @@ class QueryGenerator
                 $rowCount = $queryBuilder->count('*')
                     ->from($this->table)
                     ->where(QueryHelper::stripLogicalOperatorPrefix($queryString))
-                    ->execute()->fetchOne();
+                    ->executeQuery()
+                    ->fetchOne();
 
                 $t2DataValue = [
                     'qC' => $saveArr,
@@ -1110,7 +1111,7 @@ class QueryGenerator
             if ($permsClause !== '') {
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permsClause));
             }
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
                     $theList .= ',' . $row['uid'];
@@ -1194,7 +1195,7 @@ class QueryGenerator
                 if (!$fieldSetup['prepend_tname']) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $statement = $queryBuilder->select($fieldName)->from($table)->execute();
+                    $statement = $queryBuilder->select($fieldName)->from($table)->executeQuery();
                     while ($row = $statement->fetchAssociative()) {
                         if (str_contains($row[$fieldName], ',')) {
                             $checkContent = explode(',', $row[$fieldName]);
@@ -1302,7 +1303,7 @@ class QueryGenerator
                                 );
                             }
                         }
-                        $statement = $queryBuilder->execute();
+                        $statement = $queryBuilder->executeQuery();
                         $this->tableArray[$from_table] = [];
                         while ($row = $statement->fetchAssociative()) {
                             $this->tableArray[$from_table][] = $row;
@@ -1989,7 +1990,7 @@ class QueryGenerator
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $statement = $queryBuilder->select($fieldName)
                         ->from($table)
-                        ->execute();
+                        ->executeQuery();
                     while ($row = $statement->fetchAssociative()) {
                         if (str_contains($row[$fieldName], ',')) {
                             $checkContent = explode(',', $row[$fieldName]);
@@ -2099,7 +2100,7 @@ class QueryGenerator
                                 );
                             }
                         }
-                        $statement = $queryBuilder->execute();
+                        $statement = $queryBuilder->executeQuery();
                         $this->tableArray[$from_table] = $statement->fetchAllAssociative();
                     }
 
