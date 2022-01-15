@@ -24,19 +24,11 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 class ReportModuleCest
 {
-    public function _before(ApplicationTester $I): void
-    {
-        $I->useExistingSession('admin');
-
-        $I->click('Reports');
-        $I->switchToContentFrame();
-        $I->canSee('Overview', 'h2');
-    }
-
     public function seeStatusReport(ApplicationTester $I): void
     {
-        $I->amGoingTo('select Reports in dropdown');
-        $I->selectOption('.t3-js-jumpMenuBox', 'Status Report');
+        $I->useExistingSession('admin');
+        $I->click('Reports');
+        $I->switchToContentFrame();
         $I->see('TYPO3 System', 'h2');
     }
 }

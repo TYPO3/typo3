@@ -24,41 +24,21 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Reports\ReportInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Reports controller
+ * The "Reports" backend module.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ReportController
 {
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
-
-    /**
-     * Module name for the shortcut
-     *
-     * @var string
-     */
-    protected $shortcutName;
-
     protected UriBuilder $uriBuilder;
     protected ModuleTemplateFactory $moduleTemplateFactory;
     protected IconRegistry $iconRegistry;
@@ -74,231 +54,206 @@ class ReportController
     }
 
     /**
-     * Injects the request object for the current request, and renders correct action
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * Main dispatcher.
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? '';
-        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'] ?? '';
-        $isRedirect = $request->getQueryParams()['redirect'] ?? $request->getParsedBody()['redirect'] ?? false;
-
-        if ($action !== 'index' && !$isRedirect && !$extension
-            && is_array($GLOBALS['BE_USER']->uc['reports']['selection'] ?? null)) {
-            $previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
-            if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
-                return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('system_reports', [
-                    'action' => 'detail',
-                    'extension' => $previousSelection['extension'],
-                    'report' => $previousSelection['report'],
-                    'redirect' => 1,
-                ]), 303);
-            }
-        }
-        if (empty($action)) {
-            $action = 'index';
+        $validRegisteredReports = $this->getValidReportCombinations();
+        $queryParams = $request->getQueryParams();
+        $backendUserUc = $this->getBackendUser()->uc['reports']['selection'] ?? [];
+        // This can be 'index' for "overview", or 'detail' to render one specific report specified by 'extension' and 'report'
+        $mainView = $queryParams['action'] ?? $backendUserUc['action'] ?? 'detail';
+        if (count($validRegisteredReports) === 0 || $mainView === 'index') {
+            // Render overview directly if there are no reports at all to have some info box about that,
+            // or if that view has been requested explicitly.
+            $this->updateBackendUserUc('index');
+            return $this->indexAction($request);
         }
 
-        $this->initializeView($action);
-
-        if ($action === 'index') {
-            $this->indexAction();
-        } elseif ($action === 'detail') {
-            $response = $this->detailAction($request);
-            if ($response instanceof ResponseInterface) {
-                return $response;
-            }
-        } else {
-            throw new \RuntimeException(
-                'Reports module has only "index" and "detail" action, ' . (string)$action . ' given',
-                1536322935
-            );
+        // For fallbacks if backendUser->uc() pointer is invalid or called first time.
+        $firstReport = $validRegisteredReports[0];
+        $extension = $request->getQueryParams()['extension'] ?? $backendUserUc['extension'] ?? $firstReport['extension'];
+        $report = $request->getQueryParams()['report'] ?? $backendUserUc['report'] ?? $firstReport['report'];
+        if (!in_array(['extension' => $extension, 'report' => $report], $validRegisteredReports)) {
+            // If a selected report has been removed meanwhile (e.g. extension deleted), fall back to first one.
+            $extension = $firstReport['extension'];
+            $report = $firstReport['report'];
         }
-
-        $this->generateMenu($request);
-
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier('system_reports')
-            ->setDisplayName($this->shortcutName)
-            ->setArguments([
-                'action' => $action,
-                'extension' => $extension,
-                'report' => $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'] ?? '',
-            ]);
-        $buttonBar->addButton($shortcutButton);
-
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        if (($backendUserUc['action'] ?? '') !== 'detail'
+            || ($backendUserUc['extension'] ?? '') !== $extension
+            || ($backendUserUc['report'] ?? '') !== $report
+        ) {
+            // Update uc if view changed to render same view on next call.
+            $this->updateBackendUserUc('detail', $extension, $report);
+        }
+        return $this->detailAction($request, $extension, $report);
     }
 
     /**
-     * @param string $templateName
+     * Render index "overview".
      */
-    protected function initializeView(string $templateName)
+    protected function indexAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplate($templateName);
-        $this->view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates/Report']);
-        $this->view->setPartialRootPaths(['EXT:reports/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:reports/Resources/Private/Layouts']);
-        $this->view->getRequest()->setControllerExtensionName('Reports');
-    }
-
-    /**
-     * Overview
-     */
-    protected function indexAction()
-    {
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview')
-        );
-
-        $reports = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'];
-
-        foreach ($reports as $extension => $reportModules) {
+        $languageService = $this->getLanguageService();
+        $registeredReports = $this->getRegisteredReportsArray();
+        foreach ($registeredReports as $extension => $reportModules) {
             foreach ($reportModules as $module => $configuration) {
                 $icon = $configuration['icon'] ?? 'EXT:reports/Resources/Public/Icons/Extension.png';
-                $isRegisteredIcon = $reports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($icon);
+                $isRegisteredIcon = $registeredReports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($icon);
                 if (!$isRegisteredIcon) {
-                    // TODO: deprecate icons from non extension resources
-                    $reports[$extension][$module]['icon'] = PathUtility::isExtensionPath($icon) ? PathUtility::getPublicResourceWebPath($icon) : PathUtility::getAbsoluteWebPath($icon);
+                    // @todo: Deprecate icons from non extension resources
+                    $registeredReports[$extension][$module]['icon'] = PathUtility::isExtensionPath($icon) ? PathUtility::getPublicResourceWebPath($icon) : PathUtility::getAbsoluteWebPath($icon);
                 }
             }
         }
-
-        $this->view->assign('reports', $reports);
-        $this->saveState();
-    }
-
-    /**
-     * Display a single report
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface|void
-     */
-    protected function detailAction(ServerRequestInterface $request)
-    {
-        $content = $error = '';
-        $extension = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'];
-        $report = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'];
-
-        $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? null;
-
-        if ($reportClass === null || !class_exists($reportClass)) {
-            $this->resetState();
-            return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('system_reports', [
-                'action' => 'index',
-                'redirect' => 1,
-            ]), 303);
-        }
-
-        $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
-
-        if ($reportInstance instanceof ReportInterface) {
-            if ($reportInstance instanceof RequestAwareReportInterface) {
-                $content = $reportInstance->getReport($request);
-            } else {
-                $content = $reportInstance->getReport();
-            }
-            $this->saveState($extension, $report);
-        } else {
-            $error = $reportClass . ' does not implement the Report Interface which is necessary to be displayed here.';
-        }
-
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['title'])
-        );
-
-        $this->view->assignMultiple([
-            'content' => $content,
-            'error' => $error,
-            'report' => $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report],
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
+        $view->assignMultiple([
+            'reports' => $registeredReports,
         ]);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setContent($view->render('Report/Index'));
+        $moduleTemplate->setTitle(
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview')
+        );
+        $this->addMainMenu($moduleTemplate);
+        $this->addShortcutButton(
+            $moduleTemplate,
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview'),
+            ['action' => 'index']
+        );
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
-     * Generates the menu
-     *
-     * @param ServerRequestInterface $request
+     * Render a single report.
      */
-    protected function generateMenu(ServerRequestInterface $request)
+    protected function detailAction(ServerRequestInterface $request, string $extension, string $report): ResponseInterface
     {
-        $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:reports/Resources/Private/Language/locallang.xlf');
-        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $languageService = $this->getLanguageService();
+        $registeredReports = $this->getRegisteredReportsArray();
+        $reportClass = $registeredReports[$extension][$report]['report'];
+        // @todo: $this hand-over for b/w compat, but it's useless in general and could be removed as breaking change.
+        //        Note this prevents DI for reports, so we may actually want to drop this here!
+        $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
+        if ($reportInstance instanceof RequestAwareReportInterface) {
+            $content = $reportInstance->getReport($request);
+        } else {
+            $content = $reportInstance->getReport();
+        }
+
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
+        $view->assignMultiple([
+            'content' => $content,
+            'report' => $registeredReports[$extension][$report],
+        ]);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->setContent($view->render('Report/Detail'));
+        $moduleTemplate->setTitle(
+            $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
+            $languageService->sL($registeredReports[$extension][$report]['title'] ?? '')
+        );
+        $validRegisteredReports = $this->getValidReportCombinations();
+        if (count($validRegisteredReports) > 1) {
+            // Add the main module drop-down only if there are more than one reports registered.
+            // This also means the "overview" view is not selectable with default core.
+            $this->addMainMenu($moduleTemplate, $extension, $report);
+        }
+        $this->addShortcutButton(
+            $moduleTemplate,
+            $languageService->sL($registeredReports[$extension][$report]['title'] ?? ''),
+            ['action' => 'detail', 'extension' => $extension, 'report' => $report]
+        );
+        return new HtmlResponse($moduleTemplate->renderContent());
+    }
+
+    protected function addMainMenu(ModuleTemplate $moduleTemplate, string $extension = '', string $report = ''): void
+    {
+        $languageService = $this->getLanguageService();
+        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
-        $menuItem = $menu
-            ->makeMenuItem()
+        $menuItem = $menu->makeMenuItem()
             ->setHref(
                 $this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
             )
-            ->setTitle($lang->getLL('reports_overview'));
+            ->setTitle($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview'));
         $menu->addMenuItem($menuItem);
-        $this->shortcutName = $lang->getLL('reports_overview');
-
-        $extensionParam = $request->getQueryParams()['extension'] ?? $request->getParsedBody()['extension'] ?? '';
-        $reportParam = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'] ?? '';
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $reports) {
-            foreach ($reports as $reportName => $report) {
-                $menuItem = $menu
-                    ->makeMenuItem()
+        foreach ($this->getRegisteredReportsArray() as $extKey => $reports) {
+            foreach ($reports as $reportName => $reportConfiguration) {
+                $menuItem = $menu->makeMenuItem()
                     ->setHref($this->uriBuilder->buildUriFromRoute(
                         'system_reports',
                         ['action' => 'detail', 'extension' => $extKey, 'report' => $reportName]
                     ))
-                    ->setTitle($this->getLanguageService()->sL($report['title']));
-                if ($extensionParam === $extKey && $reportParam === $reportName) {
+                    ->setTitle($this->getLanguageService()->sL($reportConfiguration['title'] ?? 'default'));
+                if ($extension === $extKey && $report === $reportName) {
                     $menuItem->setActive(true);
-                    $this->shortcutName = $menuItem->getTitle();
                 }
                 $menu->addMenuItem($menuItem);
             }
         }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    protected function addShortcutButton(ModuleTemplate $moduleTemplate, string $title, array $arguments): void
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $shortcutButton = $buttonBar->makeShortcutButton()
+            ->setRouteIdentifier('system_reports')
+            ->setDisplayName($title)
+            ->setArguments($arguments);
+        $buttonBar->addButton($shortcutButton);
     }
 
     /**
-     * Save the selected report
-     *
-     * @param string $extension Extension name
-     * @param string $report Report name
+     * Save selected action / extension / report combination to user uc to render this again on next module call.
      */
-    protected function saveState(string $extension = '', string $report = '')
+    protected function updateBackendUserUc(string $action, string $extension = '', string $report = ''): void
     {
-        $this->getBackendUser()->uc['reports']['selection'] = [
+        $backendUser = $this->getBackendUser();
+        $backendUser->uc['reports']['selection'] = [
+            'action' => $action,
             'extension' => $extension,
             'report' => $report,
         ];
-        $this->getBackendUser()->writeUC();
+        $backendUser->writeUC();
     }
 
-    /**
-     * Reset state in user settings
-     */
-    protected function resetState(): void
+    protected function getValidReportCombinations(): array
     {
-        $this->getBackendUser()->uc['reports']['selection'] = [];
-        $this->getBackendUser()->writeUC();
+        $validReports = [];
+        foreach ($this->getRegisteredReportsArray() as $extension => $reports) {
+            if (!is_array($reports)) {
+                continue;
+            }
+            foreach ($reports as $reportName => $reportConfiguration) {
+                $reportClass = $reportConfiguration['report'] ?? '';
+                if (!empty($reportClass)
+                    && class_exists($reportClass)
+                    && is_subclass_of($reportClass, ReportInterface::class)
+                ) {
+                    $validReports[] = [
+                        'extension' => $extension,
+                        'report' => $reportName,
+                    ];
+                }
+            }
+        }
+        return $validReports;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
+    protected function getRegisteredReportsArray(): array
+    {
+        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] ?? [];
+    }
+
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

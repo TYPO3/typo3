@@ -16,10 +16,16 @@
 				<source>Reports</source>
 			</trans-unit>
 			<trans-unit id="reports_overview" resname="reports_overview">
-				<source>Overview</source>
+				<source>Reports overview</source>
 			</trans-unit>
 			<trans-unit id="choose_report" resname="choose_report">
 				<source>Report</source>
+			</trans-unit>
+			<trans-unit id="noReportsTitle" resname="noReportsTitle">
+				<source>No registered reports</source>
+			</trans-unit>
+			<trans-unit id="noReportsMessage" resname="noReportsMessage">
+				<source>There are no reports registered in the system and default reports have been disabled.</source>
 			</trans-unit>
 		</body>
 	</file>

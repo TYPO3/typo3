@@ -1,30 +1,37 @@
-<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:layout name="Default"/>
+<h1><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview"/></h1>
 
-<f:section name="content">
-    <h1><f:translate key="title"/></h1>
+<f:if condition="!{reports}">
+    <f:be.infobox state="-1" title="{f:translate(key:'LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsTitle')}">
+        <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang.xlf:noReportsMessage"/>
+    </f:be.infobox>
+</f:if>
 
-    <h2><f:translate key="reports_overview"/></h2>
-
-    <dl class="t3-overview-list">
-        <f:for each="{reports}" as="reportOverview" key="extensionKey">
-            <f:for each="{reportOverview}" key="reportName" as="report">
-                <dt>
-                    <a href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', extension: extensionKey, report: reportName}')}">
-                        <f:if condition="{report.isIconIdentifier}">
-                            <f:then>
-                                <core:icon identifier="{report.icon}"/>
-                            </f:then>
-                            <f:else>
-                                <img src="{report.icon}" width="16" height="16"/>
-                            </f:else>
-                        </f:if>
-                        <f:translate key="{report.title}"/>
-                    </a>
-                </dt>
-                <dd><f:translate key="{report.description}"/></dd>
-            </f:for>
+<dl class="t3-overview-list">
+    <f:for each="{reports}" as="reportOverview" key="extensionKey">
+        <f:for each="{reportOverview}" key="reportName" as="report">
+            <dt>
+                <a href="{be:moduleLink(route: 'system_reports', arguments: '{action: \'detail\', extension: extensionKey, report: reportName}')}">
+                    <f:if condition="{report.isIconIdentifier}">
+                        <f:then>
+                            <core:icon identifier="{report.icon}"/>
+                        </f:then>
+                        <f:else>
+                            <img src="{report.icon}" width="16" height="16"/>
+                        </f:else>
+                    </f:if>
+                    <f:translate key="{report.title}" default="{report.title}"/>
+                </a>
+            </dt>
+            <dd><f:translate key="{report.description}" default="{report.description}"/></dd>
         </f:for>
-    </dl>
-</f:section>
+    </f:for>
+</dl>
+
+</html>
