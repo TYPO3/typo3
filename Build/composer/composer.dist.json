@@ -3,6 +3,13 @@
     "type": "typo3-cms-distribution",
     "description": "For testing Composer installation",
     "version": "1.0.0",
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
+    },
     "repositories": [
         {
             "type": "path",
