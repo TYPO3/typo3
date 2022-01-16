@@ -357,7 +357,7 @@ class BackendController extends ActionController
             'paginator' => $paginator,
             'pagination' => new SimplePagination($paginator),
             'userGroups' => $userGroupArray,
-            'dateTimeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? 'h:m m-d-Y' : 'h:m d-m-Y'
+            'dateTimeFormat' => 'h:m d-m-Y'
         ]);
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/Pagination');
