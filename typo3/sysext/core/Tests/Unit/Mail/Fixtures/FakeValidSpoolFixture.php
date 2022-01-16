@@ -42,7 +42,8 @@ class FakeValidSpoolFixture implements DelayedTransportInterface
 
     public function send(RawMessage $message, Envelope $envelope = null): ?SentMessage
     {
-        // dont do anything
+        // Don't do anything
+        return null;
     }
 
     public function flushQueue(TransportInterface $transport): int

@@ -36,57 +36,42 @@ class MockPlatform extends AbstractPlatform
 
     /**
      * Returns the SQL snippet that declares a boolean column.
-     *
-     * @param array $columnDef
-     *
-     * @return string
      */
     public function getBooleanTypeDeclarationSQL(array $columnDef): ?string
     {
+        return null;
     }
 
     /**
      * Returns the SQL snippet that declares a 4 byte integer column.
-     *
-     * @param array $columnDef
-     *
-     * @return string
      */
     public function getIntegerTypeDeclarationSQL(array $columnDef): ?string
     {
+        return null;
     }
 
     /**
      * Returns the SQL snippet that declares an 8 byte integer column.
-     *
-     * @param array $columnDef
-     *
-     * @return string
      */
     public function getBigIntTypeDeclarationSQL(array $columnDef): ?string
     {
+        return null;
     }
 
     /**
      * Returns the SQL snippet that declares a 2 byte integer column.
-     *
-     * @param array $columnDef
-     *
-     * @return string
      */
     public function getSmallIntTypeDeclarationSQL(array $columnDef): ?string
     {
+        return null;
     }
 
     /**
      * Returns the SQL snippet that declares common properties of an integer column.
-     *
-     * @param array $columnDef
-     *
-     * @return string
      */
     public function _getCommonIntegerTypeDeclarationSQL(array $columnDef): ?string
     {
+        return null;
     }
 
     /**

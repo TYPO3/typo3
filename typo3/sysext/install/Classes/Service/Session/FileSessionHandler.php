@@ -192,13 +192,13 @@ class FileSessionHandler implements \SessionHandlerInterface
         return @unlink($sessionFile);
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Garbage collect session info. See @session_set_save_handler
      *
      * @param int $maxLifeTime The setting of session.gc_maxlifetime
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function gc($maxLifeTime)
     {
         $sessionSavePath = $this->getSessionSavePath();
