@@ -60,8 +60,7 @@ lint scss ts html pre-merge:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-# @todo Hardcoded enforced to PHP8.0 in Build/Scripts/runTests.sh - change this after phpstan:^1.2 raise.
-phpstan php 8.0 pre-merge:
+phpstan php 8.1 pre-merge:
   stage: main
   except:
     refs:

@@ -1230,7 +1230,22 @@ services:
           set -x
         fi
         mkdir -p .cache
-        bin/phpstan analyse --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}
+        bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G ${TEST_FILE}
+      "
+
+  phpstan_generate_baseline:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${CORE_ROOT}:${CORE_ROOT}
+    working_dir: ${CORE_ROOT}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        mkdir -p .cache
+        bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction --memory-limit 4G --generate-baseline=Build/phpstan/phpstan-baseline.neon
       "
 
   unit:

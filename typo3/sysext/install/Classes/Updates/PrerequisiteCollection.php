@@ -46,10 +46,7 @@ class PrerequisiteCollection implements \IteratorAggregate
         }
     }
 
-    /**
-     * @return \ArrayObject|\Traversable|PrerequisiteInterface[]
-     */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->prerequisites;
     }

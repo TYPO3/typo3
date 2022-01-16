@@ -291,6 +291,7 @@ class ClassSchemaTest extends UnitTestCase
             }
             public function foo($copy): self
             {
+                return $this;
             }
             public function bar(self $copy): void
             {

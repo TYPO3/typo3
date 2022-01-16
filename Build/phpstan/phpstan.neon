@@ -1,0 +1,27 @@
+includes:
+  - phpstan-baseline.neon
+  - ../../vendor/friendsoftypo3/phpstan-typo3/extension.neon
+
+parameters:
+  # Use local .cache dir instead of /tmp
+  tmpDir: ../../.cache/phpstan
+
+  parallel:
+    # Don't be overly greedy on machines with more CPU's to be a good neighbor especially on CI
+    maximumNumberOfProcesses: 5
+
+  level: 3
+
+  bootstrapFiles:
+    - phpstan-constants.php
+
+  paths:
+    - ../../typo3/sysext/
+
+  excludePaths:
+    # Checking acceptance Cest and Support files is cumbersome due to codeception dynamic mixin generation
+    - ../../typo3/sysext/core/Tests/Acceptance/*
+    # These test fixtures *could* be streamlined but currently generate lots of failures
+    - ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/*
+    # ext_emconf.php get the $_EXTKEY set from outsite. We'll ignore all of them
+    - ../../typo3/sysext/*/ext_emconf.php

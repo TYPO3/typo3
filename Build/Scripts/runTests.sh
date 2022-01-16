@@ -111,6 +111,7 @@ Options:
             - lintHtml: HTML linting
             - listExceptionCodes: list core exception codes in JSON format
             - phpstan: phpstan tests
+            - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
             - unitDeprecated: deprecated PHP unit tests
             - unitJavascript: JavaScript unit tests
@@ -712,10 +713,14 @@ case ${TEST_SUITE} in
         docker-compose down
         ;;
     phpstan)
-        # @todo remove hardcoded php version when phpstan is raised and runnable with PHP8.1
-        PHP_VERSION="8.0"
         setUpDockerComposeDotEnv
         docker-compose run phpstan
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    phpstanGenerateBaseline)
+        setUpDockerComposeDotEnv
+        docker-compose run phpstan_generate_baseline
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
