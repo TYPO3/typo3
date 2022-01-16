@@ -32,7 +32,12 @@
     "config": {
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "composer/package-versions-deprecated": true
+        }
     },
     "require-dev": {
         "codeception/codeception": "^4.1",
