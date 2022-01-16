@@ -5,9 +5,11 @@ parameters:
     - %currentWorkingDirectory%/Classes
     - %currentWorkingDirectory%/Tests
 
-  excludes_analyse:
+  excludePaths:
     - %currentWorkingDirectory%/Tests/Acceptance/Support/BackendTester.php
     - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
     - %currentWorkingDirectory%/Tests/Acceptance/Backend/GenerateCommandCest.php
 
+  # @todo Disable vague typehints which comes with level 6. Remove this after typehints have been fixed.
+  #       See: https://phpstan.org/config-reference#vague-typehints
   checkMissingIterableValueType: false
