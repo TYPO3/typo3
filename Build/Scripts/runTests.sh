@@ -52,15 +52,6 @@ handleDbmsAndDriverOptions() {
                 exit 1
             fi
             ;;
-        mssql)
-            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="sqlsrv"
-            if [ "${DATABASE_DRIVER}" != "sqlsrv" ] && [ "${DATABASE_DRIVER}" != "pdo_sqlsrv" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-            fi
-            ;;
         postgres|sqlite)
             if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
@@ -83,7 +74,7 @@ a recent docker-compose (tested >=1.21.2) is needed.
 
 Usage: $0 [options] [file]
 
-No arguments: Run all unit tests with PHP 7.4
+No arguments: Run all unit tests with PHP 8.1
 
 Options:
     -s <...>
@@ -125,7 +116,7 @@ Options:
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
-    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
+    -a <mysqli|pdo_mysql>
         Only with -s functional|functionalDeprecated
         Specifies to use another driver, following combinations are available:
             - mysql
@@ -134,40 +125,30 @@ Options:
             - mariadb
                 - mysqli (default)
                 - pdo_mysql
-            - mssql
-                - sqlsrv (default)
-                - pdo_sqlsrv
 
-    -d <mariadb|mysql|mssql|postgres|sqlite>
+    -d <mariadb|mysql|postgres|sqlite>
         Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use MySQL server
-            - mssql: use mssql microsoft sql server
             - postgres: use postgres
             - sqlite: use sqlite
 
     -i <10.1|10.2|10.3|10.4|10.5>
         Only with -d mariadb
         Specifies on which version of mariadb tests are performed
-            - 10.1
-            - 10.2
             - 10.3 (default)
             - 10.4
             - 10.5
 
-    -j <5.5|5.6|5.7|8.0>
+    -j <8.0>
         Only with -d mysql
         Specifies on which version of mysql tests are performed
-            - 5.5 (default)
-            - 5.6
-            - 5.7
-            - 8.0
+            - 8.0 (default)
 
-    -k <9.6|10|11|12|13>
+    -k <10|11|12|13>
         Only with -d postgres
         Specifies on which version of postgres tests are performed
-            - 9.6
             - 10 (default)
             - 11
             - 12
@@ -178,11 +159,9 @@ Options:
         Hack functional or acceptance tests into #numberOfChunks pieces and run tests of #chunk.
         Example -c 3/13
 
-    -p <7.4|8.0|8.1>
+    -p <8.1>
         Specifies the PHP minor version to be used
-            - 7.4 (default): use PHP 7.4
-            - 8.0: use PHP 8.0
-            - 8.1: use PHP 8.1
+            - 8.1 (default): use PHP 8.1
 
     -e "<phpunit options>"
         Only with -s functional|functionalDeprecated|unit|unitDeprecated|unitRandom|acceptance
@@ -224,7 +203,7 @@ Options:
         Show this help.
 
 Examples:
-    # Run all core unit tests using PHP 7.4
+    # Run all core unit tests using PHP 8.1
     ./Build/Scripts/runTests.sh
     ./Build/Scripts/runTests.sh -s unit
 
@@ -232,17 +211,17 @@ Examples:
     ./Build/Scripts/runTests.sh -x
 
     # Run unit tests in phpunit verbose mode with xdebug on PHP 8.0 and filter for test canRetrieveValueWithGP
-    ./Build/Scripts/runTests.sh -x -p 8.0 -e "-v --filter canRetrieveValueWithGP"
+    ./Build/Scripts/runTests.sh -x -p 8.1 -e "-v --filter canRetrieveValueWithGP"
 
     # Run functional tests in phpunit with a filtered test method name in a specified file
     # example will currently execute two tests, both of which start with the search term
     ./Build/Scripts/runTests.sh -s functional -e "--filter deleteContent" typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php
 
-    # Run unit tests with PHP 8.0 and have xdebug enabled
-    ./Build/Scripts/runTests.sh -x -p 8.0
+    # Run unit tests with PHP 8.1 and have xdebug enabled
+    ./Build/Scripts/runTests.sh -x -p 8.1
 
     # Run functional tests on postgres with xdebug, php 8.0 and execute a restricted set of tests
-    ./Build/Scripts/runTests.sh -x -p 8.0 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
+    ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
 
     # Run functional tests on mariadb 10.5
     ./Build/Scripts/runTests.sh -d mariadb -i 10.5
@@ -292,7 +271,7 @@ fi
 # Option defaults
 TEST_SUITE="unit"
 DBMS="mariadb"
-PHP_VERSION="7.4"
+PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
@@ -301,7 +280,7 @@ PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
 DATABASE_DRIVER=""
 MARIADB_VERSION="10.3"
-MYSQL_VERSION="5.5"
+MYSQL_VERSION="8.0"
 POSTGRES_VERSION="10"
 CHUNKS=0
 THISCHUNK=0
@@ -334,25 +313,25 @@ while getopts ":a:s:c:d:i:j:k:p:e:xy:o:nhuv" OPT; do
             ;;
         i)
             MARIADB_VERSION=${OPTARG}
-            if ! [[ ${MARIADB_VERSION} =~ ^(10.1|10.2|10.3|10.4|10.5)$ ]]; then
+            if ! [[ ${MARIADB_VERSION} =~ ^(10.3|10.4|10.5)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         j)
             MYSQL_VERSION=${OPTARG}
-            if ! [[ ${MYSQL_VERSION} =~ ^(5.5|5.6|5.7|8.0)$ ]]; then
+            if ! [[ ${MYSQL_VERSION} =~ ^(8.0)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         k)
             POSTGRES_VERSION=${OPTARG}
-            if ! [[ ${POSTGRES_VERSION} =~ ^(9.6|10|11|12|13)$ ]]; then
+            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.1)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
@@ -640,12 +619,6 @@ case ${TEST_SUITE} in
                 docker-compose run functional_mysql
                 SUITE_EXIT_CODE=$?
                 ;;
-            mssql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mssql2019latest
-                docker-compose run functional_mssql2019latest
-                SUITE_EXIT_CODE=$?
-                ;;
             postgres)
                 docker-compose run prepare_functional_postgres
                 docker-compose run functional_postgres
@@ -683,12 +656,6 @@ case ${TEST_SUITE} in
                 echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mysql
                 docker-compose run functional_deprecated_mysql
-                SUITE_EXIT_CODE=$?
-                ;;
-            mssql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mssql2019latest
-                docker-compose run functional_deprecated_mssql2019latest
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
@@ -745,6 +712,8 @@ case ${TEST_SUITE} in
         docker-compose down
         ;;
     phpstan)
+        # @todo remove hardcoded php version when phpstan is raised and runnable with PHP8.1
+        PHP_VERSION="8.0"
         setUpDockerComposeDotEnv
         docker-compose run phpstan
         SUITE_EXIT_CODE=$?
@@ -793,9 +762,6 @@ case ${DBMS} in
         ;;
     mysql)
         DBMS_OUTPUT="DBMS: ${DBMS}  version ${MYSQL_VERSION}  driver ${DATABASE_DRIVER}"
-        ;;
-    mssql)
-        DBMS_OUTPUT="DBMS: ${DBMS}  driver ${DATABASE_DRIVER}"
         ;;
     postgres)
         DBMS_OUTPUT="DBMS: ${DBMS}  version ${POSTGRES_VERSION}"

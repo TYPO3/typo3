@@ -9,36 +9,8 @@ unit javascript pre-merge:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s unitJavascript
-
-unit php 7.4 deprecated pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unitDeprecated -p 7.4
-unit php 7.4 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unit -p 7.4
-unit php 7.4 random pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - main
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s unitRandom -p 7.4
 
 unit php 8.1 deprecated pre-merge:
   stage: main

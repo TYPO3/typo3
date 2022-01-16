@@ -1,4 +1,4 @@
-acceptance install mariadb php 7.4 pre-merge:
+acceptance install mariadb php 8.1 pre-merge:
   stage: main
   except:
     refs:
@@ -9,8 +9,8 @@ acceptance install mariadb php 7.4 pre-merge:
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
 
 acceptance install mysql php 8.1 pre-merge:
   stage: main
@@ -24,9 +24,9 @@ acceptance install mysql php 8.1 pre-merge:
       - typo3temp/var/tests/AcceptanceReports
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 8.0 -p 8.1
 
-acceptance install postgres php 7.4 pre-merge:
+acceptance install postgres php 8.1 pre-merge:
   stage: main
   except:
     refs:
@@ -37,8 +37,8 @@ acceptance install postgres php 7.4 pre-merge:
     paths:
       - typo3temp/var/tests/AcceptanceReports
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.1
 
 acceptance install sqlite php 8.1 pre-merge:
   stage: main

@@ -1,11 +1,11 @@
-annotations php 7.4:
+annotations php 8.1:
   stage: integrity
   needs: []
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.1
 
 cgl:
   stage: integrity
@@ -13,8 +13,8 @@ cgl:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s cgl -n -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s cgl -n -p 8.1
 
 composer validate:
   stage: integrity
@@ -22,7 +22,7 @@ composer validate:
   only:
     - schedules
   script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 7.4
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
 
 grunt clean:
   stage: integrity
@@ -46,35 +46,19 @@ integration various:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
-    - Build/Scripts/runTests.sh -s checkPermissions -p 7.4
-    - Build/Scripts/runTests.sh -s checkRst -p 7.4
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.4
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.4
-    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 7.4
-    - Build/Scripts/runTests.sh -s checkBom -p 7.4
-    - Build/Scripts/runTests.sh -s checkComposer -p 7.4
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.1
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.1
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.1
+    - Build/Scripts/runTests.sh -s checkRst -p 8.1
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.1
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.1
+    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 8.1
+    - Build/Scripts/runTests.sh -s checkBom -p 8.1
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.1
+    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
 
-lint php 7.4:
-  stage: integrity
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 7.4
-lint php 8.0:
-  stage: integrity
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s lintPhp -p 8.0
 lint php 8.1:
   stage: integrity
   needs: []
@@ -97,28 +81,16 @@ lint scss ts html:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-phpstan php 7.4:
-  stage: integrity
-  needs: []
-  only:
-    - schedules
-  cache:
-    key: main-composer-phpstan-74
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s phpstan -p 7.4
-
+# @todo Hardcoded enforced to PHP8.0 in Build/Scripts/runTests.sh - change this after phpstan:^1.2 raised.
 phpstan php 8.0:
   stage: integrity
   needs: []
   only:
     - schedules
   cache:
-    key: main-composer-phpstan-80
+    key: main-composer-phpstan-81
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s phpstan -p 8.0
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s phpstan -p 8.1

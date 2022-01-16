@@ -1,12 +1,12 @@
-annotations php 7.4 pre-merge:
+annotations php 8.1 pre-merge:
   stage: main
   except:
     refs:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s checkAnnotations -p 8.1
 
 grunt clean pre-merge:
   stage: main
@@ -32,20 +32,18 @@ integration various pre-merge:
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
-    - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 7.4
-    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 7.4
-    - Build/Scripts/runTests.sh -s checkPermissions -p 7.4
-    - Build/Scripts/runTests.sh -s checkRst -p 7.4
-    - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.4
-    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.4
-    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 7.4
-    - Build/Scripts/runTests.sh -s checkBom -p 7.4
-    - Build/Scripts/runTests.sh -s checkComposer -p 7.4
-    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.1
+    - Build/Scripts/runTests.sh -s checkGitSubmodule -p 8.1
+    - Build/Scripts/runTests.sh -s checkPermissions -p 8.1
+    - Build/Scripts/runTests.sh -s checkRst -p 8.1
+    - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.1
+    - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.1
+    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 8.1
+    - Build/Scripts/runTests.sh -s checkBom -p 8.1
+    - Build/Scripts/runTests.sh -s checkComposer -p 8.1
+    - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
 
 lint scss ts html pre-merge:
   stage: main
@@ -62,20 +60,7 @@ lint scss ts html pre-merge:
     - Build/Scripts/runTests.sh -s lintTypescript
     - Build/Scripts/runTests.sh -s lintHtml
 
-phpstan php 7.4 pre-merge:
-  stage: main
-  except:
-    refs:
-      - schedules
-      - main
-  cache:
-    key: main-composer-phpstan-74
-    paths:
-      - .cache
-  script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s phpstan -p 7.4
-
+# @todo Hardcoded enforced to PHP8.0 in Build/Scripts/runTests.sh - change this after phpstan:^1.2 raise.
 phpstan php 8.0 pre-merge:
   stage: main
   except:
@@ -83,10 +68,10 @@ phpstan php 8.0 pre-merge:
       - schedules
       - main
   cache:
-    key: main-composer-phpstan-80
+    key: main-composer-phpstan-81
     paths:
       - .cache
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 8.0
-    - Build/Scripts/runTests.sh -s phpstan -p 8.0
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s phpstan -p 8.1
 

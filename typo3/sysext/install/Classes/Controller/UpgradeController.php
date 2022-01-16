@@ -1101,6 +1101,8 @@ class UpgradeController extends AbstractController
      * Fix a broken DB charset setting
      *
      * @return ResponseInterface
+     * @todo This must be reviewed and decided if we can remove this, move to reports module or if we have other
+     *       issues with charset on connection and database, or if we need to escalate this down to field level.
      */
     public function upgradeWizardsBlockingDatabaseCharsetFixAction(): ResponseInterface
     {
@@ -1120,6 +1122,8 @@ class UpgradeController extends AbstractController
      * Test if database charset is ok
      *
      * @return ResponseInterface
+     * @todo This must be reviewed and decided if we can remove this, move to reports module or if we have other
+     *       issues with charset on connection and database, or if we need to escalate this down to field level.
      */
     public function upgradeWizardsBlockingDatabaseCharsetTestAction(): ResponseInterface
     {

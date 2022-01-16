@@ -5,8 +5,8 @@ cgl pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
-    - Build/Scripts/runTests.sh -s cglGit -n -p 7.4
+    - Build/Scripts/runTests.sh -s composerInstall -p 8.1
+    - Build/Scripts/runTests.sh -s cglGit -n -p 8.1
 
 composer validate pre-merge:
   stage: early
@@ -15,4 +15,4 @@ composer validate pre-merge:
       - schedules
       - main
   script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 7.4
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
