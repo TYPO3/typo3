@@ -396,7 +396,9 @@ class BackendLayoutView implements SingletonInterface
 
         // create items and colPosList
         if (!empty($backendLayoutData['__config']['backend_layout.']['rows.'])) {
-            foreach ($backendLayoutData['__config']['backend_layout.']['rows.'] as $row) {
+            $rows = $backendLayoutData['__config']['backend_layout.']['rows.'];
+            ksort($rows);
+            foreach ($rows as $row) {
                 if (!empty($row['columns.'])) {
                     foreach ($row['columns.'] as $column) {
                         if (!isset($column['colPos'])) {
