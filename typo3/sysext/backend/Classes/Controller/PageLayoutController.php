@@ -648,12 +648,14 @@ class PageLayoutController
             $pasteItem = (int)substr((string)key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecordWSOL('tt_content', $pasteItem);
             $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord, false, true);
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste', '
-            function(Paste) {
-                Paste.itemOnClipboardUid = ' . $pasteItem . ';
-                Paste.itemOnClipboardTitle = ' . GeneralUtility::quoteJSvalue($pasteTitle) . ';
-                Paste.copyMode = ' . GeneralUtility::quoteJSvalue($clipboard->clipData['normal']['mode'] ?? '') . ';
-            }');
+            $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/LayoutModule/Paste')
+                    ->assign([
+                        'itemOnClipboardUid' => $pasteItem,
+                        'itemOnClipboardTitle' => $pasteTitle,
+                        'copyMode' => $clipboard->clipData['normal']['mode'] ?? '',
+                    ])
+            );
         }
     }
 
