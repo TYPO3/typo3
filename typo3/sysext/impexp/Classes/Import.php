@@ -1557,7 +1557,7 @@ class Import extends ImportExport
                             break;
                         case 'db':
                         default:
-                            [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ''));
+                            [$tempTable, $tempUid] = explode(':', (string)($softref['subst']['recordRef'] ?? ':'));
                             if (isset($this->importMapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->importMapId[$tempTable][$tempUid]);
                                 $tokenValue = (string)$softref['subst']['tokenValue'];
