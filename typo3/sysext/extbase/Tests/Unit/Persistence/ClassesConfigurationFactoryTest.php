@@ -79,9 +79,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                 B::class => [
                     'properties' => [
                         'propertiesFromA' => [
-                            // todo: this is flawed, we'd actually expect field_name_z here
-                            // todo: see https://forge.typo3.org/issues/87566
-                            'fieldName' => 'field_name_a'
+                            'fieldName' => 'field_name_z'
                         ],
                         'propertiesFromB' => [
                             'fieldName' => 'field_name_b'
@@ -90,14 +88,14 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                 ],
                 C::class => [
                     'properties' => [
-                        'columnNameC' => [
-                            'fieldName' => 'field_name_c'
-                        ],
                         'propertiesFromA' => [
-                            'fieldName' => 'field_name_a'
+                            'fieldName' => 'field_name_z'
                         ],
                         'propertiesFromB' => [
                             'fieldName' => 'field_name_b'
+                        ],
+                        'columnNameC' => [
+                            'fieldName' => 'field_name_c',
                         ],
                     ]
                 ],

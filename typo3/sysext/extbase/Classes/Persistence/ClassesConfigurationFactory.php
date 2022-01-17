@@ -135,7 +135,8 @@ final class ClassesConfigurationFactory implements SingletonInterface
                     continue;
                 }
 
-                ArrayUtility::mergeRecursiveWithOverrule($classes[$className]['properties'], $properties, true, false);
+                // Merge new properties over existing ones.
+                $classes[$className]['properties'] = array_replace_recursive($properties, $classes[$className]['properties'] ?? []);
             }
         }
 
