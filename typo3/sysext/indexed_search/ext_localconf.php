@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\IndexedSearch\Controller\SearchController;
@@ -68,22 +67,6 @@ if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
         'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_word,index_debug,index_config';
 }
-
-// Add search to new content element wizard
-ExtensionManagementUtility::addPageTSConfig('
-mod.wizards.newContentElement.wizardItems.forms {
-  elements.search {
-    iconIdentifier = content-elements-searchform
-    title = LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:plugin_title
-    description = LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:plugin_description
-    tt_content_defValues {
-      CType = list
-      list_type = indexedsearch_pi2
-    }
-  }
-  show :=addToList(search)
-}
-');
 
 // Use the advanced doubleMetaphone parser instead of the internal one (usage of metaphone parsers is generally disabled by default)
 if (isset($extConf['enableMetaphoneSearch']) && (int)$extConf['enableMetaphoneSearch'] == 2) {

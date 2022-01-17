@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Can be used in Frontend or Backend.
  *
- * Have a look at the PageTsConfigParser which can then parse (and cache) this information based on the.
+ * Have a look at the PageTsConfigParser which can then parse (and cache) this information based on the environment (Frontend / Backend / current page).
  *
  * Currently, this accumulated information of the pages is NOT cached, as it would need to be tagged with any
  * page, also including external files.
@@ -38,10 +38,19 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 class PageTsConfigLoader
 {
     protected EventDispatcherInterface $eventDispatcher;
+    protected string $globalTsConfig = '';
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @internal only used by DI
+     */
+    public function setGlobalTsConfig(string $globalTsConfig): void
+    {
+        $this->globalTsConfig = $globalTsConfig;
     }
 
     /**
@@ -66,6 +75,7 @@ class PageTsConfigLoader
     public function collect(array $rootLine): array
     {
         $tsData = [
+            'global' => $this->globalTsConfig,
             'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] ?? '',
         ];
         foreach ($rootLine as $page) {

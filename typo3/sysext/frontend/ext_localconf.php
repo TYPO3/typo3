@@ -93,12 +93,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['move
 
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
-
-// Include new content elements to modWizards
-ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:frontend/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
-);
-// Include FormEngine adjustments
-ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:frontend/Configuration/TsConfig/Page/TCEFORM.tsconfig'"
-);

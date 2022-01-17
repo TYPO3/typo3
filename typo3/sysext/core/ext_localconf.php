@@ -75,11 +75,6 @@ ExtensionManagementUtility::addService(
     ]
 );
 
-// add default notification options to every page
-ExtensionManagementUtility::addPageTSConfig(
-    'TCEMAIN.translateToMessage = Translate to %s:'
-);
-
 $metaTagManagerRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
 $metaTagManagerRegistry->registerManager(
     'html5',

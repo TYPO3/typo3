@@ -1,3 +1,13 @@
+TCEFORM.tt_content {
+  imageorient {
+    types {
+      image {
+        removeItems = 8,9,10,17,18,25,26
+      }
+    }
+  }
+}
+
 mod.wizards.newContentElement.wizardItems {
   common.elements {
     header {

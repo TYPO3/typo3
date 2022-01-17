@@ -30,8 +30,3 @@ ExtensionUtility::configurePlugin(
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
-
-// Add login form to new content element wizard
-ExtensionManagementUtility::addPageTSConfig(
-    "@import 'EXT:felogin/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
-);

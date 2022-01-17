@@ -1,0 +1,58 @@
+# Register default link handlers
+TCEMAIN.linkHandler {
+  page {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\PageLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:page
+  }
+  file {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:file
+    displayAfter = page
+    scanAfter = page
+  }
+  folder {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\FolderLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folder
+    displayAfter = page,file
+    scanAfter = page,file
+  }
+  url {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\UrlLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:extUrl
+    displayAfter = page,file,folder
+    scanAfter = telephone
+  }
+  mail {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\MailLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:email
+    displayAfter = page,file,folder,url
+    scanBefore = url
+  }
+  telephone {
+    handler = TYPO3\CMS\Recordlist\LinkHandler\TelephoneLinkHandler
+    label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:telephone
+    displayAfter = page,file,folder,url,mail
+    scanBefore = url
+  }
+}
+
+mod.web_list.enableClipBoard = selectable
+mod.web_list.tableDisplayOrder {
+    be_users.after = be_groups
+    sys_filemounts.after = be_users
+    sys_file_storage.after = sys_filemounts
+    fe_users.after = fe_groups
+    fe_users.before = pages
+    sys_template.after = pages
+    backend_layout.after = pages
+    tt_content.after = pages,backend_layout,sys_template
+    sys_category.after = tt_content
+}
+mod.web_list.searchLevel.items {
+    -1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+    0 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+    1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+    2 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+    3 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+    4 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
+}

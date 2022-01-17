@@ -37,16 +37,3 @@ ExtensionManagementUtility::addTypoScriptSetup(trim('
         }
     }
 '));
-
-ExtensionManagementUtility::addPageTSConfig(trim('
-mod.web_info.fieldDefinitions {
-  seo {
-    label = LLL:EXT:seo/Resources/Private/Language/locallang_webinfo.xlf:seo
-    fields = title,uid,slug,seo_title,description,no_index,no_follow,canonical_link,sitemap_changefreq,sitemap_priority
-  }
-  social_media {
-    label = LLL:EXT:seo/Resources/Private/Language/locallang_webinfo.xlf:social_media
-    fields = title,uid,og_title,og_description,twitter_title,twitter_description
-  }
-}
-'));

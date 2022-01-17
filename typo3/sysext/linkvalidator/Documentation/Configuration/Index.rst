@@ -13,7 +13,7 @@ Configuration
 -------------
 
 You can find the standard configuration in
-:file:`EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.tsconfig`.
+:file:`EXT:linkvalidator/Configuration/page.tsconfig`.
 
 This may serve as an example on how to configure the extension for
 your needs.

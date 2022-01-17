@@ -15,3 +15,6 @@ mod.wizards.newContentElement.wizardItems {
   }
   plugins.show = *
 }
+mod.wizards.newRecord.pages.show.pageInside = 1
+mod.wizards.newRecord.pages.show.pageAfter = 1
+mod.wizards.newRecord.pages.show.pageSelectPosition = 1

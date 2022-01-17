@@ -25,11 +25,6 @@ call_user_func(static function () {
         DataStructureIdentifierHook::class
     ] = DataStructureIdentifierHook::class;
 
-    // Add new content element wizard entry
-    ExtensionManagementUtility::addPageTSConfig(
-        "@import 'EXT:form/Configuration/TsConfig/Page/Mod/Wizards/NewContentElement.tsconfig'"
-    );
-
     // Add module configuration
     ExtensionManagementUtility::addTypoScriptSetup(
         'module.tx_form {

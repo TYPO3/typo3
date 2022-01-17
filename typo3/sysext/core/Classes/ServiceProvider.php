@@ -22,6 +22,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -87,6 +88,7 @@ class ServiceProvider extends AbstractServiceProvider
             TimeTracker\TimeTracker::class => [ static::class, 'getTimeTracker' ],
             TypoScript\Parser\ConstantConfigurationParser::class => [ static::class, 'getTypoScriptConstantConfigurationParser' ],
             TypoScript\TypoScriptService::class => [ static::class, 'getTypoScriptService' ],
+            'globalPageTsConfig' => [ static::class, 'getGlobalPageTsConfig' ],
             'icons' => [ static::class, 'getIcons' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
         ];
@@ -97,6 +99,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Console\CommandRegistry::class => [ static::class, 'configureCommands' ],
             Imaging\IconRegistry::class => [ static::class, 'configureIconRegistry' ],
+            Configuration\Loader\PageTsConfigLoader::class => [ static::class, 'configurePageTsConfigLoader' ],
             EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'extendEventListenerProvider' ],
         ] + parent::getExtensions();
@@ -317,6 +320,28 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
     {
         return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);
+    }
+
+    public static function getGlobalPageTsConfig(ContainerInterface $container): ArrayObject
+    {
+        return new ArrayObject();
+    }
+
+    public static function configurePageTsConfigLoader(ContainerInterface $container, PageTsConfigLoader $configLoader): PageTsConfigLoader
+    {
+        $cache = $container->get('cache.core');
+
+        $cacheIdentifier = $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('globalPageTsConfig')->toString();
+        if (!$cache->has($cacheIdentifier)) {
+            $pageTsConfigFiles = $container->get('globalPageTsConfig')->getArrayCopy();
+            $pageTsConfigFiles = implode("\n", $pageTsConfigFiles);
+            $cache->set($cacheIdentifier, 'return ' . var_export($pageTsConfigFiles, true) . ';');
+        } else {
+            $pageTsConfigFiles = $cache->require($cacheIdentifier);
+        }
+
+        $configLoader->setGlobalTsConfig($pageTsConfigFiles);
+        return $configLoader;
     }
 
     public static function getLanguageServiceFactory(ContainerInterface $container): Localization\LanguageServiceFactory

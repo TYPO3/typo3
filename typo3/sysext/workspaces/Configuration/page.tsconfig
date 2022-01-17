@@ -1,0 +1,4 @@
+tx_workspaces.emails.layoutRootPaths.90 = EXT:workspaces/Resources/Private/Layouts/
+tx_workspaces.emails.partialRootPaths.90 = EXT:workspaces/Resources/Private/Partials/
+tx_workspaces.emails.templateRootPaths.90 = EXT:workspaces/Resources/Private/Templates/Email/
+tx_workspaces.emails.format = html
