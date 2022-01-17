@@ -7,31 +7,45 @@
 Configuration Best Practices
 ============================
 
-
 .. _best-practice-sitepackage:
 
-Use a Sitepackage Extension
+Use a Sitepackage extension
 ===========================
 
 It is generally recommended to use a a sitepackage extension to
-customize a TYPO3 website. This will contain configuration files
-for the site.
+customize a TYPO3 website. The sitepackage contains configuration files
+for that site.
 
-For more information about sitepackages in TYPO3 see:
+See the :ref:`TYPO3 Sitepackage Tutorial <t3sitepackage:start>` on how
+to create a sitepackage. We assume here your sitepackage extension has the
+key `my_sitepackage`.
 
-* Benjamin Kott: `"The Anatomy of Sitepackages"
-  <https://www.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`__ (Slideshare)
-* :ref:`t3sitepackage:start`
+The YAML preset files should be kept in folder
+:file:`EXT:my_sitepackage/Configuration/RTE/`.
 
-.. TODO Explain Create an extension, add ext_localconf.php, start over and copy over the Default.yaml file
+RTE configurations need to be registered in your sitepackages
+:file:`ext_localconf.php`:
+
+.. code-block:: php
+   :caption: EXT:my_sitepackage/ext_localconf.php
+
+   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myconfig']
+      = 'EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml';
+
+.. note::
+   It is possible but not recommended to define this setting in the projects
+   :file:`LocalConfiguration.php` or :file:`AdditionalConfiguration.php`
+
+.. _best-practice-boilerplate:
 
 Use TYPO3’s Core Default.yaml as boilerplate
 ============================================
 
-Instead of starting from scratch when writing custom configurations, it is
-recommended to copy TYPO3’s configuration file
-:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Default.yaml`
-into your extension folder :file:`<extkey>/Configuration/RTE/`.
+It is recommended to start by copying the file
+:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Default.yaml` into your
+sitepackage to the file
+:file:`EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml`.
+
 
 Check TYPO3's Core Full.yaml to gain insight into a more extensive configuration
 ================================================================================
@@ -42,16 +56,27 @@ It acts as an example.
 :file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml`
 
 
-Use Core Includes
+Use Core includes
 =================
 
-.. todo: clarification needed: add examples, explanation
+It is recommended to use the following includes at the top of your custom
+configuration:
 
-The base processing configuration for “transformations” (key “processing”)
-is written in a way that is restrictive on the one hand, but also allows
-to be extended.
+.. code-block:: yaml
+   :caption: EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml
 
-The include files are already split up so transformations can just be included
-or even completely disabled (by removing the line for importing) to have CKEditor
-take care of all security measures.
+   imports:
+       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
 
+If you started out by copying this extensions
+:ref:`Default.yaml as boilerplate <best-practice-boilerplate>` the imports
+should already be there.
+
+The include files are already split up so the processing transformations can
+just be included or even completely disabled (by removing the line for importing).
+
+Please be aware that removing the :file:`Processing.yaml` removes
+security measures. In that case you have to take care of keeping the ckeditor
+safe yourself.

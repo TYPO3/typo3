@@ -117,8 +117,6 @@ When you are ready, click :guilabel:`"Get toolbar config"` to see the configurat
 How do I add Custom Plugins?
 ============================
 
-.. todo: change url to Plugins.yaml after branching main to 10.4
-
 See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
 <https://github.com/typo3/typo3/blob/main/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
 for a list of plugins, that are already integrated in `rte_ckeditor`. Besides this, the wordcount plugin was added as

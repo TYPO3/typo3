@@ -56,7 +56,9 @@ via YAML (Yet-Another-Markup-Language) was made available and is usable for both
 and HtmlArea, although for the latter it is recommended to use the existing configuration
 when having special setups.
 
-.. todo: add link to general information about configuration with YAML, once available
+TYPO3 is using a custom :ref:`YAML API <t3coreapi:yaml-api>` for handling YAML
+in TYPO3 based on the Symfony YAML package. Therefore environment variables
+can be used.
 
 YAML Basics
 ~~~~~~~~~~~
@@ -90,7 +92,7 @@ A dictionary can be combined with a list::
        - item 2
 
 
-.. configuration-presets:
+.. _configuration-presets:
 
 Configuration Presets
 ---------------------
@@ -206,10 +208,10 @@ There are several advantages for transformations, the most prominent reason is t
 not inject bad HTML code into the database which in turn would be used for output.
 Transformations from the RTE towards the database can filter out HTML tags or attributes.
 
+You can read more about
+:ref:`RTE Transformations in TYPO3 Explained <t3coreapi:transformations-introduction>`.
+
 .. todo: diagram rte -> DB -> RTE
-   todo: add examples for transformations
-   todo: possibly move most of this part to TYPO3 explained:
-     https://docs.typo3.org/typo3cms/CoreApiReference/latest/ApiOverview/Rte/Transformations/Index.html
 
 A Brief Dive Into History
 -------------------------
