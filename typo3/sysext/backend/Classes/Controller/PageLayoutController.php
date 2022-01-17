@@ -601,8 +601,8 @@ class PageLayoutController
                     // Match with the list which is present in the colPosList for the current page
                     if (!empty($colPosArray) && !empty($activeColPosArray)) {
                         $activeColPosArray = array_unique(array_intersect(
-                            $activeColPosArray,
-                            $colPosArray
+                            $colPosArray,
+                            $activeColPosArray
                         ));
                     }
                 } else {
@@ -685,7 +685,7 @@ class PageLayoutController
             // or other page structure information and we do not render any "table output" for the module.
             $configuration = $this->context->getDrawingConfiguration();
             $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
-            $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
+            $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList, true));
             $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
             $configuration->setLanguageColumns($this->MOD_MENU['language']);
             $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));

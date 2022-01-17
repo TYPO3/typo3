@@ -69,7 +69,9 @@ class BackendLayoutRenderer
         } else {
             $languageId = $context->getDrawingConfiguration()->getSelectedLanguageId();
         }
-        foreach ($context->getBackendLayout()->getStructure()['__config']['backend_layout.']['rows.'] ?? [] as $row) {
+        $rows = $context->getBackendLayout()->getStructure()['__config']['backend_layout.']['rows.'] ?? [];
+        ksort($rows);
+        foreach ($rows as $row) {
             $rowObject = GeneralUtility::makeInstance(GridRow::class, $context);
             foreach ($row['columns.'] as $column) {
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
