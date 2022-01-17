@@ -33,6 +33,8 @@ import { SeverityEnum } from 'TYPO3/CMS/Backend/Enum/Severity';
 export class TableWizardElement extends LitElement {
   @property({ type: String }) type: string = 'textarea';
   @property({ type: String }) selectorData: string = '';
+  @property({ type: String}) delimiter: string = '|';
+  @property({ type: String}) enclosure: string = '';
   @property({ type: Number, attribute: 'append-rows' }) appendRows: number = 1;
   @property({ type: Object }) l10n: any = {};
 
@@ -43,6 +45,8 @@ export class TableWizardElement extends LitElement {
     // Initialize selector so it can be used before property initialization
     // and is able to load table data from textarea
     this.selectorData = this.getAttribute('selector');
+    this.delimiter = this.getAttribute('delimiter');
+    this.enclosure = this.getAttribute('enclosure') || '';
     this.readTableFromTextarea();
   }
 
@@ -75,7 +79,11 @@ export class TableWizardElement extends LitElement {
 
     textarea.value.split('\n').forEach((row: string) => {
       if (row !== '') {
-        let cols = row.split('|')
+        if(this.enclosure) {
+          row = row.replace(new RegExp(this.enclosure, 'g'), '');
+        }
+
+        let cols = row.split(this.delimiter)
         table.push(cols)
       }
     });
@@ -87,7 +95,13 @@ export class TableWizardElement extends LitElement {
     let textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
     let text = '';
     this.table.forEach((row) => {
-      text += row.join('|') + '\n';
+      let count = row.length;
+      text += row.reduce((result, word, index) => {
+        // Do not add delimiter at the end of each row
+        let delimiter = (count - 1) === index ? '' : this.delimiter;
+
+        return result + this.enclosure + word + this.enclosure + delimiter;
+      }, '') + '\n';
     });
     textarea.value = text;
     textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
