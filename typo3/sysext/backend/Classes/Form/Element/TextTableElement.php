@@ -243,12 +243,18 @@ class TextTableElement extends AbstractFormElement
      */
     protected function getTableWizard(string $dataId): string
     {
+        $row = $this->data['databaseRow'];
+        $delimiter = ($row['table_delimiter'][0] ?? false) ? chr((int)$row['table_delimiter'][0]) : '|';
+        $enclosure = ($row['table_enclosure'][0] ?? false) ? chr((int)$row['table_enclosure'][0]) : '';
+
         return sprintf(
             '<typo3-backend-table-wizard %s></typo3-backend-table-wizard>',
             GeneralUtility::implodeAttributes([
                 'type' => 'input',
                 'append-rows' => (string)$this->numNewRows,
                 'selector' => '#' . $dataId,
+                'delimiter' => $delimiter,
+                'enclosure' => $enclosure,
             ], true)
         );
     }
