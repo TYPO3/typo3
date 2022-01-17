@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Security;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfHasRoleViewHelperTest extends FunctionalTestCase
 {
@@ -48,9 +49,11 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersThenChildIfBeUserWithSpecifiedRoleIsLoggedIn(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.security.ifHasRole role="1"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>');
-        self::assertEquals('then child', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.security.ifHasRole role="1"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
+        );
+        self::assertEquals('then child', (new TemplateView($context))->render());
     }
 
     /**
@@ -58,9 +61,11 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIsNotLoggedIn(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.security.ifHasRole role="NonExistingRole"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>');
-        self::assertEquals('else child', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.security.ifHasRole role="NonExistingRole"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
+        );
+        self::assertEquals('else child', (new TemplateView($context))->render());
     }
 
     /**
@@ -68,8 +73,10 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIdIsNotLoggedIn(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.security.ifHasRole role="123"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>');
-        self::assertEquals('else child', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.security.ifHasRole role="123"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
+        );
+        self::assertEquals('else child', (new TemplateView($context))->render());
     }
 }

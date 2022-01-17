@@ -17,10 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class ImageViewHelperTest extends FunctionalTestCase
 {
@@ -74,8 +75,8 @@ class ImageViewHelperTest extends FunctionalTestCase
     public function renderReturnsExpectedMarkup(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertMatchesRegularExpression($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertMatchesRegularExpression($expected, (new TemplateView($context))->render());
     }
 }

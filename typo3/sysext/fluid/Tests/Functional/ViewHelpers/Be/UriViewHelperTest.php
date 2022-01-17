@@ -20,8 +20,9 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UriViewHelperTest extends FunctionalTestCase
 {
@@ -41,9 +42,11 @@ class UriViewHelperTest extends FunctionalTestCase
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.uri route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">foo</f:be.uri>');
-        self::assertEquals('theUri', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.uri route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">foo</f:be.uri>'
+        );
+        self::assertEquals('theUri', (new TemplateView($context))->render());
     }
 
     /**
@@ -57,8 +60,8 @@ class UriViewHelperTest extends FunctionalTestCase
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
         GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.uri route="theRouteArgument" referenceType="theReferenceTypeArgument">foo</f:be.uri>');
-        self::assertEquals('theUri', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:be.uri route="theRouteArgument" referenceType="theReferenceTypeArgument">foo</f:be.uri>');
+        self::assertEquals('theUri', (new TemplateView($context))->render());
     }
 }

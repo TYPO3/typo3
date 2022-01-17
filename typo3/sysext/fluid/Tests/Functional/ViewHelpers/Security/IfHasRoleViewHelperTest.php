@@ -20,9 +20,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Security;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfHasRoleViewHelperTest extends FunctionalTestCase
 {
@@ -73,8 +74,8 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertEquals($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertEquals($expected, (new TemplateView($context))->render());
     }
 }

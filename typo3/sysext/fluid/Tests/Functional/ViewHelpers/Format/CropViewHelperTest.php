@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class CropViewHelperTest extends FunctionalTestCase
 {
@@ -59,8 +60,8 @@ class CropViewHelperTest extends FunctionalTestCase
      */
     public function renderConvertsAValue(string $src, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($src);
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($src);
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 }

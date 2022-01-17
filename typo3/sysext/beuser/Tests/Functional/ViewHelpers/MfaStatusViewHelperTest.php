@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Beuser\Tests\Functional\ViewHelpers;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class MfaStatusViewHelperTest extends FunctionalTestCase
 {
@@ -32,7 +32,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
         'beuser',
     ];
 
-    protected StandaloneView $view;
+    protected TemplateView $view;
 
     protected function setUp(): void
     {
@@ -46,9 +46,10 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->getRenderingContext()->getViewHelperResolver()->addNamespace('bu', 'TYPO3\\CMS\\Beuser\\ViewHelpers');
-        $this->view->getRenderingContext()->getTemplatePaths()->setTemplateSource('<bu:mfaStatus userUid="{userUid}"/>');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getViewHelperResolver()->addNamespace('bu', 'TYPO3\\CMS\\Beuser\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<bu:mfaStatus userUid="{userUid}"/>');
+        $this->view = new TemplateView($context);
     }
 
     /**

@@ -19,9 +19,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class TypolinkViewHelperTest extends FunctionalTestCase
 {
@@ -194,8 +195,9 @@ EOT
      */
     public function renderWithAssignedParameters(string $template, array $assigns, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
         $view->assignMultiple($assigns);
         self::assertSame($expected, trim($view->render()));
     }

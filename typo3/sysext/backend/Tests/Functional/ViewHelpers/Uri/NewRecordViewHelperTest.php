@@ -20,9 +20,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Uri;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class NewRecordViewHelperTest extends FunctionalTestCase
 {
@@ -31,10 +31,12 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
+    protected ServerRequest $request;
+
     public function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
+        $this->request = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }
@@ -44,9 +46,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkInExplicitFormat(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidAndTable.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord table="a_table" pid="17">new record at a_table on page 17</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][17]=new', $result);
@@ -57,9 +61,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkForRoot(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithTable.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord table="a_table">new record at a_table on root</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[a_table][0]=new', $result);
@@ -70,9 +76,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkInInlineFormat(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/InlineWithPidAndTable.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('{be:uri.newRecord(table: \'b_table\', pid:17)}');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[b_table][17]=new', $result);
@@ -83,9 +91,10 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkWithReturnUrl(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndReturnUrl.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord table="c_table" returnUrl="foo/bar" pid="17">new record at c_table</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -97,9 +106,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkWitPosition(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithNegativeUid.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord uid="-11" table="c_table">new record at c_table after record with uid 11</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][-11]=new', $result);
@@ -110,9 +121,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkWithDefaultValue(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValue.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord table="c_table" defaultValues="{c_table: {c_field: \'c_value\'}}" pid="17">new record at c_table</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -124,9 +137,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsValidLinkWithDefaultValues(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPidTableAndDefaultValues.html');
-        $result = urldecode($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord table="c_table" defaultValues="{c_table: {c_field: \'c_value\', c_field2: \'c_value2\'}}" pid="17">new record at c_table</be:uri.newRecord>');
+        $result = urldecode((new TemplateView($context))->render());
 
         self::assertStringContainsString('/typo3/record/edit', $result);
         self::assertStringContainsString('edit[c_table][17]=new', $result);
@@ -141,9 +156,11 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526136338);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithUidAndPid.html');
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord uid="-42" pid="18" table="c_table">can\'t handle uid and pid together</be:uri.newRecord>');
+        (new TemplateView($context))->render();
     }
 
     /**
@@ -154,8 +171,10 @@ class NewRecordViewHelperTest extends FunctionalTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526136362);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Uri/NewRecordViewHelper/WithPositiveUid.html');
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->setRequest($this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<be:uri.newRecord uid="42" table="c_table">if uid given, it must be negative</be:uri.newRecord>');
+        (new TemplateView($context))->render();
     }
 }

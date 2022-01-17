@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class TextfieldViewHelperTest extends FunctionalTestCase
 {
@@ -56,9 +56,10 @@ class TextfieldViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $context->setRequest(new Request());
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -75,12 +76,13 @@ class TextfieldViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.textfield property="someProperty" errorClass="myError" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.textfield property="someProperty" errorClass="myError" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<input type="text" name="myFieldPrefix[myObjectName][someProperty]" class="myError" />', $view->render());
     }

@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Security;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 {
@@ -34,9 +35,11 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
     {
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->user = ['uid' => 1];
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>');
-        self::assertEquals('then child', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
+        );
+        self::assertEquals('then child', (new TemplateView($context))->render());
     }
 
     /**
@@ -46,8 +49,10 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
     {
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->user = ['uid' => 0];
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>');
-        self::assertEquals('else child', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
+        );
+        self::assertEquals('else child', (new TemplateView($context))->render());
     }
 }

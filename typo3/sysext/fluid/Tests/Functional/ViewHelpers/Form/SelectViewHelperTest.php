@@ -25,11 +25,12 @@ use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClass;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\UserDomainClassToString;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class SelectViewHelperTest extends FunctionalTestCase
 {
@@ -38,9 +39,10 @@ class SelectViewHelperTest extends FunctionalTestCase
      */
     public function selectCorrectlySetsTagName(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.select />');
-        self::assertSame('<select name=""></select>', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select />');
+        $context->setRequest(new Request());
+        self::assertSame('<select name=""></select>', (new TemplateView($context))->render());
     }
 
     /**
@@ -48,10 +50,11 @@ class SelectViewHelperTest extends FunctionalTestCase
      */
     public function selectCreatesExpectedOptions(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.select name="myName" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
+        $context->setRequest(new Request());
         $expected = '<select name="myName"><option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '</select>';
-        self::assertSame($expected, $view->render());
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -59,10 +62,11 @@ class SelectViewHelperTest extends FunctionalTestCase
      */
     public function selectShouldSetTheRequiredAttribute(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.select name="myName" required="true" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" required="true" value="value2" options="{value1: \"label1\", value2: \"label2\"}" />');
+        $context->setRequest(new Request());
         $expected = '<select required="required" name="myName"><option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '</select>';
-        self::assertSame($expected, $view->render());
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -86,9 +90,11 @@ class SelectViewHelperTest extends FunctionalTestCase
                 'uid' => '2',
             ],
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="2"></option>
 <option value="-1">Bar</option>
@@ -120,9 +126,11 @@ EOT;
 
         $options = [$obj1, $obj2, $obj3, $obj4];
 
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="2"></option>
 <option value="-1">Bar</option>
@@ -154,9 +162,11 @@ EOT;
                 'uid' => '2',
             ],
         ]);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="2"></option>
 <option value="-1">Bar</option>
@@ -177,9 +187,11 @@ EOT;
             'value1' => 'label1',
             'value2' => 'label2',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" value="value2" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" value="value2" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="value3">label3</option>
 <option value="value1">label1</option>
@@ -199,9 +211,11 @@ EOT;
             'value1' => 'label1',
             'value2' => 'label2',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" sortByOptionLabel="true" value="value2" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" sortByOptionLabel="true" value="value2" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="value1">label1</option>
 <option value="value2" selected="selected">label2</option>
@@ -222,10 +236,12 @@ EOT;
             'value3' => 'label3',
         ];
         $value = ['value3', 'value1'];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', $value);
-        $view->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{options}" />');
         $expected = <<< EOT
 <input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>
 <option value="value2">label2</option>
@@ -241,9 +257,11 @@ EOT;
     public function multipleSelectWithoutOptionsCreatesExpectedOptions(): void
     {
         $value = ['value3', 'value1'];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('value', $value);
-        $view->setTemplateSource('<f:form.select multiple="true" name="myName" value="{value}" options="{}" />');
         $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"></select>';
         self::assertSame($expected, $view->render());
     }
@@ -261,10 +279,12 @@ EOT;
             $user_sk,
             $user_rl,
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', $user_sk);
-        $view->setTemplateSource('<f:form.select name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="1">Ingmar</option>
 <option value="2" selected="selected">Sebastian</option>
@@ -287,10 +307,12 @@ EOT;
             $user_sk,
             $user_rl,
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', [$user_rl, $user_is]);
-        $view->setTemplateSource('<f:form.select multiple="true" name="myName" optionValueField="id" optionLabelField="firstName" value="{value}" options="{options}" />');
         $expected = <<< EOT
 <input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="1" selected="selected">Ingmar</option>
 <option value="2">Sebastian</option>
@@ -325,10 +347,12 @@ EOT;
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
-        $view = new StandaloneView();
+        $context = $container->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" name="myName" optionLabelField="firstName" value="{value}" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', [$user_rl, $user_is]);
-        $view->setTemplateSource('<f:form.select multiple="true" name="myName" optionLabelField="firstName" value="{value}" options="{options}" />');
         $expected = <<< EOT
 <input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="1" selected="selected">Ingmar</option>
 <option value="2">Sebastian</option>
@@ -354,9 +378,11 @@ EOT;
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
-        $view = new StandaloneView();
+        $context = $container->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="fakeUid">fakeUid</option>
 </select>
@@ -380,9 +406,11 @@ EOT;
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
-        $view = new StandaloneView();
+        $context = $container->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="fakeUid">IngmarToString</option>
 </select>
@@ -406,9 +434,11 @@ EOT;
         $container = $this->getContainer();
         $container->set(PersistenceManager::class, $mockPersistenceManager);
 
-        $view = new StandaloneView();
+        $context = $container->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select name="myName" options="{options}" />');
 
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1247826696);
@@ -433,9 +463,11 @@ EOT;
         GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select property="someProperty" errorClass="myError" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.select property="someProperty" errorClass="myError" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<select name="myFieldPrefix[myObjectName][someProperty]" class="myError"></select>', $view->render());
     }
@@ -450,9 +482,11 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" selectAllByDefault="true" name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
-        $view->setTemplateSource('<f:form.select multiple="true" selectAllByDefault="true" name="myName" options="{options}" />');
         $expected = <<< EOT
 <input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>
 <option value="value2" selected="selected">label2</option>
@@ -472,10 +506,12 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select multiple="true" value="{value}" selectAllByDefault="true" name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', ['value2', 'value1']);
-        $view->setTemplateSource('<f:form.select multiple="true" value="{value}" selectAllByDefault="true" name="myName" options="{options}" />');
         $expected = <<< EOT
 <input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>
 <option value="value2" selected="selected">label2</option>
@@ -495,10 +531,12 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select prependOptionLabel="please choose" name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', ['value2', 'value1']);
-        $view->setTemplateSource('<f:form.select prependOptionLabel="please choose" name="myName" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="">please choose</option>
 <option value="value1">label1</option>
@@ -519,10 +557,12 @@ EOT;
             'value2' => 'label2',
             'value3' => 'label3',
         ];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select prependOptionLabel="please choose" prependOptionValue="-1" name="myName" options="{options}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('options', $options);
         $view->assign('value', ['value2', 'value1']);
-        $view->setTemplateSource('<f:form.select prependOptionLabel="please choose" prependOptionValue="-1" name="myName" options="{options}" />');
         $expected = <<< EOT
 <select name="myName"><option value="-1">please choose</option>
 <option value="value1">label1</option>

@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class PasswordViewHelperTest extends FunctionalTestCase
 {
@@ -32,9 +34,10 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagName(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.password />');
-        self::assertSame('<input type="password" name="" value="" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password />');
+        $context->setRequest(new Request());
+        self::assertSame('<input type="password" name="" value="" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -42,9 +45,10 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
-        self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -52,8 +56,9 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsAutocompleteTagAttribute(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
-        self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());
     }
 }

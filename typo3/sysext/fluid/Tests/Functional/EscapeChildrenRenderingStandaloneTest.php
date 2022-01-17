@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
 {
@@ -123,9 +124,10 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
      */
     public function renderingTest(string $viewHelperTemplate, string $expectedOutput): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($viewHelperTemplate);
-        $view->getRenderingContext()->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
+        $context->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
+        $view = new TemplateView($context);
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
         self::assertSame($expectedOutput, $view->render());
     }

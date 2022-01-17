@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UploadViewHelperTest extends FunctionalTestCase
 {
@@ -33,9 +33,10 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagName(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.upload />');
-        self::assertSame('<input type="file" name="" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.upload />');
+        $context->setRequest(new Request());
+        self::assertSame('<input type="file" name="" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -43,9 +44,10 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTypeNameAttributes(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.upload name="someName" />');
-        self::assertSame('<input type="file" name="someName" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.upload name="someName" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input type="file" name="someName" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -53,9 +55,10 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderSetsAttributeNameAsArrayIfMultipleIsGiven(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.upload multiple="multiple" name="someName" />');
-        self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.upload multiple="multiple" name="someName" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -63,9 +66,10 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsAcceptAttribute(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.upload accept=".jpg,.png" />');
-        self::assertSame('<input accept=".jpg,.png" type="file" name="" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.upload accept=".jpg,.png" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input accept=".jpg,.png" type="file" name="" />', (new TemplateView($context))->render());
     }
 
     /**
@@ -82,12 +86,13 @@ class UploadViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.upload property="someProperty" errorClass="myError" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.upload property="someProperty" errorClass="myError" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<input type="file" name="myFieldPrefix[myObjectName][someProperty]" class="myError" />', $view->render());
     }

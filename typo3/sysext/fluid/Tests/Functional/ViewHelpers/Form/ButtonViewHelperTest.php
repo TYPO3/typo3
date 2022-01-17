@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class ButtonViewHelperTest extends FunctionalTestCase
 {
@@ -32,9 +33,9 @@ class ButtonViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.button type="submit">Button Content</f:form.button>');
-        self::assertSame('<button type="submit" name="" value="">Button Content</button>', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.button type="submit">Button Content</f:form.button>');
+        self::assertSame('<button type="submit" name="" value="">Button Content</button>', (new TemplateView($context))->render());
     }
 
     /**
@@ -42,8 +43,8 @@ class ButtonViewHelperTest extends FunctionalTestCase
      */
     public function closingTagIsEnforcedOnEmptyContent(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.button type="reset"></f:form.button>');
-        self::assertSame('<button type="reset" name="" value=""></button>', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.button type="reset"></f:form.button>');
+        self::assertSame('<button type="reset" name="" value=""></button>', (new TemplateView($context))->render());
     }
 }

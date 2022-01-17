@@ -20,8 +20,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class FlashMessagesViewHelperTest extends FunctionalTestCase
 {
@@ -30,9 +32,10 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:flashMessages />');
-        self::assertEmpty($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
+        $context->setRequest(new Request());
+        self::assertEmpty((new TemplateView($context))->render());
     }
 
     /**
@@ -40,9 +43,9 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsEmptyStringFromSpecificEmptyQueue(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
-        self::assertEmpty($view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
+        self::assertEmpty((new TemplateView($context))->render());
     }
 
     /**
@@ -53,9 +56,9 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', AbstractMessage::OK, true);
         (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
-        self::assertSame('[SUCCESS] test message title: test message body', $view->render());
+        self::assertSame('[SUCCESS] test message title: test message body', (new TemplateView($context))->render());
     }
 }

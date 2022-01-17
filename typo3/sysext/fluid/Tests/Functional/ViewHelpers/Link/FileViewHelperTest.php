@@ -25,10 +25,11 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\Resource\FileCollector;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class FileViewHelperTest extends FunctionalTestCase
 {
@@ -81,9 +82,9 @@ class FileViewHelperTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1621511632);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        (new TemplateView($context))->render();
     }
 
     /**
@@ -91,8 +92,9 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicFileTest(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getFile(1));
 
         self::assertEquals(
@@ -119,8 +121,9 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getFile(1));
 
         $expected = [
@@ -144,8 +147,9 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicFileReferenceTest(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getFileReference(2));
 
         self::assertEquals(
@@ -172,8 +176,9 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getFileReference(2));
 
         $expected = [
@@ -197,8 +202,9 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicProcessedFileTest(): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getProcessedFile(3));
 
         self::assertEquals(
@@ -225,8 +231,9 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
+        $view = new TemplateView($context);
         $view->assign('file', $this->getProcessedFile(3));
 
         $expected = [

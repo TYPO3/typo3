@@ -23,8 +23,9 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IconViewHelperTest extends FunctionalTestCase
 {
@@ -46,9 +47,9 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
-        self::assertSame('htmlFoo', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
+        self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
     /**
@@ -62,9 +63,9 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
-        self::assertSame('htmlFoo', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
+        self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
     /**
@@ -78,9 +79,9 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
-        self::assertSame('htmlFoo', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
+        self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 
     /**
@@ -94,8 +95,8 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
-        self::assertSame('htmlFoo', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
+        self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
 }

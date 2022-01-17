@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class PaddingViewHelperTest extends FunctionalTestCase
 {
@@ -59,9 +60,9 @@ class PaddingViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertEquals($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -69,9 +70,10 @@ class PaddingViewHelperTest extends FunctionalTestCase
      */
     public function integersAreRespectedAsValue(): void
     {
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.padding padLength="5" padString="0">{value}</f:format.padding>');
+        $view = new TemplateView($context);
         $view->assign('value', 123);
-        $view->setTemplateSource('<f:format.padding padLength="5" padString="0">{value}</f:format.padding>');
         self::assertEquals('12300', $view->render());
     }
 }

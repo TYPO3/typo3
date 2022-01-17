@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Menus;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class ActionMenuItemViewHelperTest extends FunctionalTestCase
 {
@@ -65,8 +67,10 @@ class ActionMenuItemViewHelperTest extends FunctionalTestCase
      */
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($source);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($source);
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assignMultiple($variables);
         self::assertSame($expectation, $view->render());
     }

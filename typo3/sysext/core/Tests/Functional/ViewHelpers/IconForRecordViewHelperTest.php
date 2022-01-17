@@ -22,8 +22,9 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IconForRecordViewHelperTest extends FunctionalTestCase
 {
@@ -45,9 +46,11 @@ class IconForRecordViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<core:iconForRecord table="tt_content" row="{uid: 123}" size="large" alternativeMarkupIdentifier="inline" />');
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<core:iconForRecord table="tt_content" row="{uid: 123}" size="large" alternativeMarkupIdentifier="inline" />'
+        );
+        (new TemplateView($context))->render();
 
         $iconFactoryProphecy->getIconForRecord('tt_content', ['uid' => 123], Icon::SIZE_LARGE)->shouldHaveBeenCalled();
         $iconProphecy->render('inline')->shouldHaveBeenCalled();

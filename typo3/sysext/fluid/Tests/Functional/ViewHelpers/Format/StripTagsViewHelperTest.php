@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class StripTagsViewHelperTest extends FunctionalTestCase
 {
@@ -63,9 +64,9 @@ class StripTagsViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertEquals($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -82,9 +83,10 @@ class StripTagsViewHelperTest extends FunctionalTestCase
                 return '<script>alert(\'"xss"\')</script>';
             }
         };
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.stripTags>{value}</f:format.stripTags>');
+        $view = new TemplateView($context);
         $view->assign('value', $toStringClass);
-        $view->setTemplateSource('<f:format.stripTags>{value}</f:format.stripTags>');
         self::assertEquals('alert(\'"xss"\')', $view->render());
     }
 }

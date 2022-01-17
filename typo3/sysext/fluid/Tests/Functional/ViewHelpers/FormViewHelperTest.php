@@ -18,12 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers;
 
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class FormViewHelperTest extends FunctionalTestCase
 {
@@ -71,8 +71,10 @@ class FormViewHelperTest extends FunctionalTestCase
      */
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($source);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($source);
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assignMultiple($variables);
         $body = $view->render();
         $actual = null;
@@ -89,9 +91,11 @@ class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
         self::assertStringContainsString($expected, $view->render());
     }
@@ -101,10 +105,11 @@ class FormViewHelperTest extends FunctionalTestCase
      */
     public function setFormActionUriRespectsOverriddenArgument(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form actionUri="foobar" />');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form actionUri="foobar" />');
+        $context->setRequest(new Request());
         $expected = '<form action="foobar" method="post">';
-        self::assertStringContainsString($expected, $view->render());
+        self::assertStringContainsString($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -114,9 +119,11 @@ class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
         $expected = '<input type="hidden" name="prefix[formName][__identity]" value="123" />';
         self::assertStringContainsString($expected, $view->render());
     }
@@ -128,9 +135,11 @@ class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
         self::assertStringContainsString($expected, $view->render());
     }
@@ -142,9 +151,11 @@ class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $expected = '<form action="" method="post">' . chr(10) . '<div>';
         self::assertStringContainsString($expected, $view->render());
     }
@@ -156,9 +167,11 @@ class FormViewHelperTest extends FunctionalTestCase
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $expected = '<form action="" method="post">' . chr(10) . '<div class="hidden">';
         self::assertStringContainsString($expected, $view->render());
     }
@@ -174,13 +187,14 @@ class FormViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('extensionName');
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $extendsAbstractEntity = new ExtendsAbstractEntity();
         $extendsAbstractEntity->_setProperty('uid', 123);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $view->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $expected = '<form action="" method="post">
 <div>
 <input type="hidden" name="prefix[myObjectName][__identity]" value="123" />

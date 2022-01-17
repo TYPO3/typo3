@@ -24,8 +24,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class PageRendererViewHelperTest extends FunctionalTestCase
 {
@@ -65,10 +66,9 @@ class PageRendererViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        // Make sure rendering context has no (extbase) request
-        $view->getRenderingContext()->setRequest(null);
-        $view->setTemplateSource($template);
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $view = new TemplateView($context);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $view->render();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -82,12 +82,12 @@ class PageRendererViewHelperTest extends FunctionalTestCase
      */
     public function renderResolvesLabelWithExtbaseRequest(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Backend');
-        $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
-        $view->getRenderingContext()->setRequest($extbaseRequest);
+        $context->setRequest((new Request())->withAttribute('extbase', $extbaseRequestParameters));
+        $view = new TemplateView($context);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         $view->render();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);

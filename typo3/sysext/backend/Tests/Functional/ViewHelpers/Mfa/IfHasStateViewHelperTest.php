@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Backend\Tests\Functional\ViewHelpers\Mfa;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfHasStateViewHelperTest extends FunctionalTestCase
 {
@@ -30,14 +30,14 @@ class IfHasStateViewHelperTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
-    protected StandaloneView $view;
+    protected TemplateView $view;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view = new TemplateView($this->getContainer()->get(RenderingContextFactory::class)->create());
         $this->view->getRenderingContext()->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
-        $this->view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
+        $this->view->getTemplatePaths()->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
         $this->view->assign('provider', $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('totp'));
     }
 

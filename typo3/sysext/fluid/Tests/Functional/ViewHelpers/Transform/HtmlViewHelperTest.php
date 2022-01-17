@@ -21,8 +21,9 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class HtmlViewHelperTest extends FunctionalTestCase
 {
@@ -115,9 +116,9 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformed(string $payload, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource(sprintf('<f:transform.html>%s</f:transform.html>', $payload));
-        self::assertSame($expectation, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html>%s</f:transform.html>', $payload));
+        self::assertSame($expectation, (new TemplateView($context))->render());
     }
 
     public static function isTransformedWithSelectorDataProvider(): array
@@ -155,9 +156,9 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformedWithSelector(string $selector, string $payload, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource(sprintf('<f:transform.html selector="%s">%s</f:transform.html>', $selector, $payload));
-        self::assertSame($expectation, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html selector="%s">%s</f:transform.html>', $selector, $payload));
+        self::assertSame($expectation, (new TemplateView($context))->render());
     }
 
     public static function isTransformedWithOnFailureDataProvider(): array
@@ -205,12 +206,12 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformedWithOnFailure(?string $onFailure, string $payload, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource(sprintf(
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(sprintf(
             '<f:transform.html %s>%s</f:transform.html>',
             $onFailure !== null ? 'onFailure="' . $onFailure . '"' : '',
             $payload
         ));
-        self::assertSame($expectation, $view->render());
+        self::assertSame($expectation, (new TemplateView($context))->render());
     }
 }

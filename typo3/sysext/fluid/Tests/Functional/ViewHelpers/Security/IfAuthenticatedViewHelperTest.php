@@ -20,9 +20,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Security;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class IfAuthenticatedViewHelperTest extends FunctionalTestCase
 {
@@ -42,9 +43,9 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
         $context->setAspect('frontend.user', new UserAspect($user));
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
-        self::assertEquals('then child', $view->render());
+        $renderingContext = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $renderingContext->getTemplatePaths()->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
+        self::assertEquals('then child', (new TemplateView($renderingContext))->render());
     }
 
     /**
@@ -56,8 +57,8 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
         $context->setAspect('frontend.user', new UserAspect());
         GeneralUtility::setSingletonInstance(Context::class, $context);
 
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
-        self::assertEquals('else child', $view->render());
+        $renderingContext = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $renderingContext->getTemplatePaths()->setTemplateSource('<f:security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:security.ifAuthenticated>');
+        self::assertEquals('else child', (new TemplateView($renderingContext))->render());
     }
 }

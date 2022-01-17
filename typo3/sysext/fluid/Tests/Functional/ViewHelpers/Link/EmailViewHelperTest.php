@@ -19,9 +19,10 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class EmailViewHelperTest extends FunctionalTestCase
 {
@@ -32,10 +33,9 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackend(): void
     {
-        $view = new StandaloneView();
-        $view->setRequest();
-        $view->setTemplateSource('<f:link.email email="foo@example.com">send mail</f:link.email>');
-        self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com">send mail</f:link.email>');
+        self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', (new TemplateView($context))->render());
     }
 
     /**
@@ -43,10 +43,9 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackendWithEmptyChild(): void
     {
-        $view = new StandaloneView();
-        $view->setRequest();
-        $view->setTemplateSource('<f:link.email email="foo@example.com" />');
-        self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com" />');
+        self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', (new TemplateView($context))->render());
     }
 
     public function renderEncodesEmailInFrontendDataProvider(): array

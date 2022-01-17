@@ -18,13 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class CheckboxViewHelperTest extends FunctionalTestCase
 {
@@ -48,9 +48,10 @@ class CheckboxViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $context->setRequest(new Request());
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     /**
@@ -60,9 +61,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = false;
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" checked="true" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" checked="true" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
@@ -73,9 +76,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = true;
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
@@ -86,9 +91,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = [];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" />', $view->render());
     }
 
@@ -99,9 +106,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = ['foo'];
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty][]" value="foo" checked="checked" />', $view->render());
     }
 
@@ -111,9 +120,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     public function renderSetsCheckedAttributeIfCheckboxIsBoundToAPropertyOfTypeArrayObject(): void
     {
         $formObject = new \ArrayObject(['someProperty' => true]);
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="bar" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="bar" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="bar" checked="checked" />', $view->render());
     }
 
@@ -124,9 +135,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = 'bar';
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" checked="checked" />', $view->render());
     }
 
@@ -137,9 +150,11 @@ class CheckboxViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = null;
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest(new Request());
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         self::assertStringContainsString('<input type="hidden" name="myFieldPrefix[myObjectName][someProperty]" value="" /><input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
     }
 
@@ -157,12 +172,13 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" errorClass="myError" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" errorClass="myError" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" class="myError" />', $view->render());
     }
@@ -181,12 +197,13 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<input type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" class="f3-form-error" />', $view->render());
     }
@@ -205,12 +222,13 @@ class CheckboxViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setOriginalRequestMappingResults($mappingResult);
         $psr7Request = (new ServerRequest())->withAttribute('extbase', $extbaseRequestParameters);
         $extbaseRequest = new Request($psr7Request);
-        GeneralUtility::addInstance(Request::class, $extbaseRequest);
 
         $formObject = new \stdClass();
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" class="css_class" /></f:form>');
+        $context->setRequest($extbaseRequest);
+        $view = new TemplateView($context);
         $view->assign('formObject', $formObject);
-        $view->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.checkbox value="foo" property="someProperty" class="css_class" /></f:form>');
         // The point is that 'class="myError"' is added since the form had mapping errors for this property.
         self::assertStringContainsString('<input class="css_class f3-form-error" type="checkbox" name="myFieldPrefix[myObjectName][someProperty]" value="foo" />', $view->render());
     }

@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\ViewHelpers;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UploadedResourceViewHelperTest extends FunctionalTestCase
 {
@@ -37,8 +38,8 @@ class UploadedResourceViewHelperTest extends FunctionalTestCase
      */
     public function accpetAttributeIsAdded(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<formvh:form.uploadedResource accept="{0: \'image/jpeg\', 1: \'image/png\'}"/>');
-        self::assertSame('<input accept="image/jpeg,image/png" type="file" name="" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<formvh:form.uploadedResource accept="{0: \'image/jpeg\', 1: \'image/png\'}"/>');
+        self::assertSame('<input accept="image/jpeg,image/png" type="file" name="" />', (new TemplateView($context))->render());
     }
 }

@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be\Labels;
 
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class CshViewHelperTest extends FunctionalTestCase
 {
@@ -57,7 +58,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '<label>label&lt;&gt;&amp;&quot;&#039;</label>',
             ],
             '#3' => [
-                '{f:be.labels.csh(table:\'table\' field:\'field\' label:label)}',
+                '{f:be.labels.csh(table:\'table\', field:\'field\', label:label)}',
                 [
                     'label' => 'label<>&"\'',
                     'variable' => 'variable<>&"\'',
@@ -65,7 +66,7 @@ class CshViewHelperTest extends FunctionalTestCase
                 '<label>label&lt;&gt;&amp;&quot;&#039;</label>',
             ],
             '#4' => [
-                '{f:be.labels.csh(table:\'table\' field:\'field\' label:\'{label}\')}',
+                '{f:be.labels.csh(table:\'table\', field:\'field\', label:\'{label}\')}',
                 [
                     'label' => 'label<>&"\'',
                     'variable' => 'variable<>&"\'',
@@ -85,9 +86,10 @@ class CshViewHelperTest extends FunctionalTestCase
      */
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($source);
+        $view = new TemplateView($context);
         $view->getRenderingContext()->getCache()->flush();
-        $view->setTemplateSource($source);
         $view->assignMultiple($variables);
         self::assertSame($expectation, $view->render());
     }

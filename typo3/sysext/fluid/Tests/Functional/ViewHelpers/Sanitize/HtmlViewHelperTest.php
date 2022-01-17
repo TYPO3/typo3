@@ -18,8 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Sanitize;
 
 use TYPO3\CMS\Core\Tests\Functional\Html\DefaultSanitizerBuilderTest;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class HtmlViewHelperTest extends FunctionalTestCase
 {
@@ -42,9 +43,9 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isSanitizedUsingNodeInstruction(string $payload, string $expectation): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource(sprintf('<f:sanitize.html>%s</f:sanitize.html>', $payload));
-        self::assertSame($expectation, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(sprintf('<f:sanitize.html>%s</f:sanitize.html>', $payload));
+        self::assertSame($expectation, (new TemplateView($context))->render());
     }
 
     /**
@@ -55,9 +56,10 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isSanitizedUsingInlineInstruction(string $payload, string $expectation): void
     {
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('{payload -> f:sanitize.html()}');
+        $view = new TemplateView($context);
         $view->assign('payload', $payload);
-        $view->setTemplateSource('{payload -> f:sanitize.html()}');
         self::assertSame($expectation, $view->render());
     }
 }

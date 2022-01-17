@@ -17,9 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Functional\ViewHelpers\Format;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class PhpErrorCodeViewHelperTest extends FunctionalTestCase
 {
@@ -68,9 +69,9 @@ class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         $viewHelperInstance = new PhpErrorCodeViewHelper();
         $this->getContainer()->set(PhpErrorCodeViewHelper::class, $viewHelperInstance);
 
-        $view = new StandaloneView();
-        $view->getRenderingContext()->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
-        $view->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 }

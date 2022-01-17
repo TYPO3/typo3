@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class HiddenViewHelperTest extends FunctionalTestCase
 {
@@ -32,8 +34,9 @@ class HiddenViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:form.hidden name="foo" value="bar" />');
-        self::assertSame('<input type="hidden" name="foo" value="bar" />', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:form.hidden name="foo" value="bar" />');
+        $context->setRequest(new Request());
+        self::assertSame('<input type="hidden" name="foo" value="bar" />', (new TemplateView($context))->render());
     }
 }

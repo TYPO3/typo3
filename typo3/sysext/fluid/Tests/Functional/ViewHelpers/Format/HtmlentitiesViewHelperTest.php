@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Format;
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class HtmlentitiesViewHelperTest extends FunctionalTestCase
 {
@@ -32,9 +33,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
      */
     public function renderUsesValueAsSourceIfSpecified(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities value="Some string" />');
-        self::assertEquals('Some string', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities value="Some string" />');
+        self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
     /**
@@ -42,9 +43,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
      */
     public function renderUsesChildnodesAsSourceIfSpecified(): void
     {
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities>Some string</f:format.htmlentities>');
-        self::assertEquals('Some string', $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities>Some string</f:format.htmlentities>');
+        self::assertEquals('Some string', (new TemplateView($context))->render());
     }
 
     /**
@@ -53,9 +54,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters(): void
     {
         $source = 'This is a sample text without special characters.';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities value="' . $source . '" />');
-        self::assertEquals($source, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities value="' . $source . '" />');
+        self::assertEquals($source, (new TemplateView($context))->render());
     }
 
     /**
@@ -65,9 +66,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     {
         $source = 'Some special characters: &©"\'';
         $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities>' . $source . '</f:format.htmlentities>');
-        self::assertEquals($expectedResult, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities>' . $source . '</f:format.htmlentities>');
+        self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
     /**
@@ -77,9 +78,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     {
         $source = 'Some special characters: &©"\'';
         $expectedResult = 'Some special characters: &amp;&copy;"\'';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities keepQuotes="true">' . $source . '</f:format.htmlentities>');
-        self::assertEquals($expectedResult, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities keepQuotes="true">' . $source . '</f:format.htmlentities>');
+        self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
     /**
@@ -89,9 +90,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     {
         $source = utf8_decode('Some special characters: &©"\'');
         $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities encoding="ISO-8859-1">' . $source . '</f:format.htmlentities>');
-        self::assertEquals($expectedResult, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities encoding="ISO-8859-1">' . $source . '</f:format.htmlentities>');
+        self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
     /**
@@ -101,9 +102,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     {
         $source = 'already &quot;encoded&quot;';
         $expectedResult = 'already &amp;quot;encoded&amp;quot;';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities>' . $source . '</f:format.htmlentities>');
-        self::assertEquals($expectedResult, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities>' . $source . '</f:format.htmlentities>');
+        self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
     /**
@@ -113,9 +114,9 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
     {
         $source = 'already &quot;encoded&quot;';
         $expectedResult = 'already &quot;encoded&quot;';
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:format.htmlentities doubleEncode="false">' . $source . '</f:format.htmlentities>');
-        self::assertEquals($expectedResult, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities doubleEncode="false">' . $source . '</f:format.htmlentities>');
+        self::assertEquals($expectedResult, (new TemplateView($context))->render());
     }
 
     /**
@@ -129,9 +130,10 @@ class HtmlentitiesViewHelperTest extends FunctionalTestCase
                 return '<script>alert(\'"&xss"\')</script>';
             }
         };
-        $view = new StandaloneView();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:format.htmlentities value="{source}" />');
+        $view = new TemplateView($context);
         $view->assign('source', $toStringClass);
-        $view->setTemplateSource('<f:format.htmlentities value="{source}" />');
         self::assertEquals('&lt;script&gt;alert(&#039;&quot;&amp;xss&quot;&#039;)&lt;/script&gt;', $view->render());
     }
 }

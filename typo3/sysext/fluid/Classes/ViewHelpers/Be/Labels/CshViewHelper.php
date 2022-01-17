@@ -81,6 +81,7 @@ final class CshViewHelper extends AbstractBackendViewHelper
             $request = $renderingContext->getRequest();
             if (!$request instanceof RequestInterface) {
                 // Throw if not an extbase request
+                // @todo: Consider deprecation of calling this VH without table argument
                 throw new \RuntimeException(
                     'ViewHelper f:be.labels.csh needs an extbase Request object to resolve module name magically.'
                     . ' When not in extbase context, attribute "table" is required to be set to something like "_MOD_my_module_name"',

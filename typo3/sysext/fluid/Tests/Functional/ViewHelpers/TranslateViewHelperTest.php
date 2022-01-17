@@ -21,9 +21,10 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 class TranslateViewHelperTest extends FunctionalTestCase
 {
@@ -36,9 +37,9 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1351584844);
-        $view = new StandaloneView();
-        $view->setTemplateSource('<f:translate />');
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate />');
+        (new TemplateView($context))->render();
     }
 
     /**
@@ -48,10 +49,9 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639828178);
-        $view = new StandaloneView();
-        $view->getRenderingContext()->setRequest(null);
-        $view->setTemplateSource('<f:translate key="key1" />');
-        $view->render();
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:translate key="key1" />');
+        (new TemplateView($context))->render();
     }
 
     public function renderReturnsStringInNonExtbaseContextDataProvider(): array
@@ -102,11 +102,10 @@ class TranslateViewHelperTest extends FunctionalTestCase
     public function renderReturnsStringInNonExtbaseContext(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
-        $view->getRenderingContext()->setRequest(null);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 
     public function renderReturnsStringInExtbaseContextDataProvider(): array
@@ -162,12 +161,12 @@ class TranslateViewHelperTest extends FunctionalTestCase
     public function renderReturnsStringInExtbaseContext(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
-        $view = new StandaloneView();
-        $view->setTemplateSource($template);
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('backend');
         $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
-        $view->getRenderingContext()->setRequest($extbaseRequest);
-        self::assertSame($expected, $view->render());
+        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $context->setRequest($extbaseRequest);
+        self::assertSame($expected, (new TemplateView($context))->render());
     }
 }
