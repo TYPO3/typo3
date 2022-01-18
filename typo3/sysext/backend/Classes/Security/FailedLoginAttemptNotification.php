@@ -157,7 +157,7 @@ class FailedLoginAttemptNotification
             ->to($this->notificationRecipientEmailAddress)
             ->setTemplate('Security/LoginAttemptFailedWarning')
             ->assign('lines', $emailData);
-        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface) {
             $email->setRequest($GLOBALS['TYPO3_REQUEST']);
         }
 
