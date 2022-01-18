@@ -1313,7 +1313,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         // Check if there's already content available before processing
                         // any ifEmpty or ifBlank stdWrap properties
                         if (($functionName === 'ifBlank' && $content !== '') ||
-                            ($functionName === 'ifEmpty' && trim($content) !== '')) {
+                            ($functionName === 'ifEmpty' && trim((string)$content) !== '')) {
                             continue;
                         }
 
