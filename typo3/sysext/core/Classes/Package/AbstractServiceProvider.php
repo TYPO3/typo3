@@ -52,6 +52,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             'middlewares' => [ static::class, 'configureMiddlewares' ],
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
             'globalPageTsConfig' => [ static::class, 'configureGlobalPageTsConfig' ],
+            'backend.modules' => [ static::class, 'configureBackendModules' ],
             'icons' => [ static::class, 'configureIcons' ],
         ];
     }
@@ -124,6 +125,26 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         }
         return $tsConfigFiles;
     }
+
+    /**
+     * @param ContainerInterface $container
+     * @param ArrayObject $modules
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
+     * @return ArrayObject
+     */
+    public static function configureBackendModules(ContainerInterface $container, ArrayObject $modules, string $path = null): ArrayObject
+    {
+        $path = $path ?? static::getPackagePath();
+        $modulesFileNameForPackage = $path . 'Configuration/Backend/Modules.php';
+        if (file_exists($modulesFileNameForPackage)) {
+            $definedModulesInPackage = require $modulesFileNameForPackage;
+            if (is_array($definedModulesInPackage)) {
+                $modules->exchangeArray(array_merge($modules->getArrayCopy(), $definedModulesInPackage));
+            }
+        }
+        return $modules;
+    }
+
     public static function configureIcons(ContainerInterface $container, ArrayObject $icons, string $path = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();

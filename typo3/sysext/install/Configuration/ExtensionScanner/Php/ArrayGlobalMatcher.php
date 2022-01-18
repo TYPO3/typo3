@@ -48,4 +48,9 @@ return [
             'Breaking-92132-LastRemainsOfGlobalsSOBERemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_MODULES\']' => [
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
 ];

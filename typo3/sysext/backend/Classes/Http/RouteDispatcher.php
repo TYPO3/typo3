@@ -18,6 +18,8 @@ namespace TYPO3\CMS\Backend\Http;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Exception\MissingRequestTokenException;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -40,11 +42,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class RouteDispatcher extends Dispatcher
 {
     private UriBuilder $uriBuilder;
+    private ModuleProvider $moduleProvider;
 
-    public function __construct(ContainerInterface $container, UriBuilder $uriBuilder)
+    public function __construct(ContainerInterface $container, UriBuilder $uriBuilder, ModuleProvider $moduleProvider)
     {
         parent::__construct($container);
         $this->uriBuilder = $uriBuilder;
+        $this->moduleProvider = $moduleProvider;
     }
 
     /**
@@ -69,7 +73,7 @@ class RouteDispatcher extends Dispatcher
         $this->assertRequestToken($request, $route);
 
         if ($route->hasOption('module')) {
-            $this->addAndValidateModuleConfiguration($request, $route);
+            $this->validateModule($request, $route);
 
             // This module request (which is usually opened inside the list_frame)
             // has been issued from a toplevel browser window (e.g. a link was opened in a new tab).
@@ -159,23 +163,25 @@ class RouteDispatcher extends Dispatcher
     }
 
     /**
-     * Adds configuration for a module and checks module permissions for the
-     * current user.
+     * Fetches the module object from the resolved route and checks permissions
+     * for the current user. Furthermore, evaluates page access permissions, in
+     * case an "id" is given in the request.
      *
      * @param ServerRequestInterface $request
      * @param Route $route
      * @throws \RuntimeException
      */
-    protected function addAndValidateModuleConfiguration(ServerRequestInterface $request, Route $route)
+    protected function validateModule(ServerRequestInterface $request, Route $route): void
     {
-        $moduleName = $route->getOption('moduleName');
-        $moduleConfiguration = $this->getModuleConfiguration($moduleName);
-        $route->setOption('moduleConfiguration', $moduleConfiguration);
-
         $backendUserAuthentication = $GLOBALS['BE_USER'];
+        $module = $route->getOption('module');
 
-        // Check permissions and exit if the user has no permission for entry
-        $backendUserAuthentication->modAccess($moduleConfiguration);
+        if (!($module instanceof ModuleInterface)
+            || !$this->moduleProvider->accessGranted($module->getIdentifier(), $backendUserAuthentication)
+        ) {
+            throw new \RuntimeException('You don\'t have access to this module.', 1642450334);
+        }
+
         // '' for "no value found at all" to guarantee that the following if condition fails.
         $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? '';
         if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
@@ -190,20 +196,5 @@ class RouteDispatcher extends Dispatcher
                 }
             }
         }
-    }
-
-    /**
-     * Returns the module configuration which is provided during module registration
-     *
-     * @param string $moduleName
-     * @return array
-     * @throws \RuntimeException
-     */
-    protected function getModuleConfiguration($moduleName)
-    {
-        if (!isset($GLOBALS['TBE_MODULES']['_configuration'][$moduleName])) {
-            throw new \RuntimeException('Module ' . $moduleName . ' is not configured.', 1289918325);
-        }
-        return $GLOBALS['TBE_MODULES']['_configuration'][$moduleName];
     }
 }

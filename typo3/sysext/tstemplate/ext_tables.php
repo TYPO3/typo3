@@ -6,24 +6,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerModuleFunctionController;
 use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateConstantEditorModuleFunctionController;
 use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController;
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController;
 use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController;
 
 defined('TYPO3') or die();
-
-ExtensionManagementUtility::addModule(
-    'web',
-    'ts',
-    '',
-    '',
-    [
-        'routeTarget' => TypoScriptTemplateModuleController::class . '::mainAction',
-        'access' => 'admin',
-        'name' => 'web_ts',
-        'iconIdentifier' => 'module-tstemplate',
-        'labels' => 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_mod.xlf',
-    ]
-);
 
 ExtensionManagementUtility::insertModuleFunction(
     'web_ts',

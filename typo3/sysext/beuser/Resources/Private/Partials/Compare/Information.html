@@ -162,10 +162,10 @@
                 </thead>
             </f:if>
             <tbody>
-            <f:for each="{modules}" as="item">
+            <f:for each="{modules}" as="module">
                 <tr>
-                    <td class="col-icon"><core:icon identifier="{item.iconIdentifier}"></core:icon></td>
-                    <td class="col-title">{f:translate(key:'{item.labels}:mlang_tabs_tab')} [{item.name}]</td>
+                    <td class="col-icon"><core:icon identifier="{module.iconIdentifier}" /></td>
+                    <td class="col-title">{f:translate(key: module.title, default: module.title)} [{module.identifier}]</td>
                 </tr>
             </f:for>
             </tbody>

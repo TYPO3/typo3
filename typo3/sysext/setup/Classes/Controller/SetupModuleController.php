@@ -19,7 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -148,28 +148,15 @@ class SetupModuleController
      */
     protected $moduleTemplate;
 
-    protected EventDispatcherInterface $eventDispatcher;
-    protected MfaProviderRegistry $mfaProviderRegistry;
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected LanguageServiceFactory $languageServiceFactory;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        MfaProviderRegistry $mfaProviderRegistry,
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        LanguageServiceFactory $languageServiceFactory
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly MfaProviderRegistry $mfaProviderRegistry,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
+        protected readonly ModuleProvider $moduleProvider,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->mfaProviderRegistry = $mfaProviderRegistry;
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->languageServiceFactory = $languageServiceFactory;
-        // Instantiate the form protection before a simulated user is initialized
         $this->formProtection = FormProtectionFactory::get();
     }
 
@@ -722,32 +709,25 @@ class SetupModuleController
      *
      * @return string Complete select as HTML string
      */
-    public function renderStartModuleSelect()
+    public function renderStartModuleSelect(): string
     {
         // Load available backend modules
-        $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-        $loadModules->observeWorkspaces = true;
-        $loadModules->load($GLOBALS['TBE_MODULES']);
         $startModuleSelect = '<option value="">' . htmlspecialchars($this->getLanguageService()->getLL('startModule.firstInMenu')) . '</option>';
-        foreach ($loadModules->getModules() as $mainMod => $modData) {
-            $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
-            $isStandalone = $modData['standalone'] ?? false;
-            if ($hasSubmodules || $isStandalone) {
+        foreach ($this->moduleProvider->getModules($this->getBackendUser(), false) as $identifier => $module) {
+            if ($module->hasSubModules() || $module->isStandalone()) {
                 $modules = '';
-                if (($hasSubmodules)) {
-                    foreach ($modData['sub'] as $subData) {
-                        $modName = $subData['name'];
-                        $modules .= '<option value="' . htmlspecialchars($modName) . '"';
-                        $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $modName ? ' selected="selected"' : '';
-                        $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
+                if ($module->hasSubModules()) {
+                    foreach ($module->getSubModules() as $subModuleIdentifier => $subModule) {
+                        $modules .= '<option value="' . htmlspecialchars($subModuleIdentifier) . '"';
+                        $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $subModuleIdentifier ? ' selected="selected"' : '';
+                        $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($subModule->getTitle())) . '</option>';
                     }
-                } elseif ($isStandalone) {
-                    $modName = $modData['name'];
-                    $modules .= '<option value="' . htmlspecialchars($modName) . '"';
-                    $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $modName ? ' selected="selected"' : '';
-                    $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($modName)['title'])) . '</option>';
+                } elseif ($module->isStandalone()) {
+                    $modules .= '<option value="' . htmlspecialchars($identifier) . '"';
+                    $modules .= ($this->getBackendUser()->uc['startModule'] ?? '') === $identifier ? ' selected="selected"' : '';
+                    $modules .= '>' . htmlspecialchars($this->getLanguageService()->sL($module->getTitle())) . '</option>';
                 }
-                $groupLabel = htmlspecialchars($this->getLanguageService()->sL($loadModules->getLabelsForModule($mainMod)['title']));
+                $groupLabel = htmlspecialchars($this->getLanguageService()->sL($module->getTitle()));
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }

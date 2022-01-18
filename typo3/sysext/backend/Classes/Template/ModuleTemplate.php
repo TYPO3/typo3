@@ -78,11 +78,8 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     ) {
         $currentRoute = $request->getAttribute('route');
         if ($currentRoute instanceof Route) {
-            if ($currentRoute->hasOption('module') && $currentRoute->getOption('module')) {
-                $moduleConfiguration = $currentRoute->getOption('moduleConfiguration');
-                if ($moduleConfiguration['name']) {
-                    $this->setModuleName($moduleConfiguration['name']);
-                }
+            if ($currentRoute->hasOption('module')) {
+                $this->setModuleName($currentRoute->getOption('module')?->getIdentifier() ?? '');
             } else {
                 $this->setModuleName($currentRoute->getOption('_identifier'));
             }

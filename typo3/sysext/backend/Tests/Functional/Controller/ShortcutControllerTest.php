@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\Controller\ShortcutController;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -43,7 +42,6 @@ class ShortcutControllerTest extends FunctionalTestCase
         $this->subject = new ShortcutController(
             $this->getContainer()->get(ShortcutToolbarItem::class),
             $this->getContainer()->get(ShortcutRepository::class),
-            $this->getContainer()->get(ModuleLoader::class)
         );
         $this->request = (new ServerRequest())->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }

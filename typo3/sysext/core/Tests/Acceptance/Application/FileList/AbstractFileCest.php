@@ -33,7 +33,7 @@ abstract class AbstractFileCest
     public function _before(ApplicationTester $I, FileTree $tree): void
     {
         $I->useExistingSession('admin');
-        $I->amOnPage('/typo3/module/file/FilelistList');
+        $I->amOnPage('/typo3/module/file/list');
         $I->switchToContentFrame();
     }
 

@@ -48,11 +48,6 @@ class IconRegistry implements SingletonInterface
     /**
      * @var bool
      */
-    protected $moduleIconsInitialized = false;
-
-    /**
-     * @var bool
-     */
     protected $backendIconsInitialized = false;
 
     /**
@@ -241,15 +236,11 @@ class IconRegistry implements SingletonInterface
         if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
             $this->registerTCAIcons();
         }
-        if (!$this->moduleIconsInitialized && !empty($GLOBALS['TBE_MODULES'])) {
-            $this->registerModuleIcons();
-        }
         if (!$this->flagsInitialized) {
             $this->registerFlags();
         }
         if ($this->backendIconsInitialized
             && $this->tcaInitialized
-            && $this->moduleIconsInitialized
             && $this->flagsInitialized) {
             $this->fullInitialized = true;
         }
@@ -522,38 +513,6 @@ class IconRegistry implements SingletonInterface
             ];
         }
         $this->tcaInitialized = true;
-    }
-
-    /**
-     * Register module icons
-     */
-    protected function registerModuleIcons()
-    {
-        $moduleConfiguration = $GLOBALS['TBE_MODULES']['_configuration'] ?? [];
-        foreach ($moduleConfiguration as $moduleKey => $singleModuleConfiguration) {
-            $iconIdentifier = !empty($singleModuleConfiguration['iconIdentifier'])
-                ? $singleModuleConfiguration['iconIdentifier']
-                : null;
-
-            if ($iconIdentifier !== null) {
-                // iconIdentifier found, icon is registered, continue
-                continue;
-            }
-
-            $iconPath = !empty($singleModuleConfiguration['icon'])
-                ? $singleModuleConfiguration['icon']
-                : null;
-            $iconProviderClass = $this->detectIconProvider($iconPath);
-            $iconIdentifier = 'module-icon-' . $moduleKey;
-
-            $this->icons[$iconIdentifier] = [
-                'provider' => $iconProviderClass,
-                'options' => [
-                    'source' => $iconPath,
-                ],
-            ];
-        }
-        $this->moduleIconsInitialized = true;
     }
 
     /**

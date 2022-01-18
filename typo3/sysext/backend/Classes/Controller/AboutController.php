@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -37,12 +38,10 @@ class AboutController
     public function __construct(
         protected readonly Typo3Version $version,
         protected readonly Typo3Information $typo3Information,
-        protected readonly ModuleLoader $moduleLoader,
+        protected readonly ModuleProvider $moduleProvider,
         protected readonly PackageManager $packageManager,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->moduleLoader->observeWorkspaces = true;
-        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
     }
 
     /**
@@ -66,53 +65,9 @@ class AboutController
             'loadedExtensions' => $this->getLoadedExtensions(),
             'copyRightNotice' => $this->typo3Information->getCopyrightNotice(),
             'warnings' => $warnings,
-            'modules' => $this->getModulesData(),
+            'modules' => $this->moduleProvider->getModules($this->getBackendUser()),
         ]);
         return $view->renderResponse('About/Index');
-    }
-
-    /**
-     * Create array with data of all main modules (Web, File, ...)
-     * and its nested sub modules.
-     */
-    protected function getModulesData(): array
-    {
-        $mainModulesData = [];
-        foreach ($this->moduleLoader->getModules() as $moduleName => $moduleInfo) {
-            $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName);
-            $mainModuleData = [
-                'name'  => $moduleName,
-                'label' => $moduleLabels['title'],
-            ];
-            if (is_array($moduleInfo['sub'] ?? null) && !empty($moduleInfo['sub'])) {
-                $mainModuleData['subModules'] = $this->getSubModuleData((string)$moduleName);
-            }
-            $mainModulesData[] = $mainModuleData;
-        }
-        return $mainModulesData;
-    }
-
-    /**
-     * Create array with data of all subModules of a specific main module
-     */
-    protected function getSubModuleData(string $moduleName): array
-    {
-        if (empty($this->moduleLoader->getModules()[$moduleName]['sub'])) {
-            return [];
-        }
-        $subModulesData = [];
-        foreach ($this->moduleLoader->getModules()[$moduleName]['sub'] ?? [] as $subModuleName => $subModuleInfo) {
-            $moduleLabels = $this->moduleLoader->getLabelsForModule($moduleName . '_' . $subModuleName);
-            $subModuleData = [];
-            $subModuleData['name'] = $subModuleName;
-            $subModuleData['icon'] = $subModuleInfo['icon'] ?? null;
-            $subModuleData['iconIdentifier'] = $subModuleInfo['iconIdentifier'] ?? null;
-            $subModuleData['label'] = $moduleLabels['title'] ?? null;
-            $subModuleData['shortDescription'] = $moduleLabels['shortdescription'] ?? null;
-            $subModuleData['longDescription'] = $moduleLabels['description'] ?? null;
-            $subModulesData[] = $subModuleData;
-        }
-        return $subModulesData;
     }
 
     /**
@@ -133,5 +88,10 @@ class AboutController
             ];
         }
         return $extensions;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

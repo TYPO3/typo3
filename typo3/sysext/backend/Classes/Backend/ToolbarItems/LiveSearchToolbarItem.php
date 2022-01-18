@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
-use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
@@ -27,12 +28,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class LiveSearchToolbarItem implements ToolbarItemInterface
 {
-    protected BackendModuleRepository $backendModuleRepository;
-
-    public function __construct(
-        BackendModuleRepository $backendModuleRepository
-    ) {
-        $this->backendModuleRepository = $backendModuleRepository;
+    public function __construct(protected readonly ModuleProvider $moduleProvider)
+    {
     }
 
     /**
@@ -41,8 +38,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
      */
     public function checkAccess(): bool
     {
-        $listModule = $this->backendModuleRepository->findByModuleName('web_list');
-        return $listModule !== null && $listModule !== false;
+        return $this->moduleProvider->accessGranted('web_list', $this->getBackendUser());
     }
 
     /**
@@ -85,5 +81,10 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 90;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

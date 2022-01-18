@@ -3,26 +3,12 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Info\Controller\InfoModuleController;
 use TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController;
 use TYPO3\CMS\Info\Controller\PageInformationController;
 use TYPO3\CMS\Info\Controller\TranslationStatusController;
 
 defined('TYPO3') or die();
 
-ExtensionManagementUtility::addModule(
-    'web',
-    'info',
-    '',
-    '',
-    [
-        'routeTarget' => InfoModuleController::class . '::mainAction',
-        'access' => 'user,group',
-        'name' => 'web_info',
-        'iconIdentifier' => 'module-info',
-        'labels' => 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf',
-    ]
-);
 ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:info/Resources/Private/Language/locallang_csh_web_info.xlf');
 ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_infotsconfig', 'EXT:info/Resources/Private/Language/locallang_csh_tsconfigInfo.xlf');
 

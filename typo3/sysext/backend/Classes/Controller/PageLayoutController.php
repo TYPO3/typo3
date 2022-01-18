@@ -23,7 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -156,28 +156,17 @@ class PageLayoutController
      */
     protected $context;
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected PageRepository $pageRepository;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        PageRepository $pageRepository,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        EventDispatcherInterface $eventDispatcher
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly PageRepository $pageRepository,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly ModuleProvider $moduleProvider,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->pageRepository = $pageRepository;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
+
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
@@ -386,10 +375,7 @@ class PageLayoutController
 
         // If page is a folder
         if ($this->pageinfo['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
-            $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
-            $moduleLoader->load($GLOBALS['TBE_MODULES']);
-            $modules = $moduleLoader->getModules();
-            if (is_array($modules['web']['sub']['list'] ?? null)) {
+            if ($this->moduleProvider->accessGranted('web_list', $this->getBackendUser())) {
                 $title = $lang->getLL('goToListModule');
                 $message = '<p>' . $lang->getLL('goToListModuleMessage') . '</p>';
                 $message .= '<a class="btn btn-info" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'

@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 
+use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ExtbaseModule;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -41,13 +44,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -57,6 +60,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -72,13 +76,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -89,6 +93,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -104,13 +109,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -121,6 +126,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['format' => 'json']]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -175,13 +181,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -191,6 +197,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -232,13 +239,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -248,6 +255,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -284,13 +292,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -300,6 +308,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -317,13 +326,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -335,6 +344,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -371,13 +381,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -388,12 +398,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
-        self::assertSame('BlogController', $request->getControllerName());
+        self::assertSame('Blog', $request->getControllerName());
     }
 
     /**
@@ -404,22 +415,14 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
+                'ExtbaseTeam\BlogExample\Controller\UserController' => ['list'],
             ],
-            'ExtbaseTeam\BlogExample\Controller\UserController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\UserController',
-                'alias' => 'UserController',
-                'actions' => [
-                    'list',
-                ],
-            ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -429,12 +432,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'UserController']]);
+        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'User']]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
-        self::assertSame('UserController', $request->getControllerName());
+        self::assertSame('User', $request->getControllerName());
     }
 
     /**
@@ -449,13 +453,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -465,6 +469,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -482,13 +487,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -499,6 +504,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -512,13 +518,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']['ExtbaseTeam\BlogExample\Controller\BlogController'] = [
-            'className' => 'ExtbaseTeam\BlogExample\Controller\BlogController',
-            'alias' => 'BlogController',
-            'actions' => [
-                'list',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -529,6 +535,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -545,15 +552,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list', 'show',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -563,6 +568,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -583,12 +589,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => '',
             ],
-        ];
+        ]);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -598,6 +605,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -615,15 +623,14 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list', 'show',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
             ],
-        ];
+        ]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -654,15 +661,14 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list', 'show',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
             ],
-        ];
+        ]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -691,15 +697,14 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list', 'show',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
             ],
-        ];
+        ]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -731,15 +736,14 @@ class RequestBuilderTest extends FunctionalTestCase
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] = [
-            'ExtbaseTeam\BlogExample\Controller\BlogController' => [
-                'className' =>  'ExtbaseTeam\BlogExample\Controller\BlogController',
-                'alias' => 'BlogController',
-                'actions' => [
-                    'list', 'show',
-                ],
+        $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'path' => '/blog-example',
+            'extensionName' => $extensionName,
+            'controllerActions' => [
+                BlogController::class => ['list', 'show'],
             ],
-        ];
+        ]);
+        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;

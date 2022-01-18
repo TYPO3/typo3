@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Hooks;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Module\ModuleFactory;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
@@ -148,81 +150,49 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
     /**
      * @test
      */
-    public function populateAvailableGroupModulesTest(): void
-    {
-        $GLOBALS['TBE_MODULES'] = [];
-
-        $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
-        $moduleLoader = $moduleLoaderProphecy->reveal();
-        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoader);
-        $moduleLoaderProphecy->load([])->shouldBeCalled();
-        $moduleLoader->modListGroup = [
-            'aModule',
-        ];
-        $moduleLoaderProphecy->getModules()->willReturn([
-            'aModule' => [
-                'iconIdentifier' => 'empty-empty',
-            ],
-        ]);
-        $moduleLoaderProphecy->getLabelsForModule('aModule')->shouldBeCalled()->willReturn([
-            'shortdescription' => 'aModuleTabLabel',
-            'description' => 'aModuleTabDescription',
-            'title' => 'aModuleLabel',
-        ]);
-
-        $fieldDefinition = $expected = ['items' => []];
-        $expected['items'] = [
-            0 => [
-                0 => 'aModuleLabel',
-                1 => 'aModule',
-                2 => 'empty-empty',
-                3 => null,
-                4 => [
-                    'title' => 'aModuleTabLabel',
-                    'description' => 'aModuleTabDescription',
-                ],
-            ],
-        ];
-
-        (new TcaItemsProcessorFunctions())->populateAvailableGroupModules($fieldDefinition);
-        self::assertSame($expected, $fieldDefinition);
-    }
-
-    /**
-     * @test
-     */
     public function populateAvailableUserModulesTest(): void
     {
-        $GLOBALS['TBE_MODULES'] = [];
+        $moduleProviderProphecy = $this->prophesize(ModuleProvider::class);
+        GeneralUtility::addInstance(ModuleProvider::class, $moduleProviderProphecy->reveal());
+        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcherProphecy->dispatch(Argument::any())->willReturnArgument();
 
-        $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
-        $moduleLoader = $moduleLoaderProphecy->reveal();
-        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoader);
-        $moduleLoaderProphecy->load([])->shouldBeCalled();
-        $moduleLoader->modListUser = [
-            'bModule',
-        ];
-        $moduleLoaderProphecy->getModules()->willReturn([
-            'bModule' => [
-                'iconIdentifier' => 'empty-empty',
-            ],
-        ]);
-        $moduleLoaderProphecy->getLabelsForModule('bModule')->shouldBeCalled()->willReturn([
-            'shortdescription' => 'bModuleTabLabel',
-            'description' => 'bModuleTabDescription',
-            'title' => 'bModuleLabel',
+        $moduleFactory = new ModuleFactory(
+            $this->prophesize(IconRegistry::class)->reveal(),
+            $eventDispatcherProphecy->reveal()
+        );
+
+        $moduleProviderProphecy->getUserModules()->willReturn([
+            'aModule' => $moduleFactory->createModule('aModule', [
+                'iconIdentifier' => 'a-module',
+                'labels' => 'LLL:EXT:a-module/locallang',
+            ]),
+            'bModule' => $moduleFactory->createModule('bModule', [
+                'iconIdentifier' => 'b-module',
+                'labels' => 'LLL:EXT:b-module/locallang',
+            ]),
         ]);
 
         $fieldDefinition = $expected = ['items' => []];
         $expected['items'] = [
             0 => [
-                0 => 'bModuleLabel',
-                1 => 'bModule',
-                2 => 'empty-empty',
+                0 => 'LLL:EXT:a-module/locallang:mlang_tabs_tab',
+                1 => 'aModule',
+                2 => 'a-module',
                 3 => null,
                 4 => [
-                    'title' => 'bModuleTabLabel',
-                    'description' => 'bModuleTabDescription',
+                    'title' => 'LLL:EXT:a-module/locallang:mlang_labels_tablabel',
+                    'description' => 'LLL:EXT:a-module/locallang:mlang_labels_tabdescr',
+                ],
+            ],
+            1 => [
+                0 => 'LLL:EXT:b-module/locallang:mlang_tabs_tab',
+                1 => 'bModule',
+                2 => 'b-module',
+                3 => null,
+                4 => [
+                    'title' => 'LLL:EXT:b-module/locallang:mlang_labels_tablabel',
+                    'description' => 'LLL:EXT:b-module/locallang:mlang_labels_tabdescr',
                 ],
             ],
         ];

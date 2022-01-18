@@ -225,34 +225,6 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getControllerConfigurationReturnsConfigurationStoredInExtconf(): void
-    {
-        $controllerConfiguration = [
-            'Controller1' => [
-                'actions' => [
-                    'action1',
-                    'action2',
-                ],
-                'nonCacheableActions' => [
-                    'action1',
-                ],
-            ],
-            'Controller2' => [
-                'actions' => [
-                    'action3',
-                    'action4',
-                ],
-            ],
-        ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $controllerConfiguration;
-        $expectedResult = $controllerConfiguration;
-        $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured(): void
     {
         $storagePids = [1, 2, 3];

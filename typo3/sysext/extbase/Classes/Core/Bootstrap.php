@@ -219,10 +219,9 @@ class Bootstrap
         // build the configuration from the Server request / route
         /** @var Route $route */
         $route = $request->getAttribute('route');
-        $moduleConfiguration = $route->getOption('moduleConfiguration');
         $configuration = [
-            'extensionName' => $moduleConfiguration['extensionName'],
-            'pluginName' => $route->getOption('moduleName'),
+            'extensionName' => $route->getOption('module')?->getExtensionName(),
+            'pluginName' => $route->getOption('module')?->getIdentifier(),
         ];
 
         $this->initialize($configuration);

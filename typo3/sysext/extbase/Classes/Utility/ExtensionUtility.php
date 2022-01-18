@@ -15,10 +15,8 @@
 
 namespace TYPO3\CMS\Extbase\Utility;
 
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
  * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
@@ -144,66 +142,25 @@ tt_content.' . $pluginSignature . ' {
     }
 
     /**
-     * Registers an Extbase module (main or sub) to the backend interface.
-     * FOR USE IN ext_tables.php FILES
+     * To allow extension authors to support multiple versions, this method is kept until
+     * TYPO3 v13, but is no longer used nor evaluated from TYPO3 v12.0. To register modules,
+     * place the configuration in your extensions' Configuration/Backend/Modules.php file.
      *
-     * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-     * @param string $mainModuleName The main module key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there. If $subModuleName is not set a blank $extensionName module is created
-     * @param string $subModuleName The submodule key.
-     * @param string $position This can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
-     * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-     * @param array $moduleConfiguration The configuration options of the module (icon, locallang.xlf file)
-     * @throws \InvalidArgumentException
+     * The method deliberately does not throw a deprecation warning in order to keep the noise
+     * of deprecation warnings small.
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public static function registerModule($extensionName, $mainModuleName = '', $subModuleName = '', $position = '', array $controllerActions = [], array $moduleConfiguration = [])
     {
-        self::checkExtensionNameFormat($extensionName);
-
-        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-        $defaultModuleConfiguration = [
-            'access' => 'admin',
-            'icon' => 'EXT:extbase/Resources/Public/Icons/Extension.svg',
-            'labels' => '',
-        ];
-        if ($mainModuleName !== '' && !array_key_exists($mainModuleName, $GLOBALS['TBE_MODULES'])) {
-            $mainModuleName = $extensionName . GeneralUtility::underscoredToUpperCamelCase($mainModuleName);
-        } else {
-            $mainModuleName = $mainModuleName !== '' ? $mainModuleName : 'web';
-        }
-        // add mandatory parameter to use new pagetree
-        if ($mainModuleName === 'web') {
-            $defaultModuleConfiguration['navigationComponentId'] = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
-        }
-        ArrayUtility::mergeRecursiveWithOverrule($defaultModuleConfiguration, $moduleConfiguration);
-        $moduleConfiguration = $defaultModuleConfiguration;
-        $moduleSignature = $mainModuleName;
-        if ($subModuleName !== '') {
-            $subModuleName = $extensionName . GeneralUtility::underscoredToUpperCamelCase($subModuleName);
-            $moduleSignature .= '_' . $subModuleName;
-        }
-        $moduleConfiguration['name'] = $moduleSignature;
-        $moduleConfiguration['extensionName'] = $extensionName;
-        $moduleConfiguration['routeTarget'] = Bootstrap::class . '::handleBackendRequest';
-        if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] ?? false)) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature] = [];
-        }
-        foreach ($controllerActions as $controllerClassName => $actionsList) {
-            $controllerAlias = self::resolveControllerAliasFromControllerClassName($controllerClassName);
-
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$moduleSignature]['controllers'][$controllerClassName] = [
-                'className' => $controllerClassName,
-                'alias' => $controllerAlias,
-                'actions' => GeneralUtility::trimExplode(',', $actionsList),
-            ];
-        }
-        ExtensionManagementUtility::addModule($mainModuleName, $subModuleName, $position, null, $moduleConfiguration);
     }
 
     /**
      * @param string $controllerClassName
      * @return string
+     * @internal only used for TYPO3 Core
      */
-    protected static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string
+    public static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string
     {
         // This method has been adjusted for TYPO3 10.3 to mitigate the issue that controller aliases
         // could not longer be calculated from controller classes when calling

@@ -17,10 +17,12 @@ namespace TYPO3\CMS\Workspaces\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -87,10 +89,11 @@ class AjaxController
     protected function getPageModuleName(): string
     {
         $backendUser = $this->getBackendUser();
+        $moduleProvider = GeneralUtility::makeInstance(ModuleProvider::class);
         $pageModule = trim($backendUser->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
+        $pageModule = $moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
 
-        return $backendUser->check('modules', $pageModule) ? $pageModule : '';
+        return $moduleProvider->accessGranted($pageModule, $backendUser) ? $pageModule : '';
     }
 
     protected function getBackendUser(): BackendUserAuthentication

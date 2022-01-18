@@ -57,8 +57,8 @@
 			<trans-unit id="tbemodulesext" resname="tbemodulesext">
 				<source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
 			</trans-unit>
-			<trans-unit id="tbemodules" resname="tbemodules">
-				<source>$GLOBALS['TBE_MODULES'] (BE Modules)</source>
+			<trans-unit id="backendModules" resname="backendModules">
+				<source>Backend Modules</source>
 			</trans-unit>
 			<trans-unit id="pagesTypes" resname="pagesTypes">
 				<source>$GLOBALS['PAGES_TYPES'] (Table permissions by page type)</source>

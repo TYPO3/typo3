@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Belog\Module;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Core\Bootstrap;
+use TYPO3\CMS\Extbase\Core\Bootstrap as ExtbaseBootstrap;
 
 /**
  * This class is a wrapper for WebInfo controller of belog.
@@ -33,6 +33,13 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
  */
 class BackendLogModuleBootstrap
 {
+    public function __construct(
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleProvider $moduleProvider,
+        protected readonly ExtbaseBootstrap $extbaseBootstrap,
+    ) {
+    }
+
     /**
      * Bootstrap extbase and jump to WebInfo controller
      */
@@ -43,18 +50,13 @@ class BackendLogModuleBootstrap
         $queryParams['tx_belog_system_beloglog']['layout'] = 'Plain';
         $request = $request->withQueryParams($queryParams);
 
-        $options = [
-            'moduleName' => 'system_BelogLog',
-            'moduleConfiguration' => [
-                'extensionName' => 'Belog',
-            ],
-        ];
-        $routePath = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($options['moduleName'])->getPath();
+        $routePath = $this->uriBuilder->buildUriFromRoute('system_BelogLog')->getPath();
+        $routeOptions = $this->moduleProvider->getModule('system_BelogLog')?->getDefaultRouteOptions() ?? [];
 
-        return GeneralUtility::makeInstance(Bootstrap::class)->handleBackendRequest(
+        return $this->extbaseBootstrap->handleBackendRequest(
             $request->withAttribute(
                 'route',
-                GeneralUtility::makeInstance(Route::class, $routePath, $options)
+                new Route($routePath, $routeOptions)
             )
         );
     }

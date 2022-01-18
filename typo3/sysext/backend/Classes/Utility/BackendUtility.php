@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -2904,20 +2905,16 @@ class BackendUtility
      *
      * @param string $modName Module name
      * @return bool
+     * @deprecated no longer in use. Will be removed in v13. Use the ModuleProvider API instead.
      */
     public static function isModuleSetInTBE_MODULES($modName)
     {
-        $loaded = [];
-        foreach ($GLOBALS['TBE_MODULES'] as $mkey => $list) {
-            $loaded[$mkey] = 1;
-            if (!is_array($list) && trim($list)) {
-                $subList = GeneralUtility::trimExplode(',', $list, true);
-                foreach ($subList as $skey) {
-                    $loaded[$mkey . '_' . $skey] = 1;
-                }
-            }
-        }
-        return $modName && isset($loaded[$modName]);
+        trigger_error(
+            'BackendUtility::isModuleSetInTBE_MODULES() will be removed in TYPO3 v13.0. Use the ModuleProvider API instead.',
+            E_USER_DEPRECATED
+        );
+
+        return GeneralUtility::makeInstance(ModuleProvider::class)->isModuleRegistered((string)$modName);
     }
 
     /**

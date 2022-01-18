@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Hooks;
 
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -72,14 +72,26 @@ class TcaItemsProcessorFunctions
         }
     }
 
-    public function populateAvailableGroupModules(array &$fieldDefinition): void
-    {
-        $fieldDefinition['items'] = $this->getAvailableModules('group', $fieldDefinition['items']);
-    }
-
     public function populateAvailableUserModules(array &$fieldDefinition): void
     {
-        $fieldDefinition['items'] = $this->getAvailableModules('user', $fieldDefinition['items']);
+        $modules = GeneralUtility::makeInstance(ModuleProvider::class)->getUserModules();
+        if ($modules === []) {
+            return;
+        }
+        $languageService = $this->getLanguageService();
+        foreach ($modules as $identifier => $module) {
+            // Item configuration
+            $fieldDefinition['items'][] = [
+                ($module->hasParentModule() ? $languageService->sL($module->getParentModule()->getTitle()) . '>' : '') . $languageService->sL($module->getTitle()),
+                $identifier,
+                $module->getIconIdentifier(),
+                null,
+                [
+                    'title' => $languageService->sL($module->getShortDescription()),
+                    'description' => $languageService->sL($module->getDescription()),
+                ],
+            ];
+        }
     }
 
     public function populateExcludeFields(array &$fieldDefinition): void
@@ -224,55 +236,6 @@ class TcaItemsProcessorFunctions
             $fieldLabel = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']);
             $fieldDefinition['items'][] = [$fieldLabel, $fieldName];
         }
-    }
-
-    /**
-     * Get all available modules for the given context: "user" or "group"
-     *
-     * @param string $context
-     * @param array $items
-     * @return array
-     */
-    protected function getAvailableModules(string $context, array $items): array
-    {
-        if (!in_array($context, ['user', 'group'], true)) {
-            return $items;
-        }
-        $languageService = $this->getLanguageService();
-        $moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
-        $moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $moduleList = $context === 'user' ? $moduleLoader->modListUser : $moduleLoader->modListGroup;
-        if (!is_array($moduleList) || $moduleList === []) {
-            return $items;
-        }
-        foreach ($moduleList as $module) {
-            $moduleLabels = $moduleLoader->getLabelsForModule($module);
-            $moduleArray = GeneralUtility::trimExplode('_', $module, true);
-            $mainModule = $moduleArray[0] ?? '';
-            $subModule = $moduleArray[1] ?? '';
-            // Icon:
-            if (!empty($subModule)) {
-                $icon = $moduleLoader->getModules()[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
-            } else {
-                $icon = $moduleLoader->getModules()[$module]['iconIdentifier'] ?? '';
-            }
-            // Add help text
-            $helpText = [
-                'title' => $languageService->sL($moduleLabels['shortdescription'] ?? ''),
-                'description' => $languageService->sL($moduleLabels['description'] ?? ''),
-            ];
-            $label = '';
-            // Add label for main module if this is a submodule
-            if (!empty($subModule)) {
-                $mainModuleLabels = $moduleLoader->getLabelsForModule($mainModule);
-                $label .= $languageService->sL($mainModuleLabels['title'] ?? '') . '>';
-            }
-            // Add modules own label now
-            $label .= $languageService->sL($moduleLabels['title'] ?? '');
-            // Item configuration
-            $items[] = [$label, $module, $icon, null, $helpText];
-        }
-        return $items;
     }
 
     /**

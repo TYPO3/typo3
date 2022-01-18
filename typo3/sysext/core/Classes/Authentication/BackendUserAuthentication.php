@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -382,17 +383,23 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Checks access to a backend module with the $MCONF passed as first argument
+     * Checks access to a backend module
      *
-     * @param array $conf $MCONF array of a backend module!
+     * @param array $conf module configuration
      * @throws \RuntimeException
-     * @return bool Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
+     * @return bool Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even registered
+     * @deprecated no longer in use. Will be removed in v13. Use the ModuleProvider API instead.
      */
     public function modAccess($conf)
     {
+        trigger_error(
+            'BackendUserAuthentication->modAccess() will be removed in TYPO3 v13.0. Use the ModuleProvider API instead.',
+            E_USER_DEPRECATED
+        );
+
         $moduleName = $conf['name'] ?? '';
-        if (!BackendUtility::isModuleSetInTBE_MODULES($moduleName)) {
-            throw new \RuntimeException('Fatal Error: This module "' . $moduleName . '" is not enabled in TBE_MODULES', 1294586446);
+        if (!GeneralUtility::makeInstance(ModuleProvider::class)->isModuleRegistered($moduleName)) {
+            throw new \RuntimeException('Fatal Error: This module "' . $moduleName . '" is not registered.', 1294586446);
         }
         // Workspaces check:
         if (

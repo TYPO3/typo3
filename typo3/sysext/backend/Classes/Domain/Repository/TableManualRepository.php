@@ -16,7 +16,7 @@
 namespace TYPO3\CMS\Backend\Domain\Repository;
 
 use TYPO3\CMS\Backend\Controller\HelpController;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -29,6 +29,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class TableManualRepository
 {
+    public function __construct(
+        protected readonly ModuleProvider $moduleProvider
+    ) {
+    }
+
     /**
      * Get the manual of the given table
      *
@@ -96,21 +101,17 @@ class TableManualRepository
         $lang->loadSingleTableDescription('xMOD_csh_corebe');
         $this->renderTableOfContentItem($mode, 'xMOD_csh_corebe', 'core', $outputSections, $tocArray, $cshKeys);
         // Backend Modules
-        $loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
-        $loadModules->load($GLOBALS['TBE_MODULES']);
-        foreach ($loadModules->getModules() as $mainMod => $info) {
-            $cshKey = '_MOD_' . $mainMod;
+        foreach ($this->moduleProvider->getModules($this->getBackendUser(), false) as $identifier => $module) {
+            $cshKey = '_MOD_' . $identifier;
             if ($cshKeys[$cshKey] ?? '') {
                 $lang->loadSingleTableDescription($cshKey);
                 $this->renderTableOfContentItem($mode, $cshKey, 'modules', $outputSections, $tocArray, $cshKeys);
             }
-            if (is_array($info['sub'] ?? null)) {
-                foreach ($info['sub'] as $subMod => $subInfo) {
-                    $cshKey = '_MOD_' . $mainMod . '_' . $subMod;
-                    if ($cshKeys[$cshKey] ?? '') {
-                        $lang->loadSingleTableDescription($cshKey);
-                        $this->renderTableOfContentItem($mode, $cshKey, 'modules', $outputSections, $tocArray, $cshKeys);
-                    }
+            foreach ($module->getSubModules() as $subModuleIdentifier => $subModule) {
+                $cshKey = '_MOD_' . $subModuleIdentifier;
+                if ($cshKeys[$cshKey] ?? '') {
+                    $lang->loadSingleTableDescription($cshKey);
+                    $this->renderTableOfContentItem($mode, $cshKey, 'modules', $outputSections, $tocArray, $cshKeys);
                 }
             }
         }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -29,6 +30,7 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
 {
     private const TABLE_NAME = 'sys_be_shortcuts';
 
+    protected ?ModuleProvider $moduleProvider = null;
     protected ?iterable $routes = null;
 
     public function getIdentifier(): string
@@ -60,6 +62,7 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
 
     public function executeUpdate(): bool
     {
+        $this->moduleProvider = GeneralUtility::makeInstance(ModuleProvider::class);
         $this->routes = GeneralUtility::makeInstance(Router::class)->getRoutes();
         $connection = $this->getConnectionPool()->getConnectionForTable(self::TABLE_NAME);
 
@@ -162,22 +165,15 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
                 return $moduleName;
         }
 
-        // Get identifier from module configuration
-        $routeIdentifier = $GLOBALS['TBE_MODULES']['_configuration'][$moduleName]['id'] ?? $moduleName;
-
-        // Check if a route with the identifier exist
-        if (isset($this->routes[$routeIdentifier])
-            && $this->routes[$routeIdentifier]->hasOption('moduleName')
-            && $this->routes[$routeIdentifier]->getOption('moduleName') === $moduleName
-        ) {
-            return $routeIdentifier;
+        if ($this->moduleProvider->isModuleRegistered($moduleName)) {
+            return $this->moduleProvider->getModule($moduleName)->getIdentifier();
         }
 
         // If the defined route identifier can't be fetched, try from the other side
         // by iterating over the routes to match a route by the defined module name
         foreach ($this->routes as $identifier => $route) {
             if ($route->hasOption('moduleName') && $route->getOption('moduleName') === $moduleName) {
-                return $routeIdentifier;
+                return $identifier;
             }
         }
 

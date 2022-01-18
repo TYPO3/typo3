@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -40,9 +41,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TranslationStatusController
 {
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-
     /**
      * @var SiteLanguage[]
      */
@@ -58,10 +56,12 @@ class TranslationStatusController
      */
     protected $id;
 
-    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
-    {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleProvider $moduleProvider
+    ) {
     }
 
     /**
@@ -88,7 +88,7 @@ class TranslationStatusController
     {
         $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
         if ($this->id) {
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Info/TranslationStatus');
 
             $moduleMenu = '';
 
@@ -181,26 +181,27 @@ class TranslationStatusController
     protected function renderL10nTable(PageTreeView $tree, ServerRequestInterface $request)
     {
         $lang = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
         // Title length:
-        $titleLen = $this->getBackendUser()->uc['titleLen'];
+        $titleLen = $backendUser->uc['titleLen'];
         // Put together the TREE:
         $output = '';
         $langRecUids = [];
 
-        $userTsConfig = $this->getBackendUser()->getTSConfig();
+        $userTsConfig = $backendUser->getTSConfig();
         $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
 
         // If another page module was specified, replace the default Page module with the new one
-        $pageModule = trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
-        $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
-        $canLinkToPageModule = $this->getBackendUser()->check('modules', $pageModule);
+        $pageModule = trim($userTsConfig['options.']['overridePageModule'] ?? '');
+        $pageModule = $this->moduleProvider->isModuleRegistered($pageModule) ? $pageModule : 'web_layout';
+        $pageModuleAccess = $this->moduleProvider->accessGranted($pageModule, $backendUser);
 
         foreach ($tree->tree as $data) {
             $tCells = [];
             $langRecUids[0][] = $data['row']['uid'];
             $pageTitle = ($showPageId ? '[' . (int)$data['row']['uid'] . '] ' : '') . GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen);
             // Page icons / titles etc.
-            if ($canLinkToPageModule) {
+            if ($pageModuleAccess) {
                 $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'SET' => ['language' => 0]]);
                 $pageModuleLink = '<a href="' . htmlspecialchars($pageModuleLink) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' . htmlspecialchars($pageTitle) . '</a>';
             } else {
@@ -229,7 +230,7 @@ class TranslationStatusController
             $info = '<a href="#" ' . $previewUriBuilder->serializeDispatcherAttributes()
                 . ' class="btn btn-default" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
                 $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() . '</a>';
-            if ($this->getBackendUser()->check('tables_modify', 'pages')) {
+            if ($backendUser->check('tables_modify', 'pages')) {
                 $info .= '<a href="' . htmlspecialchars($editUrl)
                     . '" class="btn btn-default" title="' . $lang->sL(
                         'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
@@ -269,7 +270,7 @@ class TranslationStatusController
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre'
                         ) . '</div>' : '');
 
-                        if ($canLinkToPageModule) {
+                        if ($pageModuleAccess) {
                             $pageModuleLink = (string)$this->uriBuilder->buildUriFromRoute($pageModule, ['id' => $data['row']['uid'], 'SET' => ['language' => $languageId]]);
                             $pageModuleLink = '<a href="' . htmlspecialchars($pageModuleLink) . '" title="' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageLang') . '">' . $info . '</a>';
                         } else {
@@ -322,7 +323,7 @@ class TranslationStatusController
         // Put together HEADER:
         $headerCells = [];
         $headerCells[] = '<th>' . $lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . '</th>';
-        if ($this->getBackendUser()->check('tables_modify', 'pages') && is_array($langRecUids[0])) {
+        if ($backendUser->check('tables_modify', 'pages') && is_array($langRecUids[0])) {
             $editUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'pages' => [
@@ -497,13 +498,5 @@ class TranslationStatusController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

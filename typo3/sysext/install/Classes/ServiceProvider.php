@@ -90,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return [
             'backend.routes' => [ static::class, 'configureBackendRoutes' ],
+            'backend.modules' => [ static::class, 'configureBackendModules' ],
             'icons' => [ static::class, 'configureIcons' ],
             CommandRegistry::class => [ static::class, 'configureCommands' ],
         ];

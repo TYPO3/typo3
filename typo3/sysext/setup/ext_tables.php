@@ -7,19 +7,6 @@ use TYPO3\CMS\Setup\Controller\SetupModuleController;
 
 defined('TYPO3') or die();
 
-ExtensionManagementUtility::addModule(
-    'user',
-    'setup',
-    'after:task',
-    '',
-    [
-        'routeTarget' => SetupModuleController::class . '::mainAction',
-        'access' => 'group,user',
-        'name' => 'user_setup',
-        'iconIdentifier' => 'module-setup',
-        'labels' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
-    ]
-);
 ExtensionManagementUtility::addLLrefForTCAdescr(
     '_MOD_user_setup',
     'EXT:setup/Resources/Private/Language/locallang_csh_mod.xlf'

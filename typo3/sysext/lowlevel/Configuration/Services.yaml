@@ -99,18 +99,8 @@ services:
         identifier: 'services'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:t3services'
         globalVariableKey: 'T3_SERVICES'
-        before: 'tbeModules'
-        after: 'tcaDescr'
-
-  lowlevel.configuration.module.provider.tbemodules:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'tbeModules'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tbemodules'
-        globalVariableKey: 'TBE_MODULES'
         before: 'tbeModulesExt'
-        after: 'services'
+        after: 'tcaDescr'
 
   lowlevel.configuration.module.provider.tbemodulesext:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
@@ -120,7 +110,7 @@ services:
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tbemodulesext'
         globalVariableKey: 'TBE_MODULES_EXT'
         before: 'tbeStyles'
-        after: 'tbeModules'
+        after: 'services'
 
   lowlevel.configuration.module.provider.tbestyles:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
@@ -176,8 +166,17 @@ services:
       - name: 'lowlevel.configuration.module.provider'
         identifier: 'beRoutes'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:routes'
-        before: 'httpMiddlewareStacks'
+        before: 'backendModules'
         after: 'beUserTsConfig'
+
+  lowlevel.configuration.module.provider.backendModules:
+    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\BackendModuleProvider'
+    tags:
+      - name: 'lowlevel.configuration.module.provider'
+        identifier: 'backendModules'
+        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:backendModules'
+        before: 'httpMiddlewareStacks'
+        after: 'beRoutes'
 
   lowlevel.configuration.module.provider.httpmiddlewarestacks:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\HttpMiddlewareStackProvider'
@@ -186,7 +185,7 @@ services:
         identifier: 'httpMiddlewareStacks'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:httpMiddlewareStacks'
         before: 'siteConfiguration'
-        after: 'beRoutes'
+        after: 'backendModules'
 
   lowlevel.configuration.module.provider.siteconfiguration:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\SiteConfigurationProvider'

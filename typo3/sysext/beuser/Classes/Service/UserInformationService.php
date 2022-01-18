@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\Service;
 
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -30,15 +31,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UserInformationService
 {
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    public function __construct(IconFactory $iconFactory)
-    {
-        $this->iconFactory = $iconFactory;
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleProvider $moduleProvider,
+    ) {
     }
 
     /**
@@ -178,10 +174,11 @@ class UserInformationService
 
         // Modules
         $modules = GeneralUtility::trimExplode(',', $user->groupData['modules'], true);
-        foreach ($modules as $module) {
-            $data['modules'][$module] = $GLOBALS['TBE_MODULES']['_configuration'][$module] ?? '';
+        foreach ($modules as $moduleIdentifier) {
+            if ($this->moduleProvider->isModuleRegistered($moduleIdentifier)) {
+                $data['modules'][] = $this->moduleProvider->getModule($moduleIdentifier);
+            }
         }
-        $data['modules'] = array_filter($data['modules']);
 
         // Categories
         $categories = $user->getCategoryMountPoints();

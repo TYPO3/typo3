@@ -17,13 +17,10 @@ namespace TYPO3\CMS\Core\Utility;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
-use TYPO3\CMS\Backend\Routing\Route;
-use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
@@ -761,147 +758,17 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds a module (main or sub) to the backend interface
-     * FOR USE IN ext_tables.php FILES
+     * To allow extension authors to support multiple versions, this method is kept until
+     * TYPO3 v13, but is no longer used nor evaluated from TYPO3 v12.0. To add modules,
+     * place the configuration in your extensions' Configuration/Backend/Modules.php file.
      *
-     * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there.
-     * @param string $sub The submodule key. If $sub is not set a blank $main module is created.
-     * @param string $position Can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
-     * @param string $path The absolute path to the module. Was used prior to TYPO3 v8, use $moduleConfiguration[routeTarget] now
-     * @param array $moduleConfiguration additional configuration, previously put in "conf.php" of the module directory
+     * The method deliberately does not throw a deprecation warning in order to keep the noise
+     * of deprecation warnings small.
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public static function addModule($main, $sub = '', $position = '', $path = null, $moduleConfiguration = [])
     {
-        if (!isset($GLOBALS['TBE_MODULES'])) {
-            $GLOBALS['TBE_MODULES'] = [];
-        }
-        // If there is already a main module by this name:
-        // Adding the submodule to the correct position:
-        if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
-            [$place, $modRef] = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
-            $modules = ',' . $GLOBALS['TBE_MODULES'][$main] . ',';
-            if ($place === null || ($modRef !== null && !GeneralUtility::inList($modules, $modRef))) {
-                $place = 'bottom';
-            }
-            $modRef = ',' . $modRef . ',';
-            if (!GeneralUtility::inList($modules, $sub)) {
-                switch (strtolower($place)) {
-                    case 'after':
-                        $modules = str_replace($modRef, $modRef . $sub . ',', $modules);
-                        break;
-                    case 'before':
-                        $modules = str_replace($modRef, ',' . $sub . $modRef, $modules);
-                        break;
-                    case 'top':
-                        $modules = $sub . $modules;
-                        break;
-                    case 'bottom':
-                    default:
-                        $modules = $modules . $sub;
-                }
-            }
-            // Re-inserting the submodule list:
-            $GLOBALS['TBE_MODULES'][$main] = trim($modules, ',');
-        } elseif (!isset($GLOBALS['TBE_MODULES'][$main]) && empty($sub)) {
-            // Create a new main module, respecting the order, which is only possible when the module does not exist yet
-            $conf = $GLOBALS['TBE_MODULES']['_configuration'] ?? [];
-            unset($GLOBALS['TBE_MODULES']['_configuration']);
-            $navigationComponents = $GLOBALS['TBE_MODULES']['_navigationComponents'] ?? [];
-            unset($GLOBALS['TBE_MODULES']['_navigationComponents']);
-
-            $modules = array_keys($GLOBALS['TBE_MODULES']);
-            [$place, $moduleReference] = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
-            if ($place === null || ($moduleReference !== null && !in_array($moduleReference, $modules, true))) {
-                $place = 'bottom';
-            }
-            $newModules = [];
-            switch (strtolower($place)) {
-                case 'after':
-                    foreach ($modules as $existingMainModule) {
-                        $newModules[$existingMainModule] = $GLOBALS['TBE_MODULES'][$existingMainModule];
-                        if ($moduleReference === $existingMainModule) {
-                            $newModules[$main] = '';
-                        }
-                    }
-                    break;
-                case 'before':
-                    foreach ($modules as $existingMainModule) {
-                        if ($moduleReference === $existingMainModule) {
-                            $newModules[$main] = '';
-                        }
-                        $newModules[$existingMainModule] = $GLOBALS['TBE_MODULES'][$existingMainModule];
-                    }
-                    break;
-                case 'top':
-                    $newModules[$main] = '';
-                    $newModules += $GLOBALS['TBE_MODULES'];
-                    break;
-                case 'bottom':
-                default:
-                    $newModules = $GLOBALS['TBE_MODULES'];
-                    $newModules[$main] = '';
-            }
-            $GLOBALS['TBE_MODULES'] = $newModules;
-            $GLOBALS['TBE_MODULES']['_configuration'] = $conf;
-            $GLOBALS['TBE_MODULES']['_navigationComponents'] = $navigationComponents;
-        } else {
-            // Create new main modules with only one submodule, $sub (or none if $sub is blank)
-            $GLOBALS['TBE_MODULES'][$main] = $sub;
-        }
-
-        // add additional configuration
-        $fullModuleSignature = $main . ($sub ? '_' . $sub : '');
-        if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
-            // remove default icon if an icon identifier is available
-            if (!empty($moduleConfiguration['iconIdentifier'])
-                && !empty($moduleConfiguration['icon'])
-                && $moduleConfiguration['icon'] === 'EXT:extbase/Resources/Public/Icons/Extension.svg'
-            ) {
-                unset($moduleConfiguration['icon']);
-            }
-
-            if (!empty($moduleConfiguration['icon'])) {
-                $iconPath = $moduleConfiguration['icon'];
-                if (!PathUtility::isExtensionPath($iconPath)) {
-                    $iconPath = GeneralUtility::getFileAbsFileName($iconPath);
-                }
-                $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-                $iconIdentifier = 'module-' . $fullModuleSignature;
-                $iconProvider = $iconRegistry->detectIconProvider($iconPath);
-                $iconRegistry->registerIcon(
-                    $iconIdentifier,
-                    $iconProvider,
-                    ['source' => $iconPath]
-                );
-                $moduleConfiguration['iconIdentifier'] = $iconIdentifier;
-                unset($moduleConfiguration['icon']);
-            }
-
-            $GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
-        }
-
-        // Also register the module as regular route
-        $routeName = $moduleConfiguration['id'] ?? $fullModuleSignature;
-        // Build Route objects from the data
-        if (!empty($moduleConfiguration['path'])) {
-            $path = $moduleConfiguration['path'];
-            $path = '/' . ltrim($path, '/');
-        } else {
-            $path = str_replace('_', '/', $fullModuleSignature);
-            $path = '/module/' . trim($path, '/');
-        }
-
-        $options = [
-            'module' => true,
-            'moduleName' => $fullModuleSignature,
-            'access' => !empty($moduleConfiguration['access']) ? $moduleConfiguration['access'] : 'user,group',
-        ];
-        if (!empty($moduleConfiguration['routeTarget'])) {
-            $options['target'] = $moduleConfiguration['routeTarget'];
-        }
-
-        $router = GeneralUtility::makeInstance(Router::class);
-        $router->addRoute($routeName, GeneralUtility::makeInstance(Route::class, $path, $options));
     }
 
     /**
@@ -983,17 +850,11 @@ class ExtensionManagementUtility
      * @param string $componentId componentId is also a RequireJS module name e.g. 'TYPO3/CMS/MyExt/MyNavComponent'
      * @param string $extensionKey
      * @throws \RuntimeException
+     * @deprecated no longer in use. Will be removed in TYPO3 v13.0.
      */
     public static function addNavigationComponent($module, $componentId, $extensionKey)
     {
-        if (empty($extensionKey)) {
-            throw new \RuntimeException('No extensionKey set in addNavigationComponent(). Provide it as third parameter', 1404068039);
-        }
-        $GLOBALS['TBE_MODULES']['_navigationComponents'][$module] = [
-            'componentId' => $componentId,
-            'extKey' => $extensionKey,
-            'isCoreComponent' => false,
-        ];
+        trigger_error('ExtensionManagementUtility::addNavigationComponent() will be removed in TYPO3 v13.0. Is not needed anymore. Remove any calls to this method.', E_USER_DEPRECATED);
     }
 
     /**
@@ -1001,11 +862,11 @@ class ExtensionManagementUtility
      *
      * @param string $module
      * @param string $componentId
+     * @deprecated no longer in use. Will be removed in TYPO3 v13.0.
      */
     public static function addCoreNavigationComponent($module, $componentId)
     {
-        self::addNavigationComponent($module, $componentId, 'core');
-        $GLOBALS['TBE_MODULES']['_navigationComponents'][$module]['isCoreComponent'] = true;
+        trigger_error('ExtensionManagementUtility::addCoreNavigationComponent() will be removed in TYPO3 v13.0. Is not needed anymore. Remove any calls to this method.', E_USER_DEPRECATED);
     }
 
     /**************************************

@@ -3,35 +3,37 @@
 </p>
 <f:for each="{modules}" as="mainModule">
     <f:if condition="{mainModule.subModules}">
-        <f:if condition="{mainModule.label}">
-            <h2><f:translate key="{mainModule.label}" default="{mainModule.label}"/></h2>
+        <f:if condition="{mainModule.title}">
+            <h2><f:translate key="{mainModule.title}">{mainModule.title}</f:translate></h2>
         </f:if>
         <section class="card-container">
-            <f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+            <f:for each="{mainModule.subModules}" as="subModule">
                 <a
                     href="#"
                     data-dispatch-action="TYPO3.ModuleMenu.showModule"
-                    data-dispatch-args-list="{mainModule.name}_{subModule.name}"
-                    title="{f:if(condition: subModule.shortDescription, then: '{f:translate(key: subModule.shortDescription, default: subModule.shortDescription)}')}"
+                    data-dispatch-args-list="{subModule.identifier}"
+                    title="{f:translate(key: subModule.shortDescription)}"
                     class="card card-size-medium"
                 >
                     <div class="card-header">
                         <div class="card-icon">
                             <core:icon identifier="{subModule.iconIdentifier}" size="default" />
                         </div>
-                        <f:if condition="{subModule.label}">
+                        <f:if condition="{subModule.title}">
                             <div class="card-header-body">
                                 <h3 class="card-title">
-                                    {f:translate(key: subModule.label, default: subModule.label)}
+                                    <f:translate key="{subModule.title}">{subModule.title}</f:translate>
                                 </h3>
                                 <f:if condition="{subModule.shortDescription}">
                                     <span class="card-subtitle">
-                                        <f:translate key="{subModule.shortDescription}" default="{subModule.shortDescription}" />
+                                        <f:translate key="{subModule.shortDescription}">{subModule.shortDescription}</f:translate>
                                     </span>
                                 </f:if>
-                                <f:if condition="{subModule.longDescription}">
+                                <f:if condition="{subModule.description}">
                                     <div class="card-longdesc">
-                                        {f:translate(key: subModule.longDescription, default: subModule.longDescription) -> f:format.raw()}
+                                        <f:sanitize.html>
+                                            <f:translate key="{subModule.description}">{subModule.description}</f:translate>
+                                        </f:sanitize.html>
                                     </div>
                                 </f:if>
                             </div>

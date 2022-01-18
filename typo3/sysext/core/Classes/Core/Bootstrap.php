@@ -473,7 +473,6 @@ class Bootstrap
     {
         unset($GLOBALS['PAGES_TYPES']);
         unset($GLOBALS['TCA']);
-        unset($GLOBALS['TBE_MODULES']);
         unset($GLOBALS['TBE_STYLES']);
         unset($GLOBALS['BE_USER']);
         // Those set otherwise:

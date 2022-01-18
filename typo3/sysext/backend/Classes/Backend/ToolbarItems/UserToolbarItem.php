@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
-use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -32,11 +32,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class UserToolbarItem implements ToolbarItemInterface
 {
-    protected BackendModuleRepository $backendModuleRepository;
-
-    public function __construct(BackendModuleRepository $backendModuleRepository)
+    public function __construct(protected readonly ModuleProvider $moduleProvider)
     {
-        $this->backendModuleRepository = $backendModuleRepository;
     }
 
     /**
@@ -102,8 +99,8 @@ class UserToolbarItem implements ToolbarItemInterface
         }
 
         $modules = null;
-        if ($userModule = $this->backendModuleRepository->findByModuleName('user')) {
-            $modules = $userModule->getChildren();
+        if ($userModule = $this->moduleProvider->getModuleForMenu('user', $backendUser)) {
+            $modules = $userModule->getSubModules();
         }
         $view = $this->getFluidTemplateObject();
         $view->assignMultiple([

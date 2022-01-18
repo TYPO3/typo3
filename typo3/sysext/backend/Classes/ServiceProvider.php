@@ -19,9 +19,13 @@ namespace TYPO3\CMS\Backend;
 
 use ArrayObject;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Http\Application;
 use TYPO3\CMS\Backend\Http\RequestHandler;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
+use TYPO3\CMS\Backend\Module\ModuleFactory;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -33,6 +37,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 
@@ -53,9 +58,14 @@ class ServiceProvider extends AbstractServiceProvider
             RequestHandler::class => [ static::class, 'getRequestHandler' ],
             RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
             UriBuilder::class => [ static::class, 'getUriBuilder' ],
+            ModuleProvider::class => [ static::class, 'getModuleProvider' ],
+            ModuleFactory::class => [ static::class, 'getModuleFactory' ],
+            ModuleRegistry::class => [ static::class, 'getModuleRegistry' ],
             'backend.middlewares' => [ static::class, 'getBackendMiddlewares' ],
             'backend.routes' => [ static::class, 'getBackendRoutes' ],
             'backend.routes.warmer' => [ static::class, 'getBackendRoutesWarmer' ],
+            'backend.modules' => [ static::class, 'getBackendModules' ],
+            'backend.modules.warmer' => [ static::class, 'getBackendModulesWarmer' ],
         ];
     }
 
@@ -95,6 +105,7 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, RouteDispatcher::class, [
             $container,
             $container->get(UriBuilder::class),
+            $container->get(ModuleProvider::class),
         ]);
     }
 
@@ -103,6 +114,38 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, UriBuilder::class, [
             $container->get(Router::class),
         ]);
+    }
+
+    public static function getModuleProvider(ContainerInterface $container): ModuleProvider
+    {
+        return self::new($container, ModuleProvider::class, [
+            $container->get(ModuleRegistry::class),
+        ]);
+    }
+
+    public static function getModuleFactory(ContainerInterface $container): ModuleFactory
+    {
+        return self::new($container, ModuleFactory::class, [
+            $container->get(IconRegistry::class),
+            $container->get(EventDispatcherInterface::class),
+        ]);
+    }
+
+    public static function getModuleRegistry(ContainerInterface $container): ModuleRegistry
+    {
+        $cache = $container->get('cache.core');
+        $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendModules')->toString();
+        $modulesFromPackages = $cache->require($cacheIdentifier);
+        if ($modulesFromPackages === false) {
+            $modulesFromPackages = $container->get('backend.modules')->getArrayCopy();
+            $cache->set($cacheIdentifier, 'return ' . var_export($modulesFromPackages, true) . ';');
+        }
+
+        foreach ($modulesFromPackages as $identifier => $configuration) {
+            $modulesFromPackages[$identifier] = $container->get(ModuleFactory::class)->createModule($identifier, $configuration);
+        }
+
+        return self::new($container, ModuleRegistry::class, [$modulesFromPackages]);
     }
 
     /**
@@ -140,6 +183,9 @@ class ServiceProvider extends AbstractServiceProvider
             $router->addRoute($name, $route);
         }
 
+        // Add routes from all modules
+        $container->get(ModuleRegistry::class)->registerRoutesForModules($router);
+
         return $router;
     }
 
@@ -160,9 +206,27 @@ class ServiceProvider extends AbstractServiceProvider
         };
     }
 
+    public static function getBackendModules(ContainerInterface $container): ArrayObject
+    {
+        return new ArrayObject();
+    }
+
+    public static function getBackendModulesWarmer(ContainerInterface $container): \Closure
+    {
+        return static function (CacheWarmupEvent $event) use ($container) {
+            if ($event->hasGroup('system')) {
+                $cache = $container->get('cache.core');
+                $cacheIdentifier = $container->get(PackageDependentCacheIdentifier::class)->withPrefix('BackendModules')->toString();
+                $modulesFromPackages = $container->get('backend.modules')->getArrayCopy();
+                $cache->set($cacheIdentifier, 'return ' . var_export($modulesFromPackages, true) . ';');
+            }
+        };
+    }
+
     public static function addEventListeners(ContainerInterface $container, ListenerProvider $listenerProvider): ListenerProvider
     {
         $listenerProvider->addListener(CacheWarmupEvent::class, 'backend.routes.warmer');
+        $listenerProvider->addListener(CacheWarmupEvent::class, 'backend.modules.warmer');
 
         return $listenerProvider;
     }

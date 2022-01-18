@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -49,21 +49,24 @@ class BackendController
     use PageRendererBackendSetupTrait;
 
     protected string $css = '';
-    protected \SplObjectStorage $moduleStorage;
+
+    /**
+     * @var ModuleInterface[]
+     */
+    protected array $modules;
 
     public function __construct(
-        protected Typo3Version $typo3Version,
-        protected UriBuilder $uriBuilder,
-        protected PageRenderer $pageRenderer,
-        protected ModuleLoader $moduleLoader,
-        protected BackendModuleRepository $backendModuleRepository,
-        protected ToolbarItemsRegistry $toolbarItemsRegistry,
-        protected ExtensionConfiguration $extensionConfiguration,
-        protected BackendViewFactory $viewFactory,
+        protected readonly Typo3Version $typo3Version,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleProvider $moduleProvider,
+        protected readonly ToolbarItemsRegistry $toolbarItemsRegistry,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly BackendViewFactory $viewFactory,
     ) {
         // @todo: This hook is essentially useless.
         $this->executeHook('constructPostProcess');
-        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
+        $this->modules = $this->moduleProvider->getModulesForModuleMenu($this->getBackendUser());
     }
 
     /**
@@ -129,13 +132,12 @@ class BackendController
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         $pageRenderer->setTitle($title);
-        $hasModules = count($this->moduleStorage) > 0;
         $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
         $view = $this->viewFactory->create($request, 'typo3/cms-backend');
         $this->assignTopbarDetailsToView($view);
         $view->assignMultiple([
-            'modules' => $this->moduleStorage,
+            'modules' => $this->modules,
             'startupModule' => $this->getStartupModule($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
@@ -143,7 +145,7 @@ class BackendController
         ]);
         $content = $view->render('Backend/Main');
         $this->executeHook('renderPostProcess', ['content' => &$content]);
-        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $hasModules ? ' scaffold-modulemenu-expanded' : '') . '">';
+        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $this->modules ? ' scaffold-modulemenu-expanded' : '') . '">';
         $pageRenderer->addBodyContent($bodyTag . $content);
         return new HtmlResponse($pageRenderer->render());
     }
@@ -156,7 +158,7 @@ class BackendController
     public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->viewFactory->create($request, 'typo3/cms-backend');
-        $view->assign('modules', $this->moduleStorage);
+        $view->assign('modules', $this->modules);
         return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
     }
 
@@ -212,7 +214,7 @@ class BackendController
                 $logoHeight /= 2;
             }
         }
-        $view->assign('hasModules', count($this->moduleStorage) > 0);
+        $view->assign('hasModules', (bool)$this->modules);
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
@@ -289,10 +291,6 @@ class BackendController
      */
     protected function getStartupModule(ServerRequestInterface $request): array
     {
-        $moduleLoader = $this->moduleLoader;
-        $moduleLoader->observeWorkspaces = true;
-        $moduleLoader->load($GLOBALS['TBE_MODULES']);
-
         $startModule = null;
         $moduleParameters = [];
         try {
@@ -312,10 +310,10 @@ class BackendController
                     $startModule = $backendUser->uc['startModuleOnFirstLogin'];
                     unset($backendUser->uc['startModuleOnFirstLogin']);
                     $backendUser->writeUC();
-                } elseif ($moduleLoader->checkMod($backendUser->uc['startModule'] ?? '') !== 'notFound') {
+                } elseif (isset($backendUser->uc['startModule']) && $this->moduleProvider->accessGranted($backendUser->uc['startModule'], $backendUser)) {
                     $startModule = $backendUser->uc['startModule'];
-                } else {
-                    $startModule = $this->determineFirstAvailableBackendModule($moduleLoader);
+                } elseif ($firstAccessibleModule = $this->moduleProvider->getFirstAccessibleModule($backendUser)) {
+                    $startModule = $firstAccessibleModule->getIdentifier();
                 }
 
                 // check if the start module has additional parameters, so a redirect to a specific
@@ -340,24 +338,6 @@ class BackendController
             return [$startModule, (string)$deepLink];
         }
         return [null, null];
-    }
-
-    protected function determineFirstAvailableBackendModule(ModuleLoader $moduleLoader): string
-    {
-        foreach ($moduleLoader->getModules() as $modData) {
-            $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
-            $isStandalone = $modData['standalone'] ?? false;
-            if ($isStandalone) {
-                return $modData['name'];
-            }
-
-            if ($hasSubmodules) {
-                $firstSubmodule = reset($modData['sub']);
-                return $firstSubmodule['name'];
-            }
-        }
-
-        return '';
     }
 
     /**

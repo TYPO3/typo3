@@ -5162,4 +5162,11 @@ return [
             'Breaking-96616-RemoveFrontendLoginModeForPages.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-96733-DeprecatedTBE_MODULESRelatedFunctionality.rst',
+        ],
+    ],
 ];

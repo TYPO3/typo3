@@ -8980,12 +8980,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "e8ff67e717d0f28c7a9ba30083139a257cb04947"
+                "reference": "35761f537f11109f082762439bb24e81fcfd0976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/e8ff67e717d0f28c7a9ba30083139a257cb04947",
-                "reference": "e8ff67e717d0f28c7a9ba30083139a257cb04947",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/35761f537f11109f082762439bb24e81fcfd0976",
+                "reference": "35761f537f11109f082762439bb24e81fcfd0976",
                 "shasum": ""
             },
             "require-dev": {
@@ -8993,11 +8993,11 @@
                 "codeception/module-asserts": "^1.2",
                 "codeception/module-cli": "^1.1",
                 "codeception/module-webdriver": "^1.1",
-                "phpstan/phpstan": "^1.2.0",
+                "phpstan/phpstan": "^1.4.3",
                 "typo3/cms-core": "~12.0@dev",
                 "typo3/cms-frontend": "~12.0@dev",
                 "typo3/cms-install": "~12.0@dev",
-                "typo3/coding-standards": "^0.3.0",
+                "typo3/coding-standards": "^0.5.0",
                 "typo3/tailor": "^1.2",
                 "typo3/testing-framework": "dev-main"
             },
@@ -9045,7 +9045,7 @@
                 "issues": "https://github.com/TYPO3/styleguide/issues",
                 "source": "https://github.com/TYPO3/styleguide/tree/main"
             },
-            "time": "2021-12-07T14:13:05+00:00"
+            "time": "2022-02-04T14:19:51+00:00"
         },
         {
             "name": "typo3/testing-framework",

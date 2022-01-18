@@ -17,9 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
-use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
-use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
+use TYPO3\CMS\Backend\Module\MenuModule;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
@@ -28,14 +29,13 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class HelpToolbarItem implements ToolbarItemInterface
 {
-    protected ?BackendModule $helpModuleMenu = null;
+    protected ?MenuModule $helpModule = null;
 
-    public function __construct(
-        BackendModuleRepository $backendModuleRepository
-    ) {
-        $helpModuleMenu = $backendModuleRepository->findByModuleName('help');
-        if ($helpModuleMenu && $helpModuleMenu->getChildren()->count() > 0) {
-            $this->helpModuleMenu = $helpModuleMenu;
+    public function __construct(ModuleProvider $moduleProvider)
+    {
+        $helpModule = $moduleProvider->getModuleForMenu('help', $this->getBackendUser());
+        if ($helpModule && $helpModule->hasSubModules()) {
+            $this->helpModule = $helpModule;
         }
     }
 
@@ -44,7 +44,7 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function checkAccess(): bool
     {
-        return (bool)$this->helpModuleMenu;
+        return $this->helpModule !== null;
     }
 
     /**
@@ -60,12 +60,12 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown(): string
     {
-        if (!$this->helpModuleMenu instanceof BackendModule) {
+        if ($this->helpModule === null) {
             // checkAccess() is called before and prevents call to getDropDown() if there is no help.
             throw new \RuntimeException('No HelpModuleMenu found.', 1641993564);
         }
         $view = $this->getFluidTemplateObject();
-        $view->assign('modules', $this->helpModuleMenu->getChildren());
+        $view->assign('modules', $this->helpModule->getSubModules());
         return $view->render('ToolbarItems/HelpToolbarItemDropDown');
     }
 
@@ -99,5 +99,10 @@ class HelpToolbarItem implements ToolbarItemInterface
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

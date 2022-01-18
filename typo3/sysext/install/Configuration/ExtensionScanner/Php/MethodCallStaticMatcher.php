@@ -1329,4 +1329,39 @@ return [
             'Breaking-94117-RegisterExtbaseTypeConvertersAsServices.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-96733-DeprecatedTBE_MODULESRelatedFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addNavigationComponent' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
 ];

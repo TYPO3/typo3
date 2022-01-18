@@ -1904,4 +1904,24 @@ return [
             'Breaking-96726-RequestHandlerFunctionalityOfExtbaseRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Module\ModuleLoader' => [
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Module\ModuleStorage' => [
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Model\Module\BackendModule' => [
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository' => [
+        'restFiles' => [
+            'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
+        ],
+    ],
 ];

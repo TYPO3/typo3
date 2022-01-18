@@ -106,11 +106,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/Wizard/SuggestWizardController.php
 
 		-
-			message: "#^Variable \\$subEntries in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Domain/Repository/Module/BackendModuleRepository.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\AbstractNode\\:\\:initializeResultArray\\(\\) should return array\\{string\\: array\\<int, string\\>, requireJsModules\\: array\\<int, TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\>\\} but returns array\\{additionalJavaScriptPost\\: array\\{\\}, additionalHiddenFields\\: array\\{\\}, additionalInlineLanguageLabelFiles\\: array\\{\\}, stylesheetFiles\\: array\\{\\}, requireJsModules\\: array\\{\\}, inlineData\\: array\\{\\}, html\\: ''\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/AbstractNode.php
@@ -304,26 +299,6 @@ parameters:
 			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Middleware/BackendUserAuthenticator.php
-
-		-
-			message: "#^Call to function is_array\\(\\) with int\\|string will always evaluate to false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
-
-		-
-			message: "#^Offset 'default' on array\\{\\} in empty\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
-
-		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
@@ -5599,11 +5574,6 @@ parameters:
 			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
 			count: 2
 			path: ../../typo3/sysext/seo/Tests/Functional/XmlSitemap/XmlSitemapRecordsTest.php
-
-		-
-			message: "#^Elseif condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
 
 		-
 			message: "#^If condition is always true\\.$#"

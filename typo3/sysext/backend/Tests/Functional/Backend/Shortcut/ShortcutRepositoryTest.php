@@ -18,11 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Shortcut;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ShortcutRepositoryTest extends FunctionalTestCase
@@ -38,9 +37,9 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new ShortcutRepository(
-            GeneralUtility::makeInstance(ConnectionPool::class),
-            GeneralUtility::makeInstance(IconFactory::class),
-            GeneralUtility::makeInstance(ModuleLoader::class)
+            $this->getContainer()->get(ConnectionPool::class),
+            $this->getContainer()->get(IconFactory::class),
+            $this->getContainer()->get(ModuleProvider::class)
         );
     }
 

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Backend\Shortcut;
 
 use Symfony\Component\Routing\Route;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -52,19 +52,11 @@ class ShortcutRepository
 
     protected array $shortcutGroups;
 
-    protected ConnectionPool $connectionPool;
-
-    protected IconFactory $iconFactory;
-
-    protected ModuleLoader $moduleLoader;
-
-    public function __construct(ConnectionPool $connectionPool, IconFactory $iconFactory, ModuleLoader $moduleLoader)
-    {
-        $this->connectionPool = $connectionPool;
-        $this->iconFactory = $iconFactory;
-        $this->moduleLoader = $moduleLoader;
-        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-
+    public function __construct(
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleProvider $moduleProvider,
+    ) {
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
     }
@@ -415,7 +407,7 @@ class ShortcutRepository
 
             // Check if the user has access to this module
             // @todo Hack for EditDocumentController / FormEngine, see issues #91368 and #91210
-            if ($routeIdentifier !== 'record_edit' && !is_array($this->moduleLoader->checkMod($moduleName))) {
+            if ($routeIdentifier !== 'record_edit' && !$this->moduleProvider->accessGranted($moduleName, $backendUser)) {
                 continue;
             }
 
@@ -549,18 +541,12 @@ class ShortcutRepository
                 break;
             default:
                 $iconIdentifier = '';
-
-                if (str_contains($moduleName, '_')) {
-                    [$mainModule, $subModule] = explode('_', $moduleName, 2);
-                    $iconIdentifier = $this->moduleLoader->getModules()[$mainModule]['sub'][$subModule]['iconIdentifier'] ?? '';
-                } elseif ($moduleName !== '') {
-                    $iconIdentifier = $this->moduleLoader->getModules()[$moduleName]['iconIdentifier'] ?? '';
+                if ($module = $this->moduleProvider->getModule($moduleName, null, false)) {
+                    $iconIdentifier = $module->getIconIdentifier();
                 }
-
-                if (!$iconIdentifier) {
+                if ($iconIdentifier === '') {
                     $iconIdentifier = 'empty-empty';
                 }
-
                 $icon = $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL)->render();
         }
 

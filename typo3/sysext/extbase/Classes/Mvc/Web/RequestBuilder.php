@@ -16,6 +16,8 @@
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ExtbaseModule;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -122,11 +124,11 @@ class RequestBuilder implements SingletonInterface
      * @throws MvcException
      * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
      */
-    protected function loadDefaultValues()
+    protected function loadDefaultValues(array $configuration = []): void
     {
         // todo: See comment in \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration for further explanation
         // todo: on why we shouldn't use the configuration manager here.
-        $configuration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $configuration = array_replace_recursive($this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK), $configuration);
         if (empty($configuration['extensionName'])) {
             throw new MvcException('"extensionName" is not properly configured. Request can\'t be dispatched!', 1289843275);
         }
@@ -158,7 +160,15 @@ class RequestBuilder implements SingletonInterface
      */
     public function build(ServerRequestInterface $mainRequest)
     {
-        $this->loadDefaultValues();
+        $configuration = [];
+        // Load values from the route object, this is used for TYPO3 Backend Modules
+        $module = $mainRequest->getAttribute('route')?->getOption('module');
+        if ($module instanceof ExtbaseModule) {
+            $configuration = [
+                'controllerConfiguration' => $module->getControllerActions(),
+            ];
+        }
+        $this->loadDefaultValues($configuration);
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
         $queryArguments = $mainRequest->getAttribute('routing');
         if ($queryArguments instanceof PageArguments) {

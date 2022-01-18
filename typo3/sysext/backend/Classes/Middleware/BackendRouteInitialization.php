@@ -28,30 +28,30 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Loads ext_tables.php from all extensions, as this is the place
- * where all modules register their routes to the router
- * (additionally to those routes which are loaded in dependency
- * injection factories from Configuration/Backend/{,Ajax}Routes.php).
+ * Injects the Router and tries to match the current request with a
+ * configured backend route. The available backend routes were added
+ * in the corresponding dependency injection factories, which load
+ * and process the module and route configuration files
  *
- * The route path is then matched inside the Router and then handed into the request.
+ * - Configuration/Backend/{,Ajax}Routes.php
+ * - Configuration/Backend/Modules.php
  *
- * After this middleware, a "Route" object is available as attribute in the Request object.
+ * from each extension.
+ *
+ * After this middleware, a "Route" object is available as attribute in the
+ * Request object. Additionally, the request handler (e.g. a controller) is
+ * available as "target" in the PSR-7 request object.
  *
  * @internal
  */
 class BackendRouteInitialization implements MiddlewareInterface
 {
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
+    public function __construct(
+        protected readonly Router $router,
+        protected readonly UriBuilder $uriBuilder,
+    ) {
     }
 
     /**
@@ -63,8 +63,7 @@ class BackendRouteInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Backend Routes from Configuration/Backend/{,Ajax}Routes.php will be implicitly loaded thanks to DI.
-        // Load ext_tables.php files to add routes from ExtensionManagementUtility::addModule() calls.
+        // @todo Find another place for this call, since it's not related to this middleware anymore
         Bootstrap::loadExtTables();
 
         try {
@@ -75,7 +74,7 @@ class BackendRouteInitialization implements MiddlewareInterface
             return new Response(null, 405);
         } catch (ResourceNotFoundException $e) {
             // Route not found in system
-            $uri = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');
+            $uri = $this->uriBuilder->buildUriFromRoute('login');
             return new RedirectResponse($uri);
         }
 

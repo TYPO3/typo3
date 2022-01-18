@@ -21,8 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,20 +33,10 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class ShortcutController
 {
-    protected ShortcutToolbarItem $shortcutToolbarItem;
-    protected ShortcutRepository $shortcutRepository;
-    protected ModuleLoader $moduleLoader;
-
     public function __construct(
-        ShortcutToolbarItem $shortcutToolbarItem,
-        ShortcutRepository $shortcutRepository,
-        ModuleLoader $moduleLoader
+        protected readonly ShortcutToolbarItem $shortcutToolbarItem,
+        protected readonly ShortcutRepository $shortcutRepository,
     ) {
-        $this->shortcutToolbarItem = $shortcutToolbarItem;
-        $this->shortcutRepository = $shortcutRepository;
-        // Needed to get the correct icons when reloading the menu after saving it
-        $moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $this->moduleLoader = $moduleLoader;
     }
 
     /**
@@ -132,10 +120,5 @@ class ShortcutController
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

@@ -104,23 +104,11 @@ class BackendConfigurationManager extends AbstractConfigurationManager
     }
 
     /**
-     * Returns the configured controller/action configuration of the specified module in the format
-     * array(
-     * 'Controller1' => array('action1', 'action2'),
-     * 'Controller2' => array('action3', 'action4')
-     * )
-     *
-     * @param string $extensionName
-     * @param string $pluginName in BE mode this is actually the module signature. But we're using it just like the plugin name in FE
-     * @return array
+     * Not in use any more, as TYPO3 Backend Route Registration takes care of this. See ModuleRegistry.
      */
     protected function getControllerConfiguration(string $extensionName, string $pluginName): array
     {
-        $controllerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers'] ?? false;
-        if (!is_array($controllerConfiguration)) {
-            $controllerConfiguration = [];
-        }
-        return $controllerConfiguration;
+        return [];
     }
 
     /**
