@@ -138,14 +138,14 @@ Options:
                 - sqlsrv (default)
                 - pdo_sqlsrv
 
-    -d <mariadb|mysql|mssql|postgres|sqlite>
+    -d <sqlite|mariadb|mysql|postgres|mssql>
         Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
-            - mariadb (default): use mariadb
+            - sqlite: (default) use sqlite
+            - mariadb: use mariadb
             - mysql: use MySQL server
             - mssql: use mssql microsoft sql server
             - postgres: use postgres
-            - sqlite: use sqlite
 
     -i <10.1|10.2|10.3|10.4|10.5>
         Only with -d mariadb
@@ -180,7 +180,7 @@ Options:
 
     -p <7.4|8.0|8.1>
         Specifies the PHP minor version to be used
-            - 7.4 (default): use PHP 7.4
+            - 7.4: (default) use PHP 7.4
             - 8.0: use PHP 8.0
             - 8.1: use PHP 8.1
 
@@ -291,7 +291,7 @@ fi
 
 # Option defaults
 TEST_SUITE="unit"
-DBMS="mariadb"
+DBMS="sqlite"
 PHP_VERSION="7.4"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
@@ -415,6 +415,12 @@ fi
 # Suite execution
 case ${TEST_SUITE} in
     acceptance)
+        if [ "${DBMS}" == "sqlite" ]; then
+            # Dynamically switch from sqlite to mariadb since v11 currently does
+            # not support sqlite ac tests, but sqlite is default DBMS in runTests.sh.
+            # @todo: Drop this if when sqlite ac tests are allowed.
+            DBMS="mariadb"
+        fi
         handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
         if [ "${CHUNKS}" -gt 1 ]; then
