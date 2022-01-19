@@ -106,7 +106,7 @@ class ColumnSelectorController
 
         $view->assignMultiple([
             'table' => $table,
-            'columns' => $this->getColumns($table, (int)($parsedBody['id'] ?? 0)),
+            'columns' => $this->getColumns($table, (int)($queryParams['id'] ?? 0)),
         ]);
 
         return $this->htmlResponse($view);
