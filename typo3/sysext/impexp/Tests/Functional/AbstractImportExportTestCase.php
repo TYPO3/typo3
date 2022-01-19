@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -97,24 +96,11 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
 
     /**
      * Asserts that two XML documents are equal.
-     *
-     * @todo: This is a hack to align 'expected' fixture files on sqlite: sqlite returns integer
-     *        fields as string, so the exported xml miss the 'type="integer"' attribute.
-     *        This change drops 'type="integer"' from the expectations if on sqlite.
-     *        This needs to be changed in impexp, after that this helper method can vanish again.
-     *        SQLite also now returns the correct type as of PHP 8.1, so the string mangling
-     *        is no longer necessary.
-     *
-     * @todo: Remove this workaround method after minimum php version requirement is set to >8.1.
      */
     public function assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(string $expectedFile, string $actualXml): void
     {
         $actual = (new XmlLoader())->load($actualXml);
         $expectedFileContent = file_get_contents($expectedFile);
-        $databasePlatform = $this->getConnectionPool()->getConnectionForTable('pages')->getDatabasePlatform();
-        if ((PHP_VERSION_ID < 80100) && $databasePlatform instanceof SqlitePlatform) {
-            $expectedFileContent = str_replace(' type="integer"', '', $expectedFileContent);
-        }
         $expected = (new XmlLoader())->load($expectedFileContent);
         self::assertEquals($expected, $actual);
     }

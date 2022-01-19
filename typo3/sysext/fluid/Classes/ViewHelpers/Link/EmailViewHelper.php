@@ -97,11 +97,7 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
                 $linkText = (string)$linkResult->getLinkText();
                 $attributes = $linkResult->getAttributes();
                 unset($attributes['href']);
-                if (PHP_VERSION_ID < 80100) {
-                    $linkText = htmlspecialchars($linkText, ENT_COMPAT | ENT_SUBSTITUTE, 'utf-8', false);
-                } else {
-                    $linkText = htmlspecialchars($linkText, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'utf-8', false);
-                }
+                $linkText = htmlspecialchars($linkText, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'utf-8', false);
             }
         }
         $tagContent = $this->renderChildren();

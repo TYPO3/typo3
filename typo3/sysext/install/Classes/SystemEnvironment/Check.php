@@ -850,6 +850,6 @@ class Check implements CheckInterface
 
     private function checkImageResource($imageResource): bool
     {
-        return is_resource($imageResource) || (PHP_MAJOR_VERSION >= 8 && $imageResource instanceof \GdImage);
+        return $imageResource instanceof \GdImage;
     }
 }

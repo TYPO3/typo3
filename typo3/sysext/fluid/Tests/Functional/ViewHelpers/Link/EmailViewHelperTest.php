@@ -64,24 +64,12 @@ class EmailViewHelperTest extends FunctionalTestCase
             'Susceptible email' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
                 0,
-                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
-                // @todo remove conditional values when php 8.1 is min requirement
-                (PHP_VERSION_ID < 80100
-                    // before php 8.1 - remove this for >php8.1 only
-                    ? '<a href="mailto:&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>'
-                    // for php 8.1
-                    : '<a href="mailto:&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>'),
+                '<a href="mailto:&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>',
             ],
             'Susceptible email with spam protection' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
                 1,
-                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
-                // @todo remove conditional values when php 8.1 is min requirement
-                (PHP_VERSION_ID < 80100
-                    // before php 8.1 - remove this for >php8.1 only
-                    ? '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(\'fnbjm\')&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>'
-                    // for php 8.1
-                    : '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(&#039;fnbjm&#039;)&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>'),
+                '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(&#039;fnbjm&#039;)&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>',
             ],
         ];
     }

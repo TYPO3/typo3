@@ -172,19 +172,10 @@ EOT
                         'data-other' => '\'\'',
                     ],
                 ],
-                // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
-                // @todo remove conditional values when php 8.1 is min requirement
-                (PHP_VERSION_ID < 80100
-                    // before php 8.1 - remove this for >php8.1 only
-                    ? '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
-                        . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
-                        . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
-                        . ' data-other="\'\'">Link Text</a>'
-                    // for php 8.1
-                    : '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
-                        . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
-                        . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
-                        . ' data-other="&#039;&#039;">Link Text</a>'),
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self"'
+                    . ' class="&lt;CSS&gt;" data-bs-html="&lt;div data-template=&quot;template&quot;&gt;'
+                    . '&lt;img src=&quot;logo.png&quot; alt=&quot;&amp;quot;&amp;lt;ALT&amp;gt;&amp;quot;&quot;&gt;&lt;/div&gt;"'
+                    . ' data-other="&#039;&#039;">Link Text</a>',
             ],
         ];
     }
