@@ -701,6 +701,12 @@ abstract class AbstractMenuContentObject
         $pageIds = GeneralUtility::intExplode(',', (string)$specialValue);
         $disableGroupAccessCheck = !empty($this->mconf['showAccessRestrictedPages']);
         $pageRecords = $this->sys_page->getMenuForPages($pageIds);
+        // After fetching the page records, restore the initial order by using the page id list as arrays keys and
+        // replace them with the resolved page records. The id list is cleaned up first, since ids might be invalid.
+        $pageRecords = array_replace(
+            array_flip(array_intersect(array_values($pageIds), array_keys($pageRecords))),
+            $pageRecords
+        );
         $pageLinkBuilder = GeneralUtility::makeInstance(PageLinkBuilder::class, $this->parent_cObj);
         foreach ($pageRecords as $row) {
             $pageId = (int)$row['uid'];

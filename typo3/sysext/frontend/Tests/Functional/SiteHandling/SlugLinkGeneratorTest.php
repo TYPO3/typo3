@@ -1303,18 +1303,18 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             'Live' => [
                 'https://acme.us/',
                 1100,
-                [1100, 1600, 1700, 1800, 1520],
+                [1600, 1100, 1700, 1800, 1520],
                 0,
                 0,
                 [],
                 [
                     [
-                        'title' => 'EN: Welcome',
-                        'link' => '/welcome',
-                    ],
-                    [
                         'title' => 'About us',
                         'link' => '/about',
+                    ],
+                    [
+                        'title' => 'EN: Welcome',
+                        'link' => '/welcome',
                     ],
                     [
                         'title' => 'Announcements & News',
@@ -1325,18 +1325,18 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             'Workspaces' => [
                 'https://acme.us/',
                 1100,
-                [1100, 1600, 1700, 1800, 1520],
+                [1600, 1100, 1700, 1800, 1520],
                 1,
                 1,
                 [],
                 [
                     [
-                        'title' => 'EN: Welcome to ACME Inc',
-                        'link' => '/welcome-modified',
-                    ],
-                    [
                         'title' => 'About us',
                         'link' => '/about',
+                    ],
+                    [
+                        'title' => 'EN: Welcome to ACME Inc',
+                        'link' => '/welcome-modified',
                     ],
                     [
                         'title' => 'Announcements & News',
