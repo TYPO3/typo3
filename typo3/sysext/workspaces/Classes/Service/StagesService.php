@@ -153,7 +153,7 @@ class StagesService implements SingletonInterface
             }
         }
         foreach ($availableStagesForWSUser as $userWS) {
-            if ($nextStage['uid'] == $userWS['uid']) {
+            if ($nextStage && $nextStage['uid'] == $userWS['uid']) {
                 $found = true;
                 break;
             }
