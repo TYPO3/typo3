@@ -23,9 +23,6 @@ ignoreFiles+="sysext/core/Tests/Acceptance/Support/_generated/InstallTesterActio
 # an exception in here throws a code from a previous exception/error
 ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php"
-ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatement.php"
-ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatementImplementation.php"
-ignoreFiles+="sysext/core/Classes/Database/Driver/PDOConnection.php"
 ignoreFiles+="sysext/frontend/Classes/Typolink/PageLinkBuilder.php"
 
 # ------------------------
