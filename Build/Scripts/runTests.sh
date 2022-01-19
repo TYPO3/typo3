@@ -126,13 +126,13 @@ Options:
                 - mysqli (default)
                 - pdo_mysql
 
-    -d <mariadb|mysql|postgres|sqlite>
+    -d <sqlite|mariadb|mysql|postgres>
         Only with -s functional|functionalDeprecated|acceptance|acceptanceInstall
         Specifies on which DBMS tests are performed
-            - mariadb (default): use mariadb
+            - sqlite: (default): use sqlite
+            - mariadb use mariadb
             - mysql: use MySQL server
             - postgres: use postgres
-            - sqlite: use sqlite
 
     -i <10.1|10.2|10.3|10.4|10.5>
         Only with -d mariadb
@@ -270,7 +270,7 @@ fi
 
 # Option defaults
 TEST_SUITE="unit"
-DBMS="mariadb"
+DBMS="sqlite"
 PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
