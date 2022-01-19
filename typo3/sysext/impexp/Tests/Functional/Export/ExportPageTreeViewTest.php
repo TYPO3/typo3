@@ -51,7 +51,7 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
     {
         // @todo: This test needs an overhaul.
         //        It fails with mariadb / mysql with "DOMDocument::loadXML(): Namespace prefix xlink for href on use is not defined in Entity, line: 6"
-        //        it fails with sqlite / mssql with data set 0 due to missing '</li></ul>' at the end. ExportPagetTree class issue?
+        //        it fails with sqlite with data set 0 due to missing '</li></ul>' at the end. ExportPagetTree class issue?
         self::markTestSkipped();
 
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_tutorial.xml');

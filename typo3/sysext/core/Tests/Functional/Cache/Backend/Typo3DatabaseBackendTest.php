@@ -423,7 +423,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function flushByTagWorksWithEmptyCacheTablesWithMysql(): void
@@ -436,7 +435,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function flushByTagsWorksWithEmptyCacheTablesWithMysql(): void
@@ -449,7 +447,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function flushByTagRemovesCorrectRowsFromDatabaseWithMysql(): void
@@ -471,7 +468,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function flushByTagsRemovesCorrectRowsFromDatabaseWithMysql(): void
@@ -547,7 +543,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function collectGarbageWorksWithEmptyTableWithMysql(): void
@@ -560,7 +555,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function collectGarbageRemovesCacheEntryWithExpiredLifetimeWithMysql(): void
@@ -593,7 +587,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function collectGarbageRemovesTagEntriesForCacheEntriesWithExpiredLifetimeWithMysql(): void
@@ -626,7 +619,6 @@ class Typo3DatabaseBackendTest extends FunctionalTestCase
      * @test
      *
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function collectGarbageRemovesOrphanedTagEntriesFromTagsTableWithMysql(): void

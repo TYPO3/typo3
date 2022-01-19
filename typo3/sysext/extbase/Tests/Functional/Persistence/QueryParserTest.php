@@ -89,7 +89,6 @@ class QueryParserTest extends FunctionalTestCase
      * Test ColumnMap::RELATION_HAS_MANY
      *
      * @test
-     * @group not-mssql
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {

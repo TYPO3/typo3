@@ -203,7 +203,6 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * @test
-     * @group not-mssql
      */
     public function renameUnusedField(): void
     {
@@ -362,7 +361,6 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function installCanPerformChangeOperations(): void
@@ -380,7 +378,6 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function importStaticDataInsertsRecords(): void
@@ -408,7 +405,6 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * @test
      * @group not-postgres
-     * @group not-mssql
      * @group not-sqlite
      */
     public function changeTableEngine(): void
