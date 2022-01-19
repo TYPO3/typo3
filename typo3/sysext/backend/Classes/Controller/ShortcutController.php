@@ -73,7 +73,7 @@ class ShortcutController
         } elseif ($this->shortcutRepository->shortcutExists($routeIdentifier, $arguments)) {
             $result = 'alreadyExists';
         } else {
-            $shortcutName = $parsedBody['displayName'] ?? $queryParams['displayName'] ?? '';
+            $shortcutName = $parsedBody['displayName'] ?? '';
             $success = $this->shortcutRepository->addShortcut($routeIdentifier, $arguments, $shortcutName);
             if (!$success) {
                 $result = 'failed';
