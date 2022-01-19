@@ -552,7 +552,10 @@ class HtmlParser
                                             ) {
                                                 unset($tagAttrib[0][$attr]);
                                             }
-                                            if ((string)($params['removeIfEquals'] ?? '') !== '' && $this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']) === $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp'])) {
+                                            if (
+                                                (string)($params['removeIfEquals'] ?? '') !== ''
+                                                && $this->caseShift($tagAttrib[0][$attr], (bool)($params['casesensitiveComp'] ?? false)) === $this->caseShift($params['removeIfEquals'], (bool)($params['casesensitiveComp'] ?? false))
+                                            ) {
                                                 unset($tagAttrib[0][$attr]);
                                             }
                                             if ($params['prefixLocalAnchors'] ?? false) {
