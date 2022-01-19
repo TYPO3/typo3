@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * TypoScript template analyzer
@@ -118,10 +118,10 @@ class TemplateAnalyzerModuleFunctionController
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/TemplateAnalyzerModuleFunction.html');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
         $view->assignMultiple($assigns);
-        return $view->render();
+        return $view->render('TemplateAnalyzerModuleFunction');
     }
 
     protected function initializeTemplates(int $pageId, int $templateUid = 0): bool

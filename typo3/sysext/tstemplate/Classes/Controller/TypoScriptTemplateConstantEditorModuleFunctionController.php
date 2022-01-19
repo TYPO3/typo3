@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * TypoScript Constant editor
@@ -168,10 +168,10 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             }
 
             // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/ConstantEditor.html');
+            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+            $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
             $view->assignMultiple($assigns);
-            $theOutput = $view->render();
+            $theOutput = $view->render('ConstantEditor');
         } else {
             $theOutput = $this->pObj->noTemplate(1);
         }

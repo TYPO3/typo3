@@ -1,4 +1,11 @@
-<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/InformationModule'}" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer
+    includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/InformationModule'}"
+/>
 
 <h3>
     <a href="#" class="t3js-contextmenutrigger" data-table="sys_template" data-uid="{templateRecord.uid}">
@@ -16,11 +23,22 @@
     <tbody>
         <f:for each="{tableRows}" as="line">
             <tr>
-                <td class="text-nowrap"><a href="{line.url}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:editField')}" class="btn btn-block text-start btn-default"><core:icon identifier="actions-open" /> {line.label}</a></td>
+                <td class="text-nowrap">
+                    <a
+                        href="{line.url}"
+                        title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:editField')}"
+                        class="btn btn-block text-start btn-default"
+                    >
+                        <core:icon identifier="actions-open" /> {line.label}
+                    </a>
+                </td>
                 <td width="90%">{line.data -> f:format.nl2br()}</td>
             </tr>
         </f:for>
     </tbody>
 </table>
 
-<a class="btn btn-default mb-2" href="{editAllUrl}"><core:icon identifier="actions-document-open" />&nbsp;<f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:editTemplateRecord"/></a>
+<a class="btn btn-default mb-2" href="{editAllUrl}">
+    <core:icon identifier="actions-document-open" />
+    <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_info.xlf:editTemplateRecord"/>
+</a>

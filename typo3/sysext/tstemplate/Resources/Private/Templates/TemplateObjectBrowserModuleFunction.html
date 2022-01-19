@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:if condition="{existTemplate}">
     <div class="row row-cols-auto align-items-center g-3">
         <f:if condition="{manyTemplatesMenu}">
@@ -15,6 +20,7 @@
         </div>
     </div>
 </f:if>
+
 <f:if condition="{typoScriptPath}">
     <f:then>
         <f:if condition="{existTemplate}">
@@ -25,10 +31,20 @@
                         <label class="form-label">{typoScriptPath} =</label>
                     </div>
                     <div class="col">
-                        <f:form.textfield class="form-control" name="data[{typoScriptPath}][value]" value="{theSetupValue}"/>
+                        <input
+                            class="form-control"
+                            type="text"
+                            name="data[{typoScriptPath}][value]"
+                            value="{theSetupValue}"
+                        >
                     </div>
                     <div class="col">
-                        <f:form.submit value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateButton')}" class="btn btn-default" name="update_value"/>
+                        <input
+                            type="submit"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:updateButton')}"
+                            name="update_value"
+                            class="btn btn-default"
+                        >
                     </div>
                 </div>
 
@@ -38,17 +54,30 @@
                         <label class="visually-hidden">{typoScriptPath}.</label>
                         <div class="input-group">
                             <div class="input-group-addon">{typoScriptPath}.</div>
-                            <f:form.textfield class="form-control" name="data[{typoScriptPath}][name]"/>
+                            <input
+                                name="data[{typoScriptPath}][name]"
+                                type="text"
+                                class="form-control"
+                            >
                         </div>
                     </div>
                     <div class="col">
                         <label>=</label>
                     </div>
                     <div class="col">
-                        <f:form.textfield class="form-control" name="data[{typoScriptPath}][propertyValue]"/>
+                        <input
+                            type="text"
+                            name="data[{typoScriptPath}][propertyValue]"
+                            class="form-control"
+                        >
                     </div>
                     <div class="col">
-                        <f:form.submit class="btn btn-default" name="add_property" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addButton')}"/>
+                        <input
+                            type="submit"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:addButton')}"
+                            name="add_property"
+                            class="btn btn-default"
+                        >
                     </div>
                 </div>
 
@@ -60,11 +89,22 @@
                             <label class="form-check-label" for="clearValue-{typoScriptPath}">
                                 {typoScriptPath}
                             </label>
-                            <f:form.checkbox class="form-check-input" name="data[{typoScriptPath}][clearValue]" id="clearValue-{typoScriptPath}" value="1"/>
+                            <input type="hidden" name="data[{typoScriptPath}][clearValue]" value="">
+                            <input
+                                type="checkbox"
+                                name="data[{typoScriptPath}][clearValue]" value="1"
+                                id="clearValue-{typoScriptPath}"
+                                class="form-check-input"
+                            >
                         </div>
                     </div>
                     <div class="col">
-                        <f:form.submit class="btn btn-default" name="clear_object" value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearButton')}"/>
+                        <input
+                            type="submit"
+                            name="clear_object"
+                            value="{f:translate(key:'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:clearButton')}"
+                            class="btn btn-default"
+                        >
                     </div>
                 </div>
                 <f:if condition="{moduleUrlObjectListAction}">
@@ -95,11 +135,12 @@
         <div class="row mt-3">
             <div class="col-auto">
                 <a href="{moduleUrl}" class="btn btn-default">
-                    <core:icon identifier="actions-chevron-left" />&nbsp;<f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:back"/>
+                    <core:icon identifier="actions-chevron-left" /><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:back"/>
                 </a>
             </div>
         </div>
     </f:then>
+
     <f:else>
         <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser'}"/>
         <div class="row row-cols-auto align-items-end">
@@ -183,14 +224,27 @@
                                         <label class="form-check-label" for="check{condition.key}">
                                             <f:format.raw>{condition.label}</f:format.raw>
                                         </label>
-                                        <f:form.checkbox class="form-check-input" name="conditions[{condition.key}]" id="check{condition.key}" value="{condition.value}" checked="{condition.isSet}" />
+                                        <input type="hidden" name="conditions[{condition.key}]" value="">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions[{condition.key}]"
+                                            value="{condition.value}"
+                                            id="check{{condition.key}"
+                                            class="form-check-input"
+                                            {f:if(condition:  condition.isSet, then:'checked="checked"')}
+                                        >
                                     </div>
                                 </f:for>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-auto">
-                                <f:form.submit class="btn btn-default" value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:setConditions')}" name="Submit"/>
+                                <input
+                                    type="submit"
+                                    name="Submit"
+                                    value="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:setConditions')}"
+                                    class="btn btn-default"
+                                >
                             </div>
                         </div>
                     </div>
@@ -232,3 +286,5 @@
         </div>
     </f:else>
 </f:if>
+
+</html>

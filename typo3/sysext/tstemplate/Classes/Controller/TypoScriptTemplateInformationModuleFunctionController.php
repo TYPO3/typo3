@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -188,10 +188,10 @@ class TypoScriptTemplateInformationModuleFunctionController
             $assigns['editAllUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
             // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/InformationModule.html');
+            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+            $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
             $view->assignMultiple($assigns);
-            $theOutput = $view->render();
+            $theOutput = $view->render('InformationModule');
         } else {
             $theOutput = $this->pObj->noTemplate(1);
         }

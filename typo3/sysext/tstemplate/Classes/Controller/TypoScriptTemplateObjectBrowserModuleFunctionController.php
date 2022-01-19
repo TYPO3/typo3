@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
@@ -396,11 +396,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             // Ending section displayoptions
         }
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename('EXT:tstemplate/Resources/Private/Templates/TemplateObjectBrowserModuleFunction.html');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
         $view->assignMultiple($assigns);
 
-        return $view->render();
+        return $view->render('TemplateObjectBrowserModuleFunction');
     }
 
     /**

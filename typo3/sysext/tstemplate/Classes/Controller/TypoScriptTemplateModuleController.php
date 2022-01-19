@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
@@ -219,7 +219,8 @@ class TypoScriptTemplateModuleController
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         $this->access = $this->pageinfo !== [];
-        $view = $this->getFluidTemplateObject('tstemplate');
+        $view = $this->getFluidTemplateObject();
+        $isPageZero = false;
         if ($this->id && $this->access) {
             // Setting up the context sensitive menu
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
@@ -231,6 +232,7 @@ class TypoScriptTemplateModuleController
             $this->getButtons();
             $this->generateMenu();
         } else {
+            $isPageZero = true;
             $workspaceId = $this->getBackendUser()->workspace;
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_template');
@@ -270,14 +272,14 @@ class TypoScriptTemplateModuleController
                 $this->setInPageArray($pArray, $rootline, $record);
             }
 
-            $view->getRenderingContext()->setControllerAction('PageZero');
             $view->assign('pageTree', $pArray);
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
             $this->getButtons();
         }
-        $this->moduleTemplate->setContent($view->render());
+        $view->assign('isPageZero', $isPageZero);
+        $this->moduleTemplate->setContent($view->render('Main'));
 
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL($this->extClassConf['title']),
@@ -411,11 +413,11 @@ class TypoScriptTemplateModuleController
             $moduleContent['staticsText'] = $staticsText;
             $moduleContent['selector'] = $selector;
         }
-        $view = $this->getFluidTemplateObject('tstemplate', 'NoTemplate');
+        $view = $this->getFluidTemplateObject();
         // Go to previous Page with a template
         $view->assign('previousPage', $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause));
         $view->assign('content', $moduleContent);
-        return $view->render();
+        return $view->render('NoTemplate');
     }
 
     /**
@@ -538,19 +540,11 @@ page.10.value = HELLO WORLD!
         });
     }
 
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $extensionName
-     * @param string $templateName
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject($extensionName, $templateName = 'Main')
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName($extensionName);
-        $view->getRenderingContext()->setControllerAction($templateName);
-        $view->getRequest()->setControllerExtensionName('tstemplate');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:tstemplate/Resources/Private/Partials']);
         return $view;
     }
 

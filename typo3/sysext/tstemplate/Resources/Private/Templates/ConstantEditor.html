@@ -1,4 +1,11 @@
-<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/ConstantEditor'}" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer
+    includeRequireJsModules="{0: 'TYPO3/CMS/Tstemplate/ConstantEditor'}"
+/>
 <h3><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf:editConstants"/></h3>
 <div class="row row-cols-auto g-3 align-items-center">
     <f:if condition="{manyTemplatesMenu}">
@@ -52,3 +59,5 @@
         </f:for>
     </div>
 </f:if>
+
+</html>
