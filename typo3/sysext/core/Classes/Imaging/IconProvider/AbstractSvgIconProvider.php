@@ -70,15 +70,7 @@ abstract class AbstractSvgIconProvider implements IconProviderInterface
             return '';
         }
         $svgContent = (string)preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent);
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = null;
-        if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        }
         $svgElement = simplexml_load_string($svgContent);
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
-        }
         if ($svgElement === false) {
             return '';
         }

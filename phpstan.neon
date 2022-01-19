@@ -40,7 +40,6 @@ parameters:
     - typo3/sysext/core/Classes/Imaging/GraphicalFunctions.php
 
   ignoreErrors:
-    - "#^Parameter \\#1 \\$disable of function libxml_disable_entity_loader expects bool, bool\\|null given\\.$#"
     -
       message: "#^Call to static method isPlatformPackage\\(\\) on an unknown class Composer\\\\Repository\\\\PlatformRepository\\.$#"
       count: 1

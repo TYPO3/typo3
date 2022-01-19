@@ -80,12 +80,6 @@ class ExtensionXmlParser implements \SplSubject
      */
     public function parseXml($file): void
     {
-        if (PHP_MAJOR_VERSION < 8) {
-            // @deprecated will be removed as soon as the minimum version of TYPO3 is 8.0
-            $this->parseWithLegacyResource($file);
-            return;
-        }
-
         /** @var \XMLParser $parser */
         $parser = xml_parser_create();
         xml_set_object($parser, $this);
@@ -104,45 +98,6 @@ class ExtensionXmlParser implements \SplSubject
                 throw $this->createXmlErrorException($parser, $file);
             }
         }
-        xml_parser_free($parser);
-    }
-
-    /**
-     * @throws ExtensionManagerException
-     * @internal
-     */
-    private function parseWithLegacyResource(string $file): void
-    {
-        // Store the xml parser resource in when run with PHP <= 7.4
-        // @deprecated will be removed as soon as the minimum version of TYPO3 is 8.0
-        $legacyXmlParserResource = xml_parser_create();
-        xml_set_object($legacyXmlParserResource, $this);
-        if ($legacyXmlParserResource === null) {
-            throw new ExtensionManagerException('Unable to create XML parser.', 1342640663);
-        }
-        /** @var resource $parser */
-        $parser = $legacyXmlParserResource;
-
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-
-        // keep original character case of XML document
-        xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-        xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-        xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
-        xml_set_element_handler($parser, [$this, 'startElement'], [$this, 'endElement']);
-        xml_set_character_data_handler($parser, [$this, 'characterData']);
-        if (!($fp = fopen($file, 'r'))) {
-            throw $this->createUnableToOpenFileResourceException($file);
-        }
-        while ($data = fread($fp, 4096)) {
-            if (!xml_parse($parser, $data, feof($fp))) {
-                throw $this->createXmlErrorException($parser, $file);
-            }
-        }
-
-        libxml_disable_entity_loader($previousValueOfEntityLoader);
-
         xml_parser_free($parser);
     }
 

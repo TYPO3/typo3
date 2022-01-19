@@ -95,14 +95,7 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
 
         $data = [];
         $fileContent = file_get_contents($path);
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        }
         $xml = simplexml_load_string($fileContent);
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
-        }
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {

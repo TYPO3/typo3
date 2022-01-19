@@ -54,15 +54,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
         if (file_exists($src)) {
             $svgContent = (string)file_get_contents($src);
             $svgContent = preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $svgContent) ?? '';
-            // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-            $previousValueOfEntityLoader = null;
-            if (PHP_MAJOR_VERSION < 8) {
-                $previousValueOfEntityLoader = libxml_disable_entity_loader();
-            }
             $svgElement = simplexml_load_string($svgContent);
-            if (PHP_MAJOR_VERSION < 8) {
-                libxml_disable_entity_loader($previousValueOfEntityLoader);
-            }
 
             $domXml = dom_import_simplexml($svgElement);
             if (!$isDefaultWidth) {

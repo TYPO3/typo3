@@ -135,15 +135,7 @@ class ImageInfo extends FileInfo implements LoggerAwareInterface
         if ($fileContent === false) {
             return false;
         }
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = null;
-        if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        }
         $xml = simplexml_load_string($fileContent, \SimpleXMLElement::class, LIBXML_NOERROR | LIBXML_NOWARNING);
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
-        }
         // If something went wrong with simpleXml don't try to read information
         if ($xml === false) {
             return false;

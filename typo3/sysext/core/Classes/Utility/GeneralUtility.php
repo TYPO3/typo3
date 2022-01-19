@@ -1159,11 +1159,6 @@ class GeneralUtility
      */
     public static function xml2tree($string, $depth = 999, $parserOptions = [])
     {
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = null;
-        if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        }
         $parser = xml_parser_create();
         $vals = [];
         $index = [];
@@ -1173,9 +1168,6 @@ class GeneralUtility
             xml_parser_set_option($parser, $option, $value);
         }
         xml_parse_into_struct($parser, $string, $vals, $index);
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
-        }
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
         }
@@ -1389,11 +1381,6 @@ class GeneralUtility
     public static function xml2arrayProcess($string, $NSprefix = '', $reportDocTag = false)
     {
         $string = trim((string)$string);
-        // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-        $previousValueOfEntityLoader = null;
-        if (PHP_MAJOR_VERSION < 8) {
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        }
         // Create parser:
         $parser = xml_parser_create();
         $vals = [];
@@ -1408,9 +1395,6 @@ class GeneralUtility
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $theCharset);
         // Parse content:
         xml_parse_into_struct($parser, $string, $vals, $index);
-        if (PHP_MAJOR_VERSION < 8) {
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
-        }
         // If error, return error message:
         if (xml_get_error_code($parser)) {
             return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
