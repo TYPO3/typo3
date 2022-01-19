@@ -77,6 +77,10 @@ class PreviewController
         $pageUid = (int)$queryParameters['id'];
         $backendUser = $this->getBackendUser();
 
+        // Initialize module template here, so custom css / js is loaded afterwards (making overrides possible)
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->getDocHeaderComponent()->disable();
+
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Preview');
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
@@ -166,9 +170,7 @@ class PreviewController
             'prevStage' => $previousStage['title'] ?? '',
             'prevStageId' => $previousStage['uid'] ?? 0,
         ]);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $moduleTemplate->setContent($view->render('Preview/Index'));
-        $moduleTemplate->getDocHeaderComponent()->disable();
         return new HtmlResponse($moduleTemplate->renderContent());
     }
 
