@@ -28,7 +28,7 @@ class DashboardModuleCest
     protected static string $defaultDashboardTitle = 'My Dashboard';
     protected static string $customDashboardTitle = 'My Custom Dashboard';
     protected static string $dashboardActiveSelector = '.dashboard-tab--active';
-    protected static string $widgetTitle = 'TYPO3 news';
+    protected static string $widgetTitle = 'Type of backend users';
     protected static string $widgetTitleSelector = '.widget-content-title';
 
     /**
@@ -48,7 +48,6 @@ class DashboardModuleCest
     {
         $I->see(self::$defaultDashboardTitle, self::$dashboardActiveSelector);
         $I->see('About TYPO3', self::$widgetTitleSelector);
-        $I->see(self::$widgetTitle, self::$widgetTitleSelector);
         $I->see('Getting Started with TYPO3', self::$widgetTitleSelector);
     }
 
@@ -70,7 +69,7 @@ class DashboardModuleCest
         $I->waitForElementVisible('.js-dashboard-addWidget');
         $I->click('.js-dashboard-addWidget');
         $modalDialog->canSeeDialog();
-        $I->click('#dashboard-widgetgroup-tab-news');
+        $I->click('#dashboard-widgetgroup-tab-systemInfo');
         $I->click(self::$widgetTitle, ModalDialog::$openedModalSelector);
         $I->switchToContentFrame();
         $I->see(self::$widgetTitle, self::$widgetTitleSelector);
@@ -85,7 +84,7 @@ class DashboardModuleCest
     {
         // Delete widget
         $I->click(self::$customDashboardTitle, '.dashboard-tabs');
-        $I->waitForElementVisible('div[data-widget-key="t3news"] .widget-content-title');
+        $I->waitForElementVisible('div[data-widget-key="typeOfUsers"] .widget-content-title');
         $I->click('.js-dashboard-remove-widget');
         $modalDialog->canSeeDialog();
         $I->click('button[name="delete"]', ModalDialog::$openedModalButtonContainerSelector);
