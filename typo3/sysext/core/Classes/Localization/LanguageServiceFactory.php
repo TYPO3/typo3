@@ -52,7 +52,7 @@ class LanguageServiceFactory
 
     public function createFromUserPreferences(?AbstractUserAuthentication $user): LanguageService
     {
-        if ($user->user['lang'] ?? false) {
+        if ($user && ($user->user['lang'] ?? false)) {
             return $this->create($user->user['lang']);
         }
         return $this->create('default');
