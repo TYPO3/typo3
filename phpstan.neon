@@ -1,7 +1,6 @@
 includes:
     - vendor/friendsoftypo3/phpstan-typo3/extension.neon
     - Build/phpstan.level8.neon
-    - Build/phpstan.php7config.php
     - Build/phpstan.php8config.php
 # Include bleeding edge rules if necessary but do not commit
 #    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
