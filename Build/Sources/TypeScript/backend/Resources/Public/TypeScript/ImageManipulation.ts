@@ -538,6 +538,25 @@ class ImageManipulation {
       .draggable({
         containment: container,
         create: (): void => {
+          /**
+           * To make the focusarea draggable, cropper must be disabled by register the same events as cropper does.
+           *  Copied from https://github.com/fengyuanchen/cropperjs/blob/main/src/js/constants.js
+           */
+          const IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+          const IS_TOUCH_DEVICE = IS_BROWSER && window.document.documentElement ? 'ontouchstart' in window.document.documentElement : false;
+          const HAS_POINTER_EVENT = IS_BROWSER ? 'PointerEvent' in window : false;
+          const EVENT_TOUCH_START = IS_TOUCH_DEVICE ? 'touchstart' : 'mousedown';
+          const EVENT_TOUCH_END = IS_TOUCH_DEVICE ? 'touchend touchcancel' : 'mouseup';
+          const EVENT_POINTER_DOWN = HAS_POINTER_EVENT ? 'pointerdown' : EVENT_TOUCH_START;
+          const EVENT_POINTER_UP = HAS_POINTER_EVENT ? 'pointerup pointercancel' : EVENT_TOUCH_END;
+
+          this.focusArea.on(EVENT_POINTER_DOWN, (): void => {
+            this.cropper.disable();
+          });
+          this.focusArea.on(EVENT_POINTER_UP, (): void => {
+            this.cropper.enable();
+          });
+
           this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
         },
         drag: (): void => {
