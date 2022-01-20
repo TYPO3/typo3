@@ -21,8 +21,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Class to render the XML Sitemap to be used as a UserFunction
@@ -30,27 +31,25 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\InvalidConfigurationException;
  */
 class XmlSitemapRenderer
 {
-    /**
-     * @var array
-     */
-    protected $configuration;
+    protected array $configuration;
+    protected TemplateView $view;
 
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    protected TypoScriptService $typoScriptService;
-
-    public function __construct(TypoScriptService $typoScriptService)
-    {
-        $this->typoScriptService = $typoScriptService;
+    public function __construct(
+        protected TypoScriptService $typoScriptService,
+        protected RenderingContextFactory $renderingContextFactory,
+    ) {
     }
 
     protected function initialize(array $fullConfiguration)
     {
         $this->configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($fullConfiguration['plugin.']['tx_seo.'] ?? []);
-        $this->view = $this->getStandaloneView();
+        $renderingContext = $this->renderingContextFactory->create();
+        $templatePaths = $renderingContext->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths($this->configuration['view']['templateRootPaths']);
+        $templatePaths->setLayoutRootPaths($this->configuration['view']['layoutRootPaths']);
+        $templatePaths->setPartialRootPaths($this->configuration['view']['partialRootPaths']);
+        $templatePaths->setFormat('xml');
+        $this->view = GeneralUtility::makeInstance(TemplateView::class, $renderingContext);
     }
 
     /**
@@ -108,9 +107,8 @@ class XmlSitemapRenderer
 
         $this->view->assign('sitemapType', $sitemapType);
         $this->view->assign('sitemaps', $sitemaps);
-        $this->view->setTemplate('Index');
 
-        return $this->view->render();
+        return $this->view->render('Index');
     }
 
     /**
@@ -135,29 +133,17 @@ class XmlSitemapRenderer
 
                 $items = $provider->getItems();
 
-                $template = ($sitemapConfig['config']['template'] ?? false) ?: 'Sitemap';
-                $this->view->setTemplate($template);
                 $this->view->assign('xslFile', $this->getXslFilePath($sitemapType, $sitemap));
                 $this->view->assign('items', $items);
                 $this->view->assign('sitemapType', $sitemapType);
 
-                return $this->view->render();
+                $template = ($sitemapConfig['config']['template'] ?? false) ?: 'Sitemap';
+                return $this->view->render($template);
             }
             throw new InvalidConfigurationException('No valid provider set for ' . $sitemap, 1535578522);
         }
 
         throw new InvalidConfigurationException('No valid configuration found for sitemap ' . $sitemap, 1535578569);
-    }
-
-    protected function getStandaloneView(): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths($this->configuration['view']['templateRootPaths']);
-        $view->setLayoutRootPaths($this->configuration['view']['layoutRootPaths']);
-        $view->setPartialRootPaths($this->configuration['view']['partialRootPaths']);
-        $view->setFormat('xml');
-
-        return $view;
     }
 
     /**
