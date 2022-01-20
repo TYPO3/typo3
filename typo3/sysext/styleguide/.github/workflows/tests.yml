@@ -27,7 +27,6 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s lint
 
       - name: CGL
-        if: ${{ matrix.php != '8.1' }}
         run: Build/Scripts/runTests.sh -n -p ${{ matrix.php }} -s cgl
 
       - name: phpstan
