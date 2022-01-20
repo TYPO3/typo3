@@ -4356,11 +4356,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/InstallUtility.php
 
 		-
-			message: "#^Variable \\$properties on left side of \\?\\? is never defined\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Utility/ListUtility.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extensionmanager/Classes/ViewHelpers/DownloadExtensionViewHelper.php

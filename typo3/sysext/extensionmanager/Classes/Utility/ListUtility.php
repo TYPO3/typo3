@@ -129,7 +129,7 @@ class ListUtility implements SingletonInterface
                         'type' => $installationType,
                         'key' => $package->getPackageKey(),
                         'version' => $version,
-                        'state' => str_starts_with($version, 'dev-') ? 'alpha' : ($properties['state'] ?? 'stable'),
+                        'state' => str_starts_with($version, 'dev-') ? 'alpha' : 'stable',
                         'icon' => $icon ? PathUtility::getAbsoluteWebPath($package->getPackagePath() . $icon) : '',
                         'title' => $package->getPackageMetaData()->getTitle(),
                     ];
@@ -210,6 +210,7 @@ class ListUtility implements SingletonInterface
                 continue;
             }
             $extensions[$extensionKey] = array_merge($emConf, $properties);
+            $extensions[$extensionKey]['state'] = $emConf['state'] ?? $extensions[$extensionKey]['state'] ?? 'stable';
         }
         return $extensions;
     }

@@ -142,9 +142,9 @@ class ListUtilityTest extends UnitTestCase
                     'property1' => 'property value1',
                 ],
                 [
-                    'lang' => ['property1' => 'oldvalue'],
-                    'news' => ['property1' => 'property value1'],
-                    'saltedpasswords' => ['property1' => 'property value1'],
+                    'lang' => ['property1' => 'oldvalue', 'state' => 'stable'],
+                    'news' => ['property1' => 'property value1', 'state' => 'stable'],
+                    'saltedpasswords' => ['property1' => 'property value1', 'state' => 'stable'],
                 ],
             ],
         ];
