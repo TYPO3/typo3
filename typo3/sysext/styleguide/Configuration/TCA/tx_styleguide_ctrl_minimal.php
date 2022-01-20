@@ -10,7 +10,7 @@ return [
        'title' => [
            'label' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitleField',
            'config' => [
-               'type' => 'input'
+               'type' => 'input',
            ],
        ],
    ],

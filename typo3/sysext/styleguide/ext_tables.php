@@ -9,7 +9,7 @@ defined('TYPO3') or die();
     'styleguide',
     '',
     [
-        \TYPO3\CMS\Styleguide\Controller\BackendController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion, pagination, frontendCreate, frontendDelete'
+        \TYPO3\CMS\Styleguide\Controller\BackendController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion, pagination, frontendCreate, frontendDelete',
     ],
     [
         'access' => 'user,group',
@@ -49,7 +49,7 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
     [
         'name' => 'spinner',
-        'spinning' => true
+        'spinning' => true,
     ]
 );
 
@@ -64,9 +64,9 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['customPermOptions']['tx_styleguide_custom'] =
                 'Description 1',
             ],
         'key2' => [
-            'Option 2'
+            'Option 2',
         ],
-    ]
+    ],
 ];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_styleguide_ctrl_common');

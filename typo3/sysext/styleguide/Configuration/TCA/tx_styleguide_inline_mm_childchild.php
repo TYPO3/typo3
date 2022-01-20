@@ -27,8 +27,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -41,8 +41,8 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mm_childchild',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mm_childchild}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mm_childchild}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -54,26 +54,26 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mm_childchild',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mm_childchild}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mm_childchild}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
         'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
-                'default' => '0'
-            ]
+                'default' => '0',
+            ],
         ],
 
         'title' => [
@@ -84,7 +84,7 @@ return [
                 'type' => 'input',
                 'size' => '30',
                 'eval' => 'required',
-            ]
+            ],
         ],
         'parents' => [
             'exclude' => 1,
@@ -111,8 +111,8 @@ return [
             'showitem' => '
                 --div--;General, title, parents,
                 --div--;Visibility, sys_language_uid, l18n_parent,l18n_diffsource, hidden
-            '
-        ]
+            ',
+        ],
     ],
 
 ];

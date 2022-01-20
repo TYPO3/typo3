@@ -36,8 +36,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -50,8 +50,8 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_valuesdefault',
                 'foreign_table_where' => 'AND {#tx_styleguide_valuesdefault}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_valuesdefault}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -63,18 +63,18 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_valuesdefault',
                 'foreign_table_where' => 'AND {#tx_styleguide_valuesdefault}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_valuesdefault}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
 
         'input_1' => [
@@ -125,7 +125,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'default' => 1,
-            ]
+            ],
         ],
         'checkbox_2' => [
             'exclude' => 1,
@@ -135,8 +135,8 @@ return [
                 'items' => [
                     ['foo'],
                 ],
-                'default' => 1
-            ]
+                'default' => 1,
+            ],
         ],
         'checkbox_3' => [
             'exclude' => 1,
@@ -239,7 +239,7 @@ return [
                     ['foo 3', 3],
                     ['foo 4', 4],
                 ],
-                'default' => '1,3'
+                'default' => '1,3',
             ],
         ],
 

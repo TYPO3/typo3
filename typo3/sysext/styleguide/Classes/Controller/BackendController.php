@@ -71,7 +71,7 @@ class BackendController extends ActionController
         $this->moduleTemplate = $moduleTemplate;
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
-            'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination']);
+            'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination', ]);
         $this->view->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
@@ -80,7 +80,7 @@ class BackendController extends ActionController
         if (!empty($arguments['controller']) && !empty($arguments['action'])) {
             $shortcutArguments['tx_styleguide_help_styleguidestyleguide'] = [
                 'controller' => $arguments['controller'],
-                'action' => $arguments['action']
+                'action' => $arguments['action'],
             ];
         }
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -161,7 +161,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionFailedBody', 'styleguide'),
-                'status' => AbstractMessage::ERROR
+                'status' => AbstractMessage::ERROR,
             ];
         } else {
             $generator = GeneralUtility::makeInstance(Generator::class);
@@ -171,7 +171,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkBody', 'styleguide'),
-                'status' => AbstractMessage::OK
+                'status' => AbstractMessage::OK,
             ];
         }
         // And redirect to display action
@@ -189,7 +189,7 @@ class BackendController extends ActionController
         $json = [
             'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkTitle', 'styleguide'),
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkBody', 'styleguide'),
-            'status' => AbstractMessage::OK
+            'status' => AbstractMessage::OK,
         ];
 
         return new JsonResponse($json);
@@ -267,16 +267,16 @@ class BackendController extends ActionController
         $menuItems = [
             0 => [
                 'label' => 'First label',
-                'content' => 'First content'
+                'content' => 'First content',
             ],
             1 => [
                 'label' => 'Second label',
-                'content' => 'Second content'
+                'content' => 'Second content',
             ],
             2 => [
                 'label' => 'Third label',
-                'content' => 'Third content'
-            ]
+                'content' => 'Third content',
+            ],
         ];
         $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
         $this->view->assign('tabs', $tabs);
@@ -357,7 +357,7 @@ class BackendController extends ActionController
             'paginator' => $paginator,
             'pagination' => new SimplePagination($paginator),
             'userGroups' => $userGroupArray,
-            'dateTimeFormat' => 'h:m d-m-Y'
+            'dateTimeFormat' => 'h:m d-m-Y',
         ]);
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/Pagination');
@@ -372,7 +372,7 @@ class BackendController extends ActionController
             $json = [
               'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedTitle', 'styleguide'),
               'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionFailedBody', 'styleguide'),
-              'status' => AbstractMessage::ERROR
+              'status' => AbstractMessage::ERROR,
             ];
         } else {
             $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
@@ -381,7 +381,7 @@ class BackendController extends ActionController
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkTitle', 'styleguide'),
                 'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendCreateActionOkBody', 'styleguide'),
-                'status' => AbstractMessage::OK
+                'status' => AbstractMessage::OK,
             ];
         }
 
@@ -396,7 +396,7 @@ class BackendController extends ActionController
         $json = [
             'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide'),
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
-            'status' => AbstractMessage::OK
+            'status' => AbstractMessage::OK,
         ];
 
         return new JsonResponse($json);

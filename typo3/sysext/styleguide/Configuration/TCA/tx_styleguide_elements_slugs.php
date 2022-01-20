@@ -36,8 +36,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -48,13 +48,13 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_rte',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_rte}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_rte}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -66,19 +66,19 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_rte',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_rte}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_rte}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
 
         'input_1' => [
@@ -116,11 +116,11 @@ return [
                     ],
                 ],
                 'appearance' => [
-                    'prefix' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SlugPrefix::class . '->getPrefix'
+                    'prefix' => \TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SlugPrefix::class . '->getPrefix',
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
+                'default' => '',
             ],
         ],
         'slug_2' => [
@@ -132,11 +132,11 @@ return [
                 'generatorOptions' => [
                     'fields' => ['input_1'],
                     'fieldSeparator' => '/',
-                    'prefixParentPageSlug' => true
+                    'prefixParentPageSlug' => true,
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
+                'default' => '',
             ],
         ],
         'slug_4' => [
@@ -146,11 +146,11 @@ return [
                 'type' => 'slug',
                 'generatorOptions' => [
                     'fields' => ['input_1', 'input_2'],
-                    'prefixParentPageSlug' => false
+                    'prefixParentPageSlug' => false,
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
+                'default' => '',
             ],
         ],
         'slug_5' => [
@@ -160,11 +160,11 @@ return [
                 'type' => 'slug',
                 'generatorOptions' => [
                     'fields' => [['input_1', 'input_2']],
-                    'prefixParentPageSlug' => false
+                    'prefixParentPageSlug' => false,
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
+                'default' => '',
             ],
         ],
 
@@ -188,7 +188,7 @@ return [
                     'fields' => ['input_3'],
                     'replacements' => [
                         '(f/m)' => '',
-                        '/' => '-'
+                        '/' => '-',
                     ],
                 ],
                 'fallbackCharacter' => '-',

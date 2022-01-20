@@ -20,19 +20,19 @@ return [
         'disable' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.disable',
             'config' => [
-                'type' => 'check'
-            ]
+                'type' => 'check',
+            ],
         ],
 
         'parentid' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'parenttable' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'input_1' => [
             'l10n_mode' => 'prefixLangTitle',

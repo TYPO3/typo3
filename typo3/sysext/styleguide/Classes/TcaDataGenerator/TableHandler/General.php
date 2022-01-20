@@ -53,7 +53,7 @@ class General extends AbstractTableHandler implements TableHandlerInterface
         // First insert an empty row and get the uid of this row since
         // some fields need this uid for relations later.
         $fieldValues = [
-            'pid' => $recordFinder->findPidOfMainTableRecord($tableName)
+            'pid' => $recordFinder->findPidOfMainTableRecord($tableName),
         ];
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'])) {
             $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['tstamp']] = $context->getAspect('date')->get('timestamp');

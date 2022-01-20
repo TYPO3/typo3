@@ -86,7 +86,7 @@ class GeneratorFrontend extends AbstractGenerator
                     'constants' => '# see EXT:styleguide/Configuration/TypoScript',
                     'config' => '# see EXT:styleguide/Configuration/TypoScript',
                     'pid' => $newIdOfEntryPage,
-                ]
+                ],
             ],
             'tt_content' => [
                 $newIdOfEntryContent => [
@@ -95,21 +95,21 @@ class GeneratorFrontend extends AbstractGenerator
                     'bodytext' => 'This is the generated frontend for the Styleguide Extension. This consists of all default content elements of the TYPO3 Core.',
                     'pid' => $newIdOfEntryPage,
                     'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
-                ]
+                ],
             ],
             'sys_category' => [
                 $newIdOfCategory => [
                     'title' => 'Styleguide Demo Category',
                     'pid' => $newIdOfEntryPage,
-                ]
+                ],
             ],
             'fe_groups' => [
                 $newIdOfFrontendGroup => [
                     'title' => 'Styleguide Frontend Demo',
                     'hidden' => 0,
                     'pid' => $newIdOfUserFolder,
-                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend'
-                ]
+                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
+                ],
             ],
             'fe_users' => [
                 $newIdOfFrontendUser => [
@@ -119,9 +119,9 @@ class GeneratorFrontend extends AbstractGenerator
                     // Password of demo frontend user: 'password'
                     'password' => '$argon2i$v=19$m=65536,t=16,p=1$VjFaWDFGMmh6RlNEWjY2Vw$Vp5lFrbe8/GNwIrlXnUm6m2d9JJPfkQudnD8sBQKG9A',
                     'pid' => $newIdOfUserFolder,
-                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend'
-                ]
-            ]
+                    'tx_styleguide_containsdemo' => 'tx_styleguide_frontend',
+                ],
+            ],
         ];
 
         $neighborPage = $newIdOfEntryPage;
@@ -228,20 +228,20 @@ class GeneratorFrontend extends AbstractGenerator
             'bullets' => [
                 [
                     'header' => 'A bullet list',
-                    'bodytext' => "Item 1\nItem 2\nItem 3\n"
+                    'bodytext' => "Item 1\nItem 2\nItem 3\n",
                 ],
                 [
                     'header' => 'Another bullet list',
-                    'bodytext' => "Item 4\nItem 5\nItem 6\n"
-                ]
+                    'bodytext' => "Item 4\nItem 5\nItem 6\n",
+                ],
             ],
             'div' => [
                 [
-                    'header' => $kauderWelsch->getLoremIpsum()
+                    'header' => $kauderWelsch->getLoremIpsum(),
                 ],
                 [
-                    'header' => $kauderWelsch->getLoremIpsum()
-                ]
+                    'header' => $kauderWelsch->getLoremIpsum(),
+                ],
             ],
             'header' => [
                 [
@@ -249,12 +249,12 @@ class GeneratorFrontend extends AbstractGenerator
                 ],
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
-                    'header_layout' => 2
+                    'header_layout' => 2,
                 ],
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
-                    'header_layout' => 3
-                ]
+                    'header_layout' => 3,
+                ],
             ],
             'text' => [
                 [
@@ -266,7 +266,7 @@ class GeneratorFrontend extends AbstractGenerator
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'header_layout' => 3,
                     'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
-                ]
+                ],
             ],
             'textpic' => [ // @todo add images
                 [
@@ -279,7 +279,7 @@ class GeneratorFrontend extends AbstractGenerator
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'header_layout' => 2,
                     'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
-                ]
+                ],
             ],
             'textmedia' => [
                 [
@@ -292,20 +292,20 @@ class GeneratorFrontend extends AbstractGenerator
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'header_layout' => 2,
                     'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
-                    'imageorient' => 25
-                ]
+                    'imageorient' => 25,
+                ],
             ],
             'image' => [
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
-                ]
+                ],
             ],
             'html' => [
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'bodytext' => $kauderWelsch->getLoremIpsumHtml() . ' ' . $kauderWelsch->getLoremIpsumHtml(),
-                ]
+                ],
             ],
             'table' => [
                 [
@@ -315,12 +315,12 @@ class GeneratorFrontend extends AbstractGenerator
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
                     'bodytext' => "row1 col1|row1 col2|row1 col3|row1 col4\nrow2 col1|row2 col2|row2 col3|row2 col4\nrow3 col1|row3 col2|row3 col3|row3 col4\nrow4 col1|row4 col2|row4 col3|row4 col4",
-                ]
+                ],
             ],
             'felogin_login' => [
                 [
                     'header' => $kauderWelsch->getLoremIpsum(),
-                ]
+                ],
             ],
             'form_formframework' => [
                 [
@@ -330,12 +330,12 @@ class GeneratorFrontend extends AbstractGenerator
                             'sDEF' => [
                                 'lDEF' => [
                                     'settings.persistenceIdentifier' => [
-                                        'vDEF' => 'EXT:styleguide/Resources/Private/Forms/allfields.form.yaml'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                                        'vDEF' => 'EXT:styleguide/Resources/Private/Forms/allfields.form.yaml',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
                     'header' => 'Simple form',
@@ -344,96 +344,96 @@ class GeneratorFrontend extends AbstractGenerator
                             'sDEF' => [
                                 'lDEF' => [
                                     'settings.persistenceIdentifier' => [
-                                        'vDEF' => 'EXT:styleguide/Resources/Private/Forms/simpleform.form.yaml'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+                                        'vDEF' => 'EXT:styleguide/Resources/Private/Forms/simpleform.form.yaml',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'list' => [
                 [
                     'header' => 'Indexed Search',
-                    'list_type' => 'indexedsearch_pi2'
-                ]
+                    'list_type' => 'indexedsearch_pi2',
+                ],
             ],
             'shortcut' => [
                 [
                     'header' => 'Shortcut',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'uploads' => [
                 [
                     'header' => 'Uploads',
-                ]
+                ],
             ],
             'menu_categorized_pages' => [
                 [
                     'header' => 'Menu categorized pages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_categorized_content' => [
                 [
                     'header' => 'Menu categorized content',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_pages' => [
                 [
                     'header' => 'Menu pages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_subpages' => [
                 [
                     'header' => 'Menu subpages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_sitemap' => [
                 [
                     'header' => 'Menu sitemap',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_section' => [
                 [
                     'header' => 'Menu section',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_abstract' => [
                 [
                     'header' => 'Menu abstract',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_recently_updated' => [
                 [
                     'header' => 'Menu recently updated',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_related_pages' => [
                 [
                     'header' => 'Menu related pages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_section_pages' => [
                 [
                     'header' => 'Menu section pages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
             'menu_sitemap_pages' => [
                 [
                     'header' => 'Menu sitemap pages',
-                    'records' => '' // UIDs 856,857,849
-                ]
+                    'records' => '', // UIDs 856,857,849
+                ],
             ],
         ];
     }
@@ -544,12 +544,12 @@ class GeneratorFrontend extends AbstractGenerator
                         'sDEF' => [
                             'lDEF' => [
                                 'settings.pages' => [
-                                    'vDEF' => $storageFeLogin
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+                                    'vDEF' => $storageFeLogin,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ];
         }
 

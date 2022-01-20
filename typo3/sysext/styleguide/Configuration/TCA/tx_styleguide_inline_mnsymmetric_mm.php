@@ -26,8 +26,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -40,8 +40,8 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -53,26 +53,26 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
         'hidden' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
-                'default' => '0'
-            ]
+                'default' => '0',
+            ],
         ],
 
         'hotelid' => [
@@ -83,7 +83,7 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric',
                 'maxitems' => 1,
                 'localizeReferences' => 1,
-            ]
+            ],
         ],
         'branchid' => [
             'label' => 'branchid',
@@ -93,17 +93,17 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_mnsymmetric',
                 'maxitems' => 1,
                 'localizeReferences' => 1,
-            ]
+            ],
         ],
         'hotelsort' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
         'branchsort' => [
             'config' => [
                 'type' => 'passthrough',
-            ]
+            ],
         ],
     ],
 
@@ -111,8 +111,8 @@ return [
         '0' => [
             'showitem' => '
                 --div--;General, title, hotelid, branchid,
-                --div--;Visibility, sys_language_uid, l18n_parent, l10n_diffsource, hidden, hotelsort, branchsort'
-        ]
+                --div--;Visibility, sys_language_uid, l18n_parent, l10n_diffsource, hidden, hotelsort, branchsort',
+        ],
     ],
 
 ];

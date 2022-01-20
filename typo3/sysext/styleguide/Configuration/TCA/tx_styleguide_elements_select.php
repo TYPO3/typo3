@@ -35,8 +35,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -47,13 +47,13 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -65,19 +65,19 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_select',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_select}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_select}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
 
         'select_single_1' => [
@@ -92,7 +92,7 @@ return [
                         'foo and this here is very long text that maybe does not really fit into the form in one line.'
                             . ' Ok let us add even more text to see how this looks like if wrapped. Is this enough now? No?'
                             . ' Then let us add some even more useless text here!',
-                        1
+                        1,
                     ],
                     ['bar', 'bar'],
                 ],
@@ -169,7 +169,7 @@ return [
                 'fileFolderConfig' => [
                     'folder' => 'EXT:styleguide/Resources/Public/Icons',
                     'allowedExtensions' => 'svg',
-                    'depth' => 1
+                    'depth' => 1,
                 ],
                 'fieldWizard' => [
                     'selectIcons' => [
@@ -271,7 +271,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_styleguide_staticdata',
-                'MM' => 'tx_styleguide_elements_select_single_15_mm'
+                'MM' => 'tx_styleguide_elements_select_single_15_mm',
             ],
         ],
         'select_single_16' => [
@@ -329,7 +329,7 @@ return [
                     ['Cherry tree', 4],
                 ],
                 'sortItems' => [
-                    'label' => 'asc'
+                    'label' => 'asc',
                 ],
                 'size' => 4,
             ],
@@ -348,7 +348,7 @@ return [
                     ['Cherry tree', 4],
                 ],
                 'sortItems' => [
-                    'value' => 'desc'
+                    'value' => 'desc',
                 ],
                 'size' => 4,
             ],
@@ -367,7 +367,7 @@ return [
                     ['Cherry tree', 4],
                 ],
                 'sortItems' => [
-                    'tx_styleguide' => 'TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SelectItemSorter->sortReverseTitles'
+                    'tx_styleguide' => 'TYPO3\CMS\Styleguide\UserFunctions\FormEngine\SelectItemSorter->sortReverseTitles',
                 ],
                 'size' => 4,
             ],
@@ -489,7 +489,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'appearance' => [
-                    'expandAll' => true
+                    'expandAll' => true,
                 ],
                 'items' => [
                     ['div 1', '--div--'],
@@ -630,8 +630,8 @@ return [
                     'editPopup' => [
                         'disabled' => false,
                         'options' => [
-                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
-                        ]
+                            'windowOpenParameters' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+                        ],
                     ],
                     'addRecord' => [
                         'disabled' => false,
@@ -688,7 +688,7 @@ return [
                     ['foo 2', 2],
                     ['foo 3', 3],
                     ['bar', 4],
-                ]
+                ],
             ],
         ],
         'select_multiplesidebyside_10' => [
@@ -754,7 +754,7 @@ return [
                     'appearance' => [
                         'expandAll' => true,
                         'showHeader' => false,
-                        'nonSelectableLevels' => '0,1'
+                        'nonSelectableLevels' => '0,1',
                     ],
                 ],
             ],
@@ -848,7 +848,7 @@ return [
                 'items' => [
                     [
                         'Just an item',
-                        1
+                        1,
                     ],
                     ['bar', 'bar'],
                     ['and yet another one', -1],

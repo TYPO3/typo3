@@ -132,8 +132,8 @@ abstract class AbstractGenerator
                     'fallbacks' => '',
                     'flag' => 'es',
                     'languageId' => $highestLanguageId + 4,
-                ]
-            ]
+                ],
+            ],
         ];
         $siteConfiguration->write($siteIdentifier, $configuration);
     }

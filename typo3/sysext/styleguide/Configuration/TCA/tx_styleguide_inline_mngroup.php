@@ -26,8 +26,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -40,7 +40,7 @@ return [
                 ],
                 'foreign_table' => 'tx_styleguide_inline_mngroup',
                 'foreign_table_where' => 'AND {#tx_styleguide_inline_mngroup}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mngroup}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
+                'default' => 0,
             ],
         ],
         'l10n_source' => [

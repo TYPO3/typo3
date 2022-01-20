@@ -36,8 +36,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'language'
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -48,13 +48,13 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_group',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_group}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_group}.{#sys_language_uid} IN (-1,0)',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_source' => [
             'exclude' => true,
@@ -66,19 +66,19 @@ return [
                 'items' => [
                     [
                         '',
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'foreign_table' => 'tx_styleguide_elements_group',
                 'foreign_table_where' => 'AND {#tx_styleguide_elements_group}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_elements_group}.{#uid}!=###THIS_UID###',
-                'default' => 0
-            ]
+                'default' => 0,
+            ],
         ],
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'group_db_1' => [
             'exclude' => 1,
@@ -119,7 +119,7 @@ return [
             'description' => 'standard configuration',
             'config' => [
                 'type' => 'imageManipulation',
-                'file_field' => 'group_db_1'
+                'file_field' => 'group_db_1',
             ],
         ],
         'crop_2' => [
@@ -129,7 +129,7 @@ return [
             'config' => [
                 'type' => 'imageManipulation',
                 'file_field' => 'group_db_2',
-                'allowedExtensions' => 'png'
+                'allowedExtensions' => 'png',
             ],
         ],
         'crop_4' => [
@@ -139,7 +139,7 @@ return [
             'config' => [
                 'type' => 'imageManipulation',
                 'file_field' => 'group_db_2',
-                'allowedExtensions' => 'jpg'
+                'allowedExtensions' => 'jpg',
             ],
         ],
         'crop_3' => [
@@ -155,23 +155,23 @@ return [
                         'allowedAspectRatios' => [
                             '16:9' => [
                                 'title' => '16 / 9',
-                                'value' => 16 / 9
+                                'value' => 16 / 9,
                             ],
                             '3:2' => [
                                 'title' => '3 / 2',
-                                'value' => 3 / 2
+                                'value' => 3 / 2,
                             ],
                             '4:3' => [
                                 'title' => '4 / 3',
-                                'value' => 4 / 3
+                                'value' => 4 / 3,
                             ],
                             '1:1' => [
                                 'title' => '1 / 1',
-                                'value' => 1.0
+                                'value' => 1.0,
                             ],
                             'NaN' => [
                                 'title' => 'free',
-                                'value' => 0.0
+                                'value' => 0.0,
                             ],
                         ],
                         'selectedRatio' => 'NaN',
@@ -182,7 +182,7 @@ return [
                             'height' => 1.0,
                         ],
                     ],
-                ]
+                ],
             ],
         ],
         'crop_5' => [
@@ -197,7 +197,7 @@ return [
                         'allowedAspectRatios' => [
                             '1:1' => [
                                 'title' => '1 / 1',
-                                'value' => 1.0
+                                'value' => 1.0,
                             ],
                         ],
                     ],
@@ -206,15 +206,15 @@ return [
                         'allowedAspectRatios' => [
                             '4:3' => [
                                 'title' => '4 / 3',
-                                'value' => 4 / 3
+                                'value' => 4 / 3,
                             ],
                             'NaN' => [
                                 'title' => 'free',
-                                'value' => 0.0
+                                'value' => 0.0,
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
         ],
         'crop_6' => [
@@ -230,7 +230,7 @@ return [
                         'allowedAspectRatios' => [
                             '1:1' => [
                                 'title' => '1 / 1',
-                                'value' => 1.0
+                                'value' => 1.0,
                             ],
                         ],
                         'selectedRatio' => '1:1',
@@ -241,7 +241,7 @@ return [
                             'height' => 0.8,
                         ],
                     ],
-                ]
+                ],
             ],
         ],
         'crop_7' => [
@@ -257,7 +257,7 @@ return [
                         'allowedAspectRatios' => [
                             '1:1' => [
                                 'title' => '1 / 1',
-                                'value' => 1.0
+                                'value' => 1.0,
                             ],
                         ],
                         'selectedRatio' => '1:1',
@@ -268,7 +268,7 @@ return [
                             'height' => 3 / 4,
                         ],
                     ],
-                ]
+                ],
             ],
         ],
         'crop_8' => [
@@ -284,7 +284,7 @@ return [
                         'allowedAspectRatios' => [
                             '1:1' => [
                                 'title' => '1 / 1',
-                                'value' => 1.0
+                                'value' => 1.0,
                             ],
                         ],
                         'selectedRatio' => '1:1',
@@ -300,10 +300,10 @@ return [
                                 'y' => 0.05,
                                 'width' => 1 / 4,
                                 'height' => 1 / 4,
-                            ]
+                            ],
                         ],
                     ],
-                ]
+                ],
             ],
         ],
     ],
