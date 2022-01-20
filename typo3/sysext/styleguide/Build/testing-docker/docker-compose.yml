@@ -20,15 +20,6 @@ services:
     tmpfs:
       - /var/lib/mysql/:rw,noexec,nosuid
 
-  mssql2019latest:
-    image: typo3/core-testing-mssql2019:latest
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Test1234!"
-      MSSQL_PID: Developer
-    # No tmpfs setup here since mssql fails on tmpfs o_direct.
-    # This makes mssql sloooow for functionals.
-
   postgres10:
     image: postgres:10-alpine
     environment:
@@ -350,50 +341,6 @@ services:
           XDEBUG_TRIGGER=\"foo\" \
           XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
           bin/phpunit -c Web/typo3conf/ext/styleguide/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} ${TEST_FILE};
-        fi
-      "
-
-  functional_mssql2019latest:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: "${HOST_UID}"
-    links:
-    - mssql2019latest
-    volumes:
-    - ${ROOT_DIR}:${ROOT_DIR}
-    - ${HOST_HOME}:${HOST_HOME}
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
-    environment:
-      typo3DatabaseDriver: "${DATABASE_DRIVER}"
-      typo3DatabaseName: func
-      typo3DatabasePassword: "Test1234!"
-      typo3DatabaseUsername: SA
-      typo3DatabasePort: 1433
-      typo3DatabaseCharset: utf-8
-      typo3DatabaseHost: mssql2019latest
-    working_dir: ${ROOT_DIR}/.Build
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        echo Waiting for database start...;
-        while ! nc -z mssql2019latest 1433; do
-          sleep 1;
-        done;
-        sleep 5;
-        echo Database is up;
-        php -v | grep '^PHP';
-        if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
-          XDEBUG_MODE=\"off\" \
-          bin/phpunit -c Web/typo3conf/ext/styleguide/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE};
-        else
-          XDEBUG_MODE=\"debug,develop\" \
-          XDEBUG_TRIGGER=\"foo\" \
-          XDEBUG_CONFIG=\"client_port=${PHP_XDEBUG_PORT} client_host=host.docker.internal\" \
-          bin/phpunit -c Web/typo3conf/ext/styleguide/Build/FunctionalTests.xml ${EXTRA_TEST_OPTIONS} --exclude-group not-mssql ${TEST_FILE};
         fi
       "
 

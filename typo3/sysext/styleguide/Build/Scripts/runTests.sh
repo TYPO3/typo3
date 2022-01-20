@@ -91,7 +91,7 @@ Options:
             - phpstan: phpstan analyze
             - unit (default): PHP unit tests
 
-    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
+    -a <mysqli|pdo_mysql>
         Only with -s acceptance,functional
         Specifies to use another driver, following combinations are available:
             - mysql
@@ -100,16 +100,12 @@ Options:
             - mariadb
                 - mysqli (default)
                 - pdo_mysql
-            - mssql
-                - sqlsrv (default)
-                - pdo_sqlsrv
 
-    -d <mariadb|mysql|mssql|postgres|sqlite>
+    -d <mariadb|mysql|postgres|sqlite>
         Only with -s acceptance,functional
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mysql: use mysql
-            - mssql: use mssql microsoft sql server (not for -s acceptance)
             - postgres: use postgres
             - sqlite: use sqlite (not for -s acceptance)
 
@@ -327,11 +323,6 @@ case ${TEST_SUITE} in
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run functional_mysql55
-                SUITE_EXIT_CODE=$?
-                ;;
-            mssql)
-                echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run functional_mssql2019latest
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
