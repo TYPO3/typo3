@@ -787,7 +787,8 @@ class PageLayoutController
         }
 
         if (
-            !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
+            $this->current_sys_language !== -1
+            && !in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)
             && !VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
         ) {
             $languageParameter = $this->current_sys_language ? ('&L=' . $this->current_sys_language) : '';
