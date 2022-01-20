@@ -48,15 +48,6 @@ class ModuleTemplate
     protected $docHeaderComponent;
 
     /**
-     * Javascript Code Array
-     * Used for inline JS
-     *
-     * @var array
-     * @internal Only used internally, will be removed in TYPO3 v12.0
-     */
-    protected $javascriptCodeArray = [];
-
-    /**
      * Expose the pageRenderer
      *
      * @var PageRenderer
@@ -337,31 +328,6 @@ class ModuleTemplate
     }
 
     /**
-     * Wrapper function for adding JS inline blocks
-     * @internal Only used internally, will be removed in TYPO3 v12.0
-     */
-    protected function setJavaScriptCodeArray()
-    {
-        foreach ($this->javascriptCodeArray as $name => $code) {
-            $this->pageRenderer->addJsInlineCode($name, $code, false);
-        }
-    }
-
-    /**
-     * Adds JS inline blocks of code to the internal registry
-     *
-     * @param string $name Javascript code block name
-     * @param string $code Inline Javascript
-     * @return self
-     * @internal Not used anymore, will be removed in TYPO3 v12.0
-     */
-    public function addJavaScriptCode($name = '', $code = ''): self
-    {
-        $this->javascriptCodeArray[$name] = $code;
-        return $this;
-    }
-
-    /**
      * Get the DocHeader
      *
      * @return DocHeaderComponent
@@ -378,7 +344,6 @@ class ModuleTemplate
      */
     public function renderContent()
     {
-        $this->setJavaScriptCodeArray();
         $this->pageRenderer->setTitle($this->title);
 
         $this->view->assign('docHeader', $this->docHeaderComponent->docHeaderContent());

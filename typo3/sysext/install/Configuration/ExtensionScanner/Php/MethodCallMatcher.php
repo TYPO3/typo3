@@ -5113,4 +5113,11 @@ return [
             'Feature-96526-PSR-14EventForModifyingPageModuleContent.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->addJavaScriptCode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-96604-RemovedModuleTemplate-addJavaScriptCode.rst',
+        ],
+    ],
 ];
