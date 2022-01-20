@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:if condition="{overviewOfPagesUsingTSConfig}">
     <f:then>
         <div class="table-responsive">
@@ -38,3 +43,5 @@
         <f:be.infobox message="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_noPageTSconfig')}" state="-1" />
     </f:else>
 </f:if>
+
+</html>

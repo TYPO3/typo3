@@ -31,10 +31,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for the Web > Info module
@@ -61,11 +60,6 @@ class InfoModuleController
      * @var ModuleTemplate
      */
     protected $moduleTemplate;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
 
     /**
      * @var int Value of the GET/POST var 'id'
@@ -148,7 +142,6 @@ class InfoModuleController
     protected $extObj;
 
     protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected FlashMessageService $flashMessageService;
     protected ContainerInterface $container;
@@ -156,14 +149,12 @@ class InfoModuleController
 
     public function __construct(
         IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
         UriBuilder $uriBuilder,
         FlashMessageService $flashMessageService,
         ContainerInterface $container,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
         $this->uriBuilder = $uriBuilder;
         $this->flashMessageService = $flashMessageService;
         $this->container = $container;
@@ -203,18 +194,15 @@ class InfoModuleController
             if ($backendUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
-            // Setting up the context sensitive menu:
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
-
-            $this->view = $this->getFluidTemplateObject();
-            $this->view->assign('id', (int)$this->id);
-            $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
-            $this->view->assign('functionMenuModuleContent', $this->extObjContent($request));
+            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+            $view->setTemplateRootPaths(['EXT:info/Resources/Private/Templates']);
+            $view->assign('id', (int)$this->id);
+            $view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
+            $view->assign('functionMenuModuleContent', $this->extObjContent($request));
             // Setting up the buttons and markers for doc header
             $this->getButtons($request);
             $this->generateMenu();
-            $this->content = $this->view->render();
+            $this->content = $view->render('Main');
         } else {
             // If no access or if ID == zero
             $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'), false);
@@ -321,24 +309,6 @@ class InfoModuleController
             $menu->addMenuItem($item);
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject()
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates')]);
-
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates/Main.html'));
-
-        $view->getRequest()->setControllerExtensionName('info');
-        return $view;
     }
 
     /**

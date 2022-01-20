@@ -1,8 +1,30 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <h1>{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:tsconf_title')}</h1>
 <f:if condition="{csh}">
-<span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
+    <span class="btn btn-default btn-sm"><f:format.raw>{csh}</f:format.raw></span>
 </f:if>
-<f:render partial="PageTsConfig/Menu" arguments="{_all}"/>
+
+<div class="row row-cols-auto align-items-end g-3 mb-3">
+    <div class="col">
+        <label class="form-label">
+            {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:display_mode')}
+        </label>
+        <f:format.raw>{dropdownMenu}</f:format.raw>
+    </div>
+    <div class="col">
+        <div class="form-check form-switch">
+            <label class="form-check-label" for="checkTsconf_alphaSort">
+                {f:translate(key: 'LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:sort_alphabetic')}
+            </label>
+            <f:format.raw>{alphaSort}</f:format.raw>
+        </div>
+    </div>
+</div>
+
 <f:if condition="{tsconfParts99}">
     <f:then>
         <f:for each="{lines}" as="line">
@@ -24,3 +46,5 @@
         <f:format.raw>{tree}</f:format.raw>
     </f:else>
 </f:if>
+
+</html>

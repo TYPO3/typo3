@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Page TSconfig viewer in Web -> Info
@@ -41,11 +41,6 @@ class InfoPageTyposcriptConfigController
 {
     protected IconFactory $iconFactory;
     protected UriBuilder $uriBuilder;
-
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
 
     /**
      * @var InfoModuleController Contains a reference to the parent calling object
@@ -71,7 +66,6 @@ class InfoPageTyposcriptConfigController
     public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
-        $this->view = $this->getFluidTemplateObject();
         $this->pObj = $pObj;
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         // Setting MOD_MENU items as we need them for logging:
@@ -85,11 +79,15 @@ class InfoPageTyposcriptConfigController
      */
     public function main(ServerRequestInterface $request)
     {
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setPartialRootPaths(['EXT:info/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:info/Resources/Private/Templates']);
+
         if ($this->id === 0) {
-            $this->view->assign('pageZero', true);
+            $view->assign('pageZero', true);
             $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();
             if (count($pagesUsingTSConfig) > 0) {
-                $this->view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
+                $view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
             }
         } else {
             if ((int)$this->pObj->MOD_SETTINGS['tsconf_parts'] === 99) {
@@ -162,13 +160,13 @@ class InfoPageTyposcriptConfigController
                     $editTitle = '';
                 }
 
-                $this->view->assign('tsconfParts99', true);
-                $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
-                $this->view->assign('lines', $lines);
-                $this->view->assign('editIcon', $editIcon);
-                $this->view->assign('editTitle', $editTitle);
+                $view->assign('tsconfParts99', true);
+                $view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
+                $view->assign('lines', $lines);
+                $view->assign('editIcon', $editIcon);
+                $view->assign('editTitle', $editTitle);
             } else {
-                $this->view->assign('tsconfParts99', false);
+                $view->assign('tsconfParts99', false);
                 // Defined global here!
                 $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
                 $tmpl->ext_expandAllNotes = 1;
@@ -213,13 +211,13 @@ class InfoPageTyposcriptConfigController
                         // Entire array
                 }
 
-                $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
-                $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)($this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false)));
+                $view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
+                $view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)($this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false)));
             }
-            $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false, '', '', 'id="checkTsconf_alphaSort"'));
-            $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']));
+            $view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false, '', '', 'id="checkTsconf_alphaSort"'));
+            $view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']));
         }
-        return $this->view->render();
+        return $view->render('PageTsConfig');
     }
 
     /**
@@ -377,24 +375,6 @@ class InfoPageTyposcriptConfigController
             $lines = $this->getList($pageArray[$identifier . '.'] ?? [], $lines, $pageDepth + 1);
         }
         return $lines;
-    }
-
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject()
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates')]);
-
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:info/Resources/Private/Templates/PageTsConfig.html'));
-
-        $view->getRequest()->setControllerExtensionName('info');
-        return $view;
     }
 
     protected function getCodeMirrorHtml(string $label, string $content): string
