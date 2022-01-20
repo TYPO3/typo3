@@ -726,9 +726,12 @@ class PageLayoutView implements LoggerAwareInterface
                 'valign' => 'top',
                 'class' => 't3-page-column t3-page-column-lang-name',
                 'data-language-uid' => (string)$languageId,
-                'data-language-title' => $this->siteLanguages[$languageId]->getTitle(),
-                'data-flag-identifier' => $this->siteLanguages[$languageId]->getFlagIdentifier()
             ];
+
+            if (isset($this->siteLanguages[$languageId])) {
+                $columnAttributes['data-language-title'] = $this->siteLanguages[$languageId]->getTitle();
+                $columnAttributes['data-flag-identifier'] = $this->siteLanguages[$languageId]->getFlagIdentifier();
+            }
 
             $cCont[$languageId] = '
 					<td ' . GeneralUtility::implodeAttributes($columnAttributes, true) . '>
