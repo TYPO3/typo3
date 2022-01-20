@@ -32,6 +32,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
+          # @todo Verify that tailor is PHP8.1 compatible and raise version to 8.1 here.
           php-version: 7.4
           extensions: intl, mbstring, json, zip, curl
           tools: composer:v2

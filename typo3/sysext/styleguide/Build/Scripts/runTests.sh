@@ -77,7 +77,7 @@ a recent docker-compose (tested >=1.21.2) is needed.
 
 Usage: $0 [options] [file]
 
-No arguments: Run all unit tests with PHP 7.4
+No arguments: Run all unit tests with PHP 8.1
 
 Options:
     -s <...>
@@ -113,11 +113,9 @@ Options:
             - postgres: use postgres
             - sqlite: use sqlite (not for -s acceptance)
 
-    -p <7.4|8.0|8.1>
+    -p <8.1>
         Specifies the PHP minor version to be used
-            - 7.4 (default): use PHP 7.4
-            - 8.0: use PHP 8.0
-            - 8.1: use PHP 8.1
+            - 8.1 (default): use PHP 8.1
 
     -e "<phpunit or codeception options>"
         Only with -s acceptance|functional|unit
@@ -153,7 +151,7 @@ Options:
         Show this help.
 
 Examples:
-    # Run unit tests using PHP 7.4
+    # Run unit tests using PHP 8.1
     ./Build/Scripts/runTests.sh
 EOF
 
@@ -180,7 +178,7 @@ else
 fi
 TEST_SUITE="unit"
 DBMS="mariadb"
-PHP_VERSION="7.4"
+PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
@@ -207,6 +205,9 @@ while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
+            if ! [[ ${PHP_VERSION} =~ ^(8.1)$ ]]; then
+                INVALID_OPTIONS+=("p ${OPTARG}")
+            fi            
             ;;
         e)
             EXTRA_TEST_OPTIONS=${OPTARG}
