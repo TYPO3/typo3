@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <f:if condition="{accessAllowed}">
     <f:then>
         <div class="card-container">
@@ -57,10 +62,7 @@
         </f:if>
         <f:if condition="{fileObject}">
             <p>
-                <f:media file="{fileObject}"
-                                width="{width}"
-                                height="{height}"
-                />
+                <f:media file="{fileObject}" width="{width}" height="{height}" />
             </p>
         </f:if>
         <f:if condition="{url}">
@@ -231,3 +233,4 @@
         </div>
     </f:if>
 </f:section>
+</html>

@@ -44,7 +44,7 @@ use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for showing information about an item.
@@ -86,11 +86,6 @@ class ElementInformationController
     protected $type = '';
 
     /**
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
      * For type "db": Set to page record of the parent page of the item set
      * (if type="db")
      *
@@ -115,18 +110,11 @@ class ElementInformationController
      */
     protected $folderObject;
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -138,9 +126,11 @@ class ElementInformationController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate->getDocHeaderComponent()->disable();
         $this->init($request);
-        $this->main($request);
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $this->main($moduleTemplate, $request);
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -151,15 +141,10 @@ class ElementInformationController
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
         $queryParams = $request->getQueryParams();
-
         $this->table = $queryParams['table'] ?? null;
         $this->uid = $queryParams['uid'] ?? null;
-
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-
         if (isset($GLOBALS['TCA'][$this->table])) {
             $this->initDatabaseRecord();
         } elseif ($this->table === '_FILE' || $this->table === '_FOLDER' || $this->table === 'sys_file') {
@@ -223,20 +208,14 @@ class ElementInformationController
     /**
      * Compiles the whole content to be outputted, which is then set as content to the moduleTemplate
      * There is a hook to do a custom rendering of a record.
-     *
-     * @param ServerRequestInterface $request
      */
-    protected function main(ServerRequestInterface $request): void
+    protected function main(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
     {
         $content = '';
 
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/ContentElement/ElementInformation.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
 
         if ($this->access) {
             // render type by user func
@@ -252,21 +231,23 @@ class ElementInformationController
                 }
             }
 
+            $pageTitle = $this->getPageTitle();
+            $moduleTemplate->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
             if (!$typeRendered) {
                 $view->assign('accessAllowed', true);
-                $view->assignMultiple($this->getPageTitle());
+                $view->assignMultiple($pageTitle);
                 $view->assignMultiple($this->getPreview());
                 $view->assignMultiple($this->getPropertiesForTable());
                 $view->assignMultiple($this->getReferences($request));
                 $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
                 $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
-                $content .= $view->render();
+                $content .= $view->render('ContentElement/ElementInformation');
             }
         } else {
-            $content .= $view->render();
+            $content .= $view->render('ContentElement/ElementInformation');
         }
 
-        $this->moduleTemplate->setContent($content);
+        $moduleTemplate->setContent($content);
     }
 
     /**
@@ -290,7 +271,6 @@ class ElementInformationController
             $pageTitle['table'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']);
             $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, Icon::SIZE_SMALL);
         }
-        $this->moduleTemplate->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
         return $pageTitle;
     }
 
@@ -857,17 +837,11 @@ class ElementInformationController
             || $recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

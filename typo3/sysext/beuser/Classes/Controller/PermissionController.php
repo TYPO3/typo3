@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -56,27 +56,16 @@ class PermissionController
     protected int $depth;
     protected array $pageInfo = [];
 
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ResponseFactoryInterface $responseFactory;
-
     protected ?ModuleTemplate $moduleTemplate = null;
     protected ?ViewInterface $view = null;
 
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ResponseFactoryInterface $responseFactory
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected PageRenderer $pageRenderer,
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected ResponseFactoryInterface $responseFactory
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->responseFactory = $responseFactory;
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -117,7 +106,6 @@ class PermissionController
         }
 
         if ($action !== 'update') {
-            $template = ucfirst($action);
             if ($backendUser->workspace !== 0) {
                 $this->addFlashMessage(
                     $lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText'),
@@ -125,7 +113,7 @@ class PermissionController
                     FlashMessage::WARNING
                 );
             }
-            $this->initializeView($template);
+            $this->initializeView();
             $this->registerDocHeaderButtons($action);
             $this->moduleTemplate->setTitle(
                 $this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:mlang_tabs_tab'),
@@ -167,13 +155,10 @@ class PermissionController
 
         // Initialize TCE for execution of updates
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-
         // Determine the action to execute
         switch ($conf['action'] ?? '') {
             case 'show_change_owner_selector':
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ChangeOwnerSelector.html')
-                );
+                $template = 'Permission/ChangeOwnerSelector';
                 $users = BackendUtility::getUserNames();
                 $this->view->assignMultiple([
                     'elementId' => 'o_' . $conf['page'],
@@ -184,9 +169,7 @@ class PermissionController
                 ]);
                 break;
             case 'show_change_group_selector':
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ChangeGroupSelector.html')
-                );
+                $template = 'Permission/ChangeGroupSelector';
                 $groups = BackendUtility::getGroupNames();
                 $this->view->assignMultiple([
                     'elementId' => 'g_' . $conf['page'],
@@ -211,9 +194,7 @@ class PermissionController
                 $tce->process_datamap();
 
                 // Setup view
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ToggleEditLock.html')
-                );
+                $template = 'Permission/ToggleEditLock';
                 $this->view->assignMultiple([
                     'elementId' => 'el_' . $conf['page'],
                     'editLockState' => $editLockState,
@@ -236,9 +217,7 @@ class PermissionController
                 $tce->process_datamap();
 
                 // Setup and render view
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ChangeOwner.html')
-                );
+                $template = 'Permission/ChangeOwner';
                 $this->view->assignMultiple([
                     'userId' => $conf['new_owner_uid'],
                     'username' => BackendUtility::getUserNames(
@@ -264,9 +243,7 @@ class PermissionController
                 $tce->process_datamap();
 
                 // Setup and render view
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ChangeGroup.html')
-                );
+                $template = 'Permission/ChangeGroup';
                 $this->view->assignMultiple([
                     'groupId' => $conf['new_group_uid'],
                     'groupname' => BackendUtility::getGroupNames(
@@ -294,16 +271,14 @@ class PermissionController
                 $tce->process_datamap();
 
                 // Setup and render view
-                $this->view->setTemplatePathAndFilename(
-                    GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/ChangePermission.html')
-                );
+                $template = 'Permission/ChangePermission';
                 $this->view->assignMultiple([
                     'permission' => $conf['permissions'],
                     'scope' => $conf['who'],
                 ]);
         }
 
-        return $this->htmlResponse($this->view->render());
+        return $this->htmlResponse($this->view->render($template));
     }
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
@@ -327,7 +302,7 @@ class PermissionController
             ]),
         ]);
 
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render('Permission/Index'))->renderContent());
     }
 
     public function editAction(ServerRequestInterface $request): ResponseInterface
@@ -368,7 +343,7 @@ class PermissionController
             ]),
         ]);
 
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render('Permission/Edit'))->renderContent());
     }
 
     protected function updateAction(ServerRequestInterface $request): ResponseInterface
@@ -410,20 +385,12 @@ class PermissionController
             ->withHeader('location', $this->returnUrl);
     }
 
-    protected function initializeView(string $template = ''): void
+    protected function initializeView(): void
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplateRootPaths(['EXT:beuser/Resources/Private/Templates/Permission']);
-        $this->view->setPartialRootPaths(['EXT:beuser/Resources/Private/Partials/Permission']);
+        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $this->view->setTemplateRootPaths(['EXT:beuser/Resources/Private/Templates']);
+        $this->view->setPartialRootPaths(['EXT:beuser/Resources/Private/Partials']);
         $this->view->setLayoutRootPaths(['EXT:beuser/Resources/Private/Layouts']);
-        if ($template !== '') {
-            $this->view->setTemplatePathAndFilename(
-                GeneralUtility::getFileAbsFileName('EXT:beuser/Resources/Private/Templates/Permission/' . $template . '.html')
-            );
-            // Only add JS modules in case a template is given, as otherwise this may be a ajax request
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Beuser/Permissions');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        }
     }
 
     protected function registerDocHeaderButtons(string $action): void

@@ -29,7 +29,8 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Generation of image manipulation FormEngine element.
@@ -120,10 +121,7 @@ class ImageManipulationElement extends AbstractFormElement
         ],
     ];
 
-    /**
-     * @var StandaloneView
-     */
-    protected $templateView;
+    protected ViewInterface $templateView;
 
     /**
      * @var UriBuilder
@@ -138,10 +136,9 @@ class ImageManipulationElement extends AbstractFormElement
     {
         parent::__construct($nodeFactory, $data);
         // Would be great, if we could inject the view here, but since the constructor is in the interface, we can't
-        $this->templateView = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->templateView->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts/')]);
-        $this->templateView->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ImageManipulation/')]);
-        $this->templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageManipulationElement.html'));
+        $this->templateView = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $this->templateView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $this->templateView->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
     }
 
@@ -206,7 +203,7 @@ class ImageManipulationElement extends AbstractFormElement
             }
         }
         $this->templateView->assignMultiple($arguments);
-        $resultArray['html'] = $this->templateView->render();
+        $resultArray['html'] = $this->templateView->render('Form/ImageManipulationElement');
 
         return $resultArray;
     }

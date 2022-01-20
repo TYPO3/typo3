@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script class for the create-new script
@@ -87,31 +87,17 @@ class CreateFolderController
      */
     protected $moduleTemplate;
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ResourceFactory $resourceFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ResourceFactory $resourceFactory,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected UriBuilder $uriBuilder,
+        protected ResourceFactory $resourceFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->resourceFactory = $resourceFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
-     * Processes the request, currently everything is handled and put together via "main()"
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * Processes the request, currently everything is handled and put together via "main()".
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -122,8 +108,6 @@ class CreateFolderController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
      * @throws InsufficientFolderAccessPermissionsException
      * @throws \RuntimeException
      */
@@ -239,21 +223,12 @@ class CreateFolderController
         }
 
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:filelist/Resources/Private/Templates/File/CreateFolder.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
         $view->assignMultiple($assigns);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('File/CreateFolder'));
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

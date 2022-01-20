@@ -17,9 +17,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Abstract container has various methods used by the container classes
@@ -111,12 +110,9 @@ abstract class AbstractContainer extends AbstractNode
      */
     protected function renderTabMenu(array $menuItems, $domId, $defaultTabIndex = 1)
     {
-        $templatePath = ExtensionManagementUtility::extPath('backend')
-            . 'Resources/Private/Templates/DocumentTemplate/';
-
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename($templatePath . 'Tabs.html');
-        $view->setPartialRootPaths([$templatePath . 'Partials']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->assignMultiple([
             'id' => $domId,
             'items' => $menuItems,
@@ -124,6 +120,6 @@ abstract class AbstractContainer extends AbstractNode
             'wrapContent' => false,
             'storeLastActiveTab' => true,
         ]);
-        return $view->render();
+        return $view->render('Form/Tabs');
     }
 }

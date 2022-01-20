@@ -31,10 +31,9 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -93,46 +92,29 @@ class LinkValidatorController
     protected int $id;
     protected array $searchFields = [];
 
-    protected ?ModuleTemplate $moduleTemplate = null;
-    protected ?ServerRequestInterface $request = null;
-
-    protected Context $context;
-    protected UriBuilder $uriBuilder;
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected PagesRepository $pagesRepository;
-    protected BrokenLinkRepository $brokenLinkRepository;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ServerRequestInterface $request;
 
     public function __construct(
-        Context $context,
-        UriBuilder $uriBuilder,
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        PagesRepository $pagesRepository,
-        BrokenLinkRepository $brokenLinkRepository,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected Context $context,
+        protected UriBuilder $uriBuilder,
+        protected IconFactory $iconFactory,
+        protected PagesRepository $pagesRepository,
+        protected BrokenLinkRepository $brokenLinkRepository,
+        protected ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->context = $context;
-        $this->uriBuilder = $uriBuilder;
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->pagesRepository = $pagesRepository;
-        $this->brokenLinkRepository = $brokenLinkRepository;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->id = (int)($this->request->getQueryParams()['id'] ?? 0);
         $this->modTS = BackendUtility::getPagesTSconfig($this->id)['mod.']['linkvalidator.'] ?? [];
 
         // Get the current page record
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         if ($this->pageRecord !== []) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
 
         // Get the hook objects
@@ -143,9 +125,6 @@ class LinkValidatorController
             }
             $this->hookObjectsArr[$linkType] = $hookObject;
         }
-
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
 
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
         $this->validateSettings();
@@ -172,27 +151,21 @@ class LinkValidatorController
             }
         }
 
-        $this->moduleTemplate->setTitle($this->getModuleTitle());
+        $moduleTemplate->setTitle($this->getModuleTitle());
 
-        return new HtmlResponse(
-            $this->moduleTemplate->setContent(
-                $this->createView('LinkValidatorModule')->assignMultiple([
-                    'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
-                    'content' => $this->createModuleContent(),
-                ])->render()
-            )->renderContent()
-        );
+        $content = $this->createModuleContent($moduleTemplate);
+        return new HtmlResponse($moduleTemplate->setContent($content)->renderContent());
     }
 
     /**
      * Create tabs to split the report and the checkLink functions
      */
-    protected function createModuleContent(): string
+    protected function createModuleContent(ModuleTemplate $moduleTemplate): string
     {
         if ($this->getBackendUser()->workspace !== 0
             || !(($this->id && $this->pageRecord !== []) || (!$this->id && $this->getBackendUser()->isAdmin()))
         ) {
-            $this->moduleTemplate->addFlashMessage(
+            $moduleTemplate->addFlashMessage(
                 $this->getLanguageService()->getLL('no.access'),
                 $this->getLanguageService()->getLL('no.access.title'),
                 FlashMessage::ERROR
@@ -210,8 +183,12 @@ class LinkValidatorController
         }
 
         $languageService = $this->getLanguageService();
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:linkvalidator/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:linkvalidator/Resources/Private/Partials']);
         if ($action === 'report') {
-            $content = $this->createView('Report')->assignMultiple([
+            $content = $view->assignMultiple([
+                'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
                 'prefix' => 'report',
                 'selectedLevel' => $this->searchLevel['report'],
                 'options' => $this->getCheckOptions('report'),
@@ -222,18 +199,19 @@ class LinkValidatorController
                 'tableheadLinktarget' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linktarget', $languageService->getLL('list.tableHead.linktarget')),
                 'tableheadLinkmessage' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linkmessage', $languageService->getLL('list.tableHead.linkmessage')),
                 'tableheadLastcheck' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_lastcheck', $languageService->getLL('list.tableHead.lastCheck')),
-            ])->render();
+            ])->render('Backend/Report');
         } elseif ($action === 'check') {
-            $content = $this->createView('CheckLinks')->assignMultiple([
+            $content = $view->assignMultiple([
+                'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
                 'prefix' => 'check',
                 'selectedLevel' => $this->searchLevel['check'],
                 'options' => $this->getCheckOptions('check'),
-            ])->render();
+            ])->render('Backend/CheckLinks');
         } else {
             $content = '';
         }
 
-        $this->registerDocHeaderButtons($action);
+        $this->registerDocHeaderButtons($moduleTemplate, $action);
 
         // In case user is not allowed to change the tab (action), return content and skip action menu generation
         if (!($this->modTS['showCheckLinkTab'] ?? false)) {
@@ -253,7 +231,7 @@ class LinkValidatorController
             ],
         ];
 
-        $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('reportLinkvalidatorSelector');
         foreach ($actions as $action) {
             $menuItem = $actionMenu
@@ -265,7 +243,7 @@ class LinkValidatorController
             }
             $actionMenu->addMenuItem($menuItem);
         }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
+        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
 
         return $content;
     }
@@ -535,24 +513,15 @@ class LinkValidatorController
         return $options;
     }
 
-    protected function registerDocHeaderButtons(string $action): void
+    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate, string $action): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_linkvalidator')
             ->setDisplayName($this->getModuleTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
         $buttonBar->addButton($shortcutButton);
-    }
-
-    protected function createView(string $templateName): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:linkvalidator/Resources/Private/Layouts']);
-        $view->setTemplateRootPaths(['EXT:linkvalidator/Resources/Private/Templates/Backend']);
-        $view->setTemplate($templateName);
-        return $view;
     }
 
     protected function getModuleUri(string $action = null, array $additionalPramaters = []): string

@@ -28,11 +28,10 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\CMS\Recycler\Domain\Model\Tables;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
@@ -90,10 +89,6 @@ class RecyclerAjaxController
         $this->conf['records'] = $parsedBody['records'] ?? $queryParams['records'] ?? null;
         $this->conf['recursive'] = (bool)($parsedBody['recursive'] ?? $queryParams['recursive'] ?? false);
 
-        $extPath = ExtensionManagementUtility::extPath('recycler');
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setPartialRootPaths(['default' => $extPath . 'Resources/Private/Partials']);
-
         $content = null;
         // Determine the scripts to execute
         switch ($this->conf['action']) {
@@ -120,13 +115,15 @@ class RecyclerAjaxController
                 $allowDelete = $this->getBackendUser()->isAdmin()
                     ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
 
-                $view->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/Ajax/RecordsTable.html');
+                $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+                $view->setTemplateRootPaths(['EXT:recycler/Resources/Private/Templates']);
+                $view->setPartialRootPaths(['EXT:recycler/Resources/Private/Partials']);
                 $view->assign('showTableHeader', empty($this->conf['table']));
                 $view->assign('showTableName', $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin());
                 $view->assign('allowDelete', $allowDelete);
                 $view->assign('groupedRecords', $this->transform($deletedRowsArray));
                 $content = [
-                    'rows' => $view->render(),
+                    'rows' => $view->render('Ajax/RecordsTable'),
                     'totalItems' => $totalDeleted,
                 ];
                 break;

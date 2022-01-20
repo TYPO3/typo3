@@ -1,3 +1,7 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <f:if condition="{hasAccess}">
     <f:then>
         <div class="t3-new-content-element-wizard-inner">
@@ -11,7 +15,12 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.label')}</span>
-                            <input type="search" autocomplete="off" class="form-control t3js-contentWizard-search" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.placeholder')}">
+                            <input
+                                type="search"
+                                autocomplete="off"
+                                class="form-control t3js-contentWizard-search"
+                                placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.placeholder')}"
+                            />
                         </div>
                     </div>
                 </div>
@@ -28,3 +37,4 @@
         <h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
     </f:else>
 </f:if>
+</html>

@@ -49,7 +49,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
@@ -381,8 +381,8 @@ class PageLayoutController
         $content = '';
         $lang = $this->getLanguageService();
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
 
         // If page is a folder
         if ($this->pageinfo['doktype'] == PageRepository::DOKTYPE_SYSFOLDER) {
@@ -399,7 +399,7 @@ class PageLayoutController
                     'message' => $message,
                     'state' => InfoboxViewHelper::STATE_INFO,
                 ]);
-                $content .= $view->render();
+                $content .= $view->render('InfoBox');
             }
         } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
             $shortcutMode = (int)$this->pageinfo['shortcut_mode'];
@@ -458,7 +458,7 @@ class PageLayoutController
                 'message' => $message,
                 'state' => $state,
             ]);
-            $content .= $view->render();
+            $content .= $view->render('InfoBox');
         } elseif ($this->pageinfo['doktype'] === PageRepository::DOKTYPE_LINK) {
             if (empty($this->pageinfo['url'])) {
                 $view->assignMultiple([
@@ -466,7 +466,7 @@ class PageLayoutController
                     'message' => $lang->getLL('pageIsMisconfiguredExternalLinkMessage'),
                     'state' => InfoboxViewHelper::STATE_ERROR,
                 ]);
-                $content .= $view->render();
+                $content .= $view->render('InfoBox');
             } else {
                 $externalUrl = $this->pageRepository->getExtURL($this->pageinfo);
                 if (is_string($externalUrl)) {
@@ -477,7 +477,7 @@ class PageLayoutController
                         'message' => sprintf($lang->getLL('pageIsExternalLinkMessage'), $externalUrlHtml),
                         'state' => InfoboxViewHelper::STATE_INFO,
                     ]);
-                    $content .= $view->render();
+                    $content .= $view->render('InfoBox');
                 }
             }
         }
@@ -493,7 +493,7 @@ class PageLayoutController
                 'message' => $message,
                 'state' => InfoboxViewHelper::STATE_INFO,
             ]);
-            $content .= $view->render();
+            $content .= $view->render('InfoBox');
         } else {
             $links = $this->getPageLinksWhereContentIsAlsoShownOn($this->pageinfo['uid']);
             if (!empty($links)) {
@@ -503,7 +503,7 @@ class PageLayoutController
                     'message' => $message,
                     'state' => InfoboxViewHelper::STATE_INFO,
                 ]);
-                $content .= $view->render();
+                $content .= $view->render('InfoBox');
             }
         }
         return $content;
@@ -620,14 +620,14 @@ class PageLayoutController
         } else {
             $content .= ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
             $content .= '<h1>' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '</h1>';
-            $view = GeneralUtility::makeInstance(StandaloneView::class);
-            $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+            $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
             $view->assignMultiple([
                 'title' => $this->getLanguageService()->getLL('clickAPage_header'),
                 'message' => $this->getLanguageService()->getLL('clickAPage_content'),
                 'state' => InfoboxViewHelper::STATE_INFO,
             ]);
-            $content .= $view->render();
+            $content .= $view->render('InfoBox');
         }
         // Set content
         $this->moduleTemplate->setContent($content);

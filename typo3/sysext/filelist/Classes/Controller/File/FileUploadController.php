@@ -74,24 +74,13 @@ class FileUploadController
      */
     protected $moduleTemplate;
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ResourceFactory $resourceFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ResourceFactory $resourceFactory,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected UriBuilder $uriBuilder,
+        protected ResourceFactory $resourceFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->resourceFactory = $resourceFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**

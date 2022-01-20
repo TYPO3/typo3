@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for rendering the file editing screen
@@ -88,21 +88,12 @@ class EditFileController
      */
     protected $moduleTemplate;
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ResourceFactory $resourceFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ResourceFactory $resourceFactory,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected ResourceFactory $resourceFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->resourceFactory = $resourceFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -261,14 +252,10 @@ class EditFileController
         }
 
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:filelist/Resources/Private/Templates/File/EditFile.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
         $view->assignMultiple($assigns);
-        $pageContent = $view->render();
+        $pageContent = $view->render('File/EditFile');
 
         // Hook: after compiling the output
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'] ?? [] as $hookFunction) {

@@ -48,8 +48,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\FileList;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -68,31 +67,18 @@ class FileListController implements LoggerAwareInterface
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
 
-    protected UriBuilder $uriBuilder;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected ResourceFactory $resourceFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ResponseFactoryInterface $responseFactory;
-
     protected ?ModuleTemplate $moduleTemplate = null;
-    protected ?ViewInterface $view = null;
+    protected ?BackendTemplateView $view = null;
     protected ?FileList $filelist = null;
 
     public function __construct(
-        UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        ResourceFactory $resourceFactory,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ResponseFactoryInterface $responseFactory
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer,
+        protected IconFactory $iconFactory,
+        protected ResourceFactory $resourceFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected ResponseFactoryInterface $responseFactory,
     ) {
-        $this->uriBuilder = $uriBuilder;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->resourceFactory = $resourceFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->responseFactory = $responseFactory;
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -197,7 +183,7 @@ class FileListController implements LoggerAwareInterface
         // does not have necessary permissions. Just render and return the "empty" view.
         if ($this->folderObject === null) {
             return $this->htmlResponse(
-                $this->moduleTemplate->setContent($this->view->render())->renderContent()
+                $this->moduleTemplate->setContent($this->view->render('File/List'))->renderContent()
             );
         }
 
@@ -218,7 +204,7 @@ class FileListController implements LoggerAwareInterface
         $this->view->assign('showClipboardPanel', (bool)($this->MOD_SETTINGS['clipBoard'] ?? false));
 
         // Register drag-uploader
-        $this->registerDrapUploader();
+        $this->registerDragUploader();
 
         // Register the display thumbnails / show clipboard checkboxes
         $this->registerFileListCheckboxes();
@@ -247,19 +233,14 @@ class FileListController implements LoggerAwareInterface
 
         // Render view and return the response
         return $this->htmlResponse(
-            $this->moduleTemplate->setContent($this->view->render())->renderContent()
+            $this->moduleTemplate->setContent($this->view->render('File/List'))->renderContent()
         );
     }
 
     protected function initializeView(): void
     {
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates/FileList']);
-        $this->view->setPartialRootPaths(['EXT:filelist/Resources/Private/Partials']);
-        $this->view->setLayoutRootPaths(['EXT:filelist/Resources/Private/Layouts']);
-        $this->view->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName('EXT:filelist/Resources/Private/Templates/File/List.html')
-        );
+        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $this->view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
         $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
 
         // @todo: These modules should be merged into one module
@@ -437,7 +418,7 @@ class FileListController implements LoggerAwareInterface
         }
     }
 
-    protected function registerDrapUploader(): void
+    protected function registerDragUploader(): void
     {
         // Include DragUploader only if we have write access
         if ($this->folderObject->checkActionPermission('write')

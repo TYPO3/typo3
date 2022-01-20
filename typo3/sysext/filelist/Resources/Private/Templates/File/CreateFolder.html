@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <div class="filelist-create-folder-main" data-self-url="{selfUrl}" data-confirm-title="{confirmTitle}" data-confirm-text="{confirmText}">
     <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_newfolder.php.pagetitle" /></h1>
     <f:if condition="{moduleUrlTceFile}">
@@ -54,9 +59,9 @@
                                 </div>
                                 <div class="help-block">
                                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.allowedProviders" /><br>
-                                        <f:for each="{fileExtList}" as="fileExt">
-                                            <span class="label label-success">{fileExt}</span>
-                                        </f:for>
+                                    <f:for each="{fileExtList}" as="fileExt">
+                                        <span class="label label-success">{fileExt}</span>
+                                    </f:for>
                                 </div>
                             </div>
                         </div>
@@ -98,3 +103,5 @@
         </f:if>
     </f:if>
 </div>
+
+</html>

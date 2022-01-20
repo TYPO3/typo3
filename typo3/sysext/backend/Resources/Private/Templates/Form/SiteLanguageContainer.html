@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 <typo3-formengine-container-sitelanguage identifier="{nameObject}">
     <div {formGroupAttributes -> f:format.raw()}>
         <f:format.raw>{fieldInformation}</f:format.raw>
@@ -22,3 +27,4 @@
         <input type="hidden" class="inlineRecord" name="{nameForm}" value="{childRecordUids}" data-formengine-validation-rules="{validationRules}" />
     </div>
 </typo3-formengine-container-sitelanguage>
+</html>

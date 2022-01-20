@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for rendering the move-element wizard display
@@ -48,25 +48,16 @@ class MoveElementController
     protected int $makeCopy = 0;
     protected string $perms_clause = '';
 
-    protected ?ModuleTemplate $moduleTemplate = null;
-
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -80,11 +71,11 @@ class MoveElementController
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         // Setting up the buttons and markers for docheader
-        $this->getButtons();
+        $this->getButtons($moduleTemplate);
         // Build the <body> for the module
-        $this->moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
-        $this->moduleTemplate->setContent($this->renderContent());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
+        $moduleTemplate->setContent($this->renderContent());
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -173,28 +164,18 @@ class MoveElementController
         }
 
         // Rendering of the output via fluid
-        $view = $this->initializeView();
-        $view->assignMultiple($assigns);
-        return $view->render();
-    }
-
-    protected function initializeView(): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/ContentElement/MoveElement.html'
-        ));
-        return $view;
+        $view->assignMultiple($assigns);
+        return $view->render('ContentElement/MoveElement');
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons()
+    protected function getButtons(ModuleTemplate $moduleTemplate): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
             if ($this->table === 'pages') {
                 $cshButton = $buttonBar->makeHelpButton()

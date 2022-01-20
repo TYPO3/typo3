@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Controller\Page;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -34,7 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * "Create multiple pages" controller
@@ -43,31 +42,18 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class NewMultiplePagesController
 {
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    protected IconFactory $iconFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
-    public function __construct(IconFactory $iconFactory, ModuleTemplateFactory $moduleTemplateFactory)
-    {
-        $this->iconFactory = $iconFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    public function __construct(
+        protected IconFactory $iconFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+    ) {
     }
 
     /**
-     * Main function Handling input variables and rendering main view
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface Response
+     * Main function Handling input variables and rendering main view.
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $pageUid = (int)$request->getQueryParams()['id'];
 
@@ -75,13 +61,13 @@ class NewMultiplePagesController
         $pageRecord = BackendUtility::readPageAccess($pageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         if (!is_array($pageRecord)) {
             // User has no permission on parent page, should not happen, just render an empty page
-            $this->moduleTemplate->setContent('');
-            return new HtmlResponse($this->moduleTemplate->renderContent());
+            $moduleTemplate->setContent('');
+            return new HtmlResponse($moduleTemplate->renderContent());
         }
 
         // Doc header handling
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('pages_new')
             ->setFieldName('pages_new');
@@ -96,10 +82,8 @@ class NewMultiplePagesController
         $buttonBar->addButton($cshButton)->addButton($viewButton);
 
         // Main view setup
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/Page/NewPages.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
 
         $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));
         $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions->createPagePermissionIsGranted();
@@ -133,8 +117,8 @@ class NewMultiplePagesController
             $view->assign('hasNewPagesData', $hasNewPagesData);
         }
 
-        $this->moduleTemplate->setContent($view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $moduleTemplate->setContent($view->render('Page/NewPages'));
+        return new HtmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -267,22 +251,12 @@ class NewMultiplePagesController
             ->fetchAllAssociative();
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * Returns current BE user
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

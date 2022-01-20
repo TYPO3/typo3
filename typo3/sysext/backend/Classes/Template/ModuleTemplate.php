@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -94,7 +94,7 @@ class ModuleTemplate
      *
      * @var string
      */
-    protected $templateFile = 'Module.html';
+    protected $templateFile = 'ModuleTemplate/Module.html';
 
     /**
      * Fluid Standalone View
@@ -503,11 +503,9 @@ class ModuleTemplate
     public function getDynamicTabMenu(array $menuItems, $domId, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
-        $templatePath = ExtensionManagementUtility::extPath('backend')
-            . 'Resources/Private/Templates/DocumentTemplate/';
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename($templatePath . ($collapsible ? 'Collapse.html' : 'Tabs.html'));
-        $view->setPartialRootPaths([$templatePath . 'Partials']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->assignMultiple([
             'id' => 'DTM-' . md5($domId),
             'items' => $menuItems,
@@ -515,7 +513,7 @@ class ModuleTemplate
             'wrapContent' => $wrapContent,
             'storeLastActiveTab' => $storeLastActiveTab,
         ]);
-        return $view->render();
+        return $view->render($collapsible ? 'ModuleTemplate/Collapse' : 'ModuleTemplate/Tabs');
     }
 
     /*******************************************

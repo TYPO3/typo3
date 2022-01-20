@@ -1,3 +1,9 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <h1><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement" /></h1>
 <h3 class="mb-2">
     <span {recordTooltip -> f:format.raw()}><core:iconForRecord table="{table}" row="{elRow}" /></span>
@@ -44,3 +50,5 @@
     </f:if>
 </div>
 {positionTree -> f:format.raw()}
+
+</html>

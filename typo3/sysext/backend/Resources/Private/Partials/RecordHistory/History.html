@@ -1,4 +1,9 @@
-{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:changes')}</h2>
 <div class="row">
@@ -90,3 +95,5 @@
         <f:be.infobox state="-1">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:differenceMsg') -> f:format.raw()}</f:be.infobox>
     </div>
 </div>
+
+</html>

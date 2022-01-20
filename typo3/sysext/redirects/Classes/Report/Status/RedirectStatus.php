@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Redirects\Report\Status;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -49,15 +49,13 @@ class RedirectStatus implements StatusProviderInterface
         $registry = GeneralUtility::makeInstance(Registry::class);
         $reportedConflicts = $registry->get('tx_redirects', 'conflicting_redirects', []);
         $count = count($reportedConflicts);
-
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:redirects/Resources/Private/Templates/Report/RedirectStatus.html'));
-
         if ($count > 0) {
             $value = sprintf($this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.count'), $count);
             $severity = Status::WARNING;
         }
 
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:redirects/Resources/Private/Templates']);
         $view->assignMultiple([
             'count' => $count,
             'reportedConflicts' => $reportedConflicts,
@@ -67,7 +65,7 @@ class RedirectStatus implements StatusProviderInterface
             Status::class,
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects'),
             $value,
-            $view->render(),
+            $view->render('Report/RedirectStatus'),
             $severity
         );
     }

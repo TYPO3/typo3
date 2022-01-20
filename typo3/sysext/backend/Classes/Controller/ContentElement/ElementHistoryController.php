@@ -33,19 +33,16 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Controller for showing the history module of TYPO3s backend
- * @see \TYPO3\CMS\Backend\History\RecordHistory
+ * Controller for showing the history module of TYPO3s backend.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ElementHistoryController
 {
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
+    protected BackendTemplateView $view;
 
     /**
      * @var RecordHistory
@@ -76,18 +73,11 @@ class ElementHistoryController
      */
     protected string $returnUrl = '';
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->view = $this->initializeView();
     }
 
@@ -178,7 +168,7 @@ class ElementHistoryController
         // Setting up the buttons and markers for docheader
         $this->getButtons();
         // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render());
+        $this->moduleTemplate->setContent($this->view->render('RecordHistory/Main'));
 
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
@@ -453,19 +443,12 @@ class ElementHistoryController
 
     /**
      * Returns a new standalone view, shorthand function
-     *
-     * @return StandaloneView
      */
-    protected function initializeView()
+    protected function initializeView(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/RecordHistory/Main.html'));
-
-        $view->getRequest()->setControllerExtensionName('Backend');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 

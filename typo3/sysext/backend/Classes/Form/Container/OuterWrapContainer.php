@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Render header and footer row.
@@ -115,10 +115,8 @@ class OuterWrapContainer extends AbstractContainer
             }
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/OuterWrapContainer.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
 
         $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
             ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;
@@ -149,7 +147,7 @@ class OuterWrapContainer extends AbstractContainer
             'newOrUid' => $newOrUid,
             'isNewRecord' => $this->data['command'] === 'new',
         ]);
-        $result['html'] = $view->render();
+        $result['html'] = $view->render('Form/OuterWrapContainer');
         return $result;
     }
 

@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Wizard for rendering image manipulation view
@@ -32,30 +32,17 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class ImageManipulationController
 {
-    /**
-     * @var StandaloneView
-     */
-    private $templateView;
+    private BackendTemplateView $templateView;
 
-    /**
-     * @param StandaloneView $templateView
-     */
-    public function __construct(StandaloneView $templateView = null)
+    public function __construct()
     {
-        if (!$templateView) {
-            $templateView = GeneralUtility::makeInstance(StandaloneView::class);
-            $templateView->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts/')]);
-            $templateView->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials/ImageManipulation/')]);
-            $templateView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/ImageManipulation/ImageManipulationWizard.html'));
-        }
+        $templateView = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $templateView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
         $this->templateView = $templateView;
     }
 
     /**
      * Returns the HTML for the wizard inside the modal
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface $response
      */
     public function getWizardContent(ServerRequestInterface $request): ResponseInterface
     {
@@ -69,12 +56,11 @@ class ImageManipulationController
                 } catch (FileDoesNotExistException $e) {
                 }
             }
-            $viewData = [
+            $this->templateView->assignMultiple([
                 'image' => $image,
                 'cropVariants' => $parsedBody['cropVariants'],
-            ];
-            $content = $this->templateView->renderSection('Main', $viewData);
-            return new HtmlResponse($content);
+            ]);
+            return new HtmlResponse($this->templateView->render('Form/ImageManipulationWizard'));
         }
         return new HtmlResponse('', 403);
     }

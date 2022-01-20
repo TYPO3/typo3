@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Site languages entry container
@@ -164,10 +164,8 @@ class SiteLanguageContainer extends AbstractContainer
             }
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/SiteLanguageContainer.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->assignMultiple([
             'nameObject' => $nameObject,
             'nameForm' => $nameForm,
@@ -201,7 +199,7 @@ class SiteLanguageContainer extends AbstractContainer
             ]),
         ]);
 
-        $resultArray['html'] = $view->render();
+        $resultArray['html'] = $view->render('Form/SiteLanguageContainer');
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/Container/SiteLanguageContainer');
 
         return $resultArray;

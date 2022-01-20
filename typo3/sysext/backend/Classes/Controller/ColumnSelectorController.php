@@ -24,7 +24,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -48,11 +48,8 @@ class ColumnSelectorController
         't3ver_oid', // Not relevant in listing
     ];
 
-    protected ResponseFactoryInterface $responseFactory;
-
-    public function __construct(ResponseFactoryInterface $responseFactory)
+    public function __construct(protected ResponseFactoryInterface $responseFactory)
     {
-        $this->responseFactory = $responseFactory;
     }
 
     /**
@@ -99,11 +96,8 @@ class ColumnSelectorController
             throw new \RuntimeException('No table was given for selecting columns', 1625169125);
         }
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:backend/Resources/Private/Templates/ColumnSelector.html'
-        ));
-
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->assignMultiple([
             'table' => $table,
             'columns' => $this->getColumns($table, (int)($queryParams['id'] ?? 0)),
@@ -229,7 +223,7 @@ class ColumnSelectorController
             ->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8');
 
-        $response->getBody()->write($view->render());
+        $response->getBody()->write($view->render('ColumnSelector'));
         return $response;
     }
 

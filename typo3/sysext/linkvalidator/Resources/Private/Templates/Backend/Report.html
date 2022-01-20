@@ -1,18 +1,42 @@
-<f:layout name="TabContent" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="OptionsTitle">
-    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.statistics.header" />
-</f:section>
-<f:section name="levelTitle">
-    <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.func.title" />
-</f:section>
-<f:section name="Main">
-    <h3><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.header" /></h3>
-    <f:if condition="{brokenLinks -> f:count()}">
-        <f:then>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
+<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Linkvalidator/Linkvalidator'}"/>
+
+<form method="post" id="linkValidatorReportController">
+    <div id="linkvalidator-modfuncreport">
+        <f:if condition="{title}">
+            <h1>{title}</h1>
+        </f:if>
+        <div class="row row-cols-auto align-items-start t3js-linkvalidator-settings">
+            <div class="col">
+                <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.statistics.header" /></h4>
+                <f:render partial="CheckOptions" arguments="{_all}" />
+            </div>
+            <div class="col mb-3">
+                <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:report.func.title" /></h4>
+                <f:render partial="LevelSelector" arguments="{_all}" />
+            </div>
+            <div class="col-12">
+                <input
+                    type="submit"
+                    class="btn btn-default t3js-linkvalidator-action-button"
+                    name="refreshLinkList"
+                    disabled
+                    value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh')}"
+                    data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh-link-list')}"
+                />
+            </div>
+        </div>
+
+        <h3><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.header" /></h3>
+        <f:if condition="{brokenLinks -> f:count()}">
+            <f:then>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
                         <tr>
                             <th>{tableheadElement -> f:format.raw()}</th>
                             <th>{tableheadPath -> f:format.raw()}</th>
@@ -22,8 +46,8 @@
                             <th>{tableheadLastcheck -> f:format.raw()}</th>
                             <th></th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         <f:for each="{brokenLinks}" as="item">
                             <tr class="text-break">
                                 <td>
@@ -70,17 +94,15 @@
                                 </td>
                             </tr>
                         </f:for>
-                    </tbody>
-                </table>
-            </div>
-        </f:then>
-        <f:else>
-            <f:flashMessages queueIdentifier="linkvalidator" />
-        </f:else>
-    </f:if>
-</f:section>
-<f:section name="Button">
-    <input type="submit" class="btn btn-default t3js-linkvalidator-action-button" name="refreshLinkList" disabled
-        value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh')}"
-        data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_refresh-link-list')}"/>
-</f:section>
+                        </tbody>
+                    </table>
+                </div>
+            </f:then>
+            <f:else>
+                <f:flashMessages queueIdentifier="linkvalidator" />
+            </f:else>
+        </f:if>
+    </div>
+</form>
+
+</html>

@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for the New Content element wizard
@@ -81,26 +81,12 @@ class NewContentElementController
      */
     protected $pageInfo;
 
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
-
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected UriBuilder $uriBuilder,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -130,9 +116,6 @@ class NewContentElementController
         // Getting the current page and receiving access information
         $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        // Initializing the view by forwarding the requested action as template name
-        $this->view = $this->getFluidTemplateObject(ucfirst($action));
-
         // Call action and return the response
         return $this->{$action . 'Action'}($request);
     }
@@ -142,34 +125,16 @@ class NewContentElementController
      */
     public function wizardAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->prepareWizardContent($request);
-        return new HtmlResponse($this->view->render());
-    }
+        $view = $this->getFluidTemplateObject();
 
-    /**
-     * Renders the position map
-     */
-    public function positionMapAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->preparePositionMap($request);
-        return new HtmlResponse($this->view->render());
-    }
-
-    /**
-     * Creating the module output.
-     *
-     * @throws \UnexpectedValueException
-     */
-    protected function prepareWizardContent(ServerRequestInterface $request): void
-    {
         $hasAccess = $this->id && $this->pageInfo !== [];
-        $this->view->assign('hasAccess', $hasAccess);
+        $view->assign('hasAccess', $hasAccess);
         if (!$hasAccess) {
-            return;
+            return new HtmlResponse($view->render());
         }
         // Whether position selection must be performed (no colPos was yet defined)
         $positionSelection = !isset($this->colPos);
-        $this->view->assign('positionSelection', $positionSelection);
+        $view->assign('positionSelection', $positionSelection);
 
         // Get processed wizard items from configuration
         $wizardItems = $this->getWizards();
@@ -255,28 +220,31 @@ class NewContentElementController
                     ], true);
                 }
 
-                $menuItems[$key]['content'] .= $this->getFluidTemplateObject('MenuItem')->assignMultiple($viewVariables)->render();
+                $menuItems[$key]['content'] .= $this->getFluidTemplateObject()->assignMultiple($viewVariables)->render('NewContentElement/MenuItem');
             }
         }
 
-        $this->view->assign('renderedTabs', $this->moduleTemplateFactory->create($request)->getDynamicTabMenu(
+        $view->assign('renderedTabs', $this->moduleTemplateFactory->create($request)->getDynamicTabMenu(
             $menuItems,
             'new-content-element-wizard'
         ));
+
+        return new HtmlResponse($view->render('NewContentElement/Wizard'));
     }
 
     /**
-     * Creating the position map, necessary in case the position of the element has to be defined
+     * Renders the position map
      */
-    protected function preparePositionMap(ServerRequestInterface $request): void
+    public function positionMapAction(ServerRequestInterface $request): ResponseInterface
     {
-        // Init position map object
         $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
         $posMap->R_URI =  $this->R_URI;
-        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id));
+        $view = $this->getFluidTemplateObject();
+        $view->assign('posMap', $posMap->printContentElementColumns($this->id));
+        return new HtmlResponse($view->render('NewContentElement/PositionMap'));
     }
 
     /**
@@ -469,38 +437,25 @@ class NewContentElementController
         }
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @param string $templateName
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $templateName): StandaloneView
+    protected function getFluidTemplateObject(): BackendTemplateView
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/NewContentElement/' . $templateName . '.html'));
-        $view->getRequest()->setControllerExtensionName('Backend');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         return $view;
     }
 
     /**
-     * Provide information about the current page making use of the wizard
-     *
-     * @return array
+     * Provide information about the current page making use of the wizard.
      */
     public function getPageInfo(): array
     {
@@ -508,9 +463,7 @@ class NewContentElementController
     }
 
     /**
-     * Provide information about the column position of the button that triggered the wizard
-     *
-     * @return int|null
+     * Provide information about the column position of the button that triggered the wizard.
      */
     public function getColPos(): ?int
     {
@@ -518,9 +471,7 @@ class NewContentElementController
     }
 
     /**
-     * Provide information about the language used while triggering the wizard
-     *
-     * @return int
+     * Provide information about the language used while triggering the wizard.
      */
     public function getSysLanguage(): int
     {
@@ -528,9 +479,7 @@ class NewContentElementController
     }
 
     /**
-     * Provide information about the element to position the new element after (uid) or into (pid)
-     *
-     * @return int
+     * Provide information about the element to position the new element after (uid) or into (pid).
      */
     public function getUidPid(): int
     {

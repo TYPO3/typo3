@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
@@ -157,11 +157,8 @@ class Status implements RequestAwareReportInterface
         }
         unset($statuses);
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:reports/Resources/Private/Templates/StatusReport.html'
-        ));
-
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,
             'severityClassMapping' => [
@@ -171,7 +168,7 @@ class Status implements RequestAwareReportInterface
                 ReportStatus::WARNING => 'warning',
                 ReportStatus::ERROR => 'danger',
             ],
-        ])->render();
+        ])->render('StatusReport');
     }
 
     /**

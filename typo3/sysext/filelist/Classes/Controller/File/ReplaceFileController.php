@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for the replace-file form
@@ -68,24 +68,13 @@ class ReplaceFileController
      */
     protected $moduleTemplate;
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ResourceFactory $resourceFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ResourceFactory $resourceFactory,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected UriBuilder $uriBuilder,
+        protected ResourceFactory $resourceFactory,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->resourceFactory = $resourceFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -184,14 +173,10 @@ class ReplaceFileController
         }
 
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:filelist/Resources/Private/Templates/File/ReplaceFile.html'
-        ));
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:filelist/Resources/Private/Templates')]);
         $view->assignMultiple($assigns);
-        $this->moduleTemplate->setContent($view->render());
+        $this->moduleTemplate->setContent($view->render('File/ReplaceFile'));
     }
 
     /**
