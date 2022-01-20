@@ -269,7 +269,7 @@ case ${TEST_SUITE} in
         case ${DBMS} in
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run acceptance_backend_mysql55
+                docker-compose run acceptance_backend_mysql80
                 SUITE_EXIT_CODE=$?
                 ;;
             mariadb)
@@ -322,7 +322,7 @@ case ${TEST_SUITE} in
                 ;;
             mysql)
                 echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run functional_mysql55
+                docker-compose run functional_mysql80
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
