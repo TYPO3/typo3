@@ -188,7 +188,6 @@ class FormResultCompiler
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
         }
 
-        $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)
         $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
         $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);

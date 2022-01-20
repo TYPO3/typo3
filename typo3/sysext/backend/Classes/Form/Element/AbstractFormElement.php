@@ -342,7 +342,7 @@ abstract class AbstractFormElement extends AbstractNode
         } else {
             // @todo deprecate inline JavaScript in TYPO3 v12.0
             $resultArray['additionalJavaScriptPost'][] = sprintf(
-                'TBE_EDITOR.customEvalFunctions[%s] = function(value) { %s };',
+                'var TBE_EDITOR = TBE_EDITOR || { customEvalFunctions: {} }; TBE_EDITOR.customEvalFunctions[%s] = function(value) { %s };',
                 GeneralUtility::quoteJSvalue($name),
                 $javaScriptEvaluation
             );
