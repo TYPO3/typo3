@@ -144,11 +144,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public $is_permanent = false;
 
     /**
-     * @var bool
-     */
-    protected $loginHidden = false;
-
-    /**
      * Will force the session cookie to be set every time (lifetime must be 0).
      * @var bool
      */
@@ -317,7 +312,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Initializes the front-end user groups for the context API,
      * based on the user groups and the logged-in state.
      *
-     * @param bool $respectUserGroups used with the $TSFE->loginAllowedInBranch flag to disable the inclusion of the users' groups
+     * @param bool $respectUserGroups used to disable the inclusion of the users' groups
      * @return UserAspect
      */
     public function createUserAspect(bool $respectUserGroups = true): UserAspect
@@ -399,7 +394,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 // Remove session-data
                 $this->removeSessionData();
                 // Remove cookie if not logged in as the session data is removed as well
-                if (empty($this->user['uid']) && !$this->loginHidden && $this->isCookieSet()) {
+                if (empty($this->user['uid']) && $this->isCookieSet()) {
                     $this->removeCookie($this->name);
                 }
             } elseif (!$this->userSessionManager->isSessionPersisted($this->userSession)) {
@@ -421,8 +416,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $this->userSession->overrideData([]);
         if ($this->userSessionManager->isSessionPersisted($this->userSession)) {
-            // Remove session record if $this->user is empty is if session is anonymous
-            if ((empty($this->user) && !$this->loginHidden) || $this->userSession->isAnonymous()) {
+            // Remove session record if $this->user is empty or in case the session is anonymous
+            if (empty($this->user) || $this->userSession->isAnonymous()) {
                 $this->userSessionManager->removeSession($this->userSession);
             } else {
                 $this->userSession = $this->userSessionManager->updateSession($this->userSession);
@@ -512,18 +507,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $this->setSessionData($key, $data);
         $this->storeSessionData();
-    }
-
-    /**
-     * Hide the current login
-     *
-     * This is used by the fe_login_mode feature for pages.
-     * A current login is unset, but we remember that there has been one.
-     */
-    public function hideActiveLogin()
-    {
-        $this->user = null;
-        $this->loginHidden = true;
     }
 
     /**

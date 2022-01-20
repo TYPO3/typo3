@@ -97,8 +97,6 @@ class UserAspect implements AspectInterface
      * A user is logged in if the user has a UID, but does not care about groups.
      *
      * For frontend purposes, it is possible to e.g. simulate groups, but this would still be defined as "not logged in".
-     * This is also possible in frontend where there are cases that a user can be marked as NOT logged IN, but
-     * be logged in but the groups are explicitly NOT defined (see pages.fe_login_mode)
      *
      * For backend, only the check on the user ID is used.
      *

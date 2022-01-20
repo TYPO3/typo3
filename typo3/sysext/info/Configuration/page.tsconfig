@@ -9,7 +9,7 @@ mod.web_info.fieldDefinitions {
     }
     2 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2
-        fields = title,uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot,fe_login_mode
+        fields = title,uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot
     }
     3 {
         label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_layouts

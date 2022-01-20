@@ -102,7 +102,6 @@ CREATE TABLE pages (
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
 	mount_pid_ol tinyint(4) DEFAULT '0' NOT NULL,
 	l18n_cfg tinyint(4) DEFAULT '0' NOT NULL,
-	fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
 	backend_layout varchar(64) DEFAULT '' NOT NULL,
 	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
 	tsconfig_includes text,

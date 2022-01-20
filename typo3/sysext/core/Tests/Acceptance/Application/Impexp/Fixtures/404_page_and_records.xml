@@ -126,7 +126,6 @@
 				<field index="mount_pid" type="integer">0</field>
 				<field index="mount_pid_ol" type="integer">0</field>
 				<field index="l18n_cfg" type="integer">0</field>
-				<field index="fe_login_mode" type="integer">0</field>
 				<field index="backend_layout"></field>
 				<field index="backend_layout_next_level"></field>
 				<field index="tsconfig_includes"></field>

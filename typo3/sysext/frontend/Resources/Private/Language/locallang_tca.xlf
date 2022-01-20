@@ -375,27 +375,6 @@
 			<trans-unit id="pages.l18n_cfg.I.2a" resname="pages.l18n_cfg.I.2a">
 				<source>Show page even if no translation exists</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_login_mode" resname="pages.fe_login_mode">
-				<source>Login Mode</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode_formlabel" resname="pages.fe_login_mode_formlabel">
-				<source>Login Behaviour</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disable" resname="pages.fe_login_mode.disable">
-				<source>Disable</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enable" resname="pages.fe_login_mode.enable">
-				<source>Enable login</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableAll" resname="pages.fe_login_mode.disableAll">
-				<source>Disable login</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.disableGroups" resname="pages.fe_login_mode.disableGroups">
-				<source>Enable user login, Disable usergroup login</source>
-			</trans-unit>
-			<trans-unit id="pages.fe_login_mode.enableAgain" resname="pages.fe_login_mode.enableAgain">
-				<source>Re-Enable login</source>
-			</trans-unit>
 			<trans-unit id="pages.storage_pid_formlabel" resname="pages.storage_pid_formlabel">
 				<source>Page</source>
 			</trans-unit>

@@ -96,7 +96,6 @@ class RootlineUtility
         'is_siteroot',
         'mount_pid',
         'mount_pid_ol',
-        'fe_login_mode',
         'backend_layout_next_level',
     ];
 

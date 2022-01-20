@@ -200,19 +200,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $fe_user;
 
     /**
-     * Shows whether logins are allowed in branch
-     * @var bool
-     */
-    protected $loginAllowedInBranch = true;
-
-    /**
-     * Shows specific mode (all or groups)
-     * @var string
-     * @internal
-     */
-    protected $loginAllowedInBranch_mode = '';
-
-    /**
      * Value that contains the simulated usergroup if any
      * @var int
      * @internal only to be used in AdminPanel, and within TYPO3 Core
@@ -255,13 +242,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @internal
      */
     protected $cacheExpires = 0;
-
-    /**
-     * Set if cache headers allowing caching are sent.
-     * @var bool
-     * @internal
-     */
-    protected $isClientCachable = false;
 
     /**
      * Used by template fetching system. This array is an identification of
@@ -616,7 +596,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initUserGroups()
     {
-        $userAspect = $this->fe_user->createUserAspect((bool)$this->loginAllowedInBranch);
+        $userAspect = $this->fe_user->createUserAspect();
         $this->context->setAspect('frontend.user', $userAspect);
     }
 
@@ -689,18 +669,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->clear_preview();
             $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
             // Fetching the id again, now with the preview settings reset.
-            $this->fetch_the_id($request);
-        }
-        // Checks if user logins are blocked for a certain branch and if so, will unset user login and re-fetch ID.
-        $this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
-        // Logins are not allowed, but there is a login, so will we run this.
-        if (!$this->loginAllowedInBranch && $this->isUserOrGroupSet()) {
-            // Clear out user, and the group will be re-set in >initUserGroups() due to
-            // $this->loginAllowedInBranch = false
-            if ($this->loginAllowedInBranch_mode === 'all') {
-                $this->fe_user->hideActiveLogin();
-            }
-            // Fetching the id again, now with the preview settings reset and respecting $this->loginAllowedInBranch = false
             $this->fetch_the_id($request);
         }
         // Final cleaning.
@@ -1333,35 +1301,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function checkPagerecordForIncludeSection(array $row): bool
     {
         return !$row['extendToSubpages'] || $this->checkEnableFields($row);
-    }
-
-    /**
-     * Checks if logins are allowed in the current branch of the page tree. Traverses the full root line and returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
-     *
-     * @return bool returns TRUE if logins are OK, otherwise FALSE (and then the login user must be unset!)
-     */
-    public function checkIfLoginAllowedInBranch()
-    {
-        // Initialize:
-        $c = count($this->rootLine);
-        $loginAllowed = true;
-        // Traverse root line from root and outwards:
-        for ($a = 0; $a < $c; $a++) {
-            // If a value is set for login state:
-            if ($this->rootLine[$a]['fe_login_mode'] > 0) {
-                // Determine state from value:
-                if ((int)$this->rootLine[$a]['fe_login_mode'] === 1) {
-                    $loginAllowed = false;
-                    $this->loginAllowedInBranch_mode = 'all';
-                } elseif ((int)$this->rootLine[$a]['fe_login_mode'] === 3) {
-                    $loginAllowed = false;
-                    $this->loginAllowedInBranch_mode = 'groups';
-                } else {
-                    $loginAllowed = true;
-                }
-            }
-        }
-        return $loginAllowed;
     }
 
     /**
@@ -2786,11 +2725,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Getting status whether we can send cache control headers for proxy caching:
         $doCache = $this->isStaticCacheble();
-        // This variable will be TRUE unless cache headers are configured to be sent ONLY if a branch does not allow logins and logins turns out to be allowed anyway...
-        $loginsDeniedCfg = empty($this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch']) || empty($this->loginAllowedInBranch);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
-        $this->isClientCachable = $doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview() && $loginsDeniedCfg;
-        if ($this->isClientCachable) {
+        $isClientCachable = $doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview();
+        if ($isClientCachable) {
             $headers = [
                 'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
                 'ETag' => '"' . md5($this->content) . '"',

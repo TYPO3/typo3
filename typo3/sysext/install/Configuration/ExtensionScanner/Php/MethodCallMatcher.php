@@ -5120,4 +5120,18 @@ return [
             'Breaking-96604-RemovedModuleTemplate-addJavaScriptCode.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication->hideActiveLogin' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-96616-RemoveFrontendLoginModeForPages.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkIfLoginAllowedInBranch' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-96616-RemoveFrontendLoginModeForPages.rst',
+        ],
+    ],
 ];
