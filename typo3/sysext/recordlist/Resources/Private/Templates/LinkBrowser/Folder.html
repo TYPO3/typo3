@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:layout name="LinkBrowser" />
 
 <f:section name="Navigation">
@@ -15,7 +20,11 @@
         <div class="list-group list-group-flush mb-3">
             <f:if condition="{selectedFolderUrl}">
                 <f:then>
-                    <a href="{selectedFolderUrl}" class="t3js-fileLink list-group-item list-group-item-action {f:if(condition: '{selectedFolder.combinedIdentifier} == {currentIdentifier}', then: 'active')}" title="{selectedFolder.identifier}">{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}</a>
+                    <a
+                        href="{selectedFolderUrl}"
+                        class="t3js-fileLink list-group-item list-group-item-action {f:if(condition: '{selectedFolder.combinedIdentifier} == {currentIdentifier}', then: 'active')}"
+                        title="{selectedFolder.identifier}"
+                    >{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}</a>
                 </f:then>
                 <f:else>
                     <div class="list-group-item">
@@ -26,7 +35,11 @@
             <f:if condition="{itemsInSelectedFolder}">
                 <div class="list-group list-group-flush ms-3">
                     <f:for each="{itemsInSelectedFolder}" as="folder">
-                        <a href="{folder.url}" class="t3js-fileLink list-group-item list-group-item-action{f:if(condition: '{folder.identifier} == {currentIdentifier}', then: ' active')}" title="{folder.name}">
+                        <a
+                            href="{folder.url}"
+                            class="t3js-fileLink list-group-item list-group-item-action{f:if(condition: '{folder.identifier} == {currentIdentifier}', then: ' active')}"
+                            title="{folder.name}"
+                        >
                             {folder.icon -> f:format.raw()}
                             {folder.title}
                         </a>
@@ -37,3 +50,5 @@
     </f:if>
     {createFolderForm -> f:format.raw()}
 </f:section>
+
+</html>

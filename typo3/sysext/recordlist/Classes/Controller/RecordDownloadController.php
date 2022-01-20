@@ -21,14 +21,13 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Recordlist\RecordList\DownloadRecordList;
 
@@ -78,13 +77,8 @@ class RecordDownloadController
     protected string $filename = '';
     protected array $modTSconfig = [];
 
-    protected ResponseFactoryInterface $responseFactory;
-    protected UriBuilder $uriBuilder;
-
-    public function __construct(ResponseFactoryInterface $responseFactory, UriBuilder $uriBuilder)
+    public function __construct(protected ResponseFactoryInterface $responseFactory)
     {
-        $this->responseFactory = $responseFactory;
-        $this->uriBuilder = $uriBuilder;
     }
 
     /**
@@ -177,13 +171,9 @@ class RecordDownloadController
         $this->id = (int)($downloadArguments['id'] ?? 0);
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
 
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName(
-            'EXT:recordlist/Resources/Private/Templates/RecordDownloadSettings.html'
-        ));
-
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
         $view->assignMultiple([
-            'formUrl' => $this->uriBuilder->buildUriFromRoute('record_download'),
             'table' => $this->table,
             'downloadArguments' => $downloadArguments,
             'formats' => array_keys(self::DOWNLOAD_FORMATS),
@@ -193,7 +183,7 @@ class RecordDownloadController
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8');
 
-        $response->getBody()->write($view->render());
+        $response->getBody()->write($view->render('RecordDownloadSettings'));
         return $response;
     }
 

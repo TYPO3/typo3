@@ -112,7 +112,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
         $this->view->assign('treeActions', ['link']);
         $this->getRecordsOnExpandedPage($this->expandPage);
-        $this->view->setTemplate('Page');
+        $this->view->setTemplate('LinkBrowser/Page');
         return '';
     }
 

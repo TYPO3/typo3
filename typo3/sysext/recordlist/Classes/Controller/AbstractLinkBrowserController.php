@@ -175,11 +175,8 @@ abstract class AbstractLinkBrowserController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->getDocHeaderComponent()->disable();
         $view = $this->moduleTemplate->getView();
-        $view->setTemplate('LinkBrowser');
-        $view->getRequest()->setControllerExtensionName('recordlist');
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates/LinkBrowser/']);
-        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials/LinkBrowser/']);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts/', 'EXT:recordlist/Resources/Private/Layouts/']);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
 

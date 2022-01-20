@@ -6,7 +6,15 @@
         <label for="search_field" class="visually-hidden">
             <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString"/>
         </label>
-        <input class="form-control" type="search" placeholder="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}" title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')}" name="search_field" id="search_field" value="{searchString}" />
+        <input
+            class="form-control"
+            type="search"
+            placeholder="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')}"
+            title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')}"
+            name="search_field"
+            id="search_field"
+            value="{searchString}"
+        />
         <f:if condition="{availableSearchLevels -> f:count()} > 0">
             <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
             <div class="dropdown-menu">

@@ -157,7 +157,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             'treeActions' => ['link'],
         ]);
 
-        $this->view->setTemplate('Record');
+        $this->view->setTemplate('LinkBrowser/Record');
         return '';
     }
 

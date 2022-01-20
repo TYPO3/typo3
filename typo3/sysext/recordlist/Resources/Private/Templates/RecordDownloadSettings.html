@@ -1,4 +1,13 @@
-<form action="{formUrl}" method="post" id="downloadSettingsForm">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<form
+    action="{f:be.uri(route:'record_download')}"
+    method="post"
+    id="downloadSettingsForm"
+>
 
     <div class="row row-cols-auto">
         <div class="col-12">
@@ -82,3 +91,5 @@
     <input type="hidden" name="searchString" value="{downloadArguments.searchString}"/>
     <input type="hidden" name="searchLevels" value="{downloadArguments.searchLevels}"/>
 </form>
+
+</html>

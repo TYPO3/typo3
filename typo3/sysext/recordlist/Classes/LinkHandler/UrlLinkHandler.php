@@ -89,7 +89,7 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/UrlLinkHandler');
 
         $this->view->assign('url', !empty($this->linkParts) ? $this->linkParts['url'] : '');
-        $this->view->setTemplate('Url');
+        $this->view->setTemplate('LinkBrowser/Url');
         return '';
     }
 

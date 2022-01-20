@@ -150,7 +150,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             }
         }
 
-        $this->view->setTemplate(ucfirst($this->mode));
+        $this->view->setTemplate('LinkBrowser/' . ucfirst($this->mode));
         return '';
     }
 

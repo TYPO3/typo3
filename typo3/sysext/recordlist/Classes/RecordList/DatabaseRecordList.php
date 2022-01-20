@@ -45,7 +45,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent;
@@ -1349,8 +1349,11 @@ class DatabaseRecordList
         } else {
             $lastElementNumber = $totalItems;
         }
-        return $this->getFluidTemplateObject('ListNavigation.html')
-            ->assignMultiple([
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
+        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        return $view->assignMultiple([
                 'currentUrl' => $this->listURL('', $table, 'pointer'),
                 'currentPage' => $currentPage,
                 'totalPages' => $totalPages,
@@ -1358,7 +1361,7 @@ class DatabaseRecordList
                 'lastElement' => $lastElementNumber,
                 'colspan' => $paginationColumns,
             ])
-            ->render();
+            ->render('ListNavigation');
     }
 
     /*********************************
@@ -3316,22 +3319,6 @@ class DatabaseRecordList
     {
         $this->languagesAllowedForUser = $languagesAllowedForUser;
         return $this;
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     *
-     * @param string $filename Which templateFile should be used.
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
-        $view->setTemplate($filename);
-        return $view;
     }
 
     /**

@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Recordlist\View;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Renders the search box for the record listing and the element browser.
@@ -28,15 +27,9 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class RecordSearchBoxComponent
 {
-    protected ViewInterface $view;
     protected array $allowedSearchLevels = [];
     protected string $searchWord = '';
     protected int $searchLevel = 0;
-
-    public function __construct(ViewInterface $view = null)
-    {
-        $this->view = $view ?? $this->getView('Search.html');
-    }
 
     public function setSearchWord(string $searchWord): self
     {
@@ -58,21 +51,15 @@ class RecordSearchBoxComponent
 
     public function render(string $formUrl = ''): string
     {
-        return $this->view
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        return $view
             ->assignMultiple([
                 'formUrl' => $formUrl,
                 'availableSearchLevels' => $this->allowedSearchLevels,
                 'selectedSearchLevel' => $this->searchLevel,
                 'searchString' => $this->searchWord,
             ])
-            ->render();
-    }
-
-    protected function getView(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
-        $view->setTemplate($filename);
-        return $view;
+            ->render('Search');
     }
 }
