@@ -23,7 +23,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
-use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 
@@ -124,16 +123,15 @@ class PreviewSimulator implements MiddlewareInterface
 
         $frontendUser = $request->getAttribute('frontend.user');
         $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
+        $frontendUser->userGroups[$simulateUserGroup] = [
+            'uid' => $simulateUserGroup,
+            'title' => '_PREVIEW_',
+        ];
         // let's fake having a user with that group, too
-        $frontendUser->user['uid'] = PHP_INT_MAX;
-        $this->context->setAspect(
-            'frontend.user',
-            GeneralUtility::makeInstance(
-                UserAspect::class,
-                $frontendUser,
-                [$simulateUserGroup]
-            )
-        );
+        $frontendUser->user[$frontendUser->userid_column] = PHP_INT_MAX;
+        // Set this option so the is_online timestamp is not updated in updateOnlineTimestamp()
+        $frontendUser->user['is_online'] = $this->context->getPropertyFromAspect('date', 'timestamp');
+        $this->context->setAspect('frontend.user', $frontendUser->createUserAspect());
         return true;
     }
 }
