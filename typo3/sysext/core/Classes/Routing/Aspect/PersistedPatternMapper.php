@@ -304,10 +304,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         return $constraints;
     }
 
-    /**
-     * @param array|null $record
-     * @return array|null
-     */
     protected function resolveOverlay(?array $record): ?array
     {
         $languageId = $this->siteLanguage->getLanguageId();
@@ -316,16 +312,9 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         }
 
         $pageRepository = $this->createPageRepository();
-        if ($this->tableName === 'pages') {
-            return $pageRepository->getPageOverlay($record, $languageId);
-        }
-        return $pageRepository
-            ->getRecordOverlay($this->tableName, $record, $languageId) ?: null;
+        return $pageRepository->getLanguageOverlay($this->tableName, $record) ?: null;
     }
 
-    /**
-     * @return PageRepository
-     */
     protected function createPageRepository(): PageRepository
     {
         $context = clone GeneralUtility::makeInstance(Context::class);
