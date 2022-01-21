@@ -103,12 +103,20 @@ class SlugService implements LoggerAwareInterface
      */
     protected $httpStatusCode;
 
-    public function __construct(Context $context, SiteFinder $siteFinder, PageRepository $pageRepository, LinkService $linkService)
-    {
+    protected RedirectCacheService $redirectCacheService;
+
+    public function __construct(
+        Context $context,
+        SiteFinder $siteFinder,
+        PageRepository $pageRepository,
+        LinkService $linkService,
+        RedirectCacheService $redirectCacheService
+    ) {
         $this->context = $context;
         $this->siteFinder = $siteFinder;
         $this->pageRepository = $pageRepository;
         $this->linkService = $linkService;
+        $this->redirectCacheService = $redirectCacheService;
     }
 
     public function rebuildSlugsForSlugChange(int $pageId, string $currentSlug, string $newSlug, CorrelationId $correlationId): void
@@ -120,15 +128,19 @@ class SlugService implements LoggerAwareInterface
         $defaultPageId = (int)$currentPageRecord['sys_language_uid'] > 0 ? (int)$currentPageRecord['l10n_parent'] : $pageId;
         $this->initializeSettings($defaultPageId);
         if ($this->autoUpdateSlugs || $this->autoCreateRedirects) {
+            $createdRedirect = null;
             $this->createCorrelationIds($pageId, $correlationId);
             if ($this->autoCreateRedirects) {
-                $this->createRedirect($currentSlug, $defaultPageId, (int)$currentPageRecord['sys_language_uid'], (int)$pageId);
+                $createdRedirect = $this->createRedirect($currentSlug, $defaultPageId, (int)$currentPageRecord['sys_language_uid'], $pageId);
             }
             if ($this->autoUpdateSlugs) {
                 $this->checkSubPages($currentPageRecord, $currentSlug, $newSlug);
             }
             $this->sendNotification();
-            GeneralUtility::makeInstance(RedirectCacheService::class)->rebuild();
+            // rebuild caches only for matched source hosts
+            if ($createdRedirect) {
+                $this->redirectCacheService->rebuildForHost($createdRedirect['source_host'] ?: '*');
+            }
         }
     }
 
@@ -156,7 +168,10 @@ class SlugService implements LoggerAwareInterface
         $this->correlationIdSlugUpdate = $correlationId->withAspects(self::CORRELATION_ID_IDENTIFIER, 'slug');
     }
 
-    protected function createRedirect(string $originalSlug, int $pageId, int $languageId, int $pid): void
+    /**
+     * @return array The created redirect record
+     */
+    protected function createRedirect(string $originalSlug, int $pageId, int $languageId, int $pid): array
     {
         $siteLanguage = $this->site->getLanguageById($languageId);
         $basePath = rtrim($siteLanguage->getBase()->getPath(), '/');
@@ -196,6 +211,7 @@ class SlugService implements LoggerAwareInterface
         $id = (int)$connection->lastInsertId('sys_redirect');
         $record['uid'] = $id;
         $this->getRecordHistoryStore()->addRecord('sys_redirect', $id, $record, $this->correlationIdRedirectCreation);
+        return $record;
     }
 
     protected function checkSubPages(array $currentPageRecord, string $oldSlugOfParentPage, string $newSlugOfParentPage): void
