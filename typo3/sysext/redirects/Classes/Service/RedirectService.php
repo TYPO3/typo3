@@ -77,26 +77,26 @@ class RedirectService implements LoggerAwareInterface
      */
     public function matchRedirect(string $domain, string $path, string $query = ''): ?array
     {
-        $allRedirects = $this->fetchRedirects();
         $path = rawurldecode($path);
         // Check if the domain matches, or if there is a
         // redirect fitting for any domain
         foreach ([$domain, '*'] as $domainName) {
-            if (empty($allRedirects[$domainName])) {
+            $redirects = $this->fetchRedirects($domainName);
+            if (empty($redirects)) {
                 continue;
             }
 
             // check if a flat redirect matches with the Query applied
             if (!empty($query)) {
                 $pathWithQuery = rtrim($path, '/') . '?' . ltrim($query, '?');
-                if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery])) {
-                    if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['respect_query_parameters'][$pathWithQuery])) {
+                if (!empty($redirects['respect_query_parameters'][$pathWithQuery])) {
+                    if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQuery])) {
                         return $matchedRedirect;
                     }
                 } else {
                     $pathWithQueryAndSlash = rtrim($path, '/') . '/?' . ltrim($query, '?');
-                    if (!empty($allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash])) {
-                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                    if (!empty($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['respect_query_parameters'][$pathWithQueryAndSlash])) {
                             return $matchedRedirect;
                         }
                     }
@@ -104,15 +104,15 @@ class RedirectService implements LoggerAwareInterface
             }
 
             // check if a flat redirect matches
-            if (!empty($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
-                if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['flat'][rtrim($path, '/') . '/'])) {
+            if (!empty($redirects['flat'][rtrim($path, '/') . '/'])) {
+                if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['flat'][rtrim($path, '/') . '/'])) {
                     return $matchedRedirect;
                 }
             }
 
             // check all redirects that are registered as regex
-            if (!empty($allRedirects[$domainName]['regexp'])) {
-                $allRegexps = array_keys($allRedirects[$domainName]['regexp']);
+            if (!empty($redirects['regexp'])) {
+                $allRegexps = array_keys($redirects['regexp']);
                 $regExpPath = $path;
                 if (!empty($query)) {
                     $regExpPath .= '?' . ltrim($query, '?');
@@ -120,7 +120,7 @@ class RedirectService implements LoggerAwareInterface
                 foreach ($allRegexps as $regexp) {
                     $matchResult = @preg_match((string)$regexp, $regExpPath);
                     if ($matchResult > 0) {
-                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['regexp'][$regexp])) {
+                        if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp'][$regexp])) {
                             return $matchedRedirect;
                         }
                         continue;
@@ -139,7 +139,7 @@ class RedirectService implements LoggerAwareInterface
                     if (!empty($query)) {
                         $matchResult = preg_match((string)$regexp, $path);
                         if ($matchResult > 0) {
-                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($allRedirects[$domainName]['regexp'][$regexp])) {
+                            if ($matchedRedirect = $this->getFirstActiveRedirectFromPossibleRedirects($redirects['regexp'][$regexp])) {
                                 return $matchedRedirect;
                             }
                             continue;
@@ -165,12 +165,12 @@ class RedirectService implements LoggerAwareInterface
     }
 
     /**
-     * Fetches all redirects from the DB and caches them, grouped by the domain
-     * does NOT take starttime/endtime into account, as it is cached.
+     * Fetches all redirects from cache, with fallback to rebuild cache from the DB if caches was empty,
+     * grouped by the domain does NOT take starttime/endtime into account, as it is cached.
      */
-    protected function fetchRedirects(): array
+    protected function fetchRedirects(string $sourceHost): array
     {
-        return $this->redirectCacheService->getRedirects();
+        return $this->redirectCacheService->getRedirects($sourceHost);
     }
 
     /**

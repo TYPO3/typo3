@@ -78,7 +78,8 @@ class RedirectServiceTest extends UnitTestCase
      */
     public function matchRedirectReturnsNullIfNoRedirectsExist(): void
     {
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn([]);
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn([]);
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -101,17 +102,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'flat' => [
-                        $path . '/' => [
-                            1 => $row,
-                        ],
+                'flat' => [
+                    $path . '/' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', rawurlencode($path));
 
@@ -160,17 +160,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'respect_query_parameters' => [
-                        'index.php?id=123' => [
-                            1 => $row,
-                        ],
+                'respect_query_parameters' => [
+                    'index.php?id=123' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
 
@@ -192,17 +191,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'respect_query_parameters' => [
-                        'index.php/?id=123' => [
-                            1 => $row,
-                        ],
+                'respect_query_parameters' => [
+                    'index.php/?id=123' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123');
 
@@ -224,17 +222,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'respect_query_parameters' => [
-                        'index.php?id=123&a=b' => [
-                            1 => $row,
-                        ],
+                'respect_query_parameters' => [
+                    'index.php?id=123&a=b' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=b');
 
@@ -256,17 +253,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'respect_query_parameters' => [
-                        'index.php?id=123&a=b' => [
-                            1 => $row,
-                        ],
+                'respect_query_parameters' => [
+                    'index.php?id=123&a=b' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=a');
 
@@ -298,23 +294,22 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'flat' => [
-                        'special/page/' =>
+                'flat' => [
+                    'special/page/' =>
                         [
                             1 => $row1,
                         ],
-                    ],
-                    'respect_query_parameters' => [
-                        'special/page?key=998877' => [
-                            1 => $row2,
-                        ],
+                ],
+                'respect_query_parameters' => [
+                    'special/page?key=998877' => [
+                        1 => $row2,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'special/page', 'key=998877');
 
@@ -344,20 +339,20 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'flat' => [
-                        'foo/' => [
-                            1 => $row1,
-                        ],
+                'flat' => [
+                    'foo/' => [
+                        1 => $row1,
                     ],
                 ],
-                '*' => [
-                    'flat' => [
-                        'foo/' => [
-                            2 => $row2,
-                        ],
+            ]
+        );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn(
+            [
+                'flat' => [
+                    'foo/' => [
+                        2 => $row2,
                     ],
                 ],
             ]
@@ -382,17 +377,16 @@ class RedirectServiceTest extends UnitTestCase
             'starttime' => '0',
             'endtime' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'regexp' => [
-                        '/f.*?/' => [
-                            1 => $row,
-                        ],
+                'regexp' => [
+                    '/f.*?/' => [
+                        1 => $row,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 
@@ -422,18 +416,17 @@ class RedirectServiceTest extends UnitTestCase
             'endtime' => '0',
             'disabled' => '0',
         ];
-        $this->redirectCacheServiceProphecy->getRedirects()->willReturn(
+        $this->redirectCacheServiceProphecy->getRedirects('example.com')->willReturn(
             [
-                'example.com' => [
-                    'flat' => [
-                        'foo/' => [
-                            1 => $row1,
-                            2 => $row2,
-                        ],
+                'flat' => [
+                    'foo/' => [
+                        1 => $row1,
+                        2 => $row2,
                     ],
                 ],
             ]
         );
+        $this->redirectCacheServiceProphecy->getRedirects('*')->willReturn([]);
 
         $result = $this->redirectService->matchRedirect('example.com', 'foo');
 

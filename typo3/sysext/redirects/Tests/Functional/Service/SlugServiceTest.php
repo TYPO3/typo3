@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Redirects\Service\RedirectCacheService;
 use TYPO3\CMS\Redirects\Service\SlugService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -439,7 +440,8 @@ class SlugServiceTest extends FunctionalTestCase
             GeneralUtility::makeInstance(Context::class),
             GeneralUtility::makeInstance(SiteFinder::class),
             GeneralUtility::makeInstance(PageRepository::class),
-            GeneralUtility::makeInstance(LinkService::class)
+            GeneralUtility::makeInstance(LinkService::class),
+            GeneralUtility::makeInstance(RedirectCacheService::class)
         );
         $this->subject->setLogger(new NullLogger());
     }
