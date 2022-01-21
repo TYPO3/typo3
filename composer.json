@@ -58,7 +58,7 @@
 		"guzzlehttp/psr7": "^1.7.0 || ^2.0",
 		"lolli42/finediff": "^1.0",
 		"masterminds/html5": "^2.7.5",
-		"nikic/php-parser": "^4.10.4",
+		"nikic/php-parser": "^4.13.2",
 		"phpdocumentor/reflection-docblock": "^5.2",
 		"phpdocumentor/type-resolver": "^1.4",
 		"psr/container": "^1.1 || ^2.0",
