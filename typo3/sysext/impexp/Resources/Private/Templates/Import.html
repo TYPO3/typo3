@@ -4,10 +4,10 @@
     data-namespace-typo3-fluid="true"
 >
 <f:be.pageRenderer
-    includeRequireJsModules="{
-        0: 'TYPO3/CMS/Backend/ContextMenu',
-        1: 'TYPO3/CMS/Impexp/ImportExport',
-        2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement'
+    includeJavaScriptModules="{
+        0: 'TYPO3/CMS/Backend/ContextMenu.js',
+        1: 'TYPO3/CMS/Impexp/ImportExport.js',
+        2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
     }"
 />
 <form action="{f:be.uri(route:'tx_impexp_import')}" method="post" id="ImportExportController" enctype="multipart/form-data">

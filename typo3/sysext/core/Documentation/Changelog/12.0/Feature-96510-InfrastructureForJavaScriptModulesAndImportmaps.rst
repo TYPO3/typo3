@@ -97,12 +97,25 @@ A module can be added to the current page response either via
 .. code-block:: php
 
     // via PageRenderer
-    $this->packageRenderer->loadJavaScriptModule('@vendor/my-extension/Example.js');
+    $this->packageRenderer->loadJavaScriptModule('@vendor/my-extension/example.js');
 
     // via JavaScriptRenderer
     $this->packageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-        JavaScriptModuleInstruction::create('@vendor/my-extension/File.js')
+        JavaScriptModuleInstruction::create('@vendor/my-extension/example.js')
     );
+
+
+In Fluid template the `includeJavaScriptModules` property of the
+:html:`<f:be.pageRenderer>` ViewHelper may be used:
+
+.. code-block:: xml
+
+   <f:be.pageRenderer
+      includeJavaScriptModules="{
+         0: '@vendor/my-extension/example.js'
+      }"
+   />
+
 
 .. _`importmaps`: https://wicg.github.io/import-maps/
 

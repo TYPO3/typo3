@@ -46,7 +46,7 @@ class PageRendererViewHelperTest extends FunctionalTestCase
                 '<script src="typo3/sysext/backend/Resources/Public/JavaScript/backend.js',
             ],
             'renderIncludesRequireJsModules' => [
-                '<f:be.pageRenderer includeRequireJsModules="{0: \'EXT:backend/Resources/Public/JavaScript/iDoNotExist.js\'}" />',
+                '<f:be.pageRenderer includeJavaScriptModules="{0: \'EXT:backend/Resources/Public/JavaScript/iDoNotExist.js\'}" />',
                 '"name":"EXT:backend\/Resources\/Public\/JavaScript\/iDoNotExist.js"',
             ],
             'renderIncludesInlineSettings' => [

@@ -39,7 +39,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *        includeCssFiles="{0: 'EXT:my_ext/Resources/Public/Css/Stylesheet.css'}"
  *        includeJsFiles="{0: 'EXT:my_ext/Resources/Public/JavaScript/Library1.js', 1: 'EXT:my_ext/Resources/Public/JavaScript/Library2.js'}"
  *        addJsInlineLabels="{'my_ext.label1': 'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:label1'}"
- *        includeRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule.js'}"
+ *        includeJavaScriptModules="{0: '@my-vendor/my-ext/my-module.js'}"
+ *        includeRequireJsModules="{0: 'EXT:my_ext/Resources/Public/JavaScript/RequireJsModule'}"
  *        addInlineSettings="{'some.setting.key': 'some.setting.value'}"
  *    />
  *
@@ -56,6 +57,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $this->registerArgument('includeCssFiles', 'array', 'List of custom CSS file to be loaded');
         $this->registerArgument('includeJsFiles', 'array', 'List of custom JavaScript file to be loaded');
         $this->registerArgument('addJsInlineLabels', 'array', 'Custom labels to add to JavaScript inline labels');
+        $this->registerArgument('includeJavaScriptModules', 'array', 'List of JavaScript modules to be loaded');
         $this->registerArgument('includeRequireJsModules', 'array', 'List of RequireJS modules to be loaded');
         $this->registerArgument('addInlineSettings', 'array', 'Adds Javascript Inline Setting');
     }
@@ -67,6 +69,7 @@ final class PageRendererViewHelper extends AbstractViewHelper
         $includeCssFiles = $arguments['includeCssFiles'];
         $includeJsFiles = $arguments['includeJsFiles'];
         $addJsInlineLabels = $arguments['addJsInlineLabels'];
+        $includeJavaScriptModules = $arguments['includeJavaScriptModules'];
         $includeRequireJsModules = $arguments['includeRequireJsModules'];
         $addInlineSettings = $arguments['addInlineSettings'];
 
@@ -83,6 +86,11 @@ final class PageRendererViewHelper extends AbstractViewHelper
         if (is_array($includeJsFiles)) {
             foreach ($includeJsFiles as $addJsFile) {
                 $pageRenderer->addJsFile($addJsFile);
+            }
+        }
+        if (is_array($includeJavaScriptModules)) {
+            foreach ($includeJavaScriptModules as $addJavaScriptModule) {
+                $pageRenderer->loadJavaScriptModule($addJavaScriptModule);
             }
         }
         if (is_array($includeRequireJsModules)) {
