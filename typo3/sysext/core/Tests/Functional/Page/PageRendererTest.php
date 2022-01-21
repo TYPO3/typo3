@@ -230,7 +230,7 @@ class PageRendererTest extends FunctionalTestCase
         if ($requestType === SystemEnvironmentBuilder::REQUESTTYPE_FE) {
             $expectedInlineAssignmentsPrefix = 'var TYPO3 = Object.assign(TYPO3 || {}, Object.fromEntries(Object.entries({"settings":';
         } else {
-            $expectedInlineAssignmentsPrefix = '<script src="typo3/sysext/core/Resources/Public/JavaScript/JavaScriptHandler.js" data-process-text-content="processItems">/* [{"type":"globalAssignment","payload":{"TYPO3":{"settings":';
+            $expectedInlineAssignmentsPrefix = '<script src="typo3/sysext/core/Resources/Public/JavaScript/JavaScriptHandler.js?%i" data-process-text-content="processItems">/* [{"type":"globalAssignment","payload":{"TYPO3":{"settings":';
         }
 
         $renderedString = $subject->render();
@@ -241,7 +241,7 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedJsFooterInlineCodeString, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel1, $renderedString);
         self::assertStringContainsString($expectedLanguageLabel2, $renderedString);
-        self::assertStringContainsString($expectedInlineAssignmentsPrefix, $renderedString);
+        self::assertStringMatchesFormat('%a' . $expectedInlineAssignmentsPrefix . '%a', $renderedString);
         self::assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
         self::assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
     }

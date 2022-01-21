@@ -355,7 +355,6 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-        $this->javaScriptRenderer = JavaScriptRenderer::create();
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -431,7 +430,9 @@ class PageRenderer implements SingletonInterface
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
-        $this->javaScriptRenderer = JavaScriptRenderer::create();
+        $this->javaScriptRenderer = JavaScriptRenderer::create(
+            $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/JavaScriptHandler.js', true)
+        );
     }
 
     /*****************************************************/
@@ -1546,7 +1547,9 @@ class PageRenderer implements SingletonInterface
                 htmlspecialchars($requireJS->getUri())
             );
             // (using dedicated instance of JavaScriptRenderer)
-            $javaScriptRenderer = JavaScriptRenderer::create();
+            $javaScriptRenderer = JavaScriptRenderer::create(
+                $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/JavaScriptHandler.js', true)
+            );
             $javaScriptRenderer->loadRequireJS($requireJS);
             $html .= $javaScriptRenderer->render();
         } else {
@@ -1560,8 +1563,9 @@ class PageRenderer implements SingletonInterface
         // use (anonymous require.js loader), e.g. used when not having a valid TYP3 backend user session
         if (!empty($requireJsConfig['typo3BaseUrl'])) {
             $html .= '<script src="'
-                . $this->processJsFile(
-                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
+                . $this->getStreamlinedFileName(
+                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js',
+                    true
                 )
                 . '"></script>' . LF;
         }
@@ -2581,7 +2585,7 @@ class PageRenderer implements SingletonInterface
 
     /**
      * Processes a Javascript file dependent on the current context
-     *
+
      * Adds the version number for Frontend, compresses the file for Backend
      *
      * @param string $filename Filename
