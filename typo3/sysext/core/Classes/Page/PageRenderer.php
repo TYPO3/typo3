@@ -355,7 +355,9 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-        $this->javaScriptRenderer = JavaScriptRenderer::create();
+        $this->javaScriptRenderer = JavaScriptRenderer::create(
+            $this->processJsFile('EXT:core/Resources/Public/JavaScript/JavaScriptItemHandler.js')
+        );
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -2611,9 +2613,9 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Processes a Javascript file dependent on the current context
+     * Processes a JavaScript file
      *
-     * Adds the version number for Frontend, compresses the file for Backend
+     * Adds the version number or compresses the file if compression is enabled
      *
      * @param string $filename Filename
      * @return string New filename
@@ -2623,7 +2625,7 @@ class PageRenderer implements SingletonInterface
         $filename = $this->getStreamlinedFileName($filename, false);
         if ($this->compressJavascript) {
             $filename = $this->getCompressor()->compressJsFile($filename);
-        } elseif ($this->getApplicationType() === 'FE') {
+        } else {
             $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
         return $this->getAbsoluteWebPath($filename);
