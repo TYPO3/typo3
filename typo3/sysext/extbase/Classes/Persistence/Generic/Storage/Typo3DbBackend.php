@@ -482,12 +482,14 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         // record to find out all possible fields in this database table
         $fieldsOfMainTable = $pageRepository->getRawRecord($tableName, $rows[0]['uid']);
         $overlaidRows = [];
-        foreach ($rows as $row) {
-            $mainRow = array_intersect_key($row, $fieldsOfMainTable);
-            $joinRow = array_diff_key($row, $mainRow);
-            $mainRow = $this->overlayLanguageAndWorkspaceForSingleRecord($tableName, $mainRow, $pageRepository, $query);
-            if (is_array($mainRow)) {
-                $overlaidRows[] = array_replace($joinRow, $mainRow);
+        if (is_array($fieldsOfMainTable)) {
+            foreach ($rows as $row) {
+                $mainRow = array_intersect_key($row, $fieldsOfMainTable);
+                $joinRow = array_diff_key($row, $mainRow);
+                $mainRow = $this->overlayLanguageAndWorkspaceForSingleRecord($tableName, $mainRow, $pageRepository, $query);
+                if (is_array($mainRow)) {
+                    $overlaidRows[] = array_replace($joinRow, $mainRow);
+                }
             }
         }
         return $overlaidRows;
