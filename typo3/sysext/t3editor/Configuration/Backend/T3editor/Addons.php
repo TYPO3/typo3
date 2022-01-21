@@ -1,120 +1,59 @@
 <?php
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+
 /**
  * Addons for t3editor
  */
 return [
-    'dialog/dialog' => [
-        'module' => 'codemirror/addon/dialog/dialog',
-        'cssFiles' => [
-            'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/addon/dialog/dialog.css',
-        ],
+    'highlightActiveLineGutter' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/view', 'highlightActiveLineGutter')->invoke(),
     ],
-    'display/fullscreen' => [
-        'module' => 'codemirror/addon/display/fullscreen',
-        'cssFiles' => [
-            'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/addon/display/fullscreen.css',
-        ],
+    'history' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/commands', 'history')->invoke(),
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/commands', 'historyKeymap'),
     ],
-    'display/autorefresh' => [
-        'module' => 'codemirror/addon/display/autorefresh',
+    'foldGutter' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/language', 'foldGutter')->invoke(),
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/language', 'foldKeymap'),
     ],
-    'display/panel' => [
-        'module' => 'codemirror/addon/display/panel',
+    'dropCursor' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/view', 'dropCursor')->invoke(),
     ],
-    'fold/xml-fold' => [
-        'module' => 'codemirror/addon/fold/xml-fold',
+    'indentOnInput' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/language', 'indentOnInput')->invoke(),
     ],
-    'scroll/simplescrollbars' => [
-        'module' => 'codemirror/addon/scroll/simplescrollbars',
-        'cssFiles' => [
-            'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/addon/scroll/simplescrollbars.css',
-        ],
-        'options' => [
-            'scrollbarStyle' => 'simple',
-        ],
+    'bracketMatching' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/language', 'bracketMatching')->invoke(),
     ],
-    'scroll/annotatescrollbar' => [
-        'module' => 'codemirror/addon/scroll/annotatescrollbar',
+    'closeBrackets' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/autocomplete', 'closeBrackets')->invoke(),
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/autocomplete', 'closeBracketsKeymap'),
     ],
-    'search/searchcursor' => [
-        'module' => 'codemirror/addon/search/searchcursor',
+    'autocompletion' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/autocomplete', 'autocompletion')->invoke(),
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/autocomplete', 'completionKeymap'),
     ],
-    'search/search' => [
-        'module' => 'codemirror/addon/search/search',
+    'rectangularSelection' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/view', 'rectangularSelection')->invoke(),
     ],
-    'search/jump-to-line' => [
-        'module' => 'codemirror/addon/search/jump-to-line',
+    'crosshairCursor' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/view', 'crosshairCursor')->invoke(),
     ],
-    'search/matchesonscrollbar' => [
-        'module' => 'codemirror/addon/search/matchesonscrollbar',
-        'cssFiles' => [
-            'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/addon/search/matchesonscrollbar.css',
-        ],
+    'highlightActiveLine' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/view', 'highlightActiveLine')->invoke(),
     ],
-    'edit/matchbrackets' => [
-        'module' => 'codemirror/addon/edit/matchbrackets',
-        'options' => [
-            'matchBrackets' => true,
-        ],
+    'highlightSelectionMatches' => [
+        'module' => JavaScriptModuleInstruction::create('@codemirror/search', 'highlightSelectionMatches')->invoke(),
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/search', 'searchKeymap'),
     ],
-    'edit/closebrackets' => [
-        'module' => 'codemirror/addon/edit/closebrackets',
-        'options' => [
-            'autoCloseBrackets' => true,
-        ],
+    'lint' => [
+        'keymap' => JavaScriptModuleInstruction::create('@codemirror/lint', 'lintKeymap'),
     ],
-    'selection/active-line' => [
-        'module' => 'codemirror/addon/selection/active-line',
-        'options' => [
-            'styleActiveLine' => true,
-        ],
-    ],
-    'edit/matchtags' => [
-        'module' => 'codemirror/addon/edit/matchtags',
-        'options' => [
-            'matchTags' => true,
-        ],
-    ],
-    'edit/closetag' => [
-        'module' => 'codemirror/addon/edit/closetag',
-        'options' => [
-            'autoCloseTags' => true,
-        ],
-    ],
-    'hint/show-hint' => [
-        'module' => 'codemirror/addon/hint/show-hint',
-        'cssFiles' => [
-            'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/addon/hint/show-hint.css',
-        ],
-        'options' => [
-            'hintOptions' => [
-                'completeSingle' => false,
-            ],
-        ],
-    ],
-    'hint/css-hint' => [
-        'module' => 'codemirror/addon/hint/css-hint',
-        'modes' => ['css'],
-    ],
-    'hint/xml-hint' => [
-        'module' => 'codemirror/addon/hint/xml-hint',
-        'modes' => ['htmlmixed', 'xml'],
-    ],
-    'hint/html-hint' => [
-        'module' => 'codemirror/addon/hint/html-hint',
-        'modes' => ['htmlmixed'],
-    ],
-    'hint/javascript-hint' => [
-        'module' => 'codemirror/addon/hint/javascript-hint',
-        'modes' => ['javascript'],
-    ],
-    'hint/sql-hint' => [
-        'module' => 'codemirror/addon/hint/sql-hint',
-        'modes' => ['sql'],
-    ],
+    /*
     'hint/typoscript-hint' => [
         'module' => 'TYPO3/CMS/T3editor/Addon/Hint/TypoScriptHint',
         'modes' => ['typoscript'],
     ],
+    */
 ];

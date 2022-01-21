@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\T3editor\Tests\Unit\Registry;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\T3editor\Mode;
 use TYPO3\CMS\T3editor\Registry\ModeRegistry;
@@ -37,22 +38,11 @@ class ModeRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function identifierIsReturned(): void
-    {
-        $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/default/default');
-        $this->subject->register($expected);
-        $actual = $this->subject->getByIdentifier('test/mode/default/default');
-
-        self::assertSame($expected->getIdentifier(), $actual->getIdentifier());
-    }
-
-    /**
-     * @test
-     */
     public function latestDefaultModeIsReturned(): void
     {
-        $firstDefaultMode = GeneralUtility::makeInstance(Mode::class, 'test/another/foo/bar')->setAsDefault();
-        $expected = GeneralUtility::makeInstance(Mode::class, 'test/another/defaultmode/defaultmode')->setAsDefault();
+        $module = JavaScriptModuleInstruction::create('@test/foo', 'bar')->invoke();
+        $firstDefaultMode = GeneralUtility::makeInstance(Mode::class, $module)->setAsDefault();
+        $expected = GeneralUtility::makeInstance(Mode::class, $module)->setAsDefault();
         $this->subject->register($firstDefaultMode)->register($expected);
         $actual = $this->subject->getDefaultMode();
 
@@ -64,7 +54,8 @@ class ModeRegistryTest extends UnitTestCase
      */
     public function formatCodeReturnsCorrectMode(): void
     {
-        $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/format/code')->setFormatCode('code');
+        $module = JavaScriptModuleInstruction::create('@test/mode', 'formatCode')->invoke();
+        $expected = GeneralUtility::makeInstance(Mode::class, $module)->setFormatCode('code');
         $this->subject->register($expected);
         $actual = $this->subject->getByFormatCode('code');
 
@@ -76,7 +67,8 @@ class ModeRegistryTest extends UnitTestCase
      */
     public function modeIsFetchedByFileExtension(): void
     {
-        $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/extension/extension')->bindToFileExtensions(['ext', 'fext']);
+        $module = JavaScriptModuleInstruction::create('@test/mode', 'extension')->invoke();
+        $expected = GeneralUtility::makeInstance(Mode::class, $module)->bindToFileExtensions(['ext', 'fext']);
         $this->subject->register($expected);
         $actual = $this->subject->getByFileExtension('fext');
 

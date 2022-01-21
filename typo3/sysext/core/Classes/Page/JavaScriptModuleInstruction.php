@@ -156,11 +156,11 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     }
 
     /**
-     * @param string $method method of JavaScript module to be invoked
+     * @param string|null $method method of JavaScript module to be invoked
      * @param mixed ...$args corresponding method arguments
      * @return static
      */
-    public function invoke(string $method, ...$args): self
+    public function invoke(?string $method = null, ...$args): self
     {
         $this->items[] = [
             'type' => static::ITEM_INVOKE,

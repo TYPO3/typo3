@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -103,21 +104,20 @@ class ExtensionComposerStatusController extends AbstractController
         }
         $rows = MathUtility::forceIntegerInRange(count(explode(LF, $composerManifest)), 1, PHP_INT_MAX);
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
-            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
-            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
             $codeMirrorConfig = [
                 'label' => $extensionKey . ' > composer.json',
                 'panel' => 'bottom',
-                'mode' => 'codemirror/mode/javascript/javascript',
+                'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@codemirror/lang-json', 'json')->invoke(), false),
                 'nolazyload' => 'true',
-                'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                    'rows' => 'auto',
-                    'format' => 'json',
-                ], false),
+                'autoheight' => 'true',
+            ];
+            $textareaAttributes = [
+                'rows' => (string)count(explode(LF, $composerManifest)),
+                'class' => 'form-control',
             ];
             return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
-                . '<textarea ' . GeneralUtility::implodeAttributes(['rows' => (string)++$rows], true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
+                . '<textarea ' . GeneralUtility::implodeAttributes($textareaAttributes, true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
                 . '</typo3-t3editor-codemirror>';
         }
         return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'

@@ -39,26 +39,14 @@ class AddonRegistry implements SingletonInterface
      */
     public function register(Addon $addon): AddonRegistry
     {
-        $this->registeredAddons[$addon->getIdentifier()] = $addon;
+        $this->registeredAddons[] = $addon;
 
         return $this;
     }
 
-    /**
-     * @param string $mode
-     * @return Addon[]
-     */
-    public function getForMode(string $mode = ''): array
+    public function getAddons(): array
     {
-        $addons = [];
-
-        foreach ($this->registeredAddons as $addon) {
-            if (empty($addon->getModes()) || in_array($mode, $addon->getModes(), true)) {
-                $addons[] = $addon;
-            }
-        }
-
-        return $addons;
+        return $this->registeredAddons;
     }
 
     /**

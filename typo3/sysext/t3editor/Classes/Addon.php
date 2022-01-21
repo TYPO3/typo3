@@ -17,16 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\T3editor;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+
 /**
  * Represents an addon for CodeMirror
  * @internal
  */
 class Addon
 {
-    /**
-     * @var string
-     */
-    protected $identifier = '';
+    protected string $identifier;
+
+    protected ?JavaScriptModuleInstruction $module = null;
+
+    protected ?JavaScriptModuleInstruction $keymap = null;
 
     /**
      * @var array
@@ -43,39 +46,29 @@ class Addon
      */
     protected $cssFiles = [];
 
-    /**
-     * @param string $identifier
-     */
-    public function __construct(string $identifier)
-    {
+    public function __construct(
+        string $identifier,
+        ?JavaScriptModuleInstruction $module = null,
+        ?JavaScriptModuleInstruction $keymap = null
+    ) {
         $this->identifier = $identifier;
+        $this->module = $module;
+        $this->keymap = $keymap;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @param array $modes
-     * @return self
-     */
-    public function setModes(array $modes): Addon
+    public function getModule(): ?JavaScriptModuleInstruction
     {
-        $this->modes = $modes;
-
-        return $this;
+        return $this->module;
     }
 
-    /**
-     * @return array
-     */
-    public function getModes(): array
+    public function getKeymap(): ?JavaScriptModuleInstruction
     {
-        return $this->modes;
+        return $this->keymap;
     }
 
     /**

@@ -45,7 +45,7 @@ class ModeRegistry implements SingletonInterface
      */
     public function register(Mode $mode): ModeRegistry
     {
-        $this->registeredModes[$mode->getIdentifier()] = $mode;
+        $this->registeredModes[$mode->getFormatCode()] = $mode;
         if ($mode->isDefault()) {
             $this->defaultMode = $mode;
         }
@@ -56,39 +56,25 @@ class ModeRegistry implements SingletonInterface
     /**
      * Removes registered modes
      *
-     * @param string $identifier
+     * @param string $formatCode
      * @return self
      */
-    public function unregister(string $identifier): ModeRegistry
+    public function unregister(string $formatCode): ModeRegistry
     {
-        if (isset($this->registeredModes[$identifier])) {
-            unset($this->registeredModes[$identifier]);
+        if (isset($this->registeredModes[$formatCode])) {
+            unset($this->registeredModes[$formatCode]);
         }
 
         return $this;
     }
 
     /**
-     * @param string $identifier
+     * @param string $formatCode
      * @return bool
      */
-    public function isRegistered(string $identifier): bool
+    public function isRegistered(string $formatCode): bool
     {
-        return isset($this->registeredModes[$identifier]);
-    }
-
-    /**
-     * @param string $identifier
-     * @return Mode
-     * @throws InvalidModeException
-     */
-    public function getByIdentifier(string $identifier): Mode
-    {
-        if ($this->isRegistered($identifier)) {
-            return $this->registeredModes[$identifier];
-        }
-
-        throw new InvalidModeException('Tried to get unregistered t3editor mode "' . $identifier . '"', 1499710202);
+        return isset($this->registeredModes[$formatCode]);
     }
 
     /**

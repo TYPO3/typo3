@@ -88,15 +88,13 @@ class T3editorElement extends AbstractFormElement
     public function render(): array
     {
         $this->resultArray = $this->initializeResultArray();
-        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css';
-        $this->resultArray['stylesheetFiles'][] = 'EXT:t3editor/Resources/Public/Css/t3editor.css';
-        $this->resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+        $this->resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/t3editor/element/code-mirror-element.js');
 
         // Compile and register t3editor configuration
         GeneralUtility::makeInstance(T3editor::class)->registerConfiguration();
 
         $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
-        $registeredAddons = $addonRegistry->getForMode($this->getMode()->getFormatCode());
+        $registeredAddons = $addonRegistry->getAddons();
         foreach ($registeredAddons as $addon) {
             foreach ($addon->getCssFiles() as $cssFile) {
                 $this->resultArray['stylesheetFiles'][] = $cssFile;
@@ -120,7 +118,7 @@ class T3editorElement extends AbstractFormElement
 
         $editorHtml = $this->getHTMLCodeForEditor(
             $parameterArray['itemFormElName'],
-            'text-monospace enable-tab',
+            'form-control text-monospace enable-tab',
             $parameterArray['itemFormElValue'],
             $attributes,
             $settings,
@@ -198,7 +196,7 @@ class T3editorElement extends AbstractFormElement
         $code = [];
         $mode = $this->getMode();
         $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
-        $registeredAddons = $addonRegistry->getForMode($mode->getFormatCode());
+        $registeredAddons = $addonRegistry->getAddons();
 
         $attributes['class'] = $class;
         $attributes['id'] = 't3editor_' . md5($name);
@@ -207,13 +205,22 @@ class T3editorElement extends AbstractFormElement
         $settings = array_merge($addonRegistry->compileSettings($registeredAddons), $settings);
 
         $addons = [];
+        $keymaps = [];
         foreach ($registeredAddons as $addon) {
-            $addons[] = $addon->getIdentifier();
+            $module = $addon->getModule();
+            $keymap = $addon->getKeymap();
+            if ($module) {
+                $addons[] = $module;
+            }
+            if ($keymap) {
+                $keymaps[] = $keymap;
+            }
         }
         $codeMirrorConfig = [
-            'mode' => $mode->getIdentifier(),
+            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute($mode->getModule(), false),
             'label' => $label,
             'addons' => GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
+            'keymaps' => GeneralUtility::jsonEncodeForHtmlAttribute($keymaps, false),
             'options' => GeneralUtility::jsonEncodeForHtmlAttribute($settings, false),
         ];
 

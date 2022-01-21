@@ -17,16 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\T3editor;
 
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+
 /**
  * Represents a mode for CodeMirror
  * @internal
  */
 class Mode
 {
-    /**
-     * @var string
-     */
-    protected $identifier = '';
+    protected JavaScriptModuleInstruction $module;
 
     /**
      * @var string
@@ -43,20 +42,14 @@ class Mode
      */
     protected $isDefault = false;
 
-    /**
-     * @param string $identifier
-     */
-    public function __construct(string $identifier)
+    public function __construct(JavaScriptModuleInstruction $module)
     {
-        $this->identifier = $identifier;
+        $this->module = $module;
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentifier(): string
+    public function getModule(): JavaScriptModuleInstruction
     {
-        return $this->identifier;
+        return $this->module;
     }
 
     /**

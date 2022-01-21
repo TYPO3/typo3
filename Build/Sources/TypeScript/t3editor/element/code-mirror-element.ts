@@ -11,9 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {LitElement, html, css, CSSResult} from 'lit';
+import {LitElement, html, css} from 'lit';
 import {customElement, property, state} from 'lit/decorators';
-
+import {EditorView, ViewUpdate, lineNumbers, highlightSpecialChars, drawSelection, keymap, KeyBinding} from '@codemirror/view';
+import {Extension, EditorState} from '@codemirror/state';
+import {syntaxHighlighting, defaultHighlightStyle} from '@codemirror/language';
+import {defaultKeymap,  indentWithTab} from '@codemirror/commands';
+import {oneDark} from '@codemirror/theme-one-dark';
+import {executeJavaScriptModuleInstruction, loadModule, resolveSubjectRef, JavaScriptItemPayload} from '@typo3/core/java-script-item-processor';
 import '@typo3/backend/element/spinner-element'
 
 interface MarkTextPosition {
@@ -31,38 +36,91 @@ interface MarkText {
  */
 @customElement('typo3-t3editor-codemirror')
 export class CodeMirrorElement extends LitElement {
-  @property() mode: string;
-  @property() label: string;
-  @property({type: Array}) addons: string[] = ['codemirror/addon/display/panel'];
-  @property({type: Object}) options: { [key: string]: any[] } = {};
+  @property({type: Object}) mode: JavaScriptItemPayload = null;
+  @property({type: Array}) addons: JavaScriptItemPayload[] = [];
+  @property({type: Array}) keymaps: JavaScriptItemPayload[] = [];
 
-  @property({type: Number}) scrollto: number = 0;
-  @property({type: Object}) marktext: MarkText[] = [];
   @property({type: Number}) lineDigits: number = 0;
-  @property({type: Boolean}) autoheight: boolean = false;
+  @property({type: Boolean, reflect: true}) autoheight: boolean = false;
   @property({type: Boolean}) nolazyload: boolean = false;
+  @property({type: Boolean}) readonly: boolean = false;
+  @property({type: Boolean, reflect: true}) fullscreen: boolean = false;
+
+  @property({type: String}) label: string;
   @property({type: String}) panel: string = 'bottom';
 
-  @state() loaded: boolean = false;
+  @state() editorView: EditorView = null;
 
   static styles = css`
-   :host {
-     display: block;
-     position: relative;
-   }
-   typo3-backend-spinner {
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
-   }
+    :host {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    :host([fullscreen]) {
+      position: fixed;
+      inset: 64px 0 0;
+      z-index: 9;
+    }
+
+    typo3-backend-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #codemirror-parent {
+      min-height: calc(8px + 12px * 1.4 * var(--rows, 18));
+    }
+    #codemirror-parent,
+    .cm-editor {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      max-height: 100%;
+    }
+
+    .cm-scroller {
+      min-height: 100%;
+      max-height: calc(100vh - 10rem);
+      flex: 1;
+      color-scheme: dark;
+    }
+
+    :host([fullscreen]) .cm-scroller {
+      min-height: initial;
+      max-height: 100%;
+    }
+
+    :host([autoheight]) .cm-scroller {
+      max-height: initial;
+    }
+
+    .panel {
+      font-size: .85em;
+      color: #abb2bf;
+      background: #282c34;
+      border-style: solid;
+      border-color: #7d8799;
+      border-width: 0;
+      border-top-width: 1px;
+      padding: .25em .5em;
+    }
+
+    .panel-top {
+      border-top-width: 0;
+      border-bottom-width: 1px;
+      order: -1;
+    }
   `;
 
   render() {
     return html`
-      <slot></slot>
-      <slot name="codemirror"></slot>
-      ${this.loaded ? '' : html`<typo3-backend-spinner size="large" variant="dark"></typo3-backend-spinner>`}
+      <div id="codemirror-parent" @keydown=${(e: KeyboardEvent) => this.onKeydown(e)}></div>
+      ${this.label ? html`<div class="panel panel-${this.panel}">${this.label}</div>` : ''}
+      ${this.editorView === null ? html`<typo3-backend-spinner size="large" variant="dark"></typo3-backend-spinner>` : ''}
     `;
   }
 
@@ -88,107 +146,71 @@ export class CodeMirrorElement extends LitElement {
     observer.observe(this);
   }
 
-  private createPanelNode(position: string, label: string): HTMLElement {
-    const node = document.createElement('div');
-    node.setAttribute('class', 'CodeMirror-panel CodeMirror-panel-' + position);
-    node.setAttribute('id', 'panel-' + position);
-
-    const span = document.createElement('span');
-    span.textContent = label;
-
-    node.appendChild(span);
-
-    return node;
+  private onKeydown(event: KeyboardEvent): void {
+    if (event.ctrlKey && event.altKey && event.key === 'f') {
+      event.preventDefault();
+      this.fullscreen = true;
+    }
+    if (event.key === 'Escape' && this.fullscreen) {
+      event.preventDefault();
+      this.fullscreen = false;
+    }
   }
 
-  private initializeEditor(textarea: HTMLTextAreaElement): void {
-    const modeParts = this.mode.split('/');
-    const options = this.options;
-
-    // load mode + registered addons
-    // @todo: Migrate away from RequireJS usage
-    window.require(['codemirror', this.mode, ...this.addons], (CodeMirror: typeof import('codemirror')): void => {
-      const cm = CodeMirror((node: HTMLElement): void => {
-        const wrapper = document.createElement('div');
-        wrapper.setAttribute('slot', 'codemirror');
-        wrapper.appendChild(node);
-        this.insertBefore(wrapper, textarea);
-      }, {
-        value: textarea.value,
-        extraKeys: {
-          'Ctrl-F': 'findPersistent',
-          'Cmd-F': 'findPersistent',
-          'Ctrl-Alt-F': (codemirror: typeof CodeMirror): void => {
-            codemirror.setOption('fullScreen', !codemirror.getOption('fullScreen'));
-          },
-          'Ctrl-Space': 'autocomplete',
-          'Esc': (codemirror: typeof CodeMirror): void => {
-            if (codemirror.getOption('fullScreen')) {
-              codemirror.setOption('fullScreen', false);
-            }
-          },
-        },
-        fullScreen: false,
-        lineNumbers: true,
-        lineWrapping: true,
-        mode: modeParts[modeParts.length - 1],
-      });
-
-      // set options
-      Object.keys(options).map((key: string): void => {
-        cm.setOption(key, options[key]);
-      });
-
-      // Mark form as changed if code editor content has changed
-      cm.on('change', (): void => {
-        textarea.value = cm.getValue();
+  private async initializeEditor(textarea: HTMLTextAreaElement): Promise<void> {
+    const updateListener = EditorView.updateListener.of((v: ViewUpdate) => {
+      if (v.docChanged) {
+        textarea.value = v.state.doc.toString();
         textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
-      });
-
-      const panel = this.createPanelNode(this.panel, this.label);
-      cm.addPanel(
-        panel,
-        {
-          position: this.panel,
-          stable: false,
-        },
-      );
-
-      // cm.addPanel() changes the height of the editor, thus we have to override it here again
-      if (textarea.getAttribute('rows')) {
-        const lineHeight = 18;
-        const paddingBottom = 4;
-        cm.setSize(null, parseInt(textarea.getAttribute('rows'), 10) * lineHeight + paddingBottom + panel.getBoundingClientRect().height);
-      } else {
-        // Textarea has no "rows" attribute configured. Set the height to "auto"
-        // to instruct CodeMirror to automatically resize the editor depending
-        // on its content.
-        cm.getWrapperElement().style.height = 'auto';
-        cm.setOption('viewportMargin', Infinity);
       }
-
-      if (this.autoheight) {
-        cm.setOption('viewportMargin', Infinity);
-      }
-
-      if (this.lineDigits > 0) {
-        cm.setOption('lineNumberFormatter', (line: number): string => line.toString().padStart(this.lineDigits, ' '))
-      }
-
-      if (this.scrollto > 0) {
-        cm.scrollIntoView({
-          line: this.scrollto,
-          ch: 0
-        });
-      }
-
-      for (let textblock of this.marktext) {
-        if (textblock.from && textblock.to) {
-          cm.markText(textblock.from, textblock.to, {className: 'CodeMirror-markText'});
-        }
-      }
-
-      this.loaded = true;
     });
+
+    if (this.lineDigits > 0) {
+      this.style.setProperty('--rows', this.lineDigits.toString());
+    } else if (textarea.getAttribute('rows')) {
+      this.style.setProperty('--rows', textarea.getAttribute('rows'));
+    }
+
+    const extensions: Extension[] = [
+      oneDark,
+      updateListener,
+      lineNumbers(),
+      highlightSpecialChars(),
+      drawSelection(),
+      EditorState.allowMultipleSelections.of(true),
+      syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+    ];
+
+    if (this.readonly) {
+      extensions.push(EditorState.readOnly.of(true));
+    }
+
+    if (this.mode) {
+      const modeImplementation = <Extension[]>await executeJavaScriptModuleInstruction(this.mode);
+      extensions.push(...modeImplementation);
+    }
+
+    if (this.addons.length > 0) {
+      extensions.push(...await Promise.all(this.addons.map(moduleInstruction => executeJavaScriptModuleInstruction(moduleInstruction))));
+    }
+
+    const keymaps: KeyBinding[] = [
+      ...defaultKeymap,
+      indentWithTab,
+    ];
+    if (this.keymaps.length > 0) {
+      const dynamicKeymaps: KeyBinding[][] = await Promise.all(this.keymaps.map(keymap => loadModule(keymap).then((module) => resolveSubjectRef(module, keymap))));
+      dynamicKeymaps.forEach(keymap => keymaps.push(...keymap));
+    }
+    extensions.push(keymap.of(keymaps));
+
+    this.editorView = new EditorView({
+      state: EditorState.create({
+        doc: textarea.value,
+        extensions
+      }),
+      parent: this.renderRoot.querySelector('#codemirror-parent'),
+      root: this.renderRoot as ShadowRoot
+    })
   }
 }

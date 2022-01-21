@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -96,9 +97,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                 if (ExtensionManagementUtility::isLoaded('t3editor')) {
                     // @todo: Let EXT:t3editor add the deps via events in the render-loops above
                     $line['content'] = $this->getCodeMirrorHtml($title, trim($value));
-                    $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
-                    $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
-                    $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+                    $this->pageRenderer->loadJavaScriptModule('@typo3/t3editor/element/code-mirror-element.js');
                 } else {
                     $line['content'] = $this->getTextareaMarkup(trim($value));
                 }
@@ -331,17 +330,14 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
         $codeMirrorConfig = [
             'label' => $label,
             'panel' => 'top',
-            'mode' => 'TYPO3/CMS/T3editor/Mode/typoscript/typoscript',
+            'mode' => GeneralUtility::jsonEncodeForHtmlAttribute(JavaScriptModuleInstruction::create('@typo3/t3editor/language/typoscript.js', 'typoscript')->invoke(), false),
             'autoheight' => 'true',
             'nolazyload' => 'true',
-            'options' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'readOnly' => true,
-                'format' => 'typoscript',
-                'rows' => 'auto',
-            ], false),
+            'readonly' => 'true',
         ];
         $textareaAttributes = [
             'rows' => (string)count(explode(LF, $content)),
+            'class' => 'form-control',
             'readonly' => 'readonly',
         ];
 

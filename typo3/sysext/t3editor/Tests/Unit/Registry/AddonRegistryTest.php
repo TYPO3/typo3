@@ -55,10 +55,6 @@ class AddonRegistryTest extends UnitTestCase
                     ->setCssFiles(['EXT:foobar/Resources/Public/Css/Addon.css'])
             )
             ->register(
-                GeneralUtility::makeInstance(Addon::class, 'addon/for/mode')
-                    ->setModes(['xml', 'htmlmixed'])
-            )
-            ->register(
                 GeneralUtility::makeInstance(Addon::class, 'addon/with/settings')
                     ->setOptions([
                         'foobar' => false,
@@ -80,28 +76,7 @@ class AddonRegistryTest extends UnitTestCase
         ];
 
         $actual = [];
-        foreach ($this->subject->getForMode() as $addon) {
-            $actual[] = $addon->getIdentifier();
-        }
-
-        self::assertSame($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function globalAndModeAddonsGetReturned(): void
-    {
-        $expected = [
-            'addon/global',
-            'addon/another/global',
-            'addon/with/same/cssfile',
-            'addon/for/mode',
-            'addon/with/settings',
-        ];
-
-        $actual = [];
-        foreach ($this->subject->getForMode('xml') as $addon) {
+        foreach ($this->subject->getAddons() as $addon) {
             $actual[] = $addon->getIdentifier();
         }
 
@@ -119,7 +94,7 @@ class AddonRegistryTest extends UnitTestCase
             'randomInt' => 4,
         ];
 
-        $actual = $this->subject->compileSettings($this->subject->getForMode());
+        $actual = $this->subject->compileSettings($this->subject->getAddons());
 
         self::assertSame($expected, $actual);
     }

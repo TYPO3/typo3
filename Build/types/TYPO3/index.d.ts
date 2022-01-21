@@ -150,6 +150,10 @@ declare module '@typo3/backend/legacy-tree';
 declare module '@typo3/install/chosen.jquery.min';
 declare module '@typo3/recordlist/link-browser';
 declare module '@typo3/dashboard/contrib/chartjs';
+
+declare module '@typo3/t3editor/stream-parser/typoscript';
+declare module '@typo3/t3editor/autocomplete/ts-code-completion';
+
 interface Taboverride {
   set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
 }

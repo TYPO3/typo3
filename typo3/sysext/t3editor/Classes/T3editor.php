@@ -66,8 +66,8 @@ class T3editor implements SingletonInterface
 
         $addonRegistry = GeneralUtility::makeInstance(AddonRegistry::class);
         if (isset($configuration['addons'])) {
-            foreach ($configuration['addons'] as $addon) {
-                $addonInstance = GeneralUtility::makeInstance(Addon::class, $addon['module']);
+            foreach ($configuration['addons'] as $identifier => $addon) {
+                $addonInstance = GeneralUtility::makeInstance(Addon::class, $identifier, $addon['module'] ?? null, $addon['keymap'] ?? null);
 
                 if (!empty($addon['cssFiles']) && is_array($addon['cssFiles'])) {
                     $addonInstance->setCssFiles($addon['cssFiles']);
@@ -75,10 +75,6 @@ class T3editor implements SingletonInterface
 
                 if (!empty($addon['options']) && is_array($addon['options'])) {
                     $addonInstance->setOptions($addon['options']);
-                }
-
-                if (!empty($addon['modes']) && is_array($addon['modes'])) {
-                    $addonInstance->setModes($addon['modes']);
                 }
 
                 $addonRegistry->register($addonInstance);
