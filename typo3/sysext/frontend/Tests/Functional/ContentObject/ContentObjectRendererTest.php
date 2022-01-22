@@ -683,4 +683,37 @@ And another one';
             ],
         ];
     }
+
+    public function checkIfReturnsExpectedValuesDataProvider(): iterable
+    {
+        yield 'isNull returns true if stdWrap returns null' => [
+            'configuration' => [
+                'isNull.' => [
+                    'field' => 'unknown',
+                ],
+            ],
+            'expected' => true,
+        ];
+
+        yield 'isNull returns false if stdWrap returns not null' => [
+            'configuration' => [
+                'isNull.' => [
+                    'field' => 'known',
+                ],
+            ],
+            'expected' => false,
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkIfReturnsExpectedValuesDataProvider
+     */
+    public function checkIfReturnsExpectedValues(array $configuration, bool $expected): void
+    {
+        $this->subject->data = [
+            'known' => 'somevalue',
+        ];
+        self::assertSame($expected, $this->subject->checkIf($configuration));
+    }
 }
