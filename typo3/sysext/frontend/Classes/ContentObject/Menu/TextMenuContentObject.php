@@ -117,7 +117,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $wrapPartsAfter = explode('|', $this->I['val']['linkWrap'] ?? '');
             }
             if (($this->I['val']['stdWrap2'] ?? false) || isset($this->I['val']['stdWrap2.'])) {
-                $stdWrap2 = isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|';
+                $stdWrap2 = (string)(isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|');
                 $wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ?: '|', $stdWrap2);
             } else {
                 $wrapPartsStdWrap = ['', ''];
@@ -210,7 +210,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
     protected function extProc_finish()
     {
         if (is_array($this->mconf['stdWrap.'] ?? null)) {
-            $this->WMresult = $this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
+            $this->WMresult = (string)$this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
         }
         return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap'] ?? '');
     }

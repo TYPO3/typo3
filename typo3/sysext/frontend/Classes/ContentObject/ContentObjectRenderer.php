@@ -949,7 +949,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // todo: phpstan states that $pidConf always exists and is not nullable. At the moment, this is a false positive
         //       as null can be passed into this method via $pidConf. As soon as more strict types are used, this isset
         //       check must be replaced with a more appropriate check like empty or count.
-        $pidList = isset($pidConf) ? trim($this->stdWrap($pidList, $pidConf)) : trim($pidList);
+        $pidList = isset($pidConf) ? trim((string)$this->stdWrap($pidList, $pidConf)) : trim($pidList);
         if ($pidList === '') {
             $pidList = 'this';
         }
@@ -1200,7 +1200,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
      * @param array $conf TypoScript "stdWrap properties".
-     * @return string The processed input value
+     * @return string|null The processed input value
      */
     public function stdWrap($content = '', $conf = [])
     {
@@ -1286,7 +1286,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         unset($this->stopRendering[$this->stdWrapRecursionLevel]);
         $this->stdWrapRecursionLevel--;
 
-        return (string)$content;
+        return $content;
     }
 
     /**
@@ -1438,11 +1438,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $content Input value undergoing processing in this function.
      * @param array $conf stdWrap properties for field.
-     * @return string The processed input value
+     * @return string|null The processed input value
      */
     public function stdWrap_field($content = '', $conf = [])
     {
-        return (string)$this->getFieldVal($conf['field']);
+        return $this->getFieldVal($conf['field']);
     }
 
     /**
@@ -2393,7 +2393,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $sortedKeysArray = ArrayUtility::filterAndSortByNumericKeys($conf['orderedStdWrap.'], true);
         foreach ($sortedKeysArray as $key) {
-            $content = $this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.'] ?? null);
+            $content = (string)$this->stdWrap($content, $conf['orderedStdWrap.'][$key . '.'] ?? null);
         }
         return $content;
     }
@@ -3126,9 +3126,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $this->data[$this->currentValKey] = $value;
             if ($splitArr[$a]['cObjNum'] ?? false) {
                 $objName = (int)$splitArr[$a]['cObjNum'];
-                $value = isset($conf[$objName . '.'])
+                $value = (string)(isset($conf[$objName . '.'])
                     ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
-                    : $this->cObjGet($conf[$objName . '.'], $objName . '.');
+                    : $this->cObjGet($conf[$objName . '.'], $objName . '.'));
             }
             $wrap = (string)$this->stdWrapValue('wrap', $splitArr[$a] ?? []);
             if ($wrap) {
@@ -3700,7 +3700,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
             // Wrapping all inner-content:
             if (is_array($conf['innerStdWrap_all.'] ?? null)) {
-                $str_content = $this->stdWrap($str_content, $conf['innerStdWrap_all.']);
+                $str_content = (string)$this->stdWrap($str_content, $conf['innerStdWrap_all.']);
             }
             if ($uTagName) {
                 // Setting common attributes
@@ -3723,7 +3723,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 }
                 // Wrapping all inner-content:
                 if (isset($conf['encapsLinesStdWrap.'][$uTagName . '.']) && is_array($conf['encapsLinesStdWrap.'][$uTagName . '.'])) {
-                    $str_content = $this->stdWrap($str_content, $conf['encapsLinesStdWrap.'][$uTagName . '.']);
+                    $str_content = (string)$this->stdWrap($str_content, $conf['encapsLinesStdWrap.'][$uTagName . '.']);
                 }
                 // Default align
                 if ((!isset($attrib['align']) || !$attrib['align']) && $defaultAlign) {
@@ -3892,7 +3892,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             } else {
                 try {
                     if (isset($fileArray['import.']) && $fileArray['import.']) {
-                        $importedFile = trim($this->stdWrap('', $fileArray['import.']));
+                        $importedFile = trim((string)$this->stdWrap('', $fileArray['import.']));
                         if (!empty($importedFile)) {
                             $file = $importedFile;
                         }
