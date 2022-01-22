@@ -20,6 +20,7 @@ import ModuleMenu from 'TYPO3/CMS/Backend/ModuleMenu';
 import Notification from 'TYPO3/CMS/Backend/Notification';
 import AjaxRequest from 'TYPO3/CMS/Core/Ajax/AjaxRequest';
 import Router from '../../Router';
+import {topLevelModuleImport} from 'TYPO3/CMS/Backend/Utility/TopLevelModuleImport';
 
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionConfiguration
@@ -83,12 +84,26 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.html(data.html);
             this.initializeWrap();
+            this.initializeColorPicker();
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
+  }
+
+  private initializeColorPicker(): void {
+    const isInIframe = window.location !== window.parent.location;
+    if (isInIframe) {
+      topLevelModuleImport('TYPO3/CMS/Backend/ColorPicker.js').then(({default: ColorPicker}: typeof import('TYPO3/CMS/Backend/ColorPicker')): void => {
+        ColorPicker.initialize();
+      });
+    } else {
+      import('TYPO3/CMS/Backend/ColorPicker').then(({default: ColorPicker}): void => {
+        ColorPicker.initialize();
+      });
+    }
   }
 
   /**

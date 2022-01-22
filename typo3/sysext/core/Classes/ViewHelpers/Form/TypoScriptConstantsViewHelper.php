@@ -110,9 +110,6 @@ final class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
             <div class="form-wizards-element">
                 <input class="form-control t3js-color-input formengine-colorpickerelement t3js-color-picker" type="text"
                   name="' . htmlspecialchars($elementName) . '" value="' . $this->tag->getAttribute('value') . '"/>
-                <script>
-                    require([\'TYPO3/CMS/Backend/ColorPicker\'], function(ColorPicker){ColorPicker.initialize()});
-                </script>
             </div>';
 
         return $output;
