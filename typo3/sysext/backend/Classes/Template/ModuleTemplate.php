@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
@@ -40,19 +39,14 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 class ModuleTemplate
 {
+    use PageRendererBackendSetupTrait;
+
     /**
      * DocHeaderComponent
      *
      * @var DocHeaderComponent
      */
     protected $docHeaderComponent;
-
-    /**
-     * Expose the pageRenderer
-     *
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
 
     /**
      * @var bool
@@ -101,10 +95,6 @@ class ModuleTemplate
      */
     protected $content = '';
 
-    protected IconFactory $iconFactory;
-    protected FlashMessageQueue $flashMessageQueue;
-    protected ServerRequestInterface $request;
-
     /**
      * Module ID
      *
@@ -140,6 +130,52 @@ class ModuleTemplate
      */
     protected $bodyTag = '<body>';
 
+    protected PageRenderer $pageRenderer;
+    protected IconFactory $iconFactory;
+    protected FlashMessageQueue $flashMessageQueue;
+
+    /**
+     * Init PageRenderer and property objects.
+     */
+    public function __construct(
+        PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
+        FlashMessageService $flashMessageService,
+        ExtensionConfiguration $extensionConfiguration,
+        ServerRequestInterface $request = null,
+        ViewInterface $view = null
+    ) {
+        $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
+        $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        // @todo: Make $request argument non-optional in v12.
+        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
+
+        $currentRoute = $request->getAttribute('route');
+        if ($currentRoute instanceof Route) {
+            if ($currentRoute->hasOption('module') && $currentRoute->getOption('module')) {
+                $moduleConfiguration = $currentRoute->getOption('moduleConfiguration');
+                if ($moduleConfiguration['name']) {
+                    $this->setModuleName($moduleConfiguration['name']);
+                }
+            } else {
+                $this->setModuleName($currentRoute->getOption('_identifier'));
+            }
+        }
+        if ($view === null) {
+            $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+            $this->view->setPartialRootPaths($this->partialRootPaths);
+            $this->view->setTemplateRootPaths($this->templateRootPaths);
+            $this->view->setLayoutRootPaths($this->layoutRootPaths);
+            $this->view->setTemplate($this->templateFile);
+        } else {
+            $this->view = $view;
+        }
+        $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
+        $this->setUpBasicPageRendererForBackend($pageRenderer, $extensionConfiguration, $request, $this->getLanguageService());
+        $this->loadJavaScripts();
+    }
+
     /**
      * Returns the current body tag
      *
@@ -166,6 +202,7 @@ class ModuleTemplate
      * Gets the standalone view.
      *
      * @return StandaloneView
+     * @internal Candidate to deprecate when View refactoring finished.
      */
     public function getView()
     {
@@ -204,55 +241,6 @@ class ModuleTemplate
     }
 
     /**
-     * Class constructor
-     * Sets up view and property objects
-     *
-     * @param PageRenderer $pageRenderer
-     * @param IconFactory $iconFactory
-     * @param FlashMessageService $flashMessageService
-     * @param ServerRequestInterface|null $request
-     * @param ViewInterface|null $view
-     */
-    public function __construct(
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        FlashMessageService $flashMessageService,
-        ServerRequestInterface $request = null,
-        ViewInterface $view = null
-    ) {
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        // @todo: Make $request argument non-optional in v12.
-        $this->request = $request ?? $GLOBALS['TYPO3_REQUEST'];
-
-        $currentRoute = $this->request->getAttribute('route');
-        if ($currentRoute instanceof Route) {
-            if ($currentRoute->hasOption('module') && $currentRoute->getOption('module')) {
-                $moduleConfiguration = $currentRoute->getOption('moduleConfiguration');
-                if ($moduleConfiguration['name']) {
-                    $this->setModuleName($moduleConfiguration['name']);
-                }
-            } else {
-                $this->setModuleName($currentRoute->getOption('_identifier'));
-            }
-        }
-        if ($view === null) {
-            $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-            $this->view->setPartialRootPaths($this->partialRootPaths);
-            $this->view->setTemplateRootPaths($this->templateRootPaths);
-            $this->view->setLayoutRootPaths($this->layoutRootPaths);
-            $this->view->setTemplate($this->templateFile);
-        } else {
-            $this->view = $view;
-        }
-        $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
-        $this->setupPage();
-        $this->loadJavaScripts();
-        $this->loadStylesheets();
-    }
-
-    /**
      * Loads all necessary Javascript Files
      */
     protected function loadJavaScripts()
@@ -266,65 +254,6 @@ class ModuleTemplate
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
-    }
-
-    /**
-     * Loads all necessary stylesheets
-     */
-    protected function loadStylesheets()
-    {
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheet'])) {
-            $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet']);
-        }
-        if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
-            $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
-        }
-        // Add all *.css files of the directory $path to the stylesheets
-        foreach ($this->getRegisteredStylesheetFolders() as $folder) {
-            // Read all files in directory and sort them alphabetically
-            foreach (GeneralUtility::getFilesInDir($folder, 'css', true) as $cssFile) {
-                $this->pageRenderer->addCssFile($cssFile);
-            }
-        }
-    }
-
-    /**
-     * Returns an array of all stylesheet directories registered via $TBE_STYLES['skins']
-     */
-    protected function getRegisteredStylesheetFolders(): array
-    {
-        $stylesheetDirectories = [];
-        foreach ($GLOBALS['TBE_STYLES']['skins'] ?? [] as $skin) {
-            foreach ($skin['stylesheetDirectories'] ?? [] as $stylesheetDir) {
-                $directory = GeneralUtility::getFileAbsFileName($stylesheetDir);
-                if (!empty($directory)) {
-                    $stylesheetDirectories[] = $directory;
-                }
-            }
-        }
-        return $stylesheetDirectories;
-    }
-
-    /**
-     * Sets mandatory parameters for the view (pageRenderer)
-     */
-    protected function setupPage()
-    {
-        // Yes, hardcoded on purpose
-        $this->pageRenderer->setXmlPrologAndDocType('<!DOCTYPE html>');
-        $this->pageRenderer->setCharSet('utf-8');
-        $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
-        $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
-        $this->pageRenderer->setFavIcon($this->getBackendFavicon());
-        $this->pageRenderer->enableConcatenateCss();
-        $this->pageRenderer->enableConcatenateJavascript();
-        $this->pageRenderer->enableCompressCss();
-        $this->pageRenderer->enableCompressJavascript();
-        $languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
-        $this->pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
-            $this->pageRenderer->enableDebugMode();
-        }
     }
 
     /**
@@ -481,76 +410,6 @@ class ModuleTemplate
         return $view->render($collapsible ? 'ModuleTemplate/Collapse' : 'ModuleTemplate/Tabs');
     }
 
-    /*******************************************
-     * THE FOLLOWING METHODS ARE SUBJECT TO BE DEPRECATED / DROPPED!
-     *
-     * These methods have been copied over from DocumentTemplate and enables
-     * core modules to drop the dependency to DocumentTemplate altogether without
-     * rewriting these modules now.
-     * The methods below are marked as internal and will be removed
-     * one-by-one with further refactoring of modules.
-     *
-     * Do not use these methods within own extensions if possible or
-     * be prepared to change this later again.
-     *******************************************/
-
-    /**
-     * Retrieves configured favicon for backend (with fallback)
-     *
-     * @return string
-     */
-    protected function getBackendFavicon()
-    {
-        $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
-        if (!empty($backendFavicon)) {
-            return $this->getUriForFileName($backendFavicon);
-        }
-
-        return PathUtility::getPublicResourceWebPath('EXT:backend/Resources/Public/Icons/favicon.ico');
-    }
-
-    /**
-     * Returns the uri of a relative reference, resolves the "EXT:" prefix
-     * (way of referring to files inside extensions) and checks that the file is inside
-     * the project root of the TYPO3 installation
-     *
-     * @param string $filename The input filename/filepath to evaluate
-     * @return string Returns the filename of $filename if valid, otherwise blank string.
-     */
-    protected function getUriForFileName($filename)
-    {
-        if (PathUtility::hasProtocolAndScheme($filename)) {
-            return $filename;
-        }
-        $urlPrefix = '';
-        if (PathUtility::isExtensionPath($filename)) {
-            $filename = PathUtility::getPublicResourceWebPath($filename);
-        } elseif (strpos($filename, '/') !== 0) {
-            $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        }
-        return $urlPrefix . $filename;
-    }
-
-    /**
-     * Returns the BE USER Object
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Returns the LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
     /**
      * Returns the header-bar in the top of most backend modules
      * Closes section if open.
@@ -622,5 +481,15 @@ class ModuleTemplate
     {
         $this->uiBlock = $uiBlock;
         return $this;
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

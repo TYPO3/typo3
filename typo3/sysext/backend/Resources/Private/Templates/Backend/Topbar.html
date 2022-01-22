@@ -1,47 +1,6 @@
-<div class="scaffold-topbar t3js-scaffold-topbar" data-topbar-identifier="topbar">
-    <div class="topbar">
-        <div class="topbar-header t3js-topbar-header">
-            <f:render section="ToggleButton" arguments="{icon: 'actions-menu', enabled: '{hasModules}', classes: 'topbar-button-modulemenu t3js-topbar-button-modulemenu', title: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.minMaxModuleMenu\')}'}" />
-
-            <div class="topbar-header-site">
-                <a href="./" target="_top" title="{siteName} - {applicationVersion}">
-                    <span class="topbar-header-site-logo">
-                        <img src="{logoUrl}" width="{logoWidth}" height="{logoHeight}" title="TYPO3 Content Management System" alt="" />
-                    </span>
-                    <span class="topbar-header-site-title">
-                        <span class="topbar-header-site-name">{siteName}</span>
-                        <span class="topbar-header-site-version">{applicationVersion}</span>
-                    </span>
-                </a>
-            </div>
-            <button class="topbar-button topbar-button-toolbar t3js-topbar-button-toolbar" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.toolbarOpenClose')}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.toolbarOpenClose')}">
-                <core:icon identifier="actions-system-extension-configure" alternativeMarkupIdentifier="inline" />
-            </button>
-            <button class="topbar-button topbar-button-search t3js-topbar-button-search" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.searchbarOpenClose')}" aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.searchbarOpenClose')}">
-                <core:icon identifier="actions-search" alternativeMarkupIdentifier="inline" />
-            </button>
-        </div>
-    </div>
-</div>
-<div class="scaffold-toolbar t3js-scaffold-toolbar" data-toolbar-identifier="toolbar">
-    <div class="toolbar t3js-topbar-toolbar">
-        <ul class="toolbar-list" data-typo3-role="typo3-module-menu">
-            <f:format.raw>{toolbar}</f:format.raw>
-        </ul>
-    </div>
-</div>
-
-<f:section name="ToggleButton">
-    <f:variable name="disabled" value="{f:if(condition: '!{enabled}', then: 1, else: 0)}" />
-    <f:variable name="disabledAttr" value="{f:if(condition: '{disabled}', then: 'disabled')}" />
-
-    <button {disabledAttr} class="topbar-button {classes}" title="{title}" aria-label="{title}">
-        <f:render section="Icon" arguments="{identifier: icon, disabled: disabled}" />
-    </button>
-</f:section>
-
-<f:section name="Icon">
-    <f:variable name="overlay" value="{f:if(condition: '{disabled}', then: 'overlay-readonly', else: null)}" />
-
-    <core:icon identifier="{identifier}" alternativeMarkupIdentifier="inline" overlay="{overlay}" />
-</f:section>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:render partial="Backend/Topbar" arguments="{_all}" />
+</html>

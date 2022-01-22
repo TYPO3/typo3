@@ -22,7 +22,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -41,59 +41,44 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Class for rendering the TYPO3 backend
+ * Class for rendering the TYPO3 backend.
+ * This is the backend outer main frame with topbar and module menu.
  */
 class BackendController
 {
-    /**
-     * @var string
-     */
-    protected $css = '';
+    use PageRendererBackendSetupTrait;
 
-    /**
-     * @var array
-     */
-    protected $toolbarItems = [];
-
-    protected BackendModuleRepository $backendModuleRepository;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected Typo3Version $typo3Version;
-    protected UriBuilder $uriBuilder;
-    protected ModuleLoader $moduleLoader;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ToolbarItemsRegistry $toolbarItemsRegistry;
-
-    /**
-     * @var \SplObjectStorage
-     */
-    protected $moduleStorage;
+    protected string $css = '';
+    protected \SplObjectStorage $moduleStorage;
 
     public function __construct(
-        Typo3Version $typo3Version,
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer,
-        ModuleLoader $moduleLoader,
-        BackendModuleRepository $backendModuleRepository,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ToolbarItemsRegistry $toolbarItemsRegistry
+        protected Typo3Version $typo3Version,
+        protected IconFactory $iconFactory,
+        protected UriBuilder $uriBuilder,
+        protected PageRenderer $pageRenderer,
+        protected ModuleLoader $moduleLoader,
+        protected BackendModuleRepository $backendModuleRepository,
+        protected ToolbarItemsRegistry $toolbarItemsRegistry,
+        protected ExtensionConfiguration $extensionConfiguration,
     ) {
-        $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $this->backendModuleRepository = $backendModuleRepository;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->typo3Version = $typo3Version;
-        $this->pageRenderer = $pageRenderer;
-        $this->moduleLoader = $moduleLoader;
-        $this->toolbarItemsRegistry = $toolbarItemsRegistry;
-        $this->moduleLoader->observeWorkspaces = true;
-        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        // @todo: This hook is essentially useless.
+        $this->executeHook('constructPostProcess');
+        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
+    }
 
-        // Add default BE javascript
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
+    /**
+     * Main function generating the BE scaffolding.
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $backendUser = $this->getBackendUser();
+        $pageRenderer = $this->pageRenderer;
+
+        $this->executeHook('renderPreProcess');
+
+        $this->setUpBasicPageRendererForBackend($pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
+
+        $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/LoginRefresh')
                 ->invoke('initialize', [
@@ -108,93 +93,103 @@ class BackendController
         // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/Storage/Persistent.js')
-                ->invoke('load', $this->getBackendUser()->uc)
+                ->invoke('load', $backendUser->uc)
         );
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Module/Router.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ModuleMenu.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/JavaScriptModuleImportEventHandler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Storage/ModuleStateStorage.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Toolbar.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Notification.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Modal.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/InfoWindow.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DebugConsole.js');
+        $javaScriptRenderer->addGlobalAssignment([
+            'TYPO3' => [
+                'configuration' => [
+                    'username' => htmlspecialchars($backendUser->user['username']),
+                    'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
+                ],
+            ],
+        ]);
 
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
+        // @todo: This loads a ton of labels into JS. This should be reviewed what is really needed.
+        //        This could happen when the localization API gets an overhaul.
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
+        $pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
 
-        $this->pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('help_cshmanual'));
-        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
-        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('db_new'));
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
-        $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
-        $this->pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
+        // @todo: We can not put this into the template since PageRendererViewHelper does not deal with namespace in addInlineSettings argument
+        $pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('help_cshmanual'));
+        $pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
+        $pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
+        $pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('db_new'));
+        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
+        $pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
+        $pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
+        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
+        // Needed for FormEngine manipulation (date picker)
+        $pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+        $pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
+        $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
+        $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
+        $pageRenderer->setTitle($title);
+        $hasModules = count($this->moduleStorage) > 0;
+        $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
-        $this->toolbarItems = $this->toolbarItemsRegistry->getToolbarItems();
-        $this->executeHook('constructPostProcess');
-
-        $this->moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
+        $view = $this->getFluidTemplateObject();
+        $this->assignTopbarDetailsToView($view);
+        $view->assignMultiple([
+            'modules' => $this->moduleStorage,
+            'startupModule' => $this->getStartupModule($request),
+            'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
+            'sitename' => $title,
+            'sitenameFirstInBackendTitle' => ($backendUser->uc['backendTitleFormat'] ?? '') === 'sitenameFirst',
+        ]);
+        $content = $view->render('Backend/Main');
+        $this->executeHook('renderPostProcess', ['content' => &$content]);
+        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $hasModules ? ' scaffold-modulemenu-expanded' : '') . '">';
+        $pageRenderer->addBodyContent($bodyTag . $content);
+        return new HtmlResponse($pageRenderer->render());
     }
 
     /**
-     * Main function generating the BE scaffolding
+     * Returns the main module menu as json encoded HTML string. Used when
+     * "update signals" request a menu reload, e.g. when an extension is loaded
+     * that brings new main modules.
      *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface the response with the content
+     * @return ResponseInterface
      */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    public function getModuleMenu(): ResponseInterface
     {
-        $this->executeHook('renderPreProcess');
+        $view = $this->getFluidTemplateObject();
+        $view->assign('modules', $this->moduleStorage);
+        return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
+    }
 
-        $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
-        $hasModules = count($this->moduleStorage) > 0;
-        $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $hasModules ? ' scaffold-modulemenu-expanded' : '') . '">';
+    /**
+     * Returns the toolbar as json encoded HTML string. Used when
+     * "update signals" request a toolbar reload, e.g. when an extension is loaded.
+     */
+    public function getTopbar(): ResponseInterface
+    {
+        $view = $this->getFluidTemplateObject();
+        $this->assignTopbarDetailsToView($view);
+        return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
+    }
 
-        // Prepare the scaffolding, at this point extension may still add javascript and css
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $view = $moduleTemplate->getView();
-        $view->setTemplatePathAndFilename('EXT:backend/Resources/Private/Templates/Backend/Main.html');
-        $moduleTemplate->setBodyTag($bodyTag);
-        $view->assign('moduleMenu', $this->generateModuleMenu());
-        $view->assign('topbar', $this->renderTopbar());
-        $view->assign('hasModules', $hasModules);
-        $view->assign('startupModule', $this->getStartupModule($request));
-        $view->assign('stateTracker', (string)$this->uriBuilder->buildUriFromRoute('state-tracker'));
-
-        if (!empty($this->css)) {
-            $this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
-        }
-        $this->generateJavascript($request);
-
-        // Set document title
-        $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
-        $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
-        $moduleTemplate->setTitle($title);
-        $view->assign('sitename', $title);
-        $view->assign('sitenameFirstInBackendTitle', ($this->getBackendUser()->uc['backendTitleFormat'] ?? '') === 'sitenameFirst');
-
-        // Renders the backend scaffolding
-        $content = $moduleTemplate->renderContent();
-        $this->executeHook('renderPostProcess', ['content' => &$content]);
-        return new HtmlResponse($content);
+    /**
+     * Adds a css snippet to the backend. This method is old and its purpose
+     * seems to be that hooks (see executeHook()) can add css?
+     * @todo: Candidate for deprecation / removal.
+     */
+    public function addCss(string $css): void
+    {
+        $this->css .= $css;
     }
 
     /**
      * Renders the topbar, containing the backend logo, sitename etc.
-     *
-     * @return string
      */
-    protected function renderTopbar()
+    protected function assignTopbarDetailsToView(BackendTemplateView $view): void
     {
         // Extension Configuration to find the TYPO3 logo in the left corner
-        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend');
+        $extConf = $this->extensionConfiguration->get('backend');
         $logoPath = '';
         if (!empty($extConf['backendLogo'])) {
             $customBackendLogo = GeneralUtility::getFileAbsFileName(ltrim($extConf['backendLogo'], '/'));
@@ -219,8 +214,6 @@ class BackendController
                 $logoHeight /= 2;
             }
         }
-
-        $view = $this->getFluidTemplateObject();
         $view->assign('hasModules', count($this->moduleStorage) > 0);
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
@@ -228,18 +221,18 @@ class BackendController
         $view->assign('applicationVersion', $this->typo3Version->getVersion());
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('toolbar', $this->renderToolbar());
-        return $view->render('Backend/Topbar.html');
     }
 
     /**
-     * Renders the items in the top toolbar
+     * Renders the items in the top toolbar.
      *
-     * @return string top toolbar elements as HTML
+     * @todo: Inline this to the topbar template
      */
-    protected function renderToolbar()
+    protected function renderToolbar(): string
     {
+        $toolbarItems = $this->toolbarItemsRegistry->getToolbarItems();
         $toolbar = [];
-        foreach ($this->toolbarItems as $toolbarItem) {
+        foreach ($toolbarItems as $toolbarItem) {
             /** @var ToolbarItemInterface $toolbarItem */
             if ($toolbarItem->checkAccess()) {
                 $hasDropDown = (bool)$toolbarItem->hasDropDown();
@@ -294,34 +287,14 @@ class BackendController
     }
 
     /**
-     * Generates the JavaScript code for the backend.
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function generateJavascript(ServerRequestInterface $request)
-    {
-        $beUser = $this->getBackendUser();
-        // Needed for FormEngine manipulation (date picker)
-        $dateFormat = ['DD-MM-Y', 'HH:mm DD-MM-Y'];
-        $this->pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
-
-        $t3Configuration = [
-            'username' => htmlspecialchars($beUser->user['username']),
-            'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false),
-        ];
-        $this->pageRenderer->getJavaScriptRenderer()->addGlobalAssignment(
-            ['TYPO3' => ['configuration' => $t3Configuration]]
-        );
-    }
-
-    /**
      * Sets the startup module from either "redirect" GET parameters or user configuration.
-     *
-     * @param ServerRequestInterface $request
-     * @return array
      */
     protected function getStartupModule(ServerRequestInterface $request): array
     {
+        $moduleLoader = $this->moduleLoader;
+        $moduleLoader->observeWorkspaces = true;
+        $moduleLoader->load($GLOBALS['TBE_MODULES']);
+
         $startModule = null;
         $moduleParameters = [];
         try {
@@ -335,16 +308,16 @@ class BackendController
         } finally {
             // No valid redirect, check for the start module
             if (!$startModule) {
-                $beUser = $this->getBackendUser();
+                $backendUser = $this->getBackendUser();
                 // start module on first login, will be removed once used the first time
-                if (isset($beUser->uc['startModuleOnFirstLogin'])) {
-                    $startModule = $beUser->uc['startModuleOnFirstLogin'];
-                    unset($beUser->uc['startModuleOnFirstLogin']);
-                    $beUser->writeUC();
-                } elseif ($this->moduleLoader->checkMod($beUser->uc['startModule'] ?? '') !== 'notFound') {
-                    $startModule = $beUser->uc['startModule'];
+                if (isset($backendUser->uc['startModuleOnFirstLogin'])) {
+                    $startModule = $backendUser->uc['startModuleOnFirstLogin'];
+                    unset($backendUser->uc['startModuleOnFirstLogin']);
+                    $backendUser->writeUC();
+                } elseif ($moduleLoader->checkMod($backendUser->uc['startModule'] ?? '') !== 'notFound') {
+                    $startModule = $backendUser->uc['startModule'];
                 } else {
-                    $startModule = $this->determineFirstAvailableBackendModule();
+                    $startModule = $this->determineFirstAvailableBackendModule($moduleLoader);
                 }
 
                 // check if the start module has additional parameters, so a redirect to a specific
@@ -371,9 +344,9 @@ class BackendController
         return [null, null];
     }
 
-    protected function determineFirstAvailableBackendModule(): string
+    protected function determineFirstAvailableBackendModule(ModuleLoader $moduleLoader): string
     {
-        foreach ($this->moduleLoader->getModules() as $modData) {
+        foreach ($moduleLoader->getModules() as $modData) {
             $hasSubmodules = !empty($modData['sub']) && is_array($modData['sub']);
             $isStandalone = $modData['standalone'] ?? false;
             if ($isStandalone) {
@@ -390,31 +363,14 @@ class BackendController
     }
 
     /**
-     * Adds a css snippet to the backend
-     *
-     * @param string $css Css snippet
-     * @throws \InvalidArgumentException
-     */
-    public function addCss($css)
-    {
-        if (!is_string($css)) {
-            throw new \InvalidArgumentException('parameter $css must be of type string', 1195129642);
-        }
-        $this->css .= $css;
-    }
-
-    /**
      * Executes defined hooks functions for the given identifier.
      *
      * These hook identifiers are valid:
      * + constructPostProcess
      * + renderPreProcess
      * + renderPostProcess
-     *
-     * @param string $identifier Specific hook identifier
-     * @param array $hookConfiguration Additional configuration passed to hook functions
      */
-    protected function executeHook($identifier, array $hookConfiguration = [])
+    protected function executeHook(string $identifier, array $hookConfiguration = []): void
     {
         $options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
         foreach ($options[$identifier] ?? [] as $hookFunction) {
@@ -422,71 +378,29 @@ class BackendController
         }
     }
 
-    /**
-     * loads all modules from the repository
-     * and renders it with a template
-     *
-     * @return string
-     */
-    protected function generateModuleMenu()
-    {
-        $view = $this->getFluidTemplateObject();
-        $view->assign('modules', $this->moduleStorage);
-        return $view->render('Backend/ModuleMenu.html');
-    }
-
     protected function getCollapseStateOfMenu(): bool
     {
-        $uc = json_decode((string)json_encode($this->getBackendUser()->uc), true);
+        $backendUser = $this->getBackendUser();
+        $uc = json_decode((string)json_encode($backendUser->uc), true);
         $collapseState = $uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
-
         return $collapseState === true || $collapseState === 'true';
-    }
-
-    /**
-     * Returns the Module menu for the AJAX request
-     *
-     * @return ResponseInterface
-     */
-    public function getModuleMenu(): ResponseInterface
-    {
-        return new JsonResponse(['menu' => $this->generateModuleMenu()]);
-    }
-
-    /**
-     * Returns the toolbar for the AJAX request
-     *
-     * @return ResponseInterface
-     */
-    public function getTopbar(): ResponseInterface
-    {
-        return new JsonResponse(['topbar' => $this->renderTopbar()]);
     }
 
     protected function getFluidTemplateObject(): BackendTemplateView
     {
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
+        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/']);
         return $view;
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

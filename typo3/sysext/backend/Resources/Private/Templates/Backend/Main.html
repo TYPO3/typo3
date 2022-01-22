@@ -1,11 +1,41 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer
+    includeJsFiles="{
+        0: 'EXT:backend/Resources/Public/JavaScript/backend.js'
+    }"
+    includeJavaScriptModules="{
+        0: 'bootstrap',
+        1: 'TYPO3/CMS/Backend/Module/Router.js',
+        2: 'TYPO3/CMS/Backend/ModuleMenu.js',
+        3: 'TYPO3/CMS/Backend/JavaScriptModuleImportEventHandler.js',
+        4: 'TYPO3/CMS/Backend/Storage/ModuleStateStorage.js',
+        5: 'TYPO3/CMS/Backend/Toolbar.js',
+        6: 'TYPO3/CMS/Backend/Notification.js',
+        7: 'TYPO3/CMS/Backend/Modal.js',
+        8: 'TYPO3/CMS/Backend/InfoWindow.js',
+        9: 'TYPO3/CMS/Backend/Viewport/ResizableNavigation.js',
+        10: 'TYPO3/CMS/Backend/DebugConsole.js',
+        11: 'TYPO3/CMS/Backend/ContextMenu.js',
+        12: 'TYPO3/CMS/Backend/GlobalEventHandler.js',
+        13: 'TYPO3/CMS/Backend/ActionDispatcher.js',
+        14: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
+    }"
+/>
+
 <div class="scaffold-header t3js-scaffold-header">
-    <f:format.raw>{topbar}</f:format.raw>
+    <f:render partial="Backend/Topbar" arguments="{_all}" />
 </div>
+
 <f:if condition="{hasModules}">
     <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
-        <f:format.raw>{moduleMenu}</f:format.raw>
+        <f:render partial="Backend/ModuleMenu" arguments="{modules: modules}" />
     </div>
 </f:if>
+
 <div class="scaffold-content t3js-scaffold-content {f:if(condition: '!{hasModules}', then: 'scaffold-no-modules')}">
     <div class="scaffold-content-navigation t3js-scaffold-content-navigation">
         <div class="scaffold-content-navigation-component" data-component="typo3-navigationIframe">
@@ -23,3 +53,5 @@
     </div>
     <div class="scaffold-content-overlay t3js-scaffold-content-overlay"></div>
 </div>
+
+</html>

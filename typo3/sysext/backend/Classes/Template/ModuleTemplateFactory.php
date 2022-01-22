@@ -18,27 +18,22 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
- * A factory class taking care of building ModuleTemplate objects
+ * A factory class taking care of building ModuleTemplate objects.
  */
 class ModuleTemplateFactory
 {
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected FlashMessageService $flashMessageService;
-
     public function __construct(
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        FlashMessageService $flashMessageService
+        protected PageRenderer $pageRenderer,
+        protected IconFactory $iconFactory,
+        protected FlashMessageService $flashMessageService,
+        protected ExtensionConfiguration $extensionConfiguration,
     ) {
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->flashMessageService = $flashMessageService;
     }
 
     public function create(ServerRequestInterface $request): ModuleTemplate
@@ -47,6 +42,7 @@ class ModuleTemplateFactory
             $this->pageRenderer,
             $this->iconFactory,
             $this->flashMessageService,
+            $this->extensionConfiguration,
             $request
         );
     }
