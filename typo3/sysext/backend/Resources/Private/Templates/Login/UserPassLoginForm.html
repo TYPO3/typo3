@@ -1,0 +1,82 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Login" />
+
+<f:section name="loginFormFields">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Backend/UserPassLogin.js'
+        }"
+    />
+
+    <div class="form-group t3js-login-username-section" id="t3-login-username-section">
+        <div class="form-control-wrap">
+            <div class="form-control-holder">
+                <input
+                    type="text"
+                    id="t3-username"
+                    name="username"
+                    value="{presetUsername}"
+                    aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username')}"
+                    placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username')}"
+                    class="form-control input-login t3js-clearable t3js-login-username-field"
+                    autofocus="autofocus"
+                    autocomplete="username"
+                    required="required"
+                />
+                <div role="status" class="form-notice-capslock hidden t3js-login-alert-capslock">
+                    <img
+                        aria-hidden="true"
+                        src="{images.capslock}"
+                        width="14"
+                        height="14"
+                        alt=""
+                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
+                    />
+                    <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus" /></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group t3js-login-password-section" id="t3-login-password-section">
+        <div class="form-control-wrap">
+            <div class="form-control-holder">
+                <input
+                    type="password"
+                    id="t3-password"
+                    name="p_field"
+                    value="{presetPassword}"
+                    aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password')}"
+                    placeholder="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password')}"
+                    class="form-control input-login t3js-clearable t3js-login-password-field"
+                    autocomplete="current-password"
+                    required="required"
+                />
+                <div role="status" class="form-notice-capslock hidden t3js-login-alert-capslock">
+                    <img
+                        aria-hidden="true"
+                        src="{images.capslock}"
+                        width="14"
+                        height="14"
+                        alt=""
+                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslock')}"
+                    />
+                    <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.capslockStatus" /></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="ResetPassword">
+    <div class="forgot-password">
+        <div class="text-end">
+            <a href="{forgetPasswordUrl}"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password_forget" /></a>
+        </div>
+    </div>
+</f:section>
+
+</html>

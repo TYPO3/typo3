@@ -27,10 +27,10 @@ use TYPO3\CMS\Backend\LoginProvider\LoginProviderResolver;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -48,11 +48,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Controller responsible for rendering the TYPO3 Backend login form
+ * Controller responsible for rendering the TYPO3 Backend login form.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LoginController
 {
+    use PageRendererBackendSetupTrait;
+
     /**
      * The URL to redirect to after login.
      *
@@ -94,39 +97,20 @@ class LoginController
     protected $view;
 
     /**
-     * @var ModuleTemplate
+     * @todo: Only set for getCurrentRequest(). Should vanish.
      */
-    protected $moduleTemplate;
-
-    protected EventDispatcherInterface $eventDispatcher;
-    protected Typo3Information $typo3Information;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected Features $features;
-    protected Context $context;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected LoginProviderResolver $loginProviderResolver;
-
-    protected ?ServerRequestInterface $currentRequest = null;
+    protected ServerRequestInterface $request;
 
     public function __construct(
-        Typo3Information $typo3Information,
-        EventDispatcherInterface $eventDispatcher,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        Features $features,
-        Context $context,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        LoginProviderResolver $loginProviderResolver
+        protected readonly Typo3Information $typo3Information,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly Features $features,
+        protected readonly Context $context,
+        protected readonly LoginProviderResolver $loginProviderResolver,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {
-        $this->typo3Information = $typo3Information;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->uriBuilder = $uriBuilder;
-        $this->pageRenderer = $pageRenderer;
-        $this->features = $features;
-        $this->context = $context;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->loginProviderResolver = $loginProviderResolver;
     }
 
     /**
@@ -135,6 +119,7 @@ class LoginController
      */
     public function formAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->request = $request;
         $this->init($request);
         $response = new HtmlResponse($this->createLoginLogoutForm($request));
         return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
@@ -145,6 +130,7 @@ class LoginController
      */
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->request = $request;
         $this->init($request);
         $this->loginRefresh = true;
         $response = new HtmlResponse($this->createLoginLogoutForm($request));
@@ -152,8 +138,25 @@ class LoginController
     }
 
     /**
-     * If a login provider was chosen in the previous request, which is not the default provider, it is stored in a
-     * Cookie and appended to the HTTP Response.
+     * @todo: Ugly. This can be used by login providers, they receive an instance of $this.
+     *        Unused in core, though. It should vanish when login providers receive love.
+     */
+    public function getLoginProviderIdentifier(): string
+    {
+        return $this->loginProviderIdentifier;
+    }
+
+    /**
+     * @todo: Ugly. This can be used by login providers, they receive an instance of $this.
+     */
+    public function getCurrentRequest(): ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    /**
+     * If a login provider was chosen in the previous request, which is not the default provider,
+     * it is stored in a Cookie and appended to the HTTP Response.
      */
     protected function appendLoginProviderCookie(NormalizedParams $normalizedParams, ResponseInterface $response): ResponseInterface
     {
@@ -176,22 +179,17 @@ class LoginController
     }
 
     /**
-     * This can be called by single login providers, they receive an instance of $this.
-     */
-    public function getLoginProviderIdentifier(): string
-    {
-        return $this->loginProviderIdentifier;
-    }
-
-    /**
      * Initialize the login box. Will also react on a &L=OUT flag and exit.
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUserAuthentication();
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
+
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $languageService);
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? '');
 
         $this->redirectUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['redirect_url'] ?? $queryParams['redirect_url'] ?? null);
         $this->loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
@@ -203,14 +201,12 @@ class LoginController
         $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? '';
         $preferredBrowserLanguage = GeneralUtility::makeInstance(Locales::class)->getPreferredClientLanguage($httpAcceptLanguage);
 
-        // If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
+        // If we found a $preferredBrowserLanguage, and it is not the default language and no be_user is logged in,
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
-        if ($preferredBrowserLanguage !== 'default' && empty($this->getBackendUserAuthentication()->user['uid'])) {
-            $this->getLanguageService()->init($preferredBrowserLanguage);
+        if ($preferredBrowserLanguage !== 'default' && empty($backendUser->user['uid'])) {
+            $languageService->init($preferredBrowserLanguage);
             $this->pageRenderer->setLanguage($preferredBrowserLanguage);
         }
-
-        $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_login.xlf');
 
         // Setting the redirect URL to "index.php?M=main" if no alternative input is given
         if ($this->redirectUrl) {
@@ -221,14 +217,18 @@ class LoginController
         }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
-        if (($parsedBody['L'] ?? $queryParams['L'] ?? null) === 'OUT' && is_object($this->getBackendUserAuthentication())) {
-            $this->getBackendUserAuthentication()->logoff();
+        if (($parsedBody['L'] ?? $queryParams['L'] ?? null) === 'OUT' && is_object($backendUser)) {
+            $backendUser->logoff();
             $this->redirectToUrl();
         }
 
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Login.js');
-        $this->view = $this->moduleTemplate->getView();
-        $this->view->getRequest()->setControllerExtensionName('Backend');
+        // @todo: This should be ViewInterface. But this breaks LoginProviderInterface AND ModifyPageLayoutOnLoginProviderSelectionEvent
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        // StandaloneView should NOT receive a request at all, override the default StandaloneView constructor here.
+        $this->view->setRequest();
+        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $this->provideCustomLoginStyling();
         $this->view->assign('referrerCheckEnabled', $this->features->isFeatureEnabled('security.backend.enforceReferrer'));
         $this->view->assign('loginUrl', (string)$request->getUri());
@@ -237,6 +237,7 @@ class LoginController
 
     protected function provideCustomLoginStyling(): void
     {
+        $languageService = $this->getLanguageService();
         $authenticationStyleInformation = GeneralUtility::makeInstance(AuthenticationStyleInformation::class);
         if (($backgroundImageStyles = $authenticationStyleInformation->getBackgroundImageStyles()) !== '') {
             $this->pageRenderer->addCssInlineBlock('loginBackgroundImage', $backgroundImageStyles);
@@ -248,10 +249,10 @@ class LoginController
             $this->pageRenderer->addCssInlineBlock('loginHighlightColor', $highlightColorStyles);
         }
         if (($logo = $authenticationStyleInformation->getLogo()) !== '') {
-            $logoAlt = $authenticationStyleInformation->getLogoAlt() ?: $this->getLanguageService()->getLL('typo3.altText');
+            $logoAlt = $authenticationStyleInformation->getLogoAlt() ?: $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
         } else {
             $logo = $authenticationStyleInformation->getDefaultLogo();
-            $logoAlt = $this->getLanguageService()->getLL('typo3.altText');
+            $logoAlt = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.altText');
             $this->pageRenderer->addCssInlineBlock('loginLogo', $authenticationStyleInformation->getDefaultLogoStyles());
         }
         $this->view->assignMultiple([
@@ -267,12 +268,14 @@ class LoginController
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
+        $backendUser = $this->getBackendUserAuthentication();
+
         // Checking, if we should make a redirect.
         // Might set JavaScript in the header to close window.
         $this->checkRedirect($request);
 
         // Show login form
-        if (empty($this->getBackendUserAuthentication()->user['uid'])) {
+        if (empty($backendUser->user['uid'])) {
             $action = 'login';
             $formActionUrl = $this->uriBuilder->buildUriWithRedirect(
                 'login',
@@ -287,7 +290,7 @@ class LoginController
             $formActionUrl = $this->uriBuilder->buildUriFromRoute('logout');
         }
         $this->view->assignMultiple([
-            'backendUser' => $this->getBackendUserAuthentication()->user,
+            'backendUser' => $backendUser->user,
             'hasLoginError' => $this->isLoginInProgress($request),
             'action' => $action,
             'formActionUrl' => $formActionUrl,
@@ -304,15 +307,14 @@ class LoginController
 
         // Initialize interface selectors:
         $this->makeInterfaceSelector($request);
-        $this->renderHtmlViaLoginProvider($request);
+        $this->renderHtmlViaLoginProvider();
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body>' . $this->view->render());
+        return $this->pageRenderer->render();
     }
 
-    protected function renderHtmlViaLoginProvider(ServerRequestInterface $request): void
+    protected function renderHtmlViaLoginProvider(): void
     {
-        $this->currentRequest = $request;
         $loginProviderConfiguration = $this->loginProviderResolver->getLoginProviderConfigurationByIdentifier($this->loginProviderIdentifier);
         /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($loginProviderConfiguration['provider']);
@@ -324,7 +326,6 @@ class LoginController
             )
         );
         $loginProvider->render($this->view, $this->pageRenderer, $this);
-        $this->currentRequest = null;
     }
 
     /**
@@ -396,6 +397,7 @@ class LoginController
      */
     protected function makeInterfaceSelector(ServerRequestInterface $request): void
     {
+        $languageService = $this->getLanguageService();
         // If interfaces are defined AND no input redirect URL in GET vars:
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress($request) || !$this->redirectUrl)) {
             $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
@@ -403,12 +405,12 @@ class LoginController
                 // Only if more than one interface is defined we will show the selector
                 $interfaces = [
                     'backend' => [
-                        'label' => $this->getLanguageService()->getLL('interface.backend'),
+                        'label' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:interface.backend'),
                         'jumpScript' => (string)$this->uriBuilder->buildUriFromRoute('main'),
                         'interface' => 'backend',
                     ],
                     'frontend' => [
-                        'label' => $this->getLanguageService()->getLL('interface.frontend'),
+                        'label' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:interface.frontend'),
                         'jumpScript' => '../',
                         'interface' => 'frontend',
                     ],
@@ -425,9 +427,8 @@ class LoginController
     }
 
     /**
-     * Gets news from sys_news and converts them into a format suitable for showing them at the login screen.
-     *
-     * @return array An array of login news.
+     * Gets news as array from sys_news and converts them into a
+     * format suitable for showing them at the login screen.
      */
     protected function getSystemNews(): array
     {
@@ -481,10 +482,5 @@ class LoginController
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    public function getCurrentRequest(): ?ServerRequestInterface
-    {
-        return $this->currentRequest;
     }
 }

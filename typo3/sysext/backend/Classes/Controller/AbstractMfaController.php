@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
@@ -35,24 +32,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractMfaController
 {
-    protected UriBuilder $uriBuilder;
     protected MfaProviderRegistry $mfaProviderRegistry;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ?ModuleTemplate $moduleTemplate;
     protected array $mfaTsConfig;
     protected bool $mfaRequired;
     protected array $allowedProviders;
     protected array $allowedActions = [];
 
-    public function __construct(
-        UriBuilder $uriBuilder,
-        MfaProviderRegistry $mfaProviderRegistry,
-        ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-        $this->uriBuilder = $uriBuilder;
+    public function injectMfaProviderRegistry(MfaProviderRegistry $mfaProviderRegistry): void
+    {
         $this->mfaProviderRegistry = $mfaProviderRegistry;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->initializeMfaConfiguration();
     }
 
     /**
@@ -115,7 +103,6 @@ abstract class AbstractMfaController
                 return null;
             }
         }
-
         return $this->mfaProviderRegistry->getProvider($recommendedProviderIdentifier);
     }
 

@@ -23,9 +23,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\ResetPasswordController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -71,8 +71,8 @@ class ResetPasswordControllerTest extends FunctionalTestCase
             $this->getService(PageRenderer::class),
             $passwordResetProphecy->reveal(),
             $this->getService(Typo3Information::class),
-            $this->getService(ModuleTemplateFactory::class),
             $this->getService(AuthenticationStyleInformation::class),
+            new ExtensionConfiguration(),
         );
 
         $this->request = (new ServerRequest())
@@ -128,7 +128,6 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         self::assertStringContainsString($expected, $this->subject->forgetPasswordFormAction($request)->getBody()->getContents());
         self::assertStringContainsString($expected, $this->subject->initiatePasswordResetAction($request)->getBody()->getContents());
         self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->getContents());
-        self::assertStringContainsString($expected, $this->subject->passwordResetFinishAction($request)->getBody()->getContents());
     }
 
     /**

@@ -1,4 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
 <div class="typo3-login">
     <div class="typo3-login-inner">
@@ -6,7 +9,7 @@
             <div class="typo3-login-wrap">
                 <div class="card card-login card-mfa">
                     <header class="card-heading">
-                        <h2 class="text-center">{provider.title -> f:translate(id: provider.title)}</h2>
+                        <h2 class="text-center">{provider.title -> f:translate(key: provider.title, default:  provider.title)}</h2>
                     </header>
                     <main class="card-body">
                         <f:if condition="{isLocked} || {hasAuthError}">
@@ -18,12 +21,7 @@
                         </f:if>
                         <f:if condition="!{isLocked}">
                             <f:then>
-                                <form
-                                    action="{formUrl}"
-                                    method="post"
-                                    enctype="multipart/form-data"
-                                    name="verify"
-                                    id="mfaController">
+                                <form action="{formUrl}" method="post" enctype="multipart/form-data" name="verify" id="mfaController">
                                     <input type="hidden" name="identifier" value="{provider.identifier}" />
                                     {providerContent -> f:format.raw()}
                                     <div class="form-group mb-2" id="t3-login-submit-section">
@@ -40,7 +38,11 @@
                         </f:if>
                         <div class="cancel-authentication">
                             <div class="text-end">
-                                <f:be.link route="auth_mfa" parameters="{action: 'cancel', redirect: redirectRoute, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel')}">
+                                <f:be.link
+                                    route="auth_mfa"
+                                    parameters="{action: 'cancel', redirect: redirectRoute, redirectParams: redirectParams}"
+                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel')}"
+                                >
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.cancel"/>
                                 </f:be.link>
                             </div>
@@ -52,8 +54,15 @@
                             <ul class="list-group px-lg-4">
                                 <f:for each="{alternativeProviders}" as="alternativeProvider">
                                     <li>
-                                        <f:be.link route="auth_mfa" parameters="{identifier: alternativeProvider.identifier, redirect: redirectRoute, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use', arguments: {0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'})}">
-                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use" arguments="{0: '{alternativeProvider.title  -> f:translate(id: alternativeProvider.title)}'}"/>
+                                        <f:be.link
+                                            route="auth_mfa"
+                                            parameters="{identifier: alternativeProvider.identifier, redirect: redirectRoute, redirectParams: redirectParams}"
+                                            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use', arguments: {0: '{alternativeProvider.title  -> f:translate(key: alternativeProvider.title, default: alternativeProvider.title)}'})}"
+                                        >
+                                            <f:translate
+                                                key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:auth.alternativeProviders.use"
+                                                arguments="{0: '{alternativeProvider.title -> f:translate(key: alternativeProvider.title, default: alternativeProvider.title)}'}"
+                                            />
                                         </f:be.link>
                                     </li>
                                 </f:for>
@@ -64,7 +73,7 @@
             </div>
         </div>
         <f:if condition="{footerNote}">
-            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.region.footnote')}">
                 <p>{footerNote}</p>
             </aside>
         </f:if>

@@ -39,7 +39,7 @@
 </f:if>
 
 <f:section name="Item">
-    <f:variable name="providerTitle" value="{provider.title -> f:translate(id: provider.title)}"/>
+    <f:variable name="providerTitle" value="{provider.title -> f:translate(key: provider.title, default: provider.title)}"/>
     <div class="card card-size-fixed-small {f:if(condition: '{recommendedProvider} == {provider.identifier}', then: 'border-success shadow')}" id="{provider.identifier}-provider">
         <div class="card-header">
             <div class="card-icon">
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="card-body">
-            <p class="card-text">{provider.description -> f:translate(id: provider.description)}</p>
+            <p class="card-text">{provider.description -> f:translate(key: provider.description, default: provider.description)}</p>
         </div>
         <div class="card-footer">
             <be:mfa.ifHasState state="active" provider="{provider}">

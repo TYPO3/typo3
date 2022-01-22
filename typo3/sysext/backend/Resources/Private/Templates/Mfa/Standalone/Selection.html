@@ -1,3 +1,9 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <div class="typo3-login">
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
@@ -31,7 +37,11 @@
                         </f:if>
                         <div class="cancel-setup">
                             <div class="text-end">
-                                <f:be.link route="setup_mfa" parameters="{action: 'cancel', redirect: redirect, redirectParams: redirectParams}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack')}">
+                                <f:be.link
+                                    route="setup_mfa"
+                                    parameters="{action: 'cancel', redirect: redirect, redirectParams: redirectParams}"
+                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack')}"
+                                >
                                     <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.selection.goBack"/>
                                 </f:be.link>
                             </div>
@@ -41,7 +51,7 @@
             </div>
         </div>
         <f:if condition="{footerNote}">
-            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.region.footnote')}">
                 <p>{footerNote}</p>
             </aside>
         </f:if>
@@ -49,10 +59,12 @@
 </div>
 
 <f:section name="providerLink">
-    <f:be.link route="setup_mfa"
-                class="list-group-item list-group-item-action {f:if(condition: highlight, then: 'border-success')}"
-                parameters="{action: 'setup', identifier: provider.identifier, redirect: redirect, redirectParams: redirectParams}"
-                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider', arguments: {0: '{provider.title -> f:translate(key: provider.title)}'})}">
+    <f:be.link
+        route="setup_mfa"
+        class="list-group-item list-group-item-action {f:if(condition: highlight, then: 'border-success')}"
+        parameters="{action: 'setup', identifier: provider.identifier, redirect: redirect, redirectParams: redirectParams}"
+        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider', arguments: {0: '{provider.title -> f:translate(key: provider.title, default: provider.title)}'})}"
+    >
         <div class="d-flex">
             <div class="align-self-center pe-3">
                 <core:icon identifier="{provider.iconIdentifier}" size="default" />
@@ -63,3 +75,5 @@
         </div>
     </f:be.link>
 </f:section>
+
+</html>

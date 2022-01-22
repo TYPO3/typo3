@@ -51,7 +51,6 @@ class MfaProviderRegistry
         if (!$this->hasProvider($identifier)) {
             throw new \InvalidArgumentException('No MFA provider for identifier ' . $identifier . ' found.', 1610994735);
         }
-
         return $this->providers[$identifier];
     }
 

@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\MfaSetupController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -65,12 +65,12 @@ class MfaSetupControllerTest extends FunctionalTestCase
         $container = $this->getContainer();
         $this->subject = new MfaSetupController(
             $container->get(UriBuilder::class),
-            $container->get(MfaProviderRegistry::class),
-            $container->get(ModuleTemplateFactory::class),
             $container->get(AuthenticationStyleInformation::class),
             $container->get(PageRenderer::class),
+            new ExtensionConfiguration(),
             $this->prophesize(Logger::class)->reveal()
         );
+        $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);

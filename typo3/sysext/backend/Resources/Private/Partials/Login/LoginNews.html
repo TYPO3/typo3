@@ -1,18 +1,24 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:if condition="{loginNewsItems}">
     <section class="typo3-login-news" aria-labelledby="loginNewsHeader">
-        <h2 id="loginNewsHeader" class="sr-only"><f:translate key="login.news.header" /></h2>
+        <h2 id="loginNewsHeader" class="sr-only">
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.header" />
+        </h2>
         <f:if condition="{loginNewsItems -> f:count()} > 1">
             <f:then>
                 <div class="carousel slide typo3-login-carousel t3js-login-news-carousel" id="loginNews"
                     data-bs-interval="0" data-bs-ride="carousel">
                     <button class="left typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="prev">
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="sr-only"><f:translate key="login.news.previous"/></span>
+                        <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.previous"/></span>
                     </button>
                     <button type="button" class="right typo3-login-carousel-control" data-bs-target="#loginNews" data-bs-slide="next">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
-                        <span class="sr-only"><f:translate key="login.news.next"/></span>
+                        <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.next"/></span>
                     </button>
                     <div class="carousel-inner" aria-live="polite">
                         <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
@@ -37,6 +43,11 @@
 <f:section name="Item">
     <p id="loginNewsItem-{item.uid}" class="typo3-login-news-heading">{item.header}</p>
     {item.content -> f:transform.html() -> f:sanitize.html()}
-    <f:if condition="{item.date}"><p class="text-muted"><span class="sr-only"><f:translate key="login.news.date"/></span>{item.date}</p></f:if>
+    <f:if condition="{item.date}">
+        <p class="text-muted">
+            <span class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.news.date"/></span>{item.date}
+        </p>
+    </f:if>
 </f:section>
+
 </html>

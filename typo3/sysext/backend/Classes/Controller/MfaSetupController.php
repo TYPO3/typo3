@@ -22,12 +22,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -35,42 +35,36 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Controller to provide the standalone setup endpoint for multi-factor authentication
+ * Controller to provide the standalone setup endpoint for multi-factor authentication.
+ * This is used when MFA is enforced and a backend user logs in the first time to then set up MFA.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class MfaSetupController extends AbstractMfaController
 {
+    use PageRendererBackendSetupTrait;
+
     protected const ACTION_METHOD_MAP = [
         'setup' => 'GET',
         'activate' => 'POST',
         'cancel' => 'GET',
     ];
 
-    protected AuthenticationStyleInformation $authenticationStyleInformation;
-    protected PageRenderer $pageRenderer;
-    protected LoggerInterface $logger;
-
     public function __construct(
-        UriBuilder $uriBuilder,
-        MfaProviderRegistry $mfaProviderRegistry,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        AuthenticationStyleInformation $authenticationStyleInformation,
-        PageRenderer $pageRenderer,
-        LoggerInterface $logger
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly LoggerInterface $logger,
     ) {
-        parent::__construct($uriBuilder, $mfaProviderRegistry, $moduleTemplateFactory);
-        $this->authenticationStyleInformation = $authenticationStyleInformation;
-        $this->pageRenderer = $pageRenderer;
-        $this->logger = $logger;
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->initializeMfaConfiguration();
         $action = (string)($request->getQueryParams()['action'] ?? 'setup');
 
         $backendUser = $this->getBackendUser();
@@ -96,10 +90,8 @@ class MfaSetupController extends AbstractMfaController
      * Render form to setup a provider by using provider specific content. Fall
      * back to provider selection view, in case no valid provider was yet selected.
      */
-    public function setupAction(ServerRequestInterface $request): ResponseInterface
+    protected function setupAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
-
         $identifier = (string)($request->getQueryParams()['identifier'] ?? '');
         if ($identifier === '' || !$this->isValidIdentifier($identifier)) {
             return new HtmlResponse($this->renderSelectionView($request));
@@ -113,7 +105,7 @@ class MfaSetupController extends AbstractMfaController
      * Handle activate request, receiving from the setup view
      * by forwarding the request to the appropriate provider.
      */
-    public function activateAction(ServerRequestInterface $request): ResponseInterface
+    protected function activateAction(ServerRequestInterface $request): ResponseInterface
     {
         $identifier = (string)($request->getParsedBody()['identifier'] ?? '');
         if ($identifier === '' || !$this->isValidIdentifier($identifier)) {
@@ -153,7 +145,7 @@ class MfaSetupController extends AbstractMfaController
      * by calling logoff on the user object, to destroy the session and other
      * already gathered information and finally initiate a redirect back to the login.
      */
-    public function cancelAction(ServerRequestInterface $request): ResponseInterface
+    protected function cancelAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->log('Required MFA setup canceled');
         $this->getBackendUser()->logoff();
@@ -165,19 +157,23 @@ class MfaSetupController extends AbstractMfaController
      */
     protected function renderSelectionView(ServerRequestInterface $request): string
     {
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+
         $recommendedProvider = $this->getRecommendedProvider();
         $providers = array_filter($this->allowedProviders, static function ($provider) use ($recommendedProvider) {
             // Remove the recommended provider and providers, which can not be used as default, e.g. recovery codes
             return $provider->isDefaultProviderAllowed()
                 && ($recommendedProvider === null || $provider->getIdentifier() !== $recommendedProvider->getIdentifier());
         });
-        $view = $this->initializeView($request, 'Selection');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'recommendedProvider' => $recommendedProvider,
             'providers' => $providers,
         ]);
-        $this->moduleTemplate->setContent($view->render());
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Standalone/Selection'));
+        return $this->pageRenderer->render();
     }
 
     /**
@@ -187,28 +183,31 @@ class MfaSetupController extends AbstractMfaController
         ServerRequestInterface $request,
         MfaProviderManifestInterface $mfaProvider
     ): string {
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
-        $view = $this->initializeView($request, 'Setup');
+        $view = $this->initializeView($request);
         $view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
             'hasErrors' => (bool)($request->getQueryParams()['hasErrors'] ?? false),
         ]);
-        $this->moduleTemplate->setContent($view->render());
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Standalone/Setup'));
+        return $this->pageRenderer->render();
     }
 
     /**
      * Initialize the standalone view by setting the paths and assigning view variables
      */
-    protected function initializeView(ServerRequestInterface $request, string $templateName): StandaloneView
+    protected function initializeView(ServerRequestInterface $request): BackendTemplateView
     {
-        $view = $this->moduleTemplate->getView();
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa/Standalone']);
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setTemplate($templateName);
         $view->assignMultiple([
             'redirect' => $request->getQueryParams()['redirect'] ?? '',
             'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',

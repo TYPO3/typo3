@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <div class="typo3-login">
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
@@ -5,14 +10,14 @@
                 <div class="card card-login card-mfa">
                     <header class="card-heading text-center">
                         <h2>
-                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider" arguments="{0: '{provider.title -> f:translate(id: provider.title)}'}"/>
+                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setupProvider" arguments="{0: '{provider.title -> f:translate(key: provider.title, default: provider.title)}'}"/>
                         </h2>
                     </header>
                     <main class="card-body">
                         <f:if condition="{hasErrors}">
                             <div id="t3-login-error">
                                 <div class="alert alert-danger">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure" arguments="{0: '{provider.title -> f:translate(id: provider.title)}'}"/>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:activate.failure" arguments="{0: '{provider.title -> f:translate(key: provider.title, default: provider.title)}'}"/>
                                 </div>
                             </div>
                         </f:if>
@@ -23,14 +28,17 @@
                                     method="post"
                                     enctype="multipart/form-data"
                                     name="setup"
-                                    id="mfaSetupController">
+                                    id="mfaSetupController"
+                                >
                                     {providerContent -> f:format.raw()}
                                     <input type="hidden" name="identifier" value="{provider.identifier}" />
                                     <div class="text-end">
-                                        <f:be.link route="setup_mfa"
-                                                    class="btn btn-default fw-normal"
-                                                    parameters="{redirect: redirect, redirectParams: redirectParams}"
-                                                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.cancel')}">
+                                        <f:be.link
+                                            route="setup_mfa"
+                                            class="btn btn-default fw-normal"
+                                            parameters="{redirect: redirect, redirectParams: redirectParams}"
+                                            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.cancel')}"
+                                        >
                                             <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:standalone.setup.cancel"/>
                                         </f:be.link>
                                         <button type="submit" class="btn btn-info">
@@ -50,9 +58,11 @@
             </div>
         </div>
         <f:if condition="{footerNote}">
-            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.region.footnote')}">
                 <p>{footerNote}</p>
             </aside>
         </f:if>
     </div>
 </div>
+
+</html>

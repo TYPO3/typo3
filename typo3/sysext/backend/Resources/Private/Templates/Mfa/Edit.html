@@ -1,9 +1,9 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<f:variable name="providerTitle" value="{provider.title -> f:translate(id: provider.title)}"/>
+<f:variable name="providerTitle" value="{provider.title -> f:translate(key: provider.title, default: provider.title)}"/>
 
 <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:edit.title" arguments="{0: providerTitle}"/></h1>
-<p><f:format.nl2br>{provider.description -> f:translate(id: provider.description)}</f:format.nl2br></p>
+<p><f:format.nl2br>{provider.description -> f:translate(key: provider.description, default: provider.description)}</f:format.nl2br></p>
 
 <form
     action="{f:be.uri(route:'mfa', parameters:'{action: \'save\'}')}"

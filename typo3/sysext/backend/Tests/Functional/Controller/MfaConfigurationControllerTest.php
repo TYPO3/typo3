@@ -56,9 +56,9 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $this->subject = new MfaConfigurationController(
             $container->get(IconFactory::class),
             $container->get(UriBuilder::class),
-            $container->get(MfaProviderRegistry::class),
             $container->get(ModuleTemplateFactory::class),
         );
+        $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);

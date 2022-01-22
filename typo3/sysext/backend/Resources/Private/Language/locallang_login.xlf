@@ -18,9 +18,6 @@
 			<trans-unit id="interface.frontend" resname="interface.frontend">
 				<source>Frontend</source>
 			</trans-unit>
-			<trans-unit id="interface.backend_old" resname="interface.backend_old">
-				<source>Traditional Backend</source>
-			</trans-unit>
 			<trans-unit id="headline" resname="headline">
 				<source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
 			</trans-unit>

@@ -22,24 +22,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Class UsernamePasswordLoginProvider
+ * The default username + password based backend login form.
+ *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class UsernamePasswordLoginProvider implements LoginProviderInterface
 {
-    /**
-     * @param StandaloneView $view
-     * @param PageRenderer $pageRenderer
-     * @param LoginController $loginController
-     * @throws \UnexpectedValueException
-     */
-    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
+    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController): void
     {
-        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/UserPassLogin.js');
-
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));
+        $view->setTemplate('Login/UserPassLoginForm');
         $request = $loginController->getCurrentRequest();
-        if ($request !== null && $request->getAttribute('normalizedParams')->isHttps()) {
+        if ($request->getAttribute('normalizedParams')->isHttps()) {
             $username = $request->getParsedBody()['u'] ?? $request->getQueryParams()['u'] ?? null;
             $password = $request->getParsedBody()['p'] ?? $request->getQueryParams()['p'] ?? null;
             $view->assignMultiple([
@@ -47,7 +40,6 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
                 'presetPassword' => $password,
             ]);
         }
-
         $view->assign('enablePasswordReset', GeneralUtility::makeInstance(PasswordReset::class)->isEnabled());
     }
 }

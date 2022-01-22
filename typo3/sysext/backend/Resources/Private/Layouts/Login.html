@@ -1,11 +1,22 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer
+    includeJavaScriptModules="{
+        0: 'bootstrap',
+        1: 'TYPO3/CMS/Backend/Login.js'
+    }"
+/>
+
 <div class="typo3-login">
     <div class="typo3-login-inner">
         <div class="typo3-login-container">
             <div class="typo3-login-wrap">
                 <div class="card card-login">
                     <header class="card-heading">
-                        <h1 class="sr-only"><f:translate key="login.header" /></h1>
+                        <h1 class="sr-only"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.header" /></h1>
                         <div class="typo3-login-logo">
                             <img src="{logo}" class="typo3-login-image" alt="{logoAlt}" />
                         </div>
@@ -16,46 +27,57 @@
                                 <f:if condition="{hasLoginError}">
                                     <div class="t3js-login-error mb-2" id="t3-login-error">
                                         <div class="alert alert-danger">
-                                            <strong><f:translate key="login.error.message" /></strong>
-                                            <p><f:translate key="login.error.description" /></p>
+                                            <strong><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.message" /></strong>
+                                            <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.description" /></p>
                                         </div>
                                     </div>
                                 </f:if>
                                 <noscript>
-                                    <f:be.infobox message="{f:translate(key: 'login.error.javascript')}" state="2" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.javascript')}" state="2" />
                                 </noscript>
                                 <div class="hidden t3js-login-error-nocookies">
-                                    <f:be.infobox message="{f:translate(key: 'login.error.cookies')}" state="2" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.cookies')}" state="2" />
                                 </div>
                                 <div class="hidden t3js-login-error-noreferrer">
-                                    <f:be.infobox message="{f:translate(key: 'login.error.referrer')}" state="2" />
+                                    <f:be.infobox message="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.error.referrer')}" state="2" />
                                 </div>
                                 <div class="typo3-login-form t3js-login-formfields">
                                     <form action="{formActionUrl}" method="post" name="loginform" id="typo3-login-form">
-                                        <f:form.hidden name="login_status" value="login" />
-                                        <f:form.hidden name="userident" id="t3-field-userident" class="t3js-login-userident-field" value="" />
-                                        <f:form.hidden name="redirect_url" value="{redirectUrl}" />
-                                        <f:form.hidden name="loginRefresh" value="{loginRefresh}" />
+                                        <input type="hidden" name="login_status" value="login" />
+                                        <input type="hidden" name="userident" id="t3-field-userident" class="t3js-login-userident-field" value="" />
+                                        <input type="hidden" name="redirect_url" value="{redirectUrl}" />
+                                        <input type="hidden" name="loginRefresh" value="{loginRefresh}" />
 
                                         <f:render section="loginFormFields" />
 
                                         <f:render partial="Login/InterfaceSelector" arguments="{_all}" />
 
                                         <div class="form-group mb-2" id="t3-login-submit-section">
-                                            <button class="btn btn-block btn-login t3js-login-submit" id="t3-login-submit" type="submit" name="commandLI" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: 'login.process')}" autocomplete="off">
-                                                <f:translate key="login.submit" />
+                                            <button
+                                                class="btn btn-block btn-login t3js-login-submit"
+                                                id="t3-login-submit"
+                                                type="submit"
+                                                name="commandLI"
+                                                data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.process')}"
+                                                autocomplete="off"
+                                            >
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.submit" />
                                             </button>
                                         </div>
                                     </form>
                                 </div>
                                 <f:if condition="{loginProviders->f:count()} > 1">
-                                    <nav aria-label="{f:translate(key: 'login.navigation.loginProvider')}">
+                                    <nav aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.navigation.loginProvider')}">
                                         <f:comment>role is for VoiceOver</f:comment>
                                         <ul class="list-unstyled typo3-login-links" role="list">
                                             <f:for each="{loginProviders}" as="provider" key="providerKey">
                                                 <f:if condition="{provider.label}">
                                                     <f:if condition="{loginProviderIdentifier} != {providerKey}">
-                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}"><a href="?loginProvider={providerKey}"><i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" /></span></a></li>
+                                                        <li class="t3js-loginprovider-switch" data-providerkey="{providerKey}">
+                                                            <a href="?loginProvider={providerKey}">
+                                                                <i class="fa fa-fw {provider.icon-class}"></i> <span><f:translate key="{provider.label}" default="{provider.label}" /></span>
+                                                            </a>
+                                                        </li>
                                                     </f:if>
                                                 </f:if>
                                             </f:for>
@@ -76,7 +98,7 @@
                                         <div class="t3-login-logout-form">
                                             <div class="t3-login-username">
                                                 <div class="t3-login-label t3-username">
-                                                    <f:translate key="login.username" />
+                                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.username" />
                                                 </div>
                                                 <div class="t3-username-current">
                                                     {backendUser.username}
@@ -86,30 +108,42 @@
                                                 <f:then>
                                                     <div class="t3-login-interface">
                                                         <div class="t3-login-label t3-interface-selector">
-                                                            <f:translate key="login.interface" />
+                                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.interface" />
                                                         </div>
-                                                        <f:form.select name="users" options="{interfaces}" optionValueField="jumpScript" optionLabelField="label" />
+                                                        <select
+                                                            name="users"
+                                                        >
+                                                            <f:for each="{interfaces}" as="option">
+                                                                <option value="{option.jumpScript}">{option.label}</option>
+                                                            </f:for>
+                                                        </select>
                                                     </div>
                                                 </f:then>
                                                 <f:else>
                                                     <f:if condition="{interface}">
-                                                        <f:form.hidden name="interface" value="{interface}" />
+                                                        <input type="hidden" name="interface" value="{interface}" />
                                                     </f:if>
                                                 </f:else>
                                             </f:if>
                                             <input type="hidden" name="p_field" value="" />
-                                            <input class="btn btn-block btn-lg" type="submit" name="commandLO" value="{f:translate(key: 'login.submit')}" id="t3-login-submit" />
+                                            <input
+                                                class="btn btn-block btn-lg"
+                                                type="submit"
+                                                name="commandLO"
+                                                value="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.submit')}"
+                                                id="t3-login-submit"
+                                            />
                                         </div>
                                     </div>
                                 </form>
                             </f:else>
                         </f:if>
                     </main>
-                    <f:render partial="LoginNews" arguments="{_all}" />
+                    <f:render partial="Login/LoginNews" arguments="{_all}" />
                     <footer class="card-footer">
                         <div class="typo3-login-copyright-wrap">
                             <a href="#loginCopyright" class="typo3-login-copyright-link t3js-login-copyright-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="loginCopyright">
-                                <span><f:translate key="login.copyrightLink" /></span>
+                                <span><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.copyrightLink" /></span>
                                 <f:comment>the image within the button is only decorative</f:comment>
                                 <img src="{images.typo3}" alt="" width="70" height="20" />
                             </a>
@@ -118,11 +152,15 @@
                                     <p>
                                         <f:format.raw>{copyright}</f:format.raw>
                                     </p>
-                                    <nav aria-label="{f:translate(key: 'login.navigation.typo3')}">
+                                    <nav aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.navigation.typo3')}">
                                         <f:comment>role is for VoiceOver</f:comment>
                                         <ul class="list-unstyled" role="list">
                                             <li><a href="https://typo3.org" target="_blank" rel="noreferrer" class="t3-login-link-typo3"><i class="fa fa-external-link"></i> TYPO3.org</a></li>
-                                            <li><a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate"><i class="fa fa-external-link"></i> <f:translate key="login.donate" /></a></li>
+                                            <li>
+                                                <a href="https://typo3.org/donate/online-donation/" target="_blank" rel="noreferrer" class="t3-login-link-donate">
+                                                    <i class="fa fa-external-link"></i> <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.donate" />
+                                                </a>
+                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -133,7 +171,7 @@
             </div>
         </div>
         <f:if condition="{loginFootnote}">
-            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'login.region.footnote')}">
+            <aside class="typo3-login-footnote" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.region.footnote')}">
                 <p>{loginFootnote}</p>
             </aside>
         </f:if>
@@ -141,4 +179,5 @@
     <f:comment>This link is only used for protection of the backend.</f:comment>
     <a href="{loginUrl}" id="t3js-login-url" data-referrer-check-enabled="{f:if(condition: '{referrerCheckEnabled}', then: '1', else: '0')}" aria-hidden="true" tabindex="-1"></a>
 </div>
+
 </html>

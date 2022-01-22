@@ -19,43 +19,39 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Controller to provide a multi-factor authentication endpoint
+ * Controller to provide a multi-factor authentication endpoint.
+ * This is the backend login related view to authenticate against chosen MFA provider.
  *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
-class MfaController extends AbstractMfaController implements LoggerAwareInterface
+class MfaController extends AbstractMfaController
 {
-    use LoggerAwareTrait;
-
-    protected AuthenticationStyleInformation $authenticationStyleInformation;
-    protected PageRenderer $pageRenderer;
+    use PageRendererBackendSetupTrait;
 
     public function __construct(
-        UriBuilder $uriBuilder,
-        MfaProviderRegistry $mfaProviderRegistry,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        AuthenticationStyleInformation $authenticationStyleInformation,
-        PageRenderer $pageRenderer
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly LoggerInterface $logger,
     ) {
-        parent::__construct($uriBuilder, $mfaProviderRegistry, $moduleTemplateFactory);
-        $this->authenticationStyleInformation = $authenticationStyleInformation;
-        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -64,7 +60,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->initializeMfaConfiguration();
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'auth');
 
         switch ($action) {
@@ -85,23 +81,15 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
     }
 
     /**
-     * Setup the authentication view for the provider by using provider specific content
+     * Set up the authentication view for the provider by using provider specific content.
      */
-    public function authAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
+    protected function authAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
-        $view = $this->moduleTemplate->getView();
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/Mfa']);
-        $view->setTemplate('Auth');
-        $view->assign('formUrl', $this->uriBuilder->buildUriWithRedirect(
-            'auth_mfa',
-            [
-                'action' => 'verify',
-            ],
-            RouteRedirect::createFromRequest($request)
-        ));
-        $view->assign('redirectRoute', $request->getQueryParams()['redirect'] ?? '');
-        $view->assign('redirectParams', $request->getQueryParams()['redirectParams'] ?? '');
-        $view->assign('hasAuthError', (bool)($request->getQueryParams()['failure'] ?? false));
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
+        $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
         $view->assignMultiple([
@@ -110,17 +98,21 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
             'isLocked' => $mfaProvider->isLocked($propertyManager),
             'providerContent' => $providerResponse->getBody(),
             'footerNote' => $this->authenticationStyleInformation->getFooterNote(),
+            'formUrl' => $this->uriBuilder->buildUriWithRedirect('auth_mfa', ['action' => 'verify'], RouteRedirect::createFromRequest($request)),
+            'redirectRoute' => $request->getQueryParams()['redirect'] ?? '',
+            'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',
+            'hasAuthError' => (bool)($request->getQueryParams()['failure'] ?? false),
         ]);
-        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $this->addCustomAuthenticationFormStyles();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Auth'));
+        return new HtmlResponse($this->pageRenderer->render());
     }
 
     /**
      * Handle verification request, receiving from the auth view
      * by forwarding the request to the appropriate provider.
      */
-    public function verifyAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
+    protected function verifyAction(ServerRequestInterface $request, MfaProviderManifestInterface $mfaProvider): ResponseInterface
     {
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
 
@@ -157,7 +149,7 @@ class MfaController extends AbstractMfaController implements LoggerAwareInterfac
      * other already gathered information and finally initiate a
      * redirect back to the login.
      */
-    public function cancelAction(ServerRequestInterface $request): ResponseInterface
+    protected function cancelAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->log('Multi-factor authentication canceled');
         $this->getBackendUser()->logoff();
