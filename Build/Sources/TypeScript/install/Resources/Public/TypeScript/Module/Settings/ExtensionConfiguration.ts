@@ -83,12 +83,26 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           if (data.success === true) {
             modalContent.html(data.html);
             this.initializeWrap();
+            this.initializeColorPicker();
           }
         },
         (error: AjaxResponse): void => {
           Router.handleAjaxError(error, modalContent);
         }
       );
+  }
+
+  private initializeColorPicker(): void {
+    const isInIframe = window.location !== window.parent.location;
+    if (isInIframe) {
+      top.require(['TYPO3/CMS/Backend/ColorPicker'], (ColorPicker: any): void => {
+        ColorPicker.initialize();
+      });
+    } else {
+      require(['TYPO3/CMS/Backend/ColorPicker'], (ColorPicker: any): void => {
+        ColorPicker.initialize();
+      });
+    }
   }
 
   /**
