@@ -249,12 +249,6 @@ return [
             'Deprecation-92583-DeprecateLastArgumentsOfWrapClickMenuOnIcon.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Page\PageRenderer->render' => [
-        'maximumNumberOfArguments' => 0,
-        'restFiles' => [
-            'Breaking-93003-LimitationOfPageRendererToOnlyRenderFullPage.rst',
-        ],
-    ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getQueryArguments' => [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
