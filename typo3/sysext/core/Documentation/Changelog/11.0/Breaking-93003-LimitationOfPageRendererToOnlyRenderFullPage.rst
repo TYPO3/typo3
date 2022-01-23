@@ -50,4 +50,4 @@ Migration
 It is recommended for third-party extensions to use custom hooks to
 process or manipulate header or footer parts.
 
-.. index:: Backend, Frontend, FullyScanned, ext:core
+.. index:: Backend, Frontend, PartiallyScanned, ext:core
