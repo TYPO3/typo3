@@ -40,10 +40,12 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\ProgressProviderInterface;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
+use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 
 /**
  * Scheduler backend module.
@@ -56,6 +58,7 @@ class SchedulerModuleController
 
     public function __construct(
         protected readonly Scheduler $scheduler,
+        protected readonly TaskSerializer $taskSerializer,
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -484,17 +487,23 @@ class SchedulerModuleController
             return $this->renderListTasksView($view);
         }
 
-        /** @var AbstractTask $task */
-        $task = unserialize($taskRecord['serialized_task_object']);
+        $task = null;
+        $isInvalidTask = false;
+        try {
+            $task = $this->taskSerializer->deserialize($taskRecord['serialized_task_object']);
+            $class = $this->taskSerializer->resolveClassName($task);
+        } catch (InvalidTaskException) {
+            $isInvalidTask = true;
+            $class = $this->taskSerializer->extractClassName($taskRecord['serialized_task_object']);
+        }
 
-        if (!isset($registeredClasses[get_class($task)]) || !$this->scheduler->isValidTaskObject($task)) {
+        if ($isInvalidTask || !isset($registeredClasses[$class]) || !$this->scheduler->isValidTaskObject($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), get_class($task)), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), AbstractMessage::ERROR);
             return $this->renderListTasksView($view);
         }
 
         $taskExecution = $task->getExecution();
-        $class = get_class($task);
         $taskName = $this->getHumanReadableTaskName($task);
         // If an interval or a cron command is defined, it's a recurring task
         $taskType = (int)($parsedBody['type'] ?? ((empty($taskExecution->getCronCmd()) && empty($taskExecution->getInterval())) ? AbstractTask::TYPE_SINGLE : AbstractTask::TYPE_RECURRING));
@@ -524,7 +533,7 @@ class SchedulerModuleController
                 $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
                 $fields = $providerObject->getAdditionalFields($parseBodyForProvider, $task, $this);
                 if (is_array($fields)) {
-                    $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, $class);
+                    $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, (string)$class);
                 }
             }
         }
@@ -652,22 +661,36 @@ class SchedulerModuleController
             ->executeQuery();
 
         $taskGroupsWithTasks = [];
-        $missingClasses = [];
+        $errorClasses = [];
         while ($row = $result->fetchAssociative()) {
-            /** @var AbstractTask $taskObject */
-            $taskObject = unserialize($row['serialized_task_object']);
-            $taskClass = get_class($taskObject);
-            $taskData = [];
-            if ($taskClass === \__PHP_Incomplete_Class::class && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $row['serialized_task_object'], $matches) === 1) {
-                $taskClass = $matches['classname'];
-            }
-            $taskData['uid'] = (int)$row['uid'];
-            $taskData['class'] = $taskClass;
-            $taskData['lastExecutionTime'] = (int)$row['lastexecution_time'];
-            $taskData['lastExecutionContext'] = $row['lastexecution_context'];
+            $taskData = [
+                'uid' => (int)$row['uid'],
+                'lastExecutionTime' => (int)$row['lastexecution_time'],
+                'lastExecutionContext' => $row['lastexecution_context'],
+                'errorMessage' => '',
+            ];
 
-            if (!isset($registeredClasses[$taskClass]) || !$this->scheduler->isValidTaskObject($taskObject)) {
-                $missingClasses[] = $taskData;
+            try {
+                $taskObject = $this->taskSerializer->deserialize($row['serialized_task_object']);
+            } catch (InvalidTaskException $e) {
+                $taskData['errorMessage'] = $e->getMessage();
+                $taskData['class'] = $this->taskSerializer->extractClassName($row['serialized_task_object']);
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            $taskClass = $this->taskSerializer->resolveClassName($taskObject);
+            $taskData['class'] = $taskClass;
+
+            if (!$this->scheduler->isValidTaskObject($taskObject)) {
+                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a valid task';
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            if (!isset($registeredClasses[$taskClass])) {
+                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a registered task';
+                $errorClasses[] = $taskData;
                 continue;
             }
 
@@ -713,8 +736,8 @@ class SchedulerModuleController
         $view->assignMultiple([
             'tasks' => $taskGroupsWithTasks,
             'now' => $this->context->getAspect('date')->get('timestamp'),
-            'missingClasses' => $missingClasses,
-            'missingClassesCollapsed' => (bool)($schedulerModuleData['task-group-missing'] ?? false),
+            'errorClasses' => $errorClasses,
+            'errorClassesCollapsed' => (bool)($schedulerModuleData['task-group-missing'] ?? false),
         ]);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),

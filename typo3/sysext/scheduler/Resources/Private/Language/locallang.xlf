@@ -180,11 +180,11 @@
 			<trans-unit id="label.noGroup.taskCount" resname="label.noGroup.taskCount">
 				<source>Amount of tasks that are not assigned to any scheduler task group</source>
 			</trans-unit>
-			<trans-unit id="label.noClass" resname="label.noClass">
-				<source>Tasks without registered classes</source>
+			<trans-unit id="label.errorClass" resname="label.errorClass">
+				<source>Broken tasks</source>
 			</trans-unit>
-			<trans-unit id="label.noClass.taskCount" resname="label.noClass.taskCount">
-				<source>Amount of tasks without found class</source>
+			<trans-unit id="label.errorClass.taskCount" resname="label.errorClass.taskCount">
+				<source>Amount of broken tasks</source>
 			</trans-unit>
 			<trans-unit id="label.schedulableCommandName" resname="label.schedulableCommandName">
 				<source>Schedulable Command. Save and reopen to define command arguments</source>
@@ -310,7 +310,10 @@
 				<source>Please select at least one cache backend.</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClass" resname="msg.invalidTaskClass">
-				<source><![CDATA[<strong>The following tasks can not be executed. No related class could be found for none of the following listed tasks.</strong> You should consider reinstalling the extension that provided them or simply deleting the tasks. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+				<source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
+			</trans-unit>
+			<trans-unit id="msg.errorMessage" resname="msg.errorMessage">
+				<source>Error message</source>
 			</trans-unit>
 			<trans-unit id="msg.invalidTaskClassEdit" resname="msg.invalidTaskClassEdit">
 				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>

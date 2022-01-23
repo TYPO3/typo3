@@ -4,9 +4,10 @@
     data-namespace-typo3-fluid="true"
 >
 
-    <f:if condition="{missingClasses}">
+    <f:if condition="{errorClasses}">
+        <f:variable name="errorClassesCount" value="{errorClasses -> f:count()}"/>
         <f:be.infobox
-            title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass.infobox.title', arguments: '{0: \'{missingClasses ->f:count()}\'}')}"
+            title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass.infobox.title', arguments: {0: errorClassesCount})}"
             state="2"
         >
             <f:format.raw><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass.infobox.message" /></f:format.raw>
@@ -335,32 +336,32 @@
         </div>
     </f:for>
 
-    <f:if condition="{missingClasses}">
+    <f:if condition="{errorClasses}">
         <div class="tx_scheduler_mod1_table">
             <div class="panel panel-default mt-2">
                 <div class="panel-heading taskGroup" data-task-group-id="missing">
                     <button type="button"
-                        title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noClass')}"
+                        title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass')}"
                         class="btn btn-link fw-bold pt-1 p-0"
                         data-bs-toggle="collapse"
                         data-bs-target="#scheduler-task-group-missing"
-                        aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}"
+                        aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
                     >
-                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.noClass.taskCount')}">{missingClasses -> f:count()}</span>)
+                        <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/> (<span class="t3js-table-total-items" title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass.taskCount')}">{errorClasses -> f:count()}</span>)
                     </button>
                     <button type="button"
                         class="btn btn-default btn-sm pull-right t3js-toggle-table"
                         data-bs-toggle="collapse"
                         data-bs-target="#scheduler-task-group-missing"
-                        aria-expanded="{f:if(condition: missingClassesCollapsed, then: 'false', else: 'true')}"
+                        aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
                     >
                         <span class="collapseIcon">
-                            <core:icon identifier="{f:if(condition: missingClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
+                            <core:icon identifier="{f:if(condition: errorClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
                         </span>
                     </button>
                 </div>
-                <div class="collapse {f:if(condition: '!{missingClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
-                    <div class="table-fit">
+                <div class="collapse {f:if(condition: '!{errorClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
+                    <div class="table-fit mb-0">
                         <table class="table table-striped table-hover">
                             <tr class="taskGroup" data-task-group-id="0">
                                 <td class="nowrap-disabled"><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
@@ -371,19 +372,21 @@
                             <tr>
                                 <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.id"/></th>
                                 <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:task"/></th>
+                                <th><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorMessage"/></th>
                                 <th></th>
                             </tr>
                             </thead>
-                            <f:for each="{missingClasses}" as="missingClass">
+                            <f:for each="{errorClasses}" as="errorClass">
                                 <tr>
-                                    <td class="right">{missingClass.uid}</td>
-                                    <td>{missingClass.class}</td>
+                                    <td class="right">{errorClass.uid}</td>
+                                    <td>{errorClass.class}</td>
+                                    <td>{errorClass.errorMessage}</td>
                                     <td class="nowrap">
                                         <div class="btn-group" role="group">
                                             <f:comment>@todo: Next one should be a button type="submit"</f:comment>
                                             <f:be.link
                                                 route="system_txschedulerM1"
-                                                parameters="{action: {'delete': missingClass.uid}}"
+                                                parameters="{action: {'delete': errorClass.uid}}"
                                                 class="btn btn-default t3js-modal-trigger"
                                                 data="{bs-toggle: 'tooltip',
                                                     severity: 'warning',

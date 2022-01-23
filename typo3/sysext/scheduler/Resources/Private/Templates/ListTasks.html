@@ -18,7 +18,7 @@
     <form name="tx_scheduler_form" id="tx_scheduler_form" method="post">
         <h1><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler" /></h1>
         <div class="tx_scheduler_mod1">
-            <f:if condition="{tasks} || {missingClasses}">
+            <f:if condition="{tasks} || {errorClasses}">
                 <f:then>
                     <f:render partial="TaskList" arguments="{_all}" />
                     <f:render partial="ServerTime" arguments="{dateFormat: dateFormat}" />

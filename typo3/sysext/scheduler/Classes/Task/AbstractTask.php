@@ -151,7 +151,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function getTaskTitle()
     {
-        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title']);
+        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['title'] ?? '');
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function getTaskDescription()
     {
-        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description']);
+        return $this->getLanguageService()->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][static::class]['description'] ?? '');
     }
 
     /**

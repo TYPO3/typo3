@@ -24,7 +24,9 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
@@ -32,6 +34,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class Scheduler implements SingletonInterface
 {
     protected LoggerInterface $logger;
+    protected TaskSerializer $taskSerializer;
 
     /**
      * @var array $extConf Settings from the extension manager
@@ -41,9 +44,10 @@ class Scheduler implements SingletonInterface
     /**
      * Constructor, makes sure all derived client classes are included
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, TaskSerializer $taskSerializer)
     {
         $this->logger = $logger;
+        $this->taskSerializer = $taskSerializer;
         // Get configuration from the extension manager
         $this->extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('scheduler');
         if (empty($this->extConf['maxLifetime'])) {
@@ -347,16 +351,16 @@ class Scheduler implements SingletonInterface
             // Although a uid was passed, no task with given was found
             throw new \OutOfBoundsException('No task with id ' . $uid . ' found', 1422044826);
         }
-        /** @var Task\AbstractTask $task */
-        $task = unserialize($row['serialized_task_object']);
-        if ($this->isValidTaskObject($task)) {
-            // The task is valid, return it
-            $task->setScheduler();
-            if ($task->getTaskGroup() === null) {
-                // Fix invalid task_group=NULL settings in order to avoid exceptions when saving on PostgreSQL
-                $task->setTaskGroup(0);
-            }
-        } else {
+
+        $isInvalidTask = false;
+        $task = null;
+        try {
+            $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
+        } catch (InvalidTaskException) {
+            $isInvalidTask = true;
+        }
+
+        if ($isInvalidTask || !$this->isValidTaskObject($task)) {
             // Forcibly set the disable flag to 1 in the database,
             // so that the task does not come up again and again for execution
             $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
@@ -366,6 +370,13 @@ class Scheduler implements SingletonInterface
             );
             // Throw an exception to raise the problem
             throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
+        }
+
+        // The task is valid, return it
+        $task->setScheduler();
+        if ($task->getTaskGroup() === null) {
+            // Fix invalid task_group=NULL settings in order to avoid exceptions when saving on PostgreSQL
+            $task->setTaskGroup(0);
         }
 
         return $task;
@@ -434,8 +445,12 @@ class Scheduler implements SingletonInterface
 
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
-            /** @var Task\AbstractTask $task */
-            $task = unserialize($row['serialized_task_object']);
+            try {
+                $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
+            } catch (InvalidTaskException) {
+                continue;
+            }
+
             // Add the task to the list only if it is valid
             if ($this->isValidTaskObject($task)) {
                 $task->setScheduler();
