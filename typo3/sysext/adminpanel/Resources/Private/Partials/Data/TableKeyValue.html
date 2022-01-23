@@ -21,6 +21,7 @@
                             <f:variable name="typeClass" value="string" />
                             <f:if condition="{val as integer} === {val}"><f:variable name="typeClass" value="integer" /></f:if>
                             <f:if condition="{val as float} === {val}"><f:variable name="typeClass" value="float" /></f:if>
+                            <f:if condition="{val as boolean} === {val}"><f:variable name="typeClass" value="boolean" /></f:if>
                             <f:if condition="{adm:isArray(value: val)}"><f:variable name="typeClass" value="array" /></f:if>
                             <f:switch expression="{typeClass}">
                                 <f:case value="string">
@@ -28,6 +29,14 @@
                                 </f:case>
                                 <f:case value="array">
                                     <f:render partial="Data/TableKeyValue" arguments="{data: val, languageKey: languageKey}" />
+                                </f:case>
+                                <f:case value="boolean">
+                                    <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}"><f:spaceless>
+                                        <f:if condition="{val}">
+                                            <f:then>true</f:then>
+                                            <f:else>false</f:else>
+                                        </f:if>
+                                    </f:spaceless></pre>
                                 </f:case>
                                 <f:defaultCase>
                                     <pre class="typo3-adminPanel-dump typo3-adminPanel-dump-{typeClass}">{val}</pre>
