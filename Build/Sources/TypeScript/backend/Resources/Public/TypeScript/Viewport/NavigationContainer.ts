@@ -17,17 +17,26 @@ import TriggerRequest from '../Event/TriggerRequest';
 import InteractionRequest from '../Event/InteractionRequest';
 
 class NavigationContainer extends AbstractContainer {
-  private readonly parent: HTMLElement;
-  private readonly container: HTMLElement;
-  private readonly switcher: HTMLElement = null;
   private activeComponentId: string = '';
+
+  private get parent(): HTMLElement
+  {
+    return document.querySelector(ScaffoldIdentifierEnum.scaffold);
+  }
+
+  private get container(): HTMLElement
+  {
+    return document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
+  }
+
+  private get switcher(): HTMLElement|null
+  {
+    return document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher);
+  }
 
   public constructor(consumerScope: any)
   {
     super(consumerScope);
-    this.parent = document.querySelector(ScaffoldIdentifierEnum.scaffold);
-    this.container = document.querySelector(ScaffoldIdentifierEnum.contentNavigation);
-    this.switcher = <HTMLElement>document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher);
   }
 
   /**
@@ -36,13 +45,14 @@ class NavigationContainer extends AbstractContainer {
    * @param {string} navigationComponentId
    */
   public showComponent(navigationComponentId: string): void {
+    const container = this.container;
     this.show(navigationComponentId);
     // Component is already loaded and active, nothing to do
     if (navigationComponentId === this.activeComponentId) {
       return;
     }
     if (this.activeComponentId !== '') {
-      let activeComponentElement = this.container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/]/g, '_')) as HTMLElement;
+      let activeComponentElement = container.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/]/g, '_')) as HTMLElement;
       if (activeComponentElement) {
         activeComponentElement.style.display = 'none';
       }
@@ -52,7 +62,7 @@ class NavigationContainer extends AbstractContainer {
     const navigationComponentElement = 'navigationComponent-' + componentCssName;
 
     // The component was already set up, so requiring the module again can be excluded.
-    if (this.container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 1) {
+    if (container.querySelectorAll('[data-component="' + navigationComponentId + '"]').length === 1) {
       this.show(navigationComponentId);
       this.activeComponentId = navigationComponentId;
       return;
@@ -65,10 +75,10 @@ class NavigationContainer extends AbstractContainer {
         element.setAttribute('id', navigationComponentElement);
         element.classList.add('scaffold-content-navigation-component');
         element.dataset.component = navigationComponentId;
-        this.container.append(element);
+        container.append(element);
       } else {
         // Because the component does not exist, let's create the div as wrapper
-        this.container.insertAdjacentHTML(
+        container.insertAdjacentHTML(
           'beforeend',
           '<div class="scaffold-content-navigation-component" data-component="' + navigationComponentId + '" id="' + navigationComponentElement + '"></div>'
         );
@@ -85,27 +95,32 @@ class NavigationContainer extends AbstractContainer {
   }
 
   public hide(hideSwitcher: boolean): void {
-    this.parent.classList.remove('scaffold-content-navigation-expanded');
-    this.parent.classList.remove('scaffold-content-navigation-available');
-    if (hideSwitcher && this.switcher) {
-      this.switcher.style.display = 'none';
+    const parent = this.parent;
+    const switcher = this.switcher;
+    parent.classList.remove('scaffold-content-navigation-expanded');
+    parent.classList.remove('scaffold-content-navigation-available');
+    if (hideSwitcher && switcher) {
+      switcher.style.display = 'none';
     }
   }
 
   public show(component: string): void {
-    this.container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
+    const parent = this.parent;
+    const container = this.container;
+    const switcher = this.switcher;
+    container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
     if (typeof component !== undefined) {
-      this.parent.classList.add('scaffold-content-navigation-expanded');
-      this.parent.classList.add('scaffold-content-navigation-available');
-      const selectedElement = this.container.querySelector('[data-component="' + component + '"]') as HTMLElement;
+      parent.classList.add('scaffold-content-navigation-expanded');
+      parent.classList.add('scaffold-content-navigation-available');
+      const selectedElement = container.querySelector('[data-component="' + component + '"]') as HTMLElement;
       if (selectedElement) {
         // Re-set to the display setting from CSS
         selectedElement.style.display = null;
       }
     }
-    if (this.switcher) {
+    if (switcher) {
       // Re-set to the display setting from CSS
-      this.switcher.style.display = null;
+      switcher.style.display = null;
     }
   }
 
