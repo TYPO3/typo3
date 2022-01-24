@@ -97,6 +97,9 @@ acceptance install mariadb php 8.1 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
@@ -129,6 +132,9 @@ acceptance install mariadb php 8.1 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 8.1
@@ -232,6 +238,9 @@ acceptance install mysql php 8.1:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
@@ -248,6 +257,9 @@ acceptance install mysql php 8.1 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
@@ -264,6 +276,9 @@ acceptance install mysql php 8.1 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
@@ -367,6 +382,9 @@ acceptance install postgres php 8.1 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.1
@@ -383,6 +401,9 @@ acceptance install postgres php 8.1 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.1
@@ -399,6 +420,9 @@ acceptance install postgres php 8.1 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 8.1
@@ -502,6 +526,9 @@ acceptance install sqlite php 8.1 locked:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
@@ -518,6 +545,9 @@ acceptance install sqlite php 8.1 max:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMax -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
@@ -534,6 +564,9 @@ acceptance install sqlite php 8.1 min:
     when: on_failure
     paths:
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
