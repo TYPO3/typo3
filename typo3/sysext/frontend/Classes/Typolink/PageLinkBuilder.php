@@ -623,7 +623,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if ($p === 'root') {
                 $rootPage = $this->getTypoScriptFrontendController()->tmpl->rootLine[0];
                 $p = $rootPage['uid'];
-                if ($rootPage['_MOUNT_OL'] && $rootPage['_MP_PARAM']) {
+                if (($rootPage['_MOUNT_OL'] ?? false) && ($rootPage['_MP_PARAM'] ?? false)) {
                     $initMParray[] = $rootPage['_MP_PARAM'];
                 }
             }
