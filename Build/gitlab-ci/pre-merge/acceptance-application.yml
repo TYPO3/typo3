@@ -9,6 +9,9 @@ acceptance application mariadb php 8.1 pre-merge:
     paths:
       - typo3temp/var/tests/acceptance/typo3temp/var/log
       - typo3temp/var/tests/AcceptanceReports
+    reports:
+      junit:
+        - typo3temp/var/tests/AcceptanceReports/reports.xml
   parallel: 13
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
