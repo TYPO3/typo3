@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Page\Event\ResolveJavaScriptImportEvent;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -29,14 +31,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class ImportMap
 {
-    protected array $packages;
-
-    protected ?FrontendInterface $cache = null;
-
-    protected string $cacheIdentifier = '';
-
-    protected bool $bustSuffix;
-
     protected array $extensionsToLoad = [];
 
     private ?array $importMaps = null;
@@ -45,15 +39,12 @@ class ImportMap
      * @param list<PackageInterface> $packages
      */
     public function __construct(
-        array $packages,
-        ?FrontendInterface $assetsCache = null,
-        string $cacheIdentifier = '',
-        bool $bustSuffix = true
+        protected readonly array $packages,
+        protected readonly ?FrontendInterface $cache = null,
+        protected readonly string $cacheIdentifier = '',
+        protected readonly ?EventDispatcherInterface $eventDispatcher = null,
+        protected readonly bool $bustSuffix = true
     ) {
-        $this->packages = $packages;
-        $this->cache = $assetsCache;
-        $this->cacheIdentifier = $cacheIdentifier;
-        $this->bustSuffix = $bustSuffix;
     }
 
     /**
@@ -64,10 +55,26 @@ class ImportMap
         $this->extensionsToLoad['*'] = true;
     }
 
+    public function includeTaggedImports(string $tag): void
+    {
+        if (isset($this->extensionsToLoad['*'])) {
+            return;
+        }
+
+        foreach ($this->getImportMaps() as $package => $config) {
+            $tags = $config['tags'] ?? [];
+            if (in_array($tag, $tags, true)) {
+                $this->loadDependency($package);
+            }
+        }
+    }
+
     public function includeImportsFor(string $specifier): void
     {
         if (!isset($this->extensionsToLoad['*'])) {
             $this->resolveImport($specifier, true);
+        } else {
+            $this->dispatchResolveJavaScriptImportEvent($specifier, true);
         }
     }
 
@@ -75,6 +82,11 @@ class ImportMap
         string $specifier,
         bool $loadImportConfiguration = true
     ): ?string {
+        $resolution = $this->dispatchResolveJavaScriptImportEvent($specifier, $loadImportConfiguration);
+        if ($resolution !== null) {
+            return $resolution;
+        }
+
         foreach (array_reverse($this->getImportMaps()) as $package => $config) {
             $imports = $config['imports'] ?? [];
             if (isset($imports[$specifier])) {
@@ -293,12 +305,26 @@ class ImportMap
             ArrayUtility::mergeRecursiveWithOverrule($importMap, $singleImportMap);
         }
         unset($importMap['dependencies']);
+        unset($importMap['tags']);
 
         foreach ($importMap['imports'] ?? [] as $specifier => $url) {
             $importMap['imports'][$specifier] = $urlPrefix . $url;
         }
 
         return $importMap;
+    }
+
+    protected function dispatchResolveJavaScriptImportEvent(
+        string $specifier,
+        bool $loadImportConfiguration = true
+    ): ?string {
+        if ($this->eventDispatcher === null) {
+            return null;
+        }
+
+        return $this->eventDispatcher->dispatch(
+            new ResolveJavaScriptImportEvent($specifier, $loadImportConfiguration, $this)
+        )->resolution;
     }
 
     /**

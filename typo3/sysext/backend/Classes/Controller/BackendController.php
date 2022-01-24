@@ -108,6 +108,8 @@ class BackendController
                 ],
             ],
         ]);
+        $javaScriptRenderer->includeTaggedImports('backend.module');
+        $javaScriptRenderer->includeTaggedImports('backend.navigation-component');
 
         // @todo: This loads a ton of labels into JS. This should be reviewed what is really needed.
         //        This could happen when the localization API gets an overhaul.

@@ -17,32 +17,28 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 
 class ImportMapFactory implements SingletonInterface
 {
-    private PackageManager $packageManager;
-    private FrontendInterface $cache;
-    private string $cacheIdentifier;
-
     public function __construct(
-        PackageManager $packageManager,
-        FrontendInterface $assetsCache,
-        string $cacheIdentifier
+        private readonly PackageManager $packageManager,
+        private readonly FrontendInterface $assetsCache,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly string $cacheIdentifier,
     ) {
-        $this->packageManager = $packageManager;
-        $this->cache = $assetsCache;
-        $this->cacheIdentifier = $cacheIdentifier;
     }
 
     public function create(bool $bustSuffix = true): ImportMap
     {
         return new ImportMap(
             $this->packageManager->getActivePackages(),
-            $this->cache,
+            $this->assetsCache,
             $this->cacheIdentifier,
+            $this->eventDispatcher,
             $bustSuffix
         );
     }

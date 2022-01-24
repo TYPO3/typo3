@@ -35,6 +35,10 @@ services:
   TYPO3\CMS\Backend\ContextMenu\ContextMenu:
     public: true
 
+  TYPO3\CMS\Backend\ContextMenu\ImportMapConfigurator:
+    tags:
+      - name: event.listener
+
   TYPO3\CMS\Backend\ContextMenu\ItemProviders\ItemProvidersRegistry:
     arguments:
       - !tagged_iterator backend.contextmenu.itemprovider
