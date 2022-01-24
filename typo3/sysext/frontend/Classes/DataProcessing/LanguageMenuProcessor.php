@@ -412,18 +412,21 @@ class LanguageMenuProcessor implements DataProcessorInterface
         // Process Configuration
         $menuContentObject = $cObj->getContentObject('HMENU');
         $renderedMenu = $menuContentObject->render($this->menuConfig);
-        if ($renderedMenu) {
-            // Process menu
-            $menu = json_decode($renderedMenu, true);
-            $processedMenu = [];
+        if (!$renderedMenu) {
+            return $processedData;
+        }
 
+        // Process menu
+        $menu = json_decode($renderedMenu, true);
+        $processedMenu = [];
+        if (is_iterable($menu)) {
             foreach ($menu as $key => $language) {
                 $processedMenu[$key] = $language;
             }
-
-            $processedData[$this->menuTargetVariableName] = $processedMenu;
         }
 
+        // Return processed data
+        $processedData[$this->menuTargetVariableName] = $processedMenu;
         return $processedData;
     }
 

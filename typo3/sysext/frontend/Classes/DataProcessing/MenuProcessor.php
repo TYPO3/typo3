@@ -464,9 +464,10 @@ class MenuProcessor implements DataProcessorInterface
         // Process menu
         $menu = json_decode($renderedMenu, true);
         $processedMenu = [];
-
-        foreach ($menu as $key => $page) {
-            $processedMenu[$key] = $this->processAdditionalDataProcessors($page, $processorConfiguration);
+        if (is_iterable($menu)) {
+            foreach ($menu as $key => $page) {
+                $processedMenu[$key] = $this->processAdditionalDataProcessors($page, $processorConfiguration);
+            }
         }
 
         // Return processed data
