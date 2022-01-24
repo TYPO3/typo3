@@ -141,7 +141,7 @@
         name="tx_impexp[filetype]"
     >
         <f:for each="{filetypeSelectOptions}" as="optionLabel" key="optionValue">
-            <option value="{optionValue}" {f:if(condition:'{optionValue} == {{inData.filetype}}', then:'selected="selected"')}>{optionLabel}</option>
+            <option value="{optionValue}" {f:if(condition:'{optionValue} == {inData.filetype}', then:'selected="selected"')}>{optionLabel}</option>
         </f:for>
     </select>
 </div>
