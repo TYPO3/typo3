@@ -13,14 +13,13 @@ It is intended for a non-technical audience.
 LinkValidator Report
 ====================
 
-#. First, select the page you want to work on in the page tree
-#. Access the Info module.
-#. In the top menu, select :guilabel:`LinkValidator`.
+#. Access the module :guilabel:`Check Links`.
+#. Select the page you want to work on in the page tree
 
 .. figure:: ../Images/EditorReports.png
-   :alt: Access LinkValidator Report via Info module
+   :alt: Access LinkValidator Report via "Check Links" module
 
-   Access LinkValidator Report via Info module
+   Access LinkValidator Report via "Check Links" module
 
 You will now see the :guilabel:`Report` with the list of broken links.
 In order to get results, select the checkboxes ("Internal Links",

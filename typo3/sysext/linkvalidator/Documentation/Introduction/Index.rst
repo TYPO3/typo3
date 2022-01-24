@@ -57,16 +57,16 @@ It includes the following features:
 Screenshots
 ^^^^^^^^^^^
 
-This is the :guilabel:`LinkValidator` backend module. It is located inside the
-:guilabel:`Info` module and by default provides two tabs: :guilabel:`Report`
-and :guilabel:`Check Links`. The :guilabel:`Report` tab is always shown first.
+This is the :guilabel:`Check Links` backend module. It provides two actions:
+:guilabel:`Report` and :guilabel:`Check Links`. The :guilabel:`Report` action
+is always shown first.
 Here you can view the broken links which were found, when your website was
 last checked.
 
 .. figure:: ../Images/ReportsTab.png
-   :alt: The Reports tab
+   :alt: The Reports action
 
-   Viewing broken links in the Reports tab
+   Viewing broken links in the :guilabel:`Report` action
 
 
 The :guilabel:`Check Links` tab is used to check links on demand and can be
