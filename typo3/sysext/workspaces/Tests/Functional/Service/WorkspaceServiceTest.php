@@ -39,7 +39,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
-        $this->importDataSet(__DIR__ . '/../Fixtures/sys_workspace.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_workspace.csv');
     }
 
     /**
@@ -58,8 +58,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function versionsFromSpecificWorkspaceCanBeFound(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 2);
         self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
@@ -77,8 +76,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function versionsCanBeFoundRecursive(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 1, 99);
         self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
@@ -94,8 +92,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function versionsCanBeFilteredToSpecificStage(): void
     {
-        $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $service = new WorkspaceService();
         // testing stage 1
         $result = $service->selectVersionsInWorkspace(91, 1, 1, 99);
@@ -128,7 +125,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
     public function movedElementsCanNotBeFoundAtTheirOrigin(): void
     {
         self::markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 2, 99);
@@ -149,7 +146,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function movedElementsCanBeFoundAtTheirDestination(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 5, 99);
@@ -168,7 +165,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function movedElementsCanBeFoundUsingTheirLiveUid(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         // Test if the placeholder can be found when we ask using recursion (same result)
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 3, 99);
@@ -182,7 +179,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         $workspaceService = new WorkspaceService();
         $result = $workspaceService->getPagesWithVersionsInTable(91);
         $expected = [
@@ -205,7 +202,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         $workspaceService = new WorkspaceService();
         $result = $workspaceService->hasPageRecordVersions(91, 7);
         self::assertTrue($result);
@@ -216,7 +213,7 @@ class WorkspaceServiceTest extends FunctionalTestCase
      */
     public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         $workspaceService = new WorkspaceService();
         $result = $workspaceService->hasPageRecordVersions(91, 3);
         self::assertFalse($result);
