@@ -28,7 +28,7 @@
                     </f:for>
                 </ul>
             </div>
-            <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
+            <f:flashMessages queueIdentifier="core.template.flashMessages" />
             <div class="element-browser-main {f:if(condition: initialNavigationWidth, then: 'scaffold-content-navigation-available scaffold-content-navigation-expanded')}">
                 <f:if condition="{initialNavigationWidth}">
                     <div class="element-browser-main-sidebar" style="width: {initialNavigationWidth}px">

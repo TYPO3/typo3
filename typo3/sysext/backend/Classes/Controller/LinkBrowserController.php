@@ -54,8 +54,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
 
     protected function initDocumentTemplate()
     {
-        parent::initDocumentTemplate();
-
         if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
             $this->parameters['fieldChangeFunc'] = [];
         }

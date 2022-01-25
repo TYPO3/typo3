@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
@@ -145,7 +146,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
 
     protected function initDocumentTemplate()
     {
-        parent::initDocumentTemplate();
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
             JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/RteLinkBrowser')
                 ->invoke('initialize', $this->editorId)
@@ -175,15 +175,15 @@ class BrowseLinksController extends AbstractLinkBrowserController
     }
 
     /**
-     * Renders the link attributes for the selected link handler
-     *
-     * @return string
+     * Renders the link attributes for the selected link handler.
      */
-    protected function renderLinkAttributeFields()
+    protected function renderLinkAttributeFields(BackendTemplateView $view): string
     {
         // Processing the classes configuration
         if (!empty($this->buttonConfig['properties']['class']['allowedClasses'])) {
-            $classesAnchorArray = is_array($this->buttonConfig['properties']['class']['allowedClasses']) ? $this->buttonConfig['properties']['class']['allowedClasses'] : GeneralUtility::trimExplode(',', $this->buttonConfig['properties']['class']['allowedClasses'], true);
+            $classesAnchorArray = is_array($this->buttonConfig['properties']['class']['allowedClasses'])
+                ? $this->buttonConfig['properties']['class']['allowedClasses']
+                : GeneralUtility::trimExplode(',', $this->buttonConfig['properties']['class']['allowedClasses'], true);
             // Collecting allowed classes and configured default values
             $classesAnchor = [
                 'all' => [],
@@ -279,7 +279,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 $this->additionalAttributes[$attribute] = $this->linkAttributeValues[$attribute] ?? '';
             }
         }
-        return parent::renderLinkAttributeFields();
+        return parent::renderLinkAttributeFields($view);
     }
 
     /**
@@ -300,10 +300,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }
 
-    protected function renderCurrentUrl()
+    protected function renderCurrentUrl(BackendTemplateView $view)
     {
-        $this->moduleTemplate->getView()->assign('removeCurrentLink', true);
-        parent::renderCurrentUrl();
+        $view->assign('removeCurrentLink', true);
+        parent::renderCurrentUrl($view);
     }
 
     /**
