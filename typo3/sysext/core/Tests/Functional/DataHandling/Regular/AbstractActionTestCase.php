@@ -405,6 +405,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['hidden' => '1']);
     }
 
+    public function moveLocalizedContentToDifferentPage(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageId);
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdThird, self::VALUE_PageIdTarget);
+    }
+
     /**
      * Page records
      */
