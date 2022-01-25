@@ -389,8 +389,8 @@ class SetupModuleController
         $this->getButtons();
         // Build the <body> for the module
         // Renders the module page
-        $this->moduleTemplate->setContent($this->content);
         $this->content .= '</form>';
+        $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
