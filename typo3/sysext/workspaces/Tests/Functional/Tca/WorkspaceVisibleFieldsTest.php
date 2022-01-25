@@ -66,7 +66,7 @@ class WorkspaceVisibleFieldsTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
 
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/workspaces/Tests/Functional/Fixtures/sys_filemounts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_filemounts.csv');
     }
 
     /**
