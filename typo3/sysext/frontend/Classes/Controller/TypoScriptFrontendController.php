@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -3319,7 +3320,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $now = (int)$now;
         $result = PHP_INT_MAX;
-        [$tableName, $pid] = GeneralUtility::trimExplode(':', $tableDef);
+        [$tableName, $pid, $recursive] = GeneralUtility::trimExplode(':', $tableDef);
         if (empty($tableName) || empty($pid)) {
             throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
         }
@@ -3356,15 +3357,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // if starttime or endtime are defined, evaluate them
         if (!empty($timeFields)) {
             // find the timestamp, when the current page's content changes the next time
-            $row = $queryBuilder
+            $queryBuilder
                 ->from($tableName)
-                ->where(
+                ->where($timeConditions);
+
+            if (! filter_var($recursive, FILTER_VALIDATE_BOOLEAN)) {
+                $queryBuilder->andWhere(
                     $queryBuilder->expr()->eq(
                         'pid',
                         $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
                     ),
-                    $timeConditions
-                )
+                );
+            }
+
+            if (filter_var($recursive, FILTER_VALIDATE_BOOLEAN)) {
+                $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
+                $pageTree = explode(',', $queryGenerator->getTreeList((int) $pid, 999, 0, 'and hidden = 0'));
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->in('pid', $pageTree)
+                );
+            }
+
+            $row = $queryBuilder
                 ->execute()
                 ->fetchAssociative();
 
