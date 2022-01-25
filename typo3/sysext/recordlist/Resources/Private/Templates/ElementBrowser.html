@@ -1,3 +1,8 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
 <f:layout name="{f:if(condition: treeEnabled, then: 'ElementBrowserWithNavigation', else: 'ElementBrowser')}" />
 
 <f:section name="Navigation">
@@ -25,6 +30,8 @@
 </f:section>
 
 <f:section name="Content">
-    <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}"/>
+    <f:flashMessages queueIdentifier="core.template.flashMessages"/>
     <f:format.raw>{content}</f:format.raw>
 </f:section>
+
+</html>

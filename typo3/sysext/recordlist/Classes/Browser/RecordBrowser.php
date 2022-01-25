@@ -22,7 +22,10 @@ namespace TYPO3\CMS\Recordlist\Browser;
  *
  * Mostly this is about being able to set to some parameters that cannot
  * be set from outside the DatabaseBrowser.
+ *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
+ * @todo: This is a misuse of the Browser classes for link handler concerns. It would be better to separate this,
+ *        see TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler
  */
 class RecordBrowser extends DatabaseBrowser
 {

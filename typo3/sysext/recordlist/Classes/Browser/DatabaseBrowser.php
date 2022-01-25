@@ -25,7 +25,9 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
- * Showing a page tree and allows you to browse for records
+ * Showing a page tree and allows you to browse for records. This is the modal rendered
+ * for type=group internal_type=db to add relations to a group field.
+ *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
@@ -102,9 +104,8 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
         $renderedRecordList = $this->renderTableRecords($allowedTables);
 
-        $this->setBodyTagParameters();
-        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('recordSelector'));
-        $view = $this->moduleTemplate->getView();
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:recordSelector'));
+        $view = $this->view;
         $view->assignMultiple([
             'treeEnabled' => $withTree,
             'treeType' => 'page',
@@ -114,10 +115,12 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             'content' => $renderedRecordList,
             'contentOnly' => $contentOnly,
         ]);
+        $content = $this->view->render('ElementBrowser');
         if ($contentOnly) {
-            return $view->render();
+            return $content;
         }
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body ' . $this->getBodyTagParameters() . '>' . $content);
+        return $this->pageRenderer->render();
     }
 
     /**

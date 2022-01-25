@@ -23,7 +23,8 @@ use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 
 /**
- * Browser for folders
+ * Browser for folders. This is used with type=group and internal_type=folder to select folders.
+ *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
@@ -94,9 +95,8 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
         }
 
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
-        $this->setBodyTagParameters();
-        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('folderSelector'));
-        $view = $this->moduleTemplate->getView();
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folderSelector'));
+        $view = $this->view;
         $view->assignMultiple([
             'treeEnabled' => true,
             'treeType' => 'folder',
@@ -105,10 +105,12 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             'content' => $folders,
             'contentOnly' => $contentOnly,
         ]);
+        $content = $view->render('ElementBrowser');
         if ($contentOnly) {
-            return $view->render();
+            return $content;
         }
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body ' . $this->getBodyTagParameters() . '>' . $content);
+        return $this->pageRenderer->render();
     }
 
     /**

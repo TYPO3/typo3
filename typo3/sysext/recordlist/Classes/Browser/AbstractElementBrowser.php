@@ -17,13 +17,14 @@ namespace TYPO3\CMS\Recordlist\Browser;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Base class for element browsers
@@ -33,10 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractElementBrowser
 {
-    /**
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    use PageRendererBackendSetupTrait;
 
     /**
      * URL of current request
@@ -66,22 +64,14 @@ abstract class AbstractElementBrowser
     protected $bparams = '';
 
     protected ?ServerRequestInterface $request = null;
-
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected BackendTemplateView $view;
 
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -89,9 +79,11 @@ abstract class AbstractElementBrowser
      */
     protected function initialize()
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->getRequest());
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
-        $this->moduleTemplate->getView()->setTemplate('ElementBrowser');
+        $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $this->getRequest(), $this->getLanguageService());
+        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
+        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
+        $this->view = $view;
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ElementBrowser');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
@@ -115,18 +107,13 @@ abstract class AbstractElementBrowser
         $this->bparams = $this->getRequest()->getParsedBody()['bparams'] ?? $this->getRequest()->getQueryParams()['bparams'] ?? '';
     }
 
-    /**
-     * Initialize the body tag for the module
-     */
-    protected function setBodyTagParameters()
+    protected function getBodyTagParameters(): string
     {
         $bodyDataAttributes = array_merge(
             $this->getBParamDataAttributes(),
             $this->getBodyTagAttributes()
         );
-        $bodyTag = $this->moduleTemplate->getBodyTag();
-        $bodyTag = str_replace('>', ' ' . GeneralUtility::implodeAttributes($bodyDataAttributes, true, true) . '>', $bodyTag);
-        $this->moduleTemplate->setBodyTag($bodyTag);
+        return GeneralUtility::implodeAttributes($bodyDataAttributes, true, true);
     }
 
     /**

@@ -34,7 +34,8 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
- * Browser for files
+ * Browser for files. This is used when adding a FAL inline image with the 'add image' button in FormEngine.
+ *
  * @internal This class is a specific LinkBrowser implementation and is not part of the TYPO3's Core API.
  */
 class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
@@ -189,9 +190,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
         $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
 
-        $this->setBodyTagParameters();
-        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('fileSelector'));
-        $view = $this->moduleTemplate->getView();
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:fileSelector'));
+        $view = $this->view;
         $view->assignMultiple([
             'treeEnabled' => true,
             'treeType' => 'folder',
@@ -200,10 +200,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             'content' => $files . $uploadForm . $createFolder,
             'contentOnly' => $contentOnly,
         ]);
+        $content = $this->view->render('ElementBrowser');
         if ($contentOnly) {
-            return $view->render();
+            return $content;
         }
-        return $this->moduleTemplate->renderContent();
+        $this->pageRenderer->setBodyContent('<body ' . $this->getBodyTagParameters() . '>' . $content);
+        return $this->pageRenderer->render();
     }
 
     /**
