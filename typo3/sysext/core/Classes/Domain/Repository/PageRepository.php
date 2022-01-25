@@ -614,7 +614,7 @@ class PageRepository implements LoggerAwareInterface
 
         if (!empty($tableControl['languageField'])
             // Return record for ALL languages untouched
-            // TODO: Fix call stack to prevent this situation in the first place
+            // @todo: Fix call stack to prevent this situation in the first place
             && (int)$row[$tableControl['languageField']] !== -1
             && !empty($tableControl['transOrigPointerField'])
             && $row['uid'] > 0
@@ -635,13 +635,34 @@ class PageRepository implements LoggerAwareInterface
                         $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
                         $queryBuilder->getRestrictions()->removeByType(StartTimeRestriction::class);
                         $queryBuilder->getRestrictions()->removeByType(EndTimeRestriction::class);
+                        // We remove the FrontendWorkspaceRestriction in this case, because we need to get the LIVE record
+                        // of the language record before doing the version overlay of the language again. WorkspaceRestriction
+                        // does this for us, PLUS we need to ensure to get a possible LIVE record first (that's why
+                        // the "orderBy" query is there, so the LIVE record is found first), as there might only be a
+                        // versioned record (e.g. new version) or both (common for modifying, moving etc).
+                        if ($this->hasTableWorkspaceSupport($table)) {
+                            $queryBuilder->getRestrictions()->removeByType(FrontendWorkspaceRestriction::class);
+                            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->versioningWorkspaceId));
+                            $queryBuilder->orderBy('t3ver_wsid', 'ASC');
+                        }
+                    }
+
+                    $pid = $row['pid'];
+                    // When inside a workspace, the already versioned $row of the default language is coming in
+                    // For moved versioned records, the PID MIGHT be different. However, the idea of this function is
+                    // to get the language overlay of the LIVE default record, and afterwards get the versioned record
+                    // the found (live) language record again, see the versionOL() call a few lines below.
+                    // This means, we need to modify the $pid value for moved records, as they might be on a different
+                    // page and use the PID of the LIVE version.
+                    if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::cast($row['t3ver_state'] ?? 0)->equals(VersionState::MOVE_POINTER)) {
+                        $pid = $row['_ORIG_pid'];
                     }
                     $olrow = $queryBuilder->select('*')
                         ->from($table)
                         ->where(
                             $queryBuilder->expr()->eq(
                                 'pid',
-                                $queryBuilder->createNamedParameter($row['pid'], \PDO::PARAM_INT)
+                                $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
                                 $tableControl['languageField'],

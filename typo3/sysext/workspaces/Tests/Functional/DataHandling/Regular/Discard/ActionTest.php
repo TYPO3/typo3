@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\Discard;
 
 use TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Regular\AbstractActionTestCase;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
 
 /**
  * Functional test for the DataHandler
@@ -276,6 +279,54 @@ class ActionTest extends AbstractActionTestCase
         parent::moveContentToDifferentPageAndHide();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPageAndHide.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function moveLocalizedContentToDifferentPage(): void
+    {
+        parent::moveLocalizedContentToDifferentPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveLocalizedContentToDifferentPage.csv');
+
+        // Check if the regular page contains the original record again
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
+
+        /**
+         * The original page is not translated, for this reason this is disabled until the tests are adapted.
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSectionsSource = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSectionsSource, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
+         */
+
+        // Check if the target page does not contain the moved record
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageIdTarget),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSectionsTarget, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3'));
+
+        // Also test the translated page, and make sure the translated record is also discarded
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageIdTarget)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSectionsTarget = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSectionsTarget, $this->getRequestSectionDoesNotHaveRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
     }
 
     /**
