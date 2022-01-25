@@ -48,7 +48,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         $flexFormData = GeneralUtility::makeInstance(FlexFormService::class)
             ->convertFlexFormContentToArray($row['pi_flexform']);
 
-        $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'];
+        $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'] ?? '';
         if (!empty($persistenceIdentifier)) {
             try {
                 $formPersistenceManager = GeneralUtility::makeInstance(FormPersistenceManagerInterface::class);
