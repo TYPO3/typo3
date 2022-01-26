@@ -1010,7 +1010,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($conf['JSwindow']) {
                 $altUrl = $this->stdWrapValue('altUrl', $conf['JSwindow.'] ?? []);
                 if ($altUrl) {
-                    $url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode((string)$imageFile) . $params);
+                    $url = $altUrl . (($conf['JSwindow.']['altUrl_noDefaultParams'] ?? false) ? '' : '?file=' . rawurlencode((string)$imageFile) . $params);
                 }
 
                 $processedFile = $file->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $conf);
@@ -1027,7 +1027,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $windowParams = (string)$this->stdWrapValue('params', $conf['JSwindow.'] ?? []);
                 $windowParams = explode(',', $windowParams);
                 foreach ($windowParams as $windowParam) {
-                    [$paramKey, $paramValue] = explode('=', $windowParam);
+                    $windowParamParts = explode('=', $windowParam);
+                    $paramKey = $windowParamParts[0];
+                    $paramValue = $windowParamParts[1] ?? null;
+
+                    if ($paramKey === '') {
+                        continue;
+                    }
+
                     if ($paramValue !== '') {
                         $params[$paramKey] = $paramValue;
                     } else {
@@ -1127,7 +1134,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Sets the current file object during iterations over files.
      *
-     * @param File $fileObject The file object.
+     * @param File|FileReference|Folder|string|null $fileObject The file object.
      */
     public function setCurrentFile($fileObject)
     {
@@ -1137,7 +1144,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Gets the current file object during iterations over files.
      *
-     * @return File The current file object.
+     * @return File|FileReference|Folder|string|null The current file object.
      */
     public function getCurrentFile()
     {
