@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TYPO3\CMS\Styleguide\Tests\Functional\TcaDataGenerator;
 
 /*
@@ -29,7 +31,7 @@ class GeneratorTest extends FunctionalTestCase
     /**
      * @var string[] Have styleguide loaded
      */
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/styleguide',
     ];
 
