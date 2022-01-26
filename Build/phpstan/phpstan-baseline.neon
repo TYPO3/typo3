@@ -4671,7 +4671,7 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Unit/ViewHelpers/Uri/TypolinkViewHelperTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:setCurrentFile\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
+			message: "#^Parameter \\#1 \\$fileObject of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:setCurrentFile\\(\\) expects string\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
 
@@ -5028,11 +5028,6 @@ parameters:
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Instanceof between TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File and TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference will always evaluate to false\\.$#"
-			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-

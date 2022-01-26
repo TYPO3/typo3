@@ -24,6 +24,7 @@ use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -60,9 +61,12 @@ class ContentObjectRendererTest extends FunctionalTestCase
      */
     protected $typoScriptFrontendController;
 
+    protected $pathsToProvideInTestInstance = ['typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->setUpBackendUserFromFixture(1);
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
@@ -715,5 +719,206 @@ And another one';
             'known' => 'somevalue',
         ];
         self::assertSame($expected, $this->subject->checkIf($configuration));
+    }
+
+    public function imageLinkWrapWrapsTheContentAsConfiguredDataProvider(): iterable
+    {
+        $width = 900;
+        $height = 600;
+        $processingWidth = $width . 'm';
+        $processingHeight = $height . 'm';
+        $defaultConfiguration = [
+            'wrap' => '<a href="javascript:close();"> | </a>',
+            'width' => $processingWidth,
+            'height' => $processingHeight,
+            'JSwindow' => '1',
+            'JSwindow.' => [
+                'newWindow' => '0',
+            ],
+            'crop.' => [
+                'data' => 'file:current:crop',
+            ],
+            'linkParams.' => [
+                'ATagParams.' => [
+                    'dataWrap' => 'class="lightbox" rel="lightbox[{field:uid}]"',
+                ],
+            ],
+            'enable' => true,
+        ];
+        $imageTag = '<img class="image-embed-item" src="/fileadmin/_processed_/team-t3board10-processed.jpg" width="500" height="300" loading="lazy" alt="" />';
+        $windowFeatures = 'width=' . $width . ',height=' . $height . ',status=0,menubar=0';
+
+        $configurationEnableFalse = $defaultConfiguration;
+        $configurationEnableFalse['enable'] = false;
+        yield 'enable => false configuration returns image tag as is.' => [
+            'content' => $imageTag,
+            'configuration' => $configurationEnableFalse,
+            'expected' => [$imageTag => true],
+        ];
+
+        yield 'image is wrapped with link tag.' => [
+            'content' => $imageTag,
+            'configuration' => $defaultConfiguration,
+            'expected' => [
+                '<a href="index.php?eID=tx_cms_showpic&amp;file=1' => true,
+                $imageTag . '</a>' => true,
+                'data-window-features="' . $windowFeatures => true,
+                'data-window-target="thePicture"' => true,
+                ' target="' . 'thePicture' => true,
+            ],
+        ];
+
+        $paramsConfiguration = $defaultConfiguration;
+        $windowFeaturesOverrides = 'width=420,status=1,menubar=1,foo=bar';
+        $windowFeaturesOverriddenExpected = 'width=420,height=' . $height . ',status=1,menubar=1,foo=bar';
+        $paramsConfiguration['JSwindow.']['params'] = $windowFeaturesOverrides;
+        yield 'JSWindow.params overrides windowParams' => [
+            'content' => $imageTag,
+            'configuration' => $paramsConfiguration,
+            'expected' => [
+                'data-window-features="' . $windowFeaturesOverriddenExpected => true,
+            ],
+        ];
+
+        $newWindowConfiguration = $defaultConfiguration;
+        $newWindowConfiguration['JSwindow.']['newWindow'] = '1';
+        yield 'data-window-target is not "thePicture" if newWindow = 1 but an md5 hash of the url.' => [
+            'content' => $imageTag,
+            'configuration' => $newWindowConfiguration,
+            'expected' => [
+                'data-window-target="thePicture' => false,
+            ],
+        ];
+
+        $newWindowConfiguration = $defaultConfiguration;
+        $newWindowConfiguration['JSwindow.']['expand'] = '20,40';
+        $windowFeaturesExpand = 'width=' . ($width + 20) . ',height=' . ($height + 40) . ',status=0,menubar=0';
+        yield 'expand increases the window size by its value' => [
+            'content' => $imageTag,
+            'configuration' => $newWindowConfiguration,
+            'expected' => [
+                'data-window-features="' . $windowFeaturesExpand => true,
+            ],
+        ];
+
+        $directImageLinkConfiguration = $defaultConfiguration;
+        $directImageLinkConfiguration['directImageLink'] = '1';
+        yield 'Direct image link does not use eID and links directly to the image.' => [
+            'content' => $imageTag,
+            'configuration' => $directImageLinkConfiguration,
+            'expected' => [
+                'index.php?eID=tx_cms_showpic&amp;file=1' => false,
+                '<a href="fileadmin/_processed_' => true,
+                'data-window-url="fileadmin/_processed_' => true,
+            ],
+        ];
+
+        // @todo Error: Object of class TYPO3\CMS\Core\Resource\FileReference could not be converted to string
+//        $altUrlConfiguration = $defaultConfiguration;
+//        $altUrlConfiguration['JSwindow.']['altUrl'] = '/alternative-url';
+//        yield 'JSwindow.altUrl forces an alternative url.' => [
+//            'content' => $imageTag,
+//            'configuration' => $altUrlConfiguration,
+//            'expected' => [
+//                '<a href="/alternative-url' => true,
+//                'data-window-url="/alternative-url' => true,
+//            ],
+//        ];
+
+        $altUrlConfigurationNoDefault = $defaultConfiguration;
+        $altUrlConfigurationNoDefault['JSwindow.']['altUrl'] = '/alternative-url';
+        $altUrlConfigurationNoDefault['JSwindow.']['altUrl_noDefaultParams'] = '1';
+        yield 'JSwindow.altUrl_noDefaultParams removes the default ?file= params' => [
+            'content' => $imageTag,
+            'configuration' => $altUrlConfigurationNoDefault,
+            'expected' => [
+                '<a href="/alternative-url' => true,
+                'data-window-url="/alternative-url' => true,
+                'data-window-url="/alternative-url?file=' => false,
+            ],
+        ];
+
+        $targetConfiguration = $defaultConfiguration;
+        $targetConfiguration['target'] = 'myTarget';
+        yield 'Setting target overrides the default target "thePicture.' => [
+            'content' => $imageTag,
+            'configuration' => $targetConfiguration,
+            'expected' => [
+                ' target="myTarget"' => true,
+                'data-window-target="thePicture"' => true,
+            ],
+        ];
+
+        $parameters = [
+            'sample' => '1',
+            'width' => $processingWidth,
+            'height' => $processingHeight,
+            'effects' => 'gamma=1.3 | flip | rotate=180',
+            'bodyTag' => '<body style="margin:0; background:#fff;">',
+            'title' => 'My Title',
+            'wrap' => '<div class="my-wrap">|</div>',
+            'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
+        ];
+        $parameterConfiguration = array_replace($defaultConfiguration, $parameters);
+        $expectedParameters = $parameters;
+        $expectedParameters['sample'] = 1;
+        yield 'Setting one of [width, height, effects, bodyTag, title, wrap, crop, sample] will add them to the parameter list.' => [
+            'content' => $imageTag,
+            'configuration' => $parameterConfiguration,
+            'expected' => [],
+            'expectedParams' => $expectedParameters,
+        ];
+
+        $stdWrapConfiguration = $defaultConfiguration;
+        $stdWrapConfiguration['stdWrap.'] = [
+            'append' => 'TEXT',
+            'append.' => [
+                'value' => 'appendedString',
+            ],
+        ];
+        yield 'stdWrap is called upon the whole content.' => [
+            'content' => $imageTag,
+            'configuration' => $stdWrapConfiguration,
+            'expected' => [
+                'appendedString' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider imageLinkWrapWrapsTheContentAsConfiguredDataProvider
+     * @test
+     */
+    public function imageLinkWrapWrapsTheContentAsConfigured(string $content, array $configuration, array $expected, array $expectedParams = []): void
+    {
+        $GLOBALS['TSFE'] = $this->typoScriptFrontendController;
+        $this->importCSVDataSet(__DIR__ . '/DataSet/FileReferences.csv');
+        $fileReferenceData = [
+            'uid' => 1,
+            'uid_local' => 1,
+            'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
+        ];
+        $fileReference = new FileReference($fileReferenceData);
+        $this->subject->setCurrentFile($fileReference);
+        $result = $this->subject->imageLinkWrap($content, $fileReference, $configuration);
+
+        foreach ($expected as $expectedString => $shouldContain) {
+            if ($shouldContain) {
+                self::assertStringContainsString($expectedString, $result);
+            } else {
+                self::assertStringNotContainsString($expectedString, $result);
+            }
+        }
+
+        if ($expectedParams !== []) {
+            preg_match('@href="(.*)"@U', $result, $matches);
+            self::assertArrayHasKey(1, $matches);
+            $url = parse_url(html_entity_decode($matches[1]));
+            parse_str($url['query'], $queryResult);
+            $base64_string = implode('', $queryResult['parameters']);
+            $base64_decoded = base64_decode($base64_string);
+            $jsonDecodedArray = json_decode($base64_decoded, true);
+            self::assertSame($expectedParams, $jsonDecodedArray);
+        }
     }
 }
