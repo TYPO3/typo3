@@ -89,6 +89,9 @@ class PageRendererTest extends FunctionalTestCase
         $headerData = $expectedHeaderData = '<tag method="private" name="test" />';
         $subject->addHeaderData($headerData);
 
+        $subject->loadJavaScriptModule('TYPO3/CMS/Core/Ajax/AjaxRequest.js');
+        $expectedJavaScriptModuleString = '"type":"javaScriptModuleInstruction","payload":{"name":"TYPO3\\/CMS\\/Core\\/Ajax\\/AjaxRequest.js"';
+
         $subject->addJsLibrary(
             'test',
             '/fileadmin/test.js',
@@ -121,6 +124,7 @@ class PageRendererTest extends FunctionalTestCase
         $expectedBodyContent = StringUtility::getUniqueId('ABCDE-');
         $subject->setBodyContent($expectedBodyContent);
 
+        $state = serialize($subject->getState());
         $renderedString = $subject->render();
 
         self::assertStringContainsString($expectedPrologueString, $renderedString);
@@ -130,6 +134,7 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString($expectedBaseUrlString, $renderedString);
         self::assertStringContainsString($expectedInlineCommentString, $renderedString);
         self::assertStringContainsString($expectedHeaderData, $renderedString);
+        self::assertStringContainsString($expectedJavaScriptModuleString, $renderedString);
         self::assertMatchesRegularExpression($expectedJsLibraryRegExp, $renderedString);
         self::assertMatchesRegularExpression($expectedJsFileRegExp, $renderedString);
         self::assertMatchesRegularExpression($expectedJsFileWithoutTypeRegExp, $renderedString);
@@ -146,6 +151,34 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
+
+        $stateBasedSubject = new PageRenderer();
+        $stateBasedSubject->updateState(unserialize($state, ['allowed_classes' => false]));
+        $stateBasedRenderedString = $stateBasedSubject->render();
+        self::assertStringContainsString($expectedPrologueString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedTitleString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedCharsetString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedFavouriteIconPartOne, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedBaseUrlString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedInlineCommentString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedHeaderData, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedJavaScriptModuleString, $stateBasedRenderedString);
+        self::assertMatchesRegularExpression($expectedJsLibraryRegExp, $stateBasedRenderedString);
+        self::assertMatchesRegularExpression($expectedJsFileRegExp, $stateBasedRenderedString);
+        self::assertMatchesRegularExpression($expectedJsFileWithoutTypeRegExp, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedJsInlineCodeString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedCssFileString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedCssInlineBlockOnTopString, $stateBasedRenderedString);
+        self::assertStringContainsString($expectedBodyContent, $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:type" content="foobar" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="author" content="foobar" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta http-equiv="refresh" content="5" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;" />', $stateBasedRenderedString);
+        self::assertStringNotContainsString('<meta name="randomtag" content="foobar">', $stateBasedRenderedString);
+        self::assertStringNotContainsString('<meta name="randomtag" content="foobar" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta name="generator" content="TYPO3 CMS" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $stateBasedRenderedString);
+        self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $stateBasedRenderedString);
     }
 
     public function pageRendererRendersFooterValuesDataProvider(): array

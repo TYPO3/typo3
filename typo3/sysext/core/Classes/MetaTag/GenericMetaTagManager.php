@@ -166,4 +166,16 @@ final class GenericMetaTagManager implements MetaTagManagerInterface
     {
         return true;
     }
+
+    public function getState(): array
+    {
+        return [
+            'properties' => $this->properties,
+        ];
+    }
+
+    public function updateState(array $state): void
+    {
+        $this->properties = $state['properties'] ?? [];
+    }
 }

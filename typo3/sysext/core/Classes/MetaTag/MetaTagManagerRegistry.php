@@ -32,7 +32,7 @@ class MetaTagManagerRegistry implements SingletonInterface
     protected $registry = [];
 
     /**
-     * @var mixed[]
+     * @var MetaTagManagerInterface[]
      */
     private $instances = [];
 
@@ -126,14 +126,18 @@ class MetaTagManagerRegistry implements SingletonInterface
     }
 
     /**
-     * @param array $newState
+     * @param array $state
      * @internal
      */
-    public function updateState(array $newState): void
+    public function updateState(array $state): void
     {
-        foreach ($newState as $var => $value) {
-            $this->{$var} = $value;
+        $this->instances = [];
+        foreach ($state['instances'] ?? [] as $module => $instanceState) {
+            $instance = GeneralUtility::makeInstance($module);
+            $instance->updateState($instanceState);
+            $this->instances[$module] = $instance;
         }
+        $this->managers = null;
     }
 
     /**
@@ -142,10 +146,11 @@ class MetaTagManagerRegistry implements SingletonInterface
      */
     public function getState(): array
     {
-        $state = [];
-        foreach (get_object_vars($this) as $var => $value) {
-            $state[$var] = $value;
-        }
-        return $state;
+        return [
+            'instances' => array_map(
+                static fn (MetaTagManagerInterface $instance): array => $instance->getState(),
+                $this->instances,
+            ),
+        ];
     }
 }

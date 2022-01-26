@@ -2523,17 +2523,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->additionalHeaderData = $this->config['INTincScript_ext']['additionalHeaderData'] ?? [];
         $this->additionalFooterData = $this->config['INTincScript_ext']['additionalFooterData'] ?? [];
-        if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
+        if (empty($this->config['INTincScript_ext']['pageRendererState'])) {
             $this->initPageRenderer();
         } else {
-            /** @var PageRenderer $pageRenderer */
-            $pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
-            $this->pageRenderer->updateState($pageRenderer->getState());
+            $pageRendererState = unserialize($this->config['INTincScript_ext']['pageRendererState'], ['allowed_classes' => false]);
+            $this->pageRenderer->updateState($pageRendererState);
         }
-        if (!empty($this->config['INTincScript_ext']['assetCollector'])) {
-            /** @var AssetCollector $assetCollector */
-            $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => [AssetCollector::class]]);
-            GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollector->getState());
+        if (!empty($this->config['INTincScript_ext']['assetCollectorState'])) {
+            $assetCollectorState = unserialize($this->config['INTincScript_ext']['assetCollectorState'], ['allowed_classes' => false]);
+            GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollectorState);
         }
 
         $this->recursivelyReplaceIntPlaceholdersInContent($request);

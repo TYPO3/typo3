@@ -305,4 +305,16 @@ abstract class AbstractMetaTagManager implements MetaTagManagerInterface
 
         return false;
     }
+
+    public function getState(): array
+    {
+        return [
+            'properties' => $this->properties,
+        ];
+    }
+
+    public function updateState(array $state): void
+    {
+        $this->properties = $state['properties'] ?? [];
+    }
 }

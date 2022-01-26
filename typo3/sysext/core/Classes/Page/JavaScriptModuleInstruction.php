@@ -70,6 +70,19 @@ class JavaScriptModuleInstruction implements \JsonSerializable
     }
 
     /**
+     * @param array $state
+     * @return self
+     * @internal
+     */
+    public static function fromState(array $state)
+    {
+        $target = GeneralUtility::makeInstance(static::class, $state['name'], $state['flags'] ?? 0);
+        $target->exportName = $state['exportName'] ?? null;
+        $target->items = $state['items'];
+        return $target;
+    }
+
+    /**
      * @param string $name Module name
      * @param int $flags
      */
@@ -79,7 +92,10 @@ class JavaScriptModuleInstruction implements \JsonSerializable
         $this->flags = $flags;
     }
 
-    public function jsonSerialize(): array
+    /**
+     * @internal
+     */
+    public function getState(): array
     {
         return [
             'name' => $this->name,
@@ -87,6 +103,11 @@ class JavaScriptModuleInstruction implements \JsonSerializable
             'flags' => $this->flags,
             'items' => $this->items,
         ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->getState();
     }
 
     public function getName(): string

@@ -362,17 +362,20 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * @param array $newState
+     * @param array $state
      * @internal
      */
-    public function updateState(array $newState): void
+    public function updateState(array $state): void
     {
-        foreach ($newState as $var => $value) {
+        foreach ($state as $var => $value) {
             switch ($var) {
             case 'locales':
                 break;
             case 'metaTagRegistry':
                 $this->metaTagRegistry->updateState($value);
+                break;
+            case 'javaScriptRenderer':
+                $this->javaScriptRenderer->updateState($value);
                 break;
             default:
                 $this->{$var} = $value;
@@ -394,6 +397,9 @@ class PageRenderer implements SingletonInterface
                 break;
             case 'metaTagRegistry':
                 $state[$var] = $this->metaTagRegistry->getState();
+                break;
+            case 'javaScriptRenderer':
+                $state[$var] = $this->javaScriptRenderer->getState();
                 break;
             default:
                 $state[$var] = $value;

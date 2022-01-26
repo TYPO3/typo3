@@ -137,4 +137,46 @@ class JavaScriptRenderer
     {
         return (string)json_encode($value, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG);
     }
+
+    /**
+     * @internal
+     */
+    public function updateState(array $state): void
+    {
+        foreach ($state as $var => $value) {
+            switch ($var) {
+            case 'items':
+                $this->items->updateState($value);
+                break;
+            case 'importMap':
+                $this->importMap->updateState($value);
+                break;
+            default:
+                $this->{$var} = $value;
+                break;
+            }
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public function getState(): array
+    {
+        $state = [];
+        foreach (get_object_vars($this) as $var => $value) {
+            switch ($var) {
+            case 'items':
+                $state[$var] = $this->items->getState();
+                break;
+            case 'importMap':
+                $state[$var] = $this->importMap->getState();
+                break;
+            default:
+                $state[$var] = $value;
+                break;
+            }
+        }
+        return $state;
+    }
 }

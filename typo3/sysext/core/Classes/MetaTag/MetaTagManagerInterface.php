@@ -82,4 +82,8 @@ interface MetaTagManagerInterface
      * Unset all properties of this MetaTagManager
      */
     public function removeAllProperties();
+
+    public function getState(): array;
+
+    public function updateState(array $state): void;
 }

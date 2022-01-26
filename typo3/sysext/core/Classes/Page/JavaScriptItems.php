@@ -77,4 +77,30 @@ class JavaScriptItems implements \JsonSerializable
         return $this->globalAssignments === []
             && empty($this->javaScriptModuleInstructions);
     }
+
+    /**
+     * @internal
+     */
+    public function updateState(array $state): void
+    {
+        $this->globalAssignments = $state['globalAssignments'] ?? [];
+        $this->javaScriptModuleInstructions = [];
+        foreach ($state['javaScriptModuleInstructions'] ?? [] as $instruction) {
+            $this->javaScriptModuleInstructions[] = JavaScriptModuleInstruction::fromState($instruction);
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public function getState(): array
+    {
+        return [
+            'globalAssignments' => $this->globalAssignments,
+            'javaScriptModuleInstructions' => array_map(
+                static fn (JavaScriptModuleInstruction $instruction): array => $instruction->getState(),
+                $this->javaScriptModuleInstructions
+            ),
+        ];
+    }
 }
