@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Exception;
 /**
  * An exception thrown if ExtensionConfiguration->get() is called for
  * an extension that has no configuration.
- *
- * @internal
  */
 class ExtensionConfigurationExtensionNotConfiguredException extends Exception
 {
