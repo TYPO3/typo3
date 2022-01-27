@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Exception;
 /**
  * An exception thrown if ExtensionConfiguration->get() is called with
  * a path that does not exist within the extension configuration.
- *
- * @internal
  */
 class ExtensionConfigurationPathDoesNotExistException extends Exception
 {

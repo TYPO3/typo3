@@ -74,10 +74,10 @@ class ExtensionConfiguration
      * - Extensions should typically not get configuration of a different extension.
      *
      * @param string $extension Extension name
-     * @param string $path Configuration path - eg. "featureCategory/coolThingIsEnabled"
+     * @param string $path Configuration path - e.g. "featureCategory/coolThingIsEnabled"
      * @return mixed The value. Can be a sub array or a single value.
-     * @throws ExtensionConfigurationExtensionNotConfiguredException If ext configuration does no exist
-     * @throws ExtensionConfigurationPathDoesNotExistException If a requested extension path does not exist
+     * @throws ExtensionConfigurationExtensionNotConfiguredException If the extension configuration does not exist
+     * @throws ExtensionConfigurationPathDoesNotExistException If a requested path in the extension configuration does not exist
      */
     public function get(string $extension, string $path = '')
     {
