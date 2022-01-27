@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Tests\Functional\EventListener;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -45,7 +45,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(3, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcher::class)->dispatch(
+        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),
@@ -66,7 +66,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(0, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcher::class)->dispatch(
+        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),
@@ -84,7 +84,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(3, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcher::class)->dispatch(
+        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),

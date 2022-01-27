@@ -232,7 +232,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function __construct(DriverInterface $driver, array $storageRecord, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->storageRecord = $storageRecord;
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         if (is_array($storageRecord['configuration'] ?? null)) {
             $this->configuration = $storageRecord['configuration'];
         } elseif (!empty($storageRecord['configuration'] ?? '')) {

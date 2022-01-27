@@ -221,3 +221,7 @@ parameters:
       message: "#^Unsafe usage of new static\\(\\)\\.$#"
       count: 14
       path: typo3/sysext/extbase/Classes/Mvc/Request.php
+    -
+      message: "#^Cannot unset offset 'parameter\\.' on array\\('parameter' => mixed\\).$#"
+      count: 1
+      path: typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php

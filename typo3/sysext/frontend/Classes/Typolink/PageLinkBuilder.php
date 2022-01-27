@@ -82,7 +82,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         }
 
         $event = new ModifyPageLinkConfigurationEvent($conf, $linkDetails, $page, $queryParameters, $fragment);
-        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         $conf = $event->getConfiguration();
         $page = $event->getPage();
         $queryParameters = $event->getQueryParameters();

@@ -492,7 +492,7 @@ abstract class AbstractMenuContentObject
             $this->getTypoScriptFrontendController()->getContext(),
             $this->getTypoScriptFrontendController()->page
         );
-        $event = GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch($event);
+        $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
         return $event->getFilteredMenuItems();
     }
 

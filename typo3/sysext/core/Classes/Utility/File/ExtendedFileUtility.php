@@ -281,7 +281,7 @@ class ExtendedFileUtility extends BasicFileUtility
                                 break;
                         }
 
-                        GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch(
+                        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
                             new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], (string)$this->existingFilesConflictMode)
                         );
                     }

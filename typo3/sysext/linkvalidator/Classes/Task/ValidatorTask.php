@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Task;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -413,7 +413,7 @@ class ValidatorTask extends AbstractTask
 
         // Initialize and call the event
         $validatorTaskEmailEvent = new ModifyValidatorTaskEmailEvent($linkAnalyzerResult, $fluidEmail, $this->modTSconfig);
-        GeneralUtility::makeInstance(EventDispatcher::class)->dispatch($validatorTaskEmailEvent);
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($validatorTaskEmailEvent);
         $fluidEmail->assign('linkAnalyzerResult', $linkAnalyzerResult);
 
         if (!empty($this->modTSconfig['mail.']['subject']) && $fluidEmail->getSubject() === null) {

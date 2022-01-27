@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -42,7 +41,7 @@ class AssetRenderer
     public function __construct(AssetCollector $assetCollector = null, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->assetCollector = $assetCollector ?? GeneralUtility::makeInstance(AssetCollector::class);
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcher::class);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     public function renderInlineJavaScript($priority = false): string

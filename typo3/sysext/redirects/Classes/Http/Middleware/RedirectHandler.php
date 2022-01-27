@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Http\Middleware;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +25,6 @@ use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Redirects\Event\RedirectWasHitEvent;
 use TYPO3\CMS\Redirects\Service\RedirectService;
@@ -38,13 +38,13 @@ use TYPO3\CMS\Redirects\Service\RedirectService;
 class RedirectHandler implements MiddlewareInterface
 {
     protected RedirectService $redirectService;
-    protected EventDispatcher $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
     protected ResponseFactoryInterface $responseFactory;
     protected LoggerInterface $logger;
 
     public function __construct(
         RedirectService $redirectService,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         ResponseFactoryInterface $responseFactory,
         LoggerInterface $logger
     ) {
