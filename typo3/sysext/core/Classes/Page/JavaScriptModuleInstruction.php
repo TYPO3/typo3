@@ -115,7 +115,9 @@ class JavaScriptModuleInstruction implements \JsonSerializable
      */
     public function addFlags(int ...$flags): self
     {
-        $this->flags += array_sum($flags);
+        foreach ($flags as $flag) {
+            $this->flags |= $flag;
+        }
         return $this;
     }
 
