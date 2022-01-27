@@ -355,7 +355,6 @@ class PageRenderer implements SingletonInterface
         }
 
         $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-        $this->javaScriptRenderer = JavaScriptRenderer::create();
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -437,7 +436,9 @@ class PageRenderer implements SingletonInterface
         $this->inlineComments = [];
         $this->headerData = [];
         $this->footerData = [];
-        $this->javaScriptRenderer = JavaScriptRenderer::create();
+        $this->javaScriptRenderer = JavaScriptRenderer::create(
+            $this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/JavaScriptItemHandler.js', true)
+        );
     }
 
     /*****************************************************/
@@ -1512,7 +1513,7 @@ class PageRenderer implements SingletonInterface
             );
             $html .= sprintf(
                 '<script src="%s">/* %s */</script>' . "\n",
-                htmlspecialchars($this->processJsFile('EXT:core/Resources/Public/JavaScript/RequireJSConfigHandler.js')),
+                htmlspecialchars($this->getStreamlinedFileName('EXT:core/Resources/Public/JavaScript/RequireJSConfigHandler.js', true)),
                 (string)json_encode($requireJsConfig, JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG)
             );
         } else {
@@ -1530,8 +1531,9 @@ class PageRenderer implements SingletonInterface
             !empty($requireJsConfig['typo3BaseUrl'])
         ) {
             $html .= '<script src="'
-                . $this->processJsFile(
-                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
+                . $this->getStreamlinedFileName(
+                    'EXT:core/Resources/Public/JavaScript/requirejs-loader.js',
+                    true
                 )
                 . '"></script>' . LF;
         }
