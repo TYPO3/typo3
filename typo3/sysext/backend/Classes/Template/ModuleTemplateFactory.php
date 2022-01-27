@@ -17,32 +17,41 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
- * A factory class taking care of building ModuleTemplate objects.
+ * A factory class creating backend related ModuleTemplate view objects.
  */
-class ModuleTemplateFactory
+final class ModuleTemplateFactory
 {
     public function __construct(
-        protected PageRenderer $pageRenderer,
-        protected IconFactory $iconFactory,
-        protected FlashMessageService $flashMessageService,
-        protected ExtensionConfiguration $extensionConfiguration,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory,
+        protected readonly FlashMessageService $flashMessageService,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly BackendViewFactory $viewFactory,
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly StreamFactoryInterface $streamFactory,
     ) {
     }
 
-    public function create(ServerRequestInterface $request): ModuleTemplate
+    public function create(ServerRequestInterface $request, string $basePackageName = ''): ModuleTemplate
     {
         return new ModuleTemplate(
             $this->pageRenderer,
             $this->iconFactory,
             $this->flashMessageService,
             $this->extensionConfiguration,
+            $this->viewFactory->create($request, $basePackageName),
+            $this->responseFactory,
+            $this->streamFactory,
             $request
         );
     }

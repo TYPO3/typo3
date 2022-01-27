@@ -52,7 +52,8 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         ViewHelperResolver $viewHelperResolver,
         FluidCacheInterface $cache,
         array $templateProcessors,
-        array $expressionNodeTypes
+        array $expressionNodeTypes,
+        TemplatePaths $templatePaths,
     ) {
         // Partially cloning parent::__construct() but with custom implementations.
         $this->setTemplateParser(new TemplateParser());
@@ -62,7 +63,7 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
         $this->setVariableProvider(new StandardVariableProvider());
         $this->setTemplateProcessors($templateProcessors);
         $this->setExpressionNodeTypes($expressionNodeTypes);
-        $this->setTemplatePaths(GeneralUtility::makeInstance(TemplatePaths::class));
+        $this->setTemplatePaths($templatePaths);
         $this->setViewHelperResolver($viewHelperResolver);
         $this->setCache($cache);
     }

@@ -416,16 +416,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
 
 		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Template/ModuleTemplate.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\ModuleTemplate\\:\\:getView\\(\\) should return TYPO3\\\\CMS\\\\Fluid\\\\View\\\\StandaloneView but returns TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Template/ModuleTemplate.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Tree/FileStorageTreeProvider.php
@@ -2219,6 +2209,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:calculateWithParentheses\\(\\) should return int but returns string\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Utility/MathUtility.php
+
+		-
+			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/View/FluidViewAdapter.php
 
 		-
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, int given\\.$#"

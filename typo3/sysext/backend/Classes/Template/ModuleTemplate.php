@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,11 +17,13 @@
 
 namespace TYPO3\CMS\Backend\Template;
 
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -29,128 +33,49 @@ use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ResponsableViewInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
  * the doc header and other related parts.
  */
-class ModuleTemplate
+final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 {
     use PageRendererBackendSetupTrait;
 
-    /**
-     * DocHeaderComponent
-     *
-     * @var DocHeaderComponent
-     */
-    protected $docHeaderComponent;
+    protected bool $uiBlock = false;
 
-    /**
-     * @var bool
-     */
-    protected $uiBlock = false;
+    protected string $moduleId = '';
+    protected string $moduleName = '';
+    protected string $moduleClass = '';
+    protected string $title = '';
+    protected string $bodyTag = '<body>';
+    protected string $formTag = '';
 
-    /**
-     * TemplateRootPath
-     *
-     * @var string[]
-     */
-    protected $templateRootPaths = ['EXT:backend/Resources/Private/Templates'];
-
-    /**
-     * PartialRootPath
-     *
-     * @var string[]
-     */
-    protected $partialRootPaths = ['EXT:backend/Resources/Private/Partials'];
-
-    /**
-     * LayoutRootPath
-     *
-     * @var string[]
-     */
-    protected $layoutRootPaths = ['EXT:backend/Resources/Private/Layouts'];
-
-    /**
-     * Template name
-     *
-     * @var string
-     */
-    protected $templateFile = 'ModuleTemplate/Module.html';
-
-    /**
-     * Fluid Standalone View
-     *
-     * @var ViewInterface
-     */
-    protected $view;
-
-    /**
-     * Content String
-     *
-     * @var string
-     */
-    protected $content = '';
-
-    /**
-     * Module ID
-     *
-     * @var string
-     */
-    protected $moduleId = '';
-
-    /**
-     * Module Name
-     *
-     * @var string
-     */
-    protected $moduleName = '';
-
-    /**
-     * Module Class
-     *
-     * @var string
-     */
-    protected $moduleClass = '';
-
-    /**
-     * Title Tag
-     *
-     * @var string
-     */
-    protected $title = '';
-
-    /**
-     * Body Tag
-     *
-     * @var string
-     */
-    protected $bodyTag = '<body>';
-
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
     protected FlashMessageQueue $flashMessageQueue;
+    protected DocHeaderComponent $docHeaderComponent;
 
     /**
-     * Init PageRenderer and property objects.
+     * @todo: mark deprecated together with other legacy handling.
+     */
+    protected ?StandaloneView $legacyView = null;
+
+    /**
+     * Init PageRenderer and properties.
      */
     public function __construct(
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        FlashMessageService $flashMessageService,
-        ExtensionConfiguration $extensionConfiguration,
-        ServerRequestInterface $request = null,
-        ViewInterface $view = null
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory,
+        protected readonly FlashMessageService $flashMessageService,
+        protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly ViewInterface $view,
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly StreamFactoryInterface $streamFactory,
+        protected readonly ServerRequestInterface $request,
     ) {
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        // @todo: Make $request argument non-optional in v12.
-        $request = $request ?? $GLOBALS['TYPO3_REQUEST'];
-
         $currentRoute = $request->getAttribute('route');
         if ($currentRoute instanceof Route) {
             if ($currentRoute->hasOption('module') && $currentRoute->getOption('module')) {
@@ -162,77 +87,88 @@ class ModuleTemplate
                 $this->setModuleName($currentRoute->getOption('_identifier'));
             }
         }
-        if ($view === null) {
-            $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-            $this->view->setPartialRootPaths($this->partialRootPaths);
-            $this->view->setTemplateRootPaths($this->templateRootPaths);
-            $this->view->setLayoutRootPaths($this->layoutRootPaths);
-            $this->view->setTemplate($this->templateFile);
-        } else {
-            $this->view = $view;
-        }
+        $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
         $this->setUpBasicPageRendererForBackend($pageRenderer, $extensionConfiguration, $request, $this->getLanguageService());
-        $this->loadJavaScripts();
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextHelp.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DocumentHeader.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
     }
 
     /**
-     * Returns the current body tag
-     *
-     * @return string
+     * Add a variable to the view data collection.
      */
-    public function getBodyTag()
+    public function assign(string $key, mixed $value): self
     {
-        return $this->bodyTag;
+        $this->view->assign($key, $value);
+        return $this;
     }
 
     /**
-     * Sets the body tag
-     *
-     * @param string $bodyTag
-     * @return self
+     * Add multiple variables to the view data collection.
      */
-    public function setBodyTag($bodyTag): self
+    public function assignMultiple(array $values): self
+    {
+        $this->view->assignMultiple($values);
+        return $this;
+    }
+
+    /**
+     * Render the module.
+     */
+    public function render(string $templateFileName = ''): string
+    {
+        $this->assignMultiple([
+            'docHeader' => $this->docHeaderComponent->docHeaderContent(),
+            'moduleId' => $this->moduleId,
+            'moduleName' => $this->moduleName,
+            'moduleClass' => $this->moduleClass,
+            'uiBlock' => $this->uiBlock,
+            'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
+            'formTag' => $this->formTag,
+        ]);
+        $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render($templateFileName));
+        $this->pageRenderer->setTitle($this->title);
+        $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
+        if (!empty($updateSignalDetails['html'])) {
+            $this->pageRenderer->addHeaderData(implode("\n", $updateSignalDetails['html']));
+        }
+        // @deprecated will be removed in TYPO3 v13.0
+        if (!empty($updateSignalDetails['script'])) {
+            $this->pageRenderer->addJsFooterInlineCode('updateSignals', implode("\n", $updateSignalDetails['script']));
+        }
+        return $this->pageRenderer->render();
+    }
+
+    /**
+     * Render the module and create an HTML 200 response from it. This is a
+     * lazy shortcut so controllers don't need to take care of this in the backend.
+     */
+    public function renderResponse(string $templateFileName = ''): ResponseInterface
+    {
+        return $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/html; charset=utf-8')
+            ->withBody($this->streamFactory->createStream($this->render($templateFileName)));
+    }
+
+    /**
+     * Set to something like '<body id="foo">' when a special body tag is needed.
+     */
+    public function setBodyTag(string $bodyTag): self
     {
         $this->bodyTag = $bodyTag;
         return $this;
     }
 
     /**
-     * Gets the standalone view.
-     *
-     * @return StandaloneView
-     * @internal Candidate to deprecate when View refactoring finished.
+     * Title string of the module: "My module · Edit view"
      */
-    public function getView()
+    public function setTitle(string $title, string $context = ''): self
     {
-        return $this->view;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content Content of the module
-     * @return self
-     */
-    public function setContent($content): self
-    {
-        $this->view->assign('content', $content);
-        return $this;
-    }
-
-    /**
-     * Set title tag
-     *
-     * @param string $title
-     * @param string $context
-     * @return self
-     */
-    public function setTitle($title, $context = ''): self
-    {
-        $titleComponents = [
-            $title,
-        ];
+        $titleComponents = [$title];
         if ($context !== '') {
             $titleComponents[] = $context;
         }
@@ -241,126 +177,148 @@ class ModuleTemplate
     }
 
     /**
-     * Loads all necessary Javascript Files
+     * Get the DocHeader. Can be used in controllers to add custom
+     * buttons / menus / ... to the doc header.
      */
-    protected function loadJavaScripts()
-    {
-        $this->pageRenderer->loadJavaScriptModule('bootstrap');
-
-        if ($this->getBackendUserAuthentication() && !empty($this->getBackendUserAuthentication()->user)) {
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextHelp.js');
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DocumentHeader.js');
-        }
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
-    }
-
-    /**
-     * Get the DocHeader
-     *
-     * @return DocHeaderComponent
-     */
-    public function getDocHeaderComponent()
+    public function getDocHeaderComponent(): DocHeaderComponent
     {
         return $this->docHeaderComponent;
     }
 
     /**
-     * Returns the fully rendered view
-     *
-     * @return string
+     * A "<form>" tag encapsulating the entire module, including doc-header.
      */
-    public function renderContent()
+    public function setForm(string $formTag = ''): self
     {
-        $this->pageRenderer->setTitle($this->title);
-
-        $this->view->assign('docHeader', $this->docHeaderComponent->docHeaderContent());
-        if ($this->moduleId) {
-            $this->view->assign('moduleId', $this->moduleId);
-        }
-        if ($this->moduleName) {
-            $this->view->assign('moduleName', $this->moduleName);
-        }
-        if ($this->moduleClass) {
-            $this->view->assign('moduleClass', $this->moduleClass);
-        }
-        $this->view->assign('uiBlock', $this->uiBlock);
-        $this->view->assign('flashMessageQueueIdentifier', $this->flashMessageQueue->getIdentifier());
-        $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render());
-
-        $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
-        if (!empty($updateSignalDetails['html'])) {
-            $this->pageRenderer->addHeaderData(
-                implode("\n", $updateSignalDetails['html'])
-            );
-        }
-        // @deprecated will be removed in TYPO3 v13.0
-        if (!empty($updateSignalDetails['script'])) {
-            $this->pageRenderer->addJsFooterInlineCode(
-                'updateSignals',
-                implode("\n", $updateSignalDetails['script'])
-            );
-        }
-        return $this->pageRenderer->render();
-    }
-
-    /**
-     * Set form tag
-     *
-     * @param string $formTag Form tag to add
-     * @return self
-     */
-    public function setForm($formTag = ''): self
-    {
-        $this->view->assign('formTag', $formTag);
+        $this->formTag = $formTag;
         return $this;
     }
 
-    /**
-     * Sets the ModuleId
-     *
-     * @param string $moduleId ID of the module
-     * @return self
-     */
-    public function setModuleId($moduleId): self
+    public function setModuleId(string $moduleId): self
     {
         $this->moduleId = $moduleId;
         $this->registerModuleMenu($moduleId);
         return $this;
     }
 
-    /**
-     * Sets the ModuleName
-     *
-     * @param string $moduleName Name of the module
-     * @return self
-     */
-    public function setModuleName($moduleName): self
+    public function setModuleName(string $moduleName): self
     {
         $this->moduleName = $moduleName;
         return $this;
     }
 
-    /**
-     * Sets the ModuleClass
-     *
-     * @param string $moduleClass Class of the module
-     * @return self
-     */
-    public function setModuleClass($moduleClass): self
+    public function setModuleClass(string $moduleClass): self
     {
         $this->moduleClass = $moduleClass;
         return $this;
     }
 
     /**
-     * Generates the Menu for things like Web->Info
-     *
-     * @param string $moduleMenuIdentifier
-     * @return self
+     * Creates a message object and adds it to the FlashMessageQueue.
+     * These messages are automatically rendered when the view is rendered.
      */
-    public function registerModuleMenu($moduleMenuIdentifier): self
+    public function addFlashMessage(string $messageBody, string $messageTitle = '', int $severity = AbstractMessage::OK, bool $storeInSession = true): self
+    {
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageBody, $messageTitle, $severity, $storeInSession);
+        $this->flashMessageQueue->enqueue($flashMessage);
+        return $this;
+    }
+
+    /**
+     * @todo: Document scenarios where this is useful.
+     */
+    public function setFlashMessageQueue(FlashMessageQueue $flashMessageQueue): self
+    {
+        $this->flashMessageQueue = $flashMessageQueue;
+        return $this;
+    }
+
+    /**
+     * UI block is a spinner shown during browser rendering phase of the module,
+     * automatically removed when rendering finished. This is done by default,
+     * but the UI block can be turned off when needed for whatever reason.
+     */
+    public function setUiBlock(bool $uiBlock): self
+    {
+        $this->uiBlock = $uiBlock;
+        return $this;
+    }
+
+    /**
+     * @internal Candidate to deprecate when View refactoring finished.
+     * @todo: deprecate. legacy.
+     */
+    public function getView(): StandaloneView
+    {
+        $this->initLegacyView();
+        return $this->legacyView;
+    }
+
+    /**
+     * @todo: deprecate. legacy.
+     */
+    public function setContent(string $content): self
+    {
+        $this->initLegacyView();
+        $this->legacyView->assign('content', $content);
+        return $this;
+    }
+
+    /**
+     * @todo deprecate. legacy.
+     */
+    public function renderContent(): string
+    {
+        $this->initLegacyView();
+        $this->legacyView->assignMultiple([
+            'docHeader' => $this->docHeaderComponent->docHeaderContent(),
+            'moduleId' => $this->moduleId,
+            'moduleName' => $this->moduleName,
+            'moduleClass' => $this->moduleClass,
+            'formTag' => $this->formTag,
+            'uiBlock' => $this->uiBlock,
+            'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
+        ]);
+        $this->pageRenderer->addBodyContent($this->bodyTag . $this->legacyView->render('ModuleTemplate/Module.html'));
+        $this->pageRenderer->setTitle($this->title);
+        $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
+        if (!empty($updateSignalDetails['html'])) {
+            $this->pageRenderer->addHeaderData(implode("\n", $updateSignalDetails['html']));
+        }
+        // @deprecated will be removed in TYPO3 v13.0
+        if (!empty($updateSignalDetails['script'])) {
+            $this->pageRenderer->addJsFooterInlineCode('updateSignals', implode("\n", $updateSignalDetails['script']));
+        }
+        return $this->pageRenderer->render();
+    }
+
+    /**
+     * @todo: remove along with legacy view handling.
+     */
+    protected function initLegacyView(): void
+    {
+        if ($this->legacyView === null) {
+            $this->legacyView = GeneralUtility::makeInstance(StandaloneView::class);
+            $this->legacyView->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+            $this->legacyView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+            $this->legacyView->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        }
+    }
+
+    /**
+     * Returns the current body tag.
+     * @todo: deprecate. ModuleTemplate should be a data sink only, here.
+     */
+    public function getBodyTag(): string
+    {
+        return $this->bodyTag;
+    }
+
+    /**
+     * Generates the Menu for things like Web->Info
+     * @todo: deprecate. unused.
+     */
+    public function registerModuleMenu(string $moduleMenuIdentifier): self
     {
         if (isset($GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier])) {
             $menuEntries =
@@ -393,8 +351,9 @@ class ModuleTemplate
      *                                 If you don't need this feature, e.g. for wizards like import/export you can
      *                                 disable this behaviour.
      * @return string
+     * @todo: render unused and deprecate.
      */
-    public function getDynamicTabMenu(array $menuItems, $domId, $defaultTabIndex = 1, $collapsible = false, $wrapContent = true, $storeLastActiveTab = true)
+    public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
@@ -418,74 +377,19 @@ class ModuleTemplate
      * @param bool $inlineEdit Whether the header should be editable (e.g. page title)
      * @return string HTML content
      * @internal
+     * @todo: render unused and remove.
      */
-    public function header(string $text, bool $inlineEdit = true)
+    public function header(string $text, bool $inlineEdit = true): string
     {
-        return '
-
-	<!-- MAIN Header in page top -->
-	<h1 ' . ($inlineEdit ? 'class="t3js-title-inlineedit"' : '') . '>' . htmlspecialchars($text) . '</h1>
-';
+        return '<h1 ' . ($inlineEdit ? 'class="t3js-title-inlineedit"' : '') . '>' . htmlspecialchars($text) . '</h1>';
     }
 
     /**
-     * Creates a Message object and adds it to the FlashMessageQueue.
-     *
-     * @param string $messageBody The message
-     * @param string $messageTitle Optional message title
-     * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
-     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default)
-     * @throws \InvalidArgumentException if the message body is no string
-     * @return self
-     */
-    public function addFlashMessage($messageBody, $messageTitle = '', $severity = AbstractMessage::OK, $storeInSession = true): self
-    {
-        if (!is_string($messageBody)) {
-            throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1446483133);
-        }
-        /* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $messageBody,
-            $messageTitle,
-            $severity,
-            $storeInSession
-        );
-        $this->flashMessageQueue->enqueue($flashMessage);
-        return $this;
-    }
-
-    /**
-     * @param FlashMessageQueue $flashMessageQueue
-     * @return self
-     */
-    public function setFlashMessageQueue($flashMessageQueue): self
-    {
-        $this->flashMessageQueue = $flashMessageQueue;
-        return $this;
-    }
-
-    /**
-     * @return bool
+     * @todo: deprecate. ModuleTemplate should be a data sink only, here.
      */
     public function isUiBlock(): bool
     {
         return $this->uiBlock;
-    }
-
-    /**
-     * @param bool $uiBlock
-     * @return self
-     */
-    public function setUiBlock(bool $uiBlock): self
-    {
-        $this->uiBlock = $uiBlock;
-        return $this;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

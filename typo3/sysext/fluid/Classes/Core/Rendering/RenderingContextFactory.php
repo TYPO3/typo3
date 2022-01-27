@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolverFactoryInterface;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\Core\Cache\FluidCacheInterface;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\EscapingModifierTemplateProcessor;
 use TYPO3Fluid\Fluid\Core\Parser\TemplateProcessor\NamespaceDetectionTemplateProcessor;
@@ -62,7 +63,7 @@ final class RenderingContextFactory
         $this->viewHelperResolverFactory = $viewHelperResolverFactory;
     }
 
-    public function create(): RenderingContext
+    public function create(array $templatePathsArray = []): RenderingContext
     {
         /** @var TemplateProcessorInterface[] $processors */
         $processors = [];
@@ -87,11 +88,23 @@ final class RenderingContextFactory
             throw new \RuntimeException('Cache fluid_template must implement FluidCacheInterface', 1623148753);
         }
 
+        $templatePaths = new TemplatePaths();
+        if (!empty($templatePathsArray['templateRootPaths'])) {
+            $templatePaths->setTemplateRootPaths($templatePathsArray['templateRootPaths']);
+        }
+        if (!empty($templatePathsArray['layoutRootPaths'])) {
+            $templatePaths->setLayoutRootPaths($templatePathsArray['layoutRootPaths']);
+        }
+        if (!empty($templatePathsArray['partialRootPaths'])) {
+            $templatePaths->setPartialRootPaths($templatePathsArray['partialRootPaths']);
+        }
+
         return new RenderingContext(
             $this->viewHelperResolverFactory->create(),
             $cache,
             $processors,
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes']
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['expressionNodeTypes'],
+            $templatePaths
         );
     }
 }

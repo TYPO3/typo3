@@ -3,10 +3,6 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:comment>
-    @deprecated This is the legacy module template HTML to-be removed in v13 when ModuleTemplate::class does not use it anymore.
-</f:comment>
-
 <div class="module {moduleClass}" data-module-id="{moduleId}" data-module-name="{moduleName}">
     <f:if condition="{formTag}">
         <f:then>
@@ -23,7 +19,9 @@
             </div>
         </f:if>
         <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
-        <f:format.raw>{content}</f:format.raw>
+
+        <f:render section="Content" arguments="{_all}" optional="true" />
+
     </div>
     <f:if condition="{formTag}">
         <f:then>
