@@ -195,7 +195,7 @@ class FileList
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen'] ?? 1);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->eventDispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
         $this->iLimit = MathUtility::forceIntegerInRange(
             $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->iLimit,

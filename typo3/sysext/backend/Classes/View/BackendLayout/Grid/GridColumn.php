@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\View\BackendLayout\Grid;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageLayoutView;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,7 +78,7 @@ class GridColumn extends AbstractGridObject
      */
     protected $definition;
 
-    private EventDispatcher $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(PageLayoutContext $context, array $definition)
     {
@@ -89,7 +89,7 @@ class GridColumn extends AbstractGridObject
         $this->icon = $definition['icon'] ?? $this->icon;
         $this->colSpan = (int)($definition['colspan'] ?? $this->colSpan);
         $this->rowSpan = (int)($definition['rowspan'] ?? $this->rowSpan);
-        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**

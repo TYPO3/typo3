@@ -83,7 +83,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
     public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
         $this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);

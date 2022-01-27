@@ -298,7 +298,7 @@ class ExtendedFileUtility extends BasicFileUtility
                             $hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
                         }
 
-                        GeneralUtility::getContainer()->get(EventDispatcherInterface::class)->dispatch(
+                        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
                             new AfterFileCommandProcessedEvent([$action => $cmdArr], $result[$action][$key], (string)$this->existingFilesConflictMode)
                         );
                     }

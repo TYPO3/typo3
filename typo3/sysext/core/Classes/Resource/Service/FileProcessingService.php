@@ -62,7 +62,7 @@ class FileProcessingService
     {
         $this->storage = $storage;
         $this->driver = $driver;
-        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**

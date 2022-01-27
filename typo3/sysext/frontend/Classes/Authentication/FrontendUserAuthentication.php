@@ -289,7 +289,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $groupDataArr = GeneralUtility::makeInstance(GroupResolver::class)->resolveGroupsForUser($this->user, $this->usergroup_table);
         }
         // Fire an event for any kind of user (even when no specific user is here, using hideLogin feature)
-        $dispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $dispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $event = $dispatcher->dispatch(new ModifyResolvedFrontendGroupsEvent($this, $groupDataArr, $request ?? $GLOBALS['TYPO3_REQUEST'] ?? null));
         $groupDataArr = $event->getGroups();
 

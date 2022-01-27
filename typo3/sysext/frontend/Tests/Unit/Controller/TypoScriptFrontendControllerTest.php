@@ -21,6 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -134,7 +135,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
          * @see \TYPO3\CMS\Core\Page\PageRenderer::renderJavaScriptAndCss
          */
         GeneralUtility::setSingletonInstance(
-            EventDispatcher::class,
+            EventDispatcherInterface::class,
             new EventDispatcher(
                 new ListenerProvider($this->createMock(ContainerInterface::class))
             )
