@@ -43,50 +43,31 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
- * Backend module user and user group administration controller
+ * Backend module user and user group administration controller.
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
 class BackendUserController extends ActionController
 {
     protected ?ModuleData $moduleData = null;
-    protected ?ModuleTemplate $moduleTemplate = null;
-    protected BackendUserRepository $backendUserRepository;
-    protected BackendUserGroupRepository $backendUserGroupRepository;
-    protected BackendUserSessionRepository $backendUserSessionRepository;
-    protected UserInformationService $userInformationService;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected BackendUriBuilder $backendUriBuilder;
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
+    protected ModuleTemplate $moduleTemplate;
 
     public function __construct(
-        BackendUserRepository $backendUserRepository,
-        BackendUserGroupRepository $backendUserGroupRepository,
-        BackendUserSessionRepository $backendUserSessionRepository,
-        UserInformationService $userInformationService,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        BackendUriBuilder $backendUriBuilder,
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer
+        protected readonly BackendUserRepository $backendUserRepository,
+        protected readonly BackendUserGroupRepository $backendUserGroupRepository,
+        protected readonly BackendUserSessionRepository $backendUserSessionRepository,
+        protected readonly UserInformationService $userInformationService,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly BackendUriBuilder $backendUriBuilder,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer
     ) {
-        $this->backendUserRepository = $backendUserRepository;
-        $this->backendUserGroupRepository = $backendUserGroupRepository;
-        $this->backendUserSessionRepository = $backendUserSessionRepository;
-        $this->userInformationService = $userInformationService;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->backendUriBuilder = $backendUriBuilder;
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
     }
 
     /**
      * Override the default action if found in user uc
-     *
-     * @param RequestInterface $request
-     * @return ResponseInterface
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
@@ -116,21 +97,19 @@ class BackendUserController extends ActionController
     public function initializeAction(): void
     {
         $this->moduleData = ModuleData::fromUc((array)($this->getBackendUser()->getModuleData('tx_beuser')));
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-beuser');
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
     }
 
     /**
-     * Assign default variables to view
-     * @param ViewInterface $view
+     * Assign default variables to ModuleTemplate view
      */
-    protected function initializeView(ViewInterface $view): void
+    protected function initializeView(): void
     {
-        $view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
-
         // Load requireJS modules
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
@@ -166,7 +145,7 @@ class BackendUserController extends ActionController
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
             'demand' => $demand,
             'paginator' => $paginator,
@@ -196,8 +175,7 @@ class BackendUserController extends ActionController
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SwitchUser');
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/Index');
     }
 
     /**
@@ -216,7 +194,7 @@ class BackendUserController extends ActionController
 
         $currentSessionId = $this->backendUserSessionRepository->getPersistedSessionIdentifier($this->getBackendUser());
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'onlineUsersAndSessions' => $onlineUsersAndSessions,
             'currentSessionId' => $currentSessionId,
         ]);
@@ -229,14 +207,13 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('onlineUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/Online');
     }
 
     public function showAction(int $uid = 0): ResponseInterface
     {
         $data = $this->userInformationService->getUserInformation($uid);
-        $this->view->assign('data', $data);
+        $this->moduleTemplate->assign('data', $data);
 
         $this->addMainMenu('show');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -267,8 +244,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('backendUser', 'beuser') . ': ' . (string)$data['user']['username']);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/Show');
     }
 
     /**
@@ -288,7 +264,7 @@ class BackendUserController extends ActionController
             }
         }
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'compareUserList' => $compareData,
             'onlineBackendUsers' => $this->getOnlineBackendUsers(),
         ]);
@@ -306,8 +282,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('compareUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/Compare');
     }
 
     /**
@@ -409,7 +384,7 @@ class BackendUserController extends ActionController
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
         $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
-        $this->view->assignMultiple(
+        $this->moduleTemplate->assignMultiple(
             [
                 'paginator' => $paginator,
                 'pagination' => $pagination,
@@ -437,8 +412,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('backendUserGroupsMenu', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/Groups');
     }
 
     public function compareGroupsAction(): ResponseInterface
@@ -455,7 +429,7 @@ class BackendUserController extends ActionController
             return $this->redirect('groups');
         }
 
-        $this->view->assign('compareGroupList', $compareData);
+        $this->moduleTemplate->assign('compareGroupList', $compareData);
 
         $this->addMainMenu('compareGroups');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
@@ -470,8 +444,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('compareBackendUsersGroups', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('BackendUser/CompareGroups');
     }
 
     /**

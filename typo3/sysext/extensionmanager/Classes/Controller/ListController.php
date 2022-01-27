@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,7 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -40,64 +42,35 @@ use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 
 /**
- * Controller for extension listings (TER or local extensions)
+ * Controller for extension listings: local extensions, TER, various detail views.
+ * indexAction() is the default list overview Main module -> Extensions.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ListController extends AbstractModuleController
+class ListController extends AbstractController
 {
-    protected PageRenderer $pageRenderer;
-    protected ExtensionRepository $extensionRepository;
-    protected ListUtility $listUtility;
-    protected DependencyUtility $dependencyUtility;
-    protected IconFactory $iconFactory;
-
     public function __construct(
-        PageRenderer $pageRenderer,
-        ExtensionRepository $extensionRepository,
-        ListUtility $listUtility,
-        DependencyUtility $dependencyUtility,
-        IconFactory $iconFactory
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ExtensionRepository $extensionRepository,
+        protected readonly ListUtility $listUtility,
+        protected readonly DependencyUtility $dependencyUtility,
+        protected readonly IconFactory $iconFactory
     ) {
-        $this->pageRenderer = $pageRenderer;
-        $this->extensionRepository = $extensionRepository;
-        $this->listUtility = $listUtility;
-        $this->dependencyUtility = $dependencyUtility;
-        $this->iconFactory = $iconFactory;
     }
 
     /**
-     * Add the needed JavaScript files for all actions
+     * Add general things needed for all actions.
      */
-    public function initializeAction()
+    protected function initializeAction(): void
     {
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
         $this->settings['offlineMode'] = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'offlineMode');
     }
 
     /**
-     * Adds an information about composer mode
+     * List extensions present in the system.
      */
-    protected function addComposerModeNotification()
-    {
-        if (Environment::isComposerMode()) {
-            $this->addFlashMessage(
-                LocalizationUtility::translate(
-                    'composerStrictMode.message',
-                    'extensionmanager'
-                ) ?? '',
-                LocalizationUtility::translate(
-                    'composerMode.title',
-                    'extensionmanager'
-                ) ?? '',
-                FlashMessage::INFO
-            );
-        }
-    }
-
-    /**
-     * Shows list of extensions present in the system
-     */
-    public function indexAction(): ResponseInterface
+    protected function indexAction(): ResponseInterface
     {
         if ($this->request->hasArgument('filter') && is_string($this->request->getArgument('filter'))) {
             $filter = $this->request->getArgument('filter');
@@ -105,7 +78,6 @@ class ListController extends AbstractModuleController
         } else {
             $filter = $this->getBackendUserFilter();
         }
-
         $this->addComposerModeNotification();
         $isComposerMode = Environment::isComposerMode();
         $availableAndInstalledExtensions = $this->enrichExtensionsWithViewInformation(
@@ -113,31 +85,24 @@ class ListController extends AbstractModuleController
             $isComposerMode
         );
         ksort($availableAndInstalledExtensions);
-        $this->view->assignMultiple(
-            [
-                'extensions' => $availableAndInstalledExtensions,
-                'isComposerMode' => $isComposerMode,
-                'typeFilter' => $filter ?: 'All',
-                // Sort extension by update state. This is only automatically set for non-composer
-                // mode and only takes effect if at least one extension can be updated.
-                'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode,
-            ]
-        );
-        $this->handleTriggerArguments();
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $view = $this->initializeModuleTemplate($this->request);
+        $view = $this->registerDocHeaderButtons($view);
+        $view->assignMultiple([
+            'extensions' => $availableAndInstalledExtensions,
+            'isComposerMode' => $isComposerMode,
+            'typeFilter' => $filter ?: 'All',
+            // Sort extension by update state. This is only automatically set for non-composer
+            // mode and only takes effect if at least one extension can be updated.
+            'sortByUpdate' => $this->extensionsWithUpdate($availableAndInstalledExtensions) !== [] && !$isComposerMode,
+        ]);
+        $this->handleTriggerArguments($view);
+        return $view->renderResponse('List/Index');
     }
 
     /**
-     * Shows a list of unresolved dependency errors with the possibility to bypass the dependency check
-     *
-     * @param string $extensionKey
-     * @return ResponseInterface
+     * List unresolved dependency errors with the possibility to bypass the dependency check.
      */
-    public function unresolvedDependenciesAction($extensionKey): ResponseInterface
+    protected function unresolvedDependenciesAction(string $extensionKey): ResponseInterface
     {
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
@@ -151,23 +116,18 @@ class ListController extends AbstractModuleController
             throw new ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1402421007);
         }
         $this->dependencyUtility->checkDependencies($extension);
-        $this->view->assign('extension', $extension);
-        $this->view->assign('unresolvedDependencies', $this->dependencyUtility->getDependencyErrors());
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $view = $this->initializeModuleTemplate($this->request);
+        $view->assignMultiple([
+            'extension' => $extension,
+            'unresolvedDependencies' => $this->dependencyUtility->getDependencyErrors(),
+        ]);
+        return $view->renderResponse('List/UnresolvedDependencies');
     }
 
     /**
-     * Shows extensions from TER
-     * Either all extensions or depending on a search param
-     *
-     * @param string $search
-     * @param int $currentPage
-     * @return ResponseInterface
+     * Show extensions from TER, either all extensions or depending on a search param.
      */
-    public function terAction($search = '', int $currentPage = 1): ResponseInterface
+    protected function terAction(string $search = '', int $currentPage = 1): ResponseInterface
     {
         $this->addComposerModeNotification();
         $search = trim($search);
@@ -183,7 +143,9 @@ class ListController extends AbstractModuleController
         }
         $pagination = new SimplePagination($paginator);
         $availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($this->listUtility->getAvailableExtensions());
-        $this->view->assignMultiple([
+        $view = $this->initializeModuleTemplate($this->request);
+        $view = $this->registerDocHeaderButtons($view);
+        $view->assignMultiple([
             'extensions' => $extensions,
             'paginator' => $paginator,
             'pagination' => $pagination,
@@ -192,24 +154,18 @@ class ListController extends AbstractModuleController
             'actionName' => 'ter',
             'tableId' => $tableId,
         ]);
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('List/Ter');
     }
 
     /**
-     * Action for listing all possible distributions
-     *
-     * @param bool $showUnsuitableDistributions
-     * @return ResponseInterface
+     * List available distributions.
      */
-    public function distributionsAction($showUnsuitableDistributions = false): ResponseInterface
+    protected function distributionsAction(bool $showUnsuitableDistributions = false): ResponseInterface
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
         $this->addComposerModeNotification();
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
+        $view = $this->initializeModuleTemplate($this->request);
         if ($importExportInstalled) {
             try {
                 $remoteRegistry = GeneralUtility::makeInstance(RemoteRegistry::class);
@@ -217,59 +173,44 @@ class ListController extends AbstractModuleController
                     $remote->getAvailablePackages();
                 }
             } catch (ExtensionManagerException $e) {
-                $this->addFlashMessage($e->getMessage(), $e->getCode(), FlashMessage::ERROR);
+                $this->addFlashMessage($e->getMessage(), $e->getCode(), AbstractMessage::ERROR);
             }
-
             $officialDistributions = $this->extensionRepository->findAllOfficialDistributions($showUnsuitableDistributions);
             $communityDistributions = $this->extensionRepository->findAllCommunityDistributions($showUnsuitableDistributions);
-
-            $this->view->assign('officialDistributions', $officialDistributions);
-            $this->view->assign('communityDistributions', $communityDistributions);
+            $view->assign('officialDistributions', $officialDistributions);
+            $view->assign('communityDistributions', $communityDistributions);
         }
-        $this->view->assign('enableDistributionsView', $importExportInstalled);
-        $this->view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $view->assign('enableDistributionsView', $importExportInstalled);
+        $view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
+        return $view->renderResponse('List/Distributions');
     }
 
     /**
-     * Shows all versions of a specific extension
-     *
-     * @param string $extensionKey
-     * @return ResponseInterface
+     * Show all versions of a specific extension.
      */
-    public function showAllVersionsAction($extensionKey): ResponseInterface
+    protected function showAllVersionsAction(string $extensionKey): ResponseInterface
     {
         $currentVersion = $this->extensionRepository->findOneByCurrentVersionByExtensionKey($extensionKey);
         $extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
-
-        $this->view->assignMultiple(
-            [
-                'extensionKey' => $extensionKey,
-                'currentVersion' => $currentVersion,
-                'extensions' => $extensions,
-            ]
-        );
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $view = $this->initializeModuleTemplate($this->request);
+        $view = $this->registerDocHeaderButtons($view);
+        $view->assignMultiple([
+            'extensionKey' => $extensionKey,
+            'currentVersion' => $currentVersion,
+            'extensions' => $extensions,
+        ]);
+        return $view->renderResponse('List/ShowAllVersions');
     }
 
     /**
-     * Registers the Icons into the docheader
+     * Registers doc-header icons and drop-down.
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): ModuleTemplate
+    protected function registerDocHeaderButtons(ModuleTemplate $view): ModuleTemplate
     {
         if (Environment::isComposerMode()) {
-            return $moduleTemplate;
+            return $view;
         }
-
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if ($this->actionMethodName === 'showAllVersionsAction') {
             $action = $this->request->hasArgument('returnTo') ? $this->request->getArgument('returnTo') : 'ter';
             $uri = $this->uriBuilder->reset()->uriFor(in_array($action, ['index', 'ter'], true) ? $action : 'ter', [], 'List');
@@ -288,8 +229,27 @@ class ListController extends AbstractModuleController
             ->setClasses($classes)
             ->setIcon($icon);
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
+        return $view;
+    }
 
-        return $moduleTemplate;
+    /**
+     * Add an information about composer mode.
+     */
+    protected function addComposerModeNotification(): void
+    {
+        if (Environment::isComposerMode()) {
+            $this->addFlashMessage(
+                LocalizationUtility::translate(
+                    'composerStrictMode.message',
+                    'extensionmanager'
+                ) ?? '',
+                LocalizationUtility::translate(
+                    'composerMode.title',
+                    'extensionmanager'
+                ) ?? '',
+                AbstractMessage::INFO
+            );
+        }
     }
 
     protected function getBackendUserFilter(): string
@@ -305,7 +265,6 @@ class ListController extends AbstractModuleController
     protected function enrichExtensionsWithViewInformation(array $availableAndInstalledExtensions, bool $isComposerMode): array
     {
         $isOfflineMode = (bool)($this->settings['offlineMode'] ?? false);
-
         foreach ($availableAndInstalledExtensions as &$extension) {
             $extension['updateIsBlocked'] = $isComposerMode || $isOfflineMode || ($extension['state'] ?? '') === 'excludeFromUpdates';
             $extension['sortUpdate'] = 2;
@@ -313,7 +272,6 @@ class ListController extends AbstractModuleController
                 $extension['sortUpdate'] = (int)$extension['updateIsBlocked'];
             }
         }
-
         return $availableAndInstalledExtensions;
     }
 

@@ -661,11 +661,6 @@ parameters:
 			path: ../../typo3/sysext/beuser/Classes/Controller/BackendUserController.php
 
 		-
-			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/beuser/Classes/Controller/PermissionController.php
-
-		-
 			message: "#^Offset 0 does not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserGroupRepository.php
@@ -3659,21 +3654,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\UrlValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\UrlValidator\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/UrlValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getArgument\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Controller/AbstractModuleController.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Controller/AbstractModuleController.php
-
-		-
-			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getControllerName\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Controller/AbstractModuleController.php
 
 		-
 			message: "#^Offset 'message' does not exist on string\\.$#"

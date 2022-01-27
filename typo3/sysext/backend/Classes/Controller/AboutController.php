@@ -21,12 +21,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Module 'about' shows some standard information for TYPO3 CMS:
@@ -36,26 +34,15 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class AboutController
 {
-    protected Typo3Version $version;
-    protected Typo3Information $typo3Information;
-    protected ModuleLoader $moduleLoader;
-    protected PackageManager $packageManager;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        Typo3Version $version,
-        Typo3Information $typo3Information,
-        ModuleLoader $moduleLoader,
-        PackageManager $packageManager,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly Typo3Version $version,
+        protected readonly Typo3Information $typo3Information,
+        protected readonly ModuleLoader $moduleLoader,
+        protected readonly PackageManager $packageManager,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->version = $version;
-        $this->typo3Information = $typo3Information;
-        $this->moduleLoader = $moduleLoader;
         $this->moduleLoader->observeWorkspaces = true;
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $this->packageManager = $packageManager;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -71,10 +58,7 @@ class AboutController
                 $hookObj->displayWarningMessages_postProcess($warnings);
             }
         }
-
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $view->assignMultiple([
             'copyrightYear' => $this->typo3Information->getCopyrightYear(),
             'donationUrl' => $this->typo3Information::URL_DONATE,
@@ -84,9 +68,7 @@ class AboutController
             'warnings' => $warnings,
             'modules' => $this->getModulesData(),
         ]);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setContent($view->render('About/Index'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('About/Index');
     }
 
     /**

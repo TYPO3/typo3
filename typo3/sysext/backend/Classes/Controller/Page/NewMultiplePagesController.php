@@ -26,14 +26,12 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * "Create multiple pages" controller
@@ -43,8 +41,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
 class NewMultiplePagesController
 {
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
@@ -53,7 +51,7 @@ class NewMultiplePagesController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $backendUser = $this->getBackendUser();
         $pageUid = (int)$request->getQueryParams()['id'];
 
@@ -61,13 +59,12 @@ class NewMultiplePagesController
         $pageRecord = BackendUtility::readPageAccess($pageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         if (!is_array($pageRecord)) {
             // User has no permission on parent page, should not happen, just render an empty page
-            $moduleTemplate->setContent('');
-            return new HtmlResponse($moduleTemplate->renderContent());
+            return $view->renderResponse('Dummy/Index');
         }
 
         // Doc header handling
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('pages_new')
             ->setFieldName('pages_new');
@@ -81,16 +78,14 @@ class NewMultiplePagesController
             ->setHref('#');
         $buttonBar->addButton($cshButton)->addButton($viewButton);
 
-        // Main view setup
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-
         $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));
         $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions->createPagePermissionIsGranted();
 
-        $view->assign('canCreateNew', $canCreateNew);
-        $view->assign('maxTitleLength', $backendUser->uc['titleLen'] ?? 20);
-        $view->assign('pageUid', $pageUid);
+        $view->assignMultiple([
+            'canCreateNew' => $canCreateNew,
+            'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
+            'pageUid' => $pageUid,
+        ]);
 
         if ($canCreateNew) {
             $newPagesData = (array)($request->getParsedBody()['pages'] ?? []);
@@ -117,8 +112,7 @@ class NewMultiplePagesController
             $view->assign('hasNewPagesData', $hasNewPagesData);
         }
 
-        $moduleTemplate->setContent($view->render('Page/NewPages'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Page/NewPages');
     }
 
     /**

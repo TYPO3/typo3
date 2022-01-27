@@ -15,7 +15,11 @@
 
 namespace TYPO3\CMS\Extensionmanager\Controller;
 
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -27,13 +31,17 @@ class AbstractController extends ActionController
     const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
     const TRIGGER_RefreshTopbar = 'refreshTopbar';
 
-    /**
-     * @var array
-     */
-    protected $triggerArguments = [
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
+    protected array $triggerArguments = [
         self::TRIGGER_RefreshModuleMenu,
         self::TRIGGER_RefreshTopbar,
     ];
+
+    public function injectModuleTemplateFactory(ModuleTemplateFactory $moduleTemplateFactory)
+    {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
 
     /**
      * Translation shortcut
@@ -52,7 +60,7 @@ class AbstractController extends ActionController
      * widget if an extension with backend modules has been enabled
      * or disabled.
      */
-    protected function handleTriggerArguments()
+    protected function handleTriggerArguments(ModuleTemplate $view)
     {
         $triggers = [];
         foreach ($this->triggerArguments as $triggerArgument) {
@@ -60,6 +68,81 @@ class AbstractController extends ActionController
                 $triggers[$triggerArgument] = $this->request->getArgument($triggerArgument);
             }
         }
-        $this->view->assign('triggers', $triggers);
+        $view->assign('triggers', $triggers);
+    }
+
+    /**
+     * Generates the action menu. Helper used in action that render backend moduleTemplate
+     * views and not just redirect or response download things.
+     */
+    protected function initializeModuleTemplate(Request $request): ModuleTemplate
+    {
+        $menuItems = [
+            'installedExtensions' => [
+                'controller' => 'List',
+                'action' => 'index',
+                'label' => $this->translate('installedExtensions'),
+            ],
+            'extensionComposerStatus' => [
+                'controller' => 'ExtensionComposerStatus',
+                'action' => 'list',
+                'label' => $this->translate('extensionComposerStatus'),
+            ],
+        ];
+
+        if (!(bool)($this->settings['offlineMode'] ?? false) && !Environment::isComposerMode()) {
+            $menuItems['getExtensions'] = [
+                'controller' => 'List',
+                'action' => 'ter',
+                'label' => $this->translate('getExtensions'),
+            ];
+            $menuItems['distributions'] = [
+                'controller' => 'List',
+                'action' => 'distributions',
+                'label' => $this->translate('distributions'),
+            ];
+
+            if ($this->actionMethodName === 'showAllVersionsAction') {
+                $menuItems['showAllVersions'] = [
+                    'controller' => 'List',
+                    'action' => 'showAllVersions',
+                    'label' => $this->translate('showAllVersions') . ' ' . $request->getArgument('extensionKey'),
+                ];
+            }
+        }
+
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-extensionmanager');
+        // Assign some view vars we always need.
+        $view->assignMultiple([
+            'extensionName' => $request->getControllerExtensionName(),
+            'controllerName' => $request->getControllerName(),
+            'actionName' => $request->getControllerActionName(),
+        ]);
+        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('ExtensionManagerModuleMenu');
+
+        foreach ($menuItems as  $menuItemConfig) {
+            if ($request->getControllerName() === $menuItemConfig['controller']) {
+                $isActive = $request->getControllerActionName() === $menuItemConfig['action'] ? true : false;
+            } else {
+                $isActive = false;
+            }
+            $menuItem = $menu->makeMenuItem()
+                ->setTitle($menuItemConfig['label'])
+                ->setHref($this->uriBuilder->reset()->uriFor($menuItemConfig['action'], [], $menuItemConfig['controller']))
+                ->setActive($isActive);
+            $menu->addMenuItem($menuItem);
+            if ($isActive) {
+                $view->setTitle(
+                    $this->translate('LLL:EXT:extensionmanager/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
+                    $menuItemConfig['label']
+                );
+            }
+        }
+
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $view->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        return $view;
     }
 }

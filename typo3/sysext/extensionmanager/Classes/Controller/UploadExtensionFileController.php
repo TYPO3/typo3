@@ -27,15 +27,13 @@ use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 
 /**
- * Controller for handling upload of a .zip file which is then placed as an extension
+ * Controller for handling upload of a .zip file which is then placed as an extension.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class UploadExtensionFileController extends AbstractController
 {
     use BlockSerializationTrait;
-
-    protected FileHandlingUtility $fileHandlingUtility;
-    protected ExtensionManagementService $managementService;
 
     /**
      * @var string
@@ -48,11 +46,9 @@ class UploadExtensionFileController extends AbstractController
     protected $removeFromOriginalPath = false;
 
     public function __construct(
-        FileHandlingUtility $fileHandlingUtility,
-        ExtensionManagementService $managementService
+        protected readonly FileHandlingUtility $fileHandlingUtility,
+        protected readonly ExtensionManagementService $managementService
     ) {
-        $this->fileHandlingUtility = $fileHandlingUtility;
-        $this->managementService = $managementService;
     }
 
     /**

@@ -24,12 +24,10 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 
@@ -64,18 +62,15 @@ class ManagementController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-redirects');
         $demand = Demand::fromRequest($request);
 
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:mlang_tabs_tab')
         );
 
-        $this->registerDocHeaderButtons($moduleTemplate, $request->getAttribute('normalizedParams')->getRequestUri());
+        $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri());
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:redirects/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:redirects/Resources/Private/Partials']);
         $view->assignMultiple([
             'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
             'hosts' => $this->redirectRepository->findHostsOfRedirects(),
@@ -85,8 +80,7 @@ class ManagementController
             'pagination' => $this->preparePagination($demand),
         ]);
 
-        $moduleTemplate->setContent($view->render('Management/Overview'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Management/Overview');
     }
 
     /**
@@ -121,10 +115,10 @@ class ManagementController
     /**
      * Create document header buttons
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate, string $requestUri): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, string $requestUri): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Create new
         $newRecordButton = $buttonBar->makeLinkButton()

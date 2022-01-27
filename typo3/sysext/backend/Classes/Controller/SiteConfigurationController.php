@@ -53,7 +53,6 @@ use TYPO3\CMS\Core\SysLog\Type;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Backend controller: The "Site management" -> "Sites" module
@@ -66,21 +65,12 @@ class SiteConfigurationController
 {
     protected const ALLOWED_ACTIONS = ['overview', 'edit', 'save', 'delete'];
 
-    protected SiteFinder $siteFinder;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        SiteFinder $siteFinder,
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly SiteFinder $siteFinder,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->siteFinder = $siteFinder;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -117,20 +107,17 @@ class SiteConfigurationController
             }
         }
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->configureOverViewDocHeader($moduleTemplate, $request->getAttribute('normalizedParams')->getRequestUri());
-        $moduleTemplate->setTitle(
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $this->configureOverViewDocHeader($view, $request->getAttribute('normalizedParams')->getRequestUri());
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
         );
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->assignMultiple([
             'pages' => $pages,
             'unassignedSites' => $unassignedSites,
             'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
         ]);
-        $moduleTemplate->setContent($view->render('SiteConfiguration/Overview'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('SiteConfiguration/Overview');
     }
 
     /**
@@ -186,8 +173,7 @@ class SiteConfigurationController
         $formResultCompiler->mergeResult($formResult);
         $formResultCompiler->addCssFiles();
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $view->assignMultiple([
             // Always add rootPageId as additional field to have a reference for new records
             'rootPageId' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),
@@ -196,14 +182,12 @@ class SiteConfigurationController
             'formEngineFooter' => $formResultCompiler->printNeededJSFunctions(),
         ]);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->configureEditViewDocHeader($moduleTemplate);
-        $moduleTemplate->setTitle(
+        $this->configureEditViewDocHeader($view);
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab'),
             $siteIdentifier ?? ''
         );
-        $moduleTemplate->setContent($view->render('SiteConfiguration/Edit'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('SiteConfiguration/Edit');
     }
 
     /**
@@ -664,9 +648,9 @@ class SiteConfigurationController
     /**
      * Create document header buttons of "edit" action
      */
-    protected function configureEditViewDocHeader(ModuleTemplate $moduleTemplate): void
+    protected function configureEditViewDocHeader(ModuleTemplate $view): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
         $closeButton = $buttonBar->makeLinkButton()
             ->setHref('#')
@@ -688,9 +672,9 @@ class SiteConfigurationController
     /**
      * Create document header buttons of "overview" action
      */
-    protected function configureOverViewDocHeader(ModuleTemplate $moduleTemplate, string $requestUri): void
+    protected function configureOverViewDocHeader(ModuleTemplate $view, string $requestUri): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $reloadButton = $buttonBar->makeLinkButton()
             ->setHref($requestUri)
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))

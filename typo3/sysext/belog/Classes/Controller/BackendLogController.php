@@ -81,7 +81,7 @@ class BackendLogController extends ActionController
      * @param string $operation
      * @return ResponseInterface
      */
-    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Default', string $operation = ''): ResponseInterface
+    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Module', string $operation = ''): ResponseInterface
     {
         if ($operation === 'reset-filters') {
             $constraint = new Constraint();
@@ -95,7 +95,8 @@ class BackendLogController extends ActionController
         $this->forceWorkspaceSelectionIfInWorkspace($constraint);
         $logEntries = $this->logEntryRepository->findByConstraint($constraint);
         $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
-        $this->view->assignMultiple([
+        $assigns = [
+            'settings' => $this->settings,
             'pageId' => $pageId,
             'layout' => $layout,
             'groupedLogEntries' => $groupedLogEntries,
@@ -108,14 +109,17 @@ class BackendLogController extends ActionController
             'channel' => $constraint->getChannel(),
             'levels' => $this->logEntryRepository->getUsedLevels(),
             'level' => $constraint->getLevel(),
-        ]);
-
-        if ($layout === 'Default') {
-            $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-            $moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
-            $moduleTemplate->setContent($this->view->render());
-            return $this->htmlResponse($moduleTemplate->renderContent());
+        ];
+        if ($layout === 'Module') {
+            // Main module 'Log' module renders a ModuleTemplate view
+            $view = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-belog');
+            $view->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
+            $view->assignMultiple($assigns);
+            return $view->renderResponse('BackendLog/List');
         }
+        // Render default extbase view for log module in 'info'
+        $this->view->assignMultiple($assigns);
+
         return $this->htmlResponse();
     }
 

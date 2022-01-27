@@ -1,188 +1,199 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'TYPO3/CMS/Backend/ContextMenu.js',
-        1: 'TYPO3/CMS/Backend/Modal.js'
-    }"
-/>
 
-<h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.title" /></h1>
+<f:layout name="Module" />
 
-<f:if condition="{pages}">
-    <f:then>
-        <f:if condition="{duplicatedEntryPoints}">
-            <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="1">
-                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints.listing" />
-                <ul>
-                <f:for each="{duplicatedEntryPoints}" key="item" as="schemes">
-                    <li>
-                        <strong>{item}</strong>
-                        <f:if condition="{schemes}">
-                            <ul>
-                                <f:for each="{schemes}" key="schema" as="count">
-                                    <li>
-                                        {schema} ({count})
-                                    </li>
-                                </f:for>
-                            </ul>
-                        </f:if>
-                    </li>
-                </f:for>
-                </ul>
-            </f:be.infobox>
-        </f:if>
-        <div class="table-fit">
-            <table class="table table-striped table-hover table-sm">
-                <thead>
-                <tr>
-                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.site" /></th>
-                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.configuration" /></th>
-                    <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.baseUrl" /></th>
-                    <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <f:for each="{pages}" as="page">
-                    <tr>
-                        <td class="nowrap">
-                            <f:for each="{page.rootline}" as="rootLinePage" iteration="i">
-                                <span style="width: 1px; height: 1px; display:inline-block; margin-left: {rootLinePage.margin}px"></span>
-                                <f:if condition="{rootLinePage.uid} == {page.uid}">
-                                    <f:then>
-                                        <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{rootLinePage.uid}">
-                                            <core:iconForRecord table="pages" row="{rootLinePage}" />
-                                        </a>
-                                        <f:if condition="{page.siteIdentifier}">
-                                            <f:then>
-                                                <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
-                                                    {rootLinePage.title} [ID: {page.uid}]
-                                                </f:be.link>
-                                            </f:then>
-                                            <f:else>
-                                                {rootLinePage.title} [ID: {page.uid}]
-                                            </f:else>
-                                        </f:if>
-                                    </f:then>
-                                    <f:else>
-                                        <core:iconForRecord table="pages" row="{rootLinePage}" />
-                                        {rootLinePage.title}<br>
-                                    </f:else>
-                                </f:if>
-                            </f:for>
-                        </td>
-                        <td>
-                            <f:if condition="{page.siteIdentifier}">
-                                <f:then>
-                                    <code>{page.siteIdentifier}</code>
-                                </f:then>
-                                <f:else>
-                                    <div>
-                                        <f:be.link route="site_configuration" parameters="{action: 'edit', pageUid: page.uid}" title="Create configuration" class="btn btn-primary">
-                                            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.addSiteConfiguration" />
-                                        </f:be.link>
-                                    </div>
-                                </f:else>
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Backend/ContextMenu.js',
+            1: 'TYPO3/CMS/Backend/Modal.js'
+        }"
+    />
+
+    <em:be.trigger triggers="{triggers}" />
+
+    <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.title" /></h1>
+
+    <f:if condition="{pages}">
+        <f:then>
+            <f:if condition="{duplicatedEntryPoints}">
+                <f:be.infobox title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints')}" state="1">
+                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.duplicatedEntryPoints.listing" />
+                    <ul>
+                    <f:for each="{duplicatedEntryPoints}" key="item" as="schemes">
+                        <li>
+                            <strong>{item}</strong>
+                            <f:if condition="{schemes}">
+                                <ul>
+                                    <f:for each="{schemes}" key="schema" as="count">
+                                        <li>
+                                            {schema} ({count})
+                                        </li>
+                                    </f:for>
+                                </ul>
                             </f:if>
-                        </td>
-                        <td>
-                            <f:if condition="{page.siteConfiguration}">
-                                <table class="table table-striped table-no-borders">
-                                    <tr>
-                                        <th>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.language')}</th>
-                                        <th>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.fullUrlPrefix')}</th>
-                                    </tr>
-                                <f:for each="{page.siteConfiguration.allLanguages}" as="siteLanguage">
-                                    <tr>
-                                        <td>
-                                            <f:if condition="{siteLanguage.enabled}">
+                        </li>
+                    </f:for>
+                    </ul>
+                </f:be.infobox>
+            </f:if>
+            <div class="table-fit">
+                <table class="table table-striped table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.site" /></th>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.configuration" /></th>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.baseUrl" /></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <f:for each="{pages}" as="page">
+                        <tr>
+                            <td class="nowrap">
+                                <f:for each="{page.rootline}" as="rootLinePage" iteration="i">
+                                    <span style="width: 1px; height: 1px; display:inline-block; margin-left: {rootLinePage.margin}px"></span>
+                                    <f:if condition="{rootLinePage.uid} == {page.uid}">
+                                        <f:then>
+                                            <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{rootLinePage.uid}">
+                                                <core:iconForRecord table="pages" row="{rootLinePage}" />
+                                            </a>
+                                            <f:if condition="{page.siteIdentifier}">
                                                 <f:then>
-                                                    <core:icon identifier="{siteLanguage.flagIdentifier}" /> {siteLanguage.title}
+                                                    <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                                                        {rootLinePage.title} [ID: {page.uid}]
+                                                    </f:be.link>
                                                 </f:then>
                                                 <f:else>
-                                                    <core:icon identifier="{siteLanguage.flagIdentifier}" overlay="overlay-hidden" /> <span class="text-muted">{siteLanguage.title} (<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disabled">disabled</f:translate>)</span>
+                                                    {rootLinePage.title} [ID: {page.uid}]
                                                 </f:else>
                                             </f:if>
-                                        </td>
-                                        <td><a href="{siteLanguage.base}" target="_blank">{siteLanguage.base}</a></td>
-                                    </tr>
+                                        </f:then>
+                                        <f:else>
+                                            <core:iconForRecord table="pages" row="{rootLinePage}" />
+                                            {rootLinePage.title}<br>
+                                        </f:else>
+                                    </f:if>
                                 </f:for>
-                                </table>
-                            </f:if>
-                        </td>
-                        <td class="col-control nowrap">
-                            <div class="btn-group">
+                            </td>
+                            <td>
                                 <f:if condition="{page.siteIdentifier}">
-                                    <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
-                                        <core:icon identifier="actions-open" />
-                                    </f:be.link>
-                                    <f:be.link
-                                        route="site_configuration"
-                                        parameters="{action: 'delete', site:page.siteIdentifier}"
-                                        class="btn btn-default t3js-modal-trigger"
-                                        title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
-                                        data="{
-                                            severity: 'error',
-                                            title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
-                                            button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
-                                        }"
-                                    >
-                                        <core:icon identifier="actions-delete" />
-                                    </f:be.link>
+                                    <f:then>
+                                        <code>{page.siteIdentifier}</code>
+                                    </f:then>
+                                    <f:else>
+                                        <div>
+                                            <f:be.link route="site_configuration" parameters="{action: 'edit', pageUid: page.uid}" title="Create configuration" class="btn btn-primary">
+                                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.addSiteConfiguration" />
+                                            </f:be.link>
+                                        </div>
+                                    </f:else>
                                 </f:if>
-                            </div>
-                        </td>
-                    </tr>
-                </f:for>
-                </tbody>
-            </table>
-        </div>
-    </f:then>
-    <f:else>
-        <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.title')}">
-            <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.message"/></p>
-        </f:be.infobox>
-    </f:else>
-</f:if>
+                            </td>
+                            <td>
+                                <f:if condition="{page.siteConfiguration}">
+                                    <table class="table table-striped table-no-borders">
+                                        <tr>
+                                            <th>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.language')}</th>
+                                            <th>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.fullUrlPrefix')}</th>
+                                        </tr>
+                                    <f:for each="{page.siteConfiguration.allLanguages}" as="siteLanguage">
+                                        <tr>
+                                            <td>
+                                                <f:if condition="{siteLanguage.enabled}">
+                                                    <f:then>
+                                                        <core:icon identifier="{siteLanguage.flagIdentifier}" /> {siteLanguage.title}
+                                                    </f:then>
+                                                    <f:else>
+                                                        <core:icon identifier="{siteLanguage.flagIdentifier}" overlay="overlay-hidden" /> <span class="text-muted">{siteLanguage.title} (<f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:disabled">disabled</f:translate>)</span>
+                                                    </f:else>
+                                                </f:if>
+                                            </td>
+                                            <td><a href="{siteLanguage.base}" target="_blank">{siteLanguage.base}</a></td>
+                                        </tr>
+                                    </f:for>
+                                    </table>
+                                </f:if>
+                            </td>
+                            <td class="col-control nowrap">
+                                <div class="btn-group">
+                                    <f:if condition="{page.siteIdentifier}">
+                                        <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
+                                            <core:icon identifier="actions-open" />
+                                        </f:be.link>
+                                        <f:be.link
+                                            route="site_configuration"
+                                            parameters="{action: 'delete', site:page.siteIdentifier}"
+                                            class="btn btn-default t3js-modal-trigger"
+                                            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
+                                            data="{
+                                                severity: 'error',
+                                                title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
+                                                button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
+                                            }"
+                                        >
+                                            <core:icon identifier="actions-delete" />
+                                        </f:be.link>
+                                    </f:if>
+                                </div>
+                            </td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </div>
+        </f:then>
+        <f:else>
+            <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.title')}">
+                <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.noPages.message"/></p>
+            </f:be.infobox>
+        </f:else>
+    </f:if>
 
-<f:if condition="{unassignedSites}">
-    <h3>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.unassignedSites.title')}</h3>
-    <p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.unassignedSites.description')}</p>
+    <f:if condition="{unassignedSites}">
+        <h3>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.unassignedSites.title')}</h3>
+        <p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.unassignedSites.description')}</p>
 
-    <table class="table table-striped table-hover table-sm">
-        <thead>
-        <tr>
-            <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.configuration" /></th>
-            <th>&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <f:for each="{unassignedSites}" as="unassignedSite">
+        <table class="table table-striped table-hover table-sm">
+            <thead>
             <tr>
-                <td>	<code>{unassignedSite.identifier}</code></td>
-                <td class="col-control nowrap">
-                    <div class="btn-group">
-                            <f:be.link
-                                route="site_configuration"
-                                parameters="{action: 'delete', site:unassignedSite.identifier}"
-                                class="btn btn-default t3js-modal-trigger"
-                                title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
-                                data="{
-                                    severity: 'error',
-                                    title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
-                                    button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
-                                }"
-                            >
-                                <core:icon identifier="actions-delete" />
-                            </f:be.link>
-                    </div>
-                </td>
+                <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.configuration" /></th>
+                <th>&nbsp;</th>
             </tr>
-        </f:for>
-        </tbody>
-    </table>
-</f:if>
+            </thead>
+            <tbody>
+            <f:for each="{unassignedSites}" as="unassignedSite">
+                <tr>
+                    <td>	<code>{unassignedSite.identifier}</code></td>
+                    <td class="col-control nowrap">
+                        <div class="btn-group">
+                                <f:be.link
+                                    route="site_configuration"
+                                    parameters="{action: 'delete', site:unassignedSite.identifier}"
+                                    class="btn btn-default t3js-modal-trigger"
+                                    title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
+                                    data="{
+                                        severity: 'error',
+                                        title: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration\')}',
+                                        button-ok-text: '{f:translate(key:\'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete\')}'
+                                    }"
+                                >
+                                    <core:icon identifier="actions-delete" />
+                                </f:be.link>
+                        </div>
+                    </td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:if>
+
+</f:section>
+
 </html>

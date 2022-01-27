@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -37,7 +36,6 @@ use TYPO3\CMS\Core\SysLog\Action\Database as SystemLogDatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
@@ -57,11 +55,11 @@ class SchedulerModuleController
     protected Action $currentAction;
 
     public function __construct(
-        protected Scheduler $scheduler,
-        protected IconFactory $iconFactory,
-        protected UriBuilder $uriBuilder,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected Context $context,
+        protected readonly Scheduler $scheduler,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly Context $context,
     ) {
     }
 
@@ -79,7 +77,12 @@ class SchedulerModuleController
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-scheduler');
+        $view->assign('dateFormat', [
+            'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
+            'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
+        ]);
 
         // See if action from main module drop down is given, else fetch from user data and update if needed.
         $backendUser = $this->getBackendUser();
@@ -98,54 +101,54 @@ class SchedulerModuleController
 
         // 'info' and 'check' submodules have no other action and can be rendered directly.
         if ($requestedSubModule === 'info') {
-            return $this->renderInfoView($moduleTemplate);
+            return $this->renderInfoView($view);
         }
         if ($requestedSubModule === 'check') {
-            return $this->renderCheckView($moduleTemplate);
+            return $this->renderCheckView($view);
         }
 
         // Simple actions from list view.
         if (!empty($parsedBody['action']['toggleHidden'])) {
-            $this->toggleDisabledFlag($moduleTemplate, (int)$parsedBody['action']['toggleHidden']);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->toggleDisabledFlag($view, (int)$parsedBody['action']['toggleHidden']);
+            return $this->renderListTasksView($view);
         }
         if (!empty($queryParams['action']['delete'])) {
             // @todo: This should be POST only, but modals on button type="submit" don't trigger and buttons in doc header can't do that, either.
             //        Compare with 'toggleHidden' solution above which has no modal.
-            $this->deleteTask($moduleTemplate, (int)$queryParams['action']['delete']);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->deleteTask($view, (int)$queryParams['action']['delete']);
+            return $this->renderListTasksView($view);
         }
         if (!empty($queryParams['action']['stop'])) {
             // @todo: Same as above.
-            $this->stopTask($moduleTemplate, (int)$queryParams['action']['stop']);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->stopTask($view, (int)$queryParams['action']['stop']);
+            return $this->renderListTasksView($view);
         }
         if (!empty($parsedBody['execute'])) {
-            $this->executeTasks($moduleTemplate, (string)$parsedBody['execute']);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->executeTasks($view, (string)$parsedBody['execute']);
+            return $this->renderListTasksView($view);
         }
         if (!empty($parsedBody['scheduleCron'])) {
-            $this->scheduleCrons($moduleTemplate, (string)$parsedBody['scheduleCron']);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->scheduleCrons($view, (string)$parsedBody['scheduleCron']);
+            return $this->renderListTasksView($view);
         }
 
         if (($parsedBody['action'] ?? '') === Action::ADD
             && in_array($parsedBody['CMD'], ['save', 'saveclose', 'savenew'], true)
         ) {
             // Received data for adding a new task - validate, persist, render requested 'next' action.
-            $isTaskDataValid = $this->isSubmittedTaskDataValid($moduleTemplate, $request, true);
+            $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, true);
             if (!$isTaskDataValid) {
-                return $this->renderAddTaskFormView($moduleTemplate, $request);
+                return $this->renderAddTaskFormView($view, $request);
             }
-            $newTaskUid = $this->createTask($moduleTemplate, $request);
+            $newTaskUid = $this->createTask($view, $request);
             if ($parsedBody['CMD'] === 'savenew') {
-                return $this->renderAddTaskFormView($moduleTemplate, $request);
+                return $this->renderAddTaskFormView($view, $request);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
-                return $this->renderListTasksView($moduleTemplate, $request);
+                return $this->renderListTasksView($view);
             }
             if ($parsedBody['CMD'] === 'save') {
-                return $this->renderEditTaskFormView($moduleTemplate, $request, $newTaskUid);
+                return $this->renderEditTaskFormView($view, $request, $newTaskUid);
             }
         }
 
@@ -153,32 +156,32 @@ class SchedulerModuleController
             && in_array($parsedBody['CMD'], ['save', 'saveclose', 'savenew'], true)
         ) {
             // Received data for updating existing task - validate, persist, render requested 'next' action.
-            $isTaskDataValid = $this->isSubmittedTaskDataValid($moduleTemplate, $request, false);
+            $isTaskDataValid = $this->isSubmittedTaskDataValid($view, $request, false);
             if (!$isTaskDataValid) {
-                return $this->renderEditTaskFormView($moduleTemplate, $request);
+                return $this->renderEditTaskFormView($view, $request);
             }
-            $this->updateTask($moduleTemplate, $request);
+            $this->updateTask($view, $request);
             if ($parsedBody['CMD'] === 'savenew') {
-                return $this->renderAddTaskFormView($moduleTemplate, $request);
+                return $this->renderAddTaskFormView($view, $request);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
-                return $this->renderListTasksView($moduleTemplate, $request);
+                return $this->renderListTasksView($view);
             }
             if ($parsedBody['CMD'] === 'save') {
-                return $this->renderEditTaskFormView($moduleTemplate, $request);
+                return $this->renderEditTaskFormView($view, $request);
             }
         }
 
         // Add new task form / edit existing task form.
         if (($queryParams['action'] ?? '') === Action::ADD) {
-            return $this->renderAddTaskFormView($moduleTemplate, $request);
+            return $this->renderAddTaskFormView($view, $request);
         }
         if (($queryParams['action'] ?? '') === Action::EDIT) {
-            return $this->renderEditTaskFormView($moduleTemplate, $request);
+            return $this->renderEditTaskFormView($view, $request);
         }
 
         // Render list if no other action kicked in.
-        return $this->renderListTasksView($moduleTemplate, $request);
+        return $this->renderListTasksView($view);
     }
 
     /**
@@ -192,7 +195,7 @@ class SchedulerModuleController
     /**
      * Render 'Setup Check' view.
      */
-    protected function renderCheckView(ModuleTemplate $moduleTemplate): ResponseInterface
+    protected function renderCheckView(ModuleTemplate $view): ResponseInterface
     {
         $languageService = $this->getLanguageService();
 
@@ -236,7 +239,6 @@ class SchedulerModuleController
             }
         }
 
-        $view = $this->initializeView();
         $view->assignMultiple([
             'composerMode' => $composerMode,
             'script' => $script,
@@ -246,40 +248,37 @@ class SchedulerModuleController
             'isExecutableMessageLabel' => $isExecutableMessageLabel,
             'isExecutableSeverity' => $isExecutableSeverity,
         ]);
-        $moduleTemplate->setContent($view->render('CheckScreen'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')
         );
-        $this->addDocHeaderModuleDropDown($moduleTemplate, 'check');
-        $this->addDocHeaderHelpButton($moduleTemplate);
-        $this->addDocHeaderShortcutButton($moduleTemplate, 'check', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $this->addDocHeaderModuleDropDown($view, 'check');
+        $this->addDocHeaderHelpButton($view);
+        $this->addDocHeaderShortcutButton($view, 'check', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'));
+        return $view->renderResponse('CheckScreen');
     }
 
     /**
      * Render information about available task classes.
      */
-    protected function renderInfoView(ModuleTemplate $moduleTemplate): ResponseInterface
+    protected function renderInfoView(ModuleTemplate $view): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $view = $this->initializeView();
         $view->assign('registeredClasses', $this->getRegisteredClasses());
-        $moduleTemplate->setContent($view->render('InfoScreen'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info')
         );
-        $this->addDocHeaderModuleDropDown($moduleTemplate, 'info');
-        $this->addDocHeaderHelpButton($moduleTemplate);
-        $this->addDocHeaderShortcutButton($moduleTemplate, 'info', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $this->addDocHeaderModuleDropDown($view, 'info');
+        $this->addDocHeaderHelpButton($view);
+        $this->addDocHeaderShortcutButton($view, 'info', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'));
+        return $view->renderResponse('InfoScreen');
     }
 
     /**
      * Set a task to deleted.
      */
-    protected function deleteTask(ModuleTemplate $moduleTemplate, int $taskUid): void
+    protected function deleteTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
@@ -291,7 +290,7 @@ class SchedulerModuleController
             $task = $this->scheduler->fetchTask($taskUid);
             if ($task->isExecutionRunning()) {
                 // If the task is currently running, it may not be deleted
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.canNotDeleteRunningTask'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.canNotDeleteRunningTask'), AbstractMessage::ERROR);
             } else {
                 if ($this->scheduler->removeTask($task)) {
                     $backendUser->writelog(
@@ -302,22 +301,22 @@ class SchedulerModuleController
                         'Scheduler task "%s" (UID: %s, Class: "%s") was deleted',
                         [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
                     );
-                    $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
+                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
                 } else {
-                    $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'));
+                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'));
                 }
             }
         } catch (\UnexpectedValueException $e) {
             // The task could not be unserialized, simply update the database record setting it to deleted
             $result = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_scheduler_task')->update('tx_scheduler_task', ['deleted' => 1], ['uid' => $taskUid]);
             if ($result) {
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
             } else {
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteError'), AbstractMessage::ERROR);
             }
         } catch (\OutOfBoundsException $e) {
             // The task was not found, for some reason
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
         }
     }
 
@@ -326,7 +325,7 @@ class SchedulerModuleController
      * Note this doesn't actually stop the running script. It just unmark execution.
      * @todo find a way to really kill the running task.
      */
-    protected function stopTask(ModuleTemplate $moduleTemplate, int $taskUid): void
+    protected function stopTask(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if (!$taskUid > 0) {
@@ -339,25 +338,25 @@ class SchedulerModuleController
                 // If the task is indeed currently running, clear marked executions
                 $result = $task->unmarkAllExecutions();
                 if ($result) {
-                    $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopSuccess'));
+                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopSuccess'));
                 } else {
-                    $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopError'), AbstractMessage::ERROR);
+                    $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopError'), AbstractMessage::ERROR);
                 }
             } else {
                 // The task is not running, nothing to unmark
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotStopNonRunningTask'), AbstractMessage::WARNING);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotStopNonRunningTask'), AbstractMessage::WARNING);
             }
         } catch (\OutOfBoundsException $e) {
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
         } catch (\UnexpectedValueException $e) {
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopTaskFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.stopTaskFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
         }
     }
 
     /**
      * Toggle the disabled state of a task and register for next execution if task is of type "single execution".
      */
-    protected function toggleDisabledFlag(ModuleTemplate $moduleTemplate, int $taskUid): void
+    protected function toggleDisabledFlag(ModuleTemplate $view, int $taskUid): void
     {
         $languageService = $this->getLanguageService();
         if (!$taskUid > 0) {
@@ -374,26 +373,26 @@ class SchedulerModuleController
             if ($isTaskDisabled && $isTaskQueuedForExecution) {
                 $task->setDisabled(false);
                 $task->registerSingleExecution($this->context->getAspect('date')->get('timestamp'));
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabledAndQueuedForExecution'), $taskName, $taskUid));
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabledAndQueuedForExecution'), $taskName, $taskUid));
             } elseif ($isTaskDisabled) {
                 $task->setDisabled(false);
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabled'), $taskName, $taskUid));
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabled'), $taskName, $taskUid));
             } else {
                 $task->setDisabled(true);
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskDisabled'), $taskName, $taskUid));
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskDisabled'), $taskName, $taskUid));
             }
             $task->save();
         } catch (\OutOfBoundsException $e) {
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
         } catch (\UnexpectedValueException $e) {
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.toggleDisableFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.toggleDisableFailed'), $taskUid, $e->getMessage()), AbstractMessage::ERROR);
         }
     }
 
     /**
      * Render add task form.
      */
-    protected function renderAddTaskFormView(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->getRegisteredClasses();
@@ -438,7 +437,6 @@ class SchedulerModuleController
             }
         }
 
-        $view = $this->initializeView();
         $view->assignMultiple([
             'currentData' => $currentData,
             'groupedClasses' => $groupedClasses,
@@ -448,23 +446,21 @@ class SchedulerModuleController
             // Adding a group in edit view switches to formEngine. returnUrl is needed to go back to edit view on group record close.
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ]);
-        $moduleTemplate->setContent($view->render('AddTaskForm'));
-
-        $this->addDocHeaderModuleDropDown($moduleTemplate, 'scheduler');
-        $this->addDocHeaderCloseAndSaveButtons($moduleTemplate);
-        $this->addDocHeaderHelpButton($moduleTemplate);
-        $moduleTemplate->setTitle(
+        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $this->addDocHeaderCloseAndSaveButtons($view);
+        $this->addDocHeaderHelpButton($view);
+        $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')
         );
-        $this->addDocHeaderShortcutButton($moduleTemplate, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'), 'add');
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $this->addDocHeaderShortcutButton($view, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'), 'add');
+        return $view->renderResponse('AddTaskForm');
     }
 
     /**
      * Render edit task form.
      */
-    protected function renderEditTaskFormView(ModuleTemplate $moduleTemplate, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
+    protected function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->getRegisteredClasses();
@@ -478,14 +474,14 @@ class SchedulerModuleController
             $taskRecord = $this->scheduler->fetchTaskRecord($taskUid);
         } catch (\OutOfBoundsException $e) {
             // Task not found - removed meanwhile?
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+            return $this->renderListTasksView($view);
         }
 
         if (!empty($taskRecord['serialized_executions'])) {
             // If there's a registered execution, the task should not be edited. May happen if a cron started the task meanwhile.
-            $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask'), AbstractMessage::ERROR);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask'), AbstractMessage::ERROR);
+            return $this->renderListTasksView($view);
         }
 
         /** @var AbstractTask $task */
@@ -493,8 +489,8 @@ class SchedulerModuleController
 
         if (!isset($registeredClasses[get_class($task)]) || !$this->scheduler->isValidTaskObject($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
-            $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), get_class($task)), AbstractMessage::ERROR);
-            return $this->renderListTasksView($moduleTemplate, $request);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), get_class($task)), AbstractMessage::ERROR);
+            return $this->renderListTasksView($view);
         }
 
         $taskExecution = $task->getExecution();
@@ -533,7 +529,6 @@ class SchedulerModuleController
             }
         }
 
-        $view = $this->initializeView();
         $view->assignMultiple([
             'uid' => $taskUid,
             'action' => 'edit',
@@ -544,29 +539,28 @@ class SchedulerModuleController
             // Adding a group in edit view switches to formEngine. returnUrl is needed to go back to edit view on group record close.
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
         ]);
-        $moduleTemplate->setContent($view->render('EditTaskForm'));
-        $this->addDocHeaderModuleDropDown($moduleTemplate, 'scheduler');
-        $this->addDocHeaderCloseAndSaveButtons($moduleTemplate);
-        $this->addDocHeaderHelpButton($moduleTemplate);
-        $moduleTemplate->setTitle(
+        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $this->addDocHeaderCloseAndSaveButtons($view);
+        $this->addDocHeaderHelpButton($view);
+        $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName)
         );
-        $this->addDocHeaderDeleteButton($moduleTemplate, $taskUid);
+        $this->addDocHeaderDeleteButton($view, $taskUid);
         $this->addDocHeaderShortcutButton(
-            $moduleTemplate,
+            $view,
             'scheduler',
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName),
             'edit',
             $taskUid
         );
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('EditTaskForm');
     }
 
     /**
      * Execute a list of tasks.
      */
-    protected function executeTasks(ModuleTemplate $moduleTemplate, string $taskUids): void
+    protected function executeTasks(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -581,15 +575,15 @@ class SchedulerModuleController
                 // Try to execute it and report result
                 $result = $this->scheduler->executeTask($task);
                 if ($result) {
-                    $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executed'), $name));
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executed'), $name));
                 } else {
-                    $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name), AbstractMessage::ERROR);
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.notExecuted'), $name), AbstractMessage::ERROR);
                 }
                 $this->scheduler->recordLastRun('manual');
             } catch (\OutOfBoundsException $e) {
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
             } catch (\Exception $e) {
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
             }
         }
     }
@@ -597,7 +591,7 @@ class SchedulerModuleController
     /**
      * Schedule selected tasks to be executed on next cron run
      */
-    protected function scheduleCrons(ModuleTemplate $moduleTemplate, string $taskUids): void
+    protected function scheduleCrons(ModuleTemplate $view, string $taskUids): void
     {
         $taskUids = GeneralUtility::intExplode(',', $taskUids, true);
         if (empty($taskUids)) {
@@ -612,15 +606,15 @@ class SchedulerModuleController
                 $task->setRunOnNextCronJob(true);
                 if ($task->isDisabled()) {
                     $task->setDisabled(false);
-                    $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabledAndQueuedForExecution'), $name, $uid));
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabledAndQueuedForExecution'), $name, $uid));
                 } else {
-                    $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskQueuedForExecution'), $name, $uid));
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskQueuedForExecution'), $name, $uid));
                 }
                 $task->save();
             } catch (\OutOfBoundsException $e) {
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $uid), AbstractMessage::ERROR);
             } catch (\UnexpectedValueException $e) {
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulingFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.schedulingFailed'), $uid, $e->getMessage()), AbstractMessage::ERROR);
             }
         }
     }
@@ -628,7 +622,7 @@ class SchedulerModuleController
     /**
      * Assemble display of list of scheduled tasks
      */
-    protected function renderListTasksView(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function renderListTasksView(ModuleTemplate $view): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->getRegisteredClasses();
@@ -716,29 +710,27 @@ class SchedulerModuleController
             $taskGroupsWithTasks[(int)$row['task_group']]['tasks'][] = $taskData;
         }
 
-        $view = $this->initializeView();
         $view->assignMultiple([
             'tasks' => $taskGroupsWithTasks,
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'missingClasses' => $missingClasses,
             'missingClassesCollapsed' => (bool)($schedulerModuleData['task-group-missing'] ?? false),
         ]);
-        $moduleTemplate->setContent($view->render('ListTasks'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler')
         );
-        $this->addDocHeaderModuleDropDown($moduleTemplate, 'scheduler');
-        $this->addDocHeaderHelpButton($moduleTemplate);
-        $this->addDocHeaderReloadButton($moduleTemplate);
+        $this->addDocHeaderModuleDropDown($view, 'scheduler');
+        $this->addDocHeaderHelpButton($view);
+        $this->addDocHeaderReloadButton($view);
         if (!empty($registeredClasses)) {
-            $this->addDocHeaderAddButton($moduleTemplate);
+            $this->addDocHeaderAddButton($view);
         }
-        $this->addDocHeaderShortcutButton($moduleTemplate, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $this->addDocHeaderShortcutButton($view, 'scheduler', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler'));
+        return $view->renderResponse('ListTasks');
     }
 
-    protected function isSubmittedTaskDataValid(ModuleTemplate $moduleTemplate, ServerRequestInterface $request, bool $isNewTask): bool
+    protected function isSubmittedTaskDataValid(ModuleTemplate $view, ServerRequestInterface $request, bool $isNewTask): bool
     {
         $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
@@ -751,7 +743,7 @@ class SchedulerModuleController
             $taskClass = $parsedBody['class'] ?? '';
             if (!class_exists($taskClass)) {
                 $result = false;
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), AbstractMessage::ERROR);
             }
         } else {
             try {
@@ -760,22 +752,22 @@ class SchedulerModuleController
                 $taskClass = get_class($task);
             } catch (\OutOfBoundsException|\UnexpectedValueException $e) {
                 $result = false;
-                $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
+                $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
             }
         }
         if ($type !== AbstractTask::TYPE_SINGLE && $type !== AbstractTask::TYPE_RECURRING) {
             $result = false;
-            $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType'), AbstractMessage::ERROR);
         }
         if (empty($startTime)) {
             $result = false;
-            $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noStartDate'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noStartDate'), AbstractMessage::ERROR);
         } else {
             try {
                 $startTime = $this->getTimestampFromDateString($startTime);
             } catch (InvalidDateException $e) {
                 $result = false;
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
             }
         }
         if ($type === AbstractTask::TYPE_RECURRING && !empty($endTime)) {
@@ -783,23 +775,23 @@ class SchedulerModuleController
                 $endTime = $this->getTimestampFromDateString($endTime);
             } catch (InvalidDateException $e) {
                 $result = false;
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), AbstractMessage::ERROR);
             }
         }
         if ($type === AbstractTask::TYPE_RECURRING && $endTime < $startTime) {
             $result = false;
-            $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), AbstractMessage::ERROR);
+            $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), AbstractMessage::ERROR);
         }
         if ($type === AbstractTask::TYPE_RECURRING) {
             if (empty(trim($parsedBody['frequency']))) {
                 $result = false;
-                $this->addMessage($moduleTemplate, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency'), AbstractMessage::ERROR);
+                $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency'), AbstractMessage::ERROR);
             } elseif (!is_numeric(trim($parsedBody['frequency']))) {
                 try {
                     NormalizeCommand::normalize(trim($parsedBody['frequency']));
                 } catch (\InvalidArgumentException $e) {
                     $result = false;
-                    $this->addMessage($moduleTemplate, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.frequencyError'), $e->getMessage(), $e->getCode()), AbstractMessage::ERROR);
+                    $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.frequencyError'), $e->getMessage(), $e->getCode()), AbstractMessage::ERROR);
                 }
             }
         }
@@ -817,7 +809,7 @@ class SchedulerModuleController
     /**
      * Create a new task and persist. Return its new uid.
      */
-    protected function createTask(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): int
+    protected function createTask(ModuleTemplate $view, ServerRequestInterface $request): int
     {
         /** @var AbstractTask $task */
         $task = GeneralUtility::makeInstance($request->getParsedBody()['tx_scheduler']['class']);
@@ -833,14 +825,14 @@ class SchedulerModuleController
             'Scheduler task "%s" (UID: %s, Class: "%s") was added',
             [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
         );
-        $this->addMessage($moduleTemplate, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.addSuccess'));
+        $this->addMessage($view, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.addSuccess'));
         return $task->getTaskUid();
     }
 
     /**
      * Update data of an existing task.
      */
-    protected function updateTask(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
+    protected function updateTask(ModuleTemplate $view, ServerRequestInterface $request): void
     {
         $task = $this->scheduler->fetchTask($request->getParsedBody()['tx_scheduler']['uid']);
         $task = $this->setTaskDataFromRequest($task, $request);
@@ -853,7 +845,7 @@ class SchedulerModuleController
             'Scheduler task "%s" (UID: %s, Class: "%s") was updated',
             [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
         );
-        $this->addMessage($moduleTemplate, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.updateSuccess'));
+        $this->addMessage($view, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.updateSuccess'));
     }
 
     protected function setTaskDataFromRequest(AbstractTask $task, ServerRequestInterface $request): AbstractTask
@@ -1122,18 +1114,6 @@ class SchedulerModuleController
     protected function addMessage(ModuleTemplate $moduleTemplate, string $message, int $severity = AbstractMessage::OK): void
     {
         $moduleTemplate->addFlashMessage($message, '', $severity);
-    }
-
-    protected function initializeView(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:scheduler/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:scheduler/Resources/Private/Templates']);
-        $view->assign('dateFormat', [
-            'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
-            'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
-        ]);
-        return $view;
     }
 
     protected function getLanguageService(): LanguageService

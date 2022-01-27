@@ -94,6 +94,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
+        $response->getBody()->rewind();
         self::assertStringContainsString('Multi-factor Authentication Overview', $response->getBody()->getContents());
     }
 
@@ -108,6 +109,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
+        $response->getBody()->rewind();
         $responseContent = $response->getBody()->getContents();
         foreach (GeneralUtility::makeInstance(MfaProviderRegistry::class)->getProviders() as $provider) {
             self::assertStringContainsString('id="' . $provider->getIdentifier() . '-provider"', $responseContent);
@@ -124,6 +126,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
+        $response->getBody()->rewind();
         $responseContent = $response->getBody()->getContents();
         self::assertStringContainsString('Multi-factor authentication required', $responseContent);
         self::assertMatchesRegularExpression('/<div.*class="card card-size-fixed-small border-success shadow".*id="totp-provider"/s', $responseContent);
@@ -142,6 +145,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
+        $response->getBody()->rewind();
         self::assertMatchesRegularExpression('/<span.*title="Default provider">/s', $response->getBody()->getContents());
     }
 
@@ -164,6 +168,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
+        $response->getBody()->rewind();
         self::assertStringContainsString('href="' . $returnUrl . '" class="btn btn-default btn-sm " title="Go back"', $response->getBody()->getContents());
     }
 
@@ -306,6 +311,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
             self::assertEquals($searchString, $messages->getMessage());
         } else {
             self::assertEquals(200, $response->getStatusCode());
+            $response->getBody()->rewind();
             self::assertStringContainsString($searchString, $response->getBody()->getContents());
         }
     }
@@ -380,6 +386,7 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $response = $this->subject->handleRequest($request);
 
+        $response->getBody()->rewind();
         $responseContent = $response->getBody()->getContents();
 
         self::assertEquals(200, $response->getStatusCode());

@@ -2,13 +2,21 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<h1>
-    {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:title')}
-    <f:if condition="{recordTable}">[{recordTable} : {recordUid}]</f:if>
-</h1>
-<f:render partial="RecordHistory/Settings" arguments="{_all}" />
-<f:if condition="{showDifferences}">
-    <f:render partial="RecordHistory/MultipleDiff" arguments="{_all}" />
-</f:if>
-<f:render partial="RecordHistory/History" arguments="{_all}" />
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <h1>
+        {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:title')}
+        <f:if condition="{recordTable}">[{recordTable} : {recordUid}]</f:if>
+    </h1>
+    <f:render partial="RecordHistory/Settings" arguments="{_all}" />
+    <f:if condition="{showDifferences}">
+        <f:render partial="RecordHistory/MultipleDiff" arguments="{_all}" />
+    </f:if>
+    <f:render partial="RecordHistory/History" arguments="{_all}" />
+
+</f:section>
+
 </html>

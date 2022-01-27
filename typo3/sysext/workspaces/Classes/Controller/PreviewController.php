@@ -24,14 +24,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -42,27 +40,14 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class PreviewController
 {
-    protected StagesService $stageService;
-    protected WorkspaceService $workspaceService;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected SiteFinder $siteFinder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        StagesService $stageService,
-        WorkspaceService $workspaceService,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        SiteFinder $siteFinder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly StagesService $stageService,
+        protected readonly WorkspaceService $workspaceService,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly SiteFinder $siteFinder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->stageService = $stageService;
-        $this->workspaceService = $workspaceService;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->siteFinder = $siteFinder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -78,8 +63,8 @@ class PreviewController
         $backendUser = $this->getBackendUser();
 
         // Initialize module template here, so custom css / js is loaded afterwards (making overrides possible)
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->getDocHeaderComponent()->disable();
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
+        $view->getDocHeaderComponent()->disable();
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Preview');
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
@@ -152,9 +137,6 @@ class PreviewController
             throw new UnableToLinkToPageException(sprintf('The link to the page with ID "%d" could not be generated: %s', $pageUid, $e->getMessage()), 1559794913, $e);
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
         $view->assignMultiple([
             'logoLink' => Typo3Information::URL_COMMUNITY,
             'liveUrl' => $liveUrl,
@@ -170,8 +152,7 @@ class PreviewController
             'prevStage' => $previousStage['title'] ?? '',
             'prevStageId' => $previousStage['uid'] ?? 0,
         ]);
-        $moduleTemplate->setContent($view->render('Preview/Index'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Preview/Index');
     }
 
     /**

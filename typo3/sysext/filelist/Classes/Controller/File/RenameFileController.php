@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -34,7 +33,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for the rename-file form.
@@ -72,11 +70,11 @@ class RenameFileController
     protected $moduleTemplate;
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected PageRenderer $pageRenderer,
-        protected UriBuilder $uriBuilder,
-        protected ResourceFactory $resourceFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
@@ -88,10 +86,10 @@ class RenameFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
         $this->init($request);
         $this->renderContent();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('File/RenameFile');
     }
 
     /**
@@ -206,11 +204,7 @@ class RenameFileController
             'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_rename.exists.description'),
         ]);
 
-        // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
-        $view->assignMultiple($assigns);
-        $this->moduleTemplate->setContent($view->render('File/RenameFile'));
+        $this->moduleTemplate->assignMultiple($assigns);
     }
 
     protected function getLanguageService(): LanguageService

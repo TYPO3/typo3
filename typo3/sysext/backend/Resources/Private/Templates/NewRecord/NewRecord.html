@@ -1,0 +1,39 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <h1><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle" /></h1>
+    <f:for each="{groupedLinksOnTop}" key="recordTypeTable" as="groupedLinks">
+        <div class="row mb-4">
+            <div class="col-12">
+                <strong><core:icon identifier="{groupedLinks.icon}" size="small" /> {groupedLinks.title}</strong>
+                <div class="list-group mt-2">
+                    <f:for each="{groupedLinks.items}" as="link">
+                        {link -> f:format.raw()}
+                    </f:for>
+                </div>
+            </div>
+        </div>
+    </f:for>
+    <f:for each="{recordTypeGroups}" as="recordTypeGroup">
+        <div class="row mb-4">
+            <div class="col-12">
+                <strong>{recordTypeGroup.icon -> f:format.raw()} <f:format.case mode="capital">{recordTypeGroup.title}</f:format.case></strong>
+                <div class="list-group mt-2">
+                    <f:for each="{recordTypeGroup.html}" key="recordTypeTable" as="recordTypeItem">
+                        {recordTypeItem -> f:format.raw()}
+                    </f:for>
+                </div>
+            </div>
+        </div>
+    </f:for>
+
+</f:section>
+
+</html>

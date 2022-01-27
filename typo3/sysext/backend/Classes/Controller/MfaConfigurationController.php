@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller to configure MFA providers in the backend
@@ -48,7 +47,7 @@ class MfaConfigurationController extends AbstractMfaController
     protected array $allowedActions = ['overview', 'setup', 'activate', 'deactivate', 'unlock', 'edit', 'save'];
     private array $providerActionsWhenInactive = ['setup', 'activate'];
     private array $providerActionsWhenActive = ['deactivate', 'unlock', 'edit', 'save'];
-    protected ModuleTemplate $moduleTemplate;
+    protected ModuleTemplate $view;
 
     public function __construct(
         protected readonly IconFactory $iconFactory,
@@ -64,7 +63,7 @@ class MfaConfigurationController extends AbstractMfaController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeMfaConfiguration();
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview');
 
         if (!$this->isActionAllowed($action)) {
@@ -121,15 +120,13 @@ class MfaConfigurationController extends AbstractMfaController
     protected function overviewAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->addOverviewButtons($request);
-        $view = $this->initializeView();
-        $view->assignMultiple([
+        $this->view->assignMultiple([
             'providers' => $this->allowedProviders,
             'defaultProvider' => $this->getDefaultProviderIdentifier(),
             'recommendedProvider' => $this->getRecommendedProviderIdentifier(),
             'setupRequired' => $this->mfaRequired && !$this->mfaProviderRegistry->hasActiveProviders($this->getBackendUser()),
         ]);
-        $this->moduleTemplate->setContent($view->render('Mfa/Overview'));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('Mfa/Overview');
     }
 
     /**
@@ -140,13 +137,11 @@ class MfaConfigurationController extends AbstractMfaController
         $this->addFormButtons();
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::SETUP);
-        $view = $this->initializeView();
-        $view->assignMultiple([
+        $this->view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
         ]);
-        $this->moduleTemplate->setContent($view->render('Mfa/Setup'));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('Mfa/Setup');
     }
 
     /**
@@ -236,14 +231,12 @@ class MfaConfigurationController extends AbstractMfaController
         }
         $this->addFormButtons();
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::EDIT);
-        $view = $this->initializeView();
-        $view->assignMultiple([
+        $this->view->assignMultiple([
             'provider' => $mfaProvider,
             'providerContent' => $providerResponse->getBody(),
             'isDefaultProvider' => $this->isDefaultProvider($mfaProvider),
         ]);
-        $this->moduleTemplate->setContent($view->render('Mfa/Edit'));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('Mfa/Edit');
     }
 
     /**
@@ -268,18 +261,6 @@ class MfaConfigurationController extends AbstractMfaController
             return new RedirectResponse($this->getActionUri('overview'));
         }
         return new RedirectResponse($this->getActionUri('edit', ['identifier' => $mfaProvider->getIdentifier()]));
-    }
-
-    /**
-     * Initialize the simple view and set the template name
-     */
-    protected function initializeView(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        return $view;
     }
 
     /**
@@ -373,7 +354,7 @@ class MfaConfigurationController extends AbstractMfaController
 
     protected function addOverviewButtons(ServerRequestInterface $request): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         if (($returnUrl = $this->getReturnUrl($request)) !== '') {
             $button = $buttonBar
@@ -395,7 +376,7 @@ class MfaConfigurationController extends AbstractMfaController
 
     protected function addFormButtons(): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
 
         $closeButton = $buttonBar

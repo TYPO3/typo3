@@ -1,11 +1,25 @@
-<f:layout name="ContextSensitiveHelp" />
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-    <f:render partial="ContextSensitiveHelp/TableOfContents" arguments="{toc:all.toc, all:1}" />
-    <f:for each="{all.content}" as="sections">
-        <f:for each="{sections.content}" as="item">
-            <f:render partial="ContextSensitiveHelp/Manual" arguments="{manual:item}" />
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div class="help-view">
+        <f:render partial="ContextSensitiveHelp/TableOfContents" arguments="{toc:all.toc, all:1}" />
+        <f:for each="{all.content}" as="sections">
+            <f:for each="{sections.content}" as="item">
+                <f:render partial="ContextSensitiveHelp/Manual" arguments="{manual:item}" />
+            </f:for>
         </f:for>
-    </f:for>
+
+        <div class="help-copyright">
+            <small><f:format.raw>{copyright}</f:format.raw></small>
+        </div>
+    </div>
 
 </f:section>
+
+</html>

@@ -1,6 +1,20 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<f:layout name="main" />
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Extensionmanager/Main.js'
+        }"
+    />
+
+    <em:be.trigger triggers="{triggers}" />
 
     <h1><f:translate key="installExtension">Install extension</f:translate> <small>{f:translate(key: 'downloadExtension.dependencies.errorTitle')}</small></h1>
     <f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
@@ -15,3 +29,5 @@
     </f:link.action>
 
 </f:section>
+
+</html>

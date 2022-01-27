@@ -3,32 +3,38 @@
     data-namespace-typo3-fluid="true"
 >
 
-<form action="{moduleUrlTceFile}" method="post" name="editform" role="form" id="RenameFileController">
-    <fieldset class="form-section">
-        <div class="row">
-            <div class="form-group col-md-12">
-                <label class="t3js-formengine-label" for="rename_target">
-                    <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:{fieldLabel}" />
-                </label>
-                <div class="formengine-field-item">
-                    <div class="form-control-wrap">
-                        <div class="form-wizards-wrap">
-                            <div class="form-wizards-element">
-                                <input id="rename_target" class="form-control" type="text" name="data[rename][0][target]" value="{fileName}" data-original="{fileName}" />
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <form action="{moduleUrlTceFile}" method="post" name="editform" role="form" id="RenameFileController">
+        <fieldset class="form-section">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label class="t3js-formengine-label" for="rename_target">
+                        <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:{fieldLabel}" />
+                    </label>
+                    <div class="formengine-field-item">
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-element">
+                                    <input id="rename_target" class="form-control" type="text" name="data[rename][0][target]" value="{fileName}" data-original="{fileName}" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </fieldset>
+        </fieldset>
 
-    <f:if condition="{destination}">
-        <input type="hidden" name="data[rename][0][destination]" value="{destination}"/>
-        <input type="hidden" name="data[rename][0][conflictMode]" value="{conflictMode}"/>
-    </f:if>
-    <input type="hidden" name="data[rename][0][data]" value="{fileIdentifier}"/>
-    <input type="hidden" name="data[rename][0][redirect]" value="{returnUrl}"/>
-</form>
+        <f:if condition="{destination}">
+            <input type="hidden" name="data[rename][0][destination]" value="{destination}"/>
+            <input type="hidden" name="data[rename][0][conflictMode]" value="{conflictMode}"/>
+        </f:if>
+        <input type="hidden" name="data[rename][0][data]" value="{fileIdentifier}"/>
+        <input type="hidden" name="data[rename][0][redirect]" value="{returnUrl}"/>
+    </form>
+
+</f:section>
 
 </html>

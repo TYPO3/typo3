@@ -1,24 +1,33 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.title" arguments="{0: '{provider.title -> f:translate(key: provider.title, default: provider.title)}'}"/></h1>
+<f:layout name="Module" />
 
-<div class="row g-6">
-    <div class="col">
-        <form
-            action="{f:be.uri(route:'mfa', parameters:'{action: \'activate\'}')}"
-            method="post"
-            enctype="multipart/form-data"
-            name="setup"
-            id="mfaConfigurationController">
-            <input type="hidden" name="identifier" value="{provider.identifier}" />
-            {providerContent -> f:format.raw()}
-        </form>
-    </div>
-    <f:if condition="{provider.setupInstructions}">
-        <div class="col-md-4">
-            <f:render partial="Mfa/SetupInstructions" arguments="{provider: provider}" />
+<f:section name="Content">
+
+    <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_mfa.xlf:setup.title" arguments="{0: '{provider.title -> f:translate(key: provider.title, default: provider.title)}'}"/></h1>
+
+    <div class="row g-6">
+        <div class="col">
+            <form
+                action="{f:be.uri(route:'mfa', parameters:'{action: \'activate\'}')}"
+                method="post"
+                enctype="multipart/form-data"
+                name="setup"
+                id="mfaConfigurationController">
+                <input type="hidden" name="identifier" value="{provider.identifier}" />
+                {providerContent -> f:format.raw()}
+            </form>
         </div>
-    </f:if>
-</div>
+        <f:if condition="{provider.setupInstructions}">
+            <div class="col-md-4">
+                <f:render partial="Mfa/SetupInstructions" arguments="{provider: provider}" />
+            </div>
+        </f:if>
+    </div>
+
+</f:section>
 
 </html>

@@ -25,14 +25,12 @@ use TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap;
 use TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for rendering the move-element wizard display
@@ -49,15 +47,15 @@ class MoveElementController
     protected string $perms_clause = '';
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected PageRenderer $pageRenderer,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
@@ -71,20 +69,20 @@ class MoveElementController
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         // Setting up the buttons and markers for docheader
-        $this->getButtons($moduleTemplate);
+        $this->getButtons($view);
         // Build the <body> for the module
-        $moduleTemplate->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
-        $moduleTemplate->setContent($this->renderContent());
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:movingElement'));
+        $view->assignMultiple($this->getContentVariables());
+        return $view->renderResponse('ContentElement/MoveElement');
     }
 
     /**
-     * Creating the module output.
+     * Assign main body content to view.
      */
-    protected function renderContent(): string
+    protected function getContentVariables(): array
     {
         if (!$this->page_id) {
-            return '';
+            return [];
         }
         $assigns = [];
         $backendUser = $this->getBackendUser();
@@ -162,20 +160,15 @@ class MoveElementController
                     $assigns['positionTree'] = $pagePositionMap->positionTree($this->page_id, $pageInfo, $this->perms_clause, $this->R_URI);
                 }
         }
-
-        // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->assignMultiple($assigns);
-        return $view->render('ContentElement/MoveElement');
+        return $assigns;
     }
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons(ModuleTemplate $moduleTemplate): void
+    protected function getButtons(ModuleTemplate $view): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
             if ($this->table === 'pages') {
                 $cshButton = $buttonBar->makeHelpButton()

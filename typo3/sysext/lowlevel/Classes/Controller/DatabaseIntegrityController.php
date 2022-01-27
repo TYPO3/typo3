@@ -25,14 +25,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Lowlevel\Database\QueryGenerator;
 use TYPO3\CMS\Lowlevel\Integrity\DatabaseIntegrityCheck;
 
@@ -73,7 +71,7 @@ class DatabaseIntegrityController
         $languageService->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
 
         $this->menuConfig($request);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-lowlevel');
         $this->setUpDocHeader($moduleTemplate);
 
         $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');
@@ -233,10 +231,8 @@ class DatabaseIntegrityController
     /**
      * Creates the overview menu.
      */
-    protected function overviewAction(ModuleTemplate $moduleTemplate): ResponseInterface
+    protected function overviewAction(ModuleTemplate $view): ResponseInterface
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assign(
             'availableFunctions',
             [
@@ -246,14 +242,13 @@ class DatabaseIntegrityController
                 'refindex' => (string)$this->uriBuilder->buildUriFromRoute('system_dbint', ['SET' => ['function' => 'refindex']]),
             ]
         );
-        $moduleTemplate->setContent($view->render('IntegrityOverview'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('IntegrityOverview');
     }
 
     /**
      * Check and update reference index.
      */
-    protected function referenceIndexAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function referenceIndexAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $isUpdate = $request->getParsedBody()['update'] ?? false;
         $isCheckOnly = $request->getParsedBody()['checkOnly'] ?? false;
@@ -261,8 +256,6 @@ class DatabaseIntegrityController
         if ($isUpdate || $isCheckOnly) {
             $referenceIndexResult = GeneralUtility::makeInstance(ReferenceIndex::class)->updateIndex($isCheckOnly);
         }
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $readmeLocation = ExtensionManagementUtility::extPath('lowlevel', 'README.rst');
         $view->assignMultiple([
             'ReadmeLink' => PathUtility::getAbsoluteWebPath($readmeLocation),
@@ -270,14 +263,13 @@ class DatabaseIntegrityController
             'binaryPath' => ExtensionManagementUtility::extPath('core', 'bin/typo3'),
             'referenceIndexResult' => $referenceIndexResult,
         ]);
-        $moduleTemplate->setContent($view->render('ReferenceIndex'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('ReferenceIndex');
     }
 
     /**
      * Search (Full / Advanced)
      */
-    protected function searchAction(ModuleTemplate $moduleTemplate): ResponseInterface
+    protected function searchAction(ModuleTemplate $view): ResponseInterface
     {
         $lang = $this->getLanguageService();
         $searchMode = $this->MOD_SETTINGS['search'];
@@ -296,8 +288,6 @@ class DatabaseIntegrityController
             $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'] ?? '', '', '', 'id="checkOptions_sortlabel"') . '<label class="form-check-label" for="checkOptions_sortlabel">' . $lang->getLL('sortOptions') . '</label></div>';
             $submenu .= '<div class="form-check">' . BackendUtility::getFuncCheck(0, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'] ?? 0, '', '', 'id="checkShow_deleted"') . '<label class="form-check-label" for="checkShow_deleted">' . $lang->getLL('showDeleted') . '</label></div>';
         }
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assign('submenu', $submenu);
         $view->assign('searchMode', $searchMode);
         switch ($searchMode) {
@@ -309,14 +299,13 @@ class DatabaseIntegrityController
                 $view->assign('searchOptions', $fullSearch->form());
                 $view->assign('results', $fullSearch->search());
         }
-        $moduleTemplate->setContent($view->render('CustomSearch'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('CustomSearch');
     }
 
     /**
      * Records overview
      */
-    protected function recordStatisticsAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function recordStatisticsAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
@@ -422,32 +411,26 @@ class DatabaseIntegrityController
             }
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assignMultiple([
             'pages' => $pageStatistic,
             'doktypes' => $doktypes,
             'tables' => $tableStatistic,
         ]);
-        $moduleTemplate->setContent($view->render('RecordStatistics'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('RecordStatistics');
     }
 
     /**
      * Show reference list
      */
-    protected function relationsAction(ModuleTemplate $moduleTemplate): ResponseInterface
+    protected function relationsAction(ModuleTemplate $view): ResponseInterface
     {
         $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $databaseIntegrityCheck->selectNonEmptyRecordsWithFkeys();
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assignMultiple([
             'select_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckSelectDBRefs()),
             'group_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckGroupDBRefs()),
         ]);
-        $moduleTemplate->setContent($view->render('Relations'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Relations');
     }
 
     protected function getLanguageService(): LanguageService

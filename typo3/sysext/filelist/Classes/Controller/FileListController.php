@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -48,7 +49,6 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\FileList;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -67,17 +67,16 @@ class FileListController implements LoggerAwareInterface
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
 
-    protected ?ModuleTemplate $moduleTemplate = null;
-    protected ?BackendTemplateView $view = null;
+    protected ModuleTemplate $view;
     protected ?FileList $filelist = null;
 
     public function __construct(
-        protected UriBuilder $uriBuilder,
-        protected PageRenderer $pageRenderer,
-        protected IconFactory $iconFactory,
-        protected ResourceFactory $resourceFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected ResponseFactoryInterface $responseFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory,
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ResponseFactoryInterface $responseFactory,
     ) {
     }
 
@@ -86,8 +85,8 @@ class FileListController implements LoggerAwareInterface
         $lang = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
 
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'));
+        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $this->view->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'));
 
         $queryParams = $request->getQueryParams();
         $parsedBody = $request->getParsedBody();
@@ -141,7 +140,7 @@ class FileListController implements LoggerAwareInterface
             $this->addFlashMessage(
                 sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsMessage'), $this->id),
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:missingFolderPermissionsTitle'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
         } catch (Exception $fileException) {
             $this->folderObject = null;
@@ -158,7 +157,7 @@ class FileListController implements LoggerAwareInterface
                 $this->addFlashMessage(
                     sprintf($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundMessage'), $this->id),
                     $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundTitle'),
-                    FlashMessage::ERROR
+                    AbstractMessage::ERROR
                 );
             }
         } catch (\RuntimeException $e) {
@@ -166,7 +165,7 @@ class FileListController implements LoggerAwareInterface
             $this->addFlashMessage(
                 $e->getMessage() . ' (' . $e->getCode() . ')',
                 $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:folderNotFoundTitle'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
         }
 
@@ -176,15 +175,24 @@ class FileListController implements LoggerAwareInterface
             $this->folderObject = null;
         }
 
-        $this->initializeView();
+        $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
+        $this->pageRenderer->addInlineLanguageLabelFile(
+            'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
+            'buttons'
+        );
+
         $this->initializeModule($request);
 
         // In case the folderObject is NULL, the request is either invalid or the user
         // does not have necessary permissions. Just render and return the "empty" view.
         if ($this->folderObject === null) {
-            return $this->htmlResponse(
-                $this->moduleTemplate->setContent($this->view->render('File/List'))->renderContent()
-            );
+            return $this->view->renderResponse('File/List');
         }
 
         return $this->processRequest($request);
@@ -220,40 +228,18 @@ class FileListController implements LoggerAwareInterface
         ]);
 
         // Overwrite the default module title, adding the specific module headline (the folder name)
-        $this->moduleTemplate->setTitle(
+        $this->view->setTitle(
             $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'),
             $this->getModuleHeadline()
         );
 
         // Additional doc header information: current path and folder info
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([
+        $this->view->getDocHeaderComponent()->setMetaInformation([
             '_additional_info' => $this->filelist->getFolderInfo(),
         ]);
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
+        $this->view->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
 
-        // Render view and return the response
-        return $this->htmlResponse(
-            $this->moduleTemplate->setContent($this->view->render('File/List'))->renderContent()
-        );
-    }
-
-    protected function initializeView(): void
-    {
-        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $this->view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
-        $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
-
-        // @todo: These modules should be merged into one module
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
-        $this->pageRenderer->addInlineLanguageLabelFile(
-            'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
-            'buttons'
-        );
+        return $this->view->renderResponse('File/List');
     }
 
     protected function initializeModule(ServerRequestInterface $request): void
@@ -288,7 +274,7 @@ class FileListController implements LoggerAwareInterface
         }
 
         // Finally add the help button doc header button to the module
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('xMOD_csh_corebe')
             ->setFieldName('filelist_module');
@@ -487,7 +473,7 @@ class FileListController implements LoggerAwareInterface
     protected function registerAdditionalDocHeaderButtons(ServerRequestInterface $request): void
     {
         $lang = $this->getLanguageService();
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         // Refresh
         $refreshButton = $buttonBar->makeLinkButton()
@@ -682,7 +668,7 @@ class FileListController implements LoggerAwareInterface
      * @param string $title
      * @param int $severity
      */
-    protected function addFlashMessage(string $message, string $title = '', int $severity = FlashMessage::INFO): void
+    protected function addFlashMessage(string $message, string $title = '', int $severity = AbstractMessage::INFO): void
     {
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $title, $severity, true);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

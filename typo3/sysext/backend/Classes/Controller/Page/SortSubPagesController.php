@@ -26,13 +26,11 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * "Sort sub pages" controller - reachable from context menu "more" on page records
@@ -41,8 +39,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
 class SortSubPagesController
 {
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
@@ -51,7 +49,7 @@ class SortSubPagesController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $parentPageUid = (int)$request->getQueryParams()['id'];
 
@@ -59,13 +57,12 @@ class SortSubPagesController
         $pageInformation = BackendUtility::readPageAccess($parentPageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         if (!is_array($pageInformation)) {
             // User has no permission on parent page, should not happen, just render an empty page
-            $moduleTemplate->setContent('');
-            return new HtmlResponse($moduleTemplate->renderContent());
+            return $view->renderResponse('Dummy/Index');
         }
 
         // Doc header handling
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInformation);
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $view->getDocHeaderComponent()->setMetaInformation($pageInformation);
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('pages_sort')
             ->setFieldName('pages_sort');
@@ -79,16 +76,14 @@ class SortSubPagesController
             ->setHref('#');
         $buttonBar->addButton($cshButton)->addButton($viewButton);
 
-        // Main view setup
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-
         $isInWorkspace = $backendUser->workspace !== 0;
-        $view->assign('isInWorkspace', $isInWorkspace);
-        $view->assign('maxTitleLength', $backendUser->uc['titleLen'] ?? 20);
-        $view->assign('parentPageUid', $parentPageUid);
-        $view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
-        $view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
+        $view->assignMultiple([
+            'isInWorkspace' => $isInWorkspace,
+            'maxTitleLength' => $backendUser->uc['titleLen'] ?? 20,
+            'parentPageUid' => $parentPageUid,
+            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
+        ]);
 
         if (!$isInWorkspace) {
             // Apply new sorting if given
@@ -119,8 +114,7 @@ class SortSubPagesController
             $view->assign('hasInvisiblePage', $hasInvisiblePage);
         }
 
-        $moduleTemplate->setContent($view->render('Page/SortSubPages'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Page/SortSubPages');
     }
 
     /**

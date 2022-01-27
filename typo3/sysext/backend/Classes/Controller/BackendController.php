@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Class for rendering the TYPO3 backend.
@@ -58,6 +59,7 @@ class BackendController
         protected BackendModuleRepository $backendModuleRepository,
         protected ToolbarItemsRegistry $toolbarItemsRegistry,
         protected ExtensionConfiguration $extensionConfiguration,
+        protected BackendViewFactory $viewFactory,
     ) {
         // @todo: This hook is essentially useless.
         $this->executeHook('constructPostProcess');
@@ -130,7 +132,7 @@ class BackendController
         $hasModules = count($this->moduleStorage) > 0;
         $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
-        $view = $this->getFluidTemplateObject();
+        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
         $this->assignTopbarDetailsToView($view);
         $view->assignMultiple([
             'modules' => $this->moduleStorage,
@@ -150,12 +152,10 @@ class BackendController
      * Returns the main module menu as json encoded HTML string. Used when
      * "update signals" request a menu reload, e.g. when an extension is loaded
      * that brings new main modules.
-     *
-     * @return ResponseInterface
      */
-    public function getModuleMenu(): ResponseInterface
+    public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->getFluidTemplateObject();
+        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
         $view->assign('modules', $this->moduleStorage);
         return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
     }
@@ -164,9 +164,9 @@ class BackendController
      * Returns the toolbar as json encoded HTML string. Used when
      * "update signals" request a toolbar reload, e.g. when an extension is loaded.
      */
-    public function getTopbar(): ResponseInterface
+    public function getTopbar(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->getFluidTemplateObject();
+        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
         $this->assignTopbarDetailsToView($view);
         return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
     }
@@ -184,7 +184,7 @@ class BackendController
     /**
      * Renders the topbar, containing the backend logo, sitename etc.
      */
-    protected function assignTopbarDetailsToView(BackendTemplateView $view): void
+    protected function assignTopbarDetailsToView(ViewInterface $view): void
     {
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = $this->extensionConfiguration->get('backend');
@@ -382,14 +382,6 @@ class BackendController
         $uc = json_decode((string)json_encode($backendUser->uc), true);
         $collapseState = $uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
         return $collapseState === true || $collapseState === 'true';
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials/']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

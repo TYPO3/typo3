@@ -1,11 +1,20 @@
-{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-<f:layout name="main" />
-<f:section name="docheader-buttons">
-    <a href="{f:uri.action(action: 'ter')}" title="{f:translate(key:'extConfTemplate.backToList')}">
-        <core:icon identifier="actions-view-go-back" />
-    </a>
-</f:section>
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Extensionmanager/Main.js'
+        }"
+    />
+
+    <em:be.trigger triggers="{triggers}" />
 
     <h1><f:translate key="showAllVersions" /> {extensionKey}</h1>
     <f:if condition="{currentVersion}">
@@ -62,3 +71,5 @@
     <f:render partial="List/TerShowVersionsTable" arguments="{tableId: 'terVersionTable', extensions: extensions}" />
 
 </f:section>
+
+</html>

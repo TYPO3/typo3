@@ -2,83 +2,91 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:records')}</h1>
 
-<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:pages')}</h2>
-<table class="table table-striped table-hover">
-    <colgroup>
-        <col width="24">
-        <col>
-        <col width="150">
-    </colgroup>
-    <thead>
-    <tr>
-        <th colspan="2"></th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <f:for each="{pages}" as="item" key="name">
-        <tr>
-            <td><f:format.raw>{item.icon}</f:format.raw></td>
-            <td>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:{name}')}</td>
-            <td>{item.count}</td>
-        </tr>
-    </f:for>
-    </tbody>
-</table>
+<f:layout name="Module" />
 
-<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype')}</h2>
-<table class="table table-striped table-hover">
-    <colgroup>
-        <col width="24">
-        <col>
-        <col width="150">
-    </colgroup>
-    <thead>
-    <tr>
-        <th></th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype_value')}</th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <f:for each="{doktypes}" as="item">
-        <tr>
-            <td><f:format.raw>{item.icon}</f:format.raw></td>
-            <td>{item.title}</td>
-            <td>{item.count}</td>
-        </tr>
-    </f:for>
-    </tbody>
-</table>
+<f:section name="Content">
 
-<h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tables')}</h2>
-<table class="table table-striped table-hover">
-    <colgroup>
-        <col width="24">
-        <col>
-        <col width="150">
-    </colgroup>
-    <thead>
-    <tr>
-        <th></th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:label')}</th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tablename')}</th>
-        <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:total_lost')}</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <f:for each="{tables}" key="name" as="item">
+    <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:records')}</h1>
+
+    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:pages')}</h2>
+    <table class="table table-striped table-hover">
+        <colgroup>
+            <col width="24">
+            <col>
+            <col width="150">
+        </colgroup>
+        <thead>
         <tr>
-            <td><f:format.raw>{item.icon}</f:format.raw></td>
-            <td>{item.title}</td>
-            <td>{name}</td>
-            <td>{item.count}</td>
-            <td><f:format.raw>{item.lostRecords}</f:format.raw></td>
+            <th colspan="2"></th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
         </tr>
-    </f:for>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <f:for each="{pages}" as="item" key="name">
+            <tr>
+                <td><f:format.raw>{item.icon}</f:format.raw></td>
+                <td>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:{name}')}</td>
+                <td>{item.count}</td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+
+    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype')}</h2>
+    <table class="table table-striped table-hover">
+        <colgroup>
+            <col width="24">
+            <col>
+            <col width="150">
+        </colgroup>
+        <thead>
+        <tr>
+            <th></th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:doktype_value')}</th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:count')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{doktypes}" as="item">
+            <tr>
+                <td><f:format.raw>{item.icon}</f:format.raw></td>
+                <td>{item.title}</td>
+                <td>{item.count}</td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+
+    <h2>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tables')}</h2>
+    <table class="table table-striped table-hover">
+        <colgroup>
+            <col width="24">
+            <col>
+            <col width="150">
+        </colgroup>
+        <thead>
+        <tr>
+            <th></th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:label')}</th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tablename')}</th>
+            <th>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:total_lost')}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{tables}" key="name" as="item">
+            <tr>
+                <td><f:format.raw>{item.icon}</f:format.raw></td>
+                <td>{item.title}</td>
+                <td>{name}</td>
+                <td>{item.count}</td>
+                <td><f:format.raw>{item.lostRecords}</f:format.raw></td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+
+</f:section>
+
 </html>

@@ -1,0 +1,17 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <h1><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle" /></h1>
+    <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:selectPosition" /></h3>
+    {pagePositionMapForPagesOnly -> f:format.raw()}
+
+</f:section>
+
+</html>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,6 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
  * '/empty' routing target returns dummy content.
@@ -26,23 +27,18 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
  */
 class DummyController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
-    public function __construct(ModuleTemplateFactory $moduleTemplateFactory)
+    public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory)
     {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Return simple dummy content
-     *
-     * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setTitle('Blank');
-        $moduleTemplate->getDocHeaderComponent()->disable();
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view->setTitle('Blank');
+        $view->getDocHeaderComponent()->disable();
+        return $view->renderResponse('Dummy/Index');
     }
 }

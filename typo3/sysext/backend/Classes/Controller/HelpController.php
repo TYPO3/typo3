@@ -23,15 +23,12 @@ use TYPO3\CMS\Backend\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Main "CSH help" module controller.
@@ -52,24 +49,13 @@ class HelpController
      */
     const TOC_ONLY = 1;
 
-    protected Typo3Information $typo3Information;
-    protected TableManualRepository $tableManualRepository;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        Typo3Information $typo3Information,
-        TableManualRepository $tableManualRepository,
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly Typo3Information $typo3Information,
+        protected readonly TableManualRepository $tableManualRepository,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->typo3Information = $typo3Information;
-        $this->tableManualRepository = $tableManualRepository;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -89,59 +75,60 @@ class HelpController
         if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
             return new HtmlResponse('Action not allowed', 400);
         }
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setTitle($this->getShortcutTitle($request));
-        return $this->{$action . 'Action'}($moduleTemplate, $request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view->setTitle($this->getShortcutTitle($request));
+        return $this->{$action . 'Action'}($view, $request);
     }
 
     /**
      * Show table of contents
      */
-    protected function indexAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function indexAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
-        $view->assign('toc', $this->tableManualRepository->getSections(self::TOC_ONLY));
-        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/Index'));
-        $this->addShortcutButton($moduleTemplate, $request);
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->assignMultiple([
+            'copyright' => $this->typo3Information->getCopyrightNotice(),
+            'toc' => $this->tableManualRepository->getSections(self::TOC_ONLY),
+        ]);
+        $this->addShortcutButton($view, $request);
+        return $view->renderResponse('ContextSensitiveHelp/Index');
     }
 
     /**
      * Show the table of contents and all manuals
      */
-    protected function allAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function allAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
-        $view->assign('all', $this->tableManualRepository->getSections(self::FULL));
-        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/All'));
-        $this->addShortcutButton($moduleTemplate, $request);
-        $this->addBackButton($moduleTemplate);
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->assignMultiple([
+            'copyright' => $this->typo3Information->getCopyrightNotice(),
+            'all' => $this->tableManualRepository->getSections(self::FULL),
+        ]);
+        $this->addShortcutButton($view, $request);
+        $this->addBackButton($view);
+        return $view->renderResponse('ContextSensitiveHelp/All');
     }
 
     /**
      * Show a single manual
      */
-    protected function detailAction(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): ResponseInterface
+    protected function detailAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->initializeView();
         $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
         $view->assignMultiple([
+            'copyright' => $this->typo3Information->getCopyrightNotice(),
             'table' => $table,
             'key' => $table,
             'field' => $field,
             'manuals' => $this->getManuals($request),
         ]);
-        $moduleTemplate->setContent($view->render('ContextSensitiveHelp/Detail'));
-        $this->addShortcutButton($moduleTemplate, $request);
-        $this->addBackButton($moduleTemplate);
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $this->addShortcutButton($view, $request);
+        $this->addBackButton($view);
+        return $view->renderResponse('ContextSensitiveHelp/Detail');
     }
 
-    protected function addShortcutButton(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
+    protected function addShortcutButton(ModuleTemplate $view, ServerRequestInterface $request): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $action = $request->getQueryParams()['action'] ?? 'index';
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('help_cshmanual')
@@ -154,9 +141,9 @@ class HelpController
         $buttonBar->addButton($shortcutButton);
     }
 
-    protected function addBackButton(ModuleTemplate $moduleTemplate): void
+    protected function addBackButton(ModuleTemplate $view): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $backButton = $buttonBar->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
             ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
@@ -183,21 +170,6 @@ class HelpController
             }
         }
         return $title;
-    }
-
-    protected function initializeView(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->assign('copyright', $this->typo3Information->getCopyrightNotice());
-        return $view;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

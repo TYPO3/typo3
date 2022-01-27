@@ -31,6 +31,8 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
     /**
      * Gets instance of template if exists or create a new one.
      * Saves instance in viewHelperVariableContainer
+     *
+     * @todo: deprecate. This should be obsolete with the new ModuleTemplate view strategy.
      */
     public function getModuleTemplate(): ModuleTemplate
     {

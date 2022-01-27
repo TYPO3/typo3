@@ -24,15 +24,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Backend Module for the 'recycler' extension.
@@ -60,7 +57,7 @@ class RecyclerModuleController
         $backendUser = $this->getBackendUser();
         $id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $pageRecord = BackendUtility::readPageAccess($id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-recycler');
 
         // read configuration
         $recordsPageLimit = MathUtility::forceIntegerInRange((int)($backendUser->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25), 1);
@@ -81,32 +78,28 @@ class RecyclerModuleController
         if ($backendUser->workspace !== 0
             && (($id && $pageRecord !== []) || (!$id && $backendUser->isAdmin()))
         ) {
-            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
+            $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         }
 
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $pageRecord['title'] ?? ''
         );
 
-        $this->registerDocHeaderButtons($moduleTemplate, $id, $pageRecord);
+        $this->registerDocHeaderButtons($view, $id, $pageRecord);
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:recycler/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:recycler/Resources/Private/Partials']);
         $view->assign('allowDelete', $allowDelete);
 
-        $moduleTemplate->setContent($view->render('RecyclerModule'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('RecyclerModule');
     }
 
     /**
      * Registers doc header buttons.
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate, int $id, array $pageRecord): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view, int $id, array $pageRecord): void
     {
         $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         $shortcutTitle = sprintf(
             '%s: %s [%d]',

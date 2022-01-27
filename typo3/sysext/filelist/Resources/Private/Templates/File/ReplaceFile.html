@@ -3,39 +3,45 @@
     data-namespace-typo3-fluid="true"
 >
 
-<h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.pagetitle" /></h1>
-<div>
-    <form action="{moduleUrlTceFile}" role="form" method="post" name="editform" enctype="multipart/form-data">
-    <div class="form-group">
-        <div class="form-check">
-            <input type="checkbox" value="1" id="keepFilename" name="data[replace][1][keepFilename]" class="form-check-input">
-            <label class="form-check-label" for="keepFilename"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.keepfiletitle" /></label>
-        </div>
-    </div>
+<f:layout name="Module" />
 
-    <div class="form-group">
-        <label for="file_replace"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.selectfile" /></label>
-        <div class="input-group col-6">
-            <input type="text" name="fakefile" id="fakefile" class="form-control input-xlarge" readonly>
-            <a class="input-group-addon btn btn-primary" data-filelist-click-target="#file_replace">
-                <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.browse" />
+<f:section name="Content">
+
+    <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.pagetitle" /></h1>
+    <div>
+        <form action="{moduleUrlTceFile}" role="form" method="post" name="editform" enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="form-check">
+                <input type="checkbox" value="1" id="keepFilename" name="data[replace][1][keepFilename]" class="form-check-input">
+                <label class="form-check-label" for="keepFilename"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.keepfiletitle" /></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="file_replace"><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.selectfile" /></label>
+            <div class="input-group col-6">
+                <input type="text" name="fakefile" id="fakefile" class="form-control input-xlarge" readonly>
+                <a class="input-group-addon btn btn-primary" data-filelist-click-target="#file_replace">
+                    <f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.browse" />
+                </a>
+            </div>
+            <input class="form-control" type="file" id="file_replace" data-filelist-change-target="#fakefile" name="replace_1" style="visibility: hidden;" />
+        </div>
+
+        <input type="hidden" name="overwriteExistingFiles" value="replace" />
+        <input type="hidden" name="data[replace][1][data]" value="1" />
+        <input type="hidden" name="data[replace][1][uid]" value="{uid}" />
+
+        <div class="form-group">
+            <input type="hidden" name="data[replace][1][redirect]" value="{returnUrl}" />
+            <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.submit')}" />
+            <a href="{returnUrl}" class="btn btn-danger">
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel" />
             </a>
         </div>
-        <input class="form-control" type="file" id="file_replace" data-filelist-change-target="#fakefile" name="replace_1" style="visibility: hidden;" />
+        </form>
     </div>
 
-    <input type="hidden" name="overwriteExistingFiles" value="replace" />
-    <input type="hidden" name="data[replace][1][data]" value="1" />
-    <input type="hidden" name="data[replace][1][uid]" value="{uid}" />
-
-    <div class="form-group">
-        <input type="hidden" name="data[replace][1][redirect]" value="{returnUrl}" />
-        <input class="btn btn-primary" type="submit" value="{f:translate(key: 'LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_replace.php.submit')}" />
-        <a href="{returnUrl}" class="btn btn-danger">
-            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel" />
-        </a>
-    </div>
-    </form>
-</div>
+</f:section>
 
 </html>

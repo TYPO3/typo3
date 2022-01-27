@@ -4,97 +4,103 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeCssFiles="{
-        0:'{f:uri.resource(path:\'EXT:viewpage/Resources/Public/Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}'
-    }"
-    includeJavaScriptModules="{
-        0:'TYPO3/CMS/Viewpage/Main.js'
-    }"
-/>
+<f:layout name="Module" />
 
-<div class="viewpage-item">
-    <div class="viewpage-topbar t3js-viewpage-topbar">
-        <div class="viewpage-topbar-orientation t3js-viewpage-topbar-orientation">
-            <a href="#" class="t3js-change-orientation">
-                <core:icon identifier="actions-device-orientation-change" size="small" />
-            </a>
-        </div>
-        <div class="viewpage-topbar-preset">
-            <span class="dropdown">
-                <button type="button" id="viewpage-topbar-preset-button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="t3js-viewpage-current-label">
-                        {current.label}
-                    </span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="viewpage-topbar-preset-button">
-                    <li>
-                        <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}" data-width data-height>
-                            <span class="viewpage-preset-item">
-                                <span class="viewpage-preset-item-icon">
-                                    <core:icon identifier="actions-fullscreen" size="small" />
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeCssFiles="{
+            0:'{f:uri.resource(path:\'EXT:viewpage/Resources/Public/Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}'
+        }"
+        includeJavaScriptModules="{
+            0:'TYPO3/CMS/Viewpage/Main.js'
+        }"
+    />
+
+    <div class="viewpage-item">
+        <div class="viewpage-topbar t3js-viewpage-topbar">
+            <div class="viewpage-topbar-orientation t3js-viewpage-topbar-orientation">
+                <a href="#" class="t3js-change-orientation">
+                    <core:icon identifier="actions-device-orientation-change" size="small" />
+                </a>
+            </div>
+            <div class="viewpage-topbar-preset">
+                <span class="dropdown">
+                    <button type="button" id="viewpage-topbar-preset-button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="t3js-viewpage-current-label">
+                            {current.label}
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="viewpage-topbar-preset-button">
+                        <li>
+                            <a href="#" class="dropdown-item t3js-preset-maximized t3js-change-preset" data-key="maximized" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}" data-width data-height>
+                                <span class="viewpage-preset-item">
+                                    <span class="viewpage-preset-item-icon">
+                                        <core:icon identifier="actions-fullscreen" size="small" />
+                                    </span>
+                                    <span class="viewpage-preset-item-label">
+                                        {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}
+                                    </span>
+                                    <span class="viewpage-preset-item-size">
+                                        100%/100%
+                                    </span>
                                 </span>
-                                <span class="viewpage-preset-item-label">
-                                    {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:maximized')}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}" data-width="{custom.width}" data-height="{custom.height}">
+                                <span class="viewpage-preset-item">
+                                    <span class="viewpage-preset-item-icon">
+                                        <core:icon identifier="actions-expand" size="small" />
+                                    </span>
+                                    <span class="viewpage-preset-item-label t3js-preset-custom-label">
+                                        {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}
+                                    </span>
+                                    <span class="viewpage-preset-item-size">
+                                        <span class="t3js-preset-custom-width">{custom.width}</span>px/<span class="t3js-preset-custom-height">{custom.height}</span>px
+                                    </span>
                                 </span>
-                                <span class="viewpage-preset-item-size">
-                                    100%/100%
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-item t3js-preset-custom t3js-change-preset" data-key="custom" data-label="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}" data-width="{custom.width}" data-height="{custom.height}">
-                            <span class="viewpage-preset-item">
-                                <span class="viewpage-preset-item-icon">
-                                    <core:icon identifier="actions-expand" size="small" />
-                                </span>
-                                <span class="viewpage-preset-item-label t3js-preset-custom-label">
-                                    {f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom')}
-                                </span>
-                                <span class="viewpage-preset-item-size">
-                                    <span class="t3js-preset-custom-width">{custom.width}</span>px/<span class="t3js-preset-custom-height">{custom.height}</span>px
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-                    <f:for each="{presetGroups}" as="presetGroup" iteration="presetGroupIteration">
-                        <f:if condition="{presetGroup}">
-                            <li><hr class="dropdown-divider"></li>
-                            <f:for each="{presetGroup}" as="preset">
-                                <li>
-                                    <a href="#" class="dropdown-item t3js-change-preset" data-key="{preset.key}" data-label="{preset.label}" data-width="{preset.width}" data-height="{preset.height}">
-                                        <span class="viewpage-preset-item">
-                                            <span class="viewpage-preset-item-icon">
-                                                <f:switch expression="{preset.type}">
-                                                    <f:case value="desktop"><core:icon identifier="actions-device-desktop" size="small" /></f:case>
-                                                    <f:case value="tablet"><core:icon identifier="actions-device-tablet" size="small" /></f:case>
-                                                    <f:case value="mobile"><core:icon identifier="actions-device-mobile" size="small" /></f:case>
-                                                    <f:defaultCase><core:icon identifier="actions-device-unidentified" size="small" /></f:defaultCase>
-                                                </f:switch>
+                            </a>
+                        </li>
+                        <f:for each="{presetGroups}" as="presetGroup" iteration="presetGroupIteration">
+                            <f:if condition="{presetGroup}">
+                                <li><hr class="dropdown-divider"></li>
+                                <f:for each="{presetGroup}" as="preset">
+                                    <li>
+                                        <a href="#" class="dropdown-item t3js-change-preset" data-key="{preset.key}" data-label="{preset.label}" data-width="{preset.width}" data-height="{preset.height}">
+                                            <span class="viewpage-preset-item">
+                                                <span class="viewpage-preset-item-icon">
+                                                    <f:switch expression="{preset.type}">
+                                                        <f:case value="desktop"><core:icon identifier="actions-device-desktop" size="small" /></f:case>
+                                                        <f:case value="tablet"><core:icon identifier="actions-device-tablet" size="small" /></f:case>
+                                                        <f:case value="mobile"><core:icon identifier="actions-device-mobile" size="small" /></f:case>
+                                                        <f:defaultCase><core:icon identifier="actions-device-unidentified" size="small" /></f:defaultCase>
+                                                    </f:switch>
+                                                </span>
+                                                <span class="viewpage-preset-item-label">{preset.label}</span>
+                                                <span class="viewpage-preset-item-size">
+                                                    {f:if(condition: preset.width, then: '{preset.width}px', else: '100%')}/{f:if(condition: preset.height, then: '{preset.height}px', else: '100%')}
+                                                </span>
                                             </span>
-                                            <span class="viewpage-preset-item-label">{preset.label}</span>
-                                            <span class="viewpage-preset-item-size">
-                                                {f:if(condition: preset.width, then: '{preset.width}px', else: '100%')}/{f:if(condition: preset.height, then: '{preset.height}px', else: '100%')}
-                                            </span>
-                                        </span>
-                                    </a>
-                                </li>
-                            </f:for>
-                        </f:if>
-                    </f:for>
-                </ul>
-            </span>
+                                        </a>
+                                    </li>
+                                </f:for>
+                            </f:if>
+                        </f:for>
+                    </ul>
+                </span>
+            </div>
+            <div class="viewpage-topbar-size">
+                <input class="t3js-viewpage-input-width" type="number" name="width" min="300" max="9999" value="{current.width}">
+                x
+                <input class="t3js-viewpage-input-height" type="number" name="height" min="300" max="9999" value="{current.height}">
+            </div>
         </div>
-        <div class="viewpage-topbar-size">
-            <input class="t3js-viewpage-input-width" type="number" name="width" min="300" max="9999" value="{current.width}">
-            x
-            <input class="t3js-viewpage-input-height" type="number" name="height" min="300" max="9999" value="{current.height}">
+        <div class="viewpage-resizeable t3js-viewpage-resizeable" style="width:{current.width}px;height:{current.height}px;">
+            <iframe src="{url}" width="100%" height="100%" id="tx_viewpage_iframe" frameborder="0" border="0" title="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:iframe.title')}"></iframe>
         </div>
     </div>
-    <div class="viewpage-resizeable t3js-viewpage-resizeable" style="width:{current.width}px;height:{current.height}px;">
-        <iframe src="{url}" width="100%" height="100%" id="tx_viewpage_iframe" frameborder="0" border="0" title="{f:translate(key: 'LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:iframe.title')}"></iframe>
-    </div>
-</div>
+
+</f:section>
 
 </html>

@@ -23,44 +23,32 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\ArrayBrowser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\ProviderRegistry;
 
 /**
- * View configuration arrays in the backend
+ * View configuration arrays in the backend. This is the "Configuration" main module.
+ *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class ConfigurationController
 {
-    protected ProviderRegistry $configurationProviderRegistry;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        ProviderRegistry $configurationProviderRegistry,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ProviderRegistry $configurationProviderRegistry,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->configurationProviderRegistry = $configurationProviderRegistry;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Main controller action determines get/post values, takes care of
      * stored backend user settings for this module, determines tree
      * and renders it.
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     * @throws \RuntimeException
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-lowlevel');
         $backendUser = $this->getBackendUser();
         $queryParams = $request->getQueryParams();
         $postValues = $request->getParsedBody();
@@ -108,9 +96,6 @@ class ConfigurationController
         $backendUser->uc['moduleData']['system_config'] = $moduleState;
         $backendUser->writeUC();
 
-        // Render main body
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:lowlevel/Resources/Private/Templates']);
         $view->assignMultiple([
             'treeName' => $configurationProvider->getLabel(),
             'searchString' => $searchString,
@@ -118,19 +103,16 @@ class ConfigurationController
             'tree' => $arrayBrowser->tree($configurationArray, ''),
         ]);
 
-        // Prepare module setup
-        $moduleTemplate->setContent($view->render('Configuration'));
-
         // Shortcut in doc header
-        $shortcutButton = $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
+        $shortcutButton = $view->getDocHeaderComponent()->getButtonBar()->makeShortcutButton();
         $shortcutButton
             ->setRouteIdentifier('system_config')
             ->setDisplayName($configurationProvider->getLabel())
             ->setArguments(['tree' => $configurationProviderIdentifier]);
-        $moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
+        $view->getDocHeaderComponent()->getButtonBar()->addButton($shortcutButton);
 
         // Main drop down in doc header
-        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('tree');
 
         $context = '';
@@ -146,13 +128,13 @@ class ConfigurationController
             $menu->addMenuItem($menuItem);
         }
 
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-        $moduleTemplate->setTitle(
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf:mlang_tabs_tab'),
             $context
         );
 
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Configuration');
     }
 
     protected function getBackendUser(): BackendUserAuthentication

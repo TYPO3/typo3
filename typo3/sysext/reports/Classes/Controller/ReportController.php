@@ -23,12 +23,10 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Reports\ReportInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 
@@ -106,24 +104,21 @@ class ReportController
                 }
             }
         }
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-reports');
         $view->assignMultiple([
             'reports' => $registeredReports,
         ]);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setContent($view->render('Report/Index'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview')
         );
-        $this->addMainMenu($moduleTemplate);
+        $this->addMainMenu($view);
         $this->addShortcutButton(
-            $moduleTemplate,
+            $view,
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview'),
             ['action' => 'index']
         );
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Report/Index');
     }
 
     /**
@@ -143,15 +138,12 @@ class ReportController
             $content = $reportInstance->getReport();
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-reports');
         $view->assignMultiple([
             'content' => $content,
             'report' => $registeredReports[$extension][$report],
         ]);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setContent($view->render('Report/Detail'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
             $languageService->sL($registeredReports[$extension][$report]['title'] ?? '')
         );
@@ -159,20 +151,20 @@ class ReportController
         if (count($validRegisteredReports) > 1) {
             // Add the main module drop-down only if there are more than one reports registered.
             // This also means the "overview" view is not selectable with default core.
-            $this->addMainMenu($moduleTemplate, $extension, $report);
+            $this->addMainMenu($view, $extension, $report);
         }
         $this->addShortcutButton(
-            $moduleTemplate,
+            $view,
             $languageService->sL($registeredReports[$extension][$report]['title'] ?? ''),
             ['action' => 'detail', 'extension' => $extension, 'report' => $report]
         );
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Report/Detail');
     }
 
-    protected function addMainMenu(ModuleTemplate $moduleTemplate, string $extension = '', string $report = ''): void
+    protected function addMainMenu(ModuleTemplate $view, string $extension = '', string $report = ''): void
     {
         $languageService = $this->getLanguageService();
-        $menu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebFuncJumpMenu');
         $menuItem = $menu->makeMenuItem()
             ->setHref(
@@ -194,12 +186,12 @@ class ReportController
                 $menu->addMenuItem($menuItem);
             }
         }
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
-    protected function addShortcutButton(ModuleTemplate $moduleTemplate, string $title, array $arguments): void
+    protected function addShortcutButton(ModuleTemplate $view, string $title, array $arguments): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_reports')
             ->setDisplayName($title)

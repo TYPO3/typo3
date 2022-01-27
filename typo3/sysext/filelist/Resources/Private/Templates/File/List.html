@@ -3,21 +3,28 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:comment><!-- identifier initializes tree state --></f:comment>
-<div class="filelist-main" data-filelist-current-identifier="{currentIdentifier -> f:format.htmlspecialchars()}">
-    <f:if condition="{folderIdentifier}">
-        <f:render section="headline" arguments="{_all}" />
-        <f:render section="content" arguments="{_all}" />
-    </f:if>
-</div>
+<f:layout name="Module" />
 
-<f:if condition="{drapUploader}">
-    <div class="t3js-drag-uploader" data-target-folder="{folderIdentifier}" data-progress-container="#typo3-filelist"
-        data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".t3js-module-body h1:first"
-        data-file-deny-pattern="{drapUploader.fileDenyPattern}" data-max-file-size="{drapUploader.maxFileSize}"
-        data-default-action="{drapUploader.defaultDuplicationBehaviourAction}" data-reload-url="{listUrl}"
-    ></div>
-</f:if>
+<f:section name="Content">
+
+    <f:comment><!-- identifier initializes tree state --></f:comment>
+    <div class="filelist-main" data-filelist-current-identifier="{currentIdentifier -> f:format.htmlspecialchars()}">
+        <f:if condition="{folderIdentifier}">
+            <f:render section="headline" arguments="{_all}" />
+            <f:render section="content" arguments="{_all}" />
+        </f:if>
+    </div>
+
+    <f:if condition="{drapUploader}">
+        <div class="t3js-drag-uploader" data-target-folder="{folderIdentifier}" data-progress-container="#typo3-filelist"
+            data-dropzone-trigger=".t3js-drag-uploader-trigger" data-dropzone-target=".t3js-module-body h1:first"
+            data-file-deny-pattern="{drapUploader.fileDenyPattern}" data-max-file-size="{drapUploader.maxFileSize}"
+            data-default-action="{drapUploader.defaultDuplicationBehaviourAction}" data-reload-url="{listUrl}"
+        ></div>
+    </f:if>
+
+</f:section>
+
 
 <f:section name="headline">
     <h1>

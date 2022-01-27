@@ -26,14 +26,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -42,30 +40,15 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class ReviewController
 {
-    protected WorkspaceService $workspaceService;
-    protected StagesService $stagesService;
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected TranslationConfigurationProvider $translationConfigurationProvider;
-
     public function __construct(
-        WorkspaceService $workspaceService,
-        StagesService $stagesService,
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        TranslationConfigurationProvider $translationConfigurationProvider
+        protected readonly WorkspaceService $workspaceService,
+        protected readonly StagesService $stagesService,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly TranslationConfigurationProvider $translationConfigurationProvider
     ) {
-        $this->workspaceService = $workspaceService;
-        $this->stagesService = $stagesService;
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->translationConfigurationProvider = $translationConfigurationProvider;
     }
 
     /**
@@ -123,9 +106,7 @@ class ReviewController
         }
         $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID && $pageUid > 0;
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
         $view->assignMultiple([
             'isAdmin' => $backendUser->isAdmin(),
             'customWorkspaceExists' => $customWorkspaceExists,
@@ -144,24 +125,22 @@ class ReviewController
             'selectedStage' => $this->getStageSelection(),
             'workspaceSwitched' => $workspaceSwitched,
         ]);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setContent($view->render('Review/Index'));
-        $moduleTemplate->setTitle(
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab') . ' [' . $activeWorkspaceTitle . ']',
             $pageTitle
         );
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-        $this->addWorkspaceSelector($moduleTemplate, $availableWorkspaces, $activeWorkspace, $pageUid);
-        $this->addPreviewLink($moduleTemplate, $pageUid, $activeWorkspace);
-        $this->addEditWorkspaceRecordButton($moduleTemplate, $pageUid, $activeWorkspace);
-        $this->addShortcutButton($moduleTemplate, $activeWorkspaceTitle, $pageTitle, $pageUid);
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
+        $this->addWorkspaceSelector($view, $availableWorkspaces, $activeWorkspace, $pageUid);
+        $this->addPreviewLink($view, $pageUid, $activeWorkspace);
+        $this->addEditWorkspaceRecordButton($view, $pageUid, $activeWorkspace);
+        $this->addShortcutButton($view, $activeWorkspaceTitle, $pageTitle, $pageUid);
+        return $view->renderResponse('Review/Index');
     }
 
     /**
      * Create the workspace selection drop-down menu.
      */
-    protected function addWorkspaceSelector(ModuleTemplate $moduleTemplate, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
+    protected function addWorkspaceSelector(ModuleTemplate $view, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
     {
         $items = [];
         $items[] = [
@@ -179,7 +158,7 @@ class ReviewController
                 'url' => $this->getModuleUri($pageUid, (int)$workspaceId),
             ];
         }
-        $actionMenu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier('workspaceSelector');
         $actionMenu->setLabel('');
         foreach ($items as $workspaceData) {
@@ -192,12 +171,12 @@ class ReviewController
             }
             $actionMenu->addMenuItem($menuItem);
         }
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
-    protected function addShortcutButton(ModuleTemplate $moduleTemplate, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
+    protected function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_WorkspacesWorkspaces')
             ->setDisplayName(sprintf('%s: %s [%d]', $activeWorkspaceTitle, $pageTitle, $pageId))
@@ -205,7 +184,7 @@ class ReviewController
         $buttonBar->addButton($shortcutButton);
     }
 
-    protected function addPreviewLink(ModuleTemplate $moduleTemplate, int $pageUid, int $activeWorkspace): void
+    protected function addPreviewLink(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
     {
         $canCreatePreviewLink = false;
         if ($pageUid > 0 && $activeWorkspace > 0) {
@@ -216,7 +195,7 @@ class ReviewController
             }
         }
         if ($canCreatePreviewLink) {
-            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
             $showButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
                 ->setClasses('t3js-preview-link')
@@ -227,11 +206,11 @@ class ReviewController
         }
     }
 
-    protected function addEditWorkspaceRecordButton(ModuleTemplate $moduleTemplate, int $pageUid, int $activeWorkspace): void
+    protected function addEditWorkspaceRecordButton(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin() && $activeWorkspace > 0) {
-            $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+            $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
             $editWorkspaceRecordUrl = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'sys_workspace' => [

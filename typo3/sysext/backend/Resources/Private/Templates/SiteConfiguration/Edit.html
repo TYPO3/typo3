@@ -2,6 +2,11 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
 <f:be.pageRenderer
     includeJavaScriptModules="{
         0: 'TYPO3/CMS/Backend/ContextMenu.js',
@@ -9,6 +14,7 @@
         2: 'TYPO3/CMS/Backend/SiteInlineActions.js'
     }"
 />
+
 <form
     action="{f:be.uri(route:'site_configuration', parameters:'{action: \'save\'}')}"
     method="post"
@@ -25,4 +31,7 @@
 
     {formEngineFooter -> f:format.raw()}
 </form>
+
+</f:section>
+
 </html>

@@ -1,11 +1,24 @@
-<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
-<f:layout name="ContextSensitiveHelp" />
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-    <f:render partial="ContextSensitiveHelp/TableOfContents" arguments="{toc:toc,all:0}" />
-    <a href="{be:moduleLink(route:'help_cshmanual',arguments:'{action:\'all\'}')}">
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:full_manual" />
-    </a>
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div class="help-view">
+        <f:render partial="ContextSensitiveHelp/TableOfContents" arguments="{toc:toc,all:0}" />
+        <a href="{be:moduleLink(route:'help_cshmanual',arguments:'{action:\'all\'}')}">
+            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:full_manual" />
+        </a>
+
+        <div class="help-copyright">
+            <small><f:format.raw>{copyright}</f:format.raw></small>
+        </div>
+    </div>
 
 </f:section>
+
 </html>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,52 +27,41 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
- * Controller for distribution related actions
+ * Controller for distribution related actions.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class DistributionController extends AbstractModuleController
+class DistributionController extends AbstractController
 {
-    protected PackageManager $packageManager;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-
-    public function __construct(PackageManager $packageManager, PageRenderer $pageRenderer, IconFactory $iconFactory)
-    {
-        $this->packageManager = $packageManager;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
+    public function __construct(
+        protected readonly PackageManager $packageManager,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory
+    ) {
     }
 
     /**
-     * Shows information about the distribution
-     *
-     * @param Extension $extension
-     * @return ResponseInterface
+     * Shows information about a single distribution. Reachable from 'Get preconfigured distribution'.
      */
     public function showAction(Extension $extension): ResponseInterface
     {
         $extensionKey = $extension->getExtensionKey();
         // Check if extension/package is installed
         $active = $this->packageManager->isPackageActive($extensionKey);
-
-        $this->view->assign('distributionActive', $active);
-        $this->view->assign('extension', $extension);
-
+        $view = $this->initializeModuleTemplate($this->request);
+        $view = $this->registerDocHeaderButtons($view);
+        $view->assign('distributionActive', $active);
+        $view->assign('extension', $extension);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $moduleTemplate = $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Distribution/Show');
     }
 
     /**
-     * Registers the Icons into the docheader
+     * Add 'back to list' icon to doc-header.
      */
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): ModuleTemplate
+    protected function registerDocHeaderButtons(ModuleTemplate $view): ModuleTemplate
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $uri = $this->uriBuilder->reset()->uriFor('distributions', [], 'List');
         $title = $this->translate('extConfTemplate.backToList');
         $icon = $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL);
@@ -79,7 +70,6 @@ class DistributionController extends AbstractModuleController
             ->setTitle($title)
             ->setIcon($icon);
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT);
-
-        return $moduleTemplate;
+        return $view;
     }
 }

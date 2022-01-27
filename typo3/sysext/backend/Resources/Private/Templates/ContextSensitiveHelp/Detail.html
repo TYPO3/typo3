@@ -1,8 +1,22 @@
-<f:layout name="ContextSensitiveHelp" />
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-    <f:for each="{manuals}" as="manual">
-        <f:render partial="ContextSensitiveHelp/Manual" arguments="{manual:manual}" />
-    </f:for>
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <div class="help-view">
+        <f:for each="{manuals}" as="manual">
+            <f:render partial="ContextSensitiveHelp/Manual" arguments="{manual:manual}" />
+        </f:for>
+
+        <div class="help-copyright">
+            <small><f:format.raw>{copyright}</f:format.raw></small>
+        </div>
+    </div>
 
 </f:section>
+
+</html>

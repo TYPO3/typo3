@@ -33,20 +33,16 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Controller for handling extension related actions like
- * installing, removing, downloading of data or files
+ * installing, removing, downloading of data or files.
+ *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ActionController extends AbstractController
 {
-    protected InstallUtility $installUtility;
-    protected ExtensionManagementService $managementService;
-
     public function __construct(
-        InstallUtility $installUtility,
-        ExtensionManagementService $managementService
+        protected readonly InstallUtility $installUtility,
+        protected readonly ExtensionManagementService $managementService
     ) {
-        $this->installUtility = $installUtility;
-        $this->managementService = $managementService;
     }
 
     /**

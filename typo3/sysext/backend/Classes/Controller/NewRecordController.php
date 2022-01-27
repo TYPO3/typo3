@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -42,7 +41,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script class for 'db_new' and 'db_new_pages'
@@ -105,43 +103,23 @@ class NewRecordController
     protected $perms_clause;
 
     /**
-     * Accumulated HTML output
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
      * @var array
      */
     protected $tRows = [];
 
-    protected ModuleTemplate $moduleTemplate;
-    protected BackendTemplateView $view;
-
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ModuleTemplate $view;
 
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -151,22 +129,18 @@ class NewRecordController
             return new RedirectResponse($uri, 301);
         }
 
-        $this->initializeView();
         $this->init($request);
 
         // If there was a page - or if the user is admin (admins has access to the root) we proceed, otherwise just output the header
         if (empty($this->pageinfo['uid']) && !$this->getBackendUserAuthentication()->isAdmin()) {
-            $this->moduleTemplate->setContent($this->view->render('NewRecord'));
-            return new HtmlResponse($this->moduleTemplate->renderContent());
+            return $this->view->renderResponse('NewRecord/NewRecord');
         }
 
         $this->renderNewRecordControls();
 
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons();
-        // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render('NewRecord'));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('NewRecord/NewRecord');
     }
 
     /**
@@ -174,13 +148,11 @@ class NewRecordController
      */
     public function newPageAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initializeView();
         $this->init($request);
 
         // If there was a page - or if the user is admin (admins has access to the root) we proceed, otherwise just output the header
         if ((empty($this->pageinfo['uid']) && !$this->getBackendUserAuthentication()->isAdmin()) || !$this->isRecordCreationAllowedForTable('pages')) {
-            $this->moduleTemplate->setContent($this->view->render('NewPagePosition'));
-            return new HtmlResponse($this->moduleTemplate->renderContent());
+            return $this->view->renderResponse('NewRecord/NewPagePosition');
         }
         if (!$this->doPageRecordsExistInSystem()) {
             // No pages yet, no need to prompt for position, redirect to page creation.
@@ -206,9 +178,7 @@ class NewRecordController
         $this->view->assign('pagePositionMapForPagesOnly', $content);
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons(true);
-        // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render('NewPagePosition'));
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('NewRecord/NewPagePosition');
     }
 
     /**
@@ -218,7 +188,7 @@ class NewRecordController
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)
@@ -263,7 +233,7 @@ class NewRecordController
             if (($beUser->isAdmin() || !empty($this->pidInfo)) && $beUser->doesUserHaveAccess($this->pidInfo, Permission::PAGE_NEW)) {
                 $this->newPagesAfter = true;
             }
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+            $this->view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         } elseif ($beUser->isAdmin()) {
             // Admins can do it all
             $this->newPagesInto = true;
@@ -280,7 +250,7 @@ class NewRecordController
         } else {
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         }
-        $this->moduleTemplate->setTitle($title);
+        $this->view->setTitle($title);
         // Acquiring TSconfig for this module/current page:
         $web_list_modTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0)['mod.']['web_list.'] ?? [];
         $this->allowedNewTables = GeneralUtility::trimExplode(',', $web_list_modTSconfig['allowedNewTables'] ?? '', true);
@@ -303,7 +273,7 @@ class NewRecordController
     protected function getButtons(bool $createPage = false): void
     {
         $lang = $this->getLanguageService();
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         // Regular new element:
         if (!$createPage) {
             // New page
@@ -687,12 +657,6 @@ class NewRecordController
         }
 
         return !in_array($table, $deniedNewTables) && (empty($allowedNewTables) || in_array($table, $allowedNewTables));
-    }
-
-    protected function initializeView(): void
-    {
-        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
     }
 
     protected function getLanguageService(): LanguageService

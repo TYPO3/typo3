@@ -26,14 +26,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller for showing the history module of TYPO3s backend.
@@ -42,8 +40,6 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class ElementHistoryController
 {
-    protected BackendTemplateView $view;
-
     /**
      * @var RecordHistory
      */
@@ -61,12 +57,7 @@ class ElementHistoryController
      */
     protected $recordCache = [];
 
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    protected ModuleTemplate $view;
 
     /**
      * @var string
@@ -74,11 +65,10 @@ class ElementHistoryController
     protected string $returnUrl = '';
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected UriBuilder $uriBuilder,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->view = $this->initializeView();
     }
 
     /**
@@ -90,10 +80,10 @@ class ElementHistoryController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $backendUser = $this->getBackendUser();
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $this->view->getDocHeaderComponent()->setMetaInformation([]);
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
 
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
@@ -167,10 +157,8 @@ class ElementHistoryController
 
         // Setting up the buttons and markers for docheader
         $this->getButtons();
-        // Build the <body> for the module
-        $this->moduleTemplate->setContent($this->view->render('RecordHistory/Main'));
 
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->view->renderResponse('RecordHistory/Main');
     }
 
     /**
@@ -192,7 +180,7 @@ class ElementHistoryController
 
         $pageAccess = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (is_array($pageAccess)) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageAccess);
+            $this->view->getDocHeaderComponent()->setMetaInformation($pageAccess);
         }
         $this->view->assign('recordTable', $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
         $this->view->assign('recordUid', $uid);
@@ -200,7 +188,7 @@ class ElementHistoryController
 
     protected function getButtons(): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         $helpButton = $buttonBar->makeHelpButton()
             ->setModuleName('xMOD_csh_corebe')
             ->setFieldName('history_log');
@@ -439,17 +427,6 @@ class ElementHistoryController
             $this->recordCache[$table][$uid] = BackendUtility::getRecord($table, $uid, '*', '', false);
         }
         return $this->recordCache[$table][$uid];
-    }
-
-    /**
-     * Returns a new standalone view, shorthand function
-     */
-    protected function initializeView(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getLanguageService(): LanguageService

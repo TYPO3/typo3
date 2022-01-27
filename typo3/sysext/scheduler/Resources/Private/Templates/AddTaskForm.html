@@ -1,4 +1,13 @@
-<html xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
     <f:be.pageRenderer
         includeJavaScriptModules="{
             0: 'TYPO3/CMS/Backend/Modal.js',
@@ -48,4 +57,7 @@
         <div id="extraFieldsSection"></div>
     </form>
     <div id="extraFieldsHidden"></div>
+
+</f:section>
+
 </html>

@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -34,12 +33,11 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Script class for the create-new script
+ * Script class for the create-new script.
+ * Display forms for creating folders (1 to 10), a media asset or a new file.
  *
- * Displays forms for creating folders (1 to 10), a media asset or a new file.
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class CreateFolderController
@@ -80,19 +78,14 @@ class CreateFolderController
      */
     protected $pathInfo;
 
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    protected ModuleTemplate $view;
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected PageRenderer $pageRenderer,
-        protected UriBuilder $uriBuilder,
-        protected ResourceFactory $resourceFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
@@ -101,10 +94,9 @@ class CreateFolderController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
         $this->init($request);
-        $this->main();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->main();
     }
 
     /**
@@ -136,7 +128,7 @@ class CreateFolderController
             );
         }
 
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
+        $this->view->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/CreateFolder');
     }
@@ -144,7 +136,7 @@ class CreateFolderController
     /**
      * Main function, rendering the main module content
      */
-    protected function main()
+    protected function main(): ResponseInterface
     {
         $lang = $this->getLanguageService();
         $assigns = [
@@ -206,7 +198,7 @@ class CreateFolderController
             $assigns['txtFileExtList'] = $fileExtList;
         }
 
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
         // CSH button
         $helpButton = $buttonBar->makeHelpButton()
             ->setFieldName('file_new')
@@ -222,11 +214,8 @@ class CreateFolderController
             $buttonBar->addButton($backButton);
         }
 
-        // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:filelist/Resources/Private/Templates']);
-        $view->assignMultiple($assigns);
-        $this->moduleTemplate->setContent($view->render('File/CreateFolder'));
+        $this->view->assignMultiple($assigns);
+        return $this->view->renderResponse('File/CreateFolder');
     }
 
     protected function getLanguageService(): LanguageService

@@ -3,69 +3,78 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'TYPO3/CMS/Lowlevel/ConfigurationView.js'
-    }"
-/>
-<form action="" id="ConfigurationView" method="post">
-    <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:configuration" /></h1>
 
-    <h2>{treeName}</h2>
+<f:layout name="Module" />
 
-    <div id="lowlevel-config" class="row mb-3">
-        <div class="col-md-6">
-            <div class="input-group">
-                <button class="btn btn-default" type="submit" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
-                    <core:icon identifier="actions-search" />
-                </button>
+<f:section name="Content">
 
-                <label for="lowlevel-searchString" class="visually-hidden">
-                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase"/>
-                </label>
-                <input class="form-control"
-                    type="search"
-                    id="lowlevel-searchString"
-                    name="searchString"
-                    value="{searchString}"
-                    placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase')}"
-                />
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Lowlevel/ConfigurationView.js'
+        }"
+    />
 
-                <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                <div class="dropdown-menu" data-popper-placement="bottom-start">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input type="hidden" name="regexSearch" value="0" />
-                                <input type="checkbox"
-                                    class="form-check-input"
-                                    name="regexSearch"
-                                    id="lowlevel-regexSearch"
-                                    value="1"
-                                    {f:if(condition:'{regexSearch}', then: ' checked')}
-                                />
-                                <label for="lowlevel-regexSearch" class="form-check-label">
-                                    <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useRegExp" />
-                                </label>
+    <form action="" id="ConfigurationView" method="post">
+        <h1><f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:configuration" /></h1>
+
+        <h2>{treeName}</h2>
+
+        <div id="lowlevel-config" class="row mb-3">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <button class="btn btn-default" type="submit" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
+                        <core:icon identifier="actions-search" />
+                    </button>
+
+                    <label for="lowlevel-searchString" class="visually-hidden">
+                        <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase"/>
+                    </label>
+                    <input class="form-control"
+                        type="search"
+                        id="lowlevel-searchString"
+                        name="searchString"
+                        value="{searchString}"
+                        placeholder="{f:translate(key: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:enterSearchPhrase')}"
+                    />
+
+                    <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <div class="dropdown-menu" data-popper-placement="bottom-start">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input type="hidden" name="regexSearch" value="0" />
+                                    <input type="checkbox"
+                                        class="form-check-input"
+                                        name="regexSearch"
+                                        id="lowlevel-regexSearch"
+                                        value="1"
+                                        {f:if(condition:'{regexSearch}', then: ' checked')}
+                                    />
+                                    <label for="lowlevel-regexSearch" class="form-check-label">
+                                        <f:translate key="LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:useRegExp" />
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="input-group justify-content-end">
-                                <button type="submit" class="text-end btn btn-default" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
-                                    <core:icon identifier="actions-search" />
-                                    <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search"/>
-                                </button>
+                            <div class="col-12">
+                                <div class="input-group justify-content-end">
+                                    <button type="submit" class="text-end btn btn-default" title="{f:translate(id:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')}">
+                                        <core:icon identifier="actions-search" />
+                                        <f:translate id="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search"/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="nowrap">
-        <f:format.raw>{tree}</f:format.raw>
-    </div>
-</form>
+        <div class="nowrap">
+            <f:format.raw>{tree}</f:format.raw>
+        </div>
+    </form>
+
+</f:section>
+
 </html>

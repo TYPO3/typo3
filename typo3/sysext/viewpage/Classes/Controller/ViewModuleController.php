@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,7 +37,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller to show a frontend page in the backend. Backend "View" module.
@@ -47,24 +45,13 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class ViewModuleController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected PageRepository $pageRepository;
-    protected SiteFinder $siteFinder;
-
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        PageRepository $pageRepository,
-        SiteFinder $siteFinder
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly PageRepository $pageRepository,
+        protected readonly SiteFinder $siteFinder
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->pageRepository = $pageRepository;
-        $this->siteFinder = $siteFinder;
     }
 
     /**
@@ -76,36 +63,36 @@ class ViewModuleController
         $pageId = (int)($request->getQueryParams()['id'] ?? 0);
         $pageInfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setBodyTag('<body class="typo3-module-viewpage">');
-        $moduleTemplate->setModuleId('typo3-module-viewpage');
-        $moduleTemplate->setTitle(
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-viewpage');
+        $view->setBodyTag('<body class="typo3-module-viewpage">');
+        $view->setModuleId('typo3-module-viewpage');
+        $view->setTitle(
             $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $pageInfo['title'] ?? ''
         );
 
         if (!$this->isValidDoktype($pageId)) {
-            $moduleTemplate->addFlashMessage(
+            $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noValidPageSelected'),
                 '',
                 AbstractMessage::INFO
             );
-            return new HtmlResponse($moduleTemplate->renderContent());
+            return $view->renderResponse('Empty');
         }
 
         try {
             $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
             $targetUrl = BackendUtility::getPreviewUrl($pageId, '', null, '', '', $this->getTypeParameterIfSet($pageId) . '&L=' . $languageId);
         } catch (UnableToLinkToPageException $e) {
-            $moduleTemplate->addFlashMessage(
+            $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noSiteConfiguration'),
                 '',
                 AbstractMessage::WARNING
             );
-            return new HtmlResponse($moduleTemplate->renderContent());
+            return $view->renderResponse('Empty');
         }
 
-        $this->registerDocHeader($moduleTemplate, $pageId, $languageId, $targetUrl);
+        $this->registerDocHeader($view, $pageId, $languageId, $targetUrl);
         $backendUser = $this->getBackendUser();
         $current = $backendUser->uc['moduleData']['web_view']['States']['current'] ?? [];
         $current['label'] = ($current['label'] ?? $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
@@ -116,8 +103,6 @@ class ViewModuleController
         $custom['width'] = MathUtility::forceIntegerInRange($custom['width'] ?? 320, 300);
         $custom['height'] = MathUtility::forceIntegerInRange($current['custom'] ?? 480, 300);
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:viewpage/Resources/Private/Templates']);
         $view->assignMultiple([
             'current' => $current,
             'custom' => $custom,
@@ -125,16 +110,15 @@ class ViewModuleController
             'url' => $targetUrl,
         ]);
 
-        $moduleTemplate->setContent($view->render('Show'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Show');
     }
 
-    protected function registerDocHeader(ModuleTemplate $moduleTemplate, int $pageId, int $languageId, string $targetUrl)
+    protected function registerDocHeader(ModuleTemplate $view, int $pageId, int $languageId, string $targetUrl)
     {
         $languageService = $this->getLanguageService();
         $languages = $this->getPreviewLanguages($pageId);
         if (count($languages) > 1) {
-            $languageMenu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+            $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
             $languageMenu->setIdentifier('_langSelector');
             foreach ($languages as $value => $label) {
                 $href = (string)$this->uriBuilder->buildUriFromRoute(
@@ -152,10 +136,10 @@ class ViewModuleController
                 }
                 $languageMenu->addMenuItem($menuItem);
             }
-            $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+            $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
         }
 
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $showButton = $buttonBar->makeLinkButton()
             ->setHref($targetUrl)
             ->setDataAttributes([

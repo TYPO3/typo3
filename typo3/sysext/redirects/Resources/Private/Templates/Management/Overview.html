@@ -1,53 +1,61 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:rd="http://typo3.org/ns/TYPO3/CMS/Redirects/ViewHelpers"
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
-    data-namespace-typo3-fluid="true">
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'TYPO3/CMS/Backend/Modal.js',
-        1: 'TYPO3/CMS/Redirects/RedirectsModule.js'
-    }"
-/>
-<h1><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:heading_text"/></h1>
-<f:variable
-    name="returnUrl"
-    value="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', page: pagination.current, demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection}')}"
-/>
-<f:if condition="{redirects -> f:count()}">
-    <f:then>
-        <f:render section="filter" arguments="{_all}" />
-        <f:render section="table" arguments="{_all}" />
-    </f:then>
-    <f:else>
-        <f:if condition="{demand.constraints}">
-            <f:then>
-                <f:render section="filter" arguments="{_all}" />
-                <f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.title')}">
-                    <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.message"/></p>
-                    <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}">
-                        <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
-                    </a>
-                    <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_redirect">
-                        <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
-                    </be:link.newRecord>
-                </f:be.infobox>
+    data-namespace-typo3-fluid="true"
+>
 
-                <f:variable name="gotToPageUrl"><f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" /></f:variable>
-                <form data-on-submit="processNavigate">
-                    <input type="hidden" value="1" name="paginator-target-page" data-number-of-pages="1" data-url="{gotToPageUrl}"/>
-                </form>
-            </f:then>
-            <f:else>
-                <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
-                    <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
-                    <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_redirect">
-                        <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
-                    </be:link.newRecord>
-                </f:be.infobox>
-            </f:else>
-        </f:if>
-    </f:else>
-</f:if>
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Backend/Modal.js',
+            1: 'TYPO3/CMS/Redirects/RedirectsModule.js'
+        }"
+    />
+    <h1><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:heading_text"/></h1>
+    <f:variable
+        name="returnUrl"
+        value="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', page: pagination.current, demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection}')}"
+    />
+    <f:if condition="{redirects -> f:count()}">
+        <f:then>
+            <f:render section="filter" arguments="{_all}" />
+            <f:render section="table" arguments="{_all}" />
+        </f:then>
+        <f:else>
+            <f:if condition="{demand.constraints}">
+                <f:then>
+                    <f:render section="filter" arguments="{_all}" />
+                    <f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.title')}">
+                        <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.message"/></p>
+                        <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
+                        </a>
+                        <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_redirect">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+
+                    <f:variable name="gotToPageUrl"><f:be.uri route="site_redirects" parameters="{action: 'overview', demand: demand.parameters, page: 987654322}" /></f:variable>
+                    <form data-on-submit="processNavigate">
+                        <input type="hidden" value="1" name="paginator-target-page" data-number-of-pages="1" data-url="{gotToPageUrl}"/>
+                    </form>
+                </f:then>
+                <f:else>
+                    <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.title')}">
+                        <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found.message"/></p>
+                        <be:link.newRecord returnUrl="{returnUrl}" class="btn btn-primary" table="sys_redirect">
+                            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_create"/>
+                        </be:link.newRecord>
+                    </f:be.infobox>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+
+</f:section>
 
 <f:section name="table">
     <div class="table-fit">

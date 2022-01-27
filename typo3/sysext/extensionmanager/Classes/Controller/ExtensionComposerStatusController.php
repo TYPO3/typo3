@@ -30,28 +30,20 @@ use TYPO3\CMS\Extensionmanager\Package\ComposerDeficitDetector;
 use TYPO3\CMS\Extensionmanager\Service\ComposerManifestProposalGenerator;
 
 /**
- * Provide information about extensions' composer status
+ * Provide information about extension's composer status.
  *
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
  */
-class ExtensionComposerStatusController extends AbstractModuleController
+class ExtensionComposerStatusController extends AbstractController
 {
-    protected ComposerDeficitDetector $composerDeficitDetector;
-    protected ComposerManifestProposalGenerator $composerManifestProposalGenerator;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
     protected string $returnUrl = '';
 
     public function __construct(
-        ComposerDeficitDetector $composerDeficitDetector,
-        ComposerManifestProposalGenerator $composerManifestProposalGenerator,
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory
+        protected readonly ComposerDeficitDetector $composerDeficitDetector,
+        protected readonly ComposerManifestProposalGenerator $composerManifestProposalGenerator,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory
     ) {
-        $this->composerDeficitDetector = $composerDeficitDetector;
-        $this->composerManifestProposalGenerator = $composerManifestProposalGenerator;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
     }
 
     protected function initializeAction(): void
@@ -79,12 +71,10 @@ class ExtensionComposerStatusController extends AbstractModuleController
             $extensions[$extensionKey] = $extensionInformation;
         }
         ksort($extensions);
-        $this->view->assign('extensions', $extensions);
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $view = $this->initializeModuleTemplate($this->request);
+        $this->registerDocHeaderButtons($view);
+        $view->assign('extensions', $extensions);
+        return $view->renderResponse('ExtensionComposerStatus/List');
     }
 
     public function detailAction(string $extensionKey): ResponseInterface
@@ -92,21 +82,17 @@ class ExtensionComposerStatusController extends AbstractModuleController
         if ($extensionKey === '') {
             return $this->redirect('list');
         }
-
+        $view = $this->initializeModuleTemplate($this->request);
+        $this->registerDocHeaderButtons($view);
         $deficit = $this->composerDeficitDetector->checkExtensionComposerDeficit($extensionKey);
-        $this->view->assignMultiple([
+        $view->assignMultiple([
             'extensionKey' => $extensionKey,
             'deficit' => $deficit,
         ]);
-
         if ($deficit !== ComposerDeficitDetector::EXTENSION_COMPOSER_MANIFEST_VALID) {
-            $this->view->assign('composerManifestMarkup', $this->getComposerManifestMarkup($extensionKey));
+            $view->assign('composerManifestMarkup', $this->getComposerManifestMarkup($extensionKey));
         }
-
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
-        $this->registerDocHeaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('ExtensionComposerStatus/Detail');
     }
 
     protected function getComposerManifestMarkup(string $extensionKey): string
@@ -116,12 +102,10 @@ class ExtensionComposerStatusController extends AbstractModuleController
             return '';
         }
         $rows = MathUtility::forceIntegerInRange(count(explode(LF, $composerManifest)), 1, PHP_INT_MAX);
-
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
             $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
-
             $codeMirrorConfig = [
                 'label' => $extensionKey . ' > composer.json',
                 'panel' => 'bottom',
@@ -132,23 +116,20 @@ class ExtensionComposerStatusController extends AbstractModuleController
                     'format' => 'json',
                 ], false),
             ];
-
             return '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>'
                 . '<textarea ' . GeneralUtility::implodeAttributes(['rows' => (string)++$rows], true) . '>' . htmlspecialchars($composerManifest) . '</textarea>'
                 . '</typo3-t3editor-codemirror>';
         }
-
         return '<textarea ' . GeneralUtility::implodeAttributes(['class' => 'form-control', 'rows' => (string)++$rows], true) . '>'
             . htmlspecialchars($composerManifest)
             . '</textarea>';
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate): void
+    protected function registerDocHeaderButtons(ModuleTemplate $view): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-        // Add "Go back" in case a return url is defined
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if ($this->returnUrl !== '') {
+            // Add "Go back" in case a return url is defined
             $buttonBar->addButton(
                 $buttonBar
                     ->makeLinkButton()

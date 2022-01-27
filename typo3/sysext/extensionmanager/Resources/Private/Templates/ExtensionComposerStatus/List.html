@@ -1,6 +1,24 @@
-<f:layout name="main" />
-<f:section name="content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:em="http://typo3.org/ns/TYPO3/CMS/Extensionmanager/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Extensionmanager/Main.js'
+        }"
+    />
+
+    <em:be.trigger triggers="{triggers}" />
+
     <h1><f:translate key="extensionComposerStatus" /></h1>
+
     <f:if condition="{extensions}">
         <f:then>
             <f:be.infobox title="Invalid composer.json files in extensions" state="-1">
@@ -75,3 +93,5 @@
         </f:else>
     </f:if>
 </f:section>
+
+</html>
