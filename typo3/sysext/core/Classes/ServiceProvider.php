@@ -40,6 +40,11 @@ class ServiceProvider extends AbstractServiceProvider
         return __DIR__ . '/../';
     }
 
+    protected static function getPackageName(): string
+    {
+        return 'typo3/cms-core';
+    }
+
     public function getFactories(): array
     {
         return [

@@ -55,6 +55,8 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
     {
         return [
             'module' => $this,
+            'packageName' => $this->packageName,
+            'absolutePackagePath' => $this->absolutePackagePath,
             'access' => $this->access,
             'target' => Bootstrap::class . '::handleBackendRequest',
         ];

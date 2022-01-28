@@ -26,6 +26,11 @@ class Package1ServiceProviderMock extends AbstractServiceProvider
         return __DIR__ . '/../../Http/Fixtures/Package1/';
     }
 
+    protected static function getPackageName(): string
+    {
+        return 'typo3/testing-package1';
+    }
+
     public function getFactories(): array
     {
         return [];

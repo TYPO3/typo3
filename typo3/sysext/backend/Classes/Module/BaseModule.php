@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Backend\Module;
 abstract class BaseModule
 {
     protected string $identifier;
+    protected string $packageName = '';
+    protected string $absolutePackagePath = '';
     protected string $path = '';
     protected string $iconIdentifier = '';
     protected string $title = '';
@@ -199,6 +201,8 @@ abstract class BaseModule
     public static function createFromConfiguration(string $identifier, array $configuration): static
     {
         $obj = new static($identifier);
+        $obj->packageName = (string)($configuration['packageName'] ?? '');
+        $obj->absolutePackagePath = (string)($configuration['absolutePackagePath'] ?? '');
         $obj->path = '/' . ltrim((string)$configuration['path'], '/');
         $obj->standalone = (bool)($configuration['standalone'] ?? false);
 

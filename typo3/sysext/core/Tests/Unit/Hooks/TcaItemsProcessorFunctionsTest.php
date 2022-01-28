@@ -166,10 +166,12 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
             'aModule' => $moduleFactory->createModule('aModule', [
                 'iconIdentifier' => 'a-module',
                 'labels' => 'LLL:EXT:a-module/locallang',
+                'packageName' => 'typo3/cms-testing',
             ]),
             'bModule' => $moduleFactory->createModule('bModule', [
                 'iconIdentifier' => 'b-module',
                 'labels' => 'LLL:EXT:b-module/locallang',
+                'packageName' => 'typo3/cms-testing',
             ]),
         ]);
 

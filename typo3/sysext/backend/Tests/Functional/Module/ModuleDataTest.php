@@ -66,6 +66,7 @@ class ModuleDataTest extends FunctionalTestCase
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'my_module',
             [
+                'packageName' => 'typo3/cms-testing',
                 'path' => '/module/my/module',
                 'moduleData' => $defaultValues,
             ]

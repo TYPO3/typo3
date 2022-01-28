@@ -45,6 +45,11 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         throw new \BadMethodCallException('PseudoServiceProvider does not support the getPackagePath() method.', 1562354465);
     }
 
+    protected static function getPackageName(): string
+    {
+        throw new \BadMethodCallException('PseudoServiceProvider does not support the getPackageName() method.', 1643372902);
+    }
+
     /**
      * @return array
      */
@@ -59,6 +64,9 @@ final class PseudoServiceProvider extends AbstractServiceProvider
     public function getExtensions(): array
     {
         $packagePath = $this->package->getPackagePath();
+        // Fallback to empty string if dealing with an extension in non-composer mode
+        // that still does not provide composer.json.
+        $packageName = $this->package->getValueFromComposerManifest('name') ?? '';
         $extensions = parent::getExtensions();
 
         // The static configure*() methods in AbstractServiceProvider use the
@@ -69,9 +77,10 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         // AbstractServiceProvider configure methods are aware of this and
         // provide an optional third parameter which is forwarded as
         // dynamic path to getPackagePath().
+        // Same logic for $packageName.
         foreach ($extensions as $serviceName => $previousCallable) {
-            $extensions[$serviceName] = static function (ContainerInterface $container, $value) use ($previousCallable, $packagePath) {
-                return ($previousCallable)($container, $value, $packagePath);
+            $extensions[$serviceName] = static function (ContainerInterface $container, $value) use ($previousCallable, $packagePath, $packageName) {
+                return ($previousCallable)($container, $value, $packagePath, $packageName);
             };
         }
 

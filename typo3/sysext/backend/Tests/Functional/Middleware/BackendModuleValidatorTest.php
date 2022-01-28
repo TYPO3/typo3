@@ -69,7 +69,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
     {
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'web_layout',
-            ['path' => '/module/web/layout']
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/module/web/layout',
+            ]
         );
 
         $response = $this->subject->process(
@@ -88,6 +91,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'web_layout',
             [
+                'packageName' => 'typo3/cms-testing',
                 'path' => '/module/web/layout',
                 'moduleData' => [
                     'sort' => 'name',
@@ -116,7 +120,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
     {
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'some_module',
-            ['path' => '/some/module']
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/some/module',
+            ]
         );
 
         $this->expectException(\RuntimeException::class);
@@ -138,7 +145,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
         // site_configuration requires admin access
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'site_configuration',
-            ['path' => '/module/site/configuration']
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/module/site/configuration',
+            ]
         );
 
         $this->expectException(\RuntimeException::class);
@@ -157,7 +167,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
     {
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'web_layout',
-            ['path' => '/module/web/layout']
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/module/web/layout',
+            ]
         );
 
         $this->expectException(\RuntimeException::class);
@@ -178,7 +191,10 @@ class BackendModuleValidatorTest extends FunctionalTestCase
     {
         $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
             'web_layout',
-            ['path' => '/module/web/layout']
+            [
+                'packageName' => 'typo3/cms-testing',
+                'path' => '/module/web/layout',
+            ]
         );
 
         $response = $this->subject->process(

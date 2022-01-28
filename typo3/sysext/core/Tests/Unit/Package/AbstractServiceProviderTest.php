@@ -78,6 +78,7 @@ class AbstractServiceProviderTest extends UnitTestCase
 
         $package2 = $this->prophesize(Package::class);
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2/');
+        $package2->getValueFromComposerManifest('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
         $middlewares = new ArrayObject();
@@ -113,6 +114,7 @@ class AbstractServiceProviderTest extends UnitTestCase
 
         $package2 = $this->prophesize(Package::class);
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2Disables1/');
+        $package2->getValueFromComposerManifest('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
         $middlewares = new ArrayObject();
@@ -149,6 +151,7 @@ class AbstractServiceProviderTest extends UnitTestCase
 
         $package2 = $this->prophesize(Package::class);
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2Replaces1/');
+        $package2->getValueFromComposerManifest('name')->willReturn('typo3/cms-testing');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
         $middlewares = new ArrayObject();

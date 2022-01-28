@@ -39,6 +39,13 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     abstract protected static function getPackagePath(): string;
 
     /**
+     * Return the composer package name. This is the 'name' attribute in composer.json.
+     * Note composer.json existence for 'extensions' is still not mandatory
+     * in non-composer mode, the method returns empty string in this case.
+     */
+    abstract protected static function getPackageName(): string;
+
+    /**
      * @return array
      */
     abstract public function getFactories(): array;
@@ -60,7 +67,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     /**
      * @param ContainerInterface $container
      * @param ArrayObject $middlewares
-     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $path supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
     public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, string $path = null): ArrayObject
@@ -80,15 +87,22 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param ContainerInterface $container
      * @param ArrayObject $routes
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
-    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null): ArrayObject
+    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null, string $packageName = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();
+        $packageName = $packageName ?? static::getPackageName();
         $routesFileNameForPackage = $path . 'Configuration/Backend/Routes.php';
         if (file_exists($routesFileNameForPackage)) {
             $definedRoutesInPackage = require $routesFileNameForPackage;
             if (is_array($definedRoutesInPackage)) {
+                array_walk($definedRoutesInPackage, static function (&$options) use ($packageName, $path) {
+                    // Add packageName and absolutePackagePath to all routes
+                    $options['packageName'] = $packageName;
+                    $options['absolutePackagePath'] = $path;
+                });
                 $routes->exchangeArray(array_merge($routes->getArrayCopy(), $definedRoutesInPackage));
             }
         }
@@ -99,6 +113,8 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
                 foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
                     // prefix the route with "ajax_" as "namespace"
                     $routeOptions['path'] = '/ajax' . $routeOptions['path'];
+                    $routeOptions['packageName'] = $packageName;
+                    $routeOptions['absolutePackagePath'] = $path;
                     $routes['ajax_' . $routeIdentifier] = $routeOptions;
                     $routes['ajax_' . $routeIdentifier]['ajax'] = true;
                 }
@@ -130,15 +146,22 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
      * @param ContainerInterface $container
      * @param ArrayObject $modules
      * @param string|null $path supplied when invoked internally through PseudoServiceProvider
+     * @param string|null $packageName supplied when invoked internally through PseudoServiceProvider
      * @return ArrayObject
      */
-    public static function configureBackendModules(ContainerInterface $container, ArrayObject $modules, string $path = null): ArrayObject
+    public static function configureBackendModules(ContainerInterface $container, ArrayObject $modules, string $path = null, string $packageName = null): ArrayObject
     {
         $path = $path ?? static::getPackagePath();
+        $packageName = $packageName ?? static::getPackageName();
         $modulesFileNameForPackage = $path . 'Configuration/Backend/Modules.php';
         if (file_exists($modulesFileNameForPackage)) {
             $definedModulesInPackage = require $modulesFileNameForPackage;
             if (is_array($definedModulesInPackage)) {
+                array_walk($definedModulesInPackage, static function (&$module) use ($packageName, $path) {
+                    // Add packageName and absolutePackagePath to all modules
+                    $module['packageName'] = $packageName;
+                    $module['absolutePackagePath'] = $path;
+                });
                 $modules->exchangeArray(array_merge($modules->getArrayCopy(), $definedModulesInPackage));
             }
         }

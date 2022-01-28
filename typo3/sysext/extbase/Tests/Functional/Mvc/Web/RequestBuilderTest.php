@@ -44,6 +44,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -76,6 +77,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -109,6 +111,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -181,6 +184,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -239,6 +243,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -292,6 +297,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -326,6 +332,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -381,6 +388,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -415,6 +423,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -453,6 +462,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -487,6 +497,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -518,6 +529,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -552,6 +564,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -589,6 +602,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -623,6 +637,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -661,6 +676,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -697,6 +713,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
@@ -736,6 +753,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $pluginName = 'blog';
 
         $module = ExtbaseModule::createFromConfiguration($pluginName, [
+            'packageName' => 'typo3/cms-blog-example',
             'path' => '/blog-example',
             'extensionName' => $extensionName,
             'controllerActions' => [
