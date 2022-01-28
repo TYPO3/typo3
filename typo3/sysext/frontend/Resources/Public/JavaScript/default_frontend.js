@@ -82,7 +82,7 @@
     Array.from(mailtoElements).forEach(function(element) {
         element.addEventListener('click', function(evt) {
           evt.preventDefault();
-          var dataset= evt.target.dataset;
+          var dataset = evt.currentTarget.dataset;
           var value = dataset.mailtoToken;
           var offset = parseInt(dataset.mailtoVector, 10) * -1;
           document.location.href = decryptString(value, offset);
@@ -93,7 +93,7 @@
     Array.from(openElements).forEach(function(element) {
         element.addEventListener('click', function(evt) {
           evt.preventDefault();
-          var dataset= evt.target.dataset;
+          var dataset = evt.currentTarget.dataset;
           var url = dataset.windowUrl;
           var target = dataset.windowTarget || null;
           var features = dataset.windowFeatures || null;
