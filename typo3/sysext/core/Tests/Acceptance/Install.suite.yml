@@ -4,7 +4,7 @@ modules:
     - WebDriver:
         url: '%typo3TestingAcceptanceBaseUrl%/typo3temp/var/tests/acceptance'
         browser: chrome
-        wait: 1
+        wait: 2
         host: chrome
     - Asserts
 
