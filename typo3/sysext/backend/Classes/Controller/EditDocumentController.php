@@ -423,7 +423,7 @@ class EditDocumentController
                 $this->R_URI = rtrim($this->R_URI, '&') .
                     HttpUtility::buildQueryString([
                         'showPreview' => true,
-                        'popViewId' => $this->getPreviewPageId(),
+                        'popViewId' => $parsedBody['popViewId'] ?? $this->getPreviewPageId(),
                     ], (empty($this->R_URL_getvars) ? '?' : '&'));
             }
             return new RedirectResponse($this->R_URI, 302);
