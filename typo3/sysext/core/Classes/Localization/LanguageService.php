@@ -168,6 +168,10 @@ class LanguageService
     public function sL($input): string
     {
         $input = (string)$input;
+        // early return for empty input to avoid cache and language file reading on first hit.
+        if ($input === '') {
+            return $input;
+        }
         $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
