@@ -3362,6 +3362,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 ->where($timeConditions);
 
             if (! filter_var($recursive, FILTER_VALIDATE_BOOLEAN)) {
+                // if not recursive, only use given pid to fetch items
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->eq(
                         'pid',
@@ -3371,6 +3372,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
 
             if (filter_var($recursive, FILTER_VALIDATE_BOOLEAN)) {
+                // if recursive, fetch the subpages of given pid and add them to the query
                 $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
                 $pageTree = explode(',', $queryGenerator->getTreeList((int) $pid, 999, 0, 'and hidden = 0'));
                 $queryBuilder->andWhere(
