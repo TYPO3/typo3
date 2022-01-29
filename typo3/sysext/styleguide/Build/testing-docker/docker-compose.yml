@@ -452,6 +452,24 @@ services:
         php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon
       "
 
+  phpstan_generate_baseline:
+    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
+    user: "${HOST_UID}"
+    volumes:
+      - ${ROOT_DIR}:${ROOT_DIR}
+      - ${HOST_HOME}:${HOST_HOME}
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: ${ROOT_DIR}
+    command: >
+      /bin/sh -c "
+        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+          set -x
+        fi
+        php -v | grep '^PHP';
+        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --generate-baseline=Build/phpstan-baseline.neon
+      "
+
   unit:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"

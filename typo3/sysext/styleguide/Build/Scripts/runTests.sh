@@ -80,6 +80,7 @@ Options:
             - functional: functional tests
             - lint: PHP linting
             - phpstan: phpstan analyze
+            - phpstanGenerateBaseline: regenerate phpstan baseline, handy after phpstan updates
             - unit (default): PHP unit tests
 
     -a <mysqli|pdo_mysql>
@@ -346,6 +347,12 @@ case ${TEST_SUITE} in
     phpstan)
         setUpDockerComposeDotEnv
         docker-compose run phpstan
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    phpstanGenerateBaseline)
+        setUpDockerComposeDotEnv
+        docker-compose run phpstan_generate_baseline
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
