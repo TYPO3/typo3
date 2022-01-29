@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -52,6 +53,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             $pageTsConfigOfFlex = $this->getPageTsOfFlex($result, $fieldName, $simpleDataStructureIdentifier);
             $result = $this->modifyOuterDataStructure($result, $fieldName, $pageTsConfigOfFlex);
             $result = $this->removeExcludeFieldsFromDataStructure($result, $fieldName, $simpleDataStructureIdentifier);
+            $result = $this->mergeFieldDefinitionWithPageTsConfig($result, $fieldName, $pageTsConfigOfFlex);
             $result = $this->removeDisabledFieldsFromDataStructure($result, $fieldName, $pageTsConfigOfFlex);
             // A "normal" call opening a record: Process data structure and field values
             // This is called for "new" container ajax request too, since display conditions from section container
@@ -205,6 +207,32 @@ class TcaFlexProcess implements FormDataProviderInterface
             }
         }
 
+        return $result;
+    }
+
+    /**
+     * Merge fields of FlexForm TCA with config of pageTSConfig
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @param array $pageTsConfig Given pageTsConfig of this flex form
+     * @return array Modified item array
+     */
+    protected function mergeFieldDefinitionWithPageTsConfig(array $result, $fieldName, $pageTsConfig)
+    {
+        $dataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+        foreach ($dataStructure['sheets'] ?? [] as $sheetName => $sheetDefinition) {
+            if (!isset($pageTsConfig[$sheetName . '.'])) {
+                continue;
+            }
+            foreach ($sheetDefinition['ROOT']['el'] ?? [] as $flexFieldName => $fieldDefinition) {
+                if (!isset($pageTsConfig[$sheetName . '.'][$flexFieldName . '.'])) {
+                    continue;
+                }
+                // Override fieldConf by fieldTSconfig:
+                $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$sheetName]['ROOT']['el'][$flexFieldName]['config'] = FormEngineUtility::overrideFieldConf($fieldDefinition['config'], $pageTsConfig[$sheetName . '.'][$flexFieldName . '.'] ?? []);
+            }
+        }
         return $result;
     }
 
