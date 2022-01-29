@@ -1077,7 +1077,7 @@ class BackendUtility
         return GeneralUtility::makeInstance(ResourceFactory::class)
                 ->getFileObject($fileId)
                 ->process($taskType, $configuration)
-                ->getPublicUrl(true);
+                ->getPublicUrl();
     }
 
     /**
