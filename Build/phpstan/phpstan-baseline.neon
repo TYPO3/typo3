@@ -116,11 +116,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
 
 		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Backend\\\\Composer\\\\InstallerScripts\\:\\:register\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Composer/InstallerScripts.php
-
-		-
 			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/ColumnSelectorController.php
@@ -1801,122 +1796,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
 
 		-
-			message: "#^Call to method ensureDirectoryExists\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/CliEntryPoint.php
-
-		-
-			message: "#^Call to method findShortestPathCode\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/CliEntryPoint.php
-
-		-
-			message: "#^Call to method getComposer\\(\\) on an unknown class Composer\\\\Script\\\\Event\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/CliEntryPoint.php
-
-		-
-			message: "#^Instantiated class Composer\\\\Util\\\\Filesystem not found\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/CliEntryPoint.php
-
-		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\CliEntryPoint\\:\\:run\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/CliEntryPoint.php
-
-		-
-			message: "#^Call to method getComposer\\(\\) on an unknown class Composer\\\\Script\\\\Event\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/InstallerScripts.php
-
-		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\InstallerScripts\\:\\:register\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/InstallerScripts.php
-
-		-
-			message: "#^Call to method ensureDirectoryExists\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getComposer\\(\\) on an unknown class Composer\\\\Script\\\\Event\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getExtra\\(\\) on an unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getIO\\(\\) on an unknown class Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getName\\(\\) on an unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getReplaces\\(\\) on an unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method getType\\(\\) on an unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method isSymlinkedDirectory\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method normalizePath\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to method relativeSymlink\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Call to static method isPlatformPackage\\(\\) on an unknown class Composer\\\\Repository\\\\PlatformRepository\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Instantiated class Composer\\\\Util\\\\Filesystem not found\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
 			message: "#^Offset string on null in empty\\(\\) does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^PHPDoc tag @var for variable \\$composerPackage contains unknown class Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:run\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Parameter \\$rootPackage of method TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:handleRootPackage\\(\\) has invalid type Composer\\\\Package\\\\PackageInterface\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Composer\\\\PackageArtifactBuilder\\:\\:\\$event has unknown class Composer\\\\Script\\\\Event as its type\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
@@ -2146,34 +2026,9 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Messaging/FlashMessage.php
 
 		-
-			message: "#^Call to method ensureDirectoryExists\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Cache/ComposerPackageArtifact.php
-
-		-
-			message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Cache\\\\ComposerPackageArtifact\\:\\:__construct\\(\\) has invalid type Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Cache/ComposerPackageArtifact.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Package\\\\Cache\\\\ComposerPackageArtifact\\:\\:\\$filesystem has unknown class Composer\\\\Util\\\\Filesystem as its type\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Package/Cache/ComposerPackageArtifact.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\:\\:require\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/Cache/PackageStatesPackageCache.php
-
-		-
-			message: "#^Call to method findShortestPath\\(\\) on an unknown class Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Package/Package.php
-
-		-
-			message: "#^Parameter \\$filesystem of method TYPO3\\\\CMS\\\\Core\\\\Package\\\\Package\\:\\:makePathRelative\\(\\) has invalid type Composer\\\\Util\\\\Filesystem\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Package/Package.php
 
 		-
 			message: "#^Offset string does not exist on null\\.$#"
@@ -2569,16 +2424,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:calculateWithParentheses\\(\\) should return int but returns string\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Utility/MathUtility.php
-
-		-
-			message: "#^Call to method writeError\\(\\) on an unknown class Composer\\\\IO\\\\IOInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Resources/PHP/ClassMapGenerator.php
-
-		-
-			message: "#^Parameter \\$io of method Composer\\\\Autoload\\\\ClassMapGenerator\\:\\:createMap\\(\\) has invalid type Composer\\\\IO\\\\IOInterface\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Resources/PHP/ClassMapGenerator.php
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$GLOBALS\\['BE_USER'\\] BackendUserAuthentication\\)\\: Unexpected token \"\\$GLOBALS\", expected type at offset 9$#"
@@ -7431,11 +7276,6 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
 
 		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Frontend\\\\Composer\\\\InstallerScripts\\:\\:register\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Classes/Composer/InstallerScripts.php
-
-		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/CaseContentObject.php
@@ -9294,11 +9134,6 @@ parameters:
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
-			message: "#^Parameter \\$event of method TYPO3\\\\CMS\\\\Install\\\\Composer\\\\InstallerScripts\\:\\:register\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
-			count: 2
-			path: ../../typo3/sysext/install/Classes/Composer/InstallerScripts.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:authUser\\(\\)\\.$#"
