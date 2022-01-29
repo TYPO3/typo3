@@ -35,6 +35,8 @@ class BackendLayoutRendererTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     /**
      * @var string[]
      */

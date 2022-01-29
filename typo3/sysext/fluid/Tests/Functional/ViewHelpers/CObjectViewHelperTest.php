@@ -30,6 +30,8 @@ class CObjectViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     /**
      * Add basic FE setup
      */

@@ -38,6 +38,8 @@ class RedirectServiceTest extends FunctionalTestCase
     use \Prophecy\PhpUnit\ProphecyTrait;
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     /**
      * @var string[]
      */
