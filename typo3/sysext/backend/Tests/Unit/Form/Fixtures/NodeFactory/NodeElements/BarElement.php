@@ -13,8 +13,8 @@ class BarElement implements NodeInterface
     {
     }
 
-    public function render()
+    public function render(): array
     {
-        // TODO: Implement render() method.
+        return [];
     }
 }
