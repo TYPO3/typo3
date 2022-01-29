@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class NoteVisibleFieldsTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['sys_note'];
 
     /**

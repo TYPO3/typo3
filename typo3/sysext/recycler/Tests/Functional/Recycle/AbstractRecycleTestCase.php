@@ -26,9 +26,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 abstract class AbstractRecycleTestCase extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['recycler'];
 
     /**

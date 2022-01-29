@@ -32,9 +32,7 @@ class TemplatesPathsTest extends FunctionalTestCase
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
-    /**
-     * @var array
-     */
+
     protected $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test',
     ];

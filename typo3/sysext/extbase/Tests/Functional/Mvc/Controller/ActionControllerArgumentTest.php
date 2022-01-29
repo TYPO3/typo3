@@ -40,9 +40,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
     private string $extensionName = 'ActionControllerArgumentTest';
     private ?string $pluginNamespacePrefix = null;
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test',
     ];

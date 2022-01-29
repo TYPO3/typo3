@@ -26,9 +26,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ExportPageTreeViewTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial',
     ];

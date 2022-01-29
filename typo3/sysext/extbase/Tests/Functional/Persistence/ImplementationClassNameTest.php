@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ImplementationClassNameTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/a',
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/b',

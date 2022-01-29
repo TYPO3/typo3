@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mm',

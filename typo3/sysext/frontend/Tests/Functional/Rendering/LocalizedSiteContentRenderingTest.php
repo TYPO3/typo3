@@ -104,14 +104,8 @@ class LocalizedSiteContentRenderingTest extends AbstractDataHandlerActionTestCas
     const TABLE_Content = 'tt_content';
     const TABLE_Pages = 'pages';
 
-    /**
-     * @var string[]
-     */
     protected $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var array
-     */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];

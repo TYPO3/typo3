@@ -46,9 +46,6 @@ class ActionControllerTest extends FunctionalTestCase
      */
     protected $subject;
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test',
     ];

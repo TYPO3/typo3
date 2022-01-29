@@ -31,9 +31,6 @@ class AddTest extends FunctionalTestCase
      */
     protected $persistentManager;
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

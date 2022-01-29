@@ -29,8 +29,6 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
 
     /**
      * Explicitly copy extension directory & files instead of using symlink with $testExtensionsToLoad
-     *
-     * @var array
      */
     protected $pathsToProvideInTestInstance = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_resources' => 'typo3conf/ext/test_resources',

@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FrontendUserGroupRepositoryTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['felogin'];
 
     /**

@@ -32,9 +32,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 abstract class AbstractImportExportTestCase extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected $coreExtensionsToLoad = ['impexp', 'form'];
 
     /**

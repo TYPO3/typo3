@@ -37,9 +37,6 @@ class BackendLayoutRendererTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [];
 
-    /**
-     * @var string[]
-     */
     protected $coreExtensionsToLoad = ['workspaces'];
 
     /**

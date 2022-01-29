@@ -37,9 +37,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
     protected const TABLE_Content = 'tt_content';
     protected const TABLE_Pages = 'pages';
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**
@@ -47,9 +44,6 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
      */
     protected $contentRepository;
 
-    /**
-     * @var array
-     */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];

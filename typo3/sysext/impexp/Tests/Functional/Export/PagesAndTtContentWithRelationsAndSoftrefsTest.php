@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',

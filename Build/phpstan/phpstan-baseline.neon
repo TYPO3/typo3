@@ -341,11 +341,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Clipboard\\\\ClipboardTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
@@ -376,18 +371,8 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\FormInlineAjaxControllerTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
 			count: 6
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\LocalizationControllerTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
 
 		-
@@ -422,11 +407,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
 
@@ -482,11 +462,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\View\\\\Drawing\\\\BackendLayoutRendererTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
 
@@ -1441,11 +1416,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Authentication/BackendUserAuthenticationTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Core\\\\ClassAliasLoaderTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Core/ClassAliasLoaderTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\:\\:add\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
@@ -1454,21 +1424,6 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$collection CategoryCollection\\)\\: Unexpected token \"\\$collection\", expected type at offset 9$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Category\\\\Collection\\\\CategoryCollectionTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\DataHandling\\\\DataHandler\\\\SecurityTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/SecurityTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilderTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/Expression/ExpressionBuilderTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$code\\)\\: Unexpected token \"\\$code\", expected type at offset 26$#"
@@ -1497,11 +1452,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectation$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\IO\\\\PharStreamWrapperInterceptorTest\\:\\:\\$pathsToProvideInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToProvideInTestInstance\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
 
@@ -1542,11 +1492,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Utility\\\\RootlineUtilityTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
 
@@ -2786,11 +2731,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Mvc\\\\Controller\\\\ActionControllerArgumentTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
-
-		-
 			message: "#^Variable \\$expectations on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
@@ -2806,34 +2746,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Mvc\\\\Controller\\\\ActionControllerTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
-
-		-
 			message: "#^Variable \\$validator in PHPDoc tag @var does not match assigned variable \\$conjunctionValidator\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Mvc\\\\Controller\\\\ControllerArgumentsMappingTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ControllerArgumentsMappingTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Mvc\\\\Validation\\\\ActionControllerValidationTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Validation/ActionControllerValidationTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Pagination\\\\QueryResultPaginatorTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Pagination/QueryResultPaginatorTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\AddTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/AddTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -2841,47 +2756,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/CountTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\CountTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/CountTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\EnableFieldsTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/EnableFieldsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMapFactoryTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapFactoryTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMapperTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\ImplementationClassNameTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/ImplementationClassNameTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\InTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/InTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\IsDirtyTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/IsDirtyTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:between\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\OperatorTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
 
@@ -2889,16 +2764,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryLocalizedDataTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\QueryLocalizedDataTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryLocalizedDataTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\QueryParserTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryParserTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 126$#"
@@ -2946,32 +2811,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\TranslatedSiteContentTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\TranslatedSiteContentTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\TranslationTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslationTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/WorkspaceTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\WorkspaceTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/WorkspaceTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Persistence\\\\WorkspaceTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/WorkspaceTest.php
 
@@ -2987,11 +2827,6 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Service\\\\ExtensionServiceTest\\:\\:\\$backendConfigurationManager\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Service/ExtensionServiceTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Service\\\\ExtensionServiceTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Service/ExtensionServiceTest.php
 
@@ -3606,21 +3441,6 @@ parameters:
 			path: ../../typo3/sysext/felogin/Classes/Controller/PasswordRecoveryController.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Functional\\\\Domain\\\\Repository\\\\FrontendUserGroupRepositoryTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Functional/Domain/Repository/FrontendUserGroupRepositoryTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Functional\\\\Domain\\\\Repository\\\\FrontendUserRepositoryTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Functional/Domain/Repository/FrontendUserRepositoryTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Functional\\\\Tca\\\\ContentVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Functional/Tca/ContentVisibleFieldsTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\RedirectModeHandler\\:\\:reveal\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
@@ -3669,11 +3489,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Filemetadata\\\\Tests\\\\Functional\\\\Tca\\\\FileMetadataVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filemetadata/Tests/Functional/Tca/FileMetadataVisibleFieldsTest.php
 
 		-
 			message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContext\\:\\:getParserConfiguration\\(\\)\\.$#"
@@ -3861,11 +3676,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\View\\\\TemplatesPathsTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
@@ -3919,11 +3729,6 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\ViewHelpers\\\\Link\\\\FileViewHelperTest\\:\\:\\$pathsToProvideInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToProvideInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
@@ -4121,16 +3926,6 @@ parameters:
 			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\Functional\\\\Rendering\\\\SecureHtmlRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\Functional\\\\Tca\\\\ContentVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Tca/ContentVisibleFieldsTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
@@ -4152,11 +3947,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\FunctionalDeprecated\\\\Rendering\\\\SecureHtmlRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
 
@@ -4314,11 +4104,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Functional\\\\Mvc\\\\Validation\\\\MimeTypeValidatorTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Mvc/Validation/MimeTypeValidatorTest.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
@@ -4636,11 +4421,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\ContentObject\\\\FluidTemplateContentObjectTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
@@ -4706,16 +4486,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\Rendering\\\\LocalizedSiteContentRenderingTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\Rendering\\\\LocalizedSiteContentRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$expectations\\)\\: Unexpected token \"\\$expectations\", expected type at offset 44$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
@@ -4726,11 +4496,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\Rendering\\\\TitleTagRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
@@ -4756,11 +4521,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\Rendering\\\\UriPrefixRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
@@ -4782,11 +4542,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\SiteHandling\\\\AbstractTestCase\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
 
@@ -5586,74 +5341,9 @@ parameters:
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\AbstractImportExportTestCase\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/AbstractImportExportTestCase.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\ExportPageTreeViewTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/ExportPageTreeViewTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\IrreTutorialRecordsTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/IrreTutorialRecordsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\PagesAndTtContentTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\PagesAndTtContentTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentTest.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$subject Export\\)\\: Unexpected token \"\\$subject\", expected type at offset 69$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentWithImagesTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\PagesAndTtContentWithImagesTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentWithImagesTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Export\\\\PagesAndTtContentWithRelationsAndSoftrefsTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentWithRelationsAndSoftrefsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\ExportTest\\:\\:\\$pathsToProvideInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToProvideInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ExportTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\ExportTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ExportTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Import\\\\IrreTutorialRecordsTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Import/IrreTutorialRecordsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Import\\\\PagesAndTtContentWithImagesInFilledDatabaseTest\\:\\:\\$pathsToProvideInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToProvideInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImagesInFilledDatabaseTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\ImportExportTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ImportExportTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\ImportTest\\:\\:\\$pathsToLinkInTestInstance is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$pathsToLinkInTestInstance\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/ImportTest.php
 
 		-
 			message: "#^Variable \\$subject in PHPDoc tag @var does not match assigned variable \\$importMock\\.$#"
@@ -5831,16 +5521,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/BackendUserLanguageMigration.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Functional\\\\Updates\\\\RowUpdater\\\\WorkspaceNewPlaceholderRemovalTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/Updates/RowUpdater/WorkspaceNewPlaceholderRemovalTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Functional\\\\Updates\\\\ShortcutRecordsMigrationTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/Updates/ShortcutRecordsMigrationTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Functional/ViewHelpers/Format/PhpErrorCodeViewHelperTest.php
@@ -5939,11 +5619,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:setDepth\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/linkvalidator/Classes/Task/ValidatorTaskAdditionalFieldProvider.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Linkvalidator\\\\Tests\\\\Functional\\\\Repository\\\\BrokenLinkRepositoryTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Tests/Functional/Repository/BrokenLinkRepositoryTest.php
 
 		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
@@ -6046,11 +5721,6 @@ parameters:
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Recycler\\\\Tests\\\\Functional\\\\Recycle\\\\AbstractRecycleTestCase\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
 			message: "#^Variable \\$previousValueOfEntityLoader might not be defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
@@ -6071,11 +5741,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Classes/Command/CheckIntegrityCommand.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Redirects\\\\Tests\\\\Functional\\\\Service\\\\IntegrityServiceTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/IntegrityServiceTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
@@ -6097,11 +5762,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Redirects\\\\Tests\\\\Functional\\\\Service\\\\RedirectServiceTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
 
@@ -6116,11 +5776,6 @@ parameters:
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
 
 		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Scheduler\\\\Tests\\\\Functional\\\\Tca\\\\TaskGroupVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Tests/Functional/Tca/TaskGroupVisibleFieldsTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
@@ -6146,11 +5801,6 @@ parameters:
 			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
 
 		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Seo\\\\Tests\\\\Functional\\\\Canonical\\\\CanonicalGeneratorTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
@@ -6172,11 +5822,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
-
-		-
-			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Seo\\\\Tests\\\\Functional\\\\HrefLang\\\\HrefLangGeneratorTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
 
@@ -6184,11 +5829,6 @@ parameters:
 			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
 			count: 2
 			path: ../../typo3/sysext/seo/Tests/Functional/XmlSitemap/XmlSitemapRecordsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\SysNote\\\\Tests\\\\Functional\\\\Tca\\\\NoteVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/sys_note/Tests/Functional/Tca/NoteVisibleFieldsTest.php
 
 		-
 			message: "#^Variable \\$liveUrl on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -6219,21 +5859,6 @@ parameters:
 			message: "#^Cannot access an offset on false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Workspaces\\\\Tests\\\\Functional\\\\Service\\\\WorkspaceServiceTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Workspaces\\\\Tests\\\\Functional\\\\Tca\\\\WorkspaceStageVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Tca/WorkspaceStageVisibleFieldsTest.php
-
-		-
-			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Workspaces\\\\Tests\\\\Functional\\\\Tca\\\\WorkspaceVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Tca/WorkspaceVisibleFieldsTest.php
 
 		-
 			message: "#^PHPDoc tag @return with type Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\> is incompatible with native type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\.$#"

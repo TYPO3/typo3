@@ -37,9 +37,6 @@ class DataMapFactoryTest extends FunctionalTestCase
      */
     protected $dataMapFactory;
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

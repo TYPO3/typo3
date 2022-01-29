@@ -46,9 +46,6 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @var string[]
-     */
     protected $coreExtensionsToLoad = ['fluid_styled_content'];
 
     protected function setUp(): void

@@ -35,9 +35,6 @@ class ClipboardTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [];
 
-    /**
-     * @var string[]
-     */
     protected $coreExtensionsToLoad = ['workspaces'];
 
     private Clipboard $subject;

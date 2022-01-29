@@ -35,9 +35,6 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test',
     ];
