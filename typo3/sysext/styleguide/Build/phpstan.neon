@@ -4,6 +4,9 @@ includes:
 parameters:
   level: 6
 
+  # Use local cache dir instead of /tmp
+  tmpDir: ../.Build/.cache/phpstan
+
   paths:
     - %currentWorkingDirectory%/Classes
     - %currentWorkingDirectory%/Tests
