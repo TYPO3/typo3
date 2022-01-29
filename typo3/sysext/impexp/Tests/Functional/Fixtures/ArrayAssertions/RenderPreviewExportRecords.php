@@ -119,7 +119,6 @@ return [
     [
       'ref' => 'sys_file:4',
       'type' => 'rel',
-      'msg' => 'LOST RELATION (Path: /)',
       'title' => '<span title="/">sys_file:4</span>',
       'msg' => 'LOST RELATION (Path: /)',
       'preCode' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-danger" title="sys_file:4"><span class="t3js-icon icon icon-size-small icon-state-default icon-status-dialog-warning" data-identifier="status-dialog-warning">
