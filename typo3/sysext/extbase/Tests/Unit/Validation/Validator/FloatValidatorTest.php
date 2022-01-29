@@ -20,26 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the float validator
- */
 class FloatValidatorTest extends UnitTestCase
 {
-    protected string $validatorClassName = FloatValidator::class;
-
-    public function setup(): void
-    {
-        parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-    }
-
-    /**
-     * Data provider with valid floats
-     *
-     * @return array
-     */
     public function validFloats(): array
     {
         return [
@@ -55,18 +37,15 @@ class FloatValidatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validFloats
-     * @param mixed $float
      */
-    public function floatValidatorReturnsNoErrorsForAValidFloat($float): void
+    public function floatValidatorReturnsNoErrorsForAValidFloat(float|string $float): void
     {
-        self::assertFalse($this->validator->validate($float)->hasErrors());
+        $validator = $this->getMockBuilder(FloatValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->getMock();
+        self::assertFalse($validator->validate($float)->hasErrors());
     }
 
-    /**
-     * Data provider with invalid floats
-     *
-     * @return array
-     */
     public function invalidFloats(): array
     {
         return [
@@ -79,11 +58,13 @@ class FloatValidatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidFloats
-     * @param mixed $float
      */
-    public function floatValidatorReturnsErrorForAnInvalidFloat($float): void
+    public function floatValidatorReturnsErrorForAnInvalidFloat(int|string $float): void
     {
-        self::assertTrue($this->validator->validate($float)->hasErrors());
+        $validator = $this->getMockBuilder(FloatValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->getMock();
+        self::assertTrue($validator->validate($float)->hasErrors());
     }
 
     /**
@@ -91,6 +72,9 @@ class FloatValidatorTest extends UnitTestCase
      */
     public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
-        self::assertCount(1, $this->validator->validate(123456)->getErrors());
+        $validator = $this->getMockBuilder(FloatValidator::class)
+            ->onlyMethods(['translateErrorMessage'])
+            ->getMock();
+        self::assertCount(1, $validator->validate(123456)->getErrors());
     }
 }

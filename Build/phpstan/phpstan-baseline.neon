@@ -2971,11 +2971,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\FloatValidatorTest\\:\\:\\$validator\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/FloatValidatorTest.php
-
-		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\IntegerValidatorTest\\:\\:\\$validator\\.$#"
 			count: 4
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/IntegerValidatorTest.php
