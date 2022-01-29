@@ -30,9 +30,6 @@ class ClassAliasLoaderTest extends FunctionalTestCase
      */
     protected bool $initializeDatabase = false;
 
-    /**
-     * @var array Load test fixture extension
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Cache/Core/Fixtures/Extensions/aliases_test',
     ];

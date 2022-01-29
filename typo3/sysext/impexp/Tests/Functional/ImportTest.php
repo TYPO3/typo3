@@ -23,9 +23,6 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ImportTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected array $pathsToLinkInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/XmlImports' => 'fileadmin/xml_imports',
     ];

@@ -23,9 +23,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 class UploadedResourceViewHelperTest extends FunctionalTestCase
 {
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['form'];
 
     /**

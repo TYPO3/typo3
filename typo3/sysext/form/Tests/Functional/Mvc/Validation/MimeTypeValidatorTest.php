@@ -28,9 +28,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MimeTypeValidatorTest extends FunctionalTestCase
 {
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['form'];
 
     /**

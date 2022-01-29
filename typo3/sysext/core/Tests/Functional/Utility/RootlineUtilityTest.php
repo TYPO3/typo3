@@ -42,9 +42,6 @@ class RootlineUtilityTest extends FunctionalTestCase
         'ES' => ['id' => 3, 'title' => 'Spanish', 'locale' => 'es_ES.UTF8', 'iso' => 'es', 'hrefLang' => 'es-ES', 'direction' => ''],
     ];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     protected function setUp(): void

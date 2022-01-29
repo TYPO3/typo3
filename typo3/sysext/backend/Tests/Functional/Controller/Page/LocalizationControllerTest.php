@@ -35,9 +35,6 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 
     protected BackendUserAuthentication $backendUser;
 
-    /**
-     * @var array
-     */
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**

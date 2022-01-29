@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ContentVisibleFieldsTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected array $coreExtensionsToLoad = ['fluid_styled_content'];
 
     /**

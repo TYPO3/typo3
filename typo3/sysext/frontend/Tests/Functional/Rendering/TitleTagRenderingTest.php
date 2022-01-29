@@ -27,9 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class TitleTagRenderingTest extends FunctionalTestCase
 {
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected array $configurationToUseInTestInstance = [

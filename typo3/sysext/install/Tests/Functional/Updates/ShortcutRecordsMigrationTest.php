@@ -31,10 +31,7 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
     private const TABLE_NAME = 'sys_be_shortcuts';
 
     /**
-     * Require additional core extensions so the routes
-     * of the modules in the fixture are available.
-     *
-     * @var string[]
+     * Require additional core extensions so routes of modules in the fixture are available.
      */
     protected array $coreExtensionsToLoad = ['beuser', 'filelist', 'form', 'info', 'lowlevel'];
 

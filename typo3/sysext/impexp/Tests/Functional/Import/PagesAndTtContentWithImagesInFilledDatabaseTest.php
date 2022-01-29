@@ -31,9 +31,6 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         '/fileadmin/user_upload',
     ];
 
-    /**
-     * @var array
-     */
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
     ];

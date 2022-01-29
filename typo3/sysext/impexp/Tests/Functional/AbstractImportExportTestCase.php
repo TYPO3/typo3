@@ -31,16 +31,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 abstract class AbstractImportExportTestCase extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected array $coreExtensionsToLoad = ['impexp', 'form'];
 
     /**
      * Absolute path to files that must be removed
      * after a test - handled in tearDown
-     *
-     * @var array
      */
     protected array $testFilesToDelete = [];
 

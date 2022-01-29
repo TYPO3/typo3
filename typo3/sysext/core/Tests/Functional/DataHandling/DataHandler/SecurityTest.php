@@ -41,9 +41,6 @@ class SecurityTest extends FunctionalTestCase
      */
     private $actionService;
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
     protected function setUp(): void

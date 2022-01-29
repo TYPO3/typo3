@@ -28,9 +28,6 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',

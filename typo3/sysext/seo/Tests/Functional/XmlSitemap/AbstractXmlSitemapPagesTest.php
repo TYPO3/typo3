@@ -32,9 +32,6 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
         'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
     ];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void

@@ -40,9 +40,6 @@ class RedirectServiceTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['redirects'];
 
     protected array $testFilesToDelete = [];

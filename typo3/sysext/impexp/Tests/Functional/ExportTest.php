@@ -23,16 +23,10 @@ use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 class ExportTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload',
     ];
 
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Extensions/template_extension',
     ];

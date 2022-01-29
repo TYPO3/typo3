@@ -38,9 +38,6 @@ class TreeControllerTest extends FunctionalTestCase
 
     protected const LANGUAGE_PRESETS = [];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**

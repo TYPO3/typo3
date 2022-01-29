@@ -55,9 +55,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.svg',
     ];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['rte_ckeditor'];
 
     protected array $configurationToUseInTestInstance = [

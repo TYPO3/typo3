@@ -23,9 +23,6 @@ use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
 class IrreTutorialRecordsTest extends AbstractImportExportTestCase
 {
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv',
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mm',

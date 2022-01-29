@@ -32,9 +32,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TranslationTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

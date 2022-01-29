@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ExpressionBuilderTest extends FunctionalTestCase
 {
-    /**
-     * @var array Extension comes with table setup to test inSet() methods of ExpressionBuilder
-     */
     protected array $testExtensionsToLoad = [
         'typo3/sysext/core/Tests/Functional/Database/Fixtures/Extensions/test_expressionbuilder',
     ];

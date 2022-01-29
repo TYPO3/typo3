@@ -24,9 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class WorkspaceVisibleFieldsTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     /**

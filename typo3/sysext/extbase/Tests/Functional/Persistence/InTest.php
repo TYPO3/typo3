@@ -35,9 +35,6 @@ class InTest extends FunctionalTestCase
      */
     protected $postRepository;
 
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

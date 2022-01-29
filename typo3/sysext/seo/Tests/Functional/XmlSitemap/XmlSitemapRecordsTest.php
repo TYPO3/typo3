@@ -25,9 +25,6 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
  */
 class XmlSitemapRecordsTest extends AbstractTestCase
 {
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void

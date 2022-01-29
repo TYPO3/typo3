@@ -28,9 +28,6 @@ class CountTest extends FunctionalTestCase
      */
     protected $numberOfRecordsInFixture = 14;
 
-    /**
-     * @var array
-     */
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     /**

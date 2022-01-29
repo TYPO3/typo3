@@ -44,9 +44,6 @@ class CanonicalGeneratorTest extends FunctionalTestCase
         ],
     ];
 
-    /**
-     * @var string[]
-     */
     protected array $coreExtensionsToLoad = ['seo'];
 
     protected function setUp(): void

@@ -34,9 +34,6 @@ class IntegrityServiceTest extends FunctionalTestCase
      */
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var array
-     */
     protected array $coreExtensionsToLoad = ['redirects'];
 
     /**
