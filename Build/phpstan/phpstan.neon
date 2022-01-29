@@ -1,6 +1,7 @@
 includes:
   - phpstan-baseline.neon
   - ../../vendor/friendsoftypo3/phpstan-typo3/extension.neon
+  - ../../vendor/jangregor/phpstan-prophecy/extension.neon
 
 parameters:
   # Use local .cache dir instead of /tmp
