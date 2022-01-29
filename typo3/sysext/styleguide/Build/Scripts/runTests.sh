@@ -47,15 +47,6 @@ handleDbmsAndDriverOptions() {
                 exit 1
             fi
             ;;
-        mssql)
-            [ -z ${DATABASE_DRIVER} ] && DATABASE_DRIVER="sqlsrv"
-            if [ "${DATABASE_DRIVER}" != "sqlsrv" ] && [ "${DATABASE_DRIVER}" != "pdo_sqlsrv" ]; then
-                echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
-                echo >&2
-                echo "call \".Build/Scripts/runTests.sh -h\" to display help and valid options" >&2
-                exit 1
-            fi
-            ;;
         postgres|sqlite)
             if [ -n "${DATABASE_DRIVER}" ]; then
                 echo "Invalid option -a ${DATABASE_DRIVER} with -d ${DBMS}" >&2
@@ -203,7 +194,7 @@ while getopts ":s:a:d:p:e:xy:nhuv" OPT; do
             PHP_VERSION=${OPTARG}
             if ! [[ ${PHP_VERSION} =~ ^(8.1)$ ]]; then
                 INVALID_OPTIONS+=("p ${OPTARG}")
-            fi            
+            fi
             ;;
         e)
             EXTRA_TEST_OPTIONS=${OPTARG}

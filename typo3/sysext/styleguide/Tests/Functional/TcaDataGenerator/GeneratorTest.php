@@ -36,19 +36,7 @@ class GeneratorTest extends FunctionalTestCase
     ];
 
     /**
-     * Just a dummy to show that at least one test is actually executed on mssql
-     *
      * @test
-     */
-    public function dummy(): void
-    {
-        self::assertTrue(true);
-    }
-
-    /**
-     * @test
-     * @group not-mssql
-     * @todo Generator does not work using mssql DMBS yet ... fix this
      */
     public function generatorCreatesBasicRecord(): void
     {
