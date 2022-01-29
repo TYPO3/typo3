@@ -774,13 +774,9 @@ final class TcaFlexProcessTest extends FunctionalTestCase
                                                 'aFlexField' => [
                                                     'label' => 'aFlexFieldLabel',
                                                     'config' => [
-                                                        'type' => 'radio',
-                                                        'items' => [
-                                                            0 => [
-                                                                'label' => 'aLabel',
-                                                                'value' => 'aValue',
-                                                            ],
-                                                        ],
+                                                        'type' => 'group',
+                                                        'allowed' => 'pages',
+                                                        'size' => 3,
                                                     ],
                                                 ],
                                             ],
@@ -799,6 +795,9 @@ final class TcaFlexProcessTest extends FunctionalTestCase
                             'aFlex.' => [
                                 'sDEF.' => [
                                     'aFlexField.' => [
+                                        'config.' => [
+                                            'size' => 5,
+                                        ],
                                         'altLabels.' => [
                                             '0' => 'labelOverride',
                                         ],
@@ -832,13 +831,9 @@ final class TcaFlexProcessTest extends FunctionalTestCase
                             'aFlexField' => [
                                 'label' => 'aFlexFieldLabel',
                                 'config' => [
-                                    'type' => 'radio',
-                                    'items' => [
-                                        0 => [
-                                            'label' => 'labelOverride',
-                                            'value' => 'aValue',
-                                        ],
-                                    ],
+                                    'type' => 'group',
+                                    'allowed' => 'pages',
+                                    'size' => 5,
                                 ],
                             ],
                         ],
