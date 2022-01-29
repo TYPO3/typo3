@@ -34,8 +34,6 @@ services:
     stop_grace_period: 1s
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -396,8 +394,6 @@ services:
     user: "${HOST_UID}"
     volumes:
     - ${ROOT_DIR}:${ROOT_DIR}
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     working_dir: ${ROOT_DIR}
     command: >
       /bin/sh -c "
