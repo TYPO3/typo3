@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
-use TYPO3\CMS\install\FolderStructure\NodeInterface;
+use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNode;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;

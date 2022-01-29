@@ -13,8 +13,8 @@ class FooElement implements NodeInterface
     {
     }
 
-    public function render()
+    public function render(): array
     {
-        // TODO: Implement render() method.
+        return [];
     }
 }

@@ -41,6 +41,8 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
      */
     protected $subject;
 
+    protected ActionService $actionService;
+
     protected function setUp(): void
     {
         parent::setUp();

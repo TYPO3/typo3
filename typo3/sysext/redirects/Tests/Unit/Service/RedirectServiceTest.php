@@ -75,7 +75,7 @@ class RedirectServiceTest extends UnitTestCase
         $this->siteFinder = $this->prophesize(SiteFinder::class);
         $this->redirectRepository = $this->prophesize(RedirectRepository::class);
 
-        $this->redirectService = new RedirectService($this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal(), $this->redirectRepository->reveal());
+        $this->redirectService = new RedirectService($this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal());
         $this->redirectService->setLogger($loggerProphecy->reveal());
 
         $GLOBALS['SIM_ACCESS_TIME'] = 42;

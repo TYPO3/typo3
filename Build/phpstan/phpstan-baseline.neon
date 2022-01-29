@@ -806,22 +806,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/BarElement.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement\\:\\:render\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/BarElement.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\FooElement has an unused parameter \\$data\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/FooElement.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\FooElement has an unused parameter \\$nodeFactory\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/FooElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\FooElement\\:\\:render\\(\\) should return array but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeElements/FooElement.php
 
@@ -9506,11 +9496,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Updates/BackendUserLanguageMigration.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Functional\\\\Updates\\\\RowUpdater\\\\WorkspaceNewPlaceholderRemovalTest\\:\\:\\$actionService\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Functional/Updates/RowUpdater/WorkspaceNewPlaceholderRemovalTest.php
-
-		-
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Functional\\\\Updates\\\\RowUpdater\\\\WorkspaceNewPlaceholderRemovalTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Functional/Updates/RowUpdater/WorkspaceNewPlaceholderRemovalTest.php
@@ -9574,11 +9559,6 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$node LinkNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
 			count: 21
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/LinkNodeTest.php
-
-		-
-			message: "#^Interface TYPO3\\\\CMS\\\\Install\\\\FolderStructure\\\\NodeInterface referenced with incorrect case\\: TYPO3\\\\CMS\\\\install\\\\FolderStructure\\\\NodeInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/RootNodeTest.php
 
 		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$child NodeInterface\\)\\: Unexpected token \"\\$child\", expected type at offset 9$#"
@@ -9886,11 +9866,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/IntegrityServiceTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService constructor invoked with 4 parameters, 3 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/IntegrityServiceTest.php
-
-		-
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Redirects\\\\Tests\\\\Functional\\\\Service\\\\IntegrityServiceTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/IntegrityServiceTest.php
@@ -9952,11 +9927,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService\\:\\:method\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService constructor invoked with 4 parameters, 3 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
 
