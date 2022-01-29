@@ -9036,11 +9036,6 @@ parameters:
 			path: ../../typo3/sysext/impexp/Tests/Functional/ExportTest.php
 
 		-
-			message: "#^Array has 2 duplicate keys with value 'msg' \\('msg', 'msg'\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php
-
-		-
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Impexp\\\\Tests\\\\Functional\\\\Import\\\\IrreTutorialRecordsTest\\:\\:\\$testExtensionsToLoad is not covariant with PHPDoc type array\\<string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$testExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/Import/IrreTutorialRecordsTest.php
