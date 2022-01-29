@@ -28,6 +28,8 @@ class EmailViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     /**
      * @test
      */

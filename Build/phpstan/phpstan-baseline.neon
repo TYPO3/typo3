@@ -401,11 +401,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Authentication/PasswordResetTest.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Clipboard\\\\ClipboardTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
@@ -479,11 +474,6 @@ parameters:
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\LocalizationControllerTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
-
-		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
@@ -574,11 +564,6 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\View\\\\Drawing\\\\BackendLayoutRendererTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
@@ -6546,11 +6531,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\ViewHelpers\\\\CObjectViewHelperTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
@@ -6606,11 +6586,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Format/HtmlViewHelperTest.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\ViewHelpers\\\\Link\\\\EmailViewHelperTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
@@ -6641,11 +6616,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\ViewHelpers\\\\Link\\\\PageViewHelperTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
@@ -6719,11 +6689,6 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Fluid\\\\Tests\\\\Functional\\\\ViewHelpers\\\\Uri\\\\PageViewHelperTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
@@ -6806,11 +6771,6 @@ parameters:
 			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
 
 		-
-			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\Functional\\\\Rendering\\\\SecureHtmlRenderingTest\\:\\:LANGUAGE_PRESETS through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
 			message: "#^PHPDoc type array of property TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\Functional\\\\Tca\\\\ContentVisibleFieldsTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Tca/ContentVisibleFieldsTest.php
@@ -6843,11 +6803,6 @@ parameters:
 		-
 			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\FunctionalDeprecated\\\\Rendering\\\\SecureHtmlRenderingTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\FluidStyledContent\\\\Tests\\\\FunctionalDeprecated\\\\Rendering\\\\SecureHtmlRenderingTest\\:\\:LANGUAGE_PRESETS through static\\:\\:\\.$#"
-			count: 2
 			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
 
 		-
@@ -9661,11 +9616,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/IntegrityServiceTest.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Redirects\\\\Tests\\\\Functional\\\\Service\\\\RedirectServiceTest\\)\\:\\:LANGUAGE_PRESETS\\.$#"
-			count: 2
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
 			message: "#^Call to an undefined method Prophecy\\\\Prophecy\\\\ObjectProphecy\\:\\:resolve\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
@@ -9793,11 +9743,6 @@ parameters:
 		-
 			message: "#^PHPDoc type array\\<string\\> of property TYPO3\\\\CMS\\\\Seo\\\\Tests\\\\Functional\\\\Canonical\\\\CanonicalGeneratorTest\\:\\:\\$coreExtensionsToLoad is not covariant with PHPDoc type array\\<int, string\\> of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\FunctionalTestCase\\:\\:\\$coreExtensionsToLoad\\.$#"
 			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\Seo\\\\Tests\\\\Functional\\\\Canonical\\\\CanonicalGeneratorTest\\:\\:LANGUAGE_PRESETS through static\\:\\:\\.$#"
-			count: 2
 			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
 
 		-

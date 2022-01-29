@@ -26,6 +26,8 @@ class PageViewHelperTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     public function renderDataProvider(): array
     {
         return [

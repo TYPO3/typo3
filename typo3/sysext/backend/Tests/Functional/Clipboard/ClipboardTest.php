@@ -33,6 +33,8 @@ class ClipboardTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected const LANGUAGE_PRESETS = [];
+
     /**
      * @var string[]
      */
