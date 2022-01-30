@@ -2016,11 +2016,6 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Configuration/AbstractConfigurationManager.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Core/Bootstrap.php

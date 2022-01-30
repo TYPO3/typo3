@@ -168,7 +168,7 @@ abstract class AbstractConfigurationManager implements SingletonInterface
                     FrontendSimulatorUtility::simulateFrontendEnvironment(GeneralUtility::makeInstance(ContentObjectRenderer::class));
                 }
                 $conf = $this->typoScriptService->convertPlainArrayToTypoScriptArray($frameworkConfiguration['persistence']);
-                $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf ?? []);
+                $frameworkConfiguration['persistence']['storagePid'] = $GLOBALS['TSFE']->cObj->stdWrapValue('storagePid', $conf);
                 if ($isBackend) {
                     FrontendSimulatorUtility::resetFrontendEnvironment();
                 }
