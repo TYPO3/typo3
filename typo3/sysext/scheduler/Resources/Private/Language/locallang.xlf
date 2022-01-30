@@ -460,7 +460,7 @@
 				<source>This task anonymizes the IP addresses to enforce the privacy of the persisted data.</source>
 			</trans-unit>
 			<trans-unit id="label.ipAnonymization.table" resname="label.ipAnonymization.table">
-				<source>Table to anoymize</source>
+				<source>Table to anonymize</source>
 			</trans-unit>
 			<trans-unit id="label.ipAnonymization.additionalInformationTable" resname="label.ipAnonymization.additionalInformationTable">
 				<source>Table: %s after %s days</source>
