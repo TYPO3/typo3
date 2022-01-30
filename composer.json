@@ -101,6 +101,7 @@
 		"typo3fluid/fluid": "^2.7.1"
 	},
 	"require-dev": {
+		"bnf/phpstan-psr-container": "^1.0",
 		"codeception/codeception": "^4.1.22",
 		"codeception/lib-asserts": "^1.13.2",
 		"codeception/module-asserts": "^1.3.1",

@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication\Mfa\Provider;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifest;
+use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class RecoveryCodesProviderTest extends FunctionalTestCase
 {
     private BackendUserAuthentication $user;
-    private MfaProviderManifest $subject;
+    private MfaProviderManifestInterface $subject;
 
     protected array $configurationToUseInTestInstance = [
         'BE' => [

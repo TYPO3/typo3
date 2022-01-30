@@ -2441,21 +2441,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerName\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getFormat\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:between\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
