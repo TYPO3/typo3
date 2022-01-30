@@ -38,41 +38,7 @@ class DateTimeConverterTest extends UnitTestCase
         $this->converter = new DateTimeConverter();
     }
 
-    /**
-     * @test
-     */
-    public function checkMetadata(): void
-    {
-        self::assertEquals(['string', 'integer', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals('DateTime', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
-    }
-
     /** String to DateTime testcases  **/
-
-    /**
-     * @test
-     */
-    public function canConvertFromReturnsFalseIfTargetTypeIsNotDateTime(): void
-    {
-        self::assertFalse($this->converter->canConvertFrom('Foo', 'SomeOtherType'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromReturnsTrueIfSourceTypeIsAString(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom('Foo', 'DateTime'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromReturnsTrueIfSourceTypeIsAnEmptyString(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom('', 'DateTime'));
-    }
 
     /**
      * @test
@@ -206,14 +172,6 @@ class DateTimeConverterTest extends UnitTestCase
         $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
         self::assertInstanceOf('DateTime', $date);
         self::assertSame((string)$source, $date->format('U'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromReturnsTrueIfSourceTypeIsAnArray(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom([], 'DateTime'));
     }
 
     /**

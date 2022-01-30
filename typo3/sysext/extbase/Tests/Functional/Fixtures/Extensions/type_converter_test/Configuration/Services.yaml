@@ -1,0 +1,37 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ExtbaseTeam\TypeConverterTest\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/{Model,Validator}'
+
+  ExtbaseTeam\TypeConverterTest\Property\TypeConverter\CountableTypeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: Countable
+        sources: integer
+
+  ExtbaseTeam\TypeConverterTest\Property\TypeConverter\ExtendedCountableTypeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: ExtbaseTeam\TypeConverterTest\Domain\Model\ExtendedCountableInterface
+        sources: integer
+
+  ExtbaseTeam\TypeConverterTest\Property\TypeConverter\AnimalTypeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: ExtbaseTeam\TypeConverterTest\Domain\Model\Animal
+        sources: string
+
+  ExtbaseTeam\TypeConverterTest\Property\TypeConverter\CatTypeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: ExtbaseTeam\TypeConverterTest\Domain\Model\Cat
+        sources: string

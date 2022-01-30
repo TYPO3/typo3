@@ -23,11 +23,7 @@ use TYPO3\CMS\Extbase\Property\TypeConverterInterface;
 
 /**
  * Type converter which provides sensible default implementations for most methods. If you extend this class
- * you only need to do the following:
- * - set $sourceTypes
- * - set $targetType
- * - set $priority
- * - implement convertFrom()
+ * you only need to implement convertFrom()
  */
 abstract class AbstractTypeConverter implements TypeConverterInterface, SingletonInterface
 {
@@ -35,6 +31,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * The source types this converter can convert.
      *
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = [];
 
@@ -42,6 +39,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * The target type this converter can convert to.
      *
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = '';
 
@@ -49,6 +47,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * The priority for this converter.
      *
      * @var int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $priority;
 
@@ -57,6 +56,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * Must be PHP simple types, classes or object is not allowed.
      *
      * @return string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     public function getSupportedSourceTypes(): array
     {
@@ -68,6 +68,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * Can be a simple type or a class name.
      *
      * @return string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     public function getSupportedTargetType(): string
     {
@@ -75,6 +76,10 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     }
 
     /**
+     * @todo The concept of this method is flawed because it enables the override of the target type depending on the
+     *       structure of the source. So, technically we no longer convert type A to B but source of type A with
+     *       structure X to type B defined by X. This makes a type converter non-deterministic.
+     *
      * Returns the $originalTargetType unchanged in this implementation.
      *
      * @param mixed $source the source data
@@ -91,6 +96,7 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
      * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
      *
      * @return int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     public function getPriority(): int
     {
@@ -98,13 +104,8 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     }
 
     /**
-     * todo: this method should be abstract or removed, contract is defined by TypeConverterInterface.
-     *
-     * This implementation always returns TRUE for this method.
-     *
      * @param mixed $source the source data
-     * @param string $targetType the type to convert to.
-     * @return bool TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
+     * @deprecated will be removed in TYPO3 v13.0
      */
     public function canConvertFrom($source, string $targetType): bool
     {
@@ -112,7 +113,8 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     }
 
     /**
-     * todo: this method should be abstract or removed, contract is defined by TypeConverterInterface.
+     * @todo this method is only used for converter sources that have children (i.e. objects). Introduce another
+     *       ChildPropertyAwareTypeConverterInterface and drop this method from the main interface
      *
      * Returns an empty list of sub property names
      *
@@ -125,7 +127,8 @@ abstract class AbstractTypeConverter implements TypeConverterInterface, Singleto
     }
 
     /**
-     * todo: this method should be abstract or removed, contract is defined by TypeConverterInterface.
+     * @todo this method is only used for converter sources that have children (i.e. objects). Introduce another
+     *       ChildPropertyAwareTypeConverterInterface and drop this method from the main interface
      *
      * This method is never called, as getSourceChildPropertiesToBeConverted() returns an empty array.
      *

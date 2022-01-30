@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ObjectStorageConverterTest extends FunctionalTestCase

@@ -40,27 +40,9 @@ class StringConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata(): void
-    {
-        self::assertEquals(['string', 'integer'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
-    }
-
-    /**
-     * @test
-     */
     public function convertFromShouldReturnSourceString(): void
     {
         self::assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromShouldReturnTrue(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom('myString', 'string'));
     }
 
     /**

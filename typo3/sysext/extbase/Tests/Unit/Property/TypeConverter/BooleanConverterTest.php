@@ -36,16 +36,6 @@ class BooleanConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata(): void
-    {
-        self::assertEquals(['boolean', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
-    }
-
-    /**
-     * @test
-     */
     public function convertFromDoesNotModifyTheBooleanSource(): void
     {
         $source = true;

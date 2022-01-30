@@ -26,27 +26,26 @@ class BooleanConverter extends AbstractTypeConverter
 {
     /**
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = ['boolean', 'string'];
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = 'boolean';
 
     /**
      * @var int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $priority = 10;
 
     /**
      * Actually convert from $source to $targetType
      *
-     * @param string $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return bool
+     * @param mixed $source
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
     {

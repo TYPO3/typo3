@@ -41,16 +41,6 @@ class IntegerConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata(): void
-    {
-        self::assertEquals(['integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals('integer', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
-    }
-
-    /**
-     * @test
-     */
     public function convertFromShouldCastTheStringToInteger(): void
     {
         self::assertSame(15, $this->converter->convertFrom('15', 'integer'));
@@ -79,38 +69,6 @@ class IntegerConverterTest extends UnitTestCase
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric(): void
     {
         self::assertInstanceOf(Error::class, $this->converter->convertFrom('not numeric', 'integer'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromShouldReturnTrueForANumericStringSource(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom('15', 'integer'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromShouldReturnTrueForAnIntegerSource(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom(123, 'integer'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromShouldReturnTrueForAnEmptyValue(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom('', 'integer'));
-    }
-
-    /**
-     * @test
-     */
-    public function canConvertFromShouldReturnTrueForANullValue(): void
-    {
-        self::assertTrue($this->converter->canConvertFrom(null, 'integer'));
     }
 
     /**

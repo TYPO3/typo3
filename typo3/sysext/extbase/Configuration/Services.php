@@ -6,6 +6,7 @@ namespace TYPO3\CMS\Extbase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use TYPO3\CMS\Extbase\DependencyInjection\TypeConverterPass;
 
 return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container) {
     $container->registerForAutoconfiguration(Mvc\RequestHandlerInterface::class)->addTag('extbase.request_handler');
@@ -26,4 +27,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             }
         }
     });
+
+    $container->addCompilerPass(new TypeConverterPass('extbase.type_converter'));
 };

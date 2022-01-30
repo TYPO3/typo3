@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property\TypeConverter;
 
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Animal;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ObjectConverterTest extends FunctionalTestCase
@@ -153,12 +153,12 @@ class ObjectConverterTest extends FunctionalTestCase
     {
         $class = new class() {
             /**
-             * @var ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal>
+             * @var ObjectStorage<\ExtbaseTeam\TypeConverterTest\Domain\Model\Animal>
              */
             protected ObjectStorage $collection;
 
             /**
-             * @return ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal>
+             * @return ObjectStorage<\ExtbaseTeam\TypeConverterTest\Domain\Model\Animal>
              */
             public function getCollection(): ObjectStorage
             {
@@ -166,7 +166,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
 
             /**
-             * @param ObjectStorage<\TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal> $collection
+             * @param ObjectStorage<\ExtbaseTeam\TypeConverterTest\Domain\Model\Animal> $collection
              */
             public function setCollection(ObjectStorage $collection): void
             {
@@ -437,7 +437,7 @@ class ObjectConverterTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": The given type "TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal" is not a subtype of "');
+        $this->expectExceptionMessage('Exception while property mapping at property path "": The given type "ExtbaseTeam\TypeConverterTest\Domain\Model\Animal" is not a subtype of "');
 
         $class = new class() {
         };

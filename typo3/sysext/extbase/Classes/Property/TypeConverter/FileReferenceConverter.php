@@ -29,11 +29,13 @@ class FileReferenceConverter extends AbstractFileFolderConverter
 {
     /**
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = ['integer'];
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = FileReference::class;
 

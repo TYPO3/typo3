@@ -39,16 +39,6 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkMetadata(): void
-    {
-        self::assertEquals(['array', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
-    }
-
-    /**
-     * @test
-     */
     public function convertFromDoesNotModifyTheSourceArray(): void
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
@@ -122,31 +112,6 @@ class ArrayConverterTest extends UnitTestCase
     public function canConvertWithConfigurationFromString(string $source, PropertyMappingConfigurationInterface $configuration, array $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array', [], $configuration));
-    }
-
-    /**
-     * @return array
-     */
-    public function canConvertFromDataProvider(): array
-    {
-        return [
-            'Can convert empty string' => ['', true],
-            'Can convert not empty string' => ['foo', true],
-            'Can not convert number' => [12, false],
-            'Can convert array' => [['foo'], true],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider canConvertFromDataProvider
-     *
-     * @param mixed $source
-     * @param bool $expectedResult
-     */
-    public function canConvertFromReturnsCorrectBooleans($source, bool $expectedResult): void
-    {
-        self::assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
     }
 
     /**

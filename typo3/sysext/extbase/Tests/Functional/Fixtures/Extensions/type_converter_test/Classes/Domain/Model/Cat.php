@@ -15,68 +15,41 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
+namespace ExtbaseTeam\TypeConverterTest\Domain\Model;
 
 class Cat extends Animal
 {
-    /**
-     * @var string|null
-     */
-    protected $color;
+    protected ?string $color = null;
 
-    /**
-     * @var int|null
-     */
-    protected $height;
+    protected ?int $height = null;
 
-    /**
-     * @var int|null
-     */
-    protected $numberOfEars;
+    protected ?int $numberOfEars = null;
 
-    /**
-     * @return string|null
-     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @param string|null $color
-     */
     public function setColor(?string $color): void
     {
         $this->color = $color;
     }
 
-    /**
-     * @return int|null
-     */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    /**
-     * @param int|null $height
-     */
     public function setHeight(?int $height): void
     {
         $this->height = $height;
     }
 
-    /**
-     * @return int|null
-     */
     public function getNumberOfEars(): ?int
     {
         return $this->numberOfEars;
     }
 
-    /**
-     * @param int|null $numberOfEars
-     */
     public function setNumberOfEars(?int $numberOfEars): void
     {
         $this->numberOfEars = $numberOfEars;

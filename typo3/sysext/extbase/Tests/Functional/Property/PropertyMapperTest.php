@@ -17,38 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 
-use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
+use ExtbaseTeam\BlogExample\Domain\Model\Blog;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Animal;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Cat;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Countable;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\Dog;
+use ExtbaseTeam\TypeConverterTest\Domain\Model\ExtendedCountableInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
-use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Animal;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat;
-use TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\ExtendedCountableInterface;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class PropertyMapperTest extends FunctionalTestCase
 {
-    // @todo: Switch to a simple test extension that contains a test model, instead.
-    protected array $coreExtensionsToLoad = ['beuser'];
-
-    /**
-     * @test
-     */
-    public function initializeObjectThrowsDuplicateTypeConverterException(): void
+    protected function setUp(): void
     {
-        $this->expectExceptionCode(1297951378);
+        $this->coreExtensionsToLoad[] = 'extbase';
+        $this->testExtensionsToLoad[] = 'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/';
+        $this->testExtensionsToLoad[] = 'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/type_converter_test/';
 
-        $class = new class() extends ArrayConverter {
-        };
-        ExtensionUtility::registerTypeConverter(get_class($class));
-        $this->getContainer()->set(get_class($class), $class);
-        $this->getContainer()->get(PropertyMapper::class);
+        parent::setUp();
     }
 
     /**
@@ -81,7 +72,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297933823);
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
-        $propertyMapper->convert(9999, BackendUser::class);
+        $propertyMapper->convert(9999, Blog::class);
     }
 
     /**
@@ -141,39 +132,12 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('There exist at least two converters which handle the conversion to an interface with priority "10"');
 
-        $converterOne = new class() extends AbstractTypeConverter {
-            protected $priority = 10;
-            protected $sourceTypes = ['integer'];
-            protected $targetType = \Countable::class;
-
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
-            {
-                return true;
-            }
-        };
-
-        $converterTwo = new class() extends AbstractTypeConverter {
-            protected $priority = 10;
-            protected $sourceTypes = ['integer'];
-            protected $targetType = ExtendedCountableInterface::class;
-
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): bool
-            {
-                return true;
-            }
-        };
-
         $counter = new class() implements ExtendedCountableInterface {
             public function count(): int
             {
                 return 1;
             }
         };
-
-        ExtensionUtility::registerTypeConverter(get_class($converterOne));
-        $this->getContainer()->set(get_class($converterOne), $converterOne);
-        ExtensionUtility::registerTypeConverter(get_class($converterTwo));
-        $this->getContainer()->set(get_class($converterTwo), $converterTwo);
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
         $propertyMapper->convert(1, get_class($counter));
@@ -242,9 +206,7 @@ class PropertyMapperTest extends FunctionalTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(1297759968);
-        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures\Cat"');
-
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
+        $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "ExtbaseTeam\TypeConverterTest\Domain\Model\Cat"');
 
         $result = $this->getContainer()->get(PropertyMapper::class)->convert(1, Cat::class);
         self::assertNull($result);
@@ -255,20 +217,6 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject(): void
     {
-        $converter = new class() extends AbstractTypeConverter {
-            protected $priority = 10;
-            protected $sourceTypes = ['string'];
-            protected $targetType = Cat::class;
-
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Cat
-            {
-                return new Cat();
-            }
-        };
-
-        ExtensionUtility::registerTypeConverter(get_class($converter));
-        $this->getContainer()->set(get_class($converter), $converter);
-
         $result = $this->getContainer()->get(PropertyMapper::class)->convert('tigger', Cat::class);
         self::assertInstanceOf(Cat::class, $result);
     }
@@ -278,21 +226,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass(): void
     {
-        $converter = new class() extends AbstractTypeConverter {
-            protected $priority = 10;
-            protected $sourceTypes = ['string'];
-            protected $targetType = Animal::class;
-
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): Animal
-            {
-                return new Animal();
-            }
-        };
-
-        ExtensionUtility::registerTypeConverter(get_class($converter));
-        $this->getContainer()->set(get_class($converter), $converter);
-
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert('tigger', Cat::class);
+        $result = $this->getContainer()->get(PropertyMapper::class)->convert('fluffy', Dog::class);
         self::assertInstanceOf(Animal::class, $result);
     }
 
@@ -301,29 +235,8 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces(): void
     {
-        $converter = new class() extends AbstractTypeConverter {
-            protected $priority = 10;
-            protected $sourceTypes = ['integer'];
-            protected $targetType = \Countable::class;
-
-            public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null): array
-            {
-                return [];
-            }
-        };
-
-        $counter = new class() implements \Countable {
-            public function count(): int
-            {
-                return 1;
-            }
-        };
-
-        ExtensionUtility::registerTypeConverter(get_class($converter));
-        $this->getContainer()->set(get_class($converter), $converter);
-
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
-        $result = $propertyMapper->convert(1, get_class($counter));
+        $result = $propertyMapper->convert(1, Countable::class);
 
         self::assertSame([], $result);
     }

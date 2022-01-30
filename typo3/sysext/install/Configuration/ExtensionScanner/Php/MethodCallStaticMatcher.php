@@ -1322,4 +1322,11 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+        ],
+    ],
 ];

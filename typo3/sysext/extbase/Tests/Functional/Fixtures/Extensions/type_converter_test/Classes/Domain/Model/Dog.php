@@ -15,28 +15,8 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
+namespace ExtbaseTeam\TypeConverterTest\Domain\Model;
 
-class Animal
+class Dog extends Animal
 {
-    /**
-     * @var string
-     */
-    protected string $name;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 }

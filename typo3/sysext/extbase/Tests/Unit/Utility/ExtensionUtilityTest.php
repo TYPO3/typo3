@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use TYPO3\CMS\Extbase\Core\Bootstrap;
-use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\SecondController;
@@ -360,28 +359,6 @@ class ExtensionUtilityTest extends UnitTestCase
             'EXT:indexed_search/foo.gif',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
         );
-    }
-
-    /**
-     * A type converter added several times with the exact same class name must
-     * not be added more than once to the global array.
-     *
-     * @test
-     */
-    public function sameTypeConvertersRegisteredAreAddedOnlyOnce(): void
-    {
-        $typeConverterClassName = ArrayConverter::class;
-
-        // the Extbase EXTCONF is not set at all at this point
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
-
-        ExtensionUtility::registerTypeConverter($typeConverterClassName);
-
-        self::assertEquals($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][0]);
-        self::assertCount(1, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
-
-        ExtensionUtility::registerTypeConverter($typeConverterClassName);
-        self::assertCount(1, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
     }
 
     /**

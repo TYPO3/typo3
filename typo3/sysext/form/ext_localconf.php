@@ -10,7 +10,6 @@ use TYPO3\CMS\Form\Hooks\DataStructureIdentifierHook;
 use TYPO3\CMS\Form\Hooks\FormElementHooks;
 use TYPO3\CMS\Form\Hooks\ImportExportHook;
 use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration;
-use TYPO3\CMS\Form\Mvc\Property\TypeConverter\FormDefinitionArrayConverter;
 
 defined('TYPO3') or die();
 
@@ -52,10 +51,6 @@ call_user_func(static function () {
         = PropertyMappingConfiguration::class;
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'][1613296803]
         = PropertyMappingConfiguration::class;
-
-    ExtensionUtility::registerTypeConverter(
-        FormDefinitionArrayConverter::class
-    );
 
     // Register "formvh:" namespace
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['formvh'][] = 'TYPO3\\CMS\\Form\\ViewHelpers';

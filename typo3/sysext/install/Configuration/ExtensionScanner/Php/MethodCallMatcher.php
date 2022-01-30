@@ -5098,7 +5098,35 @@ return [
             'Breaking-96351-UnusedTemplateService-updateRootlineDataMethodRemoved.rst',
         ],
     ],
-    'TTYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getMailTo' => [
+    'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedSourceTypes' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getSupportedTargetType' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->getPriority' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Property\AbstractTypeConverter->canConvertFrom' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-94117-RegisterExtbaseTypeConvertersAsServices.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getMailTo' => [
         'numberOfMandatoryArguments' => 2,
         'maximumNumberOfArguments' => 2,
         'restFiles' => [

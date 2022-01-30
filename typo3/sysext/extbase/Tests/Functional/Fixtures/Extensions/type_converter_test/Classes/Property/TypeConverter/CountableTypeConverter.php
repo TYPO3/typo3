@@ -15,8 +15,15 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Property\Fixtures;
+namespace ExtbaseTeam\TypeConverterTest\Property\TypeConverter;
 
-interface ExtendedCountableInterface extends \Countable
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
+
+class CountableTypeConverter extends AbstractTypeConverter
 {
+    public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
+    {
+        return [];
+    }
 }

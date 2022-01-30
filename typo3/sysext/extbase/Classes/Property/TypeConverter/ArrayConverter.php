@@ -32,16 +32,19 @@ class ArrayConverter extends AbstractTypeConverter
 
     /**
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = ['array', 'string'];
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = 'array';
 
     /**
      * @var int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $priority = 10;
 
@@ -52,6 +55,7 @@ class ArrayConverter extends AbstractTypeConverter
      * @param string $targetType
      * @return bool
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated will be removed in TYPO3 v13.0
      */
     public function canConvertFrom($source, string $targetType): bool
     {

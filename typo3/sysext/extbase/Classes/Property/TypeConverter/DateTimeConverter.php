@@ -77,16 +77,19 @@ class DateTimeConverter extends AbstractTypeConverter
 
     /**
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = ['string', 'integer', 'array'];
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = \DateTime::class;
 
     /**
      * @var int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $priority = 10;
 

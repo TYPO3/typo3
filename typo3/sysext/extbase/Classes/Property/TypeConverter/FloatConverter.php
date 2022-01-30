@@ -39,16 +39,19 @@ class FloatConverter extends AbstractTypeConverter
 
     /**
      * @var string[]
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $sourceTypes = ['float', 'integer', 'string'];
 
     /**
      * @var string
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $targetType = 'float';
 
     /**
      * @var int
+     * @deprecated will be removed in TYPO3 v13.0, as this is defined in Services.yaml.
      */
     protected $priority = 10;
 
@@ -56,10 +59,7 @@ class FloatConverter extends AbstractTypeConverter
      * Actually convert from $source to $targetType, by doing a typecast.
      *
      * @param mixed $source
-     * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return float|\TYPO3\CMS\Extbase\Error\Error
+     * @return float|\TYPO3\CMS\Extbase\Error\Error|null
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {

@@ -25,22 +25,6 @@ namespace TYPO3\CMS\Extbase\Property;
 interface TypeConverterInterface
 {
     /**
-     * Returns the list of source types the TypeConverter can handle.
-     * Must be PHP simple types, classes or object is not allowed.
-     *
-     * @return string[]
-     */
-    public function getSupportedSourceTypes(): array;
-
-    /**
-     * Return the target type this TypeConverter converts to.
-     * Can be a simple type or a class name.
-     *
-     * @return string
-     */
-    public function getSupportedTargetType(): string;
-
-    /**
      * Returns the type for a given source, depending on e.g. the __type setting or other properties.
      *
      * @param mixed $source the source data
@@ -49,23 +33,6 @@ interface TypeConverterInterface
      * @return string
      */
     public function getTargetTypeForSource($source, string $originalTargetType, PropertyMappingConfigurationInterface $configuration = null): string;
-
-    /**
-     * Return the priority of this TypeConverter. TypeConverters with a high priority are chosen before low priority.
-     *
-     * @return int
-     */
-    public function getPriority(): int;
-
-    /**
-     * Here, the TypeConverter can do some additional runtime checks to see whether
-     * it can handle the given source data and the given target type.
-     *
-     * @param mixed $source the source data
-     * @param string $targetType the type to convert to.
-     * @return bool TRUE if this TypeConverter can convert from $source to $targetType, FALSE otherwise.
-     */
-    public function canConvertFrom($source, string $targetType): bool;
 
     /**
      * Return a list of sub-properties inside the source object.

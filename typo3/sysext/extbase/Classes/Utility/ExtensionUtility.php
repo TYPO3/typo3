@@ -248,17 +248,14 @@ tt_content.' . $pluginSignature . ' {
      * Register a type converter by class name.
      *
      * @param string $typeConverterClassName
+     * @deprecated will be removed in TYPO3 v13.0. Register type converters via Services.yaml in your extension(s).
      */
     public static function registerTypeConverter($typeConverterClassName)
     {
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']) ||
-            !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])
-        ) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'] = [];
-        }
-        if (!in_array($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][] = $typeConverterClassName;
-        }
+        trigger_error(
+            'Method ' . __METHOD__ . ' does no longer has any effect and will completely be removed with TYPO3 v13. Register type converters via Services.yaml instead.',
+            E_USER_DEPRECATED
+        );
     }
 
     /**

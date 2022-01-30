@@ -85,3 +85,98 @@ services:
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory:
     arguments:
       $baseCacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").toString()'
+
+  # Type Converters
+  TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: array
+        sources: array,string
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: boolean
+        sources: boolean,string
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: DateTime
+        sources: string,integer,array
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: float
+        sources: float, integer, string
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: integer
+        sources: integer, string
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Extbase\Persistence\ObjectStorage
+        sources: string, array
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 20
+        target: TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject
+        sources: integer, string, array
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: object
+        sources: array
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\StringConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: string
+        sources: string, integer
+
+  TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Core\Type\TypeInterface
+        sources: string, integer, float, boolean, array
+
+  # Experimental FAL<->extbase converter
+  TYPO3\CMS\Extbase\Property\TypeConverter\FileConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Extbase\Domain\Model\File
+        sources: integer, string
+
+  # Experimental FAL<->extbase converter
+  TYPO3\CMS\Extbase\Property\TypeConverter\FileReferenceConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Extbase\Domain\Model\FileReference
+        sources: integer
+
+  # Experimental FAL<->extbase converter
+  TYPO3\CMS\Extbase\Property\TypeConverter\FolderConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Extbase\Domain\Model\Folder
+        sources: string

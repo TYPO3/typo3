@@ -3466,19 +3466,9 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMapper.php
 
 		-
-			message: "#^Result of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMapper.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfigurationInterface\\:\\:traverseProperties\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Property/PropertyMappingConfiguration.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\FloatConverter\\:\\:convertFrom\\(\\) should return float\\|TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Property/TypeConverter/FloatConverter.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\IntegerConverter\\:\\:convertFrom\\(\\) should return int\\|TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error but returns null\\.$#"
@@ -3716,11 +3706,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
 
 		-
-			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$targetType of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMapper\\:\\:convert\\(\\) expects string, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/PropertyMapperTest.php
@@ -3956,11 +3941,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$source of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\TypeConverter\\\\BooleanConverter\\:\\:convertFrom\\(\\) expects string, true given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/BooleanConverterTest.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/DateTimeConverterTest.php
@@ -4037,7 +4017,7 @@ parameters:
 
 		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
-			count: 6
+			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
 
 		-
@@ -4074,11 +4054,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\UrlValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\UrlValidator\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/UrlValidatorTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/ext_localconf.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getArgument\\(\\)\\.$#"
