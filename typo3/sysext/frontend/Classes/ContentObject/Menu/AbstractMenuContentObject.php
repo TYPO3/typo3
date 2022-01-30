@@ -1513,32 +1513,6 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Creates an access-key for a TMENU menu item based on the menu item titles first letter
-     *
-     * @param string $title Menu item title.
-     * @return array Returns an array with keys "code" ("accesskey" attribute for the img-tag) and "alt" (text-addition to the "alt" attribute) if an access key was defined. Otherwise array was empty
-     */
-    protected function accessKey($title)
-    {
-        $tsfe = $this->getTypoScriptFrontendController();
-        // The global array ACCESSKEY is used to globally control if letters are already used!!
-        $result = [];
-        $title = trim(strip_tags($title));
-        $titleLen = strlen($title);
-        for ($a = 0; $a < $titleLen; $a++) {
-            $key = strtoupper(substr($title, $a, 1));
-            if (preg_match('/[A-Z]/', $key) && !isset($tsfe->accessKey[$key])) {
-                $tsfe->accessKey[$key] = true;
-                $result['code'] = ' accesskey="' . $key . '"';
-                $result['alt'] = ' (ALT+' . $key . ')';
-                $result['key'] = $key;
-                break;
-            }
-        }
-        return $result;
-    }
-
-    /**
      * Calls a user function for processing of internal data.
      * Used for the properties "IProcFunc" and "itemArrayProcFunc"
      *
@@ -1561,9 +1535,7 @@ abstract class AbstractMenuContentObject
      */
     protected function setATagParts()
     {
-        $params = trim($this->I['accessKey']['code'] ?? '');
-        $params = $params !== '' ? ' ' . $params : '';
-        $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . $params . '>';
+        $this->I['A1'] = '<a ' . GeneralUtility::implodeAttributes($this->I['linkHREF'], true) . '>';
         $this->I['A2'] = '</a>';
     }
 

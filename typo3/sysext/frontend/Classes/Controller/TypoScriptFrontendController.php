@@ -387,13 +387,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $currentRecord = '';
 
     /**
-     * Used by class \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
-     * to keep track of access-keys.
-     * @var array
-     */
-    public $accessKey = [];
-
-    /**
      * Used to generate page-unique keys. Point is that uniqid() functions is very
      * slow, so a unikey key is made based on this, see function uniqueHash()
      * @var int

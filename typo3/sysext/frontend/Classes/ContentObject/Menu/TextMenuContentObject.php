@@ -77,12 +77,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
             $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
-            // Set access key
-            if ($this->mconf['accessKey'] ?? false) {
-                $this->I['accessKey'] = $this->accessKey((string)($this->I['title'] ?? ''));
-            } else {
-                $this->I['accessKey'] = [];
-            }
             // Make link tag
             $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
             $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
@@ -91,7 +85,6 @@ class TextMenuContentObject extends AbstractMenuContentObject
             }
             // Title attribute of links:
             $titleAttrValue = $this->WMcObj->stdWrapValue('ATagTitle', $this->I['val']);
-            $titleAttrValue .= $this->I['accessKey']['alt'] ?? '';
             if ($titleAttrValue !== '') {
                 $this->I['linkHREF']['title'] = $titleAttrValue;
             }

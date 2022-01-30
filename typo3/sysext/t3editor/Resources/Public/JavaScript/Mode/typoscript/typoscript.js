@@ -35,7 +35,6 @@
         '_offset': kw('_offset'),
         'absRefPrefix': kw('absRefPrefix'),
         'accessibility': kw('accessibility'),
-        'accessKey': kw('accessKey'),
         'ACT': B,
         'ACTIFSUB': B,
         'ACTIFSUBRO': kw('ACTIFSUBRO'),

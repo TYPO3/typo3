@@ -2687,16 +2687,6 @@ See example on the testsite and in media/scripts/example_itemArrayProcFunc.php]]
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="accessKey" type="boolean">
-			<description><![CDATA[If set access-keys are set on the menu-links]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="collapse" type="boolean">
-			<description><![CDATA[If set, "active" menuitems that has expanded the next level on the menu will now collapse that menu again.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="debugItemConf" type="string">
 			<description><![CDATA[Outputs (by the debug()-function) the configuration arrays for each menuitem. Useful to debug optionSplit things and such...
 Applies to TMENU]]></description>

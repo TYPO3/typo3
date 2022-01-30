@@ -939,4 +939,9 @@ return [
             'Breaking-96107-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->accessKey' => [
+        'restFiles' => [
+            'Breaking-96708-RemovedSupportForAccesskeysInHMENU.rst',
+        ],
+    ],
 ];
