@@ -371,7 +371,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
 			count: 6
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
 
@@ -451,11 +451,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
 
 		-
-			message: "#^PHPDoc tag @param for parameter \\$context with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\View\\\\PageLayoutContext is not subtype of native type TYPO3\\\\CMS\\\\Backend\\\\View\\\\PageLayoutContext\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
@@ -476,34 +471,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Configuration/BackendUserConfigurationTest.php
 
 		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\FileControllerTest\\:\\:\\$fileResourceMock with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/FileControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\FileControllerTest\\:\\:\\$folderResourceMock with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/FileControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\FileControllerTest\\:\\:\\$mockFileProcessor with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Core\\\\Utility\\\\File\\\\ExtendedFileUtility is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/FileControllerTest.php
-
-		-
 			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\FileControllerTest\\:\\:\\$request with type Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\> is not subtype of native type Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/FileControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:render\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/ThumbnailControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\ThumbnailControllerTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\File\\\\ThumbnailController is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/ThumbnailControllerTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
@@ -561,66 +531,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseDefaultLanguagePageRowTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabaseDefaultLanguagePageRowTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabaseDefaultLanguagePageRow is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseDefaultLanguagePageRowTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 7
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseEditRowTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabaseEditRowTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabaseEditRow is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseEditRowTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 7
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseLanguageRowsTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabaseLanguageRowsTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabaseLanguageRows is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseLanguageRowsTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabasePageLanguageOverlayRowsTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabasePageLanguageOverlayRowsTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabasePageLanguageOverlayRows is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabasePageLanguageOverlayRowsTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 5
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseParentPageRowTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabaseParentPageRowTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabaseParentPageRow is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseParentPageRowTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:addData\\(\\)\\.$#"
-			count: 14
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseRecordTypeValueTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\FormDataProvider\\\\DatabaseRecordTypeValueTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\DatabaseRecordTypeValue is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseRecordTypeValueTest.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$processedTcaFieldToBeRemovedPath\\)\\: Unexpected token \"\\$processedTcaFieldToBeRemovedPath\", expected type at offset 122$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
@@ -661,12 +571,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/View/BackendLayoutViewTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\View\\\\BackendLayoutViewTest\\:\\:\\$backendLayoutView with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayoutView is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayoutView\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/View/BackendLayoutViewTest.php
 
@@ -1611,6 +1516,11 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/Parser/PageTsConfigParserTest.php
 
 		-
+			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcherTest\\:\\:\\$conditionMatcher \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\AbstractConditionMatcher&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Backend\\\\Configuration\\\\TypoScript\\\\ConditionMatching\\\\ConditionMatcher\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
+
+		-
 			message: "#^PHPDoc tag @var above assignment does not specify variable name\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Console/CommandRegistryTest.php
@@ -1746,29 +1656,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/ConnectionMigratorTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Parser\\\\AST\\\\AbstractCreateStatement\\:\\:\\$isTemporary\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/CreateTableFragmentTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Parser\\\\AST\\\\AbstractCreateStatement\\:\\:\\$tableName\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/CreateTableFragmentTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Parser\\\\AST\\\\AbstractCreateStatement\\:\\:\\$tableOptions\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/TableOptionsTest.php
-
-		-
 			message: "#^Method class@anonymous/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest\\.php\\:225\\:\\:getFactories\\(\\) should return array\\<callable\\(\\)\\: mixed\\> but returns array\\{invalid\\: 2\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\DependencyInjection\\\\ServiceProviderInterface\\:\\:\\$package\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/ServiceProviderRegistryTest.php
 
 		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"
@@ -1794,6 +1684,11 @@ parameters:
 			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\Resolver constructor invoked with 3 parameters, 2 required\\.$#"
 			count: 4
 			path: ../../typo3/sysext/core/Tests/Unit/ExpressionLanguage/ResolverTest.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\FormProtection\\\\BackendFormProtectionTest\\:\\:\\$subject \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/FormProtection/BackendFormProtectionTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Backend\\\\Module\\\\ModuleLoader\\>\\:\\:\\$modListGroup\\.$#"
@@ -1946,34 +1841,19 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailerTest.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getLocalDomain\\(\\)\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getHost\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getPassword\\(\\)\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getPort\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getPath\\(\\)\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Messaging\\\\FlashMessageServiceTest\\:\\:\\$flashMessageService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService\\.$#"
 			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getSettings\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getStream\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getUsername\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
+			path: ../../typo3/sysext/core/Tests/Unit/Messaging/FlashMessageServiceTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedSortedPackageKeys\\)\\: Unexpected token \"\\$expectedSortedPackageKeys\", expected type at offset 177$#"
@@ -2022,6 +1902,11 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Resource\\\\BaseTestCase\\:\\:_createFileFolderMock\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder but returns PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Resource\\\\BaseTestCase\\:\\:getSimpleFileMock\\(\\) should return PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
 
@@ -2138,11 +2023,6 @@ parameters:
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:updateProperties\\(\\)\\.$#"
 			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$driverObject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\AbstractDriver is not subtype of native type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\AbstractDriver\\|null\\.$#"
-			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
 		-
@@ -2741,14 +2621,24 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:getValidators\\(\\)\\.$#"
+			message: "#^Variable \\$validator in PHPDoc tag @var does not match assigned variable \\$conjunctionValidator\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^Variable \\$validator in PHPDoc tag @var does not match assigned variable \\$conjunctionValidator\\.$#"
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
+			count: 6
+			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerName\\(\\)\\.$#"
 			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
+			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getFormat\\(\\)\\.$#"
+			count: 3
+			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -2841,6 +2731,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/FunctionalDeprecated/Object/Fixtures/Test.php
 
 		-
+			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\AbstractConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/AbstractConfigurationManagerTest.php
+
+		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
@@ -2848,6 +2743,11 @@ parameters:
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 5
+			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\BackendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
+			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
 
 		-
@@ -2886,6 +2786,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
 		-
+			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\FrontendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
+
+		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
@@ -2916,6 +2821,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/RequestTest.php
 
 		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:_call\\(\\)\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
+
+		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
@@ -2928,6 +2838,11 @@ parameters:
 		-
 			message: "#^Access to an undefined property Psr\\\\Log\\\\LoggerInterface\\:\\:\\$records\\.$#"
 			count: 11
+			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/ContainerTest.php
+
+		-
+			message: "#^Access to an undefined property t3lib_object_tests_needsinterface\\:\\:\\$dependency\\.$#"
+			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/ContainerTest.php
 
 		-
@@ -3046,6 +2961,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbQueryParserTest.php
 
 		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
+
+		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:countByFoo\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
@@ -3058,11 +2978,6 @@ parameters:
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\:\\:findOneByFoo\\(\\)\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:findOneByFoo\\(\\)\\.$#"
-			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
@@ -3089,11 +3004,6 @@ parameters:
 			message: "#^PHPDoc tag @return with type TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration is incompatible with native type array\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
-
-		-
-			message: "#^Call to an undefined method DateTime\\|TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Error\\:\\:foo\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/DateTimeConverterTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$source\\)\\: Unexpected token \"\\$source\", expected type at offset 31$#"
@@ -3196,7 +3106,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:validate\\(\\)\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:validate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
 
@@ -3216,7 +3126,7 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\CollectionValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\CollectionValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
 
@@ -3274,6 +3184,11 @@ parameters:
 			message: "#^PHPDoc tag @var has invalid value \\(\\$objectManager \\\\TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\)\\: Unexpected token \"\\$objectManager\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Domain/Repository/CategoryRepositoryTest.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\UnitDeprecated\\\\SignalSlot\\\\DispatcherTest\\:\\:\\$signalSlotDispatcher \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\SignalSlot\\\\Dispatcher&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\SignalSlot\\\\Dispatcher\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/SignalSlot/DispatcherTest.php
 
 		-
 			message: "#^Offset 'defaultContentRende…' does not exist on array\\{\\}\\.$#"
@@ -4416,12 +4331,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Functional\\\\Controller\\\\TypoScriptFrontendControllerTest\\:\\:\\$tsFrontendController with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
 
@@ -4626,413 +4536,13 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Authentication/FrontendUserAuthenticationTest.php
 
 		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$alternativeData\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$config\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$currentValKey\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$data\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$parameters\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$parentRecordNumber\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_get\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_set\\(\\)\\.$#"
-			count: 19
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:calcAge\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:caseshift\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:crop\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:cropHTML\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getATagParams\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getContentObject\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getCurrentFile\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getCurrentTable\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getCurrentVal\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getData\\(\\)\\.$#"
-			count: 46
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getFieldVal\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getImgResource\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getQueryArguments\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:getUserObjectType\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:numberFormat\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:prefixComment\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:registerContentObjectClass\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:render\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:setContentObjectClassMap\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:setCurrentFile\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:setCurrentVal\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:setLogger\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:setUserObjectType\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:splitObj\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrapValue\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_addPageCacheTags\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_br\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_brTag\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_bytes\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_char\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_csConv\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_current\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_date\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_debug\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_debugData\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_debugFunc\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_doubleBrTag\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_encapsLines\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_encodeForJavaScriptValue\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_expandList\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_fieldRequired\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_hash\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_htmlSpecialChars\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_ifBlank\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_ifEmpty\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_ifNull\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_innerWrap\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_innerWrap2\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_insertData\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_intval\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_keywords\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_lang\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_noTrimWrap\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_outerWrap\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_override\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_prioriCalc\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_rawUrlEncode\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_required\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_setContentToCurrent\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_setCurrent\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_strPad\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_strftime\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_stripHtml\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_strtotime\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_trim\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_wrap\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_wrap2\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_wrap3\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:stdWrap_wrapAlign\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:substring\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:typoLink\\(\\)\\.$#"
-			count: 12
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\ContentObjectRendererTest\\:\\:stdWrapBrDataProvider\\(\\) should return array\\<array\\<string\\>\\> but returns array\\<string, array\\<int, string\\|null\\>\\>\\.$#"
 			count: 1
+			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 3
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
@@ -5071,24 +4581,9 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\ContentObjectRendererTest\\:\\:\\$frontendControllerMock with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$alternativeData \\(string\\) does not accept array\\<string, string\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\ContentObjectRendererTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:render\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FilesContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\FilesContentObjectTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\FilesContentObject is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FilesContentObjectTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\>\\:\\:\\$currentValKey\\.$#"
@@ -5101,43 +4596,13 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_set\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:render\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\FluidTemplateContentObjectTest\\:\\:\\$request with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\FluidTemplateContentObjectTest\\:\\:\\$standaloneView with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Fluid\\\\View\\\\StandaloneView is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\FluidTemplateContentObjectTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\FluidTemplateContentObject\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
 			message: "#^PHPDoc tag @var has invalid value \\(\\$tsfe TypoScriptFrontendController\\)\\: Unexpected token \"\\$tsfe\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ImageContentObject\\:\\:_call\\(\\)\\.$#"
 			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\ImageContentObjectTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ImageContentObject is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
 
 		-
@@ -5146,17 +4611,12 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
 
 		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$parent_cObj\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_call\\(\\)\\.$#"
 			count: 8
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_set\\(\\)\\.$#"
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_set\\(\\)\\.$#"
 			count: 19
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
@@ -5166,82 +4626,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
 		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObjectTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$baseUrl\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$cObj\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$config\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$indexedDocTitle\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$linkVars\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$page\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$sWordRegEx\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_call\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:_set\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:baseUrlWrap\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:calculateLinkVars\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:generatePageTitle\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:preparePageContentGeneration\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:sL\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Controller\\\\TypoScriptFrontendControllerTest\\:\\:\\$subject with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
 
@@ -5291,27 +4676,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/SiteResolverTest.php
 
 		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$data\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Processor/GalleryProcessorTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Processor\\\\GalleryProcessorTest\\:\\:\\$contentObjectRenderer with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Processor/GalleryProcessorTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$absRefPrefix\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
-
-		-
-			message: "#^Access to an undefined property PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:\\$config\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Typolink\\\\AbstractTypolinkBuilderTest\\:\\:\\$frontendControllerMock with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Typolink\\\\AbstractTypolinkBuilderTest\\:\\:\\$frontendControllerMock \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
 
@@ -5526,12 +4891,12 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
-			message: "#^Cannot access property \\$args on null\\.$#"
+			message: "#^Access to an undefined property PhpParser\\\\Node\\\\Expr\\\\BinaryOp\\\\Concat\\:\\:\\$class\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
-			message: "#^Cannot call method getAttribute\\(\\) on null\\.$#"
+			message: "#^Cannot access property \\$args on null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
