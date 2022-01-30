@@ -17,18 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /**
- * Fixture class with @TYPO3\CMS\Extbase\Annotation\ORM\Lazy annotation
+ * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
  */
-class DummyClassWithLazyDoctrineAnnotation
+class DummyControllerWithIgnoreValidationDoctrineAttribute
 {
-    /**
-     * @Extbase\ORM\Lazy
-     */
-    public $propertyWithLazyAnnotation;
-
-    #[Extbase\ORM\Lazy]
-    public $propertyWithLazyAttribute;
+    #[IgnoreValidation(['argumentName' => 'foo'])]
+    #[IgnoreValidation(['argumentName' => 'bar'])]
+    public function someAction($foo, $bar): void
+    {
+    }
 }

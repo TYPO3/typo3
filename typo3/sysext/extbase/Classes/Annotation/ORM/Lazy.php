@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Extbase\Annotation\ORM;
  * @Annotation
  * @Target({"PROPERTY"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Lazy
 {
 }

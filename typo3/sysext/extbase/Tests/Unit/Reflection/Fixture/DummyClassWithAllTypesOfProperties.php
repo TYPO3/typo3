@@ -65,6 +65,9 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
      */
     public $propertyWithTransientAnnotation;
 
+    #[Transient]
+    public $propertyWithTransientAttribute;
+
     /**
      * @var DummyClassWithAllTypesOfProperties
      * @Extbase\ORM\Cascade("remove")
@@ -75,6 +78,9 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
      * @Extbase\ORM\Cascade("remove")
      */
     public $propertyWithCascadeAnnotationWithoutVarAnnotation;
+
+    #[Extbase\ORM\Cascade(['value' => 'remove'])]
+    public DummyClassWithAllTypesOfProperties $propertyWithCascadeAttribute;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithAllTypesOfProperties>

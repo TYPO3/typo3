@@ -18,17 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Fixture class with @TYPO3\CMS\Extbase\Annotation\ORM\Lazy annotation
+ * Fixture class with @validate annotations
  */
-class DummyClassWithLazyDoctrineAnnotation
+class DummyControllerWithValidateAttributeWithoutParam extends ActionController
 {
-    /**
-     * @Extbase\ORM\Lazy
-     */
-    public $propertyWithLazyAnnotation;
-
-    #[Extbase\ORM\Lazy]
-    public $propertyWithLazyAttribute;
+    #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'NotEmpty'])]
+    #[Extbase\Validate(['param' => 'fooParam', 'validator' => 'StringLength'])]
+    public function methodWithValidateAttributesAction(): void
+    {
+    }
 }

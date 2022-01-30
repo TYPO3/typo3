@@ -44,6 +44,15 @@ class PropertyTest extends UnitTestCase
     /**
      * @test
      */
+    public function classSchemaDetectsPropertiesWithLazyAttribute(): void
+    {
+        $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
+        self::assertTrue($classSchema->getProperty('propertyWithLazyAttribute')->isLazy());
+    }
+
+    /**
+     * @test
+     */
     public function classSchemaDetectsPropertyVisibility(): void
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
@@ -78,10 +87,32 @@ class PropertyTest extends UnitTestCase
     /**
      * @test
      */
+    public function classSchemaDetectsTransientPropertyFromAttribute(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithTransientAttribute');
+
+        self::assertTrue($property->isTransient());
+    }
+
+    /**
+     * @test
+     */
     public function classSchemaDetectsCascadeProperty(): void
     {
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAnnotation');
+
+        self::assertSame('remove', $property->getCascadeValue());
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsCascadePropertyFromAttribute(): void
+    {
+        $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
+            ->getProperty('propertyWithCascadeAttribute');
 
         self::assertSame('remove', $property->getCascadeValue());
     }
@@ -129,6 +160,103 @@ class PropertyTest extends UnitTestCase
         $this->resetSingletonInstances = true;
         $property = (new ClassSchema(DummyModel::class))
             ->getProperty('propertyWithValidateAnnotations');
+
+        self::assertSame(
+            [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'minimum' => 1,
+                        'maximum' => 10,
+                    ],
+                    'className' => StringLengthValidator::class,
+                ],
+                [
+                    'name' => 'NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+                [
+                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => NotEmptyValidator::class,
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+            ],
+            $property->getValidators()
+        );
+    }
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValidateAttributeModelProperties(): void
+    {
+        $this->resetSingletonInstances = true;
+        $property = (new ClassSchema(DummyModel::class))
+            ->getProperty('propertyWithValidateAttributes');
+
+        self::assertSame(
+            [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'minimum' => 1,
+                        'maximum' => 10,
+                    ],
+                    'className' => StringLengthValidator::class,
+                ],
+                [
+                    'name' => 'NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+                [
+                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => NotEmptyValidator::class,
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+            ],
+            $property->getValidators()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValidateAttributeOnPromotedModelProperties(): void
+    {
+        $this->resetSingletonInstances = true;
+        $property = (new ClassSchema(DummyModel::class))
+            ->getProperty('dummyPromotedProperty');
 
         self::assertSame(
             [

@@ -23,6 +23,7 @@ use Doctrine\Common\Annotations\Annotation\Required;
  * @Annotation
  * @Target({"PROPERTY", "METHOD"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_METHOD|\Attribute::IS_REPEATABLE)]
 class Validate
 {
     /**

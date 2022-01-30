@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithConstructorAnd
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyController;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAnnotation;
+use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithIgnoreValidationDoctrineAttribute;
 use TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\Validation\Validator\DummyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
@@ -88,6 +89,19 @@ class MethodParameterTest extends UnitTestCase
         $this->expectException(NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
     }
+    /**
+     * @test
+     */
+    public function classSchemaDetectsIgnoreValidationAttribute(): void
+    {
+        $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAttribute::class))
+            ->getMethod('someAction');
+        self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
+        self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
+
+        $this->expectException(NoSuchMethodParameterException::class);
+        $classSchemaMethod->getParameter('baz')->ignoreValidation();
+    }
 
     /**
      * @test
@@ -145,6 +159,53 @@ class MethodParameterTest extends UnitTestCase
                 ],
             ],
             $classSchema->getMethod('methodWithValidateAnnotationsAction')->getParameter('fooParam')->getValidators()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaDetectsValidateAttributesOfControllerActions(): void
+    {
+        $this->resetSingletonInstances = true;
+        $classSchema = new ClassSchema(DummyController::class);
+        self::assertSame(
+            [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'minimum' => 1,
+                        'maximum' => 10,
+                    ],
+                    'className' => StringLengthValidator::class,
+                ],
+                [
+                    'name' => 'NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase:NotEmpty',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => 'TYPO3.CMS.Extbase.Tests.Unit.Reflection.Fixture:DummyValidator',
+                    'options' => [],
+                    'className' => DummyValidator::class,
+                ],
+                [
+                    'name' => '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator',
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+                [
+                    'name' => NotEmptyValidator::class,
+                    'options' => [],
+                    'className' => NotEmptyValidator::class,
+                ],
+            ],
+            $classSchema->getMethod('methodWithValidateAttributesAction')->getParameter('fooParam')->getValidators()
         );
     }
 }

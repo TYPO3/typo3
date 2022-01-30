@@ -216,6 +216,27 @@ class ClassSchema
                 'v' => [], // validators
             ];
 
+            $validateAttributes = [];
+            foreach ($reflectionProperty->getAttributes() as $attribute) {
+                match ($attribute->getName()) {
+                    Validate::class => $validateAttributes[] = $attribute,
+                    Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
+                    Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
+                    Cascade::class => $this->properties[$propertyName]['c'] = ($attribute->newInstance())->value,
+                    'default' => '' // non-extbase attributes
+                };
+            }
+            foreach ($validateAttributes as $attribute) {
+                $validator = $attribute->newInstance();
+                $validatorObjectName = ValidatorClassNameResolver::resolve($validator->validator);
+
+                $this->properties[$propertyName]['v'][] = [
+                    'name' => $validator->validator,
+                    'options' => $validator->options,
+                    'className' => $validatorObjectName,
+                ];
+            }
+
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
 
             /** @var array|Validate[] $validateAnnotations */
@@ -305,6 +326,16 @@ class ClassSchema
 
             $argumentValidators = [];
 
+            $validateAttributes = [];
+            $reflectionAttributes = $reflectionMethod->getAttributes();
+            foreach ($reflectionAttributes as $attribute) {
+                match ($attribute->getName()) {
+                    Validate::class => $validateAttributes[] = $attribute,
+                    IgnoreValidation::class => $this->methods[$methodName]['tags']['ignorevalidation'][] = $attribute->newInstance()->argumentName,
+                    'default' => '' // non-extbase attributes
+                };
+            }
+
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
 
             /** @var array|Validate[] $validateAnnotations */
@@ -314,7 +345,7 @@ class ClassSchema
 
             if ($this->methods[$methodName]['isAction']
                 && $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER)
-                && count($validateAnnotations) > 0
+                && (count($validateAnnotations) > 0 || $validateAttributes !== [])
             ) {
                 foreach ($validateAnnotations as $validateAnnotation) {
                     $validatorName = $validateAnnotation->validator;
@@ -323,6 +354,16 @@ class ClassSchema
                     $argumentValidators[$validateAnnotation->param][] = [
                         'name' => $validatorName,
                         'options' => $validateAnnotation->options,
+                        'className' => $validatorObjectName,
+                    ];
+                }
+                foreach ($validateAttributes as $attribute) {
+                    $validator = $attribute->newInstance();
+                    $validatorObjectName = ValidatorClassNameResolver::resolve($validator->validator);
+
+                    $argumentValidators[$validator->param][] = [
+                        'name' => $validator->validator,
+                        'options' => $validator->options,
                         'className' => $validatorObjectName,
                     ];
                 }
@@ -344,6 +385,10 @@ class ClassSchema
                     return $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName;
                 });
 
+                $ignoreValidationParametersFromAttribute = array_filter($reflectionAttributes, static function ($attribute) use ($parameterName) {
+                    return $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName;
+                });
+
                 $reflectionType = $reflectionParameter->getType();
 
                 $this->methods[$methodName]['params'][$parameterName] = [];
@@ -357,7 +402,7 @@ class ClassSchema
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
                 $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['dependency'] = null; // Extbase DI
-                $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = count($ignoreValidationParameters) === 1;
+                $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = $ignoreValidationParameters !== [] || $ignoreValidationParametersFromAttribute !== [];
                 $this->methods[$methodName]['params'][$parameterName]['validators'] = [];
 
                 if ($reflectionParameter->isDefaultValueAvailable()) {
