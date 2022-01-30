@@ -667,7 +667,7 @@ abstract class ActionController implements ControllerInterface
      * display no flash message at all on errors. Override this to customize
      * the flash message in your action controller.
      *
-     * @return string The flash message or FALSE if no flash message should be set
+     * @return string|bool The flash message or FALSE if no flash message should be set
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
