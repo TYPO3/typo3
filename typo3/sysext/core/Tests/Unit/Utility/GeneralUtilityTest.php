@@ -4013,7 +4013,7 @@ class GeneralUtilityTest extends UnitTestCase
      * @test
      * @dataProvider xml2ArrayProcessHandlesAttributeTypesDataProvider
      * @param string $input
-     * @param $expected
+     * @param mixed $expected
      */
     public function xml2ArrayProcessHandlesAttributeTypes(string $input, $expected): void
     {

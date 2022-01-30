@@ -30,3 +30,8 @@ parameters:
     - ../../typo3/sysext/*/ext_emconf.php
     # This file has a PHP dependent version switch - ignore it in v11
     - ../../typo3/sysext/core/Classes/Database/Driver/PDOStatementImplementation.php
+    # contains broken syntax for testing-purpose, which cannot be disabled directly
+    - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyController.php
+    # contains broken syntax for testing-purpose, which cannot be disabled directly
+    - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
+

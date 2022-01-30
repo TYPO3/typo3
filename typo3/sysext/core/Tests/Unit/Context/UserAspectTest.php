@@ -193,12 +193,8 @@ class UserAspectTest extends UnitTestCase
     /**
      * @test
      * @dataProvider isUserOrGroupSetDataProvider
-     * @param $userId
-     * @param $userGroups
-     * @param $overriddenGroups
-     * @param bool $expectedResult
      */
-    public function isUserOrGroupSetChecksForValidUser($userId, $userGroups, $overriddenGroups, $expectedResult): void
+    public function isUserOrGroupSetChecksForValidUser(int $userId, ?array $userGroups, ?array $overriddenGroups, bool $expectedResult): void
     {
         $user = new FrontendUserAuthentication();
         if ($userId) {

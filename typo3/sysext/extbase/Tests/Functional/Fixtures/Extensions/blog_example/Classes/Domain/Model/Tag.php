@@ -31,8 +31,7 @@ class Tag extends AbstractValueObject
 
     /**
      * Constructs this tag
-     *
-     * @param $name
+     * @param string $name
      */
     public function __construct($name)
     {

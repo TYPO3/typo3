@@ -163,8 +163,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider prepareDependenciesBuildsFullIdentifierListDataProvider
-     * @param array $dependencies
-     * @param $expectedDependencies
      * @throws \InvalidArgumentException
      */
     public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies): void

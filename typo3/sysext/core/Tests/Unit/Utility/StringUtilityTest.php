@@ -97,13 +97,10 @@ class StringUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param $haystack
-     * @param $needle
-     * @param $result
      * @test
      * @dataProvider searchStringWildcardDataProvider
      */
-    public function searchStringWildcard($haystack, $needle, $result): void
+    public function searchStringWildcard(string $haystack, string $needle, bool $result): void
     {
         self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
     }

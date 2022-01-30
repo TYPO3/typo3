@@ -130,8 +130,8 @@ class EnumerationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider looseEnumerationValues
-     * @param $testValue
-     * @param $expectedValue
+     * @param string|int $testValue
+     * @param string|int $expectedValue
      */
     public function doesTypeLooseComparison($testValue, $expectedValue): void
     {

@@ -80,9 +80,6 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $path
-     * @param $expectation
-     *
      * @test
      * @dataProvider directoryActionAllowsInvocationDataProvider
      */
@@ -100,9 +97,6 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $path
-     * @param $expectation
-     *
      * @test
      * @dataProvider directoryActionAllowsInvocationDataProvider
      */

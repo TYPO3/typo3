@@ -23,12 +23,7 @@ use TYPO3\CMS\TestMeta\PageTitle\CustomPageTitleProvider;
 
 class MetaPluginController
 {
-    /**
-     * @param string Empty string (no content to process)
-     * @param array TypoScript configuration
-     * @return string
-     */
-    public function setMetaData($content, $configuration): string
+    public function setMetaData(string $content, array $configuration): string
     {
         $pageId = $GLOBALS['TYPO3_REQUEST']->getQueryParams()['id'];
         if (!empty($configuration['setTitle'])) {

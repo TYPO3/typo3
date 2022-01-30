@@ -110,14 +110,14 @@ class ErrorHandlerTest extends FunctionalTestCase
             }
 
             /**
-             * @param $code
-             * @param $message
+             * @param int $code
+             * @param string $message
              * @param string $file
              * @param int $line
              * @param array $context
-             * @return bool|mixed
+             * @return mixed
              */
-            public function handleError($code, $message, $file = '', $line = 0, $context = [])
+            public function handleError(int $code, string $message, string $file = '', int $line = 0, array $context = [])
             {
                 // process errors
                 if ($this->existingHandler !== null) {

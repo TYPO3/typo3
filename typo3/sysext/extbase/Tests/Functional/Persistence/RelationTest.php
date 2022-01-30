@@ -1088,9 +1088,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_ONE relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1109,9 +1106,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_ONE relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1144,9 +1138,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1167,9 +1158,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1201,9 +1189,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1222,9 +1207,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1257,9 +1239,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */
@@ -1278,9 +1257,6 @@ class RelationTest extends FunctionalTestCase
 
     /**
      * Addresses ColumnMap::RELATION_HAS_ONE, ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY relations.
-     *
-     * @param $queryRequest
-     *
      * @test
      * @dataProvider distinctDataProvider
      */

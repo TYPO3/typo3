@@ -139,12 +139,10 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     }
 
     /**
-     * @param $input
-     * @param $expectExceptionCode
      * @test
      * @dataProvider dataProviderForGenerateTrustedPropertiesTokenWithUnallowedValues
      */
-    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input, $expectExceptionCode): void
+    public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases(array $input, int $expectExceptionCode): void
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->expectExceptionCode($expectExceptionCode);

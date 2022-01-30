@@ -160,13 +160,10 @@ class ResourceStorageTest extends BaseTestCase
      *
      * IMPORTANT: Call this only after setting up the virtual file system (with the addTo* methods)!
      *
-     * @param $driverConfiguration
-     * @param ResourceStorage $storageObject
-     * @param array $mockedDriverMethods
      * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver|MockObject
      */
     protected function createDriverMock(
-        $driverConfiguration,
+        array $driverConfiguration,
         ResourceStorage $storageObject = null,
         array $mockedDriverMethods = []
     ) {

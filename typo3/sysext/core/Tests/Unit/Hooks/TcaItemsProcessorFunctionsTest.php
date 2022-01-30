@@ -232,11 +232,8 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider populateExcludeFieldsTestDataProvider
-     *
-     * @param $tca
-     * @param $expectedItems
      */
-    public function populateExcludeFieldsTest($tca, $expectedItems): void
+    public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
     {
         $GLOBALS['TCA'] = $tca;
         $GLOBALS['TCA_DESCR']['fooTable']['columns']['bar']['description'] = 'aDescription';

@@ -186,8 +186,8 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @param $source
      * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
+     * @param string|int $source
      */
     public function convertFromIntegerOrDigitStringWithoutConfigurationTests($source): void
     {
@@ -200,8 +200,8 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @param $source
      * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
+     * @param string|int $source
      */
     public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests($source): void
     {

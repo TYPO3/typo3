@@ -273,9 +273,7 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Finds possible placeholders.
      * May find false positives for complexer structures, but they will be sorted later on.
-     *
-     * @param $value
-     * @return bool
+     * @param mixed $value
      */
     protected function containsPlaceholder($value): bool
     {

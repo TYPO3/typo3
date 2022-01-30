@@ -440,11 +440,11 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @dataProvider inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider
      * @test
-     * @param $inputValue
-     * @param $expected
-     * @param $expectedEvalInt
+     * @param string|int $inputValue
+     * @param string $expected
+     * @param int $expectedEvalInt
      */
-    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty($inputValue, $expected, $expectedEvalInt): void
+    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty($inputValue, string $expected, int $expectedEvalInt): void
     {
         $tcaFieldConf = [
             'type' => 'input',
@@ -544,14 +544,10 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * Tests whether native dbtype inputs are parsed independent from the server timezone.
-     *
-     * @param $value
-     * @param $dbtype
-     * @param $expectedOutput
      * @test
      * @dataProvider inputValueCheckDbtypeIsIndependentFromTimezoneDataProvider
      */
-    public function inputValueCheckDbtypeIsIndependentFromTimezone($value, $dbtype, $expectedOutput): void
+    public function inputValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
     {
         $tcaFieldConf = [
             'type' => 'input',

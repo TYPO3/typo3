@@ -69,12 +69,10 @@ class AreaTest extends UnitTestCase
     }
 
     /**
-     * @param array $areaSize
-     * @param $ratio
      * @test
      * @dataProvider applyRatioRestrictsAreaToRespectRatioDataProvider
      */
-    public function applyRatioRestrictsAreaToRespectRatio(array $areaSize, $ratio): void
+    public function applyRatioRestrictsAreaToRespectRatio(array $areaSize, float $ratio): void
     {
         $area = new Area(...$areaSize);
         $ratioFixture = new Ratio('dummy', 'dummy', $ratio);

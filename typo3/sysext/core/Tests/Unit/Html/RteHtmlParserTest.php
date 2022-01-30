@@ -695,10 +695,8 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseProvider
-     * @param $content
-     * @param $expectedResult
      */
-    public function anchorCorrectlyTransformedOnWayToDatabase($content, $expectedResult): void
+    public function anchorCorrectlyTransformedOnWayToDatabase(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
@@ -733,10 +731,8 @@ class RteHtmlParserTest extends UnitTestCase
     /**
      * @test
      * @dataProvider anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTEProvider
-     * @param $content
-     * @param $expectedResult
      */
-    public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE($content, $expectedResult): void
+    public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE(string $content, string $expectedResult): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);

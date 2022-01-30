@@ -512,9 +512,6 @@ class FlexFormToolsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider
-     * @param array $row
-     * @param array $ds
-     * @param $expected
      */
     public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations(array $row, array $ds, string $expected): void
     {

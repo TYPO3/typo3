@@ -259,13 +259,10 @@ class PathUtilityTest extends UnitTestCase
     }
 
     /**
-     * @param $baseFileName
-     * @param $includeFileName
-     * @param $expectedFileName
      * @test
      * @dataProvider getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectlyDataProvider
      */
-    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName): void
+    public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly(string $baseFileName, string $includeFileName, string $expectedFileName): void
     {
         $resolvedFilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
         self::assertEquals($expectedFileName, $resolvedFilename);

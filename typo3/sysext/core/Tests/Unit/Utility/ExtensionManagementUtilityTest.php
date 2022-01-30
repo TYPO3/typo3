@@ -463,11 +463,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider removeDuplicatesForInsertionRemovesDuplicatesDataProvider
-     * @param $insertionList
-     * @param $list
-     * @param $expected
      */
-    public function removeDuplicatesForInsertionRemovesDuplicates($insertionList, $list, $expected): void
+    public function removeDuplicatesForInsertionRemovesDuplicates(string $insertionList, string $list, string $expected): void
     {
         $result = ExtensionManagementUtilityAccessibleProxy::removeDuplicatesForInsertion($insertionList, $list);
         self::assertSame($expected, $result);
@@ -1022,10 +1019,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider executePositionedStringInsertionTrimsCorrectCharactersDataProvider
-     * @param $string
-     * @param $expectedResult
      */
-    public function executePositionedStringInsertionTrimsCorrectCharacters($string, $expectedResult): void
+    public function executePositionedStringInsertionTrimsCorrectCharacters(string $string, string $expectedResult): void
     {
         $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, ['dummy']);
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
@@ -1167,11 +1162,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addTcaSelectItemDataProvider
-     * @param $relativeToField
-     * @param $relativePosition
-     * @param $expectedResultArray
      */
-    public function addTcaSelectItemInsertsItemAtSpecifiedPosition($relativeToField, $relativePosition, $expectedResultArray): void
+    public function addTcaSelectItemInsertsItemAtSpecifiedPosition(string $relativeToField, string $relativePosition, array $expectedResultArray): void
     {
         $GLOBALS['TCA'] = [
             'testTable' => [
@@ -1308,11 +1300,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addModulePositionTestsDataProvider
-     * @param $position
-     * @param $existing
-     * @param $expected
      */
-    public function addModuleCanAddModule($position, $existing, $expected): void
+    public function addModuleCanAddModule(string $position, string $existing, string $expected): void
     {
         $mainModule = 'foobar';
         $subModule = 'newModule';
@@ -1329,11 +1318,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addModulePositionTestsDataProvider
-     * @param $position
-     * @param $existing
-     * @param $expected
      */
-    public function addModuleCanAddMainModule($position, $existing, $expected): void
+    public function addModuleCanAddMainModule(string $position, string $existing, string $expected): void
     {
         $mainModule = 'newModule';
         if ($existing) {
@@ -1676,8 +1662,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getExtensionVersionFaultyDataProvider
-     * @param $key
      * @throws \TYPO3\CMS\Core\Package\Exception
+     * @param mixed $key
      */
     public function getExtensionVersionForFaultyExtensionKeyThrowsException($key): void
     {
