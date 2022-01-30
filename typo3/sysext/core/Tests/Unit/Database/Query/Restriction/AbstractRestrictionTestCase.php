@@ -40,7 +40,6 @@ class AbstractRestrictionTestCase extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var Connection|\Prophecy\Prophecy\ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
         $connection->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . implode('"."', explode('.', $args[0])) . '"';

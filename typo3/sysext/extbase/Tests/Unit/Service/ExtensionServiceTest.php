@@ -103,8 +103,6 @@ class ExtensionServiceTest extends UnitTestCase
     /**
      * Setup and return a mocked database connection that allows
      * the QueryBuilder to work.
-     *
-     * @return ObjectProphecy
      */
     protected function getMockDatabaseConnection(): ObjectProphecy
     {

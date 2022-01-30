@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -45,7 +44,6 @@ class TcaInputPlaceholderRecordTest extends UnitTestCase
      */
     public function compileReturnsIncomingData(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
@@ -62,12 +60,10 @@ class TcaInputPlaceholderRecordTest extends UnitTestCase
      */
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaInputPlaceholderRecord'] = [
             FormDataProviderInterface::class => [],
@@ -84,12 +80,10 @@ class TcaInputPlaceholderRecordTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaInputPlaceholderRecord'] = [
             \stdClass::class => [],

@@ -36,9 +36,6 @@ class TcaFlexProcessTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $backendUserProphecy;
 
     protected function setUp(): void
@@ -836,7 +833,6 @@ class TcaFlexProcessTest extends UnitTestCase
             TcaRadioItems::class => [],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
@@ -924,7 +920,6 @@ class TcaFlexProcessTest extends UnitTestCase
             DatabaseRowDefaultValues::class => [],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
@@ -1126,7 +1121,6 @@ class TcaFlexProcessTest extends UnitTestCase
             DatabaseRowDefaultValues::class => [],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
@@ -1439,7 +1433,6 @@ class TcaFlexProcessTest extends UnitTestCase
             'pageTsConfig' => [],
         ];
 
-        /** @var FlexFormSegment|ObjectProphecy $dummyGroup */
         $dummyGroup = $this->prophesize(FlexFormSegment::class);
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroup->reveal());
 
@@ -1501,7 +1494,6 @@ class TcaFlexProcessTest extends UnitTestCase
             'pageTsConfig' => [],
         ];
 
-        /** @var FlexFormSegment|ObjectProphecy $dummyGroupExisting */
         $dummyGroupExisting = $this->prophesize(FlexFormSegment::class);
         GeneralUtility::addInstance(FlexFormSegment::class, $dummyGroupExisting->reveal());
         // Check array given to flex group contains databaseRow as flexParentDatabaseRow and check compile is called

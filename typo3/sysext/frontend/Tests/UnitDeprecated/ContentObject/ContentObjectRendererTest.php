@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\ContentObject;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -108,10 +109,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'SVG' => ScalableVectorGraphicsContentObject::class,
     ];
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|CacheManager
-     */
-    private $cacheManager;
+    private ObjectProphecy $cacheManager;
 
     protected bool $backupEnvironment = true;
 

@@ -51,10 +51,7 @@ class TemplateServiceTest extends UnitTestCase
 
     protected ?PackageManager $backupPackageManager;
 
-    /**
-     * @var PackageManager|ObjectProphecy
-     */
-    protected $packageManagerProphecy;
+    protected ObjectProphecy $packageManagerProphecy;
 
     /**
      * Set up

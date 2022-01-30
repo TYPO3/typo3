@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\File\FileController;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -52,9 +51,6 @@ class FileControllerTest extends UnitTestCase
      */
     protected MockObject $mockFileProcessor;
 
-    /**
-     * @var ServerRequestInterface|ObjectProphecy
-     */
     protected ServerRequestInterface $request;
 
     /**

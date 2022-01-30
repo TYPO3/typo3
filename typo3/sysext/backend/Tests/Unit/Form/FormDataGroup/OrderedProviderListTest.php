@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OrderedProviderList;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -38,7 +37,6 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileReturnsIncomingData(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
@@ -55,12 +53,10 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
         $providerResult = ['foo'];
@@ -78,7 +74,6 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileDoesNotCallDisabledDataProvider(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
@@ -98,12 +93,10 @@ class OrderedProviderListTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        /** @var DependencyOrderingService|ObjectProphecy $orderingServiceProphecy */
         $orderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         GeneralUtility::addInstance(DependencyOrderingService::class, $orderingServiceProphecy->reveal());
         $orderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
 
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
 

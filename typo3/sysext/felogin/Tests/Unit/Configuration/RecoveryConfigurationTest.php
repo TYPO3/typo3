@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Address;
@@ -33,21 +34,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class RecoveryConfigurationTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-    /**
-     * @var ObjectProphecy|Context
-     */
-    protected $context;
+    use ProphecyTrait;
 
-    /**
-     * @var ObjectProphecy|ConfigurationManager
-     */
-    protected $configurationManager;
+    protected ObjectProphecy $context;
 
-    /**
-     * @var ObjectProphecy|HashService
-     */
-    protected $hashService;
+    protected ObjectProphecy $configurationManager;
+
+    protected ObjectProphecy $hashService;
 
     /**
      * @var array
@@ -70,10 +63,7 @@ class RecoveryConfigurationTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var ObjectProphecy|LoggerInterface
-     */
-    protected $logger;
+    protected ObjectProphecy $logger;
 
     protected function setUp(): void
     {

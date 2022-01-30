@@ -39,9 +39,6 @@ class DatabaseLanguageRowsTest extends UnitTestCase
      */
     protected MockObject $subject;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void
@@ -246,7 +243,6 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
         $translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
         GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
         $translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
@@ -337,7 +333,6 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        /** @var TranslationConfigurationProvider|ObjectProphecy $translationProphecy */
         $translationProphecy = $this->prophesize(TranslationConfigurationProvider::class);
         GeneralUtility::addInstance(TranslationConfigurationProvider::class, $translationProphecy->reveal());
         $translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);

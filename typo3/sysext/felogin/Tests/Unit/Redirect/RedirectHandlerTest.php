@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 
 use Generator;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -50,20 +51,11 @@ class RedirectHandlerTest extends UnitTestCase
      */
     protected $typo3Request;
 
-    /**
-     * @var ServerRequestHandler
-     */
-    protected $serverRequestHandler;
+    protected ObjectProphecy $serverRequestHandler;
 
-    /**
-     * @var RedirectModeHandler
-     */
-    protected $redirectModeHandler;
+    protected ObjectProphecy $redirectModeHandler;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|Context
-     */
-    protected $context;
+    protected ObjectProphecy $context;
 
     protected function setUp(): void
     {

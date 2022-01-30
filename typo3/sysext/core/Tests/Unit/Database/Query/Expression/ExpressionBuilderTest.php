@@ -34,10 +34,7 @@ class ExpressionBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var Connection
-     */
-    protected $connectionProphet;
+    protected ObjectProphecy $connectionProphecy;
     protected ?ExpressionBuilder $subject;
     protected string $testTable = 'testTable';
 
@@ -48,11 +45,10 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         parent::setUp();
 
-        /** @var Connection|ObjectProphecy $connectionProphet */
-        $this->connectionProphet = $this->prophesize(Connection::class);
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
+        $this->connectionProphecy = $this->prophesize(Connection::class);
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->willReturnArgument(0);
 
-        $this->subject = new ExpressionBuilder($this->connectionProphet->reveal());
+        $this->subject = new ExpressionBuilder($this->connectionProphecy->reveal());
     }
 
     /**
@@ -84,7 +80,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->eq('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField = 1', $result);
     }
 
@@ -95,7 +91,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->neq('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField <> 1', $result);
     }
 
@@ -106,7 +102,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->lt('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField < 1', $result);
     }
 
@@ -117,7 +113,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->lte('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField <= 1', $result);
     }
 
@@ -128,7 +124,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->gt('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField > 1', $result);
     }
 
@@ -139,7 +135,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->gte('aField', 1);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField >= 1', $result);
     }
 
@@ -150,7 +146,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->isNull('aField');
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField IS NULL', $result);
     }
 
@@ -161,7 +157,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->isNotNull('aField');
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField IS NOT NULL', $result);
     }
 
@@ -172,7 +168,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->like('aField', "'aValue%'");
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame("aField LIKE 'aValue%'", $result);
     }
 
@@ -183,7 +179,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->notLike('aField', "'aValue%'");
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame("aField NOT LIKE 'aValue%'", $result);
     }
 
@@ -194,7 +190,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->in('aField', '1,2,3');
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField IN (1,2,3)', $result);
     }
 
@@ -205,7 +201,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->in('aField', [1, 2, 3]);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField IN (1, 2, 3)', $result);
     }
 
@@ -216,7 +212,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->notIn('aField', '1,2,3');
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField NOT IN (1,2,3)', $result);
     }
 
@@ -227,7 +223,7 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $result = $this->subject->notIn('aField', [1, 2, 3]);
 
-        $this->connectionProphet->quoteIdentifier('aField')->shouldHaveBeenCalled();
+        $this->connectionProphecy->quoteIdentifier('aField')->shouldHaveBeenCalled();
         self::assertSame('aField NOT IN (1, 2, 3)', $result);
     }
 
@@ -259,11 +255,11 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '`' . $args[0] . '`';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
@@ -279,13 +275,13 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('postgresql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
@@ -300,12 +296,12 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', '"testtable"."uid"', true);
 
@@ -321,13 +317,13 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
@@ -343,14 +339,14 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
             ->willReturn("',''Some''Value,'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'''Some''Value'");
 
@@ -366,7 +362,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1476029421);
@@ -383,7 +379,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1476029421);
@@ -400,15 +396,15 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
 
-        $this->connectionProphet->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphet->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphet->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
@@ -443,11 +439,11 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('mysql');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '`' . $args[0] . '`';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->notInSet('aField', "'1'");
 
@@ -463,13 +459,13 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('postgresql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('"');
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote("'1'", \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->notInSet('aField', "'1'");
 
@@ -484,12 +480,12 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('postgresql');
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->notInSet('aField', '"testtable"."uid"', true);
 
@@ -505,13 +501,13 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote(',1,', Argument::cetera())->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->notInSet('aField', "'1'");
 
@@ -527,14 +523,14 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
-        $this->connectionProphet->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
+        $this->connectionProphecy->quote(',', Argument::cetera())->shouldBeCalled()->willReturn("','");
+        $this->connectionProphecy->quote(',\'Some\'Value,', Argument::cetera())->shouldBeCalled()
             ->willReturn("',''Some''Value,'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->notInSet('aField', "'''Some''Value'");
 
@@ -550,7 +546,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1627573103);
@@ -567,7 +563,7 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('sqlite');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn("'");
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1476029421);
@@ -584,15 +580,15 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform->getName()->willReturn('mssql');
         $databasePlatform->getStringLiteralQuoteCharacter()->willReturn('\'');
 
-        $this->connectionProphet->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
-        $this->connectionProphet->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
-        $this->connectionProphet->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
-        $this->connectionProphet->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quote('1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1'");
+        $this->connectionProphecy->quote('1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'1,%'");
+        $this->connectionProphecy->quote('%,1', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1'");
+        $this->connectionProphecy->quote('%,1,%', \PDO::PARAM_STR)->shouldBeCalled()->willReturn("'%,1,%'");
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '[' . $args[0] . ']';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         $result = $this->subject->inSet('aField', "'1'");
 
@@ -606,11 +602,11 @@ class ExpressionBuilderTest extends UnitTestCase
     {
         $databasePlatform = $this->prophesize(MockPlatform::class);
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         self::assertSame('"aField" & 1', $this->subject->bitAnd('aField', 1));
     }
@@ -623,11 +619,11 @@ class ExpressionBuilderTest extends UnitTestCase
         $databasePlatform = $this->prophesize(MockPlatform::class);
         $databasePlatform->getName()->willReturn('pdo_oracle');
 
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             return '"' . $args[0] . '"';
         });
 
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatform->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatform->reveal());
 
         self::assertSame('BITAND("aField", 1)', $this->subject->bitAnd('aField', 1));
     }
@@ -637,7 +633,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function maxQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -654,7 +650,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function minQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -671,7 +667,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function sumQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -688,7 +684,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function avgQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -705,7 +701,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function countQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -722,7 +718,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function lengthQuotesIdentifier(): void
     {
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())->will(static function ($args) {
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
             $platform = new MockPlatform();
             return $platform->quoteIdentifier($args[0]);
         });
@@ -740,10 +736,10 @@ class ExpressionBuilderTest extends UnitTestCase
     public function trimQuotesIdentifierWithDefaultValues(): void
     {
         $platform = new MockPlatform();
-        $this->connectionProphet->getDatabasePlatform(Argument::cetera())
+        $this->connectionProphecy->getDatabasePlatform(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($platform);
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())
             ->shouldBeCalled()
             ->will(
                 static function ($args) use ($platform) {
@@ -797,17 +793,17 @@ class ExpressionBuilderTest extends UnitTestCase
     public function trimQuotesIdentifier(int $position, string $char, string $expected): void
     {
         $platform = new MockPlatform();
-        $this->connectionProphet->getDatabasePlatform(Argument::cetera())
+        $this->connectionProphecy->getDatabasePlatform(Argument::cetera())
             ->shouldBeCalled()
             ->willReturn($platform);
-        $this->connectionProphet->quoteIdentifier(Argument::cetera())
+        $this->connectionProphecy->quoteIdentifier(Argument::cetera())
             ->shouldBeCalled()
             ->will(
                 static function ($args) use ($platform) {
                     return $platform->quoteIdentifier($args[0]);
                 }
             );
-        $this->connectionProphet->quote(Argument::cetera())
+        $this->connectionProphecy->quote(Argument::cetera())
             ->shouldBeCalled()
             ->will(
                 static function ($args) {
@@ -826,7 +822,7 @@ class ExpressionBuilderTest extends UnitTestCase
      */
     public function literalQuotesValue(): void
     {
-        $this->connectionProphet->quote('aField', 'Doctrine\DBAL\Types\StringType')
+        $this->connectionProphecy->quote('aField', 'Doctrine\DBAL\Types\StringType')
             ->shouldBeCalled()
             ->willReturn('"aField"');
         $result = $this->subject->literal('aField', 'Doctrine\DBAL\Types\StringType');

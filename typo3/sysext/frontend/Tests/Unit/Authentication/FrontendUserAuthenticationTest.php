@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Authentication;
 use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
@@ -167,7 +166,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $userSession = UserSession::createFromRecord($sessionRecord['ses_id'], $sessionRecord);
 
         // Main session backend setup
-        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         // Verify new session id is generated
@@ -213,7 +211,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
         // Main session backend setup
         $userSession = UserSession::createNonFixated($uniqueSessionId);
-        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
         $userSessionManager->createAnonymousSession(Argument::cetera())->willReturn($userSession);
@@ -287,7 +284,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'ses_permanent' => 0,
         ];
         $userSession = UserSession::createFromRecord($uniqueSessionId, $sessionRecord);
-        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
         $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);
@@ -349,7 +345,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // Main session backend setup
         $userSession = UserSession::createNonFixated('newSessionId');
         $elevatedUserSession = UserSession::createFromRecord('newSessionId', ['ses_userid' => 1], true);
-        /** @var UserSessionManager|ObjectProphecy $userSessionManager */
         $userSessionManager = $this->prophesize(UserSessionManager::class);
         $userSessionManager->createAnonymousSession()->willReturn(UserSession::createNonFixated('not-in-use'));
         $userSessionManager->createFromRequestOrAnonymous(Argument::cetera())->willReturn($userSession);

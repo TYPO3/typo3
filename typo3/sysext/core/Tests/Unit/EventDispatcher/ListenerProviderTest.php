@@ -31,10 +31,7 @@ class ListenerProviderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ContainerInterface|ObjectProphecy
-     */
-    protected $containerProphecy;
+    protected ObjectProphecy $containerProphecy;
     protected ?ListenerProvider $listenerProvider;
 
     protected function setUp(): void

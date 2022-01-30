@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http\Security;
 
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
@@ -204,11 +203,9 @@ class ReferrerEnforcerTest extends UnitTestCase
         $dir = $host . rtrim(dirname($requestUriInstance->getPath()), '/') . '/';
         parse_str($requestUriInstance->getQuery(), $queryParams);
 
-        /** @var NormalizedParams|ObjectProphecy $normalizedParams */
         $normalizedParams = $this->prophesize(NormalizedParams::class);
         $normalizedParams->getRequestHost()->willReturn($host);
         $normalizedParams->getRequestDir()->willReturn($dir);
-        /** @var ServerRequestInterface|ObjectProphecy $request */
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getAttribute('normalizedParams')->willReturn($normalizedParams);
         $request->getServerParams()->willReturn(['HTTP_REFERER' => $referrer]);

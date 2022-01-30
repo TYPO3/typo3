@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -479,7 +478,6 @@ class TcaCheckboxItemsTest extends UnitTestCase
             'tableName' => 'foo',
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
 
@@ -610,13 +608,10 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        /** @var FlashMessageService|ObjectProphecy $flashMessageService */
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        /** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
         $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
         $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
 
@@ -678,13 +673,10 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $languageService->sL(Argument::cetera())->willReturn('');
         $GLOBALS['LANG'] = $languageService->reveal();
-        /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        /** @var FlashMessageService|ObjectProphecy $flashMessageService */
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        /** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
         $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
         $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
 
@@ -727,7 +719,6 @@ class TcaCheckboxItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL('aLabel')->willReturnArgument(0);

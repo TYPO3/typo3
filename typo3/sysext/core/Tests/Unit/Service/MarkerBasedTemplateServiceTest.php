@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -46,7 +45,6 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);

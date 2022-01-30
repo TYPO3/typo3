@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -44,7 +43,6 @@ class AbstractUserAuthenticationTest extends UnitTestCase
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
-        /** @var Connection|ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
         $connection->getDatabasePlatform()->willReturn(new MockPlatform());
         $connection->getExpressionBuilder()->willReturn(new ExpressionBuilder($connection->reveal()));
@@ -57,7 +55,6 @@ class AbstractUserAuthenticationTest extends UnitTestCase
             $this->prophesize(DoctrineQueryBuilder::class)->reveal()
         );
 
-        /** @var ConnectionPool|ObjectProphecy $connection */
         $connectionPool = $this->prophesize(ConnectionPool::class);
         $connectionPool->getQueryBuilderForTable(Argument::cetera())->willReturn($queryBuilder);
 

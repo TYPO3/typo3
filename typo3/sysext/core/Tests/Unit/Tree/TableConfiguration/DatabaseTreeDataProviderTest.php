@@ -60,9 +60,8 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
      * Setup prophecies for database stack
      *
      * @param int $instanceCount Number of instances of ConnectionPool::class to register
-     * @return ObjectProphecy|QueryBuilder
      */
-    protected function setupDatabaseMock(int $instanceCount = 1)
+    protected function setupDatabaseMock(int $instanceCount = 1): ObjectProphecy
     {
         // Prophecies and revelations for a lot of the database stack classes
         $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);

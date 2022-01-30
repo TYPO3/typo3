@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
 use TYPO3\CMS\Core\Package\Package;
@@ -31,10 +32,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var PackageManager|\Prophecy\Prophecy\ObjectProphecy
-     */
-    protected $packageManagerProphecy;
+    protected ObjectProphecy $packageManagerProphecy;
 
     /**
      * Set up this testcase

@@ -21,7 +21,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
@@ -130,7 +129,6 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('foreignTable');
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalled();
 
@@ -257,7 +255,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
@@ -1008,7 +1005,6 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1027,7 +1023,6 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -1098,14 +1093,12 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1165,7 +1158,6 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $GLOBALS['TCA']['fTable'] = [];
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -1188,13 +1180,10 @@ class TcaSelectItemsTest extends UnitTestCase
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphet->reveal());
 
-        /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        /** @var FlashMessageService|ObjectProphecy $flashMessageService */
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        /** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
         $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
         $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
 
@@ -1213,7 +1202,6 @@ class TcaSelectItemsTest extends UnitTestCase
     {
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid', 'fTable.labelField')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1270,7 +1258,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -1364,7 +1351,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $resourceStorageProphecy = $this->prophesize(ResourceStorage::class);
         $resourceStorageProphecy->getUid()->willReturn(1);
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -1374,7 +1360,6 @@ class TcaSelectItemsTest extends UnitTestCase
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_file_storage');
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('sys_file_storage.uid', 'sys_file_storage.labelField')
@@ -1462,14 +1447,12 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
         [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
 
         $queryBuilderProphet->select('fTable.uid', 'fTable.icon')->shouldBeCalled()->willReturn($queryBuilderProphet->reveal());
@@ -1905,13 +1888,11 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue')->willReturn('INVALID VALUE "%s"');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->checkLanguageAccess('keep')->shouldBeCalled()->willReturn(true);
@@ -1964,7 +1945,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->checkAuthMode('aTable', 'aField', 'keep', 'explicitAllow')->shouldBeCalled()->willReturn(true);
@@ -2009,7 +1989,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
@@ -2056,13 +2035,13 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);
-        $backendUserProphecy->groupData = [
+        $backendUser = $backendUserProphecy->reveal();
+        $backendUser->groupData = [
             'pagetypes_select' => 'foo,keep,anotherAllowedDoktype',
         ];
+        $GLOBALS['BE_USER'] = $backendUser;
 
         $expected = $input;
         $expected['databaseRow']['doktype'] = ['keep'];
@@ -2175,7 +2154,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2296,7 +2274,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2426,7 +2403,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2557,7 +2533,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2681,13 +2656,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
-        /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        /** @var FlashMessageService|ObjectProphecy $flashMessageService */
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        /** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
         $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
         $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
 
@@ -2750,13 +2722,10 @@ class TcaSelectItemsTest extends UnitTestCase
         $languageService = $this->prophesize(LanguageService::class);
         $languageService->sL(Argument::cetera())->willReturn('');
         $GLOBALS['LANG'] = $languageService->reveal();
-        /** @var FlashMessage|ObjectProphecy $flashMessage */
         $flashMessage = $this->prophesize(FlashMessage::class);
         GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
-        /** @var FlashMessageService|ObjectProphecy $flashMessageService */
         $flashMessageService = $this->prophesize(FlashMessageService::class);
         GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
-        /** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
         $flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
         $flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
 
@@ -2808,7 +2777,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL('aLabel')->willReturnArgument(0);
@@ -2888,7 +2856,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2920,7 +2887,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
         $fieldConfig = $input['processedTca']['columns']['aField']['config'];
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
 
@@ -2950,7 +2916,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -2980,7 +2945,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
         $fieldConfig = $input['processedTca']['columns']['aField']['config'];
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
 
@@ -3010,7 +2974,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
@@ -3479,14 +3442,12 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
 
         $this->mockDatabaseConnectionForProcessSelectField();
 
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
 

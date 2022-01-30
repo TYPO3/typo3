@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -219,10 +220,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         // no additional assertion here as the test would fail due to not mocking the email API
     }
 
-    /**
-     * @return \Prophecy\Prophecy\ObjectProphecy|FluidEmail
-     */
-    protected function setUpMailMessageProphecy()
+    protected function setUpMailMessageProphecy(): ObjectProphecy
     {
         $mailMessage = $this->prophesize(FluidEmail::class);
         $mailMessage->to(Argument::any())->willReturn($mailMessage->reveal());

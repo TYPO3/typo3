@@ -37,15 +37,9 @@ class WidgetRegistryTest extends UnitTestCase
 
     protected WidgetRegistry $subject;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
-    protected $beUserProphecy;
+    protected ObjectProphecy $beUserProphecy;
 
-    /**
-     * @var ContainerInterface|ObjectProphecy
-     */
-    protected $containerProphecy;
+    protected ObjectProphecy $containerProphecy;
 
     public function setUp(): void
     {

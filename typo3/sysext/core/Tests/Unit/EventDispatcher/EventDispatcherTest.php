@@ -32,10 +32,7 @@ class EventDispatcherTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ListenerProviderInterface|ObjectProphecy
-     */
-    protected $listenerProviderProphecy;
+    protected ObjectProphecy $listenerProviderProphecy;
     protected EventDispatcher $eventDispatcher;
 
     protected function setUp(): void

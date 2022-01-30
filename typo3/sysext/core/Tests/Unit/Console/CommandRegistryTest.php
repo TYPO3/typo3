@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Console;
 
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
@@ -31,10 +32,7 @@ class CommandRegistryTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ContainerInterface|\Prophecy\Prophecy\ObjectProphecy
-     */
-    protected $containerProphecy;
+    protected ObjectProphecy $containerProphecy;
 
     /**
      * Set up this testcase
@@ -43,7 +41,6 @@ class CommandRegistryTest extends UnitTestCase
     {
         parent::setUp();
 
-        /** @var ContainerInterface */
         $this->containerProphecy = $this->prophesize(ContainerInterface::class);
     }
 
