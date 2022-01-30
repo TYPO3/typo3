@@ -13,7 +13,7 @@ parameters:
     # Don't be overly greedy on machines with more CPU's to be a good neighbor especially on CI
     maximumNumberOfProcesses: 5
 
-  level: 3
+  level: 5
 
   bootstrapFiles:
     - phpstan-constants.php
