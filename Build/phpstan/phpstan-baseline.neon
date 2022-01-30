@@ -2166,11 +2166,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$response$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
-
-		-
 			message: "#^Return type \\(bool\\) of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getErrorFlashMessage\\(\\) should be compatible with return type \\(string\\) of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:getErrorFlashMessage\\(\\)$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
