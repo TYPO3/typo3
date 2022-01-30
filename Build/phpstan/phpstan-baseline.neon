@@ -2116,11 +2116,6 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
 
 		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Configuration/AbstractConfigurationManager.php
-
-		-
 			message: "#^Variable \\$controllerAlias might not be defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Configuration/AbstractConfigurationManager.php
