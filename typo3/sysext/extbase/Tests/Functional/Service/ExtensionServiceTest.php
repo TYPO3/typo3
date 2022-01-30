@@ -21,7 +21,6 @@ use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Exception;
@@ -49,15 +48,9 @@ class ExtensionServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
         $this->frontendConfigurationManager = $this->prophesize(FrontendConfigurationManager::class);
-        $this->backendConfigurationManager = $this->prophesize(BackendConfigurationManager::class);
-
         $this->containerProphecy = $this->prophesize(ContainerInterface::class);
-
         $this->extensionService = new ExtensionService();
     }
 

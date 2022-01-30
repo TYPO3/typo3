@@ -35,16 +35,13 @@ class EventDispatcherTest extends UnitTestCase
     /**
      * @var ListenerProviderInterface|ObjectProphecy
      */
-    protected $containerProphecy;
-    protected ?EventDispatcher $eventDispatcher;
+    protected $listenerProviderProphecy;
+    protected EventDispatcher $eventDispatcher;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->listenerProviderProphecy = $this->prophesize();
-        $this->listenerProviderProphecy->willImplement(ListenerProviderInterface::class);
-
+        $this->listenerProviderProphecy = $this->prophesize(ListenerProviderInterface::class);
         $this->eventDispatcher = new EventDispatcher(
             $this->listenerProviderProphecy->reveal()
         );

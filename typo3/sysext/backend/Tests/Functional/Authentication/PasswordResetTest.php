@@ -29,7 +29,10 @@ class PasswordResetTest extends FunctionalTestCase
 {
     use ProphecyTrait;
 
-    protected LoggerInterface $logger;
+    /**
+     * @var LoggerInterface|object
+     */
+    protected $logger;
 
     public function setUp(): void
     {

@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\Entity2;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -362,32 +361,6 @@ class PersistenceManagerTest extends UnitTestCase
         $changedEntities->attach($entity1);
         $repository->update($entity1);
         $persistenceManager->persistAll();
-    }
-
-    /**
-     * @test
-     */
-    public function clearStateForgetsAboutNewObjects(): void
-    {
-        /** @var PersistenceManagerInterface|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockObject */
-        $mockObject = $this->createMock(PersistenceManagerInterface::class);
-        $mockObject->Persistence_Object_Identifier = 'abcdefg';
-
-        $mockSession = $this->createMock(Session::class);
-        $mockSession->method('hasIdentifier')->willReturn(false);
-        $mockBackend = $this->createMock(BackendInterface::class);
-
-        $persistenceManager = new PersistenceManager(
-            $this->createMock(QueryFactoryInterface::class),
-            $mockBackend,
-            $mockSession
-        );
-
-        $persistenceManager->registerNewObject($mockObject);
-        $persistenceManager->clearState();
-
-        $object = $persistenceManager->getObjectByIdentifier('abcdefg');
-        self::assertNull($object);
     }
 
     /**

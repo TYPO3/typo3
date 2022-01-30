@@ -26,22 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class IntegerValidatorTest extends UnitTestCase
 {
     /**
-     * @var string
-     */
-    protected $validatorClassName = IntegerValidator::class;
-
-    public function setup(): void
-    {
-        parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-    }
-
-    /**
      * Data provider with valid integers
-     *
-     * @return array
      */
     public function validIntegers(): array
     {
@@ -56,17 +41,15 @@ class IntegerValidatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider validIntegers
-     * @param mixed $integer
      */
-    public function integerValidatorReturnsNoErrorsForAValidInteger($integer): void
+    public function integerValidatorReturnsNoErrorsForAValidInteger(int|string $integer): void
     {
-        self::assertFalse($this->validator->validate($integer)->hasErrors());
+        $validator = $this->getMockBuilder(IntegerValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertFalse($validator->validate($integer)->hasErrors());
     }
 
     /**
      * Data provider with invalid integers
-     *
-     * @return array
      */
     public function invalidIntegers(): array
     {
@@ -80,11 +63,11 @@ class IntegerValidatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidIntegers
-     * @param mixed $invalidInteger
      */
-    public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger): void
+    public function integerValidatorReturnsErrorForAnInvalidInteger(float|string $invalidInteger): void
     {
-        self::assertTrue($this->validator->validate($invalidInteger)->hasErrors());
+        $validator = $this->getMockBuilder(IntegerValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertTrue($validator->validate($invalidInteger)->hasErrors());
     }
 
     /**
@@ -92,6 +75,7 @@ class IntegerValidatorTest extends UnitTestCase
      */
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
-        self::assertCount(1, $this->validator->validate('not a number')->getErrors());
+        $validator = $this->getMockBuilder(IntegerValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertCount(1, $validator->validate('not a number')->getErrors());
     }
 }

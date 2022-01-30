@@ -174,8 +174,8 @@ class Typo3DbBackendTest extends UnitTestCase
             ->onlyMethods(['getWorkspaceVersionOfRecord'])
             ->setConstructorArgs([$context])
             ->getMock();
-        $this->container = $this->createMock(ContainerInterface::class);
-        $query = new Query($this->createMock(DataMapFactory::class), $this->createMock(PersistenceManagerInterface::class), $this->createMock(QueryObjectModelFactory::class), $this->container);
+        $container = $this->createMock(ContainerInterface::class);
+        $query = new Query($this->createMock(DataMapFactory::class), $this->createMock(PersistenceManagerInterface::class), $this->createMock(QueryObjectModelFactory::class), $container);
         $query->setQuerySettings($mockQuerySettings);
         $pageRepositoryMock->expects(self::once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->willReturn($workspaceVersion);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
