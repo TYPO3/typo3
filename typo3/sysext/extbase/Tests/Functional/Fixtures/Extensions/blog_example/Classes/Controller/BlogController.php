@@ -104,8 +104,6 @@ class BlogController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
      * @throws \RuntimeException
      */
     public function processRequest(RequestInterface $request): ResponseInterface
