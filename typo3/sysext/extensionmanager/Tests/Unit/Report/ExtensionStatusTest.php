@@ -305,7 +305,6 @@ class ExtensionStatusTest extends UnitTestCase
         $mockTerObject->setReviewState($reviewState);
 
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
-        /** @var $mockListUtility ListUtility|\PHPUnit\Framework\MockObject\MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility->injectEventDispatcher($eventDispatcher);
         $mockListUtility

@@ -747,7 +747,7 @@ class LocalDriverTest extends BaseTestCase
                 'someDir' => [],
             ]
         );
-        /** @var $subject LocalDriver */
+        /** @var LocalDriver $subject */
         [$basedir, $subject] = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someDir');
         $subject->createFile('testfile.txt', '/someDir');
@@ -1084,7 +1084,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function permissionsAreCorrectlyRetrievedForAllowedFile(): void
     {
-        /** @var $subject LocalDriver */
+        /** @var LocalDriver $subject */
         [$basedir, $subject] = $this->prepareRealTestEnvironment();
         touch($basedir . '/someFile');
         chmod($basedir . '/someFile', 448);
@@ -1097,7 +1097,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function permissionsAreCorrectlyRetrievedForAllowedFolder(): void
     {
-        /** @var $subject LocalDriver */
+        /** @var LocalDriver $subject */
         [$basedir, $subject] = $this->prepareRealTestEnvironment();
         mkdir($basedir . '/someFolder');
         chmod($basedir . '/someFolder', 448);

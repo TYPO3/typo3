@@ -282,7 +282,7 @@ trait SiteBasedTestTrait
         }
 
         if ($current instanceof TypoScriptInstruction) {
-            /** @var $other TypoScriptInstruction */
+            /** @var TypoScriptInstruction $other */
             $typoScript = array_replace_recursive(
                 $current->getTypoScript() ?? [],
                 $other->getTypoScript() ?? []
@@ -301,7 +301,7 @@ trait SiteBasedTestTrait
         }
 
         if ($current instanceof ArrayValueInstruction) {
-            /** @var $other ArrayValueInstruction */
+            /** @var ArrayValueInstruction $other */
             $array = array_merge_recursive($current->getArray(), $other->getArray());
             return $current->withArray($array);
         }

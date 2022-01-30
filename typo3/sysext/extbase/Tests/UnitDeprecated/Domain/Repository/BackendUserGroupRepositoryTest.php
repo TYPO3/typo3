@@ -47,7 +47,6 @@ class BackendUserGroupRepositoryTest extends UnitTestCase
     public function initializeObjectSetsDefaultQuerySettings(): void
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
-        /** @var $subject BackendUserGroupRepository */
         $subject = $this->getMockBuilder(BackendUserGroupRepository::class)
             ->onlyMethods(['setDefaultQuerySettings'])
             ->setConstructorArgs([$objectManager])

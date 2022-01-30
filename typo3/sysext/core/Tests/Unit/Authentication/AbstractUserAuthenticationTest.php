@@ -63,7 +63,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
 
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
+        /** @var AbstractUserAuthentication $mock */
         $mock = $this->getMockBuilder(AbstractUserAuthentication::class)
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()

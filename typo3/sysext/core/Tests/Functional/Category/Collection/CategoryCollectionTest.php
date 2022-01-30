@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
 class CategoryCollectionTest extends FunctionalTestCase
 {
     /**
@@ -123,7 +120,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      */
     public function canLoadADummyCollectionFromDatabase(): void
     {
-        /** @var $collection CategoryCollection */
+        /** @var CategoryCollection $collection */
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
         // Check the number of record
         self::assertEquals(5, $collection->count());
@@ -174,7 +171,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      */
     public function canLoadADummyCollectionWithoutContentFromDatabase(): void
     {
-        /** @var $collection CategoryCollection */
+        /** @var CategoryCollection $collection */
         $collection = CategoryCollection::load(1, false, 'tx_test_test');
         // Check the number of record
         self::assertEquals(0, $collection->count());

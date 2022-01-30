@@ -30,7 +30,6 @@ class AbstractMemoryTest extends UnitTestCase
      */
     public function setRealMemoryUsageSetsRealMemoryUsage(): void
     {
-        /** @var $processor AbstractMemoryProcessor */
         $processor = $this->getMockForAbstractClass(AbstractMemoryProcessor::class);
         $processor->setRealMemoryUsage(false);
         self::assertFalse($processor->getRealMemoryUsage());
@@ -41,7 +40,6 @@ class AbstractMemoryTest extends UnitTestCase
      */
     public function setFormatSizeSetsFormatSize(): void
     {
-        /** @var $processor AbstractMemoryProcessor */
         $processor = $this->getMockForAbstractClass(AbstractMemoryProcessor::class);
         $processor->setFormatSize(false);
         self::assertFalse($processor->getFormatSize());

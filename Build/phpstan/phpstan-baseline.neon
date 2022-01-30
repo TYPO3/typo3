@@ -316,79 +316,14 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Authentication/PasswordResetTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Clipboard/ClipboardTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\FormInlineAjaxController\\:\\:createAction\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 4
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
 			count: 6
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -399,66 +334,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/View/Drawing/BackendLayoutRendererTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
@@ -1316,18 +1191,8 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/MathUtility.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$GLOBALS\\['BE_USER'\\] BackendUserAuthentication\\)\\: Unexpected token \"\\$GLOBALS\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Authentication/BackendUserAuthenticationTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\:\\:add\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$collection CategoryCollection\\)\\: Unexpected token \"\\$collection\", expected type at offset 9$#"
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
 
 		-
@@ -1374,36 +1239,6 @@ parameters:
 			message: "#^Binary operation \"\\+\\=\" between string and 0\\|4000 results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Routing/Aspect/PersistedPatternMapperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$mock \\\\TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\)\\: Unexpected token \"\\$mock\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AbstractUserAuthenticationTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$checkPid_value \\(int\\|string\\) does not accept null\\.$#"
@@ -1496,8 +1331,8 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Fixtures/FrontendFixture.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject ConfigurationManager\\|\\\\PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|\\\\TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 5
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/ConfigurationManagerTest.php
 
 		-
@@ -1666,11 +1501,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$exception \\\\Exception\\|\\\\PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\)\\: Unexpected token \"\\$exception\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Error/ProductionExceptionHandlerTest.php
-
-		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\EventDispatcher\\\\EventDispatcherTest\\:\\:\\$listenerProviderProphecy\\.$#"
 			count: 6
 			path: ../../typo3/sysext/core/Tests/Unit/EventDispatcher/EventDispatcherTest.php
@@ -1794,21 +1624,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Log\\\\Fixtures\\\\WriterFixture\\:\\:writeLog\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Log\\\\Writer\\\\WriterInterface but return statement is missing\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Log/Fixtures/WriterFixture.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$record LogRecord\\)\\: Unexpected token \"\\$record\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Log/LogRecordTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$processor \\\\TYPO3\\\\CMS\\\\Core\\\\Log\\\\Processor\\\\ProcessorInterface\\|\\\\PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\)\\: Unexpected token \"\\$processor\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Log/LoggerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$processor AbstractMemoryProcessor\\)\\: Unexpected token \"\\$processor\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Log/Processor/AbstractMemoryTest.php
 
 		-
 			message: "#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#"
@@ -1961,11 +1776,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject LocalDriver\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
-
-		-
 			message: "#^Variable \\$driver in PHPDoc tag @var does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
@@ -2016,47 +1826,12 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject \\\\PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|\\\\TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\|ResourceFactory\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceFactoryTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:updateProperties\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$driverConfiguration\\)\\: Unexpected token \"\\$driverConfiguration\", expected type at offset 212$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$driver LocalDriver\\|MockObject\\)\\: Unexpected token \"\\$driver\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$mockedDriver LocalDriver\\|MockObject\\)\\: Unexpected token \"\\$mockedDriver\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$mockedDriver \\\\TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\AbstractDriver\\|MockObject\\)\\: Unexpected token \"\\$mockedDriver\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$mockedFolder Folder\\|MockObject\\)\\: Unexpected token \"\\$mockedFolder\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject ResourceStorage\\|MockObject\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject ResourceStorage\\|MockObject\\|\\\\TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
@@ -2681,31 +2456,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RelationTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/TranslatedSiteContentTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/WorkspaceTest.php
@@ -2757,36 +2507,16 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 8
+			count: 10
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 5
+			count: 7
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$abstractConfigurationManager FrontendConfigurationManager\\)\\: Unexpected token \"\\$abstractConfigurationManager\", expected type at offset 9$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$cObjectMock ContentObjectRenderer\\)\\: Unexpected token \"\\$cObjectMock\", expected type at offset 9$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$flexFormService FlexFormService\\|MockObject\\)\\: Unexpected token \"\\$flexFormService\", expected type at offset 9$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$frontendConfigurationManager FrontendConfigurationManager\\)\\: Unexpected token \"\\$frontendConfigurationManager\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
@@ -2819,11 +2549,6 @@ parameters:
 			message: "#^PHPDoc tag @param has invalid value \\(\\$input\\)\\: Unexpected token \"\\$input\", expected type at offset 18$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$request \\\\TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request\\)\\: Unexpected token \"\\$request\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/RequestTest.php
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:_call\\(\\)\\.$#"
@@ -2891,13 +2616,8 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$dataMapFactory \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMapFactory \\| AccessibleObjectInterface\\)\\: Unexpected token \"\\$dataMapFactory\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapFactoryTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$dataMapFactory \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\DataMapFactory\\)\\: Unexpected token \"\\$dataMapFactory\", expected type at offset 9$#"
-			count: 1
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapFactoryTest.php
 
 		-
@@ -2908,11 +2628,6 @@ parameters:
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$dateTime NULL\\|\\\\DateTime\\)\\: Unexpected token \"\\$dateTime\", expected type at offset 9$#"
-			count: 3
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
 
 		-
@@ -2942,11 +2657,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\PersistenceManagerInterface\\:\\:expects\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$qomFactory \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\QueryObjectModelFactory\\)\\: Unexpected token \"\\$qomFactory\", expected type at offset 9$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
 
@@ -3076,11 +2786,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Service/ExtensionServiceTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$objectStorage \\\\TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\ObjectStorage\\)\\: Unexpected token \"\\$objectStorage\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/DebuggerUtilityTest.php
-
-		-
 			message: "#^Offset 'defaultContentRende…' does not exist on array\\{\\}\\.$#"
 			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
@@ -3174,21 +2879,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject BackendUserGroupRepository\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Domain/Repository/BackendUserGroupRepositoryTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject BackendUserRepository\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Domain/Repository/BackendUserRepositoryTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$objectManager \\\\TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\)\\: Unexpected token \"\\$objectManager\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Domain/Repository/CategoryRepositoryTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\UnitDeprecated\\\\SignalSlot\\\\DispatcherTest\\:\\:\\$signalSlotDispatcher \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\SignalSlot\\\\Dispatcher&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\SignalSlot\\\\Dispatcher\\.$#"
@@ -3304,11 +2994,6 @@ parameters:
 			message: "#^Method PHPUnit\\\\Framework\\\\TestCase\\:\\:count\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Repository/ExtensionRepositoryTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$mockListUtility ListUtility\\|\\\\PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\)\\: Unexpected token \"\\$mockListUtility\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
 
 		-
 			message: "#^Undefined variable\\: \\$EM_CONF$#"
@@ -3566,239 +3251,14 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/ResourceViewHelper.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/View/TemplatesPathsTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/CObjectViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Form/SelectViewHelperTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/EmailViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/PageViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/TypolinkViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/TypolinkViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Transform/HtmlViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/PageViewHelperTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:setRequest\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/ResourceViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/FunctionalDeprecated/ViewHelpers/Uri/EmailViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/FunctionalDeprecated/ViewHelpers/Uri/EmailViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/FunctionalDeprecated/ViewHelpers/Uri/EmailViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/FunctionalDeprecated/ViewHelpers/Uri/EmailViewHelperTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/FunctionalDeprecated/ViewHelpers/Uri/EmailViewHelperTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$arguments\\)\\: Unexpected token \"\\$arguments\", expected type at offset 102$#"
@@ -3814,56 +3274,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/fluid/Tests/Unit/ViewHelpers/Uri/TypolinkViewHelperTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/Functional/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Tests/FunctionalDeprecated/Rendering/SecureHtmlRenderingTest.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getArguments\\(\\)\\.$#"
@@ -4306,36 +3716,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$tsfe \\\\TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\)\\: Unexpected token \"\\$tsfe\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
@@ -4346,56 +3726,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Imaging/GifBuilderTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Middleware/BackendUserAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Middleware/BackendUserAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Middleware/BackendUserAuthenticatorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Middleware/BackendUserAuthenticatorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Middleware/BackendUserAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/LocalizedSiteContentRenderingTest.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$expectations\\)\\: Unexpected token \"\\$expectations\", expected type at offset 44$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
@@ -4404,56 +3734,6 @@ parameters:
 			message: "#^PHPDoc tag @param has invalid value \\(\\$pageConfig\\)\\: Unexpected token \"\\$pageConfig\", expected type at offset 18$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/UriPrefixRenderingTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/AbstractTestCase.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -4601,17 +3881,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$tsfe TypoScriptFrontendController\\)\\: Unexpected token \"\\$tsfe\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ImageContentObject\\:\\:_call\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$cObj MockObject\\|ContentObjectRenderer\\)\\: Unexpected token \"\\$cObj\", expected type at offset 9$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
 
@@ -4906,74 +4176,14 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node AbstractNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 20
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 4
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/AbstractNodeTest.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$child NodeInterface\\)\\: Unexpected token \"\\$child\", expected type at offset 9$#"
-			count: 1
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 3
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node DirectoryNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 26
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node DirectoryNode\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node FileNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 39
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node LinkNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 21
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/LinkNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$child NodeInterface\\)\\: Unexpected token \"\\$child\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/RootNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node DirectoryNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/RootNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$node RootNode\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$node\", expected type at offset 9$#"
-			count: 9
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/RootNodeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$facade StructureFacade\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$facade\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/StructureFacadeTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$instance CoreUpdateService\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$instance\", expected type at offset 9$#"
-			count: 4
-			path: ../../typo3/sysext/install/Tests/Unit/Service/CoreUpdateServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$instance CoreVersionService\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$instance\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/Service/CoreVersionServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$subject EnableFileService\\|AccessibleObjectInterface\\|MockObject\\)\\: Unexpected token \"\\$subject\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/Service/EnableFileServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService\\|MockObject\\|AccessibleObjectInterface\\)\\: Unexpected token \"\\$silentConfigurationUpgradeServiceInstance\", expected type at offset 9$#"
-			count: 14
-			path: ../../typo3/sysext/install/Tests/Unit/Service/SilentConfigurationUpgradeServiceTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Unit\\\\Service\\\\SilentConfigurationUpgradeServiceTest\\:\\:\\$backupPackageManager \\(TYPO3\\\\CMS\\\\Core\\\\Package\\\\UnitTestPackageManager\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
@@ -5071,21 +4281,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$column \\\\SimpleXMLElement\\)\\: Unexpected token \"\\$column\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$deletedRecords \\\\TYPO3\\\\CMS\\\\Recycler\\\\Domain\\\\Model\\\\DeletedRecords\\)\\: Unexpected token \"\\$deletedRecords\", expected type at offset 9$#"
-			count: 2
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$table \\\\SimpleXMLElement\\)\\: Unexpected token \"\\$table\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
-
-		-
 			message: "#^Variable \\$previousValueOfEntityLoader might not be defined\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
@@ -5106,31 +4301,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Classes/Command/CheckIntegrityCommand.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService\\:\\:method\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
@@ -5139,56 +4309,6 @@ parameters:
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
 			count: 1
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/Canonical/CanonicalGeneratorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getArray\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getConstants\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\TestingFramework\\\\Core\\\\Functional\\\\Framework\\\\Frontend\\\\Internal\\\\AbstractInstruction\\:\\:getTypoScript\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other ArrayValueInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
-
-		-
-			message: "#^PHPDoc tag @var has invalid value \\(\\$other TypoScriptInstruction\\)\\: Unexpected token \"\\$other\", expected type at offset 9$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Tests/Functional/HrefLang/HrefLangGeneratorTest.php
 
 		-
 			message: "#^PHPDoc tag @var above a method has no effect\\.$#"

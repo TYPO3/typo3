@@ -79,7 +79,7 @@ class EnableFileServiceTest extends UnitTestCase
     {
         $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var $subject EnableFileService|AccessibleObjectInterface|MockObject */
+        /** @var EnableFileService|AccessibleObjectInterface|MockObject $subject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),
@@ -151,7 +151,7 @@ class EnableFileServiceTest extends UnitTestCase
     {
         $vfs = vfsStream::setup();
         vfsStream::create($structure, $vfs);
-        /** @var $subject EnableFileService|AccessibleObjectInterface|MockObject */
+        /** @var EnableFileService|AccessibleObjectInterface|MockObject $subject */
         $subject = $this->getAccessibleMock(EnableFileService::class, ['dummy'], [], '', false);
         Environment::initialize(
             Environment::getContext(),

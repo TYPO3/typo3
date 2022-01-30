@@ -33,7 +33,6 @@ class CategoryRepositoryTest extends UnitTestCase
      */
     public function initializeObjectSetsRespectStoragePidToFalse(): void
     {
-        /** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
         $objectManager = $this->createMock(ObjectManagerInterface::class);
         $subject = new CategoryRepository($objectManager);
         $querySettings = $this->createMock(Typo3QuerySettings::class);

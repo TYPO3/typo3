@@ -54,7 +54,6 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
      */
     protected function getDeletedPages($pageUid, $depth = 0): array
     {
-        /** @var $deletedRecords \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
         $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
         $deletedRecords->loadData($pageUid, 'pages', $depth);
         return $deletedRecords->getDeletedRows();
@@ -68,7 +67,6 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
      */
     protected function getDeletedContent($contentUid): array
     {
-        /** @var $deletedRecords \TYPO3\CMS\Recycler\Domain\Model\DeletedRecords */
         $deletedRecords = GeneralUtility::makeInstance(DeletedRecords::class);
         $deletedRecords->loadData($contentUid, 'tt_content', 0);
         return $deletedRecords->getDeletedRows();
@@ -101,11 +99,11 @@ abstract class AbstractRecycleTestCase extends FunctionalTestCase
             libxml_disable_entity_loader($previousValueOfEntityLoader);
         }
 
-        /** @var $table \SimpleXMLElement */
+        /** @var \SimpleXMLElement $table */
         foreach ($xml->children() as $table) {
             $record = [];
 
-            /** @var $column \SimpleXMLElement */
+            /** @var \SimpleXMLElement $column*/
             foreach ($table->children() as $column) {
                 $columnName = $column->getName();
                 $columnValue = null;

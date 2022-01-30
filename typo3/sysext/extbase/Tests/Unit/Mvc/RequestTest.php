@@ -257,7 +257,6 @@ class RequestTest extends UnitTestCase
      */
     public function setControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly($controllerArguments, $controllerObjectName): void
     {
-        /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
         $request = new Request();
         $request->setControllerObjectName($controllerObjectName);
 

@@ -157,7 +157,6 @@ class LogRecordTest extends UnitTestCase
         $level = LogLevel::DEBUG;
         $message = 'test message';
         $data = ['foo' => 'bar'];
-        /** @var $record LogRecord */
         $record = new LogRecord($component, $level, $message, $data);
         $recordArray = $record->toArray();
         self::assertEquals($component, $recordArray['component']);

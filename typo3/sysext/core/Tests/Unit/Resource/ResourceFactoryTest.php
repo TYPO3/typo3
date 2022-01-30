@@ -17,12 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -87,7 +89,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath(): void
     {
-        /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
+        /** @var MockObject|AccessibleObjectInterface|ResourceFactory $subject */
         $subject = $this->getAccessibleMock(
             ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],
@@ -107,7 +109,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath(): void
     {
-        /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
+        /** @var MockObject|AccessibleObjectInterface|ResourceFactory $subject */
         $subject = $this->getAccessibleMock(
             ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],

@@ -309,7 +309,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [3, 5, 9];
         $recursive = 99;
-        /** @var $abstractConfigurationManager FrontendConfigurationManager */
+        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -322,7 +322,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock
             ->method('getTreeList')
@@ -341,7 +340,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [-3, 5, 9];
         $recursive = 99;
-        /** @var $abstractConfigurationManager FrontendConfigurationManager */
+        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -354,7 +353,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock
             ->method('getTreeList')
@@ -373,7 +371,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     {
         $storagePids = [1, 2, 3];
 
-        /** @var $abstractConfigurationManager FrontendConfigurationManager */
+        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
@@ -386,7 +384,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects(self::never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
@@ -417,7 +414,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             false
         );
 
-        /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
         $cObjectMock->expects(self::never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
@@ -491,7 +487,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsString(): void
     {
-        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -516,7 +511,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsStringAndEmpty(): void
     {
-        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -537,7 +531,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsArray(): void
     {
-        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -558,7 +551,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromFlexFormChecksForDataIsArrayAndEmpty(): void
     {
-        /** @var $flexFormService FlexFormService|MockObject */
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->onlyMethods(['convertFlexFormContentToArray'])
             ->getMock();
@@ -579,7 +571,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideConfigurationFromPluginOverridesCorrectly(): void
     {
-        /** @var $frontendConfigurationManager FrontendConfigurationManager */
+        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $frontendConfigurationManager */
         $frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             ['getTypoScriptSetup'],
