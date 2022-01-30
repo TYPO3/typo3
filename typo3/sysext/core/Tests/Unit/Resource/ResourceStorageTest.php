@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 /**
  * Test case for ResourceStorage class
@@ -256,12 +257,10 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
-        /** @var $driver LocalDriver|MockObject */
         $driver = $this->getMockBuilder(LocalDriver::class)
             ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
             ->getMock();
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var $subject ResourceStorage|MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['isOnline', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$driver, ['configuration' => []], $this->eventDispatcher])
@@ -313,14 +312,12 @@ class ResourceStorageTest extends BaseTestCase
         array $permissionsFromDriver,
         bool $expectedResult
     ): void {
-        /** @var $mockedDriver LocalDriver|MockObject */
         $mockedDriver = $this->createMock(LocalDriver::class);
         $mockedDriver->method('getPermissions')->willReturn($permissionsFromDriver);
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var $mockedFolder Folder|MockObject */
+        /** @var Folder|MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
         // Let all other checks pass
-        /** @var $subject ResourceStorage|MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->onlyMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$mockedDriver, [], $this->eventDispatcher])
@@ -512,12 +509,10 @@ class ResourceStorageTest extends BaseTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1325952534);
 
-        /** @var \TYPO3\CMS\Core\Resource\Folder|MockObject $folderMock */
         $folderMock = $this->createMock(Folder::class);
-        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|MockObject */
         $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
-        /** @var $subject ResourceStorage|MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var ResourceStorage|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);

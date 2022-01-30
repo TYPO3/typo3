@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -41,9 +42,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper\Fixture\DummyParentE
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DataMapperTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -60,7 +58,7 @@ class DataMapperTest extends UnitTestCase
         $rows = [['uid' => '1234']];
         $object = new \stdClass();
 
-        /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $dataMapper */
+        /** @var DataMapper|AccessibleObjectInterface|MockObject $dataMapper */
         $dataMapper = $this->getMockBuilder(DataMapper::class)
             ->setConstructorArgs([
                 $this->createMock(ReflectionService::class),
@@ -141,7 +139,7 @@ class DataMapperTest extends UnitTestCase
         $dataMaps = [
             $className => $dataMap,
         ];
-        /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
+        /** @var AccessibleObjectInterface|ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
             ->setConstructorArgs([new NullFrontend('extbase'), 'ClassSchemata'])
@@ -189,7 +187,6 @@ class DataMapperTest extends UnitTestCase
         $dataMaps = [
             $className => $dataMap,
         ];
-        /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
         $classSchema = new ClassSchema($className);
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)
             ->setConstructorArgs([new NullFrontend('extbase'), 'ClassSchemata'])
@@ -307,7 +304,6 @@ class DataMapperTest extends UnitTestCase
         $object = new DummyParentEntity();
         $child = new DummyChildEntity();
 
-        /** @var \TYPO3\CMS\Extbase\Reflection\ClassSchema|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $classSchema1 */
         $classSchema1 = new ClassSchema(DummyParentEntity::class);
         $identifier = 1;
 
@@ -375,10 +371,10 @@ class DataMapperTest extends UnitTestCase
      */
     public function mapDateTimeHandlesDifferentFieldEvaluations($value, $storageFormat, $expectedValue): void
     {
-        /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
+        /** @var DataMapper|AccessibleObjectInterface|MockObject $accessibleDataMapFactory */
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
 
-        /** @var $dateTime NULL|\DateTime */
+        /** @var \DateTime|MockObject|AccessibleObjectInterface $dateTime */
         $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $value, $storageFormat);
 
         if ($expectedValue === null) {
@@ -415,10 +411,10 @@ class DataMapperTest extends UnitTestCase
         $originalTimeZone = date_default_timezone_get();
         date_default_timezone_set('America/Chicago');
         $usedTimeZone = date_default_timezone_get();
-        /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
+        /** @var DataMapper|AccessibleObjectInterface|MockObject $accessibleDataMapFactory */
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
 
-        /** @var $dateTime NULL|\DateTime */
+        /** @var \DateTime|MockObject|AccessibleObjectInterface $dateTime */
         $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $value, $storageFormat);
 
         if ($expectedValue === null) {
@@ -435,13 +431,13 @@ class DataMapperTest extends UnitTestCase
      */
     public function mapDateTimeHandlesSubclassesOfDateTime(): void
     {
-        /** @var DataMapper|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject $accessibleDataMapFactory */
+        /** @var DataMapper|AccessibleObjectInterface|MockObject $accessibleDataMapFactory */
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
         $targetType = 'TYPO3\CMS\Extbase\Tests\Unit\Persistence\Fixture\Model\CustomDateTime';
         $date = '2013-01-01 01:02:03';
         $storageFormat = 'datetime';
 
-        /** @var $dateTime NULL|\DateTime */
+        /** @var \DateTime|MockObject|AccessibleObjectInterface $dateTime */
         $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $date, $storageFormat, $targetType);
 
         self::assertInstanceOf($targetType, $dateTime);

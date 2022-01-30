@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -35,7 +36,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     /**
-     * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit\Framework\MockObject\MockObject
+     * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|MockObject
      */
     protected $subject;
 
@@ -79,7 +80,6 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $typo3InformationProphecy->getCopyrightYear()->willReturn('1999-20XX');
         GeneralUtility::addInstance(Typo3Information::class, $typo3InformationProphecy->reveal());
         $title = '<b>b</b><script>alert(1);</script>';
-        /** @var $exception \Exception|\PHPUnit\Framework\MockObject\MockObject */
         $exception = $this->getMockBuilder('Exception')
             ->addMethods(['getTitle'])
             ->setConstructorArgs(['some message'])

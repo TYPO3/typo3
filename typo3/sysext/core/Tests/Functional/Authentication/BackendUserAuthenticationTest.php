@@ -24,15 +24,10 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for class \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
- */
 class BackendUserAuthenticationTest extends FunctionalTestCase
 {
     /**
      * The fixture which is used when initializing a backend user
-     *
-     * @var string
      */
     protected string $backendUserFixture = __DIR__ . '/Fixtures/be_users.xml';
 
@@ -63,8 +58,9 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $this->importDataSet(__DIR__ . '/Fixtures/be_groups.xml');
         $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
         $this->setUpBackendUserFromFixture(2);
-        /** @var $GLOBALS['BE_USER'] BackendUserAuthentication */
-        $this->subject = $GLOBALS['BE_USER'];
+        /** @var BackendUserAuthentication $backendUser */
+        $backendUser = $GLOBALS['BE_USER'];
+        $this->subject = $backendUser;
     }
 
     /**

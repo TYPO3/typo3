@@ -598,7 +598,7 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isInstalledVersionAReleasedVersionReturnsTrueForNonDevelopmentVersion(): void
     {
-        /** @var $instance CoreVersionService|AccessibleObjectInterface|MockObject */
+        /** @var CoreVersionService|AccessibleObjectInterface|MockObject $instance */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.2.0');
         self::assertTrue($instance->isInstalledVersionAReleasedVersion());
@@ -609,7 +609,7 @@ class CoreVersionServiceTest extends UnitTestCase
      */
     public function isInstalledVersionAReleasedVersionReturnsFalseForDevelopmentVersion(): void
     {
-        /** @var $instance CoreVersionService|AccessibleObjectInterface|MockObject */
+        /** @var CoreVersionService|AccessibleObjectInterface|MockObject $instance */
         $instance = $this->getAccessibleMock(CoreVersionService::class, ['getInstalledVersion'], [], '', false);
         $instance->expects(self::once())->method('getInstalledVersion')->willReturn('7.4-dev');
         self::assertFalse($instance->isInstalledVersionAReleasedVersion());

@@ -88,7 +88,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -126,7 +126,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function doNotRemoveObsoleteLocalConfigurationSettingsIfThereAreNoOldSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -162,7 +162,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function doNotGenerateEncryptionKeyIfExists(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -197,7 +197,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function generateEncryptionKeyIfNotExists(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -338,7 +338,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function transferHttpSettingsIfSet(array $currentLocalConfiguration, array $newSettings, bool $localConfigurationNeedsUpdate): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -381,7 +381,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function disableImageMagickDetailSettingsIfImageMagickIsDisabled(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -427,7 +427,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function doNotDisableImageMagickDetailSettingsIfImageMagickIsEnabled(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -468,7 +468,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function setImageMagickDetailSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -514,7 +514,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function doNotSetImageMagickDetailSettings(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -613,7 +613,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateNonExistingLangDebug(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -647,7 +647,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateExistingLangDebug(): void
     {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -707,7 +707,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -871,7 +871,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectException(ConfigurationChangedException::class);
         $this->expectExceptionCode(1379024938);
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],
@@ -912,7 +912,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
 
         $configurationManager->setLocalConfigurationValueByPath(Argument::cetera())->shouldNotBeCalled();
 
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface */
+        /** @var SilentConfigurationUpgradeService|MockObject|AccessibleObjectInterface $silentConfigurationUpgradeServiceInstance */
         $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
             SilentConfigurationUpgradeService::class,
             ['dummy'],

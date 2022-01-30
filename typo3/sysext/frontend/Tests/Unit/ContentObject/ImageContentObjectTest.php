@@ -156,7 +156,6 @@ class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
-        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -251,7 +250,6 @@ class ImageContentObjectTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault(string $layoutKey, array $configuration): void
     {
-        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -375,7 +373,6 @@ class ImageContentObjectTest extends UnitTestCase
         string $xhtmlDoctype,
         string $expectedHtml
     ): void {
-        /** @var $cObj MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->onlyMethods(['stdWrap', 'getImgResource'])
             ->getMock();

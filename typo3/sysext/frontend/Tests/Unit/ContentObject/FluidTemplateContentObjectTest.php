@@ -99,7 +99,6 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ['initializeStandaloneViewInstance'],
             [$this->contentObjectRenderer->reveal()]
         );
-        /** @var $tsfe TypoScriptFrontendController */
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)
             ->disableOriginalConstructor()
