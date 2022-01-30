@@ -26,16 +26,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TextValidatorTest extends UnitTestCase
 {
-    protected string $validatorClassName = TextValidator::class;
-
-    public function setup(): void
-    {
-        parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-    }
-
     public function isValidDataProvider(): array
     {
         return [
@@ -96,7 +86,8 @@ class TextValidatorTest extends UnitTestCase
      */
     public function isValidHasNoError(bool $expectation, string $testString): void
     {
-        self::assertSame($expectation, $this->validator->validate($testString)->hasErrors());
+        $validator = $this->getMockBuilder(TextValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertSame($expectation, $validator->validate($testString)->hasErrors());
     }
 
     /**
@@ -104,8 +95,9 @@ class TextValidatorTest extends UnitTestCase
      */
     public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities(): void
     {
+        $validator = $this->getMockBuilder(TextValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
         // we only test for the error code, after the translation Method for message is mocked anyway
         $expected = [new Error('', 1221565786)];
-        self::assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
+        self::assertEquals($expected, $validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
     }
 }

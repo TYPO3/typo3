@@ -25,22 +25,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class NotEmptyValidatorTest extends UnitTestCase
 {
-    protected string $validatorClassName = NotEmptyValidator::class;
-
-    public function setup(): void
-    {
-        parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-    }
-
     /**
      * @test
      */
     public function notEmptyValidatorReturnsNoErrorForASimpleString(): void
     {
-        self::assertFalse($this->validator->validate('a not empty string')->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertFalse($validator->validate('a not empty string')->hasErrors());
     }
 
     /**
@@ -48,7 +39,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorReturnsErrorForAnEmptyString(): void
     {
-        self::assertTrue($this->validator->validate('')->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertTrue($validator->validate('')->hasErrors());
     }
 
     /**
@@ -56,7 +48,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorReturnsErrorForANullValue(): void
     {
-        self::assertTrue($this->validator->validate(null)->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertTrue($validator->validate(null)->hasErrors());
     }
 
     /**
@@ -64,7 +57,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject(): void
     {
-        self::assertCount(1, $this->validator->validate('')->getErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertCount(1, $validator->validate('')->getErrors());
     }
 
     /**
@@ -72,7 +66,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue(): void
     {
-        self::assertCount(1, $this->validator->validate(null)->getErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertCount(1, $validator->validate(null)->getErrors());
     }
 
     /**
@@ -80,8 +75,9 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorWorksForEmptyArrays(): void
     {
-        self::assertTrue($this->validator->validate([])->hasErrors());
-        self::assertFalse($this->validator->validate([1 => 2])->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertTrue($validator->validate([])->hasErrors());
+        self::assertFalse($validator->validate([1 => 2])->hasErrors());
     }
 
     /**
@@ -89,7 +85,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorWorksForEmptyCountableObjects(): void
     {
-        self::assertTrue($this->validator->validate(new \SplObjectStorage())->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertTrue($validator->validate(new \SplObjectStorage())->hasErrors());
     }
 
     /**
@@ -99,6 +96,7 @@ class NotEmptyValidatorTest extends UnitTestCase
     {
         $countableObject = new \SplObjectStorage();
         $countableObject->attach(new \stdClass());
-        self::assertFalse($this->validator->validate($countableObject)->hasErrors());
+        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        self::assertFalse($validator->validate($countableObject)->hasErrors());
     }
 }

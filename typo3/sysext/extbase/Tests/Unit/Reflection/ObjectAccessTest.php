@@ -48,6 +48,7 @@ class ObjectAccessTest extends UnitTestCase
         $this->dummyObject = new DummyClassWithGettersAndSetters();
         $this->dummyObject->setProperty('string1');
         $this->dummyObject->setAnotherProperty(42);
+        // @phpstan-ignore-next-line That property does not exist in dummy class by intention.
         $this->dummyObject->shouldNotBePickedUp = true;
     }
 

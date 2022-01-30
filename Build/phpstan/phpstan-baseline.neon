@@ -311,11 +311,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/NewRecordViewHelper.php
 
 		-
-			message: "#^Access to an undefined property Psr\\\\Log\\\\LoggerInterface\\:\\:\\$records\\.$#"
-			count: 5
-			path: ../../typo3/sysext/backend/Tests/Functional/Authentication/PasswordResetTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\FormInlineAjaxController\\:\\:createAction\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 4
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
@@ -1501,11 +1496,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\EventDispatcher\\\\EventDispatcherTest\\:\\:\\$listenerProviderProphecy\\.$#"
-			count: 6
-			path: ../../typo3/sysext/core/Tests/Unit/EventDispatcher/EventDispatcherTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\EventDispatcher\\\\ListenerProviderTest\\:\\:\\$containerProphecy \\(Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Psr\\\\Container\\\\ContainerInterface\\>\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/EventDispatcher/ListenerProviderTest.php
@@ -2456,11 +2446,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Functional\\\\Service\\\\ExtensionServiceTest\\:\\:\\$backendConfigurationManager\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Service/ExtensionServiceTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
@@ -2616,11 +2601,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\PersistenceManagerInterface\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:\\$Persistence_Object_Identifier\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/PersistenceManagerTest.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryFactoryTest.php
@@ -2644,11 +2624,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\PersistenceManagerInterface\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/QueryTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Persistence\\\\Generic\\\\Storage\\\\Typo3DbBackendTest\\:\\:\\$container\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbBackendTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Persistence\\\\Generic\\\\Storage\\\\Typo3DbQueryParserTest\\:\\:prophesize\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
@@ -2761,11 +2736,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithGettersAndSetters\\:\\:\\$shouldNotBePickedUp\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ObjectAccessTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Configuration\\\\ConfigurationManagerInterface\\:\\:expects\\(\\)\\.$#"
 			count: 8
 			path: ../../typo3/sysext/extbase/Tests/Unit/Service/ExtensionServiceTest.php
@@ -2826,16 +2796,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
 
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\IntegerValidatorTest\\:\\:\\$validator\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/IntegerValidatorTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\NotEmptyValidatorTest\\:\\:\\$validator\\.$#"
-			count: 10
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NotEmptyValidatorTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:validate\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberRangeValidatorTest.php
@@ -2844,11 +2804,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\NumberValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberValidatorTest.php
-
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\TextValidatorTest\\:\\:\\$validator\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/TextValidatorTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\UrlValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\UrlValidator\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
