@@ -42,20 +42,11 @@ class RecoveryServiceTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    /**
-     * @var FrontendUserRepository|ObjectProphecy
-     */
-    protected $userRepository;
+    protected ObjectProphecy $userRepository;
 
-    /**
-     * @var RecoveryConfiguration|ObjectProphecy
-     */
-    protected $recoveryConfiguration;
+    protected ObjectProphecy $recoveryConfiguration;
 
-    /**
-     * @var TemplatePaths|ObjectProphecy
-     */
-    protected $templatePathsProphecy;
+    protected ObjectProphecy $templatePathsProphecy;
 
     protected function setUp(): void
     {
@@ -262,14 +253,12 @@ class RecoveryServiceTest extends UnitTestCase
      * @param Address $receiver
      * @param array $expectedViewVariables
      * @param array $recoveryConfiguration
-     *
-     * @return ObjectProphecy|FluidEmail
      */
     private function setupFluidEmailProphecy(
         Address $receiver,
         array $expectedViewVariables,
         array $recoveryConfiguration
-    ) {
+    ): ObjectProphecy {
         $fluidEmailProphecy = $this->prophesize(FluidEmail::class);
         GeneralUtility::addInstance(FluidEmail::class, $fluidEmailProphecy->reveal());
         $fluidEmailProphecy->subject('translation')->willReturn($fluidEmailProphecy);

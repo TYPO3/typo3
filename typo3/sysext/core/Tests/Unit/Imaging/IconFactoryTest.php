@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -52,10 +53,7 @@ class IconFactoryTest extends UnitTestCase
     protected string $registeredIconIdentifier = 'actions-close';
     protected string $registeredSpinningIconIdentifier = 'spinning-icon';
 
-    /**
-     * @var \TYPO3\CMS\Core\Imaging\IconRegistry
-     */
-    protected $iconRegistryMock;
+    protected ObjectProphecy $iconRegistryMock;
 
     /**
      * Simulate a tt_content record

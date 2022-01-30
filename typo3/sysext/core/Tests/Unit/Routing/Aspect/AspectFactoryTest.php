@@ -34,15 +34,9 @@ class AspectFactoryTest extends UnitTestCase
 
     protected ?AspectFactory $subject;
 
-    /**
-     * @var SiteLanguage|ObjectProphecy
-     */
-    protected $languageProphecy;
+    protected ObjectProphecy $languageProphecy;
 
-    /**
-     * @var Site|ObjectProphecy
-     */
-    protected $siteProphecy;
+    protected ObjectProphecy $siteProphecy;
 
     protected ?string $persistedMockClass;
     protected ?string $aspectMockClass;

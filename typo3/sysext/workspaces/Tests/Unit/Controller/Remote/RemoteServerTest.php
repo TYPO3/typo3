@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -40,9 +39,9 @@ class RemoteServerTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var FileReference[]|ObjectProphecy[]
+     * @var array<string, FileReference>
      */
-    protected array $fileReferenceProphecies;
+    protected array $fileReferenceMocks;
 
     /**
      * @return array
@@ -115,8 +114,8 @@ class RemoteServerTest extends UnitTestCase
      */
     public function prepareFileReferenceDifferencesAreCorrect(string $fileFileReferenceList, string $versionFileReferenceList, bool $useThumbnails, array $expected = null): void
     {
-        $liveFileReferences = $this->getFileReferenceProphecies($fileFileReferenceList);
-        $versionFileReferences = $this->getFileReferenceProphecies($versionFileReferenceList);
+        $liveFileReferences = $this->getFileReferenceMocks($fileFileReferenceList);
+        $versionFileReferences = $this->getFileReferenceMocks($versionFileReferenceList);
 
         $subject = $this->getAccessibleMock(RemoteServer::class, ['__none'], [], '', false);
         $result = $subject->_call(
@@ -131,28 +130,24 @@ class RemoteServerTest extends UnitTestCase
 
     /**
      * @param string $idList List of ids
-     * @return FileReference[]|ObjectProphecy[]
+     * @return array<string, FileReference>
      */
-    protected function getFileReferenceProphecies(string $idList): array
+    protected function getFileReferenceMocks(string $idList): array
     {
         $fileReferenceProphecies = [];
         $ids = GeneralUtility::trimExplode(',', $idList, true);
 
         foreach ($ids as $id) {
-            $fileReferenceProphecies[$id] = $this->getFileReferenceProphecy($id);
+            $fileReferenceProphecies[$id] = $this->getFileReferenceMock($id);
         }
 
         return $fileReferenceProphecies;
     }
 
-    /**
-     * @param string $id
-     * @return ObjectProphecy|FileReference
-     */
-    protected function getFileReferenceProphecy(string $id): FileReference
+    protected function getFileReferenceMock(string $id): FileReference
     {
-        if (isset($this->fileReferenceProphecies[$id])) {
-            return $this->fileReferenceProphecies[$id];
+        if (isset($this->fileReferenceMocks[$id])) {
+            return $this->fileReferenceMocks[$id];
         }
 
         $processedFileProphecy = $this->prophesize(ProcessedFile::class);
@@ -166,7 +161,7 @@ class RemoteServerTest extends UnitTestCase
         $fileReferenceProphecy->getOriginalFile()->willReturn($fileProphecy->reveal());
         $fileReferenceProphecy->getPublicUrl(Argument::cetera())->willReturn('/img/' . $id . '.png');
 
-        $this->fileReferenceProphecies[$id] = $fileReferenceProphecy->reveal();
-        return $this->fileReferenceProphecies[$id];
+        $this->fileReferenceMocks[$id] = $fileReferenceProphecy->reveal();
+        return $this->fileReferenceMocks[$id];
     }
 }

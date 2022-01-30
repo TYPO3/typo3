@@ -153,9 +153,10 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $GLOBALS['TBE_MODULES'] = [];
 
         $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
-        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoaderProphecy->reveal());
+        $moduleLoader = $moduleLoaderProphecy->reveal();
+        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoader);
         $moduleLoaderProphecy->load([])->shouldBeCalled();
-        $moduleLoaderProphecy->modListGroup = [
+        $moduleLoader->modListGroup = [
             'aModule',
         ];
         $moduleLoaderProphecy->getModules()->willReturn([
@@ -195,9 +196,10 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
         $GLOBALS['TBE_MODULES'] = [];
 
         $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);
-        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoaderProphecy->reveal());
+        $moduleLoader = $moduleLoaderProphecy->reveal();
+        GeneralUtility::addInstance(ModuleLoader::class, $moduleLoader);
         $moduleLoaderProphecy->load([])->shouldBeCalled();
-        $moduleLoaderProphecy->modListUser = [
+        $moduleLoader->modListUser = [
             'bModule',
         ];
         $moduleLoaderProphecy->getModules()->willReturn([

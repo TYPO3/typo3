@@ -21,7 +21,6 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,9 +35,6 @@ class TcaFlexPrepareTest extends UnitTestCase
 
     protected TcaFlexPrepare $subject;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $backendUserProphecy;
 
     /**
@@ -48,7 +44,6 @@ class TcaFlexPrepareTest extends UnitTestCase
     {
         parent::setUp();
         // Suppress cache foo in xml helpers of GeneralUtility
-        /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);

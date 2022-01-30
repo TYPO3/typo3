@@ -18,9 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaInputPlaceholderRecord;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -157,7 +155,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        /** @var FormDataCompiler|ObjectProphecy $formDataCompilerProphecy */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
         $formDataCompilerProphecy->compile([
@@ -265,7 +262,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        /** @var TcaInputPlaceholderRecord $languageService */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
         $formDataCompilerProphecy->compile([
@@ -331,7 +327,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
             ],
         ];
 
-        /** @var TcaInputPlaceholderRecord $languageService */
         $formDataCompilerProphecy = $this->prophesize(FormDataCompiler::class);
         GeneralUtility::addInstance(FormDataCompiler::class, $formDataCompilerProphecy->reveal());
         $formDataCompilerProphecy->compile([
@@ -477,7 +472,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $localizedString;
 
-        /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL($labelString)->shouldBeCalled()->willReturn($localizedString);

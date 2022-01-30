@@ -31,16 +31,16 @@ class ConfigurationServiceTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $beUserProphecy;
+
+    protected BackendUserAuthentication $beUser;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
+        $this->beUser = $this->beUserProphecy->reveal();
+        $GLOBALS['BE_USER'] = $this->beUser;
     }
 
     /**
@@ -152,7 +152,7 @@ class ConfigurationServiceTest extends UnitTestCase
     public function getConfigurationOptionReturnsSettingFromUcIfNoOverrideGiven(): void
     {
         $this->setUpUserTsConfigForAdmPanel([]);
-        $this->beUserProphecy->uc = [
+        $this->beUser->uc = [
             'AdminPanel' => [
                 'preview_showHiddenPages' => '1',
             ],
@@ -195,7 +195,7 @@ class ConfigurationServiceTest extends UnitTestCase
     public function saveConfigurationSavesMergedExistingAndNewConfiguration(): void
     {
         // existing configuration from UC
-        $this->beUserProphecy->uc = [
+        $this->beUser->uc = [
             'AdminPanel' => [
                 'foo' => 'bar',
             ],
@@ -220,7 +220,7 @@ class ConfigurationServiceTest extends UnitTestCase
                 'baz' => 'bam',
             ],
         ];
-        self::assertSame($expected, $this->beUserProphecy->uc);
+        self::assertSame($expected, $this->beUser->uc);
         $this->beUserProphecy->writeUC()->shouldHaveBeenCalled();
     }
 

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -108,10 +107,8 @@ class TcaGroupTest extends UnitTestCase
             ],
         ];
 
-        /** @var Folder|ObjectProphecy $relationHandlerProphecy */
         $folderProphecy = $this->prophesize(Folder::class);
 
-        /** @var ResourceFactory|ObjectProphecy $relationHandlerProphecy */
         $resourceFactoryProphecy = $this->prophesize(ResourceFactory::class);
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryProphecy->reveal());
         $resourceFactoryProphecy->retrieveFileOrFolderObject('1:/aFolder/anotherFolder/')
@@ -162,7 +159,6 @@ class TcaGroupTest extends UnitTestCase
         $clipboardProphecy->initializeClipboard()->shouldBeCalled();
         $clipboardProphecy->elFromTable('aForeignTable')->shouldBeCalled()->willReturn([]);
 
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
         $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
         GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
         $relationHandlerProphecy->start('1,2', 'aForeignTable', 'mmTableName', 42, 'aTable', $aFieldConfig)->shouldBeCalled();

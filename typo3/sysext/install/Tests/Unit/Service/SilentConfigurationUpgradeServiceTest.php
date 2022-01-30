@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
@@ -557,7 +556,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migratesGraphicsProcessorEffects($currentValue, bool $expectedMigratedValue): void
     {
-        /** @var ConfigurationManager|\Prophecy\Prophecy\ObjectProphecy */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
         $configurationManager->getLocalConfigurationValueByPath('GFX/processor')->willReturn('GraphicsMagick');
         $configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng')->willReturn(false);
@@ -692,7 +690,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
             'FE/cHashExcludedParametersIfEmpty' => '*',
         ];
 
-        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
 
         foreach ($oldConfig as $key => $value) {
@@ -860,7 +857,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'groups' => ['system'],
             ],
         ];
-        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
         $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
             ->shouldBeCalled()
@@ -904,7 +900,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
                 'groups' => ['system'],
             ],
         ];
-        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
         $configurationManager->getLocalConfigurationValueByPath('SYS/caching/cacheConfigurations')
             ->shouldBeCalled()
@@ -949,7 +944,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateExplicitADmodeKeepsCurrentValue(string $value): void
     {
-        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
         $configurationManager->getLocalConfigurationValueByPath('BE/explicitADmode')
             ->shouldBeCalled()
@@ -971,7 +965,6 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
      */
     public function migrateExplicitADmodeMigratesIfNeeded(): void
     {
-        /** @var ConfigurationManager|ObjectProphecy $configurationManager */
         $configurationManager = $this->prophesize(ConfigurationManager::class);
         $configurationManager->getLocalConfigurationValueByPath('BE/explicitADmode')
             ->shouldBeCalled()

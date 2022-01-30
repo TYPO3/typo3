@@ -32,9 +32,6 @@ class OpenDocumentServiceTest extends UnitTestCase
 
     protected OpenDocumentService $subject;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $backendUser;
 
     /**

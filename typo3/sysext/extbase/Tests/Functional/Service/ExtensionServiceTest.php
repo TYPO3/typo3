@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Service;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,21 +31,15 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ExtensionServiceTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
 
     protected $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     protected ExtensionService $extensionService;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|FrontendConfigurationManager
-     */
-    protected $frontendConfigurationManager;
+    protected ObjectProphecy $frontendConfigurationManager;
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|ContainerInterface
-     */
-    protected $containerProphecy;
+    protected ObjectProphecy $containerProphecy;
 
     protected function setUp(): void
     {

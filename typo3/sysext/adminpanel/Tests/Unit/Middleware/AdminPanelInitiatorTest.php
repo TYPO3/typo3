@@ -58,10 +58,11 @@ class AdminPanelInitiatorTest extends UnitTestCase
                 'display_top' => true,
             ],
         ];
-        $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthentication->getTSConfig()->willReturn($tsConfig);
+        $userAuthenticationProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
+        $userAuthenticationProphecy->getTSConfig()->willReturn($tsConfig);
+        $userAuthentication = $userAuthenticationProphecy->reveal();
         $userAuthentication->uc = $uc;
-        $GLOBALS['BE_USER'] = $userAuthentication->reveal();
+        $GLOBALS['BE_USER'] = $userAuthentication;
 
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
@@ -122,10 +123,11 @@ class AdminPanelInitiatorTest extends UnitTestCase
      */
     protected function checkAdminPanelDoesNotCallInitialize(array $tsConfig, array $uc): void
     {
-        $userAuthentication = $this->prophesize(FrontendBackendUserAuthentication::class);
-        $userAuthentication->getTSConfig()->willReturn($tsConfig);
+        $userAuthenticationProphecy = $this->prophesize(FrontendBackendUserAuthentication::class);
+        $userAuthenticationProphecy->getTSConfig()->willReturn($tsConfig);
+        $userAuthentication = $userAuthenticationProphecy->reveal();
         $userAuthentication->uc = $uc;
-        $GLOBALS['BE_USER'] = $userAuthentication->reveal();
+        $GLOBALS['BE_USER'] = $userAuthentication;
 
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
@@ -141,10 +143,7 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $controller->initialize(Argument::any())->shouldNotHaveBeenCalled();
     }
 
-    /**
-     * @return ObjectProphecy|RequestHandlerInterface
-     */
-    protected function prophesizeHandler()
+    protected function prophesizeHandler(): ObjectProphecy
     {
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler

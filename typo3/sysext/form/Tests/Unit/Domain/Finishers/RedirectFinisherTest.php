@@ -54,9 +54,10 @@ class RedirectFinisherTest extends UnitTestCase
         $contentObjectRendererProphecy->typoLink_URL(Argument::type('array'))->will(static function ($arguments) use ($uriPrefix) {
             return $uriPrefix . $arguments[0]['parameter'];
         });
-        $tsfeProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfeProphecy->cObj = $contentObjectRendererProphecy->reveal();
-        $GLOBALS['TSFE'] = $tsfeProphecy->reveal();
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->cObj = $contentObjectRendererProphecy->reveal();
+        $GLOBALS['TSFE'] = $frontendController;
 
         $redirectFinisherMock = $this->getAccessibleMock(RedirectFinisher::class, null, [], '', false);
         $redirectFinisherMock->_set('options', [

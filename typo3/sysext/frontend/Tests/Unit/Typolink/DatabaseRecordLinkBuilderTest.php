@@ -168,17 +168,18 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         ];
 
         // Arrange
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
         $context = new Context();
         $templateService = $this->prophesize(TemplateService::class);
         $pageRepository = $this->prophesize(PageRepository::class);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->getRequest()->willReturn($this->prophesize(ServerRequestInterface::class)->reveal());
 
-        $tsfe->getContext()->willReturn($context);
-        $tsfe->tmpl = $templateService->reveal();
-        $tsfe->tmpl->setup = $typoScriptConfig;
-        $tsfe->sys_page = $pageRepository->reveal();
+        $frontendControllerProphecy->getContext()->willReturn($context);
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->tmpl = $templateService->reveal();
+        $frontendController->tmpl->setup = $typoScriptConfig;
+        $frontendController->sys_page = $pageRepository->reveal();
         GeneralUtility::addInstance(ContentObjectRenderer::class, $cObj->reveal());
 
         $pageRepository->checkRecord('tx_news_domain_model_news', 1)->willReturn(
@@ -190,10 +191,10 @@ class DatabaseRecordLinkBuilderTest extends UnitTestCase
         $cObj->start(Argument::cetera())->shouldBeCalled();
         $cObj->typoLink(Argument::cetera())->shouldBeCalled();
 
-        $tsfe->getPagesTSconfig()->willReturn($pageTsConfig);
+        $frontendControllerProphecy->getPagesTSconfig()->willReturn($pageTsConfig);
 
         // Act
-        $databaseRecordLinkBuilder = new DatabaseRecordLinkBuilder($cObj->reveal(), $tsfe->reveal());
+        $databaseRecordLinkBuilder = new DatabaseRecordLinkBuilder($cObj->reveal(), $frontendController);
         try {
             $databaseRecordLinkBuilder->build($extractedLinkDetails, $linkText, $target, $confFromDb);
         } catch (UnableToLinkException $exception) {

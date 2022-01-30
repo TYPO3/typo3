@@ -39,9 +39,6 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var BackendUserAuthentication|ObjectProphecy
-     */
     protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void

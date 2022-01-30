@@ -588,11 +588,9 @@ class AbstractFinisherTest extends UnitTestCase
 
     /**
      * @param array $values Key/Value pairs to be retrievable
-     * @return ObjectProphecy|FormRuntime
      */
-    protected function createFormRuntimeProphecy(array $values)
+    protected function createFormRuntimeProphecy(array $values): ObjectProphecy
     {
-        /** @var ObjectProphecy|FormRuntime $formRuntimeProphecy */
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
         foreach ($values as $key => $value) {
             $formRuntimeProphecy->offsetExists(Argument::exact($key))->willReturn(true);

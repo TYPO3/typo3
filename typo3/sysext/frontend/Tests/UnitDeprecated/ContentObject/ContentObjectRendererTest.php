@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Frontend\Tests\UnitDeprecated\ContentObject;
 
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -108,10 +109,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'EDITPANEL' => EditPanelContentObject::class,
     ];
 
-    /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|CacheManager
-     */
-    private $cacheManager;
+    private ObjectProphecy $cacheManager;
 
     protected $backupEnvironment = true;
 

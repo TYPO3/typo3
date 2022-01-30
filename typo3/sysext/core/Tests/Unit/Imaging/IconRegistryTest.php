@@ -40,10 +40,7 @@ class IconRegistryTest extends UnitTestCase
      */
     protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
 
-    /**
-     * @var FrontendInterface|ObjectProphecy
-     */
-    protected $cacheFrontendProphecy;
+    protected ObjectProphecy $cacheFrontendProphecy;
 
     public function setUp(): void
     {

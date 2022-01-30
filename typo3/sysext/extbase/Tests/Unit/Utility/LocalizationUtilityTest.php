@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -41,10 +42,8 @@ class LocalizationUtilityTest extends UnitTestCase
 
     /**
      * Instance of configurationManagerInterface, injected to subject
-     *
-     * @var ConfigurationManagerInterface
      */
-    protected $configurationManagerInterfaceProphecy;
+    protected ObjectProphecy $configurationManagerInterfaceProphecy;
 
     /**
      * LOCAL_LANG array fixture
@@ -321,10 +320,11 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setValue($this->LOCAL_LANG);
 
         $backendUserAuthenticationProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
-        $backendUserAuthenticationProphecy->user = [
+        $backendUserAuthentication = $backendUserAuthenticationProphecy->reveal();
+        $backendUserAuthentication->user = [
             'lang' => $languageKey,
         ];
+        $GLOBALS['BE_USER'] = $backendUserAuthentication;
         $GLOBALS['LANG'] = $this->LOCAL_LANG;
 
         self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));

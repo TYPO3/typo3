@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -82,17 +81,14 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function logoffCleansFormProtectionIfBackendUserIsLoggedIn(): void
     {
-        /** @var ObjectProphecy|Connection $connection */
         $connection = $this->prophesize(Connection::class);
         $connection->delete('sys_lockedrecords', Argument::cetera())->willReturn(1);
 
-        /** @var ObjectProphecy|ConnectionPool $connectionPool */
         $connectionPool = $this->prophesize(ConnectionPool::class);
         $connectionPool->getConnectionForTable(Argument::cetera())->willReturn($connection->reveal());
 
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        /** @var ObjectProphecy|\TYPO3\CMS\Core\FormProtection\AbstractFormProtection $formProtection */
         $formProtection = $this->prophesize(BackendFormProtection::class);
         $formProtection->clean()->shouldBeCalled();
 
@@ -740,20 +736,17 @@ class BackendUserAuthenticationTest extends UnitTestCase
         // of GeneralUtility::addInstance will influence other tests
         // as the ConnectionPool is never used!
         if (!$admin) {
-            /** @var Connection|ObjectProphecy $connectionProphecy */
             $connectionProphecy = $this->prophesize(Connection::class);
             $connectionProphecy->getDatabasePlatform()->willReturn(new MockPlatform());
             $connectionProphecy->quoteIdentifier(Argument::cetera())->will(static function ($args) {
                 return '`' . str_replace('.', '`.`', $args[0]) . '`';
             });
 
-            /** @var QueryBuilder|ObjectProphecy $queryBuilderProphecy */
             $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
             $queryBuilderProphecy->expr()->willReturn(
                 new ExpressionBuilder($connectionProphecy->reveal())
             );
 
-            /** @var ConnectionPool|ObjectProphecy $databaseProphecy */
             $databaseProphecy = $this->prophesize(ConnectionPool::class);
             $databaseProphecy->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphecy->reveal());
             // Shift previously added instance

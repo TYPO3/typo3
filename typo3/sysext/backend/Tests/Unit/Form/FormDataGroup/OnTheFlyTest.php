@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataGroup;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -54,7 +53,6 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileReturnsIncomingData(): void
     {
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
         $formDataProviderProphecy->addData(Argument::cetera())->willReturnArgument(0);
@@ -75,7 +73,6 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileReturnsResultChangedByDataProvider(): void
     {
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(FormDataProviderInterface::class);
         GeneralUtility::addInstance(FormDataProviderInterface::class, $formDataProviderProphecy->reveal());
 
@@ -94,7 +91,6 @@ class OnTheFlyTest extends UnitTestCase
      */
     public function compileThrowsExceptionIfDataProviderDoesNotImplementInterface(): void
     {
-        /** @var FormDataProviderInterface|ObjectProphecy $formDataProviderProphecy */
         $formDataProviderProphecy = $this->prophesize(\stdClass::class);
         GeneralUtility::addInstance(\stdClass::class, $formDataProviderProphecy->reveal());
         $providerList = [

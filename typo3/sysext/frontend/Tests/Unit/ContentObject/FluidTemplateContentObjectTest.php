@@ -58,10 +58,9 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     protected MockObject $subject;
 
-    /**
-     * @var ContentObjectRenderer|ObjectProphecy
-     */
-    protected ObjectProphecy $contentObjectRenderer;
+    protected ObjectProphecy $contentObjectRendererProphecy;
+
+    protected ContentObjectRenderer $contentObjectRenderer;
 
     /**
      * @var ContentDataProcessor
@@ -85,12 +84,13 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         parent::setUp();
         $this->contentDataProcessor = new ContentDataProcessor($this->prophesize(ContainerInterface::class)->reveal());
-        $this->contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
+        $this->contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
+        $this->contentObjectRenderer = $this->contentObjectRendererProphecy->reveal();
         GeneralUtility::addInstance(ContentDataProcessor::class, $this->contentDataProcessor);
         $this->subject = $this->getAccessibleMock(
             FluidTemplateContentObject::class,
             ['initializeStandaloneViewInstance'],
-            [$this->contentObjectRenderer->reveal()]
+            [$this->contentObjectRenderer]
         );
         $tsfe = $this->createMock(TypoScriptFrontendController::class);
         $tsfe->tmpl = $this->getMockBuilder(TemplateService::class)

@@ -34,14 +34,8 @@ class DashboardWidgetPassTest extends UnitTestCase
 
     protected DashboardWidgetPass $subject;
 
-    /**
-     * @var ContainerBuilder|ObjectProphecy
-     */
     protected ObjectProphecy $container;
 
-    /**
-     * @var Definition|ObjectProphecy
-     */
     protected ObjectProphecy $widgetRegistryDefinition;
 
     public function setUp(): void

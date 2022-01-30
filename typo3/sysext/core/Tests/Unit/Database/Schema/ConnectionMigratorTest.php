@@ -38,10 +38,7 @@ class ConnectionMigratorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform|\Prophecy\Prophecy\ObjectProphecy
-     */
-    protected $platform;
+    protected MySQLPlatform $platform;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface

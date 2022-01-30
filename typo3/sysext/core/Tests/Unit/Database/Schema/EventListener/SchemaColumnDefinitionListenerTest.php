@@ -42,10 +42,7 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     * @var Connection|ObjectProphecy
-     */
-    protected $connectionProphet;
+    protected ObjectProphecy $connectionProphet;
 
     /**
      * Set up the test subject

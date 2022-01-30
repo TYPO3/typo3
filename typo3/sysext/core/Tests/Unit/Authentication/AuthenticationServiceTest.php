@@ -138,8 +138,9 @@ class AuthenticationServiceTest extends UnitTestCase
     public function authUserThrowsExceptionIfPasswordInDbDoesNotResolveToAValidHash(): void
     {
         $subject = new AuthenticationService();
-        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $pObjProphecy->loginType = 'BE';
+        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $userAuthentication = $userAuthenticationProphecy->reveal();
+        $userAuthentication->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -152,7 +153,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $pObjProphecy->reveal()
+            $userAuthentication
         );
         $dbUser = [
             'password' => 'aPlainTextPassword',
@@ -166,8 +167,9 @@ class AuthenticationServiceTest extends UnitTestCase
     public function authUserReturns0IfPasswordDoesNotMatch(): void
     {
         $subject = new AuthenticationService();
-        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $pObjProphecy->loginType = 'BE';
+        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $userAuthentication = $userAuthenticationProphecy->reveal();
+        $userAuthentication->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -180,7 +182,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $pObjProphecy->reveal()
+            $userAuthentication
         );
         $dbUser = [
             // a phpass hash of 'myPassword'
@@ -195,8 +197,9 @@ class AuthenticationServiceTest extends UnitTestCase
     public function authUserReturns200IfPasswordMatch(): void
     {
         $subject = new AuthenticationService();
-        $pObjProphecy = $this->prophesize(AbstractUserAuthentication::class);
-        $pObjProphecy->loginType = 'BE';
+        $userAuthenticationProphecy = $this->prophesize(AbstractUserAuthentication::class);
+        $userAuthentication = $userAuthenticationProphecy->reveal();
+        $userAuthentication->loginType = 'BE';
         $loggerProphecy = $this->prophesize(Logger::class);
         $subject->setLogger($loggerProphecy->reveal());
         $subject->initAuth(
@@ -209,7 +212,7 @@ class AuthenticationServiceTest extends UnitTestCase
                 'db_user' => ['table' => 'be_users'],
                 'HTTP_HOST' => '',
             ],
-            $pObjProphecy->reveal()
+            $userAuthentication
         );
         $dbUser = [
             // an argon2i hash of 'myPassword'

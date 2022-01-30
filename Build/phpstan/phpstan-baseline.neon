@@ -11,16 +11,6 @@ parameters:
 			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Backend\\\\FrontendBackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
-			count: 2
-			path: ../../typo3/sysext/adminpanel/Tests/Unit/Middleware/AdminPanelInitiatorTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
-			count: 2
-			path: ../../typo3/sysext/adminpanel/Tests/Unit/Service/ConfigurationServiceTest.php
-
-		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/adminpanel/ext_localconf.php
@@ -636,26 +626,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Utility/BackendUtilityTest.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
-			count: 4
-			path: ../../typo3/sysext/backend/Tests/Unit/Configuration/BackendUserConfigurationTest.php
-
-		-
-			message: "#^PHPDoc tag @var above assignment does not specify variable name\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Configuration/BackendUserConfigurationTest.php
-
-		-
-			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Controller\\\\File\\\\FileControllerTest\\:\\:\\$request with type Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\> is not subtype of native type Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/File/FileControllerTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/FormInlineAjaxControllerTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/SwitchUserControllerTest.php
@@ -711,36 +681,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/DatabaseEditRowTest.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\>\\:\\:\\$lang\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaColumnsProcessFieldDescriptionsTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\>\\:\\:\\$lang\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaColumnsProcessFieldLabelsTest.php
-
-		-
-			message: "#^Variable \\$relationHandlerProphecy in PHPDoc tag @var does not match assigned variable \\$folderProphecy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaGroupTest.php
-
-		-
-			message: "#^Variable \\$relationHandlerProphecy in PHPDoc tag @var does not match assigned variable \\$resourceFactoryProphecy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaGroupTest.php
-
-		-
-			message: "#^Variable \\$languageService in PHPDoc tag @var does not match assigned variable \\$formDataCompilerProphecy\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaInputPlaceholdersTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$groupData\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaSelectItemsTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'TYPO3\\\\\\\\CMS\\\\\\\\Backend\\\\\\\\Tests\\\\\\\\Unit\\\\\\\\Form\\\\\\\\Fixtures\\\\\\\\NodeFactory\\\\\\\\NodeElements\\\\\\\\BarElement' and TYPO3\\\\CMS\\\\Backend\\\\Form\\\\AbstractNode will always evaluate to false\\.$#"
 			count: 4
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/NodeFactoryTest.php
@@ -759,11 +699,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int\\<0, 9\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Tree/TreeNodeTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Database\\\\RelationHandler\\>\\:\\:\\$tableArray\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$pageId of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getLabelFromItemListMerged\\(\\) expects int, string given\\.$#"
@@ -2456,11 +2391,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/RedisBackendTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$classOrInterface of method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Core\\\\ClassAliasLoaderTest\\:\\:prophesize\\(\\) expects class\\-string\\|null, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Core/ClassAliasLoaderTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Collection\\\\CollectionInterface\\:\\:add\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
@@ -2636,11 +2566,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AbstractUserAuthenticationTest.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\>\\:\\:\\$loginType\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
-
-		-
 			message: "#^Parameter \\#4 \\$pObj of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractAuthenticationService\\:\\:initAuth\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication, null given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
@@ -2756,11 +2681,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/AbstractConditionMatcherTest.php
 
 		-
-			message: "#^PHPDoc tag @var above assignment does not specify variable name\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Console/CommandRegistryTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$packageManifest of method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Core\\\\ClassLoadingInformationGeneratorTest\\:\\:createPackageMock\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Core/ClassLoadingInformationGeneratorTest.php
@@ -2806,56 +2726,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:shouldBeCalled\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:willReturn\\(\\)\\.$#"
-			count: 18
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Cannot call method shouldBeCalled\\(\\) on string\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Cannot call method shouldHaveBeenCalled\\(\\) on string\\.$#"
-			count: 14
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Cannot call method will\\(\\) on string\\.$#"
-			count: 20
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Method Doctrine\\\\DBAL\\\\Connection\\:\\:getDatabasePlatform\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$identifier of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\:\\:quoteIdentifier\\(\\) expects string, Prophecy\\\\Argument\\\\Token\\\\AnyValuesToken given\\.$#"
-			count: 22
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$type of method Doctrine\\\\DBAL\\\\Connection\\:\\:quote\\(\\) expects Doctrine\\\\DBAL\\\\Types\\\\Type\\|int\\|string\\|null, Prophecy\\\\Argument\\\\Token\\\\AnyValuesToken given\\.$#"
-			count: 12
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilderTest\\:\\:\\$connectionProphet \\(TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Database\\\\Connection\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
-			message: "#^Variable \\$connectionProphet in PHPDoc tag @var does not exist\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Restriction/DefaultRestrictionContainerTest.php
@@ -2881,11 +2751,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/ConnectionMigratorTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Database\\\\Schema\\\\ConnectionMigratorTest\\:\\:\\$platform \\(Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\>\\) does not accept Doctrine\\\\DBAL\\\\Platforms\\\\MySqlPlatform\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/ConnectionMigratorTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 0 and string\\|null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/TableBuilderTest.php
@@ -2901,11 +2766,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\EventDispatcher\\\\ListenerProviderTest\\:\\:\\$containerProphecy \\(Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Psr\\\\Container\\\\ContainerInterface\\>\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/EventDispatcher/ListenerProviderTest.php
-
-		-
 			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\Resolver constructor invoked with 3 parameters, 2 required\\.$#"
 			count: 4
 			path: ../../typo3/sysext/core/Tests/Unit/ExpressionLanguage/ResolverTest.php
@@ -2914,16 +2774,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\FormProtection\\\\BackendFormProtectionTest\\:\\:\\$subject \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/FormProtection/BackendFormProtectionTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Backend\\\\Module\\\\ModuleLoader\\>\\:\\:\\$modListGroup\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Hooks/TcaItemsProcessorFunctionsTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Backend\\\\Module\\\\ModuleLoader\\>\\:\\:\\$modListUser\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Hooks/TcaItemsProcessorFunctionsTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Html\\\\Parser\\\\ParserTest\\:\\:nodesAreResolvedDataProvider\\(\\) should return array\\<string\\> but returns array\\<int, array\\<int, array\\<int, string\\>\\|string\\>\\>\\.$#"
@@ -2954,31 +2804,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$port of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri\\:\\:withPort\\(\\) expects int\\|null, true given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Http/UriTest.php
-
-		-
-			message: "#^Cannot call method willReturn\\(\\) on bool\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
-
-		-
-			message: "#^Cannot call method willReturn\\(\\) on string\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\:\\:getDefaultIconIdentifier\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$identifier of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\:\\:isRegistered\\(\\) expects string, Prophecy\\\\Argument\\\\Token\\\\AnyValueToken given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Imaging\\\\IconFactoryTest\\:\\:\\$iconRegistryMock \\(TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\EmailLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"
@@ -4401,18 +4226,8 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/SessionTest.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Persistence\\\\Generic\\\\Storage\\\\Typo3DbQueryParserTest\\:\\:prophesize\\(\\) invoked with 2 parameters, 0\\-1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbQueryParserTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$languageUid of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Typo3QuerySettings\\:\\:setLanguageUid\\(\\) expects int, string given\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbQueryParserTest.php
-
-		-
-			message: "#^Static method Prophecy\\\\Argument\\:\\:any\\(\\) invoked with 2 parameters, 0 required\\.$#"
-			count: 4
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Storage/Typo3DbQueryParserTest.php
 
 		-
@@ -4569,26 +4384,6 @@ parameters:
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 6
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$user\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
-
-		-
-			message: "#^Cannot call method shouldBeCalled\\(\\) on array\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
-
-		-
-			message: "#^Cannot call method willReturn\\(\\) on array\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Utility\\\\LocalizationUtilityTest\\:\\:\\$configurationManagerInterfaceProphecy \\(TYPO3\\\\CMS\\\\Extbase\\\\Configuration\\\\ConfigurationManagerInterface\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Extbase\\\\Configuration\\\\ConfigurationManagerInterface\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:validate\\(\\)\\.$#"
@@ -4876,32 +4671,7 @@ parameters:
 			path: ../../typo3/sysext/felogin/Configuration/TCA/Overrides/tt_content.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\RedirectModeHandler\\:\\:reveal\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\ServerRequestHandler\\:\\:reveal\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
-			message: "#^Cannot call method willReturn\\(\\) on string\\.$#"
-			count: 4
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$settings$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Unit\\\\Redirect\\\\RedirectHandlerTest\\:\\:\\$redirectModeHandler \\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\RedirectModeHandler\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\RedirectModeHandler\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Unit\\\\Redirect\\\\RedirectHandlerTest\\:\\:\\$serverRequestHandler \\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\ServerRequestHandler\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\ServerRequestHandler\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
 
@@ -5489,11 +5259,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/ClosureFinisherTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$cObj\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/RedirectFinisherTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Mvc\\\\Configuration\\\\InheritancesResolverService\\:\\:getResolvedConfiguration\\(\\) invoked with 1 parameter, 0 required\\.$#"
@@ -6206,16 +5971,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\>\\:\\:\\$currentValKey\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\>\\:\\:\\$data\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
@@ -6261,31 +6016,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
 
 		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$cObj\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/Http/RequestHandlerTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$config\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/Http/RequestHandlerTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$pSetup\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/Http/RequestHandlerTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$page\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/Http/RequestHandlerTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$tmpl\\.$#"
-			count: 4
-			path: ../../typo3/sysext/frontend/Tests/Unit/Http/RequestHandlerTest.php
-
-		-
 			message: "#^PHPDoc tag @var for property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Middleware\\\\PageArgumentValidatorTest\\:\\:\\$subject with type TYPO3\\\\CMS\\\\Frontend\\\\Middleware\\\\PageResolver\\|TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface is not subtype of native type TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Middleware/PageArgumentValidatorTest.php
@@ -6329,16 +6059,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Tests\\\\Unit\\\\Typolink\\\\AbstractTypolinkBuilderTest\\:\\:\\$frontendControllerMock \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$sys_page\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/DatabaseRecordLinkBuilderTest.php
-
-		-
-			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$tmpl\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/DatabaseRecordLinkBuilderTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
@@ -7504,11 +7224,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @return with type Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\> is incompatible with native type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileReference\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Unit/Controller/Remote/RemoteServerTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"

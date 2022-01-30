@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -3987,7 +3986,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(true);
@@ -4017,7 +4015,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             ],
         ];
 
-        /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(false);

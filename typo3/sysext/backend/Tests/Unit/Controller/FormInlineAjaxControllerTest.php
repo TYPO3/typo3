@@ -222,8 +222,8 @@ class FormInlineAjaxControllerTest extends UnitTestCase
     public function getInlineExpandCollapseStateArraySwitchesToFallbackIfTheBackendUserDoesNotHaveAnUCInlineViewProperty(): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserProphecy->uc = [];
         $backendUser = $backendUserProphecy->reveal();
+        $backendUser->uc = [];
 
         $mockObject = $this->getAccessibleMock(
             FormInlineAjaxController::class,
@@ -247,8 +247,8 @@ class FormInlineAjaxControllerTest extends UnitTestCase
     public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData(): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserProphecy->uc = ['inlineView' => json_encode(['foo' => 'bar'])];
         $backendUser = $backendUserProphecy->reveal();
+        $backendUser->uc = ['inlineView' => json_encode(['foo' => 'bar'])];
 
         $mockObject = $this->getAccessibleMock(
             FormInlineAjaxController::class,

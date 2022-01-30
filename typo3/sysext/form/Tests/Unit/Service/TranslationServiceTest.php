@@ -910,7 +910,6 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store->flushData($formRuntimeXlfPaths);
 
-        /** @var FormRuntime|\Prophecy\Prophecy\ObjectProphecy */
         $formRuntime = $this->prophesize(FormRuntime::class);
         $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
         $formRuntime->getRenderingOptions()->willReturn([
@@ -920,7 +919,6 @@ class TranslationServiceTest extends UnitTestCase
             ],
         ]);
 
-        /** @var RootRenderableInterface|\Prophecy\Prophecy\ObjectProphecy */
         $element = $this->prophesize(RootRenderableInterface::class);
         $element->getIdentifier()->willReturn('my-form-element-with-translation-arguments');
         $element->getType()->willReturn(RootRenderableInterface::class);
@@ -983,7 +981,6 @@ class TranslationServiceTest extends UnitTestCase
 
         $this->store->flushData($formRuntimeXlfPaths);
 
-        /** @var FormRuntime|\Prophecy\Prophecy\ObjectProphecy */
         $formRuntime = $this->prophesize(FormRuntime::class);
         $formRuntime->getIdentifier()->willReturn('my-form-runtime-identifier');
         $formRuntime->getRenderingOptions()->willReturn([

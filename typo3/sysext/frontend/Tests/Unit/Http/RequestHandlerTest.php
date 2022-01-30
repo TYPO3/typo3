@@ -243,15 +243,16 @@ class RequestHandlerTest extends UnitTestCase
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->cObj = $cObj->reveal();
-        $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->page = [
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendControllerProphecy->generatePageTitle()->willReturn('');
+        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->cObj = $cObj->reveal();
+        $frontendController->tmpl = $tmpl->reveal();
+        $frontendController->page = [
             'title' => '',
         ];
-        $tsfe->pSetup = [
+        $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
@@ -266,7 +267,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
         $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
     }
 
@@ -285,18 +286,19 @@ class RequestHandlerTest extends UnitTestCase
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->cObj = $cObj->reveal();
-        $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config = [
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendControllerProphecy->generatePageTitle()->willReturn('');
+        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->cObj = $cObj->reveal();
+        $frontendController->tmpl = $tmpl->reveal();
+        $frontendController->config = [
             'config' => [],
         ];
-        $tsfe->page = [
+        $frontendController->page = [
             'title' => '',
         ];
-        $tsfe->pSetup = [
+        $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
@@ -311,7 +313,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
         $subject->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
 
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
     }
@@ -332,18 +334,19 @@ class RequestHandlerTest extends UnitTestCase
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->cObj = $cObj->reveal();
-        $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config = [
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendControllerProphecy->generatePageTitle()->willReturn('');
+        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->cObj = $cObj->reveal();
+        $frontendController->tmpl = $tmpl->reveal();
+        $frontendController->config = [
             'config' => [],
         ];
-        $tsfe->page = [
+        $frontendController->page = [
             'title' => '',
         ];
-        $tsfe->pSetup = [
+        $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
@@ -359,7 +362,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
 
         $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
     }
@@ -434,18 +437,19 @@ class RequestHandlerTest extends UnitTestCase
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
         $tmpl = $this->prophesize(TemplateService::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfe->generatePageTitle()->willReturn('');
-        $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->cObj = $cObj->reveal();
-        $tsfe->tmpl = $tmpl->reveal();
-        $tsfe->config = [
+        $frontendControllerProphecy = $this->prophesize(TypoScriptFrontendController::class);
+        $frontendControllerProphecy->generatePageTitle()->willReturn('');
+        $frontendControllerProphecy->INTincScript_loadJSCode()->shouldBeCalled();
+        $frontendController = $frontendControllerProphecy->reveal();
+        $frontendController->cObj = $cObj->reveal();
+        $frontendController->tmpl = $tmpl->reveal();
+        $frontendController->config = [
             'config' => [],
         ];
-        $tsfe->page = [
+        $frontendController->page = [
             'title' => '',
         ];
-        $tsfe->pSetup = [
+        $frontendController->pSetup = [
             'meta.' => $typoScript,
         ];
         $typo3InformationProphecy = $this->prophesize(Typo3Information::class);
@@ -461,7 +465,7 @@ class RequestHandlerTest extends UnitTestCase
         $dispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
         $dispatcherProphecy->dispatch($modifyHrefLangTagsEvent)->willReturn($modifyHrefLangTagsEvent);
         $subject->_set('eventDispatcher', $dispatcherProphecy->reveal());
-        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage, $requestProphecy);
+        $subject->_call('processHtmlBasedRenderingSettings', $frontendController, $siteLanguage, $requestProphecy);
 
         $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false)->shouldHaveBeenCalled();
         $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false)->shouldHaveBeenCalled();

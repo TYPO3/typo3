@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
@@ -217,7 +216,6 @@ class BackendUtilityTest extends UnitTestCase
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
         $relationHandlerProphet = $this->prophesize(RelationHandler::class);
         $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
         $relationHandlerProphet->getFromDB()->willReturn([]);
@@ -289,7 +287,6 @@ class BackendUtilityTest extends UnitTestCase
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
         $relationHandlerProphet = $this->prophesize(RelationHandler::class);
         $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
         $relationHandlerProphet->getFromDB()->willReturn([]);
@@ -322,7 +319,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueForSelectWithMMRelation(): void
     {
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphet */
         $relationHandlerProphet = $this->prophesize(RelationHandler::class);
         $relationHandlerProphet->start(Argument::cetera())->shouldBeCalled();
         $relationHandlerProphet->getFromDB()->willReturn([]);
@@ -412,7 +408,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
-        /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
@@ -465,7 +460,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getProcessedValueHandlesAgeDisplayCorrectly($input, string $expected): void
     {
-        /** @var ObjectProphecy $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
@@ -937,7 +931,6 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function dateTimeAgeReturnsCorrectValues(): void
     {
-        /** @var ObjectProphecy|LanguageService $languageServiceProphecy */
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
@@ -1135,8 +1128,8 @@ class BackendUtilityTest extends UnitTestCase
     {
         $tableName = 'table_a';
         $fieldName = 'field_a';
-        $relationHandler = $this->prophesize(RelationHandler::class);
-        $relationHandler->start(
+        $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+        $relationHandlerProphecy->start(
             'foo',
             'sys_file_reference',
             '',
@@ -1144,9 +1137,10 @@ class BackendUtilityTest extends UnitTestCase
             $tableName,
             ['type' => 'inline', 'foreign_table' => 'sys_file_reference']
         )->shouldBeCalled();
+        $relationHandlerProphecy->processDeletePlaceholder()->shouldBeCalled();
+        $relationHandler = $relationHandlerProphecy->reveal();
         $relationHandler->tableArray = ['sys_file_reference' => []];
-        $relationHandler->processDeletePlaceholder()->shouldBeCalled();
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandler->reveal());
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandler);
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
             'type' => 'inline',
             'foreign_table' => 'sys_file_reference',

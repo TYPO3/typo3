@@ -45,18 +45,12 @@ class QueryBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var Connection|ObjectProphecy
-     */
-    protected $connection;
+    protected ObjectProphecy $connection;
 
     protected ?AbstractPlatform $platform;
     protected ?QueryBuilder $subject;
 
-    /**
-     * @var \Doctrine\DBAL\Query\QueryBuilder|ObjectProphecy
-     */
-    protected $concreteQueryBuilder;
+    protected ObjectProphecy $concreteQueryBuilder;
 
     /**
      * Create a new database connection mock object for every test.

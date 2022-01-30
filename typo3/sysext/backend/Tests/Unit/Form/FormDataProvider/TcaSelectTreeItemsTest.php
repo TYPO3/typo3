@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Doctrine\DBAL\Result;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -67,7 +66,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
             return '`' . $arguments[0] . '`';
         });
 
-        /** @var Result|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Result::class);
         $statementProphet->fetchAssociative()->shouldBeCalled();
 
@@ -133,7 +131,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
@@ -144,11 +141,9 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $this->mockDatabaseConnection();
 
-        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
         GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
 
-        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
         $tableConfigurationTreeProphecy->setDataProvider(Argument::cetera())->shouldBeCalled();
@@ -205,7 +200,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
@@ -216,11 +210,9 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $this->mockDatabaseConnection();
 
-        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
         GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
 
-        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
         $tableConfigurationTreeProphecy->render()->willReturn([]);
@@ -329,7 +321,6 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(Argument::cetera())->willReturn(' 1=1');
@@ -340,11 +331,9 @@ class TcaSelectTreeItemsTest extends UnitTestCase
 
         $this->mockDatabaseConnection();
 
-        /** @var DatabaseTreeDataProvider|ObjectProphecy $treeDataProviderProphecy */
         $treeDataProviderProphecy = $this->prophesize(DatabaseTreeDataProvider::class);
         GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProviderProphecy->reveal());
 
-        /** @var TableConfigurationTree|ObjectProphecy $treeDataProviderProphecy */
         $tableConfigurationTreeProphecy = $this->prophesize(TableConfigurationTree::class);
         GeneralUtility::addInstance(TableConfigurationTree::class, $tableConfigurationTreeProphecy->reveal());
         $tableConfigurationTreeProphecy->render()->willReturn([]);

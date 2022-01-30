@@ -148,9 +148,10 @@ class TcaColumnsProcessFieldDescriptionsTest extends UnitTestCase
             ],
         ];
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->lang = 'fr';
         $languageServiceProphecy->sL('aDescriptionOverride')->shouldBeCalled()->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $languageService = $languageServiceProphecy->reveal();
+        $languageService->lang = 'fr';
+        $GLOBALS['LANG'] = $languageService;
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['description'] = 'aDescriptionOverride';

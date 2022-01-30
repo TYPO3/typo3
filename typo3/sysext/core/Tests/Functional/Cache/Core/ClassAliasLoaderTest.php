@@ -39,6 +39,7 @@ class ClassAliasLoaderTest extends FunctionalTestCase
      */
     public function aliasMapsFromExtensionsCanBeLoaded(): void
     {
+        // @phpstan-ignore-next-line PHPStan does not know about class aliases.
         $viewHelperProphecy = $this->prophesize('\TYPO3\CMS\Fluid\Core\ViewHelper\AliasAbstractViewHelper');
         self::assertInstanceOf(AbstractViewHelper::class, $viewHelperProphecy->reveal());
     }
