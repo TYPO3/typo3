@@ -120,10 +120,9 @@ class MailerTest extends UnitTestCase
 
     /**
      * @test
-     * @param $settings
      * @dataProvider wrongConfigurationProvider
      */
-    public function wrongConfigurationThrowsException($settings): void
+    public function wrongConfigurationThrowsException(array $settings): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);

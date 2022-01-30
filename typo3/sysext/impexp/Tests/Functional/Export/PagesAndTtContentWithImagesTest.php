@@ -144,8 +144,6 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 
     /**
      * Add default set of records to export
-     *
-     * @param $subject Export
      */
     protected function compileExportPagesAndRelatedTtContentWithImages(Export $subject): void
     {

@@ -214,12 +214,10 @@ class TitleTagRenderingTest extends FunctionalTestCase
     }
 
     /**
-     * @param $pageConfig
-     * @param $expectations
      * @test
      * @dataProvider titleTagDataProvider
      */
-    public function checkIfCorrectTitleTagIsRendered($pageConfig, $expectations): void
+    public function checkIfCorrectTitleTagIsRendered(array $pageConfig, array $expectations): void
     {
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withQueryParameters([

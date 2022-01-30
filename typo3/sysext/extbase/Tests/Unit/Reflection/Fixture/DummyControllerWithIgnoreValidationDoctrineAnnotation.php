@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /**
  * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
+ * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
  */
 class DummyControllerWithIgnoreValidationDoctrineAnnotation
 {

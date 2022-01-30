@@ -4012,10 +4012,8 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      * @dataProvider xml2ArrayProcessHandlesAttributeTypesDataProvider
-     * @param string $input
-     * @param $expected
      */
-    public function xml2ArrayProcessHandlesAttributeTypes(string $input, $expected): void
+    public function xml2ArrayProcessHandlesAttributeTypes(string $input, mixed $expected): void
     {
         $result = GeneralUtility::xml2arrayProcess($input);
         self::assertSame($expected, $result['index']['vDEF']);

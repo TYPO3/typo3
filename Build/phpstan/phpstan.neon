@@ -28,3 +28,7 @@ parameters:
     - ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/*
     # ext_emconf.php get the $_EXTKEY set from outsite. We'll ignore all of them
     - ../../typo3/sysext/*/ext_emconf.php
+    # contains broken syntax for testing-purpose, which cannot be disabled directly
+    - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyController.php
+    # contains broken syntax for testing-purpose, which cannot be disabled directly
+    - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php

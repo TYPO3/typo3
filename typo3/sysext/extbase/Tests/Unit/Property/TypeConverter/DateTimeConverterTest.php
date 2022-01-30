@@ -186,10 +186,9 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @param $source
      * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
      */
-    public function convertFromIntegerOrDigitStringWithoutConfigurationTests($source): void
+    public function convertFromIntegerOrDigitStringWithoutConfigurationTests(string|int $source): void
     {
         $date = $this->converter->convertFrom($source, 'DateTime', [], null);
         self::assertInstanceOf('DateTime', $date);
@@ -200,10 +199,9 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @param $source
      * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
      */
-    public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests($source): void
+    public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests(string|int $source): void
     {
         $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
         self::assertInstanceOf('DateTime', $date);

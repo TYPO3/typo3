@@ -386,11 +386,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/Fixtures/NodeFactory/NodeResolvers/FooResolver.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$processedTcaFieldToBeRemovedPath\\)\\: Unexpected token \"\\$processedTcaFieldToBeRemovedPath\", expected type at offset 122$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/EvaluateDisplayConditionsTest.php
-
-		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageService\\>\\:\\:\\$lang\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/Form/FormDataProvider/TcaColumnsProcessFieldDescriptionsTest.php
@@ -484,11 +479,6 @@ parameters:
 			message: "#^Offset string on null in empty\\(\\) does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$value\\)\\: Unexpected token \"\\$value\", expected type at offset 153$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/Loader/YamlFileLoader.php
 
 		-
 			message: "#^Variable \\$sectionsToMatch on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -1116,31 +1106,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$code\\)\\: Unexpected token \"\\$code\", expected type at offset 26$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Error/ErrorHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$message\\)\\: Unexpected token \"\\$message\", expected type at offset 54$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Error/ErrorHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(array TypoScript configuration\\)\\: Unexpected token \"TypoScript\", expected variable at offset 82$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/Controller/MetaPluginController.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string Empty string \\(no content to process\\)\\)\\: Unexpected token \"Empty\", expected variable at offset 25$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta/Classes/Controller/MetaPluginController.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectation\\)\\: Unexpected token \"\\$expectation\", expected type at offset 45$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$expectation$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/IO/PharStreamWrapperInterceptorTest.php
@@ -1169,21 +1134,6 @@ parameters:
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\>\\:\\:\\$loginType\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$storageUid\\)\\: Unexpected token \"\\$storageUid\", expected type at offset 58$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/BackendUserAuthenticationTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$lockIPv4PartCount\\)\\: Unexpected token \"\\$lockIPv4PartCount\", expected type at offset 50$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/IpLockerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$lockIPv6PartCount\\)\\: Unexpected token \"\\$lockIPv6PartCount\", expected type at offset 83$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Authentication/IpLockerTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -1256,11 +1206,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/ConfigurationManagerTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expected\\)\\: Unexpected token \"\\$expected\", expected type at offset 179$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
-
-		-
 			message: "#^Result of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\FlexForm\\\\FlexFormTools\\:\\:traverseFlexFormXMLData_recurse\\(\\) \\(void\\) is used\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
@@ -1279,26 +1224,6 @@ parameters:
 			message: "#^PHPDoc tag @var above assignment does not specify variable name\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Console/CommandRegistryTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$overriddenGroups\\)\\: Unexpected token \"\\$overriddenGroups\", expected type at offset 129$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Context/UserAspectTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$userGroups\\)\\: Unexpected token \"\\$userGroups\", expected type at offset 103$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Context/UserAspectTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$userId\\)\\: Unexpected token \"\\$userId\", expected type at offset 81$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Context/UserAspectTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(array Array which should be returned as composer manifest\\)\\: Unexpected token \"Array\", expected variable at offset 24$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Core/ClassLoadingInformationGeneratorTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 12 parameters, 1 required\\.$#"
@@ -1323,36 +1248,6 @@ parameters:
 		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$dbtype\\)\\: Unexpected token \"\\$dbtype\", expected type at offset 137$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expected\\)\\: Unexpected token \"\\$expected\", expected type at offset 157$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedEvalInt\\)\\: Unexpected token \"\\$expectedEvalInt\", expected type at offset 181$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedOutput\\)\\: Unexpected token \"\\$expectedOutput\", expected type at offset 159$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$inputValue\\)\\: Unexpected token \"\\$inputValue\", expected type at offset 131$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$value\\)\\: Unexpected token \"\\$value\", expected type at offset 116$#"
-			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
@@ -1451,39 +1346,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Hooks/TcaItemsProcessorFunctionsTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedItems\\)\\: Unexpected token \"\\$expectedItems\", expected type at offset 116$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Hooks/TcaItemsProcessorFunctionsTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$tca\\)\\: Unexpected token \"\\$tca\", expected type at offset 97$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Hooks/TcaItemsProcessorFunctionsTest.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Html\\\\Parser\\\\ParserTest\\:\\:nodesAreResolvedDataProvider\\(\\) should return array\\<string\\> but returns array\\<int, array\\<int, array\\<int, string\\>\\|string\\>\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Html/Parser/ParserTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$content\\)\\: Unexpected token \"\\$content\", expected type at offset 102$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Html/RteHtmlParserTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$content\\)\\: Unexpected token \"\\$content\", expected type at offset 114$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Html/RteHtmlParserTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 125$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Html/RteHtmlParserTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 137$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Html/RteHtmlParserTest.php
 
 		-
 			message: "#^Cannot call method willReturn\\(\\) on bool\\.$#"
@@ -1504,11 +1369,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Imaging\\\\IconFactoryTest\\:\\:\\$iconRegistryMock \\(TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconRegistry\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Imaging/IconFactoryTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$ratio\\)\\: Unexpected token \"\\$ratio\", expected type at offset 48$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Imaging/ImageManipulation/AreaTest.php
 
 		-
 			message: "#^Variable \\$storageMock in PHPDoc tag @var does not match assigned variable \\$factory\\.$#"
@@ -1571,11 +1431,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailerTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$settings\\)\\: Unexpected token \"\\$settings\", expected type at offset 31$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailerTest.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getHost\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
@@ -1589,11 +1444,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Messaging\\\\FlashMessageServiceTest\\:\\:\\$flashMessageService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageService\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Messaging/FlashMessageServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedSortedPackageKeys\\)\\: Unexpected token \"\\$expectedSortedPackageKeys\", expected type at offset 177$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Package/PackageManagerTest.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:expects\\(\\)\\.$#"
@@ -1646,36 +1496,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$identifier\\)\\: Unexpected token \"\\$identifier\", expected type at offset 165$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$identifier\\)\\: Unexpected token \"\\$identifier\", expected type at offset 93$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$mockedMethods\\)\\: Unexpected token \"\\$mockedMethods\", expected type at offset 191$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$path\\)\\: Unexpected token \"\\$path\", expected type at offset 74$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$path\\)\\: Unexpected token \"\\$path\", expected type at offset 86$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$type\\)\\: Unexpected token \"\\$type\", expected type at offset 145$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/BaseTestCase.php
-
-		-
 			message: "#^Offset 'my_type' does not exist on array\\{typeB\\: array\\{showitem\\: 'fieldA, fieldB,…'\\}\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Collection/FileCollectionRegistryTest.php
@@ -1711,21 +1531,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Filter/FileNameFilterTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$get\\)\\: Unexpected token \"\\$get\", expected type at offset 61$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/MetaDataAspectTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$has\\)\\: Unexpected token \"\\$has\", expected type at offset 42$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/MetaDataAspectTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$metaData\\)\\: Unexpected token \"\\$metaData\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/MetaDataAspectTest.php
-
-		-
 			message: "#^PHPDoc tag @var for variable \\$fileResourceMock contains unknown class PHPUnit_Framework_MockObject_MockObject\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Rendering/VimeoRendererTest.php
@@ -1751,11 +1556,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$driverConfiguration\\)\\: Unexpected token \"\\$driverConfiguration\", expected type at offset 212$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Filter\\\\FileExtensionFilter\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Utility/FileExtensionFilterTest.php
@@ -1776,11 +1576,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Service/DependencyOrderingServiceTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedDependencies\\)\\: Unexpected token \"\\$expectedDependencies\", expected type at offset 142$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Service/DependencyOrderingServiceTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/DatabaseTreeDataProviderTest.php
@@ -1789,16 +1584,6 @@ parameters:
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\Tree\\\\TableConfiguration\\\\Fixtures\\\\TreeDataProviderFixture has an unused parameter \\$configuration\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/Fixtures/TreeDataProviderFixture.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedValue\\)\\: Unexpected token \"\\$expectedValue\", expected type at offset 100$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Type/EnumerationTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$testValue\\)\\: Unexpected token \"\\$testValue\", expected type at offset 75$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Type/EnumerationTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -1816,89 +1601,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$existing\\)\\: Unexpected token \"\\$existing\", expected type at offset 111$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expected\\)\\: Unexpected token \"\\$expected\", expected type at offset 135$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expected\\)\\: Unexpected token \"\\$expected\", expected type at offset 159$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 141$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResultArray\\)\\: Unexpected token \"\\$expectedResultArray\", expected type at offset 144$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$insertionList\\)\\: Unexpected token \"\\$insertionList\", expected type at offset 110$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$key\\)\\: Unexpected token \"\\$key\", expected type at offset 90$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$list\\)\\: Unexpected token \"\\$list\", expected type at offset 139$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$position\\)\\: Unexpected token \"\\$position\", expected type at offset 87$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$relativePosition\\)\\: Unexpected token \"\\$relativePosition\", expected type at offset 112$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$relativeToField\\)\\: Unexpected token \"\\$relativeToField\", expected type at offset 81$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$string\\)\\: Unexpected token \"\\$string\", expected type at offset 119$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expected\\)\\: Unexpected token \"\\$expected\", expected type at offset 130$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
 			message: "#^Static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) invoked with 4 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$baseFileName\\)\\: Unexpected token \"\\$baseFileName\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/PathUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedFileName\\)\\: Unexpected token \"\\$expectedFileName\", expected type at offset 77$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/PathUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$includeFileName\\)\\: Unexpected token \"\\$includeFileName\", expected type at offset 46$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/PathUtilityTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -1909,21 +1614,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 7
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$haystack\\)\\: Unexpected token \"\\$haystack\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/StringUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$needle\\)\\: Unexpected token \"\\$needle\", expected type at offset 42$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/StringUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$result\\)\\: Unexpected token \"\\$result\", expected type at offset 64$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/StringUtilityTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\:\\:doesNotExist\\(\\)\\.$#"
@@ -2181,11 +1871,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$name\\)\\: Unexpected token \"\\$name\", expected type at offset 52$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Tag.php
-
-		-
 			message: "#^PHPDoc type int\\|null of property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\TtContent\\:\\:\\$pid is not covariant with PHPDoc type int of overridden property TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractDomainObject\\:\\:\\$pid\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php
@@ -2209,26 +1894,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:between\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 126$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RelationTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 81$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RelationTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 82$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RelationTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 97$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RelationTest.php
 
 		-
 			message: "#^Call to an undefined method Psr\\\\Container\\\\ContainerInterface\\:\\:set\\(\\)\\.$#"
@@ -2304,16 +1969,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\Arguments\\:\\:nonExistingMethod\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ArgumentsTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectExceptionCode\\)\\: Unexpected token \"\\$expectExceptionCode\", expected type at offset 39$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$input\\)\\: Unexpected token \"\\$input\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:_call\\(\\)\\.$#"
@@ -2441,11 +2096,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$source\\)\\: Unexpected token \"\\$source\", expected type at offset 31$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/DateTimeConverterTest.php
-
-		-
 			message: "#^Constructor of an anonymous class has an unused parameter \\$copy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ClassSchemaTest.php
@@ -2479,21 +2129,6 @@ parameters:
 			message: "#^Parameter \\$invalid of method TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithInvalidTypeHint\\:\\:__construct\\(\\) has invalid type Foo\\\\Bar\\\\Not\\\\Found\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyClassWithInvalidTypeHint.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$fooParam\\)\\: Unexpected token \"\\$fooParam\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyController.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$bar\\)\\: Unexpected token \"\\$bar\", expected type at offset 37$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$foo\\)\\: Unexpected token \"\\$foo\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
 
 		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Reflection\\\\Fixture\\\\DummyClassWithGettersAndSetters\\:\\:\\$shouldNotBePickedUp\\.$#"
@@ -2679,31 +2314,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Utility\\\\FileHandlingUtility\\:\\:_call\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/FileHandlingUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$availableExtensions\\)\\: Unexpected token \"\\$availableExtensions\", expected type at offset 99$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/ListUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$emConf\\)\\: Unexpected token \"\\$emConf\", expected type at offset 128$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/ListUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 134$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/ListUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 150$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/ListUtilityTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$extensions\\)\\: Unexpected token \"\\$extensions\", expected type at offset 102$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/ListUtilityTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\:\\:fromSettings\\(\\) should return static\\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\) but returns TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\.$#"
@@ -3436,16 +3046,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Imaging/GifBuilderTest.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectations\\)\\: Unexpected token \"\\$expectations\", expected type at offset 44$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$pageConfig\\)\\: Unexpected token \"\\$pageConfig\", expected type at offset 18$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/TitleTagRenderingTest.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ApplicableConjunction.php
@@ -3547,31 +3147,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @param for parameter \\$content with type mixed is not subtype of native type string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$configuration\\)\\: Unexpected token \"\\$configuration\", expected type at offset 42$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$disable\\)\\: Unexpected token \"\\$disable\", expected type at offset 613$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$expectedResult\\)\\: Unexpected token \"\\$expectedResult\", expected type at offset 71$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$imageResource\\)\\: Unexpected token \"\\$imageResource\", expected type at offset 160$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$linkText\\)\\: Unexpected token \"\\$linkText\", expected type at offset 18$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
@@ -3679,11 +3254,6 @@ parameters:
 			message: "#^Offset 'updatePath' does not exist on array\\{msg\\: string, ref\\: 'FILE', type\\: 'file', preCode\\: non\\-empty\\-string, title\\: string, showDiffContent\\: string\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$subject Export\\)\\: Unexpected token \"\\$subject\", expected type at offset 69$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Export/PagesAndTtContentWithImagesTest.php
 
 		-
 			message: "#^Variable \\$subject in PHPDoc tag @var does not match assigned variable \\$importMock\\.$#"

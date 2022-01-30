@@ -138,14 +138,10 @@ class IpLockerTest extends UnitTestCase
     }
 
     /**
-     * @param string $ipAddress
-     * @param $lockIPv4PartCount
-     * @param $lockIPv6PartCount
-     * @param string $expectedLock
      * @test
      * @dataProvider getSessionIpLockDataProvider
      */
-    public function getSessionIpLock(string $ipAddress, $lockIPv4PartCount, $lockIPv6PartCount, string $expectedLock): void
+    public function getSessionIpLock(string $ipAddress, int $lockIPv4PartCount, int $lockIPv6PartCount, string $expectedLock): void
     {
         $ipLocker = GeneralUtility::makeInstance(IpLocker::class, $lockIPv4PartCount, $lockIPv6PartCount);
         $lock = $ipLocker->getSessionIpLock($ipAddress);

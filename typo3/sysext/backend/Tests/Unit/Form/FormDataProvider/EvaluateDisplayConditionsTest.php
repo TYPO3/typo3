@@ -3628,11 +3628,8 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
     /**
      * @test
      * @dataProvider addDataRemovesTcaReferencingOtherFieldsInDisplayConditionDataProvider
-     * @param $processedTcaFieldToBeRemovedPath
-     * @param array $databaseRow
-     * @param array $processedTca
      */
-    public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition($processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca): void
+    public function addDataRemovesTcaReferencingOtherFieldsInDisplayCondition(string $processedTcaFieldToBeRemovedPath, array $databaseRow, array $processedTca): void
     {
         $input = [
             'databaseRow' => $databaseRow,

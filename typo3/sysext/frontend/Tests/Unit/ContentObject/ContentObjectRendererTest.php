@@ -257,18 +257,12 @@ class ContentObjectRendererTest extends UnitTestCase
 
     /**
      * Handles the arguments that have been sent to the getImgResource hook.
-     *
-     * @param string $file
-     * @param array $fileArray
-     * @param $imageResource
-     * @param ContentObjectRenderer $parent
-     * @return array
      * @see getImgResourceHookGetsCalled
      */
     public function isGetImgResourceHookCalledCallback(
         string $file,
         array $fileArray,
-        $imageResource,
+        array $imageResource,
         ContentObjectRenderer $parent
     ): array {
         self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
@@ -2712,13 +2706,10 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @param $linkText
-     * @param $configuration
-     * @param $expectedResult
      * @dataProvider typoLinkProperlyEncodesLinkResultDataProvider
      * @test
      */
-    public function typoLinkProperlyEncodesLinkResult($linkText, $configuration, $expectedResult): void
+    public function typoLinkProperlyEncodesLinkResult(string $linkText, array $configuration, string $expectedResult): void
     {
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -6304,18 +6295,12 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * @test
      * @dataProvider stdWrap_prefixCommentDataProvider
-     * @param string $expect
-     * @param string $content
-     * @param array $conf
-     * @param $disable
-     * @param int $times
-     * @param string $will
      */
     public function stdWrap_prefixComment(
         string $expect,
         string $content,
         array $conf,
-        $disable,
+        int|bool $disable,
         int $times,
         string $will
     ): void {

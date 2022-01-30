@@ -357,13 +357,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
     }
 
     /**
-     * @param array $defaultPermissions
-     * @param $storageUid
-     * @param array $storagePermissions
      * @test
      * @dataProvider getFilePermissionsFromStorageDataProvider
      */
-    public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions): void
+    public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, int $storageUid, array $storagePermissions): void
     {
         /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)

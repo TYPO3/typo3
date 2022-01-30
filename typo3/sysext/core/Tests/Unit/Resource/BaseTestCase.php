@@ -70,11 +70,8 @@ abstract class BaseTestCase extends UnitTestCase
 
     /**
      * Returns the URL for a path inside the mount directory
-     *
-     * @param $path
-     * @return string
      */
-    protected function getUrlInMount($path): string
+    protected function getUrlInMount(string $path): string
     {
         return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
     }
@@ -91,24 +88,17 @@ abstract class BaseTestCase extends UnitTestCase
 
     /**
      * Returns the URL for a path inside the VFS
-     *
-     * @param $path
-     * @return string
      */
-    protected function getUrl($path): string
+    protected function getUrl(string $path): string
     {
         return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
     }
 
     /**
      * Creates a file or folder mock. This should not be called directly, but only through getSimple{File,Folder}Mock()
-     *
-     * @param $type
-     * @param $identifier
-     * @param $mockedMethods
      * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
      */
-    protected function _createFileFolderMock($type, $identifier, $mockedMethods)
+    protected function _createFileFolderMock(string $type, string $identifier, array $mockedMethods)
     {
         if (!in_array('getIdentifier', $mockedMethods, true)) {
             $mockedMethods[] = 'getIdentifier';
@@ -154,13 +144,13 @@ abstract class BaseTestCase extends UnitTestCase
     /**
      * Returns a mock of a folder object with subfolders and files.
      *
-     * @param $identifier
+     * @param string $identifier
      * @param array $mockedMethods Methods to mock, in addition to getFiles and getSubfolders
      * @param \TYPO3\CMS\Core\Resource\Folder[] $subfolders
      * @param \TYPO3\CMS\Core\Resource\File[] $files
      * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
      */
-    protected function getFolderMock($identifier, array $mockedMethods = [], array $subfolders = [], array $files = [])
+    protected function getFolderMock(string $identifier, array $mockedMethods = [], array $subfolders = [], array $files = [])
     {
         $folder = $this->_createFileFolderMock(Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
         $folder->method('getSubfolders')->willReturn($subfolders);

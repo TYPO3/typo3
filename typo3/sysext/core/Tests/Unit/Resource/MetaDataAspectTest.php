@@ -255,13 +255,10 @@ class MetaDataAspectTest extends UnitTestCase
     }
 
     /**
-     * @param $metaData
-     * @param $has
-     * @param $get
      * @test
      * @dataProvider propertyDataProvider
      */
-    public function propertyIsFetchedProperly($metaData, $has, $get): void
+    public function propertyIsFetchedProperly(array $metaData, array $has, array $get): void
     {
         $file = new File([], $this->storageMock, $metaData);
 

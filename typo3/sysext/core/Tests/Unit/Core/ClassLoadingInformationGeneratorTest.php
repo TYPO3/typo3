@@ -404,11 +404,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         }
     }
 
-    /**
-     * @param array Array which should be returned as composer manifest
-     * @return PackageInterface
-     */
-    protected function createPackageMock($packageManifest): PackageInterface
+    protected function createPackageMock(array $packageManifest): PackageInterface
     {
         $packageMock = $this->createMock(PackageInterface::class);
         $packageMock->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');

@@ -273,11 +273,8 @@ class YamlFileLoader implements LoggerAwareInterface
     /**
      * Finds possible placeholders.
      * May find false positives for complexer structures, but they will be sorted later on.
-     *
-     * @param $value
-     * @return bool
      */
-    protected function containsPlaceholder($value): bool
+    protected function containsPlaceholder(mixed $value): bool
     {
         return is_string($value) && substr_count($value, '%') >= 2;
     }

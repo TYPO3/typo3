@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Fixture class with @validate annotations
+ * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
  */
 class DummyController extends ActionController
 {

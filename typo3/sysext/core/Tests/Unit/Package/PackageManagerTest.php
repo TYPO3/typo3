@@ -722,14 +722,11 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider packageSortingDataProvider
-     * @param array $unsortedPackageStatesConfiguration
-     * @param array $frameworkPackageKeys
-     * @param $expectedSortedPackageKeys
      */
     public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays(
         array $unsortedPackageStatesConfiguration,
         array $frameworkPackageKeys,
-        $expectedSortedPackageKeys
+        array $expectedSortedPackageKeys
     ): void {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService()]);
         $packageManager->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
