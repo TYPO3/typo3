@@ -301,7 +301,7 @@ class LiveSearch
      * @param array $fieldsToSearchWithin User right based visible fields where we can search within.
      * @return CompositeExpression
      */
-    protected function makeQuerySearchByTable(QueryBuilder &$queryBuilder, $tableName, array $fieldsToSearchWithin)
+    protected function makeQuerySearchByTable(QueryBuilder $queryBuilder, $tableName, array $fieldsToSearchWithin)
     {
         $constraints = [];
 
@@ -314,9 +314,9 @@ class LiveSearch
                 ) {
                     continue;
                 }
-                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
+                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
+                $fieldType = $fieldConfig['type'] ?? '';
+                $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Assemble the search condition only if the field is an integer, or is uid or pid
                 if ($fieldName === 'uid'
@@ -333,7 +333,7 @@ class LiveSearch
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
                     // Otherwise and if the field makes sense to be searched, assemble a like condition
-                    $constraints[] = $constraints[] = $queryBuilder->expr()->like(
+                    $constraints[] = $queryBuilder->expr()->like(
                         $fieldName,
                         $queryBuilder->createNamedParameter(
                             '%' . $queryBuilder->escapeLikeWildcards((int)$this->queryString) . '%',
@@ -348,9 +348,9 @@ class LiveSearch
                 if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
                     continue;
                 }
-                $fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
-                $evalRules = ($fieldConfig['eval'] ?? '') ?: '';
+                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
+                $fieldType = $fieldConfig['type'] ?? '';
+                $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
                 $searchConstraint = $queryBuilder->expr()->andX(
