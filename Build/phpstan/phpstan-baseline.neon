@@ -2626,23 +2626,13 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerName\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getFormat\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Web/RequestBuilderTest.php
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/CountTest.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
+			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/CountTest.php
 
 		-
@@ -2654,6 +2644,21 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryLocalizedDataTest.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryParserTest.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryParserTest.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 2
+			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/QueryParserTest.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$queryRequest\\)\\: Unexpected token \"\\$queryRequest\", expected type at offset 126$#"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7f818359e4001c3164549b7cb254c8e",
+    "content-hash": "ac7d5bd0f7bef5d1626382a8508a679d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5202,6 +5202,63 @@
                 "source": "https://github.com/Behat/Gherkin/tree/v4.8.0"
             },
             "time": "2021-02-04T12:44:21+00:00"
+        },
+        {
+            "name": "bnf/phpstan-psr-container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bnf/phpstan-psr-container.git",
+                "reference": "15f001a5a4462e5125af13124d700f024f5355d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bnf/phpstan-psr-container/zipball/15f001a5a4462e5125af13124d700f024f5355d5",
+                "reference": "15f001a5a4462e5125af13124d700f024f5355d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0|^8.0",
+                "phpstan/phpstan": "^1.0",
+                "psr/container": "^1.0"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bnf\\PhpstanPsrContainer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Franzke",
+                    "email": "benjaminfranzke@gmail.com",
+                    "homepage": "https://bnfr.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHPStan dynamic return type extension for PSR-11 ContainerInterface",
+            "keywords": [
+                "PHPStan",
+                "PSR-11",
+                "service-provider",
+                "static"
+            ],
+            "support": {
+                "issues": "https://github.com/bnf/phpstan-psr-container/issues",
+                "source": "https://github.com/bnf/phpstan-psr-container/tree/1.0.0"
+            },
+            "time": "2021-11-25T07:37:18+00:00"
         },
         {
             "name": "codeception/codeception",
