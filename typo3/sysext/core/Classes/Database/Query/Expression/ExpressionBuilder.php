@@ -64,9 +64,7 @@ class ExpressionBuilder
     /**
      * Creates a conjunction of the given boolean expressions
      *
-     * @param string ...$expressions Optional clause. Requires at least one defined when converting to string.
-     *
-     * @return CompositeExpression
+     * @param string|CompositeExpression ...$expressions Optional clause. Requires at least one defined when converting to string.
      */
     public function andX(...$expressions): CompositeExpression
     {
@@ -76,9 +74,7 @@ class ExpressionBuilder
     /**
      * Creates a disjunction of the given boolean expressions.
      *
-     * @param string ...$expressions Optional clause. Requires at least one defined when converting to string.
-     *
-     * @return CompositeExpression
+     * @param string|CompositeExpression ...$expressions Optional clause. Requires at least one defined when converting to string.
      */
     public function orX(...$expressions): CompositeExpression
     {

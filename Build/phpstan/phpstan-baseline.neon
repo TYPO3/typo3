@@ -106,11 +106,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ResetPasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between int and '' will always evaluate to false\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Controller/Wizard/AddController.php
@@ -946,16 +941,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/ReferenceIndexUpdater.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/ReferenceIndexUpdater.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between int\\<0, 99\\> and 100 will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/SlugHelper.php
@@ -986,11 +971,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Connection.php
 
 		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
 			message: "#^Parameter \\#4 \\$condition of method Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:\\:leftJoin\\(\\) expects string\\|null, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
@@ -1004,46 +984,6 @@ parameters:
 			message: "#^Variable \\$alias on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/AbstractRestrictionContainer.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/EndTimeRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/FrontendRestrictionContainer.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/LimitToTablesRestrictionContainer.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/PagePermissionRestriction.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/PagePermissionRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/WorkspaceRestriction.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Query/Restriction/WorkspaceRestriction.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Database\\\\ReferenceIndex\\:\\:setReferenceValue_dbRels\\(\\) should return string but returns false\\.$#"
@@ -1756,21 +1696,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Search/FileSearchQuery.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Search/QueryRestrictions/FolderMountsRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Search/QueryRestrictions/SearchTermRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Resource/Search/QueryRestrictions/SearchTermRestriction.php
-
-		-
 			message: "#^Argument of an invalid type TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Index\\\\ExtractorInterface supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Service/ExtractorService.php
@@ -2399,16 +2324,6 @@ parameters:
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Restriction/DefaultRestrictionContainerTest.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:andX\\(\\) expects string, array given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/Restriction/LimitToTablesRestrictionContainerTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Database\\\\RelationHandler\\:\\:expects\\(\\)\\.$#"
@@ -5434,26 +5349,6 @@ parameters:
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 4
-			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/QueryRestrictions/EditableRestriction.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/linkvalidator/Classes/Repository/BrokenLinkRepository.php
-
-		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/linkvalidator/Classes/Repository/BrokenLinkRepository.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:setDepth\\(\\)\\.$#"
