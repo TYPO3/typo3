@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\SwitchUserController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class SwitchUserControllerTest extends UnitTestCase
 {
     /**
@@ -31,7 +30,10 @@ class SwitchUserControllerTest extends UnitTestCase
      */
     protected const RECENT_USERS_LIMIT = 3;
 
-    protected SwitchUserController $subject;
+    /**
+     * @var SwitchUserController|MockObject|AccessibleObjectInterface
+     */
+    protected $subject;
 
     protected function setUp(): void
     {
@@ -40,7 +42,6 @@ class SwitchUserControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->uc = [
             'recentSwitchedToUsers' => [],
         ];
-
         $this->subject = $this->getAccessibleMock(SwitchUserController::class, ['dummy'], [], '', false);
     }
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -28,9 +29,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class TypoScriptFrontendControllerTest extends FunctionalTestCase
 {
     /**
-     * @var TypoScriptFrontendController|MockObject
+     * @var TypoScriptFrontendController|MockObject|AccessibleObjectInterface
      */
-    protected MockObject $tsFrontendController;
+    protected $tsFrontendController;
 
     protected function setUp(): void
     {

@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -32,26 +34,25 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\Page;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TranslationServiceTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
     protected $resetSingletonInstances = true;
 
     /**
-     * @var ConfigurationManager
+     * @var ConfigurationManager|MockObject|AccessibleObjectInterface
      */
     protected $mockConfigurationManager;
 
     /**
-     * @var TranslationService
+     * @var TranslationService|MockObject|AccessibleObjectInterface
      */
     protected $mockTranslationService;
 

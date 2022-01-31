@@ -46,9 +46,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3Fluid\Fluid\View\AbstractView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
-/**
- * Test case
- */
 class ActionControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -297,7 +294,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
@@ -377,7 +374,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])
@@ -457,7 +454,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             // @deprecated since v11, will be removed with v12: Drop setControllerContext from list
             ->onlyMethods(['setControllerContext', 'assign', 'assignMultiple', 'render', 'initializeView'])

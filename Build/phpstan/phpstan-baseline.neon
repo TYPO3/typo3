@@ -611,7 +611,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 6
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
 
@@ -656,7 +656,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/FormInlineAjaxControllerTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\SwitchUserController\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/SwitchUserControllerTest.php
 
@@ -781,7 +781,7 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayoutView\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Unit/View/BackendLayoutViewTest.php
 
@@ -3176,12 +3176,12 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/AbstractHierarchicalFilesystemDriverTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:_call\\(\\)\\.$#"
-			count: 8
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 4
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:expects\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 5 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
 
@@ -3256,7 +3256,7 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Filter\\\\FileExtensionFilter\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Utility/FileExtensionFilterTest.php
 
@@ -4331,11 +4331,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_set\\(\\) invoked with 3 parameters, 2 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$messageBody of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:addFlashMessage\\(\\) expects string, stdClass given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
@@ -4366,13 +4361,8 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/View/JsonViewTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:_call\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
+			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
 
 		-
@@ -4424,11 +4414,6 @@ parameters:
 			message: "#^Access to an undefined property t3lib_object_tests_needsinterface\\:\\:\\$dependency\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/testclasses/t3lib_object_tests_needsinterface.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Backend\\:\\:_set\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
@@ -4711,31 +4696,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:validate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:expects\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:method\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:_set\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\CollectionValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:validate\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberRangeValidatorTest.php
@@ -4976,7 +4936,12 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Utility\\\\FileHandlingUtility\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/FileHandlingUtilityTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/FileHandlingUtilityTest.php
 
@@ -5641,8 +5606,28 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Unit/Mvc/Configuration/InheritancesResolverServiceTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Service\\\\TranslationService\\:\\:_call\\(\\)\\.$#"
-			count: 38
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 3
+			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
+			count: 19
+			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 5 parameters, 1 required\\.$#"
+			count: 2
+			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 6 parameters, 1 required\\.$#"
+			count: 13
 			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
 
 		-
@@ -6151,7 +6136,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:_call\\(\\)\\.$#"
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
 
@@ -6336,18 +6321,28 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ImageContentObject\\:\\:_call\\(\\)\\.$#"
-			count: 3
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 2
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_call\\(\\)\\.$#"
-			count: 8
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 5
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_set\\(\\)\\.$#"
-			count: 19
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 2
+			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
+
+		-
+			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 6 parameters, 1 required\\.$#"
+			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
 		-

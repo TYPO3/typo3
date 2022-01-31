@@ -26,6 +26,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterfa
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\ImageContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ImageContentObjectTest extends UnitTestCase
@@ -38,9 +39,9 @@ class ImageContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var ImageContentObject|MockObject
+     * @var ImageContentObject|MockObject|AccessibleObjectInterface
      */
-    protected MockObject $subject;
+    protected $subject;
 
     /**
      * Set up

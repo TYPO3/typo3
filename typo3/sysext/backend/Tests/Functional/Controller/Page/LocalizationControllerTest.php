@@ -17,19 +17,18 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-/**
- * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
- */
 class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 {
     /**
-     * @var LocalizationController|\PHPUnit\Framework\MockObject\MockObject
+     * @var LocalizationController|MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
