@@ -117,7 +117,7 @@ final class ListenerProviderPass implements CompilerPassInterface
             }
             $params = $this->getReflectionMethod($serviceName, $definition, $method)->getParameters();
             $rType = count($params) ? $params[0]->getType() : null;
-            if ($rType === null) {
+            if (!$rType instanceof \ReflectionNamedType) {
                 throw new \InvalidArgumentException(
                     sprintf('Service "%s" registers method "%s" as an event listener, but does not specify an event type and the method does not type a parameter. Declare a class type for the method parameter or specify an event class explicitly', $serviceName, $method),
                     1623881315,

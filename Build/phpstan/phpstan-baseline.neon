@@ -1246,11 +1246,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
 
 		-
-			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DependencyInjection/ListenerProviderPass.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageInterface\\:\\:getServiceProvider\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DependencyInjection/ServiceProviderRegistry.php
