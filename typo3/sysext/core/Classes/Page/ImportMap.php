@@ -220,7 +220,7 @@ class ImportMap
         $map = [];
         foreach ($fileIterator as $match) {
             $fileName = $match[0];
-            $specifier = $prefix . $match[1] ?? '';
+            $specifier = $prefix . ($match[1] ?? '');
 
             // @todo: Abstract into an iterator?
             foreach ($exclude as $excludedPath) {
