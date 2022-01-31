@@ -61,11 +61,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Exception\\\\ResourceNotFoundException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php

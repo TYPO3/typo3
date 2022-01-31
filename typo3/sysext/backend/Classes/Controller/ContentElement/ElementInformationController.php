@@ -100,15 +100,8 @@ class ElementInformationController
      */
     protected $row;
 
-    /**
-     * @var \TYPO3\CMS\Core\Resource\File|null
-     */
-    protected $fileObject;
-
-    /**
-     * @var Folder
-     */
-    protected $folderObject;
+    protected ?File $fileObject = null;
+    protected ?Folder $folderObject = null;
 
     public function __construct(
         protected IconFactory $iconFactory,
