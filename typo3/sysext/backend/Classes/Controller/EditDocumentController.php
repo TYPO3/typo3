@@ -868,12 +868,10 @@ class EditDocumentController
 
         // add/override parameters by configuration
         if (isset($previewConfiguration['additionalGetParameters.'])) {
-            $additionalGetParameters = [];
-            $this->parseAdditionalGetParameters(
-                $additionalGetParameters,
-                $previewConfiguration['additionalGetParameters.']
+            $linkParameters = array_replace(
+                $linkParameters,
+                GeneralUtility::removeDotsFromTS($previewConfiguration['additionalGetParameters.'])
             );
-            $linkParameters = array_replace($linkParameters, $additionalGetParameters);
         }
 
         return HttpUtility::buildQueryString($linkParameters, '&');
@@ -984,28 +982,6 @@ class EditDocumentController
             PageRepository::DOKTYPE_SYSFOLDER,
             PageRepository::DOKTYPE_RECYCLER,
         ], true);
-    }
-
-    /**
-     * Migrates a set of (possibly nested) GET parameters in TypoScript syntax to a plain array
-     *
-     * This basically removes the trailing dots of sub-array keys in TypoScript.
-     * The result can be used to create a query string with GeneralUtility::implodeArrayForUrl().
-     *
-     * @param array $parameters Should be an empty array by default
-     * @param array $typoScript The TypoScript configuration
-     */
-    protected function parseAdditionalGetParameters(array &$parameters, array $typoScript)
-    {
-        foreach ($typoScript as $key => $value) {
-            if (is_array($value)) {
-                $key = rtrim($key, '.');
-                $parameters[$key] = [];
-                $this->parseAdditionalGetParameters($parameters[$key], $value);
-            } else {
-                $parameters[$key] = $value;
-            }
-        }
     }
 
     /**

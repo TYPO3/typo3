@@ -17,15 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -39,49 +32,6 @@ class EditDocumentControllerTest extends UnitTestCase
      * @var bool
      */
     protected bool $resetSingletonInstances = true;
-
-    /**
-     * @test
-     */
-    public function parseAdditionalGetParametersCreatesCorrectParameterArray(): void
-    {
-        $typoScript = [
-            'tx_myext.' => [
-                'controller' => 'test',
-                'action' => 'run',
-            ],
-            'magic' => 'yes',
-        ];
-        $expectedParameters = [
-            'tx_myext' => [
-                'controller' => 'test',
-                'action' => 'run',
-            ],
-            'magic' => 'yes',
-        ];
-        $result = [];
-        $uriBuilder = $this->prophesize(UriBuilder::class);
-        $iconFactory = $this->prophesize(IconFactory::class);
-        $pageRenderer = $this->prophesize(PageRenderer::class);
-        $moduleTemplate = $this->prophesize(ModuleTemplate::class);
-        $moduleTemplate->setUiBlock(Argument::any())->willReturn($moduleTemplate->reveal());
-        $moduleTemplateFactory = $this->prophesize(ModuleTemplateFactory::class);
-        $moduleTemplateFactory->create(Argument::any())->willReturn($moduleTemplate->reveal());
-
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $mock = \Closure::bind(static function (EditDocumentController $editDocumentController) use (&$result, $typoScript) {
-            return $editDocumentController->parseAdditionalGetParameters($result, $typoScript);
-        }, null, EditDocumentController::class);
-        $mock(new EditDocumentController(
-            $eventDispatcher->reveal(),
-            $iconFactory->reveal(),
-            $pageRenderer->reveal(),
-            $uriBuilder->reveal(),
-            $moduleTemplateFactory->reveal()
-        ));
-
-        self::assertSame($expectedParameters, $result);
-    }
 
     /**
      * @test
