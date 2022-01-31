@@ -1521,11 +1521,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 
 		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Preparations/TcaPreparation.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\AbstractFile\\:\\:copyTo\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Resource\\\\File but returns TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
