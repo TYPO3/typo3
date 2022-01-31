@@ -19,10 +19,13 @@ namespace TYPO3\CMS\Dashboard\Tests\Unit\DependencyInjection;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use TYPO3\CMS\Dashboard\DependencyInjection\DashboardWidgetPass;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
+use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DashboardWidgetPassTest extends UnitTestCase
@@ -32,14 +35,14 @@ class DashboardWidgetPassTest extends UnitTestCase
     protected DashboardWidgetPass $subject;
 
     /**
-     * @var ContainerBuilder
+     * @var ContainerBuilder|ObjectProphecy
      */
-    protected $container;
+    protected ObjectProphecy $container;
 
     /**
-     * @var Definition
+     * @var Definition|ObjectProphecy
      */
-    protected $widgetRegistryDefinition;
+    protected ObjectProphecy $widgetRegistryDefinition;
 
     public function setUp(): void
     {
@@ -55,7 +58,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function doesNothingIfWidgetRegistryIsUnknown(): void
     {
-        $this->container->findDefinition(WidgetRegistry::class)->willReturn(false);
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(false);
         $this->container->findTaggedServiceIds('dashboard.widget')->shouldNotBeCalled();
 
         $this->subject->process($this->container->reveal());
@@ -66,6 +69,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function doesNothingIfNoWidgetsAreTagged(): void
     {
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn([])->shouldBeCalled();
         $this->widgetRegistryDefinition->addMethodCall()->shouldNotBeCalled();
@@ -78,6 +82,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function makesWidgetPublic(): void
     {
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $this->container->findTaggedServiceIds('dashboard.widget')->willReturn(['NewsWidget' => []]);
         $definition = $this->prophesize(Definition::class);
@@ -92,6 +97,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersTaggedWidgetWithMinimumConfigurationInRegistry(): void
     {
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
@@ -114,7 +120,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
-                && $definition->getClass(WidgetConfiguration::class)
+                && $definition->getClass() === WidgetConfiguration::class
                 && $definition->getArgument('$identifier') === 't3news'
                 && $definition->getArgument('$groupNames') === ['typo3']
                 && $definition->getArgument('$title') ===  'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'
@@ -139,6 +145,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersWidgetToMultipleGroupsByComma(): void
     {
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
@@ -161,7 +168,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
-                && $definition->getClass(WidgetConfiguration::class)
+                && $definition->getClass() === WidgetConfiguration::class
                 && $definition->getArgument('$groupNames') === ['typo3', 'general']
                 ;
         }))->shouldBeCalled();
@@ -180,6 +187,7 @@ class DashboardWidgetPassTest extends UnitTestCase
      */
     public function registersTaggedWidgetWithMaximumConfigurationInRegistry(): void
     {
+        $this->container->hasDefinition(WidgetRegistry::class)->willReturn(true);
         $this->container->findDefinition(WidgetRegistry::class)->willReturn($this->widgetRegistryDefinition->reveal());
         $definition = $this->prophesize(Definition::class);
         $this->container->findDefinition('dashboard.widget.t3news')->willReturn($definition->reveal());
@@ -205,7 +213,7 @@ class DashboardWidgetPassTest extends UnitTestCase
             $definition = $widgetConfigurationDefinitions['t3newsWidgetConfiguration'];
             /* @var Definition $definition */
             return $definition instanceof Definition
-                && $definition->getClass(WidgetConfiguration::class)
+                && $definition->getClass() === WidgetConfiguration::class
                 && $definition->getArgument('$identifier') === 't3news'
                 && $definition->getArgument('$groupNames') === ['typo3']
                 && $definition->getArgument('$title') ===  'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title'

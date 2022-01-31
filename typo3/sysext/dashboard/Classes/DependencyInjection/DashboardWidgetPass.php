@@ -48,11 +48,10 @@ final class DashboardWidgetPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        $widgetRegistryDefinition = $container->findDefinition(WidgetRegistry::class);
-        /* @var Definition|bool $widgetRegistryDefinition */
-        if (!$widgetRegistryDefinition) {
+        if (!$container->hasDefinition(WidgetRegistry::class)) {
             return;
         }
+        $widgetRegistryDefinition = $container->findDefinition(WidgetRegistry::class);
 
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $definition = $container->findDefinition($serviceName);

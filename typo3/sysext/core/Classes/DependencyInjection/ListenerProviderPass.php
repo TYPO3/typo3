@@ -52,12 +52,11 @@ final class ListenerProviderPass implements CompilerPassInterface
     {
         $this->container = $container;
 
-        $listenerProviderDefinition = $container->findDefinition(ListenerProvider::class);
-
-        // If there's no listener provider registered to begin with, don't bother registering listeners with it.
-        if (!$listenerProviderDefinition) {
+        if (!$container->hasDefinition(ListenerProvider::class)) {
+            // If there's no listener provider registered to begin with, don't bother registering listeners with it.
             return;
         }
+        $listenerProviderDefinition = $container->findDefinition(ListenerProvider::class);
 
         $unorderedEventListeners = $this->collectListeners($container);
 
