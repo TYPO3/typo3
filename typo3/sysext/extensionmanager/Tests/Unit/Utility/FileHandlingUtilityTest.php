@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -28,11 +29,9 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 class FileHandlingUtilityTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -40,7 +39,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     /**
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
-    protected $fakedExtensions = [];
+    protected array $fakedExtensions = [];
 
     /**
      * Creates a fake extension inside typo3temp/. No configuration is created,
@@ -70,6 +69,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists(): void
     {
         $extKey = $this->createFakeExtension();
+        /** @var FileHandlingUtility|MockObject|AccessibleObjectInterface $fileHandlerMock */
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
         $fileHandlerMock->expects(self::once())
             ->method('removeDirectory')
@@ -372,7 +372,7 @@ class FileHandlingUtilityTest extends UnitTestCase
             'category' => 'Frontend',
         ];
         $rootPath = $this->fakedExtensions[$extKey]['packagePath'];
-        /** @var FileHandlingUtility $fileHandlerMock */
+        /** @var FileHandlingUtility|MockObject|AccessibleObjectInterface $fileHandlerMock */
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->injectEmConfUtility(new EmConfUtility());
         $fileHandlerMock->_call('writeEmConfToFile', $extKey, $emConfData, $rootPath);

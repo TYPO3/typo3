@@ -45,9 +45,6 @@ use TYPO3Fluid\Fluid\View\AbstractView;
 use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
-/**
- * Test case
- */
 class ActionControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -295,7 +292,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setTemplateRootPaths'])
@@ -374,7 +371,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setlayoutRootPaths'])
@@ -453,7 +450,7 @@ class ActionControllerTest extends UnitTestCase
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $mockConfigurationManager->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
-        $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
+        $mockController->_set('request', $this->createMock(Request::class));
         $view = $this->getMockBuilder(ViewInterface::class)
             ->onlyMethods(['assign', 'assignMultiple', 'render', 'renderSection', 'renderPartial'])
             ->addMethods(['setpartialRootPaths'])

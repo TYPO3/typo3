@@ -581,11 +581,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/FormInlineAjaxControllerTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\Page\\\\LocalizationController\\:\\:_call\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\:\\:\\$regularBackendUser is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
@@ -614,11 +609,6 @@ parameters:
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\>\\:\\:\\$uc\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/FormInlineAjaxControllerTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\SwitchUserController\\:\\:_call\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Controller/SwitchUserControllerTest.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$data\\.$#"
@@ -734,11 +724,6 @@ parameters:
 			message: "#^Parameter \\#3 \\$value of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getProcessedValue\\(\\) expects string, int\\|false given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayoutView\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/View/BackendLayoutViewTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
@@ -3041,16 +3026,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Collection/FileCollectionRegistryTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:_call\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:expects\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
-
-		-
 			message: "#^Parameter \\#4 \\$recursive of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:getFoldersInFolder\\(\\) expects bool, array\\<int, array\\<int, string\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/LocalDriverTest.php
@@ -3109,11 +3084,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between array and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceStorageTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Filter\\\\FileExtensionFilter\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Utility/FileExtensionFilterTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\:\\:method\\(\\)\\.$#"
@@ -3921,11 +3891,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Error/ResultTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_set\\(\\) invoked with 3 parameters, 2 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$messageBody of method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Controller\\\\ActionController\\:\\:addFlashMessage\\(\\) expects string, stdClass given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
@@ -3954,16 +3919,6 @@ parameters:
 			message: "#^Property class@anonymous/extbase/Tests/Unit/Mvc/View/JsonViewTest\\.php\\:107\\:\\:\\$prohibited is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/View/JsonViewTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Web\\\\Routing\\\\UriBuilder\\:\\:_call\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Backend\\:\\:_set\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with DateTime&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface will always evaluate to false\\.$#"
@@ -4221,31 +4176,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/LocalizationUtilityTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:validate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:expects\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:method\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:_set\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\CollectionValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/CollectionValidatorTest.php
-
-		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:validate\\(\\)\\.$#"
 			count: 4
 			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberRangeValidatorTest.php
@@ -4404,11 +4334,6 @@ parameters:
 			message: "#^Undefined variable\\: \\$EM_CONF$#"
 			count: 2
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/EmConfUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extensionmanager\\\\Utility\\\\FileHandlingUtility\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/FileHandlingUtilityTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
@@ -5081,11 +5006,6 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Unit/Mvc/Configuration/InheritancesResolverServiceTest.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Service\\\\TranslationService\\:\\:_call\\(\\)\\.$#"
-			count: 38
-			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$fileReference of method TYPO3\\\\CMS\\\\Core\\\\Localization\\\\LanguageStore\\:\\:flushData\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 37
 			path: ../../typo3/sysext/form/Tests/Unit/Service/TranslationServiceTest.php
@@ -5606,11 +5526,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\:\\:_call\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/TypoScriptFrontendControllerTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:isMissing\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Imaging/GifBuilderTest.php
@@ -5779,21 +5694,6 @@ parameters:
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\>\\:\\:\\$data\\.$#"
 			count: 2
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/FluidTemplateContentObjectTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ImageContentObject\\:\\:_call\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_call\\(\\)\\.$#"
-			count: 8
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:_set\\(\\)\\.$#"
-			count: 19
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/AbstractMenuContentObjectTest.php
 
 		-
 			message: "#^PHPDoc tag @param for parameter \\$oTarget with type mixed is not subtype of native type string\\.$#"

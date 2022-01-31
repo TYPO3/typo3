@@ -19,17 +19,15 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testing behaviour of \TYPO3\CMS\Backend\View\BackendLayoutView
- */
 class BackendLayoutViewTest extends UnitTestCase
 {
     /**
-     * @var BackendLayoutView|MockObject
+     * @var BackendLayoutView|MockObject|AccessibleObjectInterface
      */
-    protected MockObject $backendLayoutView;
+    protected $backendLayoutView;
 
     /**
      * Sets up this test case.

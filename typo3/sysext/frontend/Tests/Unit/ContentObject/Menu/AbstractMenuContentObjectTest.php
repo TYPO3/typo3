@@ -47,18 +47,17 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class AbstractMenuContentObjectTest extends UnitTestCase
 {
     use ProphecyTrait;
+
     /**
-     * @var AbstractMenuContentObject|MockObject
+     * @var AbstractMenuContentObject|MockObject|AccessibleObjectInterface
      */
-    protected MockObject $subject;
+    protected $subject;
 
     /**
      * Set up this testcase

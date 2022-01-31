@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,11 +29,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class BackendTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -115,7 +114,7 @@ class BackendTest extends UnitTestCase
 
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
-        /** @var Backend $backend */
+        /** @var Backend|MockObject|AccessibleObjectInterface $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 
@@ -146,7 +145,7 @@ class BackendTest extends UnitTestCase
         $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
         $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
-        /** @var Backend $backend */
+        /** @var Backend|MockObject|AccessibleObjectInterface $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 

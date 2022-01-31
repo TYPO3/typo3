@@ -24,14 +24,8 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class UriBuilderTest extends UnitTestCase
 {
-    /**
-     * @return array
-     */
     public function validRoutesAreBuiltDataProvider(): array
     {
         return [
@@ -75,11 +69,6 @@ class UriBuilderTest extends UnitTestCase
     }
 
     /**
-     * @param Route[] $routes
-     * @param string $routeName
-     * @param array $routeParameters
-     * @param string $expectation
-     *
      * @test
      * @dataProvider validRoutesAreBuiltDataProvider
      */

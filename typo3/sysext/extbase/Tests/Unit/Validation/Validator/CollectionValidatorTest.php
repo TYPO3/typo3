@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -26,35 +27,22 @@ use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class CollectionValidatorTest extends UnitTestCase
 {
-    protected string $validatorClassName = CollectionValidator::class;
-
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
+     * @var ValidatorResolver|MockObject|AccessibleObjectInterface
      */
     protected $mockValidatorResolver;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
+     * @var ValidatorInterface|MockObject|AccessibleObjectInterface
      */
     protected $validator;
-
-    /**
-     * @param array $options
-     * @param array $mockedMethods
-     * @return \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
-     */
-    protected function getValidator(array $options = [], array $mockedMethods = ['translateErrorMessage'])
-    {
-        return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, [$options], '', true);
-    }
 
     protected function setUp(): void
     {
@@ -64,8 +52,8 @@ class CollectionValidatorTest extends UnitTestCase
             ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction']
         );
-        GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Validation\ValidatorResolver::class, $this->mockValidatorResolver);
-        $this->validator = $this->getValidator();
+        GeneralUtility::setSingletonInstance(ValidatorResolver::class, $this->mockValidatorResolver);
+        $this->validator = $this->getAccessibleMock(CollectionValidator::class, ['translateErrorMessage'], [[]], '', true);
         $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
     }
 
@@ -180,7 +168,7 @@ class CollectionValidatorTest extends UnitTestCase
             $this->createMock(DataMapper::class)
         );
         // only in this test case we want to mock the isValid method
-        $validator = $this->getValidator(['elementType' => $elementType], ['isValid']);
+        $validator = $this->getAccessibleMock(CollectionValidator::class, ['isValid'], [['elementType' => $elementType]], '', true);
         $validator->expects(self::never())->method('isValid');
         $this->mockValidatorResolver->expects(self::never())->method('createValidator');
         $validator->validate($lazyObjectStorage);

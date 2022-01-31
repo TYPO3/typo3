@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
@@ -29,10 +30,8 @@ use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
-/**
- * Test case
- */
 class LocalDriverTest extends BaseTestCase
 {
     /**
@@ -98,12 +97,8 @@ class LocalDriverTest extends BaseTestCase
      * Creates a mocked driver object as test subject, optionally using a given mount object.
      *
      * IMPORTANT: Call this only after setting up the virtual file system (with the addTo* methods)!
-     *
-     * @param array $driverConfiguration
-     * @param array $mockedDriverMethods
-     * @return LocalDriver
      */
-    protected function createDriver(array $driverConfiguration = [], array $mockedDriverMethods = []): LocalDriver
+    protected function createDriver(array $driverConfiguration = [], array $mockedDriverMethods = []): LocalDriver|MockObject|AccessibleObjectInterface
     {
         // it's important to do that here, so vfsContents could have been set before
         if (!isset($driverConfiguration['basePath'])) {
