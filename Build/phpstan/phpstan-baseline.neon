@@ -586,16 +586,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/LocalizationControllerTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 4
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Functional\\\\Controller\\\\Page\\\\TreeControllerTest\\:\\:\\$regularBackendUser is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Tests/Functional/Controller/Page/TreeControllerTest.php
@@ -629,11 +619,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\SwitchUserController\\:\\:_call\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Controller/SwitchUserControllerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Form/Element/AbstractFormElementTest.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Backend\\\\Tests\\\\Unit\\\\Form\\\\Fixtures\\\\NodeFactory\\\\NodeElements\\\\BarElement has an unused parameter \\$data\\.$#"
@@ -2601,16 +2586,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Authentication/AuthenticationServiceTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/ApcuBackendTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/ApcuBackendTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$data of method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\FileBackend\\:\\:set\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Backend/FileBackendTest.php
@@ -2686,11 +2661,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Configuration/ConfigurationManagerTest.php
-
-		-
 			message: "#^Result of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\FlexForm\\\\FlexFormTools\\:\\:traverseFlexFormXMLData_recurse\\(\\) \\(void\\) is used\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Configuration/FlexForm/FlexFormToolsTest.php
@@ -2734,26 +2704,6 @@ parameters:
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Crypto/PasswordHashing/Md5PasswordHashTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 12 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 7 parameters, 1 required\\.$#"
-			count: 9
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 8 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
@@ -2824,11 +2774,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Database\\\\RelationHandler\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Database/RelationHandlerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/ConnectionMigratorTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$newTables of class Doctrine\\\\DBAL\\\\Schema\\\\SchemaDiff constructor expects array\\<Doctrine\\\\DBAL\\\\Schema\\\\Table\\>, null given\\.$#"
@@ -3056,16 +3001,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Page/PageRendererTest.php
-
-		-
 			message: "#^Cannot call method withCurrentPageNumber\\(\\) on array\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
@@ -3104,11 +3039,6 @@ parameters:
 			message: "#^Offset 'my_type' does not exist on array\\{typeB\\: array\\{showitem\\: 'fieldA, fieldB,…'\\}\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Collection/FileCollectionRegistryTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/Driver/AbstractHierarchicalFilesystemDriverTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Driver\\\\LocalDriver\\:\\:_call\\(\\)\\.$#"
@@ -3166,16 +3096,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/Repository/AbstractRepositoryTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest.php
-
-		-
 			message: "#^PHPDoc tag @param for parameter \\$input with type string is incompatible with native type array\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Resource/ResourceCompressorTest.php
@@ -3201,21 +3121,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Routing/SiteMatcherTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Service/DependencyOrderingServiceTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Service/DependencyOrderingServiceTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/DatabaseTreeDataProviderTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode\\:\\:setId\\(\\) expects string, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/DatabaseTreeDataProviderTest.php
@@ -3229,16 +3134,6 @@ parameters:
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'TYPO3\\\\\\\\CMS\\\\\\\\Core\\\\\\\\Tests\\\\\\\\Unit\\\\\\\\Tree\\\\\\\\TableConfiguration\\\\\\\\Fixtures\\\\\\\\TreeDataProviderFixture' and TYPO3\\\\CMS\\\\Core\\\\Tree\\\\TableConfiguration\\\\DatabaseTreeDataProvider will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Tree/TableConfiguration/TreeDataProviderFactoryTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
 
 		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$modifierName$#"
@@ -3339,16 +3234,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$theInt of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:forceIntegerInRange\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/MathUtilityTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 7
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/RootlineUtilityTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 7
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/RootlineUtilityTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\:\\:doesNotExist\\(\\)\\.$#"
@@ -4006,44 +3891,14 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\AbstractConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/AbstractConfigurationManagerTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 5
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\BackendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/BackendConfigurationManagerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 10
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 7
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Configuration/FrontendConfigurationManagerTest.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Configuration\\\\FrontendConfigurationManagerTest\\:\\:\\$mockTypoScriptService \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TypoScriptService\\.$#"
@@ -4064,11 +3919,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$warning of method TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result\\:\\:addWarning\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Warning, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/extbase/Tests/Unit/Error/ResultTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/ActionControllerTest.php
 
 		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_set\\(\\) invoked with 3 parameters, 2 required\\.$#"
@@ -4111,38 +3961,13 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Web/Routing/UriBuilderTest.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Backend\\:\\:_set\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapFactoryTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with DateTime&PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface will always evaluate to false\\.$#"
 			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Mapper/DataMapperTest.php
 
 		-
@@ -4644,11 +4469,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\FrontendLogin\\\\Tests\\\\Unit\\\\Redirect\\\\RedirectHandlerTest\\:\\:\\$serverRequestHandler \\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\ServerRequestHandler\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\FrontendLogin\\\\Redirect\\\\ServerRequestHandler\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 4
-			path: ../../typo3/sysext/felogin/Tests/Unit/Validation/RedirectUrlValidatorTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
@@ -5244,11 +5064,6 @@ parameters:
 			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/AbstractFinisherTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/ClosureFinisherTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$cObj\\.$#"
@@ -5941,11 +5756,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
 			message: "#^Offset 'INTincScript' does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
@@ -5999,11 +5809,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$className of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\MenuContentObjectFactory\\:\\:registerMenuType\\(\\) expects string, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/MenuContentObjectFactoryTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Unit/Controller/TypoScriptFrontendControllerTest.php
 
 		-
 			message: "#^Access to an undefined property Prophecy\\\\Prophecy\\\\ObjectProphecy\\<TYPO3\\\\CMS\\\\Frontend\\\\Controller\\\\TypoScriptFrontendController\\>\\:\\:\\$cObj\\.$#"
@@ -6496,11 +6301,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 4
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/AbstractNodeTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string, string, string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
@@ -6508,11 +6308,6 @@ parameters:
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{string\\} and array\\<TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessage\\> will always evaluate to false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 3
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
 
 		-
