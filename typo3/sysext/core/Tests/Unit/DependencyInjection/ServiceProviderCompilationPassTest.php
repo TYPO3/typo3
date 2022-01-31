@@ -24,7 +24,6 @@ use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderCompilationPass;
-use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderRegistry;
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProvider;
 use TYPO3\CMS\Core\Tests\Unit\DependencyInjection\Fixtures\TestServiceProviderFactoryOverride;
@@ -212,32 +211,5 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $this->getContainer([
             TestServiceProviderOverride::class,
         ]);
-    }
-
-    /**
-     * @test
-     */
-    public function exceptionForInvalidFactories(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        $registry = new ServiceProviderRegistry([
-            new class() implements ServiceProviderInterface {
-                public function getFactories(): array
-                {
-                    return [
-                        'invalid' => 2,
-                    ];
-                }
-                public function getExtensions(): array
-                {
-                    return [];
-                }
-            },
-        ]);
-        $container = new ContainerBuilder();
-        $registryServiceName = 'service_provider_registry_test';
-        $container->addCompilerPass(new ServiceProviderCompilationPass($registry, $registryServiceName));
-        $container->compile();
     }
 }

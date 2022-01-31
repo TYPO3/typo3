@@ -2896,16 +2896,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/FailsafeContainerTest.php
 
 		-
-			message: "#^Method class@anonymous/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest\\.php\\:225\\:\\:getFactories\\(\\) should return array\\<callable\\(\\)\\: mixed\\> but returns array\\{invalid\\: 2\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$packageManager of class TYPO3\\\\CMS\\\\Core\\\\DependencyInjection\\\\ServiceProviderRegistry constructor expects TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager, array\\<int, class@anonymous/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest\\.php\\:225\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/ServiceProviderCompilationPassTest.php
-
-		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
