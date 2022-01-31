@@ -46,11 +46,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
 
 		-
-			message: "#^Result of \\|\\| is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
