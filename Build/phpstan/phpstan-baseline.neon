@@ -1246,17 +1246,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DependencyInjection/ConsoleCommandPass.php
-
-		-
 			message: "#^Call to an undefined method ReflectionType\\:\\:getName\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DependencyInjection/ListenerProviderPass.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DependencyInjection/ListenerProviderPass.php
 
@@ -3246,84 +3236,9 @@ parameters:
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Classes/DependencyInjection/DashboardWidgetPass.php
-
-		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/dashboard/Configuration/TCA/Overrides/be_groups.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:reveal\\(\\)\\.$#"
-			count: 6
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:reveal\\(\\)\\.$#"
-			count: 5
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:shouldBeCalled\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:shouldNotBeCalled\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:willReturn\\(\\)\\.$#"
-			count: 10
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Cannot call method shouldNotBeCalled\\(\\) on array\\<string, array\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Cannot call method willReturn\\(\\) on array\\<string, array\\>\\.$#"
-			count: 5
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Dashboard\\\\Tests\\\\Unit\\\\DependencyInjection\\\\Reference not found\\.$#"
-			count: 3
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Dashboard\\\\Tests\\\\Unit\\\\DependencyInjection\\\\WidgetConfiguration not found\\.$#"
-			count: 3
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:addMethodCall\\(\\) invoked with 0 parameters, 1\\-3 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:getClass\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 3
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$definitions of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:addDefinitions\\(\\) expects array\\<string, Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\>, Prophecy\\\\Argument\\\\Token\\\\CallbackToken given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Dashboard\\\\Tests\\\\Unit\\\\DependencyInjection\\\\DashboardWidgetPassTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Dashboard\\\\Tests\\\\Unit\\\\DependencyInjection\\\\DashboardWidgetPassTest\\:\\:\\$widgetRegistryDefinition \\(Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\) does not accept Prophecy\\\\Prophecy\\\\ObjectProphecy\\<Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Tests/Unit/DependencyInjection/DashboardWidgetPassTest.php
 
 		-
 			message: "#^Right side of \\|\\| is always false\\.$#"

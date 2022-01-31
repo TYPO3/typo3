@@ -44,10 +44,10 @@ final class ConsoleCommandPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $commandRegistryDefinition = $container->findDefinition(CommandRegistry::class);
-        if (!$commandRegistryDefinition) {
+        if (!$container->hasDefinition(CommandRegistry::class)) {
             return;
         }
+        $commandRegistryDefinition = $container->findDefinition(CommandRegistry::class);
 
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $commandServiceDefinition = $container->findDefinition($serviceName)->setPublic(true);
