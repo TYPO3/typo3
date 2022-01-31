@@ -1686,11 +1686,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\:\\:forRequireJS\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\Page\\\\JavaScriptModuleInstruction\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Page/JavaScriptModuleInstruction.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$charSet \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
