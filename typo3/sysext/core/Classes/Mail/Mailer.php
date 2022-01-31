@@ -36,30 +36,14 @@ use TYPO3\CMS\Core\Utility\MailUtility;
  */
 class Mailer implements MailerInterface
 {
-    /**
-     * @var TransportInterface
-     */
-    protected $transport;
+    protected array $mailSettings = [];
+
+    protected ?SentMessage $sentMessage;
 
     /**
-     * @var array
+     * This will be added as X-Mailer to all outgoing mails
      */
-    protected $mailSettings = [];
-
-    /**
-     * @var SentMessage|null
-     */
-    protected $sentMessage;
-
-    /**
-     * @var string This will be added as X-Mailer to all outgoing mails
-     */
-    protected $mailerHeader = 'TYPO3';
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected string $mailerHeader = 'TYPO3';
 
     /**
      * When constructing, also initializes the Symfony Transport like configured
@@ -68,24 +52,21 @@ class Mailer implements MailerInterface
      * @param EventDispatcherInterface|null $eventDispatcher
      * @throws CoreException
      */
-    public function __construct(TransportInterface $transport = null, EventDispatcherInterface $eventDispatcher = null)
-    {
-        if ($transport !== null) {
-            $this->transport = $transport;
-        } else {
-            if (empty($this->mailSettings)) {
-                $this->injectMailSettings();
-            }
-            try {
-                $this->initializeTransport();
-            } catch (\Exception $e) {
-                throw new CoreException($e->getMessage(), 1291068569);
-            }
+    public function __construct(
+        protected ?TransportInterface $transport = null,
+        protected readonly ?EventDispatcherInterface $eventDispatcher = null,
+    ) {
+        if (empty($this->mailSettings)) {
+            $this->injectMailSettings();
         }
-        if ($eventDispatcher !== null) {
-            $this->eventDispatcher = $eventDispatcher;
-            $this->eventDispatcher->dispatch(new AfterMailerInitializationEvent($this));
+
+        try {
+            $this->initializeTransport();
+        } catch (\Exception $e) {
+            throw new CoreException($e->getMessage(), 1291068569);
         }
+
+        $this->eventDispatcher?->dispatch(new AfterMailerInitializationEvent($this));
     }
 
     /**
@@ -153,7 +134,7 @@ class Mailer implements MailerInterface
      */
     private function initializeTransport()
     {
-        $this->transport = $this->getTransportFactory()->get($this->mailSettings);
+        $this->transport ??= $this->getTransportFactory()->get($this->mailSettings);
     }
 
     /**
@@ -164,11 +145,7 @@ class Mailer implements MailerInterface
      */
     public function injectMailSettings(array $mailSettings = null)
     {
-        if (is_array($mailSettings)) {
-            $this->mailSettings = $mailSettings;
-        } else {
-            $this->mailSettings = (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
-        }
+        $this->mailSettings = $mailSettings ?? (array)$GLOBALS['TYPO3_CONF_VARS']['MAIL'];
     }
 
     /**

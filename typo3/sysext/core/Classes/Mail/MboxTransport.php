@@ -19,6 +19,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,34 +31,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MboxTransport extends AbstractTransport
 {
     /**
-     * @var string The file to write our mails into
-     */
-    private $mboxFile;
-
-    /**
-     * The logger instance.
-     *
-     * @var LoggerInterface|null
-     */
-    protected $logger;
-
-    /**
      * Create a new MailTransport
      *
-     * @param string $mboxFile
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
+     * @param string $mboxFile The file into which to write mail.
+     * @param ?EventDispatcherInterface $dispatcher
+     * @param ?LoggerInterface $logger
      */
     public function __construct(
-        string $mboxFile,
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        private readonly string $mboxFile,
+        ?EventDispatcherInterface $dispatcher = null,
+        protected readonly ?LoggerInterface $logger = null,
     ) {
         parent::__construct($dispatcher, $logger);
-
-        $this->mboxFile = $mboxFile;
-        $this->logger = $logger;
-
         $this->setMaxPerSecond(0);
     }
 
@@ -63,9 +50,9 @@ class MboxTransport extends AbstractTransport
      * Outputs the mail to a text file according to RFC 4155.
      *
      * @param SentMessage $message
-     * @throws \TYPO3\CMS\Core\Locking\Exception\LockAcquireException
-     * @throws \TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException
-     * @throws \TYPO3\CMS\Core\Locking\Exception\LockCreateException
+     * @throws LockAcquireException
+     * @throws LockAcquireWouldBlockException
+     * @throws LockCreateException
      */
     protected function doSend(SentMessage $message): void
     {

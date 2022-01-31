@@ -40,17 +40,11 @@ class FluidEmail extends Email
     /**
      * @var string[]
      */
-    protected $format = ['html', 'plain'];
+    protected array $format = ['html', 'plain'];
 
-    /**
-     * @var string
-     */
-    protected $templateName = 'Default';
+    protected string $templateName = 'Default';
 
-    /**
-     * @var StandaloneView
-     */
-    protected $view;
+    protected StandaloneView $view;
 
     public function __construct(TemplatePaths $templatePaths = null, Headers $headers = null, AbstractPart $body = null)
     {
@@ -69,19 +63,12 @@ class FluidEmail extends Email
 
     public function format(string $format)
     {
-        switch ($format) {
-            case self::FORMAT_BOTH:
-                $this->format = [self::FORMAT_HTML, self::FORMAT_PLAIN];
-                break;
-            case self::FORMAT_HTML:
-                $this->format = [self::FORMAT_HTML];
-                break;
-            case self::FORMAT_PLAIN:
-                $this->format = [self::FORMAT_PLAIN];
-                break;
-            default:
-                throw new \InvalidArgumentException('Setting FluidEmail->format() must be either "html", "plain" or "both", no other formats are currently supported', 1580743847);
-        }
+        $this->format = match ($format) {
+            self::FORMAT_BOTH => [self::FORMAT_HTML, self::FORMAT_PLAIN],
+            self::FORMAT_HTML => [self::FORMAT_HTML],
+            self::FORMAT_PLAIN => [self::FORMAT_PLAIN],
+            default => throw new \InvalidArgumentException('Setting FluidEmail->format() must be either "html", "plain" or "both", no other formats are currently supported', 1580743847),
+        };
         return $this;
     }
 

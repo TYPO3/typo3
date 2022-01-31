@@ -39,53 +39,29 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FileSpool extends AbstractTransport implements DelayedTransportInterface
 {
     /**
-     * The spool directory
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * The logger instance.
-     *
-     * @var LoggerInterface|null
-     */
-    protected $logger;
-
-    /**
      * File WriteRetry Limit.
-     *
-     * @var int
      */
-    protected $retryLimit = 10;
+    protected int $retryLimit = 10;
 
     /**
      * The maximum number of messages to send per flush
-     * @var int
      */
-    protected $messageLimit;
+    protected int $messageLimit;
 
     /**
      * The time limit per flush
-     * @var int
      */
-    protected $timeLimit;
+    protected int $timeLimit;
 
     /**
-     * Create a new FileSpool.
-     *
-     * @param string $path
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
+     * Create a new FileSpool, storing messages in $path.
      */
     public function __construct(
-        string $path,
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        protected string $path,
+        ?EventDispatcherInterface $dispatcher = null,
+        protected readonly ?LoggerInterface $logger = null
     ) {
         parent::__construct($dispatcher, $logger);
-
-        $this->path = $path;
-        $this->logger = $logger;
 
         if (!file_exists($this->path)) {
             GeneralUtility::mkdir_deep($this->path);
@@ -94,7 +70,6 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
 
     /**
      * Stores a message in the queue.
-     * @param SentMessage $message
      */
     protected function doSend(SentMessage $message): void
     {
@@ -125,9 +100,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
     /**
      * Allow to manage the enqueuing retry limit.
      *
-     * Default, is ten and allows over 64^20 different fileNames
-     *
-     * @param int $limit
+     * Default is ten and allows over 64^20 different fileNames
      */
     public function setRetryLimit(int $limit): void
     {
@@ -144,7 +117,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
         foreach (new DirectoryIterator($this->path) as $file) {
             $file = (string)$file->getRealPath();
 
-            if (substr($file, -16) == '.message.sending') {
+            if (str_ends_with($file, '.message.sending')) {
                 $lockedtime = filectime($file);
                 if ((time() - $lockedtime) > $timeout) {
                     rename($file, substr($file, 0, -8));
@@ -165,7 +138,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
         foreach ($directoryIterator as $file) {
             $file = (string)$file->getRealPath();
 
-            if (substr($file, -8) != '.message') {
+            if (!str_ends_with($file, '.message')) {
                 continue;
             }
 
@@ -215,7 +188,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
         $ret = '';
         $strlen = strlen($base);
         for ($i = 0; $i < $count; ++$i) {
-            $ret .= $base[((int)random_int(0, $strlen - 1))];
+            $ret .= $base[random_int(0, $strlen - 1)];
         }
 
         return $ret;
@@ -223,18 +196,14 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
 
     /**
      * Sets the maximum number of messages to send per flush.
-     *
-     * @param int $limit
      */
     public function setMessageLimit(int $limit): void
     {
-        $this->messageLimit = (int)$limit;
+        $this->messageLimit = $limit;
     }
 
     /**
      * Gets the maximum number of messages to send per flush.
-     *
-     * @return int The limit
      */
     public function getMessageLimit(): int
     {
@@ -243,18 +212,14 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
 
     /**
      * Sets the time limit (in seconds) per flush.
-     *
-     * @param int $limit The limit
      */
     public function setTimeLimit(int $limit): void
     {
-        $this->timeLimit = (int)$limit;
+        $this->timeLimit = $limit;
     }
 
     /**
      * Gets the time limit (in seconds) per flush.
-     *
-     * @return int The limit
      */
     public function getTimeLimit(): int
     {

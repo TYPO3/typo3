@@ -42,37 +42,23 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
     use BlockSerializationTrait;
 
     /**
-     * The logger instance.
-     *
-     * @var LoggerInterface|null
-     */
-    protected $logger;
-
-    /**
      * @var SentMessage[]
      */
-    protected $queuedMessages = [];
+    protected array $queuedMessages = [];
 
     /**
      * Maximum number of retries when the real transport has failed.
-     *
-     * @var int
      */
-    protected $retries = 3;
+    protected int $retries = 3;
 
     /**
      * Create a new MemorySpool
-     *
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
      */
     public function __construct(
-        EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        ?EventDispatcherInterface $dispatcher = null,
+        protected readonly ?LoggerInterface $logger = null
     ) {
         parent::__construct($dispatcher, $logger);
-
-        $this->logger = $logger;
 
         $this->setMaxPerSecond(0);
     }

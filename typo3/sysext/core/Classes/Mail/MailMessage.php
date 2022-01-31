@@ -26,21 +26,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MailMessage extends Email
 {
-    /**
-     * @var Mailer
-     */
-    protected $mailer;
+    protected Mailer $mailer;
 
     /**
      * TRUE if the message has been sent.
-     *
-     * @var bool
      */
-    protected $sent = false;
+    protected bool $sent = false;
 
     private function initializeMailer(): void
     {
-        $this->mailer = GeneralUtility::makeInstance(Mailer::class);
+        $this->mailer ??= GeneralUtility::makeInstance(Mailer::class);
     }
 
     /**

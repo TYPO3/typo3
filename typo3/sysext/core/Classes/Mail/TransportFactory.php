@@ -40,20 +40,10 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
     public const SPOOL_MEMORY = 'memory';
     public const SPOOL_FILE = 'file';
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
-
-    /**
-     * @var LogManagerInterface
-     */
-    protected $logManager;
-
-    public function __construct(EventDispatcherInterface $dispatcher, LogManagerInterface $logManager)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->logManager = $logManager;
+    public function __construct(
+        protected readonly EventDispatcherInterface $dispatcher,
+        protected readonly LogManagerInterface $logManager,
+    ) {
     }
 
     /**

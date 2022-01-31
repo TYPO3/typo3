@@ -41,21 +41,12 @@ class MailerTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * @var Mailer
-     */
     protected $subject;
-
     protected ?LogManagerInterface $logManager;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,6 +58,12 @@ class MailerTest extends UnitTestCase
             public function getLogger(string $name = ''): LoggerInterface
             {
                 return new NullLogger();
+            }
+        };
+        $this->eventDispatcher = new class() implements EventDispatcherInterface {
+            public function dispatch(object $event, string $eventName = null): object
+            {
+                return $event;
             }
         };
     }
@@ -104,11 +101,6 @@ class MailerTest extends UnitTestCase
         $transportFactory->get($settings)->shouldHaveBeenCalled();
     }
 
-    /**
-     * Data provider for wrongConfigurationThrowsException
-     *
-     * @return array Data sets
-     */
     public static function wrongConfigurationProvider(): array
     {
         return [
@@ -127,8 +119,7 @@ class MailerTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);
 
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
@@ -139,8 +130,7 @@ class MailerTest extends UnitTestCase
      */
     public function providingCorrectClassnameDoesNotThrowException(): void
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => NullTransport::class]);
         $this->subject->__construct();
@@ -151,8 +141,7 @@ class MailerTest extends UnitTestCase
      */
     public function noPortSettingSetsPortTo25(): void
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost']);
         $this->subject->__construct();
@@ -165,8 +154,7 @@ class MailerTest extends UnitTestCase
      */
     public function emptyPortSettingSetsPortTo25(): void
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:']);
         $this->subject->__construct();
@@ -179,8 +167,7 @@ class MailerTest extends UnitTestCase
      */
     public function givenPortSettingIsRespected(): void
     {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345']);
         $this->subject->__construct();
@@ -188,27 +175,6 @@ class MailerTest extends UnitTestCase
         self::assertEquals(12345, $port);
     }
 
-    /**
-     * @test
-     * @dataProvider getRealTransportReturnsNoSpoolTransportProvider
-     */
-    public function getRealTransportReturnsNoSpoolTransport($settings): void
-    {
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $transportFactory = new TransportFactory($eventDispatcher->reveal(), $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
-        $this->subject->injectMailSettings($settings);
-        $transport = $this->subject->getRealTransport();
-
-        self::assertInstanceOf(TransportInterface::class, $transport);
-        self::assertNotInstanceOf(DelayedTransportInterface::class, $transport);
-    }
-
-    /**
-     * Data provider for getRealTransportReturnsNoSpoolTransport
-     *
-     * @return array Data sets
-     */
     public static function getRealTransportReturnsNoSpoolTransportProvider(): array
     {
         return [
@@ -221,5 +187,20 @@ class MailerTest extends UnitTestCase
                 'spool' => 'memory',
             ]],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getRealTransportReturnsNoSpoolTransportProvider
+     */
+    public function getRealTransportReturnsNoSpoolTransport($settings): void
+    {
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
+        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $this->subject->injectMailSettings($settings);
+        $transport = $this->subject->getRealTransport();
+
+        self::assertInstanceOf(TransportInterface::class, $transport);
+        self::assertNotInstanceOf(DelayedTransportInterface::class, $transport);
     }
 }

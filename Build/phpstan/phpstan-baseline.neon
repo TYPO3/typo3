@@ -2411,11 +2411,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\TransportInterface\\:\\:getStream\\(\\)\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailerTest.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mailer\\\\Transport\\\\Smtp\\\\Stream\\\\AbstractStream\\:\\:getHost\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Mail/TransportFactoryTest.php
