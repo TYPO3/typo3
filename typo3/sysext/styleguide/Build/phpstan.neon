@@ -8,10 +8,10 @@ parameters:
   tmpDir: ../.Build/.cache/phpstan
 
   paths:
-    - %currentWorkingDirectory%/Classes
-    - %currentWorkingDirectory%/Tests
+    - ../Classes
+    - ../Tests
 
   excludePaths:
-    - %currentWorkingDirectory%/Tests/Acceptance/Support/BackendTester.php
-    - %currentWorkingDirectory%/Tests/Acceptance/Backend/ModuleCest.php
-    - %currentWorkingDirectory%/Tests/Acceptance/Backend/GenerateCommandCest.php
+    - ../Tests/Acceptance/Support/BackendTester.php
+    - ../Tests/Acceptance/Backend/ModuleCest.php
+    - ../Tests/Acceptance/Backend/GenerateCommandCest.php
