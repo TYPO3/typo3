@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
-use TYPO3\CMS\Extbase\Mvc\RequestHandlerResolver;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -40,22 +39,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class Bootstrap
 {
-    /**
-     * @var array
-     */
-    public static $persistenceClasses = [];
+    public static array $persistenceClasses = [];
 
     /**
      * Set by UserContentObject (USER) via setContentObjectRenderer() in frontend
-     *
-     * @var ContentObjectRenderer|null
      */
     protected ?ContentObjectRenderer $cObj = null;
 
     protected ContainerInterface $container;
     protected ConfigurationManagerInterface $configurationManager;
     protected PersistenceManagerInterface $persistenceManager;
-    protected RequestHandlerResolver $requestHandlerResolver;
     protected CacheService $cacheService;
     protected Dispatcher $dispatcher;
     protected RequestBuilder $extbaseRequestBuilder;
@@ -64,7 +57,6 @@ class Bootstrap
         ContainerInterface $container,
         ConfigurationManagerInterface $configurationManager,
         PersistenceManagerInterface $persistenceManager,
-        RequestHandlerResolver $requestHandlerResolver,
         CacheService $cacheService,
         Dispatcher $dispatcher,
         RequestBuilder $extbaseRequestBuilder
@@ -72,7 +64,6 @@ class Bootstrap
         $this->container = $container;
         $this->configurationManager = $configurationManager;
         $this->persistenceManager = $persistenceManager;
-        $this->requestHandlerResolver = $requestHandlerResolver;
         $this->cacheService = $cacheService;
         $this->dispatcher = $dispatcher;
         $this->extbaseRequestBuilder = $extbaseRequestBuilder;
@@ -80,8 +71,6 @@ class Bootstrap
 
     /**
      * Called for frontend plugins from UserContentObject via ContentObjectRenderer->callUserFunction().
-     *
-     * @param ContentObjectRenderer $cObj
      */
     public function setContentObjectRenderer(ContentObjectRenderer $cObj)
     {
@@ -161,8 +150,7 @@ class Bootstrap
         }
 
         // Dispatch the extbase request
-        $requestHandler = $this->requestHandlerResolver->resolveRequestHandler($extbaseRequest);
-        $response = $requestHandler->handleRequest($extbaseRequest);
+        $response = $this->dispatcher->dispatch($extbaseRequest);
         if ($response->getStatusCode() >= 300) {
             // Avoid caching the plugin when we issue a redirect or error response
             // This means that even when an action is configured as cachable

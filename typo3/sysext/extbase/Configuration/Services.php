@@ -9,16 +9,12 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use TYPO3\CMS\Extbase\DependencyInjection\TypeConverterPass;
 
 return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container) {
-    $container->registerForAutoconfiguration(Mvc\RequestHandlerInterface::class)->addTag('extbase.request_handler');
     $container->registerForAutoconfiguration(Mvc\Controller\ControllerInterface::class)->addTag('extbase.controller');
     $container->registerForAutoconfiguration(Mvc\Controller\ActionController::class)->addTag('extbase.action_controller');
 
     $container->addCompilerPass(new class() implements CompilerPassInterface {
         public function process(ContainerBuilder $container): void
         {
-            foreach ($container->findTaggedServiceIds('extbase.request_handler') as $id => $tags) {
-                $container->findDefinition($id)->setPublic(true);
-            }
             foreach ($container->findTaggedServiceIds('extbase.controller') as $id => $tags) {
                 $container->findDefinition($id)->setPublic(true);
             }

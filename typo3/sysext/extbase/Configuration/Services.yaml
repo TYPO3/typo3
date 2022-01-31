@@ -74,14 +74,6 @@ services:
       $cache: '@cache.extbase'
       $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("PersistenceClasses").toString()'
 
-  TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory:
-    arguments:
-      $cache: '@cache.extbase'
-      $cacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").withPrefix("RequestHandlers").toString()'
-
-  TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration:
-      factory: ['@TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory', 'createRequestHandlersConfiguration']
-
   TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory:
     arguments:
       $baseCacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").toString()'

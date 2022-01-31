@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Mvc;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -31,29 +30,11 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException;
  * returns the response the controller generated.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Dispatcher implements SingletonInterface
+class Dispatcher
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var array
-     */
-    protected $settings = [];
-
-    /**
-     * Constructs the global dispatcher
-     *
-     * @param ContainerInterface $container
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher

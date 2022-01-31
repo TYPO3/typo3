@@ -1899,4 +1899,9 @@ return [
             'Feature-87616-PSR-14EventForModifyingPageLinkGeneration.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface' => [
+        'restFiles' => [
+            'Breaking-96726-RequestHandlerFunctionalityOfExtbaseRemoved.rst',
+        ],
+    ],
 ];
