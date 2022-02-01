@@ -30,11 +30,9 @@ class BackendUserConfigurationTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var BackendUserConfiguration
-     */
     protected BackendUserConfiguration $backendUserConfiguration;
 
+    /** @var ObjectProphecy<BackendUserAuthentication> */
     protected ObjectProphecy $backendUserProphecy;
 
     protected BackendUserAuthentication $backendUser;

@@ -42,7 +42,8 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
      */
     protected $subject;
 
-    protected ObjectProphecy $connectionProphet;
+    /** @var ObjectProphecy<Connection> */
+    protected ObjectProphecy $connectionProphecy;
 
     /**
      * Set up the test subject
@@ -51,7 +52,7 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
     {
         parent::setUp();
         $this->subject = GeneralUtility::makeInstance(SchemaColumnDefinitionListener::class);
-        $this->connectionProphet = $this->prophesize(Connection::class);
+        $this->connectionProphecy = $this->prophesize(Connection::class);
     }
 
     /**
@@ -63,7 +64,7 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
             ['Type' => 'int(11)'],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphet->reveal()
+            $this->connectionProphecy->reveal()
         );
 
         $this->subject->onSchemaColumnDefinition($event);
@@ -83,13 +84,13 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         }
         $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
         $databasePlatformProphet->getDoctrineTypeMapping('enum')->willReturn('enum');
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
 
         $event = new SchemaColumnDefinitionEventArgs(
             ['Type' => "enum('value1', 'value2','value3')"],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphet->reveal()
+            $this->connectionProphecy->reveal()
         );
 
         $this->subject->onSchemaColumnDefinition($event);
@@ -111,13 +112,13 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         }
         $databasePlatformProphet = $this->prophesize(AbstractPlatform::class);
         $databasePlatformProphet->getDoctrineTypeMapping('set')->willReturn('set');
-        $this->connectionProphet->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
+        $this->connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphet->reveal());
 
         $event = new SchemaColumnDefinitionEventArgs(
             ['Type' => "set('value1', 'value3')"],
             'aTestTable',
             'aTestDatabase',
-            $this->connectionProphet->reveal()
+            $this->connectionProphecy->reveal()
         );
 
         $this->subject->onSchemaColumnDefinition($event);

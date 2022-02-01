@@ -32,6 +32,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<PackageManager> */
     protected ObjectProphecy $packageManagerProphecy;
 
     /**

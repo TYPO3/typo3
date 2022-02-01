@@ -53,6 +53,7 @@ class IconFactoryTest extends UnitTestCase
     protected string $registeredIconIdentifier = 'actions-close';
     protected string $registeredSpinningIconIdentifier = 'spinning-icon';
 
+    /** @var ObjectProphecy<IconRegistry> */
     protected ObjectProphecy $iconRegistryMock;
 
     /**

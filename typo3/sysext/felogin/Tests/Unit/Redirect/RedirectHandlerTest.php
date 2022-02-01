@@ -51,10 +51,13 @@ class RedirectHandlerTest extends UnitTestCase
      */
     protected $typo3Request;
 
+    /** @var ObjectProphecy<ServerRequestHandler> */
     protected ObjectProphecy $serverRequestHandler;
 
+    /** @var ObjectProphecy<RedirectModeHandler> */
     protected ObjectProphecy $redirectModeHandler;
 
+    /** @var ObjectProphecy<Context> */
     protected ObjectProphecy $context;
 
     protected function setUp(): void

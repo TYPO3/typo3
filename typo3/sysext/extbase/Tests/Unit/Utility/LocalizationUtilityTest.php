@@ -42,6 +42,8 @@ class LocalizationUtilityTest extends UnitTestCase
 
     /**
      * Instance of configurationManagerInterface, injected to subject
+     *
+     * @var ObjectProphecy<ConfigurationManagerInterface>
      */
     protected ObjectProphecy $configurationManagerInterfaceProphecy;
 

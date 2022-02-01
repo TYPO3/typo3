@@ -588,6 +588,7 @@ class AbstractFinisherTest extends UnitTestCase
 
     /**
      * @param array $values Key/Value pairs to be retrievable
+     * @return ObjectProphecy<FormRuntime>
      */
     protected function createFormRuntimeProphecy(array $values): ObjectProphecy
     {

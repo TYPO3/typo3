@@ -34,6 +34,7 @@ class DocumentationFileTest extends UnitTestCase
     protected DocumentationFile $documentationFileService;
     protected vfsStreamDirectory $docRoot;
 
+    /** @var ObjectProphecy<Registry> */
     protected ObjectProphecy $registry;
 
     /**

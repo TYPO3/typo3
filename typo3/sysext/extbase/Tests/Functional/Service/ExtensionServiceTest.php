@@ -37,8 +37,10 @@ class ExtensionServiceTest extends FunctionalTestCase
 
     protected ExtensionService $extensionService;
 
+    /** @var ObjectProphecy<FrontendConfigurationManager> */
     protected ObjectProphecy $frontendConfigurationManager;
 
+    /** @var ObjectProphecy<ContainerInterface> */
     protected ObjectProphecy $containerProphecy;
 
     protected function setUp(): void

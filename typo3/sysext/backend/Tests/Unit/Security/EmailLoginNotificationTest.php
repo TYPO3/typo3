@@ -220,6 +220,9 @@ class EmailLoginNotificationTest extends UnitTestCase
         // no additional assertion here as the test would fail due to not mocking the email API
     }
 
+    /**
+     * @return ObjectProphecy<FluidEmail>
+     */
     protected function setUpMailMessageProphecy(): ObjectProphecy
     {
         $mailMessage = $this->prophesize(FluidEmail::class);

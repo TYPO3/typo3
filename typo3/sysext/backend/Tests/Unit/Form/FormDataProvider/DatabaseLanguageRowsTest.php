@@ -39,6 +39,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
      */
     protected MockObject $subject;
 
+    /** @var ObjectProphecy<BackendUserAuthentication> */
     protected ObjectProphecy $beUserProphecy;
 
     protected function setUp(): void

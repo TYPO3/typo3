@@ -34,8 +34,11 @@ class ExpressionBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<Connection> */
     protected ObjectProphecy $connectionProphecy;
+
     protected ?ExpressionBuilder $subject;
+
     protected string $testTable = 'testTable';
 
     /**

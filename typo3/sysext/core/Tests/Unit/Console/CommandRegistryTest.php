@@ -32,6 +32,7 @@ class CommandRegistryTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<ContainerInterface> */
     protected ObjectProphecy $containerProphecy;
 
     /**

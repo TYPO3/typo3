@@ -31,15 +31,16 @@ class ListenerProviderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<ContainerInterface> */
     protected ObjectProphecy $containerProphecy;
+
     protected ?ListenerProvider $listenerProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->containerProphecy = $this->prophesize();
-        $this->containerProphecy->willImplement(ContainerInterface::class);
+        $this->containerProphecy = $this->prophesize(ContainerInterface::class);
 
         $this->listenerProvider = new ListenerProvider(
             $this->containerProphecy->reveal()

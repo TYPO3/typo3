@@ -109,6 +109,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'EDITPANEL' => EditPanelContentObject::class,
     ];
 
+    /** @var ObjectProphecy<CacheManager> */
     private ObjectProphecy $cacheManager;
 
     protected $backupEnvironment = true;
