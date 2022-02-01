@@ -143,6 +143,9 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $controller->initialize(Argument::any())->shouldNotHaveBeenCalled();
     }
 
+    /**
+     * @return ObjectProphecy<RequestHandlerInterface>
+     */
     protected function prophesizeHandler(): ObjectProphecy
     {
         $handler = $this->prophesize(RequestHandlerInterface::class);

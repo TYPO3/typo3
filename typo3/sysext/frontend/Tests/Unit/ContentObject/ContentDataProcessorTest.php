@@ -35,6 +35,7 @@ class ContentDataProcessorTest extends UnitTestCase
 
     protected ContentDataProcessor $contentDataProcessor;
 
+    /** @var ObjectProphecy<ContainerInterface> */
     protected ObjectProphecy $containerProphecy;
 
     /**

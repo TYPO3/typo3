@@ -60,6 +60,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     protected MockObject $subject;
 
+    /** @var ObjectProphecy<ContentObjectRenderer> */
     protected ObjectProphecy $contentObjectRendererProphecy;
 
     protected ContentObjectRenderer $contentObjectRenderer;

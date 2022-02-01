@@ -269,6 +269,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
     }
 
+    /**
+     * @return ObjectProphecy<QueryBuilder>
+     */
     protected function getQueryBuilderWithExpressionBuilderProphet(): ObjectProphecy
     {
         $connectionProphet = $this->prophesize(Connection::class);
@@ -279,6 +282,9 @@ class Typo3DbQueryParserTest extends UnitTestCase
         return $queryBuilderProphet;
     }
 
+    /**
+     * @return ObjectProphecy<QueryBuilder>
+     */
     protected function getQueryBuilderProphetWithQueryBuilderForSubselect(): ObjectProphecy
     {
         $connectionProphet = $this->prophesize(Connection::class);

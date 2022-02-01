@@ -36,10 +36,13 @@ class RecoveryConfigurationTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<Context> */
     protected ObjectProphecy $context;
 
+    /** @var ObjectProphecy<ConfigurationManager> */
     protected ObjectProphecy $configurationManager;
 
+    /** @var ObjectProphecy<HashService> */
     protected ObjectProphecy $hashService;
 
     /**
@@ -63,6 +66,7 @@ class RecoveryConfigurationTest extends UnitTestCase
      */
     protected $subject;
 
+    /** @var ObjectProphecy<LoggerInterface> */
     protected ObjectProphecy $logger;
 
     protected function setUp(): void

@@ -33,6 +33,7 @@ class FormDataCompilerTest extends UnitTestCase
 
     protected FormDataCompiler $subject;
 
+    /** @var ObjectProphecy<FormDataGroupInterface> */
     protected ObjectProphecy $formDataGroupProphecy;
 
     protected function setUp(): void

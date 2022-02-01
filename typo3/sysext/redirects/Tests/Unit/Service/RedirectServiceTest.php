@@ -44,14 +44,18 @@ class RedirectServiceTest extends UnitTestCase
      */
     protected bool $resetSingletonInstances = true;
 
+    /** @var ObjectProphecy<RedirectCacheService> */
     protected ObjectProphecy $redirectCacheServiceProphecy;
 
+    /** @var ObjectProphecy<LinkService> */
     protected ObjectProphecy $linkServiceProphecy;
 
     protected RedirectService $redirectService;
 
+    /** @var ObjectProphecy<SiteFinder> */
     protected ObjectProphecy $siteFinder;
 
+    /** @var ObjectProphecy<RedirectRepository> */
     protected ObjectProphecy $redirectRepository;
 
     protected function setUp(): void

@@ -36,6 +36,7 @@ class TcaFlexProcessTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<BackendUserAuthentication> */
     protected ObjectProphecy $backendUserProphecy;
 
     protected function setUp(): void

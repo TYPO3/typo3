@@ -33,6 +33,7 @@ class FlexFormProcessorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<ContentObjectRenderer> */
     protected ObjectProphecy $contentObjectRenderer;
 
     protected function setUp(): void

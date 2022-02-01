@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\Tests\UnitDeprecated\Form\FormDataProvider;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -34,8 +33,6 @@ class TcaFlexPrepareTest extends UnitTestCase
     use ProphecyTrait;
 
     protected TcaFlexPrepare $subject;
-
-    protected ObjectProphecy $backendUserProphecy;
 
     /**
      * Set up

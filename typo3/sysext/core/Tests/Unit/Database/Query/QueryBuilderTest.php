@@ -45,11 +45,13 @@ class QueryBuilderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<Connection> */
     protected ObjectProphecy $connection;
 
     protected ?AbstractPlatform $platform;
     protected ?QueryBuilder $subject;
 
+    /** @var ObjectProphecy<\Doctrine\DBAL\Query\QueryBuilder> */
     protected ObjectProphecy $concreteQueryBuilder;
 
     /**

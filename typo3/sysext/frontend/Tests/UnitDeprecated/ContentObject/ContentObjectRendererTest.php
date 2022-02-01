@@ -109,6 +109,7 @@ class ContentObjectRendererTest extends UnitTestCase
         'SVG' => ScalableVectorGraphicsContentObject::class,
     ];
 
+    /** @var ObjectProphecy<CacheManager> */
     private ObjectProphecy $cacheManager;
 
     protected bool $backupEnvironment = true;

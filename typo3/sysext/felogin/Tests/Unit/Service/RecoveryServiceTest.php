@@ -42,10 +42,13 @@ class RecoveryServiceTest extends UnitTestCase
      */
     protected bool $resetSingletonInstances = true;
 
+    /** @var ObjectProphecy<FrontendUserRepository> */
     protected ObjectProphecy $userRepository;
 
+    /** @var ObjectProphecy<RecoveryConfiguration> */
     protected ObjectProphecy $recoveryConfiguration;
 
+    /** @var ObjectProphecy<TemplatePaths> */
     protected ObjectProphecy $templatePathsProphecy;
 
     protected function setUp(): void
@@ -253,6 +256,7 @@ class RecoveryServiceTest extends UnitTestCase
      * @param Address $receiver
      * @param array $expectedViewVariables
      * @param array $recoveryConfiguration
+     * @return ObjectProphecy<FluidEmail>
      */
     private function setupFluidEmailProphecy(
         Address $receiver,
