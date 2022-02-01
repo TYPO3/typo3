@@ -3038,7 +3038,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function splitObj($value, $conf)
     {
-        $conf['token'] = isset($conf['token.']) ? $this->stdWrap($conf['token'], $conf['token.']) : $conf['token'];
+        $conf['token'] = isset($conf['token.']) ? $this->stdWrap($conf['token'], $conf['token.']) : $conf['token'] ?? '';
         if ($conf['token'] === '') {
             return $value;
         }
