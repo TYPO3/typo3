@@ -3267,7 +3267,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
 
         // `parseFunc` issues deprecation in case `htmlSanitize` is not given
-        $expectExceptions = ['numRows', 'parseFunc', 'split', 'bytes'];
+        $expectExceptions = ['numRows', 'parseFunc', 'bytes'];
         $count = 0;
         $processors = [];
         $exceptions = [];
