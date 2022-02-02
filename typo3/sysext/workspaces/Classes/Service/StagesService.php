@@ -44,10 +44,7 @@ class StagesService implements SingletonInterface
      */
     private $pathToLocallang = 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf';
 
-    /**
-     * @var RecordService
-     */
-    protected $recordService;
+    protected ?RecordService $recordService;
 
     /**
      * Local cache to reduce number of database queries for stages, groups, etc.
@@ -320,10 +317,12 @@ class StagesService implements SingletonInterface
             }
         }
         if ($nextStage === false) {
-            $nextStage[] = [
-                'uid' => self::STAGE_EDIT_ID,
-                'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
-                    . $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"',
+            $nextStage = [
+                [
+                    'uid' => self::STAGE_EDIT_ID,
+                    'title' => $this->getLanguageService()->sL($this->pathToLocallang . ':actionSendToStage') . ' "'
+                        . $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod_user_ws.xlf:stage_editing') . '"',
+                ],
             ];
         }
         return $nextStage;
