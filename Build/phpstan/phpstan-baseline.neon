@@ -6496,16 +6496,6 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Service/HistoryService.php
 
 		-
-			message: "#^Cannot access an offset on false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\StagesService\\:\\:\\$recordService \\(TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\RecordService\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Configuration/TCA/Overrides/be_users.php
