@@ -434,9 +434,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         return $html;
     }
 
-    /**
-     * @return LanguageService
-     */
     public function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

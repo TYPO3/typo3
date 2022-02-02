@@ -3302,11 +3302,7 @@ class DatabaseRecordList
         ], true);
     }
 
-    /**
-     * Returns the language service
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -116,11 +116,6 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

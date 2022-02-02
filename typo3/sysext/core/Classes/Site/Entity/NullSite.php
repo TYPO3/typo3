@@ -194,10 +194,6 @@ class NullSite implements SiteInterface
         throw new \RuntimeException('No error handler given for the status code "' . $statusCode . '".', 1522495102);
     }
 
-    /**
-     * Shorthand functionality for fetching the language service
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

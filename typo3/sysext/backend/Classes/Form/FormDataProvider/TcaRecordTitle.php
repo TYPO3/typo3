@@ -379,10 +379,7 @@ class TcaRecordTitle implements FormDataProviderInterface
         return trim(strip_tags($value));
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

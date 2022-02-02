@@ -491,10 +491,7 @@ class BackendLayoutView implements SingletonInterface
         return GeneralUtility::makeInstance(DataProviderContext::class);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

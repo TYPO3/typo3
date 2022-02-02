@@ -1228,12 +1228,7 @@ class ExtendedFileUtility extends BasicFileUtility
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

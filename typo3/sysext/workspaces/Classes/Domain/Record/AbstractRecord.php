@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Domain\Record;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
@@ -58,10 +59,7 @@ abstract class AbstractRecord
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected static function getLanguageService()
+    protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -27,11 +27,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 abstract class AbstractSubModule implements ModuleInterface, ContentProviderInterface
 {
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

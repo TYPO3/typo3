@@ -77,9 +77,6 @@ class BackendUtilityHook
         return $params['hasAccess'];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Domain\Repository;
 use TYPO3\CMS\Backend\Controller\HelpController;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -425,12 +426,7 @@ class TableManualRepository
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -149,9 +149,6 @@ abstract class AbstractFormEngineAjaxController
         return $labelArray;
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

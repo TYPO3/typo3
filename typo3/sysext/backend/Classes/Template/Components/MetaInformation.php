@@ -252,12 +252,7 @@ class MetaInformation
         ];
     }
 
-    /**
-     * Get LanguageService Object
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

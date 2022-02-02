@@ -626,11 +626,6 @@ class FormManagerController extends AbstractBackendController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns the Language Service
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

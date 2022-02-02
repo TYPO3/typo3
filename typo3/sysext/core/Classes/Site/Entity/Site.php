@@ -373,10 +373,6 @@ class Site implements SiteInterface
         return GeneralUtility::makeInstance(PageRouter::class, $this, $context);
     }
 
-    /**
-     * Shorthand functionality for fetching the language service
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

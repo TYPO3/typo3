@@ -77,11 +77,6 @@ class ContextMenuController
         return new JsonResponse([]);
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

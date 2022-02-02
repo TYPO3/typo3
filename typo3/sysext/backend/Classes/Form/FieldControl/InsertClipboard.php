@@ -80,9 +80,6 @@ class InsertClipboard extends AbstractNode
         ];
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

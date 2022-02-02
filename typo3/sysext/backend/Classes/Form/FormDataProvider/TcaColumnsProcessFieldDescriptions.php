@@ -86,9 +86,6 @@ class TcaColumnsProcessFieldDescriptions implements FormDataProviderInterface
         return $result;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

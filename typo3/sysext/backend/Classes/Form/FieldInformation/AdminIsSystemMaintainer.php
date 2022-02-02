@@ -81,9 +81,6 @@ class AdminIsSystemMaintainer extends AbstractNode
         return $resultArray;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

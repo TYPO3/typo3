@@ -316,9 +316,6 @@ class LocalizationUtility
         return null;
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
     protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

@@ -415,9 +415,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $defaultFlashMessageQueue->enqueue($flashMessage);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

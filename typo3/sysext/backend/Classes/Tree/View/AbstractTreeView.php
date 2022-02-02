@@ -578,10 +578,7 @@ abstract class AbstractTreeView
         $res->free();
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

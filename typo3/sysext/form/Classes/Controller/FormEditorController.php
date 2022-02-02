@@ -769,11 +769,6 @@ class FormEditorController extends AbstractBackendController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns the language service
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

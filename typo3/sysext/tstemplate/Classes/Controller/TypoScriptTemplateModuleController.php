@@ -709,10 +709,6 @@ page.10.value = HELLO WORLD!
         );
     }
 
-    /**
-     * Returns the Language Service
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

@@ -102,9 +102,6 @@ class TestTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
         $task->email = $submittedData['email'];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

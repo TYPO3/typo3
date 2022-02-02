@@ -68,12 +68,7 @@ class AbstractWizardController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

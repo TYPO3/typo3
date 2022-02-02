@@ -1012,11 +1012,6 @@ class PageLayoutController
             && $this->getBackendUser()->checkLanguageAccess($languageId);
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

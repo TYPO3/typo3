@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recycler\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -204,12 +205,7 @@ class RecyclerUtility
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected static function getLanguageService()
+    protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -64,10 +64,7 @@ class BackendUserGroupIntegrityCheck
         }
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -144,9 +144,6 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
         return $backends;
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

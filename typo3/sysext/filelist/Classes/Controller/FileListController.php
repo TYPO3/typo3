@@ -706,11 +706,6 @@ class FileListController implements LoggerAwareInterface
         );
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

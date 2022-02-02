@@ -772,11 +772,6 @@ class Clipboard
         return is_array($this->clipData[$this->current]['el'] ?? null) && !empty($this->clipData[$this->current]['el']);
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

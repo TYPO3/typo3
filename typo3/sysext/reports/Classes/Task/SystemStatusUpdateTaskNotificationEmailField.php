@@ -141,10 +141,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         return $this->fieldPrefix . ucfirst($fieldName);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

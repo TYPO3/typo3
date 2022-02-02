@@ -198,9 +198,6 @@ class TypoScriptTemplateInformationModuleFunctionController
         return $theOutput;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

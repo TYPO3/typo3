@@ -1105,10 +1105,7 @@ abstract class AbstractItemProvider
         return $uid;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

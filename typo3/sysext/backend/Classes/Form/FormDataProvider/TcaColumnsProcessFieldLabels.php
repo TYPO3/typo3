@@ -154,10 +154,7 @@ class TcaColumnsProcessFieldLabels implements FormDataProviderInterface
         return $result;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

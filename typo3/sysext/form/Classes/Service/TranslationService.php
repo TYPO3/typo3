@@ -704,9 +704,6 @@ class TranslationService implements SingletonInterface
         return $languages;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

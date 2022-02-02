@@ -468,9 +468,6 @@ class LiveSearch
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

@@ -362,12 +362,7 @@ class BackendModuleRepository implements SingletonInterface
         return '';
     }
 
-    /**
-     * Return language service instance
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

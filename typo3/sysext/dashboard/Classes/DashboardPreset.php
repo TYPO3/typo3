@@ -117,9 +117,6 @@ class DashboardPreset
         return $this->showInWizard;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

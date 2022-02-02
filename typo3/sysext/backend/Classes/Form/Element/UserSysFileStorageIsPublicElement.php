@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -126,13 +125,5 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] = '</div>';
         $resultArray['html'] = implode(LF, $html);
         return $resultArray;
-    }
-
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

@@ -342,10 +342,7 @@ class ConfigurationStatus implements StatusProviderInterface
         );
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

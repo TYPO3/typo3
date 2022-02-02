@@ -315,12 +315,7 @@ class PagePositionMap
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns the LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

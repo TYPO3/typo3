@@ -82,10 +82,7 @@ class Typo3Status implements StatusProviderInterface
         );
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

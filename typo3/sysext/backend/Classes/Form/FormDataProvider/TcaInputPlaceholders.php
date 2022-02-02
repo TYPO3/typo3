@@ -271,10 +271,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
         return $possibleUids;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

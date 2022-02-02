@@ -1050,9 +1050,6 @@ class WorkspaceService implements SingletonInterface
         return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected static function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

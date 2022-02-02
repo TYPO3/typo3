@@ -99,9 +99,6 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
         $task->sleepTime = $submittedData['sleepTime'];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

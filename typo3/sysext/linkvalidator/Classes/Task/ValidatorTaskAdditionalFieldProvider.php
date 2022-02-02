@@ -305,9 +305,6 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         return (string)(BackendUtility::getRecord('pages', $pageId, 'title', '', false)['title'] ?? '');
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

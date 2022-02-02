@@ -56,9 +56,6 @@ class WidgetGroup
         return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

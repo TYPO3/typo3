@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recycler\Domain\Model;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
@@ -83,12 +84,7 @@ class Tables
         return $jsonArray;
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

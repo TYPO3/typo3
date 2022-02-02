@@ -262,9 +262,6 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exceptionHandler'), $value, $message, $severity);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

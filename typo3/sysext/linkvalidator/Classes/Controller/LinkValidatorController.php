@@ -547,9 +547,6 @@ class LinkValidatorController
         return $moduleName . ($pageTitle !== '' ? ': ' . $pageTitle : '');
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

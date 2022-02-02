@@ -626,9 +626,6 @@ class ShortcutRepository
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

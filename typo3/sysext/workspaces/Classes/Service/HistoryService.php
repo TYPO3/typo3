@@ -177,10 +177,7 @@ class HistoryService implements SingletonInterface
         return $this->differencesObject;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

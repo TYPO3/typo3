@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recycler\Task;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -204,10 +205,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         $task->setPeriod($submittedData['RecyclerCleanerPeriod']);
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

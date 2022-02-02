@@ -213,9 +213,6 @@ class RenameFileController
         $this->moduleTemplate->setContent($view->render('File/RenameFile'));
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

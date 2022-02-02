@@ -96,10 +96,7 @@ class UpdateFromTerController extends AbstractController
         return $this->jsonResponse();
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

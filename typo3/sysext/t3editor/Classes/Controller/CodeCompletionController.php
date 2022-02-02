@@ -116,9 +116,6 @@ class CodeCompletionController
         return $cleanedTreeBranch;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

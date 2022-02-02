@@ -80,10 +80,7 @@ class ListOfFieldsContainer extends AbstractContainer
         return $this->nodeFactory->create($options)->render();
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

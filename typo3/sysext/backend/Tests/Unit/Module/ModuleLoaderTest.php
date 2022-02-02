@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,10 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ModuleLoaderTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = new \stdClass();
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
         $GLOBALS['LANG']->lang = 'it';
     }
 

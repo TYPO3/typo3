@@ -603,9 +603,6 @@ abstract class AbstractTask implements LoggerAwareInterface
         $this->logger->error('A Task Exception was captured.', ['exception' => $e]);
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

@@ -304,11 +304,6 @@ class EditFileController
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

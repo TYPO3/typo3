@@ -428,10 +428,7 @@ class PaletteAndSingleContainer extends AbstractContainer
         return false;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

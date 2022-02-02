@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -200,10 +201,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         return array_pop($extractorParts);
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

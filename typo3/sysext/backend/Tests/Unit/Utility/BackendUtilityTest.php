@@ -155,7 +155,10 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['LANG'] = [];
+
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+
         self::assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 

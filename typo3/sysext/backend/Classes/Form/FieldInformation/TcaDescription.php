@@ -44,11 +44,6 @@ class TcaDescription extends AbstractNode
         return $resultArray;
     }
 
-    /**
-     * Returns the LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

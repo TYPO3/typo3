@@ -179,9 +179,6 @@ class ReplaceFileController
         $this->moduleTemplate->setContent($view->render('File/ReplaceFile'));
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

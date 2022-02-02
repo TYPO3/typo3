@@ -211,9 +211,6 @@ class FileUploadController
         return $content;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

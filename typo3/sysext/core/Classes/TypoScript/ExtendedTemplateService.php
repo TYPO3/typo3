@@ -1288,10 +1288,7 @@ class ExtendedTemplateService extends TemplateService
         return is_array($this->absoluteRootLine) ? $this->absoluteRootLine : [];
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -271,9 +271,6 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         $task->numberOfDays = (int)($submittedData['scheduler_tableGarbageCollection_numberOfDays'] ?? 0);
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

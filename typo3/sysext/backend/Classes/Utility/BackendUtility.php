@@ -3533,10 +3533,7 @@ class BackendUtility
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected static function getLanguageService()
+    protected static function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

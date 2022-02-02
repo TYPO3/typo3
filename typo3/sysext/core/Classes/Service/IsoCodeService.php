@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Core\Service;
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+
 /**
  * Helper functionality for dealing with ISO codes.
  *
@@ -247,12 +249,7 @@ class IsoCodeService
         return $isoCodes;
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

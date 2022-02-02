@@ -446,10 +446,7 @@ abstract class AbstractFormElement extends AbstractNode
         return (string)$label;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

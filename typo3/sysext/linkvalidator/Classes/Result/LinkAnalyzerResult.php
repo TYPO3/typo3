@@ -317,9 +317,6 @@ class LinkAnalyzerResult
         return $parentId;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

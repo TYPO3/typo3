@@ -1548,9 +1548,6 @@ class DataHandlerHook
         return GeneralUtility::makeInstance(RelationHandler::class);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

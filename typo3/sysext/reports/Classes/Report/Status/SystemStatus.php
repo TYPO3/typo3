@@ -81,10 +81,7 @@ class SystemStatus implements StatusProviderInterface
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_phpModules'), $value, $message, $severity);
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

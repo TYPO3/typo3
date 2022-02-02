@@ -101,9 +101,6 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
         $task->numberOfDays = (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'];
     }
 
-    /**
-     * @return LanguageService|null
-     */
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;

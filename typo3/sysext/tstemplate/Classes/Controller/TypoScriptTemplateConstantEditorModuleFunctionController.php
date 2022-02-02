@@ -178,9 +178,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         return $theOutput;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

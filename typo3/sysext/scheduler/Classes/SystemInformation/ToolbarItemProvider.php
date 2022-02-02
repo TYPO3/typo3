@@ -139,9 +139,6 @@ final class ToolbarItemProvider
         return $queryBuilder->executeQuery()->fetchOne() > 0;
     }
 
-    /**
-     * @return LanguageService
-     */
     private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

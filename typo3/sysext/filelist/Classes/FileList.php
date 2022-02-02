@@ -1412,12 +1412,7 @@ class FileList
         return (bool)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['fileDownload.']['enabled'] ?? true);
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -116,10 +116,7 @@ class FlexFormTabsContainer extends AbstractContainer
         return $resultArray;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

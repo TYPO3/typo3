@@ -213,11 +213,6 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
         $task->numberOfDays = (int)$submittedData['scheduler_ipAnonymization_numberOfDays'];
     }
 
-    /**
-     * Returns an instance of LanguageService
-     *
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

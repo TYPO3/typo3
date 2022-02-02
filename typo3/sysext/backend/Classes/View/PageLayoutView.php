@@ -1974,11 +1974,7 @@ class PageLayoutView implements LoggerAwareInterface
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 
-    /**
-     * Returns the language service
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

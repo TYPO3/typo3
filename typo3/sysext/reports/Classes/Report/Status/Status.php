@@ -238,10 +238,7 @@ class Status implements RequestAwareReportInterface
         return $statuses;
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

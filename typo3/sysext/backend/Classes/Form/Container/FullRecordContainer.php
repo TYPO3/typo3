@@ -84,10 +84,7 @@ class FullRecordContainer extends AbstractContainer
         return $this->nodeFactory->create($data)->render();
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

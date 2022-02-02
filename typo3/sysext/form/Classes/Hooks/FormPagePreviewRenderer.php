@@ -134,9 +134,6 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
             );
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

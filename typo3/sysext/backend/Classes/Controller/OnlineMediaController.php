@@ -154,10 +154,7 @@ class OnlineMediaController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

@@ -303,9 +303,6 @@ class ConstantConfigurationParser
         return $editableComments;
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

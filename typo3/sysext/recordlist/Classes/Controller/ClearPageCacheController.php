@@ -83,11 +83,6 @@ class ClearPageCacheController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
