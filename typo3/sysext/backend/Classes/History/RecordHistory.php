@@ -465,6 +465,7 @@ class RecordHistory
      */
     protected function sanitizeElementValue($value): string
     {
+        $value = (string)$value;
         if ($value !== '' && !preg_match('#^[a-z\d_.]+:[\d]+$#i', $value)) {
             return '';
         }
@@ -479,6 +480,7 @@ class RecordHistory
      */
     protected function sanitizeRollbackFieldsValue($value): string
     {
+        $value = (string)$value;
         if ($value !== '' && !preg_match('#^[a-z\d_.]+(:[\d]+(:[a-z\d_.]+)?)?$#i', $value)) {
             return '';
         }
