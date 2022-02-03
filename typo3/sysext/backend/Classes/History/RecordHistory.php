@@ -77,8 +77,8 @@ class RecordHistory
      */
     public function __construct($element = '', $rollbackFields = '')
     {
-        $this->element = $this->sanitizeElementValue($element);
-        $this->rollbackFields = $this->sanitizeRollbackFieldsValue($rollbackFields);
+        $this->element = $this->sanitizeElementValue((string)$element);
+        $this->rollbackFields = $this->sanitizeRollbackFieldsValue((string)$rollbackFields);
     }
 
     /**
@@ -463,7 +463,7 @@ class RecordHistory
      * @param string $value the value of the element value
      * @return string
      */
-    protected function sanitizeElementValue($value): string
+    protected function sanitizeElementValue(string $value): string
     {
         if ($value !== '' && !preg_match('#^[a-z\d_.]+:[\d]+$#i', $value)) {
             return '';
@@ -477,7 +477,7 @@ class RecordHistory
      * @param string $value
      * @return string
      */
-    protected function sanitizeRollbackFieldsValue($value): string
+    protected function sanitizeRollbackFieldsValue(string $value): string
     {
         if ($value !== '' && !preg_match('#^[a-z\d_.]+(:[\d]+(:[a-z\d_.]+)?)?$#i', $value)) {
             return '';
