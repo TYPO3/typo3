@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -66,7 +65,6 @@ class BackendController
 
     protected BackendModuleRepository $backendModuleRepository;
     protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
     protected Typo3Version $typo3Version;
     protected UriBuilder $uriBuilder;
     protected ModuleLoader $moduleLoader;
@@ -79,7 +77,6 @@ class BackendController
 
     public function __construct(
         Typo3Version $typo3Version,
-        IconFactory $iconFactory,
         UriBuilder $uriBuilder,
         PageRenderer $pageRenderer,
         ModuleLoader $moduleLoader,
@@ -89,7 +86,6 @@ class BackendController
         $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->backendModuleRepository = $backendModuleRepository;
-        $this->iconFactory = $iconFactory;
         $this->uriBuilder = $uriBuilder;
         $this->typo3Version = $typo3Version;
         $this->pageRenderer = $pageRenderer;
