@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -53,7 +52,6 @@ class BackendController
 
     public function __construct(
         protected Typo3Version $typo3Version,
-        protected IconFactory $iconFactory,
         protected UriBuilder $uriBuilder,
         protected PageRenderer $pageRenderer,
         protected ModuleLoader $moduleLoader,
