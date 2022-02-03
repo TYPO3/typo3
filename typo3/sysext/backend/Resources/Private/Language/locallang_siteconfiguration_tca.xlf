@@ -25,7 +25,7 @@
 				<source>Available Languages for this Site</source>
 			</trans-unit>
 			<trans-unit id="site.languages.description" resname="site.languages.description">
-				<source>Select an already exisiting language form another site or create a new one.</source>
+				<source>Select an already existing language from another site or create a new one.</source>
 			</trans-unit>
 			<trans-unit id="site.languages.new" resname="site.languages.new">
 				<source>New language</source>
