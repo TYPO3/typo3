@@ -510,7 +510,7 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
         // If current row is a translation select its parent
         $languageOfCurrentRecord = 0;
         if (($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null)
-            && $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? 0
+            && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? false)
         ) {
             $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
         }

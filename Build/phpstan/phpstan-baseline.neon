@@ -3576,11 +3576,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Session.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbBackend.php
-
-		-
 			message: "#^Argument of an invalid type TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\StaticOperandInterface supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php

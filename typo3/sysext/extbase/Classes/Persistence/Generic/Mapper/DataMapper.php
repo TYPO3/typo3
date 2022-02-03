@@ -191,7 +191,7 @@ class DataMapper
         $object->_setProperty('_localizedUid', (int)$row['uid']);
         $object->_setProperty('_versionedUid', (int)$row['uid']);
         if ($dataMap->getLanguageIdColumnName() !== null) {
-            $object->_setProperty('_languageUid', (int)$row[$dataMap->getLanguageIdColumnName()]);
+            $object->_setProperty('_languageUid', (int)($row[$dataMap->getLanguageIdColumnName()] ?? 0));
             if (isset($row['_LOCALIZED_UID'])) {
                 $object->_setProperty('_localizedUid', (int)$row['_LOCALIZED_UID']);
             }
