@@ -184,7 +184,7 @@ class DataMapper
         $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['uid']);
         $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['uid']);
         if ($dataMap->getLanguageIdColumnName() !== null) {
-            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)$row[$dataMap->getLanguageIdColumnName()]);
+            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)($row[$dataMap->getLanguageIdColumnName()] ?? 0));
             if (isset($row['_LOCALIZED_UID'])) {
                 $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
             }
