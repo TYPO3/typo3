@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Lowlevel\Command;
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -263,17 +264,21 @@ If you want to get more detailed information, use the --verbose option.')
                     $selectFields[] = 't3ver_wsid';
                 }
 
-                $existingRecords[$idx] = $queryBuilder
-                    ->select(...$selectFields)
-                    ->from($rec['ref_table'])
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($rec['ref_uid'], \PDO::PARAM_INT)
+                try {
+                    $existingRecords[$idx] = $queryBuilder
+                        ->select(...$selectFields)
+                        ->from($rec['ref_table'])
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($rec['ref_uid'], \PDO::PARAM_INT)
+                            )
                         )
-                    )
-                    ->executeQuery()
-                    ->fetchAssociative();
+                        ->executeQuery()
+                        ->fetchAssociative();
+                } catch (TableNotFoundException $tableNotFoundException) {
+                    // noop
+                }
             }
             // Compile info string for location of reference:
             $infoString = $this->formatReferenceIndexEntryToString($rec);
