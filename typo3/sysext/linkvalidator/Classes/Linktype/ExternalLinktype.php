@@ -89,18 +89,13 @@ class ExternalLinktype extends AbstractLinktype
     protected int $timeout = 0;
 
     /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
-
-    /**
      * @var array
      */
     protected $errorParams = [];
 
-    public function __construct(RequestFactory $requestFactory = null)
-    {
-        $this->requestFactory = $requestFactory ?: GeneralUtility::makeInstance(RequestFactory::class);
+    public function __construct(
+        protected readonly RequestFactory $requestFactory,
+    ) {
     }
 
     public function setAdditionalConfig(array $config): void

@@ -351,8 +351,9 @@ services:
     public: true
 
   # External dependencies
+
   GuzzleHttp\Client:
-    factory: ['TYPO3\CMS\Core\Http\Client\GuzzleClientFactory', 'getClient']
+    factory: ['@TYPO3\CMS\Core\Http\Client\GuzzleClientFactory', 'getClient']
   Masterminds\HTML5:
     public: true
     factory: ['TYPO3\CMS\Core\DependencyInjection\CommonFactory', 'createHtml5Parser']

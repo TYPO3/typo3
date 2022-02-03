@@ -23,6 +23,7 @@ use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -200,7 +201,7 @@ class ExternalLinktypeTest extends UnitTestCase
      */
     public function preprocessUrlReturnsCorrectString(string $inputUrl, $expectedResult): void
     {
-        $subject = new ExternalLinktype();
+        $subject = new ExternalLinktype(new RequestFactory(new GuzzleClientFactory()));
         $method = new \ReflectionMethod($subject, 'preprocessUrl');
         $method->setAccessible(true);
         $result = $method->invokeArgs($subject, [$inputUrl]);

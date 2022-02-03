@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -32,7 +33,7 @@ class RequestFactoryTest extends UnitTestCase
      */
     public function implementsPsr17FactoryInterface(): void
     {
-        $factory = new RequestFactory();
+        $factory = new RequestFactory(new GuzzleClientFactory());
         self::assertInstanceOf(RequestFactoryInterface::class, $factory);
     }
 
@@ -41,7 +42,7 @@ class RequestFactoryTest extends UnitTestCase
      */
     public function requestHasMethodSet(): void
     {
-        $factory = new RequestFactory();
+        $factory = new RequestFactory(new GuzzleClientFactory());
         $request = $factory->createRequest('POST', '/');
         self::assertSame('POST', $request->getMethod());
     }
@@ -51,7 +52,7 @@ class RequestFactoryTest extends UnitTestCase
      */
     public function requestFactoryHasAWritableEmptyBody(): void
     {
-        $factory = new RequestFactory();
+        $factory = new RequestFactory(new GuzzleClientFactory());
         $request = $factory->createRequest('GET', '/');
         $body = $request->getBody();
 
@@ -89,7 +90,7 @@ class RequestFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717272);
-        $factory = new RequestFactory();
+        $factory = new RequestFactory(new GuzzleClientFactory());
         $factory->createRequest('GET', $uri);
     }
 
@@ -100,7 +101,7 @@ class RequestFactoryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1436717275);
-        $factory = new RequestFactory();
+        $factory = new RequestFactory(new GuzzleClientFactory());
         $factory->createRequest('BOGUS-BODY', '/');
     }
 }

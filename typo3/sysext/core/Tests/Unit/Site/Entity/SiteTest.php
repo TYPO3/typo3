@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\Uri;
@@ -204,7 +205,7 @@ class SiteTest extends UnitTestCase
         $container = new Container();
         $container->set(Application::class, $app);
         $container->set(Features::class, new Features());
-        $container->set(RequestFactory::class, new RequestFactory());
+        $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
         $container->set(ResponseFactoryInterface::class, new ResponseFactory());
         $container->set(LinkService::class, $link);
         $container->set(SiteFinder::class, $siteFinder);

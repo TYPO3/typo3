@@ -15,6 +15,9 @@ services:
   TYPO3\CMS\Linkvalidator\LinkAnalyzer:
     public: true
 
+  TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype:
+    public: true
+
   TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository:
     public: true
 

@@ -60,6 +60,7 @@ class ServiceProvider extends AbstractServiceProvider
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
+            Http\Client\GuzzleClientFactory::class => [ static::class, 'getGuzzleClientFactory' ],
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Http\RequestFactory::class => [ static::class, 'getRequestFactory' ],
             Imaging\IconFactory::class => [ static::class, 'getIconFactory' ],
@@ -484,9 +485,16 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, TypoScript\TypoScriptService::class);
     }
 
+    public static function getGuzzleClientFactory(ContainerInterface $container): Http\Client\GuzzleClientFactory
+    {
+        return new Http\Client\GuzzleClientFactory();
+    }
+
     public static function getRequestFactory(ContainerInterface $container): Http\RequestFactory
     {
-        return new Http\RequestFactory();
+        return new Http\RequestFactory(
+            $container->get(Http\Client\GuzzleClientFactory::class)
+        );
     }
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver

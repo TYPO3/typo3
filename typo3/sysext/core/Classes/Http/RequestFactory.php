@@ -24,11 +24,15 @@ use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
- * Class RequestFactory to create Request objects
- * Returns PSR-7 Request objects
+ * Front-end for sending requests, using PSR-7.
  */
 class RequestFactory implements RequestFactoryInterface
 {
+    public function __construct(
+        private readonly GuzzleClientFactory $guzzleFactory,
+    ) {
+    }
+
     /**
      * Create a new request.
      *
@@ -42,7 +46,7 @@ class RequestFactory implements RequestFactoryInterface
     }
 
     /**
-     * Create a guzzle request object with our custom implementation
+     * Create a Guzzle request object with our custom implementation
      *
      * @param string $uri the URI to request
      * @param string $method the HTTP method (defaults to GET)
@@ -51,7 +55,6 @@ class RequestFactory implements RequestFactoryInterface
      */
     public function request(string $uri, string $method = 'GET', array $options = []): ResponseInterface
     {
-        $client = GuzzleClientFactory::getClient();
-        return $client->request($method, $uri, $options);
+        return $this->guzzleFactory->getClient()->request($method, $uri, $options);
     }
 }

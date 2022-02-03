@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Http\Client;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -31,7 +30,7 @@ class GuzzleClientFactory
      * Creates the client to do requests
      * @return ClientInterface
      */
-    public static function getClient(): ClientInterface
+    public function getClient(): ClientInterface
     {
         $httpOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
@@ -44,6 +43,6 @@ class GuzzleClientFactory
             $httpOptions['handler'] = $stack;
         }
 
-        return GeneralUtility::makeInstance(Client::class, $httpOptions);
+        return new Client($httpOptions);
     }
 }
