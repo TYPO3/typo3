@@ -1,12 +1,11 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="Main">
-
     <f:if condition="{menu}">
         <ul>
             <f:for each="{menu}" as="page">
                 <li>
-                    <a href="{page.link}"{f:if(condition: page.target, then: ' target="{page.target}"')} title="{page.title}">
+                    <a href="{page.link}"{f:if(condition: page.target, then: ' target="{page.target}"')}{f:if(condition: page.current, then: ' aria-current="page"')} title="{page.title}">
                         <span>{page.title}</span>
                     </a>
                 </li>
