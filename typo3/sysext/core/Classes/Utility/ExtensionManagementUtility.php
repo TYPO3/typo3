@@ -855,7 +855,7 @@ class ExtensionManagementUtility
             // remove default icon if an icon identifier is available
             if (!empty($moduleConfiguration['iconIdentifier'])
                 && !empty($moduleConfiguration['icon'])
-                && $moduleConfiguration['icon'] === 'EXT:extbase/Resources/Public/Icons/Extension.png'
+                && $moduleConfiguration['icon'] === 'EXT:extbase/Resources/Public/Icons/Extension.svg'
             ) {
                 unset($moduleConfiguration['icon']);
             }
