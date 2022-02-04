@@ -1,265 +1,273 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default"/>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-  <f:be.pageRenderer
-    includeRequireJsModules="{
-      0:'TYPO3/CMS/Styleguide/RenderNotifications'
-    }"
-  />
+<f:layout name="Module" />
 
-  <h1>
-    <f:translate key="flashMessages"/>
-  </h1>
+<f:section name="Content">
 
-  <div role="tabpanel">
-    <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
-      <li role="presentation" class="t3js-tabmenu-item">
-        <a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
-          Flash messages
-        </a>
-      </li>
-      <li role="presentation" class="t3js-tabmenu-item ">
-        <a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-bs-toggle="tab" aria-selected="false">
-          Notifications
-        </a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="tab-1">
-        <div class="panel panel-tab">
-          <div class="panel-body">
-            <h2>Flash messages</h2>
-            <f:flashMessages/>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+
+      <h1>
+        <f:translate key="flashMessages"/>
+      </h1>
+
+      <div role="tabpanel">
+        <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
+          <li role="presentation" class="t3js-tabmenu-item">
+            <a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
+              Flash messages
+            </a>
+          </li>
+          <li role="presentation" class="t3js-tabmenu-item ">
+            <a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-bs-toggle="tab" aria-selected="false">
+              Notifications
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tab-1">
+            <div class="panel panel-tab">
+              <div class="panel-body">
+                <h2>Flash messages</h2>
+                <f:flashMessages queueIdentifier="styleguide.demo" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="tab-2">
-        <div class="panel panel-tab">
-          <div class="panel-body">
-            <h2>Notification API</h2>
+          <div role="tabpanel" class="tab-pane" id="tab-2">
+            <div class="panel panel-tab">
+              <div class="panel-body">
+                <h2>Notification API</h2>
 
-            <h3>Default Notifications</h3>
-            <p>All notifications will disappear per default after 5 seconds, except the error message which sticky,
-              unless re-configured.</p>
-            <p>
-              <button class="btn btn-default" data-severity="notice" data-action="trigger-notification"
-                      data-title="Notice"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="0">
-                Notice Notification
-              </button>
-              <button class="btn btn-info" data-severity="info" data-action="trigger-notification" data-title="Info"
-                      data-message="Lor1em ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="0">
-                Info Notification
-              </button>
-              <button class="btn btn-success" data-severity="success" data-action="trigger-notification" data-title="OK"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="0">
-                Success Notification
-              </button>
-              <button class="btn btn-warning" data-severity="warning" data-action="trigger-notification"
-                      data-title="Warning"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="0">
-                Warning Notification
-              </button>
-              <button class="btn btn-danger" data-severity="error" data-action="trigger-notification" data-title="Error"
-                      data-message="Highway to the danger zone" data-duration="0" data-include-actions="0">
-                Danger Notification
-              </button>
-            </p>
-            <sg:code language="javascript" codeonly="true">
-              <script>
-                  require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                <h3>Default Notifications</h3>
+                <p>All notifications will disappear per default after 5 seconds, except the error message which sticky,
+                  unless re-configured.</p>
+                <p>
+                  <button class="btn btn-default" data-severity="notice" data-action="trigger-notification"
+                          data-title="Notice"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="0">
+                    Notice Notification
+                  </button>
+                  <button class="btn btn-info" data-severity="info" data-action="trigger-notification" data-title="Info"
+                          data-message="Lor1em ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="0">
+                    Info Notification
+                  </button>
+                  <button class="btn btn-success" data-severity="success" data-action="trigger-notification" data-title="OK"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="0">
+                    Success Notification
+                  </button>
+                  <button class="btn btn-warning" data-severity="warning" data-action="trigger-notification"
+                          data-title="Warning"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="0">
+                    Warning Notification
+                  </button>
+                  <button class="btn btn-danger" data-severity="error" data-action="trigger-notification" data-title="Error"
+                          data-message="Highway to the danger zone" data-duration="0" data-include-actions="0">
+                    Danger Notification
+                  </button>
+                </p>
+                <sg:code language="javascript" codeonly="true">
+                  <script>
+                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                          Notification.notice(
+                              'Notice',
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                          );
+                          Notification.info(
+                              'Info',
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                          );
+                          Notification.success(
+                              'OK',
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                          );
+                          Notification.warning(
+                              'Warning',
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                          );
+                          Notification.error(
+                              'Error',
+                              'Highway to the danger zone'
+                          );
+                      });
+                  </script>
+                </sg:code>
+
+                <h3>Action Buttons</h3>
+                <p>Notification can be enriched with action buttons to trigger two kinds of actions:</p>
+                <h4>Immediate Action</h4>
+                <p>
+                  Immediate actions are executed directly when the action button is triggered. The notification will dismiss
+                  immediately.
+                  This action type is suitable for action that don't need any processing time, e.g. calling a backend
+                  module.
+                </p>
+                <h4>Deferred Action</h4>
+                <p>
+                  Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls.
+                  The notifications will close as soon the action has ended <strong>successfully</strong>.
+                  When invoked, the button will show a spinner icon to indicate some activity.
+                </p>
+                <p>
+                  <button class="btn btn-default" data-severity="notice" data-action="trigger-notification"
+                          data-title="Notice"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="1">
+                    Notice Notification
+                  </button>
+                  <button class="btn btn-info" data-severity="info" data-action="trigger-notification" data-title="Info"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="1">
+                    Info Notification
+                  </button>
+                  <button class="btn btn-success" data-severity="success" data-action="trigger-notification" data-title="OK"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="1">
+                    Success Notification
+                  </button>
+                  <button class="btn btn-warning" data-severity="warning" data-action="trigger-notification"
+                          data-title="Warning"
+                          data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
+                          data-duration="5" data-include-actions="1">
+                    Warning Notification
+                  </button>
+                  <button class="btn btn-danger" data-severity="error" data-action="trigger-notification" data-title="Error"
+                          data-message="Highway to the danger zone" data-duration="0" data-include-actions="1">
+                    Danger Notification
+                  </button>
+                </p>
+                <sg:code language="javascript" codeonly="true">
+                  <script>
+                    require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
                       Notification.notice(
-                          'Notice',
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                        'Notice',
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                        5,
+                        [
+                          {
+                            label: 'Immediate action',
+                            action: new ImmediateAction(function () {
+                              alert('Immediate action done');
+                            }),
+                          },
+                          {
+                            label: 'Deferred action',
+                            action: new DeferredAction(function () {
+                              return new Promise(resolve => setTimeout(() => {
+                                alert('Deferred action done after 3000 ms');
+                                resolve();
+                              }, 3000));
+                            }),
+                          }
+                        ]
                       );
                       Notification.info(
-                          'Info',
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                        'Info',
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                        5,
+                        [
+                          {
+                            label: 'Immediate action',
+                            action: new ImmediateAction(function () {
+                              alert('Immediate action done');
+                            }),
+                          },
+                          {
+                            label: 'Deferred action',
+                            action: new DeferredAction(function () {
+                              return new Promise(resolve => setTimeout(() => {
+                                alert('Deferred action done after 3000 ms');
+                                resolve();
+                              }, 3000));
+                            }),
+                          }
+                        ]
                       );
                       Notification.success(
-                          'OK',
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                        'OK',
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                        5,
+                        [
+                          {
+                            label: 'Immediate action',
+                            action: new ImmediateAction(function () {
+                              alert('Immediate action done');
+                            }),
+                          },
+                          {
+                            label: 'Deferred action',
+                            action: new DeferredAction(function () {
+                              return new Promise(resolve => setTimeout(() => {
+                                alert('Deferred action done after 3000 ms');
+                                resolve();
+                              }, 3000));
+                            }),
+                          }
+                        ]
                       );
                       Notification.warning(
-                          'Warning',
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                        'Warning',
+                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                        5,
+                        [
+                          {
+                            label: 'Immediate action',
+                            action: new ImmediateAction(function () {
+                              alert('Immediate action done');
+                            }),
+                          },
+                          {
+                            label: 'Deferred action',
+                            action: new DeferredAction(function () {
+                              return new Promise(resolve => setTimeout(() => {
+                                alert('Deferred action done after 3000 ms');
+                                resolve();
+                              }, 3000));
+                            }),
+                          }
+                        ]
                       );
                       Notification.error(
-                          'Error',
-                          'Highway to the danger zone'
+                        'Error',
+                        'Highway to the danger zone',
+                        0,
+                        [
+                          {
+                            label: 'Immediate action',
+                            action: new ImmediateAction(function () {
+                              alert('Immediate action done');
+                            }),
+                          },
+                          {
+                            label: 'Deferred action',
+                            action: new DeferredAction(function () {
+                              return new Promise(resolve => setTimeout(() => {
+                                alert('Deferred action done after 3000 ms');
+                                resolve();
+                              }, 3000));
+                            }),
+                          }
+                        ]
                       );
-                  });
-              </script>
-            </sg:code>
-
-            <h3>Action Buttons</h3>
-            <p>Notification can be enriched with action buttons to trigger two kinds of actions:</p>
-            <h4>Immediate Action</h4>
-            <p>
-              Immediate actions are executed directly when the action button is triggered. The notification will dismiss
-              immediately.
-              This action type is suitable for action that don't need any processing time, e.g. calling a backend
-              module.
-            </p>
-            <h4>Deferred Action</h4>
-            <p>
-              Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls.
-              The notifications will close as soon the action has ended <strong>successfully</strong>.
-              When invoked, the button will show a spinner icon to indicate some activity.
-            </p>
-            <p>
-              <button class="btn btn-default" data-severity="notice" data-action="trigger-notification"
-                      data-title="Notice"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="1">
-                Notice Notification
-              </button>
-              <button class="btn btn-info" data-severity="info" data-action="trigger-notification" data-title="Info"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="1">
-                Info Notification
-              </button>
-              <button class="btn btn-success" data-severity="success" data-action="trigger-notification" data-title="OK"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="1">
-                Success Notification
-              </button>
-              <button class="btn btn-warning" data-severity="warning" data-action="trigger-notification"
-                      data-title="Warning"
-                      data-message="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
-                      data-duration="5" data-include-actions="1">
-                Warning Notification
-              </button>
-              <button class="btn btn-danger" data-severity="error" data-action="trigger-notification" data-title="Error"
-                      data-message="Highway to the danger zone" data-duration="0" data-include-actions="1">
-                Danger Notification
-              </button>
-            </p>
-            <sg:code language="javascript" codeonly="true">
-              <script>
-                require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                  Notification.notice(
-                    'Notice',
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                    5,
-                    [
-                      {
-                        label: 'Immediate action',
-                        action: new ImmediateAction(function () {
-                          alert('Immediate action done');
-                        }),
-                      },
-                      {
-                        label: 'Deferred action',
-                        action: new DeferredAction(function () {
-                          return new Promise(resolve => setTimeout(() => {
-                            alert('Deferred action done after 3000 ms');
-                            resolve();
-                          }, 3000));
-                        }),
-                      }
-                    ]
-                  );
-                  Notification.info(
-                    'Info',
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                    5,
-                    [
-                      {
-                        label: 'Immediate action',
-                        action: new ImmediateAction(function () {
-                          alert('Immediate action done');
-                        }),
-                      },
-                      {
-                        label: 'Deferred action',
-                        action: new DeferredAction(function () {
-                          return new Promise(resolve => setTimeout(() => {
-                            alert('Deferred action done after 3000 ms');
-                            resolve();
-                          }, 3000));
-                        }),
-                      }
-                    ]
-                  );
-                  Notification.success(
-                    'OK',
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                    5,
-                    [
-                      {
-                        label: 'Immediate action',
-                        action: new ImmediateAction(function () {
-                          alert('Immediate action done');
-                        }),
-                      },
-                      {
-                        label: 'Deferred action',
-                        action: new DeferredAction(function () {
-                          return new Promise(resolve => setTimeout(() => {
-                            alert('Deferred action done after 3000 ms');
-                            resolve();
-                          }, 3000));
-                        }),
-                      }
-                    ]
-                  );
-                  Notification.warning(
-                    'Warning',
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                    5,
-                    [
-                      {
-                        label: 'Immediate action',
-                        action: new ImmediateAction(function () {
-                          alert('Immediate action done');
-                        }),
-                      },
-                      {
-                        label: 'Deferred action',
-                        action: new DeferredAction(function () {
-                          return new Promise(resolve => setTimeout(() => {
-                            alert('Deferred action done after 3000 ms');
-                            resolve();
-                          }, 3000));
-                        }),
-                      }
-                    ]
-                  );
-                  Notification.error(
-                    'Error',
-                    'Highway to the danger zone',
-                    0,
-                    [
-                      {
-                        label: 'Immediate action',
-                        action: new ImmediateAction(function () {
-                          alert('Immediate action done');
-                        }),
-                      },
-                      {
-                        label: 'Deferred action',
-                        action: new DeferredAction(function () {
-                          return new Promise(resolve => setTimeout(() => {
-                            alert('Deferred action done after 3000 ms');
-                            resolve();
-                          }, 3000));
-                        }),
-                      }
-                    ]
-                  );
-                });
-              </script>
-            </sg:code>
+                    });
+                  </script>
+                </sg:code>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
 </f:section>
+
+</html>

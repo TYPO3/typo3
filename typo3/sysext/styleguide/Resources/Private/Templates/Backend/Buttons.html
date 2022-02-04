@@ -1,68 +1,80 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-{namespace co = TYPO3\CMS\Core\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
+<f:layout name="Module" />
 
-	<h1><f:translate key="buttons" /></h1>
+<f:section name="Content">
 
-	<!--
-		Form type buttons
-	-->
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="buttons" /></h1>
 
-	<h3>Form Button</h3>
+        <!--
+            Form type buttons
+        -->
 
-	<sg:code language="html">
-		<a href="#" class="btn btn-default">Default button</a>
-		<button class="btn btn-default">Button</button>
-		<input type="button" class="btn btn-default" value="Input button" />
-		<input type="submit" class="btn btn-default" value="Submit button" />
-	</sg:code>
+        <h3>Form Button</h3>
+
+        <sg:code language="html">
+            <a href="#" class="btn btn-default">Default button</a>
+            <button class="btn btn-default">Button</button>
+            <input type="button" class="btn btn-default" value="Input button" />
+            <input type="submit" class="btn btn-default" value="Submit button" />
+        </sg:code>
 
 
-	<!--
-		twbs Buttons
-	-->
+        <!--
+            twbs Buttons
+        -->
 
-	<h3>Button Types</h3>
+        <h3>Button Types</h3>
 
-	<sg:code language="html">
-		<a href="#" class="btn btn-default">Default button</a>
-		<a href="#" class="btn btn-primary">Primary button</a>
-		<a href="#" class="btn btn-success">Success button</a>
-		<a href="#" class="btn btn-warning">Warning button</a>
-		<a href="#" class="btn btn-danger">Danger button</a>
-		<a href="#" class="btn btn-link">Link button</a>
-	</sg:code>
+        <sg:code language="html">
+            <a href="#" class="btn btn-default">Default button</a>
+            <a href="#" class="btn btn-primary">Primary button</a>
+            <a href="#" class="btn btn-success">Success button</a>
+            <a href="#" class="btn btn-warning">Warning button</a>
+            <a href="#" class="btn btn-danger">Danger button</a>
+            <a href="#" class="btn btn-link">Link button</a>
+        </sg:code>
 
-	<!--
-		Buttons with icons
-	-->
+        <!--
+            Buttons with icons
+        -->
 
-	<h3>Buttons with icons</h3>
+        <h3>Buttons with icons</h3>
 
-	<sg:code language="html">
-		<a href="#" class="btn btn-default"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
-		<a href="#" class="btn btn-primary"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-		<a href="#" class="btn btn-success"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
-		<a href="#" class="btn btn-warning"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-		<a href="#" class="btn btn-danger"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-		<a href="#" class="btn btn-link"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
-	</sg:code>
+        <sg:code language="html">
+            <a href="#" class="btn btn-default"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
+            <a href="#" class="btn btn-primary"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
+            <a href="#" class="btn btn-success"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
+            <a href="#" class="btn btn-warning"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
+            <a href="#" class="btn btn-danger"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
+            <a href="#" class="btn btn-link"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
+        </sg:code>
 
-	<!--
-		Disabled buttons
-	-->
+        <!--
+            Disabled buttons
+        -->
 
-	<h3>Disabled buttons</h3>
+        <h3>Disabled buttons</h3>
 
-	<sg:code language="html">
-		<a href="#" class="btn btn-default disabled"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
-		<a href="#" class="btn btn-primary disabled"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
-		<a href="#" class="btn btn-success disabled"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
-		<a href="#" class="btn btn-warning disabled"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
-		<a href="#" class="btn btn-danger disabled"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
-		<a href="#" class="btn btn-link disabled"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
-	</sg:code>
+        <sg:code language="html">
+            <a href="#" class="btn btn-default disabled"><co:icon identifier="apps-filetree-folder-default" />  Default button</a>
+            <a href="#" class="btn btn-primary disabled"><co:icon identifier="apps-filetree-folder-default" />  Primary button</a>
+            <a href="#" class="btn btn-success disabled"><co:icon identifier="apps-filetree-folder-default" />  Success button</a>
+            <a href="#" class="btn btn-warning disabled"><co:icon identifier="apps-filetree-folder-default" />  Warning button</a>
+            <a href="#" class="btn btn-danger disabled"><co:icon identifier="apps-filetree-folder-default" />  Danger button</a>
+            <a href="#" class="btn btn-link disabled"><co:icon identifier="apps-filetree-folder-default" />  Link button</a>
+        </sg:code>
+    </div>
 
 </f:section>
+
+</html>

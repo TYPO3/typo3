@@ -1,50 +1,65 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-    <h1><f:translate key="infobox" /></h1>
+<f:layout name="Module" />
 
-    <p class="lead">Is a fluid based widget for the backend that can be inserted as view helper.</p>
+<f:section name="Content">
 
-    <h2>Optional icon</h2>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
 
-    <div class="example">
-        <f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
-        <f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
+        <h1><f:translate key="infobox" /></h1>
+
+        <p class="lead">Is a fluid based widget for the backend that can be inserted as view helper.</p>
+
+        <h2>Optional icon</h2>
+
+        <div class="example">
+            <f:be.infobox title="Infobox with default icon">Your infobox content</f:be.infobox>
+            <f:be.infobox title="Infobox without icon" disableIcon="TRUE">Your infobox content</f:be.infobox>
+        </div>
+
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox with default icon"&gt;Your infobox content&lt;/f:be.infobox&gt;
+    &lt;f:be.infobox title="Infobox without icon" disableIcon="TRUE"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
+        <h2>Levels</h2>
+
+        <h3>Notice</h3>
+        <div class="example">
+            <f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
+        </div>
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
+        <h3>Information</h3>
+        <div class="example">
+            <f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
+        </div>
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
+        <h3>Positive feedback</h3>
+        <div class="example">
+            <f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
+        </div>
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="0"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
+        <h3>Warning</h3>
+        <div class="example">
+            <f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
+        </div>
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
+        <h3>Error</h3>
+        <div class="example">
+            <f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
+        </div>
+        <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
+
     </div>
 
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Infobox with default icon"&gt;Your infobox content&lt;/f:be.infobox&gt;
-&lt;f:be.infobox title="Infobox without icon" disableIcon="TRUE"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
-
-    <h2>Levels</h2>
-
-    <h3>Notice</h3>
-    <div class="example">
-        <f:be.infobox title="Message title" state="-2">Your infobox content</f:be.infobox>
-    </div>
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
-
-    <h3>Information</h3>
-    <div class="example">
-        <f:be.infobox title="Message title" state="-1">Your infobox content</f:be.infobox>
-    </div>
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="-1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
-
-    <h3>Positive feedback</h3>
-    <div class="example">
-        <f:be.infobox title="Message title" state="0">Your infobox content</f:be.infobox>
-    </div>
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="0"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
-
-    <h3>Warning</h3>
-    <div class="example">
-        <f:be.infobox title="Message title" state="1">Your infobox content</f:be.infobox>
-    </div>
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="1"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
-
-    <h3>Error</h3>
-    <div class="example">
-        <f:be.infobox title="Message title" state="2">Your infobox content</f:be.infobox>
-    </div>
-    <div class="example code"><pre><code class="language-html">&lt;f:be.infobox title="Message title" state="2"&gt;Your infobox content&lt;/f:be.infobox&gt;</code></pre></div>
 </f:section>
+
+</html>

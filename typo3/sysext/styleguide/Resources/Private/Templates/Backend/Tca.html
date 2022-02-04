@@ -1,45 +1,57 @@
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-    <f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Styleguide/ProcessingIndicator'}" />
+<f:layout name="Module" />
 
-	<h1><f:translate key="tca" /></h1>
+<f:section name="Content">
 
-	<h2>TCA test records</h2>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="tca" /></h1>
 
-	<p class="lead">
-		This extension comes with a huge set of TCA records to show and test different combinations
-		of TCA possibilities. This module can be used to create a page tree with default records and
-		demo data.
-	</p>
+        <h2>TCA test records</h2>
 
-	<p>
-        <button data-href="{f:uri.action(action: 'tcaCreate')}" class="btn btn-primary{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action">
-            <i class="fa fa-plus fa-fw"></i>
-            <f:translate key="tcaCreateButton" />
-        </button>
+        <p class="lead">
+            This extension comes with a huge set of TCA records to show and test different combinations
+            of TCA possibilities. This module can be used to create a page tree with default records and
+            demo data.
+        </p>
 
-        <button data-href="{f:uri.action(action: 'tcaDelete')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')}  t3js-generator-action">
-            <i class="fa fa-trash fa-fw"></i>
-            <f:translate key="tcaDeleteButton" />
-        </button>
-	</p>
+        <p>
+            <button data-href="{f:uri.action(action: 'tcaCreate')}" class="btn btn-primary{f:if(condition: '{demoExists} = true', then: ' disabled')} t3js-generator-action">
+                <i class="fa fa-plus fa-fw"></i>
+                <f:translate key="tcaCreateButton" />
+            </button>
 
-    <h2>Create a frontend page tree including FE elements</h2>
+            <button data-href="{f:uri.action(action: 'tcaDelete')}" class="btn btn-danger{f:if(condition: '{demoExists} != true', then: ' disabled')}  t3js-generator-action">
+                <i class="fa fa-trash fa-fw"></i>
+                <f:translate key="tcaDeleteButton" />
+            </button>
+        </p>
 
-    <p class="lead">
-        This creates a frontend with a page for each content element a site configuration and files
-    </p>
+        <h2>Create a frontend page tree including FE elements</h2>
 
-    <p>
-        <button data-href="{f:uri.action(action: 'frontendCreate')}" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}  t3js-generator-action">
-            <i class="fa fa-plus fa-fw"></i>
-            <f:translate key="frontendCreateButton" />
-        </button>
+        <p class="lead">
+            This creates a frontend with a page for each content element a site configuration and files
+        </p>
 
-        <button data-href="{f:uri.action(action: 'frontendDelete')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}  t3js-generator-action">
-            <i class="fa fa-trash fa-fw"></i>
-            <f:translate key="frontendDeleteButton" />
-        </button>
-    </p>
+        <p>
+            <button data-href="{f:uri.action(action: 'frontendCreate')}" class="btn btn-primary{f:if(condition: '{demoFrontendExists} = true', then: ' disabled')}  t3js-generator-action">
+                <i class="fa fa-plus fa-fw"></i>
+                <f:translate key="frontendCreateButton" />
+            </button>
+
+            <button data-href="{f:uri.action(action: 'frontendDelete')}" class="btn btn-danger{f:if(condition: '{demoFrontendExists} != true', then: ' disabled')}  t3js-generator-action">
+                <i class="fa fa-trash fa-fw"></i>
+                <f:translate key="frontendDeleteButton" />
+            </button>
+        </p>
+    </div>
+
 </f:section>
+
+</html>

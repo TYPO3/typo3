@@ -1,143 +1,155 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
+<f:layout name="Module" />
 
-	<h1><f:translate key="tables" /></h1>
+<f:section name="Content">
 
-	<!--
-		Table
-	-->
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="tables" /></h1>
 
-	<h2>Standard Table</h2>
+        <!--
+            Table
+        -->
 
-	<p>Tables are used all over the TYPO3 CMS backend. Use tables to show tabular data. The action icons should always be in the last table row cell..</p>
+        <h2>Standard Table</h2>
 
-	<sg:code language="html">
-	<div class="panel panel-default">
-		<table class="table table-striped table-hover">
-			<thead>
-				<tr>
-					<th>Tree & Table Header</th>
-					<th>Table Header <a href="#">link</a> inline</th>
-					<th align="right" width="150">Table Header</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="nowrap">Record title on root row</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">1.900,50</td>
-				</tr>
-				<tr class="active">
-					<td class="nowrap">First row entry record</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">540,99</td>
-				</tr>
-				<tr class="success">
-					<td class="nowrap">
-						<b>Second row</b>
-						<small>not second class</small>
-					</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">9.300,20</td>
-				</tr>
-				<tr class="info">
-					<td class="nowrap">Magic third row</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">9.300,20</td>
-				</tr>
-				<tr class="warning">
-					<td class="nowrap">Record title always bold</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">0,00</td>
-				</tr>
-				<tr class="danger">
-					<td>Record title always bold</td>
-					<td><a href="#">Donec id elit</a></td>
-					<td align="right">0,00</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="4">
-						X.XXX,XX Entries
-					</td>
-				</tr>
-			</tfoot>
-		</table>
-	</div>
-	</sg:code>
+        <p>Tables are used all over the TYPO3 CMS backend. Use tables to show tabular data. The action icons should always be in the last table row cell..</p>
 
-	<h2>Table fit</h2>
+        <sg:code language="html">
+        <div class="panel panel-default">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Tree & Table Header</th>
+                        <th>Table Header <a href="#">link</a> inline</th>
+                        <th align="right" width="150">Table Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="nowrap">Record title on root row</td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">1.900,50</td>
+                    </tr>
+                    <tr class="active">
+                        <td class="nowrap">First row entry record</td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">540,99</td>
+                    </tr>
+                    <tr class="success">
+                        <td class="nowrap">
+                            <b>Second row</b>
+                            <small>not second class</small>
+                        </td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">9.300,20</td>
+                    </tr>
+                    <tr class="info">
+                        <td class="nowrap">Magic third row</td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">9.300,20</td>
+                    </tr>
+                    <tr class="warning">
+                        <td class="nowrap">Record title always bold</td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">0,00</td>
+                    </tr>
+                    <tr class="danger">
+                        <td>Record title always bold</td>
+                        <td><a href="#">Donec id elit</a></td>
+                        <td align="right">0,00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            X.XXX,XX Entries
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        </sg:code>
 
-	<p>Wide tables should be wrapped in table-fit DIV container wrap.</p>
+        <h2>Table fit</h2>
 
-	<sg:code language="html">
-	<div class="panel panel-default">
-		<div class="table-fit">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Head 1</th>
-						<th>Head 2</th>
-						<th>Head 3</th>
-						<th>Head 4</th>
-						<th>Head 5</th>
-						<th>Head 6</th>
-						<th>Head 7</th>
-						<th>Head 8</th>
-						<th>Head 9</th>
-						<th>Head 10</th>
-						<th>Head 11</th>
-						<th>Head 12</th>
-						<th>Head 13</th>
-						<th>Head 14</th>
-						<th>Head 15</th>
-						<th>Head 16</th>
-						<th>Head 17</th>
-						<th>Head 18</th>
-						<th>Head 19</th>
-						<th>Head 20</th>
-						<th>Head 21</th>
-						<th>Head 22</th>
-						<th>Head 23</th>
-						<th>Head 24</th>
-						<th>Head 25</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Body 1</td>
-						<td>Body 2</td>
-						<td>Body 3</td>
-						<td>Body 4</td>
-						<td>Body 5</td>
-						<td>Body 6</td>
-						<td>Body 7</td>
-						<td>Body 8</td>
-						<td>Body 9</td>
-						<td>Body 10</td>
-						<td>Body 11</td>
-						<td>Body 12</td>
-						<td>Body 13</td>
-						<td>Body 14</td>
-						<td>Body 15</td>
-						<td>Body 16</td>
-						<td>Body 17</td>
-						<td>Body 18</td>
-						<td>Body 19</td>
-						<td>Body 20</td>
-						<td>Body 21</td>
-						<td>Body 22</td>
-						<td>Body 23</td>
-						<td>Body 24</td>
-						<td>Body 25</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	</sg:code>
+        <p>Wide tables should be wrapped in table-fit DIV container wrap.</p>
+
+        <sg:code language="html">
+        <div class="panel panel-default">
+            <div class="table-fit">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Head 1</th>
+                            <th>Head 2</th>
+                            <th>Head 3</th>
+                            <th>Head 4</th>
+                            <th>Head 5</th>
+                            <th>Head 6</th>
+                            <th>Head 7</th>
+                            <th>Head 8</th>
+                            <th>Head 9</th>
+                            <th>Head 10</th>
+                            <th>Head 11</th>
+                            <th>Head 12</th>
+                            <th>Head 13</th>
+                            <th>Head 14</th>
+                            <th>Head 15</th>
+                            <th>Head 16</th>
+                            <th>Head 17</th>
+                            <th>Head 18</th>
+                            <th>Head 19</th>
+                            <th>Head 20</th>
+                            <th>Head 21</th>
+                            <th>Head 22</th>
+                            <th>Head 23</th>
+                            <th>Head 24</th>
+                            <th>Head 25</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Body 1</td>
+                            <td>Body 2</td>
+                            <td>Body 3</td>
+                            <td>Body 4</td>
+                            <td>Body 5</td>
+                            <td>Body 6</td>
+                            <td>Body 7</td>
+                            <td>Body 8</td>
+                            <td>Body 9</td>
+                            <td>Body 10</td>
+                            <td>Body 11</td>
+                            <td>Body 12</td>
+                            <td>Body 13</td>
+                            <td>Body 14</td>
+                            <td>Body 15</td>
+                            <td>Body 16</td>
+                            <td>Body 17</td>
+                            <td>Body 18</td>
+                            <td>Body 19</td>
+                            <td>Body 20</td>
+                            <td>Body 21</td>
+                            <td>Body 22</td>
+                            <td>Body 23</td>
+                            <td>Body 24</td>
+                            <td>Body 25</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </sg:code>
+    </div>
+
 </f:section>
+
+</html>

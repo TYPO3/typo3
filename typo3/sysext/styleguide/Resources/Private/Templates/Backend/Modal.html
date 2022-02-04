@@ -1,128 +1,144 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-    <h1><f:translate key="modal" /></h1>
+<f:layout name="Module" />
 
-    <script>
-        function openModal(title, message, type, btns){
-            title = title || 'Modal title';
-            message = message || 'Modal message';
-            type = type || 1;
-            btnClass = ['', 'btn-warning', 'btn-danger', 'btn-primary'];
-            btns = btns || [{
-                text: 'Cancel',
-                active: true,
-                btnClass: 'btn-default',
-                name: 'cancel'
-            },
-            {
-                text: 'OK',
-                btnClass: btnClass[type],
-                name: 'ok'
-            }];
-            top.TYPO3.Modal.confirm(
-                title,
-                message,
-                type,
-                btns
-            );
-        }
-    </script>
+<f:section name="Content">
 
-    <h2>Simple Modal</h2>
-
-    <div class="example">
-        <a href="javascript:openModal();" class="btn btn-primary">
-            Open simple modal
-        </a>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
     </div>
+    <div id="container-content">
 
-    <sg:code language="html" codeonly="true">
+        <h1><f:translate key="modal" /></h1>
+
         <script>
-            top.TYPO3.Modal.confirm();
-        </script>
-    </sg:code>
-
-    <h2>Customize title and message</h2>
-
-    <div class="example">
-        <a href="javascript:openModal('Modal with custom title', 'Modal with custom message');" class="btn btn-primary">
-            Open modal
-        </a>
-    </div>
-
-    <sg:code language="html" codeonly="true">
-        <script>
-            top.TYPO3.Modal.confirm(
-                'Modal with custom title',
-                'Modal with custom message'
-            ]);
-        </script>
-    </sg:code>
-
-    <h2>Change modal type</h2>
-
-    <div class="example">
-        <a href="javascript:openModal('Modal title', 'Modal message', 1);" class="btn btn-warning">
-            Open warning modal
-        </a>
-        <a href="javascript:openModal('Modal title', 'Modal message', 2);" class="btn btn-danger">
-            Open danger modal
-        </a>
-        <a href="javascript:openModal('Modal title', 'Modal message', 3);" class="btn btn-primary">
-            Open primary modal
-        </a>
-    </div>
-
-    <sg:code language="html" codeonly="true">
-        <script>
-            top.TYPO3.Modal.confirm(
-                'Modal title',
-                'Modal message',
-                1 // warning
-            ]);
-            top.TYPO3.Modal.confirm(
-                'Modal title',
-                'Modal message',
-                2 // danger
-            ]);
-            top.TYPO3.Modal.confirm(
-                'Modal title',
-                'Modal message',
-                3 // primary
-            ]);
-        </script>
-    </sg:code>
-
-    <h2>Customize submit buttons</h2>
-
-    <div class="example">
-        <a href="javascript:openModal('Modal title', 'Modal message', 2, [{text: 'Custom Cancel',active: true,btnClass: 'btn-default',name: 'cancel'},{text: 'May be',btnClass: 'btn-warning',name: 'may-be'},{text: 'OK',btnClass: 'btn-danger',name: 'ok'}]);" class="btn btn-primary">
-            Open modal
-        </a>
-    </div>
-
-    <sg:code language="html" codeonly="true">
-        <script>
-            top.TYPO3.Modal.confirm(
-                'Modal title',
-                'Modal message',
-                2, [{
-                    text: 'Custom Cancel',
+            function openModal(title, message, type, btns){
+                title = title || 'Modal title';
+                message = message || 'Modal message';
+                type = type || 1;
+                btnClass = ['', 'btn-warning', 'btn-danger', 'btn-primary'];
+                btns = btns || [{
+                    text: 'Cancel',
                     active: true,
                     btnClass: 'btn-default',
                     name: 'cancel'
-                },{
-                    text: 'May be',
-                    btnClass: 'btn-warning',
-                    name: 'may-be'
-                },{
+                },
+                {
                     text: 'OK',
-                    btnClass: 'btn-danger',
+                    btnClass: btnClass[type],
                     name: 'ok'
-                }]
-            ]);
+                }];
+                top.TYPO3.Modal.confirm(
+                    title,
+                    message,
+                    type,
+                    btns
+                );
+            }
         </script>
-    </sg:code>
+
+        <h2>Simple Modal</h2>
+
+        <div class="example">
+            <a href="javascript:openModal();" class="btn btn-primary">
+                Open simple modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <script>
+                top.TYPO3.Modal.confirm();
+            </script>
+        </sg:code>
+
+        <h2>Customize title and message</h2>
+
+        <div class="example">
+            <a href="javascript:openModal('Modal with custom title', 'Modal with custom message');" class="btn btn-primary">
+                Open modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <script>
+                top.TYPO3.Modal.confirm(
+                    'Modal with custom title',
+                    'Modal with custom message'
+                ]);
+            </script>
+        </sg:code>
+
+        <h2>Change modal type</h2>
+
+        <div class="example">
+            <a href="javascript:openModal('Modal title', 'Modal message', 1);" class="btn btn-warning">
+                Open warning modal
+            </a>
+            <a href="javascript:openModal('Modal title', 'Modal message', 2);" class="btn btn-danger">
+                Open danger modal
+            </a>
+            <a href="javascript:openModal('Modal title', 'Modal message', 3);" class="btn btn-primary">
+                Open primary modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <script>
+                top.TYPO3.Modal.confirm(
+                    'Modal title',
+                    'Modal message',
+                    1 // warning
+                ]);
+                top.TYPO3.Modal.confirm(
+                    'Modal title',
+                    'Modal message',
+                    2 // danger
+                ]);
+                top.TYPO3.Modal.confirm(
+                    'Modal title',
+                    'Modal message',
+                    3 // primary
+                ]);
+            </script>
+        </sg:code>
+
+        <h2>Customize submit buttons</h2>
+
+        <div class="example">
+            <a href="javascript:openModal('Modal title', 'Modal message', 2, [{text: 'Custom Cancel',active: true,btnClass: 'btn-default',name: 'cancel'},{text: 'May be',btnClass: 'btn-warning',name: 'may-be'},{text: 'OK',btnClass: 'btn-danger',name: 'ok'}]);" class="btn btn-primary">
+                Open modal
+            </a>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <script>
+                top.TYPO3.Modal.confirm(
+                    'Modal title',
+                    'Modal message',
+                    2, [{
+                        text: 'Custom Cancel',
+                        active: true,
+                        btnClass: 'btn-default',
+                        name: 'cancel'
+                    },{
+                        text: 'May be',
+                        btnClass: 'btn-warning',
+                        name: 'may-be'
+                    },{
+                        text: 'OK',
+                        btnClass: 'btn-danger',
+                        name: 'ok'
+                    }]
+                ]);
+            </script>
+        </sg:code>
+
+    </div>
+
 </f:section>
+
+</html>

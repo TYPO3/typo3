@@ -1,29 +1,40 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:layout name="Default" />
+<f:layout name="Module" />
 
-<f:section name="content">
-	<h1><f:translate key="backendStyleguide" /></h1>
-	<p class="lead">Presents supported styles for TYPO3 backend modules.</p>
-	<p>This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.<br />
-		Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.</p>
+<f:section name="Content">
 
-	<h2>Styleguide examples</h2>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="backendStyleguide" /></h1>
+        <p class="lead">Presents supported styles for TYPO3 backend modules.</p>
+        <p>This styleguide is work in progress. It is not part of and does not represent the official documentation, yet.<br />
+            Styleguide extension currently brings own css definitions that need to be integrated into TYPO3 CMS step by step.</p>
 
-	<ul class="fence list-unstyled">
-		<f:for each="{actions}" as="action">
-			<f:if condition="{action} != 'index'">
-				<li>
-					<f:link.action class="btn btn-default btn-block btn-lg" action="{action}">
-						<sg:initials text="{f:translate(key: '{action}')}"/>
-					</f:link.action>
-					<f:link.action action="{action}">
-						<f:translate key="{action}"/>
-					</f:link.action>
-				</li>
-			</f:if>
-		</f:for>
+        <h2>Styleguide examples</h2>
 
-	</ul>
+        <ul class="fence list-unstyled">
+            <f:for each="{actions}" as="action">
+                <f:if condition="{action} != 'index'">
+                    <li>
+                        <f:link.action class="btn btn-default btn-block btn-lg" action="{action}">
+                            <sg:initials text="{f:translate(key: '{action}')}"/>
+                        </f:link.action>
+                        <f:link.action action="{action}">
+                            <f:translate key="{action}"/>
+                        </f:link.action>
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+    </div>
 
 </f:section>
+
+</html>

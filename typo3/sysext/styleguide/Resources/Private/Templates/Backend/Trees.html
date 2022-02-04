@@ -1,51 +1,65 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-	<h1><f:translate key="trees" /></h1>
+<f:layout name="Module" />
 
-	<h2>Stand alone trees</h2>
-	<p>Structures and hierarchical content as trees.</p>
+<f:section name="Content">
 
-	<div class="nowrap">
-		<ul class="list-tree text-monospace">
-			<li>
-				<a class="list-tree-control list-tree-control-open" href="#">
-					<i class="fa"></i>
-				</a>
-				<span class="list-tree-group">
-					<span class="list-tree-label">Tree branch opened</span>
-				</span>
-				<ul class="list-tree text-monospace">
-					<li>
-						<span class="list-tree-group">
-							<span class="list-tree-label">DINK</span> = <span class="list-tree-value">1</span>
-						</span>
-					</li>
-					<li>
-						<a class="list-tree-control list-tree-control-closed" id="a7856cf" href="#">
-							<i class="fa"></i>
-						</a>
-						<span class="list-tree-group">
-							<span class="list-tree-label">Kids (not expandable)</span>
-						</span>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<a class="list-tree-control list-tree-control-closed" href="#">
-					<i class="fa"></i>
-				</a>
-				<span class="list-tree-group">
-					<span class="list-tree-label">Tree branch closed (not expandable)</span>
-				</span>
-			</li>
-		</ul>
-	</div>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="trees" /></h1>
 
-	<sg:code language="html" codeonly="true">
-		<ul class="list-tree text-monospace">
-			<li></li>
-		</ul>
-	</sg:code>
+        <h2>Stand alone trees</h2>
+        <p>Structures and hierarchical content as trees.</p>
+
+        <div class="nowrap">
+            <ul class="list-tree text-monospace">
+                <li>
+                    <a class="list-tree-control list-tree-control-open" href="#">
+                        <i class="fa"></i>
+                    </a>
+                    <span class="list-tree-group">
+                        <span class="list-tree-label">Tree branch opened</span>
+                    </span>
+                    <ul class="list-tree text-monospace">
+                        <li>
+                            <span class="list-tree-group">
+                                <span class="list-tree-label">DINK</span> = <span class="list-tree-value">1</span>
+                            </span>
+                        </li>
+                        <li>
+                            <a class="list-tree-control list-tree-control-closed" id="a7856cf" href="#">
+                                <i class="fa"></i>
+                            </a>
+                            <span class="list-tree-group">
+                                <span class="list-tree-label">Kids (not expandable)</span>
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="list-tree-control list-tree-control-closed" href="#">
+                        <i class="fa"></i>
+                    </a>
+                    <span class="list-tree-group">
+                        <span class="list-tree-label">Tree branch closed (not expandable)</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <sg:code language="html" codeonly="true">
+            <ul class="list-tree text-monospace">
+                <li></li>
+            </ul>
+        </sg:code>
+    </div>
+
 </f:section>
+
+</html>

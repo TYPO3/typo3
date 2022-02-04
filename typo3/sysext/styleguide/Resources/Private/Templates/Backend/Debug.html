@@ -1,49 +1,63 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-	<h1><f:translate key="debug" /></h1>
+<f:layout name="Module" />
 
-	<script>
-		var messages = [
-			'E = mc²',
-			'The mass of a body is a measure of its energy content.',
-			'If A is success in life, then A = x + y + z. Work is x, play is y and z is keeping your mouth shut.',
-			'Life is like riding a bicycle. To keep your balance you must keep moving.',
-			'Everything should be made as simple as possible, but no simpler.',
-			'The eternal mystery of the world is its comprehensibility.',
-			'Do not worry about your difficulties in Mathematics. I can assure you mine are still greater.',
-			'Why is it nobody understands me and everybody likes me?'
-		];
-		function styleguideRandomDebug() {
-			var index = Math.floor(Math.random() * messages.length);
-			top.TYPO3.DebugConsole.add(messages[index], 'Styleguide Message #' + (index + 1), 'Styleguide');
-		}
-	</script>
+<f:section name="Content">
 
-	<div class="example">
-		<a href="javascript:styleguideRandomDebug();" class="btn btn-primary">
-			<i class="fa fa-bomb fa-fw"></i>
-			Send debug message
-		</a>
-	</div>
-	<sg:code language="javascript" codeonly="true">
-		<script>
-			top.TYPO3.DebugConsole.add(message, header, group);
-		</script>
-	</sg:code>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
 
-	<div class="example">
-		<a href="javascript:top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');" class="btn btn-primary">
-			<i class="fa fa-bomb fa-fw"></i>
-			Send debug message to multiple groups
-		</a>
-	</div>
-	<sg:code language="javascript" codeonly="true">
-		<script>
-			top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');
-			top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');
-		</script>
-	</sg:code>
+        <h1><f:translate key="debug" /></h1>
+
+        <script>
+            var messages = [
+                'E = mc²',
+                'The mass of a body is a measure of its energy content.',
+                'If A is success in life, then A = x + y + z. Work is x, play is y and z is keeping your mouth shut.',
+                'Life is like riding a bicycle. To keep your balance you must keep moving.',
+                'Everything should be made as simple as possible, but no simpler.',
+                'The eternal mystery of the world is its comprehensibility.',
+                'Do not worry about your difficulties in Mathematics. I can assure you mine are still greater.',
+                'Why is it nobody understands me and everybody likes me?'
+            ];
+            function styleguideRandomDebug() {
+                var index = Math.floor(Math.random() * messages.length);
+                top.TYPO3.DebugConsole.add(messages[index], 'Styleguide Message #' + (index + 1), 'Styleguide');
+            }
+        </script>
+
+        <div class="example">
+            <a href="javascript:styleguideRandomDebug();" class="btn btn-primary">
+                <i class="fa fa-bomb fa-fw"></i>
+                Send debug message
+            </a>
+        </div>
+        <sg:code language="javascript" codeonly="true">
+            <script>
+                top.TYPO3.DebugConsole.add(message, header, group);
+            </script>
+        </sg:code>
+
+        <div class="example">
+            <a href="javascript:top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');" class="btn btn-primary">
+                <i class="fa fa-bomb fa-fw"></i>
+                Send debug message to multiple groups
+            </a>
+        </div>
+        <sg:code language="javascript" codeonly="true">
+            <script>
+                top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Test');
+                top.TYPO3.DebugConsole.add('Test message', 'Header', 'Group Foo');
+            </script>
+        </sg:code>
+    </div>
 
 </f:section>
+
+</html>

@@ -1,210 +1,224 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-	<h1><f:translate key="typography" /></h1>
+<f:layout name="Module" />
 
-	<!--
-        Headlines
-    -->
+<f:section name="Content">
 
-	<h2>Headlines</h2>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+        <h1><f:translate key="typography" /></h1>
 
-	<div class="example">
-		<h1>H1: Headline</h1>
-		<h2>H2: Headline</h2>
-		<h3>H3: Headline</h3>
-		<h4>H4: Headline</h4>
-	</div>
+        <!--
+            Headlines
+        -->
 
-	<div class="example">
-		<h1>H1: Headline <small>small description</small></h1>
-		<h2>H2: Headline <small>small description</small></h2>
-		<h3>H3: Headline <small>small description</small></h3>
-		<h4>H4: Headline <small>small description</small></h4>
-	</div>
+        <h2>Headlines</h2>
 
-	<div class="example">
-		<h1><a href="#">H1: Headline</a></h1>
-		<h2><a href="#">H2: Headline</a></h2>
-		<h3><a href="#">H3: Headline</a></h3>
-		<h4><a href="#">H4: Headline</a></h4>
-	</div>
+        <div class="example">
+            <h1>H1: Headline</h1>
+            <h2>H2: Headline</h2>
+            <h3>H3: Headline</h3>
+            <h4>H4: Headline</h4>
+        </div>
 
-	<!--
-        H1
-    -->
+        <div class="example">
+            <h1>H1: Headline <small>small description</small></h1>
+            <h2>H2: Headline <small>small description</small></h2>
+            <h3>H3: Headline <small>small description</small></h3>
+            <h4>H4: Headline <small>small description</small></h4>
+        </div>
 
-	<p>Module headline "H1" is the main headline within each backend module. Only added once to every backend page.</p>
+        <div class="example">
+            <h1><a href="#">H1: Headline</a></h1>
+            <h2><a href="#">H2: Headline</a></h2>
+            <h3><a href="#">H3: Headline</a></h3>
+            <h4><a href="#">H4: Headline</a></h4>
+        </div>
 
-	<sg:code language="html">
-		<h1>H1: Module Headline</h1>
-	</sg:code>
+        <!--
+            H1
+        -->
 
-	<!--
-        H2
-    -->
+        <p>Module headline "H1" is the main headline within each backend module. Only added once to every backend page.</p>
 
-	<p>Section headline "H2" is the headline for every section in backend modules. Place above each section and use several times..</p>
+        <sg:code language="html">
+            <h1>H1: Module Headline</h1>
+        </sg:code>
 
-	<sg:code language="html">
-		<h2>H2: Section Headline</h2>
-	</sg:code>
+        <!--
+            H2
+        -->
 
-	<!--
-        H3
-    -->
+        <p>Section headline "H2" is the headline for every section in backend modules. Place above each section and use several times..</p>
 
-	<p>Paragraph headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.</p>
+        <sg:code language="html">
+            <h2>H2: Section Headline</h2>
+        </sg:code>
 
-	<sg:code language="html">
-		<h3>H3: Paragraph Headline</h3>
-	</sg:code>
+        <!--
+            H3
+        -->
 
-	<!--
-        H4
-    -->
+        <p>Paragraph headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.</p>
 
-	<p>Moderate headline "H4" might be used to split off meta / footer information.</p>
+        <sg:code language="html">
+            <h3>H3: Paragraph Headline</h3>
+        </sg:code>
 
-	<sg:code language="html">
-		<h4>H4: Moderate headline</h4>
-	</sg:code>
+        <!--
+            H4
+        -->
 
-	<!--
-        Copy text
-    -->
+        <p>Moderate headline "H4" might be used to split off meta / footer information.</p>
 
-	<h2>Copy text</h2>
+        <sg:code language="html">
+            <h4>H4: Moderate headline</h4>
+        </sg:code>
 
-	<p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
+        <!--
+            Copy text
+        -->
 
-	<sg:code language="html">
-		<p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
-			vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
-			there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
-			<strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
-	</sg:code>
+        <h2>Copy text</h2>
 
-	<!--
-        Lead
-    -->
+        <p>Normal copy text in base font size 1em with a line-height of 1.5em.</p>
 
-	<h2>Lead copy</h2>
+        <sg:code language="html">
+            <p>This is a paragraph. Paragraphs are preset with a font size, line height and spacing to match the overall
+                vertical rhythm. To show what a paragraph looks like this needs a little more content so, did you know that
+                there are storms occurring on Jupiter that are larger than the Earth? Pretty cool. Wrap "strong" around type to
+                <strong>make it bold!</strong>. You can also "em" to <em>italicize your words</em>.</p>
+        </sg:code>
 
-	<p>The lead class can be added to paragraphs and other html content to highlight. Most used for the introduction text in backend modules.</p>
+        <!--
+            Lead
+        -->
 
-	<sg:code language="html">
-		<p class="lead">Introduction text or lead copy text box with highlights.</p>
-	</sg:code>
+        <h2>Lead copy</h2>
 
-	<!--
-        Emphasis
-    -->
+        <p>The lead class can be added to paragraphs and other html content to highlight. Most used for the introduction text in backend modules.</p>
 
-	<h2>Emphasis</h2>
+        <sg:code language="html">
+            <p class="lead">Introduction text or lead copy text box with highlights.</p>
+        </sg:code>
 
-	<!--
-        Bold
-    -->
+        <!--
+            Emphasis
+        -->
 
-	<h3>Bold</h3>
+        <h2>Emphasis</h2>
 
-	<p>Bold font-weight can be gained with strong and b html tag.</p>
+        <!--
+            Bold
+        -->
 
-	<sg:code language="html">
-		<p>This example includes <strong>bold text</strong> based on strong html tag.</p>
-		<p>This example includes <b>bold text</b> based on b htm tag.</p>
-	</sg:code>
+        <h3>Bold</h3>
 
-	<!--
-        Italic
-    -->
+        <p>Bold font-weight can be gained with strong and b html tag.</p>
 
-	<h3>Italic</h3>
+        <sg:code language="html">
+            <p>This example includes <strong>bold text</strong> based on strong html tag.</p>
+            <p>This example includes <b>bold text</b> based on b htm tag.</p>
+        </sg:code>
 
-	<p>Italic font style can be gained with em and i html tag.</p>
+        <!--
+            Italic
+        -->
 
-	<sg:code language="html">
-		<p>This example includes <em>italic text</em> based on em html tag.</p>
-		<p>This example includes <i>italic text</i>  based on i html tag.</p>
-	</sg:code>
+        <h3>Italic</h3>
 
-	<!--
-        Small text
-    -->
+        <p>Italic font style can be gained with em and i html tag.</p>
 
-	<h3>Small text</h3>
+        <sg:code language="html">
+            <p>This example includes <em>italic text</em> based on em html tag.</p>
+            <p>This example includes <i>italic text</i>  based on i html tag.</p>
+        </sg:code>
 
-	<p>Footer information, small notices can be wrapped in small text tag.</p>
+        <!--
+            Small text
+        -->
 
-	<sg:code language="html">
-		<small>Line of small text</small>
-	</sg:code>
+        <h3>Small text</h3>
 
-	<!--
-        Links
-    -->
+        <p>Footer information, small notices can be wrapped in small text tag.</p>
 
-	<h2>Links</h2>
+        <sg:code language="html">
+            <small>Line of small text</small>
+        </sg:code>
 
-	<p>Links are currently not decorated.</p>
+        <!--
+            Links
+        -->
 
-	<sg:code language="html">
-		<p>Copy text with embedded <a href="#">link text</a>.</p>
-	</sg:code>
+        <h2>Links</h2>
 
-	<!--
-        Lists
-    -->
+        <p>Links are currently not decorated.</p>
 
-	<h2>Lists</h2>
+        <sg:code language="html">
+            <p>Copy text with embedded <a href="#">link text</a>.</p>
+        </sg:code>
 
-	<p>Ordered and unordered lists are styled with disc bullet and decimal.</p>
+        <!--
+            Lists
+        -->
 
-	<sg:code language="html">
-		<ul>
-			<li>List item zero</li>
-			<li>First item of list</li>
-			<li>Last not least item</li>
-		</ul>
+        <h2>Lists</h2>
 
-		<ol>
-			<li>List item zero</li>
-			<li>First item of list</li>
-			<li>Last not least item</li>
-		</ol>
+        <p>Ordered and unordered lists are styled with disc bullet and decimal.</p>
 
-		<ul class="list-unstyled">
-			<li>List item zero</li>
-			<li>First item of list</li>
-			<li>Last not least item</li>
-		</ul>
+        <sg:code language="html">
+            <ul>
+                <li>List item zero</li>
+                <li>First item of list</li>
+                <li>Last not least item</li>
+            </ul>
 
-		<ol class="list-unstyled">
-			<li>List item zero</li>
-			<li>First item of list</li>
-			<li>Last not least item</li>
-		</ol>
-	</sg:code>
+            <ol>
+                <li>List item zero</li>
+                <li>First item of list</li>
+                <li>Last not least item</li>
+            </ol>
 
-	<!--
-        Colors
-    -->
+            <ul class="list-unstyled">
+                <li>List item zero</li>
+                <li>First item of list</li>
+                <li>Last not least item</li>
+            </ul>
 
-	<h2>Colors</h2>
+            <ol class="list-unstyled">
+                <li>List item zero</li>
+                <li>First item of list</li>
+                <li>Last not least item</li>
+            </ol>
+        </sg:code>
 
-	<p>CI color from the TYPO3 logo and constrast primary color.</p>
+        <!--
+            Colors
+        -->
+
+        <h2>Colors</h2>
+
+        <p>CI color from the TYPO3 logo and constrast primary color.</p>
 
 
-	<sg:code language="html">
-		<div class="clearfix">
-			<div class="bg-primary pull-left" style="padding: 20px;">Primary color</div>
-			<div class="bg-notice pull-left" style="padding: 20px;">Notice color</div>
-			<div class="bg-info pull-left" style="padding: 20px;">Info color</div>
-			<div class="bg-warning pull-left" style="padding: 20px;">Warning color</div>
-			<div class="bg-danger pull-left" style="padding: 20px;">Danger color</div>
-			<div class="bg-success pull-left" style="padding: 20px;">Success color</div>
-		</div>
-	</sg:code>
+        <sg:code language="html">
+            <div class="clearfix">
+                <div class="bg-primary pull-left" style="padding: 20px;">Primary color</div>
+                <div class="bg-notice pull-left" style="padding: 20px;">Notice color</div>
+                <div class="bg-info pull-left" style="padding: 20px;">Info color</div>
+                <div class="bg-warning pull-left" style="padding: 20px;">Warning color</div>
+                <div class="bg-danger pull-left" style="padding: 20px;">Danger color</div>
+                <div class="bg-success pull-left" style="padding: 20px;">Success color</div>
+            </div>
+        </sg:code>
+    </div>
+
 </f:section>
+
+</html>

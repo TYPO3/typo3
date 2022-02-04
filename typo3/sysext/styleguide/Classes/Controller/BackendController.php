@@ -23,56 +23,47 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Styleguide\Service\KauderwelschService;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Backend module for Styleguide
  */
 class BackendController extends ActionController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-
     protected ModuleTemplate $moduleTemplate;
-
-    /**
-     * @var string
-     */
-    protected $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
+    protected string $languageFilePrefix = 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:';
 
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly FlashMessageService $flashMessageService,
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
     }
 
     /**
      * Method is called before each action and sets up the doc header.
-     *
-     * @param ViewInterface $view
      */
-    protected function initializeView($view): void
+    protected function initializeView(): void
     {
+        $this->pageRenderer->addJsFile('EXT:styleguide/Resources/Public/JavaScript/prism.js');
+        $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
+
         // Hand over flash message queue to module template
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->moduleTemplate = $moduleTemplate;
-        $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
-        $this->view->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-styleguide');
+        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+        $this->moduleTemplate->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
             'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination', ]);
-        $this->view->assign('currentAction', $this->request->getControllerActionName());
+        $this->moduleTemplate->assign('currentAction', $this->request->getControllerActionName());
 
         // Shortcut button
         $arguments = $this->request->getArguments();
@@ -83,7 +74,7 @@ class BackendController extends ActionController
                 'action' => $arguments['action'],
             ];
         }
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setDisplayName(sprintf(
                 '%s - %s',
@@ -95,65 +86,45 @@ class BackendController extends ActionController
         $buttonBar->addButton($shortcutButton);
     }
 
-    /**
-     * Buttons
-     */
-    public function buttonsAction(): ResponseInterface
+    protected function buttonsAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Buttons');
     }
 
-    /**
-     * Index
-     */
-    public function indexAction(): ResponseInterface
+    protected function indexAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Index');
     }
 
-    /**
-     * Typography
-     */
-    public function typographyAction(): ResponseInterface
+    protected function typographyAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Typography');
     }
 
-    /**
-     * Trees
-     */
-    public function treesAction(): ResponseInterface
+    protected function treesAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Trees');
     }
 
-    /**
-     * Tables
-     */
-    public function tablesAction(): ResponseInterface
+    protected function tablesAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Tables');
     }
 
-    /**
-     * TCA
-     */
-    public function tcaAction(): ResponseInterface
+    protected function tcaAction(): ResponseInterface
     {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/ProcessingIndicator');
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
         $demoFrontendExists = count($finder->findUidsOfFrontendPages());
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'demoExists' => $demoExists,
             'demoFrontendExists' => $demoFrontendExists,
         ]);
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Tca');
     }
 
-    /**
-     * TCA create default data action
-     */
-    public function tcaCreateAction(): ResponseInterface
+    protected function tcaCreateAction(): ResponseInterface
     {
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($finder->findUidsOfStyleguideEntryPages())) {
@@ -166,7 +137,6 @@ class BackendController extends ActionController
         } else {
             $generator = GeneralUtility::makeInstance(Generator::class);
             $generator->create();
-
             // Tell something was done here
             $json = [
                 'title' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaCreateActionOkTitle', 'styleguide'),
@@ -178,10 +148,7 @@ class BackendController extends ActionController
         return new JsonResponse($json);
     }
 
-    /**
-     * TCA delete default data action
-     */
-    public function tcaDeleteAction(): ResponseInterface
+    protected function tcaDeleteAction(): ResponseInterface
     {
         $generator = GeneralUtility::makeInstance(Generator::class);
         $generator->delete();
@@ -191,79 +158,65 @@ class BackendController extends ActionController
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'tcaDeleteActionOkBody', 'styleguide'),
             'status' => AbstractMessage::OK,
         ];
-
         return new JsonResponse($json);
     }
 
-    /**
-     * Debug
-     */
-    public function debugAction(): ResponseInterface
+    protected function debugAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Debug');
     }
 
-    /**
-     * Icons
-     */
-    public function iconsAction(): ResponseInterface
+    protected function iconsAction(): ResponseInterface
     {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/FindIcons');
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
         $overlays = array_filter(
             $allIcons,
             function ($key) {
-                return strpos($key, 'overlay') === 0;
+                return str_starts_with($key, 'overlay');
             }
         );
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'allIcons' => $allIcons,
             'deprecatedIcons' => $iconRegistry->getDeprecatedIcons(),
             'overlays' => $overlays,
         ]);
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Icons');
     }
 
-    /**
-     * Infobox
-     */
-    public function infoboxAction(): ResponseInterface
+    protected function infoboxAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Infobox');
     }
 
-    /**
-     * FlashMessages
-     */
-    public function flashMessagesAction(): ResponseInterface
+    protected function flashMessagesAction(): ResponseInterface
     {
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/RenderNotifications');
         $loremIpsum = GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum();
-        $this->addFlashMessage($loremIpsum, 'Info - Title for Info message', FlashMessage::INFO, true);
-        $this->addFlashMessage($loremIpsum, 'Notice - Title for Notice message', FlashMessage::NOTICE, true);
-        $this->addFlashMessage($loremIpsum, 'Error - Title for Error message', FlashMessage::ERROR, true);
-        $this->addFlashMessage($loremIpsum, 'Ok - Title for OK message', FlashMessage::OK, true);
-        $this->addFlashMessage($loremIpsum, 'Warning - Title for Warning message', FlashMessage::WARNING, true);
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        // We're writing to an own queue here to position the messages within the body.
+        // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
+        // at some appropriate positions.
+        $flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier('styleguide.demo');
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Info - Title for Info message', AbstractMessage::INFO, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Notice - Title for Notice message', AbstractMessage::NOTICE, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Error - Title for Error message', AbstractMessage::ERROR, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Ok - Title for OK message', AbstractMessage::OK, true));
+        $flashMessageQueue->enqueue(GeneralUtility::makeInstance(FlashMessage::class, $loremIpsum, 'Warning - Title for Warning message', AbstractMessage::WARNING, true));
+        return $this->moduleTemplate->renderResponse('Backend/FlashMessages');
     }
 
-    /**
-     * Avatar
-     */
-    public function avatarAction(): ResponseInterface
+    protected function avatarAction(): ResponseInterface
     {
-        $this->view->assign(
+        $this->moduleTemplate->assign(
             'backendUser',
             $GLOBALS['BE_USER']->user
         );
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Avatar');
     }
 
-    /**
-     * Tabs
-     */
-    public function tabAction(): ResponseInterface
+    protected function tabAction(): ResponseInterface
     {
-        $module = GeneralUtility::makeInstance(ModuleTemplate::class);
         $menuItems = [
             0 => [
                 'label' => 'First label',
@@ -278,25 +231,22 @@ class BackendController extends ActionController
                 'content' => 'Third content',
             ],
         ];
-        $tabs = $module->getDynamicTabMenu($menuItems, 'ident');
-        $this->view->assign('tabs', $tabs);
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        $tabs = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'ident');
+        $this->moduleTemplate->assign('tabs', $tabs);
+        return $this->moduleTemplate->renderResponse('Backend/Tab');
     }
 
-    public function modalAction(): ResponseInterface
+    protected function modalAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Modal');
     }
 
-    public function accordionAction(): ResponseInterface
+    protected function accordionAction(): ResponseInterface
     {
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Accordion');
     }
 
-    /**
-     * @throws NoSuchArgumentException
-     */
-    public function paginationAction(int $page = 1): ResponseInterface
+    protected function paginationAction(int $page = 1): ResponseInterface
     {
         // Prepare example data for pagination list
         $itemsToBePaginated = [
@@ -353,7 +303,7 @@ class BackendController extends ActionController
         ];
 
         $paginator = new ArrayPaginator($itemsToBePaginated, $page, $itemsPerPage);
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'paginator' => $paginator,
             'pagination' => new SimplePagination($paginator),
             'userGroups' => $userGroupArray,
@@ -362,10 +312,10 @@ class BackendController extends ActionController
 
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/Pagination');
 
-        return $this->htmlResponse($this->moduleTemplate->setContent($this->view->render())->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Pagination');
     }
 
-    public function frontendCreateAction(): ResponseInterface
+    protected function frontendCreateAction(): ResponseInterface
     {
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
         if (count($recordFinder->findUidsOfFrontendPages())) {
@@ -384,21 +334,18 @@ class BackendController extends ActionController
                 'status' => AbstractMessage::OK,
             ];
         }
-
         return new JsonResponse($json);
     }
 
-    public function frontendDeleteAction(): ResponseInterface
+    protected function frontendDeleteAction(): ResponseInterface
     {
         $frontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
         $frontend->delete();
-
         $json = [
             'title' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkTitle', 'styleguide'),
             'body' => LocalizationUtility::translate($this->languageFilePrefix . 'frontendDeleteActionOkBody', 'styleguide'),
             'status' => AbstractMessage::OK,
         ];
-
         return new JsonResponse($json);
     }
 }

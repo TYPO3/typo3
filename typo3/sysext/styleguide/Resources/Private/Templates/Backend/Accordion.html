@@ -1,103 +1,117 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default"/>
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-    <h1>
-        <f:translate key="accordion"/>
-    </h1>
+<f:layout name="Module" />
 
-    <h3>Simple Accordion</h3>
+<f:section name="Content">
 
-    <sg:code language="html">
-        <div class="panel-group" id="accordionExampleSimple">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="simple-heading-panel1">
-                        <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel1" aria-expanded="false" aria-controls="simple-panel1">
-                            <span class="caret"></span>
-                            <strong>Panel 1</strong>
-                        </a>
-                    </h3>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
+
+        <h1><f:translate key="accordion"/></h1>
+
+        <h3>Simple Accordion</h3>
+
+        <sg:code language="html">
+            <div class="panel-group" id="accordionExampleSimple">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="simple-heading-panel1">
+                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel1" aria-expanded="false" aria-controls="simple-panel1">
+                                <span class="caret"></span>
+                                <strong>Panel 1</strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="simple-panel1" class="collapse" aria-labelledby="simple-heading-panel1">
+                        <div class="panel-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                        </div>
+                    </div>
                 </div>
-                <div id="simple-panel1" class="collapse" aria-labelledby="simple-heading-panel1">
-                    <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="simple-heading-panel2">
+                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel2" aria-expanded="false" aria-controls="simple-panel2">
+                                <span class="caret"></span>
+                                <strong>Panel 2</strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="simple-panel2" class="collapse" aria-labelledby="simple-heading-panel2">
+                        <div class="panel-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="simple-heading-panel2">
-                        <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#simple-panel2" aria-expanded="false" aria-controls="simple-panel2">
-                            <span class="caret"></span>
-                            <strong>Panel 2</strong>
-                        </a>
-                    </h3>
-                </div>
-                <div id="simple-panel2" class="collapse" aria-labelledby="simple-heading-panel2">
-                    <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-                    </div>
-                </div>
-            </div>
-        </div>
-    </sg:code>
+        </sg:code>
 
-    <h3>First panel open and only one open at a time</h3>
+        <h3>First panel open and only one open at a time</h3>
 
-    <sg:code language="html">
-        <div class="panel-group" id="accordionExampleAdvanced">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="heading-panel1">
-                        <a href="#" data-bs-toggle="collapse" data-bs-target="#panel1" aria-expanded="true" aria-controls="panel1">
-                            <span class="caret"></span>
-                            <strong>Panel 1</strong>
-                        </a>
-                    </h3>
-                </div>
-                <div id="panel1" class="accordion-collapse collapse show" aria-labelledby="heading-panel1" data-bs-parent="#accordionExampleAdvanced">
-                    <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+        <sg:code language="html">
+            <div class="panel-group" id="accordionExampleAdvanced">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="heading-panel1">
+                            <a href="#" data-bs-toggle="collapse" data-bs-target="#panel1" aria-expanded="true" aria-controls="panel1">
+                                <span class="caret"></span>
+                                <strong>Panel 1</strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="panel1" class="accordion-collapse collapse show" aria-labelledby="heading-panel1" data-bs-parent="#accordionExampleAdvanced">
+                        <div class="panel-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="heading-panel2">
-                        <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel2" aria-expanded="false" aria-controls="panel2">
-                            <span class="caret"></span>
-                            <strong>Panel 2</strong>
-                        </a>
-                    </h3>
-                </div>
-                <div id="panel2" class="accordion-collapse collapse" aria-labelledby="heading-panel2" data-bs-parent="#accordionExampleAdvanced">
-                    <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="heading-panel2">
+                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel2" aria-expanded="false" aria-controls="panel2">
+                                <span class="caret"></span>
+                                <strong>Panel 2</strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="panel2" class="accordion-collapse collapse" aria-labelledby="heading-panel2" data-bs-parent="#accordionExampleAdvanced">
+                        <div class="panel-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" id="heading-panel3">
-                        <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel3" aria-expanded="false" aria-controls="heading-panel3">
-                            <span class="caret"></span>
-                            <strong>Panel 3</strong>
-                        </a>
-                    </h3>
-                </div>
-                <div id="panel3" class="accordion-collapse collapse" aria-labelledby="heading-panel3" data-bs-parent="#accordionExampleAdvanced">
-                    <div class="panel-body">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-                        labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" id="heading-panel3">
+                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#panel3" aria-expanded="false" aria-controls="heading-panel3">
+                                <span class="caret"></span>
+                                <strong>Panel 3</strong>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="panel3" class="accordion-collapse collapse" aria-labelledby="heading-panel3" data-bs-parent="#accordionExampleAdvanced">
+                        <div class="panel-body">
+                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                            labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </sg:code>
+        </sg:code>
+
+    </div>
+
 </f:section>
+
+</html>

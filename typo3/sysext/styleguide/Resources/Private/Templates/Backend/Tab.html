@@ -1,55 +1,71 @@
-{namespace sg=TYPO3\CMS\Styleguide\ViewHelpers}
-<f:layout name="Default" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:section name="content">
-	<h1><f:translate key="tab" /></h1>
+<f:layout name="Module" />
 
-	<h2>Tab based on Module Template "dynamic tab"</h2>
+<f:section name="Content">
 
-	<f:format.raw>{tabs}</f:format.raw>
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
 
-	<sg:code language="html" codeonly="true">
-		<div role="tabpanel">
-			<ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
-				<li role="presentation" class="t3js-tabmenu-item">
-					<a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
-						First label
-					</a>
-				</li>
-				<li role="presentation" class="t3js-tabmenu-item ">
-					<a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-bs-toggle="tab" aria-selected="false">
-						Second label
-					</a>
-				</li>
-				<li role="presentation" class="t3js-tabmenu-item ">
-					<a href="#tab-3" title="" aria-controls="tab-3" role="tab" data-bs-toggle="tab" aria-selected="false">
-						Third label
-					</a>
-				</li>
-			</ul>
-			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane active" id="tab-1">
-					<div class="panel panel-tab">
-						<div class="panel-body">
-							First content
-						</div>
-					</div>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="tab-2">
-					<div class="panel panel-tab">
-						<div class="panel-body">
-							Second content
-						</div>
-					</div>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="tab-3">
-					<div class="panel panel-tab">
-						<div class="panel-body">
-							Third content
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</sg:code>
+        <h1><f:translate key="tab" /></h1>
+
+        <h2>Tab based on Module Template "dynamic tab"</h2>
+
+        <f:format.raw>{tabs}</f:format.raw>
+
+        <sg:code language="html" codeonly="true">
+            <div role="tabpanel">
+                <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
+                    <li role="presentation" class="t3js-tabmenu-item">
+                        <a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
+                            First label
+                        </a>
+                    </li>
+                    <li role="presentation" class="t3js-tabmenu-item ">
+                        <a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-bs-toggle="tab" aria-selected="false">
+                            Second label
+                        </a>
+                    </li>
+                    <li role="presentation" class="t3js-tabmenu-item ">
+                        <a href="#tab-3" title="" aria-controls="tab-3" role="tab" data-bs-toggle="tab" aria-selected="false">
+                            Third label
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tab-1">
+                        <div class="panel panel-tab">
+                            <div class="panel-body">
+                                First content
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-2">
+                        <div class="panel panel-tab">
+                            <div class="panel-body">
+                                Second content
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab-3">
+                        <div class="panel panel-tab">
+                            <div class="panel-body">
+                                Third content
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </sg:code>
+
+    </div>
+
 </f:section>
+
+</html>

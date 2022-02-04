@@ -1,355 +1,363 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
-			xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
-			data-namespace-typo3-fluid="true">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
-<f:layout name="Default" />
+<f:layout name="Module" />
 
-<f:section name="content">
+<f:section name="Content">
 
-	<f:be.pageRenderer includeRequireJsModules="{0: 'TYPO3/CMS/Styleguide/FindIcons'}" />
+    <div id="container-navigation">
+        <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
+    </div>
+    <div id="container-content">
 
-	<h1><f:translate key="icons" /></h1>
+        <h1><f:translate key="icons" /></h1>
 
-	<p class="lead">Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</p>
+        <p class="lead">Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</p>
 
-	<div>
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs t3js-tabs" role="tablist">
-			<li role="presentation">
-			    <a href="#iconprovider" aria-controls="iconprovider" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">IconProvider</a>
-            </li>
-			<li role="presentation">
-			    <a href="#all" aria-controls="all" role="tab" data-bs-toggle="tab" aria-selected="false">All Icons</a>
-            </li>
-            <f:if condition="{deprecatedIcons}">
+        <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs t3js-tabs" role="tablist">
                 <li role="presentation">
-                    <a href="#deprecated" aria-controls="deprecated" role="tab" data-bs-toggle="tab" aria-selected="false">Deprecated Icons</a>
+                    <a href="#iconprovider" aria-controls="iconprovider" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">IconProvider</a>
                 </li>
-            </f:if>
-			<li role="presentation">
-			    <a href="#overlays" aria-controls="overlays" role="tab" data-bs-toggle="tab" aria-selected="false">All Overlays</a>
-            </li>
-			<li role="presentation">
-			    <a href="#examples" aria-controls="examples" role="tab" data-bs-toggle="tab" aria-selected="false">Examples</a>
-			</li>
-		</ul>
+                <li role="presentation">
+                    <a href="#all" aria-controls="all" role="tab" data-bs-toggle="tab" aria-selected="false">All Icons</a>
+                </li>
+                <f:if condition="{deprecatedIcons}">
+                    <li role="presentation">
+                        <a href="#deprecated" aria-controls="deprecated" role="tab" data-bs-toggle="tab" aria-selected="false">Deprecated Icons</a>
+                    </li>
+                </f:if>
+                <li role="presentation">
+                    <a href="#overlays" aria-controls="overlays" role="tab" data-bs-toggle="tab" aria-selected="false">All Overlays</a>
+                </li>
+                <li role="presentation">
+                    <a href="#examples" aria-controls="examples" role="tab" data-bs-toggle="tab" aria-selected="false">Examples</a>
+                </li>
+            </ul>
 
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="iconprovider">
-				<table class="table table-bordered">
-					<tr>
-						<th></th>
-						<th>small</th>
-						<th>default</th>
-						<th>large</th>
-					</tr>
-					<tr>
-						<th colspan="4" style="background-color: #eee;">Default Icon</th>
-					</tr>
-					<tr>
-						<th>not registered icon</th>
-						<td><core:icon identifier="default-not-found" size="small" /></td>
-						<td><core:icon identifier="default-not-found" size="default" /></td>
-						<td><core:icon identifier="default-not-found" size="large" /></td>
-					</tr>
-					<tr>
-						<th colspan="4" style="background-color: #eee;">Provider Examples</th>
-					</tr>
-					<tr>
-						<th>provider-svg</th>
-						<td><core:icon identifier="provider-svg" size="small" /></td>
-						<td><core:icon identifier="provider-svg" size="default" /></td>
-						<td><core:icon identifier="provider-svg" size="large" /></td>
-					</tr>
-					<tr>
-						<th>provider-svg with overlay</th>
-						<td><core:icon identifier="provider-svg" size="small" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-svg" size="default" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-svg" size="large" overlay="overlay-readonly" /></td>
-					</tr>
-					<tr>
-						<th>provider-bitmap</th>
-						<td><core:icon identifier="provider-bitmap" size="small" /></td>
-						<td><core:icon identifier="provider-bitmap" size="default" /></td>
-						<td><core:icon identifier="provider-bitmap" size="large" /></td>
-					</tr>
-					<tr>
-						<th>provider-bitmap with overlay</th>
-						<td><core:icon identifier="provider-bitmap" size="small" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-bitmap" size="default" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-bitmap" size="large" overlay="overlay-readonly" /></td>
-					</tr>
-					<tr>
-						<th>provider-fontawesome</th>
-						<td><core:icon identifier="provider-fontawesome" size="small" /></td>
-						<td><core:icon identifier="provider-fontawesome" size="default" /></td>
-						<td><core:icon identifier="provider-fontawesome" size="large" /></td>
-					</tr>
-					<tr>
-						<th>provider-fontawesome-spinner</th>
-						<td><core:icon identifier="provider-fontawesome-spinner" size="small" /></td>
-						<td><core:icon identifier="provider-fontawesome-spinner" size="default" /></td>
-						<td><core:icon identifier="provider-fontawesome-spinner" size="large" /></td>
-					</tr>
-					<tr>
-						<th>provider-fontawesome with overlay</th>
-						<td><core:icon identifier="provider-fontawesome" size="small" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-fontawesome" size="default" overlay="overlay-readonly" /></td>
-						<td><core:icon identifier="provider-fontawesome" size="large" overlay="overlay-readonly" /></td>
-					</tr>
-				</table>
-			</div>
-			<div role="tabpanel" class="tab-pane form-section" id="all">
-				<div class="row">
-					<form>
-						<div class="form-group col-md-12">
-                            <label>Filter: </label><br/>
-							<div class="input-group">
-								<div class="btn-group t3js-filter-buttons">
-									<button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
-									<button class="btn btn-default" data-filter="type:font">Font</button>
-									<button class="btn btn-default" data-filter="type:vector">Vector</button>
-								</div>
-							</div>
-						</div>
-						<div class="form-group col-md-12">
-							<div class="input-group">
-								<div class="input-group-addon"><i class="fa fa-search"></i></div>
-								<input type="text" class="form-control input-lg" id="search-field" placeholder="Icon identifier">
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="row" id="t3js-filter-container">
-					<f:for each="{allIcons}" as="icon">
-						<div class="col-md-2 icon-container" data-icon-identifier="{icon}">
-							<span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
-							<span class="icon-container-label">{icon}</span>
-						</div>
-					</f:for>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="deprecated">
-				<div class="row">
-					<f:for each="{deprecatedIcons}" key="icon" as="alternativeIcon">
-						<div class="col-md-2 icon-container icon-deprecated-container" data-icon-identifier="{icon}">
-							<span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
-							<span class="icon-container-label"><i class="fa fa-arrow-circle-left"></i> {icon}</span>
-							<span class="icon-container-label"><i class="fa fa-arrow-circle-right"></i> {alternativeIcon}</span>
-						</div>
-					</f:for>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="overlays">
-				<table class="table table-bordered">
-					<tr>
-						<th></th>
-						<th>small</th>
-						<th>default</th>
-						<th>large</th>
-					</tr>
-					<f:for each="{overlays}" as="overlay">
-						<tr>
-							<th>{overlay}</th>
-							<td><core:icon identifier="apps-pagetree-page-default" size="small" overlay="{overlay}" /></td>
-							<td><core:icon identifier="apps-pagetree-page-default" size="default" overlay="{overlay}" /></td>
-							<td><core:icon identifier="apps-pagetree-page-default" size="large" overlay="{overlay}" /></td>
-						</tr>
-					</f:for>
-				</table>
-			</div>
-			<div role="tabpanel" class="tab-pane form-section" id="examples">
-				<h1>Buttons</h1>
-				<h3>Default</h3>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="default-not-found" size="small" />
-				</a>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="default-not-found" size="small" /> default-not-found [a]
-				</a>
-				<button class="btn btn-default">
-					<core:icon identifier="default-not-found" size="small" />
-				</button>
-				<button class="btn btn-default">
-					<core:icon identifier="default-not-found" size="small" /> default-not-found [button]
-				</button>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="iconprovider">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th></th>
+                            <th>small</th>
+                            <th>default</th>
+                            <th>large</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="background-color: #eee;">Default Icon</th>
+                        </tr>
+                        <tr>
+                            <th>not registered icon</th>
+                            <td><core:icon identifier="default-not-found" size="small" /></td>
+                            <td><core:icon identifier="default-not-found" size="default" /></td>
+                            <td><core:icon identifier="default-not-found" size="large" /></td>
+                        </tr>
+                        <tr>
+                            <th colspan="4" style="background-color: #eee;">Provider Examples</th>
+                        </tr>
+                        <tr>
+                            <th>provider-svg</th>
+                            <td><core:icon identifier="provider-svg" size="small" /></td>
+                            <td><core:icon identifier="provider-svg" size="default" /></td>
+                            <td><core:icon identifier="provider-svg" size="large" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-svg with overlay</th>
+                            <td><core:icon identifier="provider-svg" size="small" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-svg" size="default" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-svg" size="large" overlay="overlay-readonly" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-bitmap</th>
+                            <td><core:icon identifier="provider-bitmap" size="small" /></td>
+                            <td><core:icon identifier="provider-bitmap" size="default" /></td>
+                            <td><core:icon identifier="provider-bitmap" size="large" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-bitmap with overlay</th>
+                            <td><core:icon identifier="provider-bitmap" size="small" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-bitmap" size="default" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-bitmap" size="large" overlay="overlay-readonly" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-fontawesome</th>
+                            <td><core:icon identifier="provider-fontawesome" size="small" /></td>
+                            <td><core:icon identifier="provider-fontawesome" size="default" /></td>
+                            <td><core:icon identifier="provider-fontawesome" size="large" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-fontawesome-spinner</th>
+                            <td><core:icon identifier="provider-fontawesome-spinner" size="small" /></td>
+                            <td><core:icon identifier="provider-fontawesome-spinner" size="default" /></td>
+                            <td><core:icon identifier="provider-fontawesome-spinner" size="large" /></td>
+                        </tr>
+                        <tr>
+                            <th>provider-fontawesome with overlay</th>
+                            <td><core:icon identifier="provider-fontawesome" size="small" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-fontawesome" size="default" overlay="overlay-readonly" /></td>
+                            <td><core:icon identifier="provider-fontawesome" size="large" overlay="overlay-readonly" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane form-section" id="all">
+                    <div class="row">
+                        <form>
+                            <div class="form-group col-md-12">
+                                <label>Filter: </label><br/>
+                                <div class="input-group">
+                                    <div class="btn-group t3js-filter-buttons">
+                                        <button class="btn btn-default" data-filter="type:bitmap">Bitmap</button>
+                                        <button class="btn btn-default" data-filter="type:font">Font</button>
+                                        <button class="btn btn-default" data-filter="type:vector">Vector</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="form-control input-lg" id="search-field" placeholder="Icon identifier">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row" id="t3js-filter-container">
+                        <f:for each="{allIcons}" as="icon">
+                            <div class="col-md-2 icon-container" data-icon-identifier="{icon}">
+                                <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
+                                <span class="icon-container-label">{icon}</span>
+                            </div>
+                        </f:for>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="deprecated">
+                    <div class="row">
+                        <f:for each="{deprecatedIcons}" key="icon" as="alternativeIcon">
+                            <div class="col-md-2 icon-container icon-deprecated-container" data-icon-identifier="{icon}">
+                                <span class="icon-container-icon"><core:icon identifier="{icon}" size="large" /></span>
+                                <span class="icon-container-label"><i class="fa fa-arrow-circle-left"></i> {icon}</span>
+                                <span class="icon-container-label"><i class="fa fa-arrow-circle-right"></i> {alternativeIcon}</span>
+                            </div>
+                        </f:for>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="overlays">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th></th>
+                            <th>small</th>
+                            <th>default</th>
+                            <th>large</th>
+                        </tr>
+                        <f:for each="{overlays}" as="overlay">
+                            <tr>
+                                <th>{overlay}</th>
+                                <td><core:icon identifier="apps-pagetree-page-default" size="small" overlay="{overlay}" /></td>
+                                <td><core:icon identifier="apps-pagetree-page-default" size="default" overlay="{overlay}" /></td>
+                                <td><core:icon identifier="apps-pagetree-page-default" size="large" overlay="{overlay}" /></td>
+                            </tr>
+                        </f:for>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane form-section" id="examples">
+                    <h1>Buttons</h1>
+                    <h3>Default</h3>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="default-not-found" size="small" />
+                    </a>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="default-not-found" size="small" /> default-not-found [a]
+                    </a>
+                    <button class="btn btn-default">
+                        <core:icon identifier="default-not-found" size="small" />
+                    </button>
+                    <button class="btn btn-default">
+                        <core:icon identifier="default-not-found" size="small" /> default-not-found [button]
+                    </button>
 
-				<h3>Provider SVG</h3>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-svg" size="small" />
-				</a>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-svg" size="small" /> provider-svg [a]
-				</a>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-svg" size="small" />
-				</button>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-svg" size="small" /> provider-svg [button]
-				</button>
+                    <h3>Provider SVG</h3>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-svg" size="small" />
+                    </a>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-svg" size="small" /> provider-svg [a]
+                    </a>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-svg" size="small" />
+                    </button>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-svg" size="small" /> provider-svg [button]
+                    </button>
 
-				<h3>Provider Bitmap</h3>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-bitmap" size="small" />
-				</a>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [a]
-				</a>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-bitmap" size="small" />
-				</button>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [button]
-				</button>
+                    <h3>Provider Bitmap</h3>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-bitmap" size="small" />
+                    </a>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [a]
+                    </a>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-bitmap" size="small" />
+                    </button>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-bitmap" size="small" /> provider-bitmap [button]
+                    </button>
 
-				<h3>Provider FontAwesome</h3>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-fontawesome" size="small" />
-				</a>
-				<a class="btn btn-default" href="#">
-					<core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [a]
-				</a>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-fontawesome" size="small" />
-				</button>
-				<button class="btn btn-default">
-					<core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [button]
-				</button>
+                    <h3>Provider FontAwesome</h3>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-fontawesome" size="small" />
+                    </a>
+                    <a class="btn btn-default" href="#">
+                        <core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [a]
+                    </a>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-fontawesome" size="small" />
+                    </button>
+                    <button class="btn btn-default">
+                        <core:icon identifier="provider-fontawesome" size="small" /> provider-fontawesome [button]
+                    </button>
 
-				<hr>
+                    <hr>
 
-				<h2>IRRE</h2>
-				<div class="panel panel-default panel-condensed panel-collapsed">
-					<div class="panel-heading">
-						<div class="form-irre-header">
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<span class="caret"></span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<core:icon identifier="default-not-found" size="small" />
-							</div>
-							<div class="form-irre-header-cell form-irre-header-body">
-								<span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-1_label">
-									<span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">default-not-found</span>
-								</span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-								<div class="btn-group btn-group-sm" role="group">
-									<span class="btn btn-default">
-										<core:icon identifier="default-not-found" size="small" />
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="panel panel-default panel-condensed panel-collapsed">
-					<div class="panel-heading">
-						<div class="form-irre-header">
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<span class="caret"></span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<core:icon identifier="provider-svg" size="small" />
-							</div>
-							<div class="form-irre-header-cell form-irre-header-body">
-								<span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-2_label">
-									<span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-svg</span>
-								</span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-								<div class="btn-group btn-group-sm" role="group">
-									<span class="btn btn-default">
-										<core:icon identifier="provider-svg" size="small" />
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="panel panel-default panel-condensed panel-collapsed">
-					<div class="panel-heading">
-						<div class="form-irre-header">
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<span class="caret"></span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<core:icon identifier="provider-bitmap" size="small" />
-							</div>
-							<div class="form-irre-header-cell form-irre-header-body">
-								<span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-3_label">
-									<span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-bitmap</span>
-								</span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-								<div class="btn-group btn-group-sm" role="group">
-									<span class="btn btn-default">
-										<core:icon identifier="provider-bitmap" size="small" />
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="panel panel-default panel-condensed panel-collapsed">
-					<div class="panel-heading">
-						<div class="form-irre-header">
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<span class="caret"></span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-icon">
-								<core:icon identifier="provider-fontawesome" size="small" />
-							</div>
-							<div class="form-irre-header-cell form-irre-header-body">
-								<span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-4_label">
-									<span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-fontawesome</span>
-								</span>
-							</div>
-							<div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
-								<div class="btn-group btn-group-sm" role="group">
-									<span class="btn btn-default">
-										<core:icon identifier="provider-fontawesome" size="small" />
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                    <h2>IRRE</h2>
+                    <div class="panel panel-default panel-condensed panel-collapsed">
+                        <div class="panel-heading">
+                            <div class="form-irre-header">
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <span class="caret"></span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <core:icon identifier="default-not-found" size="small" />
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-body">
+                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-1_label">
+                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">default-not-found</span>
+                                    </span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <span class="btn btn-default">
+                                            <core:icon identifier="default-not-found" size="small" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default panel-condensed panel-collapsed">
+                        <div class="panel-heading">
+                            <div class="form-irre-header">
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <span class="caret"></span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <core:icon identifier="provider-svg" size="small" />
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-body">
+                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-2_label">
+                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-svg</span>
+                                    </span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <span class="btn btn-default">
+                                            <core:icon identifier="provider-svg" size="small" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default panel-condensed panel-collapsed">
+                        <div class="panel-heading">
+                            <div class="form-irre-header">
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <span class="caret"></span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <core:icon identifier="provider-bitmap" size="small" />
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-body">
+                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-3_label">
+                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-bitmap</span>
+                                    </span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <span class="btn btn-default">
+                                            <core:icon identifier="provider-bitmap" size="small" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default panel-condensed panel-collapsed">
+                        <div class="panel-heading">
+                            <div class="form-irre-header">
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <span class="caret"></span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-icon">
+                                    <core:icon identifier="provider-fontawesome" size="small" />
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-body">
+                                    <span id="data-1-tt_content-170-tx_bootstrappackage_carousel_item-tx_bootstrappackage_carousel_item-4_label">
+                                        <span title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin egestas.">provider-fontawesome</span>
+                                    </span>
+                                </div>
+                                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <span class="btn btn-default">
+                                            <core:icon identifier="provider-fontawesome" size="small" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-				<hr>
+                    <hr>
 
-				<h2>Registration</h2>
-				<h3>Register SVG</h3>
+                    <h2>Registration</h2>
+                    <h3>Register SVG</h3>
 
-				<sg:code language="php" codeonly="true">
-					$iconRegistry->registerIcon(
-						'provider-svg',
-						\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-						['source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg']
-					);
-				</sg:code>
+                    <sg:code language="php" codeonly="true">
+                        $iconRegistry->registerIcon(
+                            'provider-svg',
+                            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+                            ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_svg_icon.svg']
+                        );
+                    </sg:code>
 
-				<h3>Register Bitmap</h3>
-				<sg:code language="php" codeonly="true">
-					$iconRegistry->registerIcon(
-						'provider-bitmap',
-						\TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-						['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
-					);
-				</sg:code>
+                    <h3>Register Bitmap</h3>
+                    <sg:code language="php" codeonly="true">
+                        $iconRegistry->registerIcon(
+                            'provider-bitmap',
+                            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+                            ['source' => 'EXT:icon_api/Resources/Public/Icons/provider_bitmap_icon.png']
+                        );
+                    </sg:code>
 
-				<h3>Register FontAwesome</h3>
-				<sg:code language="php" codeonly="true">
-					$iconRegistry->registerIcon(
-						'provider-fontawesome',
-						\TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-						['name' => 'desktop']
-					);
-				</sg:code>
-			</div>
-		</div>
-	</div>
+                    <h3>Register FontAwesome</h3>
+                    <sg:code language="php" codeonly="true">
+                        $iconRegistry->registerIcon(
+                            'provider-fontawesome',
+                            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+                            ['name' => 'desktop']
+                        );
+                    </sg:code>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </f:section>
+
 </html>
