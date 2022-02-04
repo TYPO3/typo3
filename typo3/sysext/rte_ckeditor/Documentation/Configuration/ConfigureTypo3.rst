@@ -147,8 +147,8 @@ sitepackage extension, see :ref:`best-practice-sitepackage`.
 
 .. _config-typo3-tca:
 
-TCA
-===
+CKEditor related TCA configuration
+==================================
 
 The :abbr:`table configuration array (TCA)` is used to configure database fields and how they will behave in the
 backend when edited. It is for example used to define that ``tt_content.bodytext`` should be edited
