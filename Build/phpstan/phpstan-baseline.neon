@@ -11,11 +11,6 @@ parameters:
 			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/adminpanel/ext_localconf.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Backend/Shortcut/ShortcutRepository.php
@@ -341,6 +336,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
 
 		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Module/ModuleLoader.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Routing/PreviewUriBuilder.php
@@ -482,7 +482,7 @@ parameters:
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
+			count: 3
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
@@ -584,16 +584,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/ViewHelpers/Uri/NewRecordViewHelper.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/a/Configuration/SiteConfiguration/Overrides/site.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/Configuration/SiteConfiguration/Fixtures/Extensions/conf_overriding/b/Configuration/SiteConfiguration/Overrides/site.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Controller\\\\FormInlineAjaxController\\:\\:createAction\\(\\) invoked with 2 parameters, 1 required\\.$#"
@@ -741,16 +731,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Tests/UnitDeprecated/Utility/BackendUtilityTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/ext_tables.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/Controller/BackendLogController.php
@@ -764,11 +744,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/belog/Classes/ViewHelpers/Form/TranslateLabelSelectViewHelper.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/belog/ext_tables.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -794,11 +769,6 @@ parameters:
 			message: "#^Offset 'tables_select' on array\\{tables_select\\: array\\<string, mixed\\>, tables_modify\\: array\\<string, mixed\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/beuser/Classes/Service/UserInformationService.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/beuser/ext_tables.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$writeAttemptLog \\(bool\\) on left side of \\?\\? is not nullable\\.$#"
@@ -928,6 +898,11 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$pathArray of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\FlexForm\\\\FlexFormTools\\:\\:setArrayValueByPath\\(\\) expects string, array\\<int, string\\> given\\.$#"
 			count: 1
+			path: ../../typo3/sysext/core/Classes/Configuration/FlexForm/FlexFormTools.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Configuration/FlexForm/FlexFormTools.php
 
 		-
@@ -1511,7 +1486,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
 		-
-			message: "#^Offset 'type' on \\*NEVER\\* in empty\\(\\) always exists and is always falsy\\.$#"
+			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/LinkHandling/LinkService.php
 
@@ -1627,6 +1602,11 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$lang \\(string\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
+
+		-
+			message: "#^Result of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 
@@ -1972,6 +1952,11 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\AbstractEnhancer\\:\\:\\$variableProcessor \\(TYPO3\\\\CMS\\\\Core\\\\Routing\\\\Enhancer\\\\VariableProcessor\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/AbstractEnhancer.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Routing/Enhancer/AbstractEnhancer.php
 
@@ -2331,16 +2316,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/ViewHelpers/Form/TypoScriptConstantsViewHelper.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Configuration/TCA/Overrides/sys_file_storage.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\Mfa\\\\MfaProviderPropertyManager\\:\\:getProperty\\(\\) expects null, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Authentication/Mfa/MfaProviderPropertyManagerTest.php
@@ -2396,66 +2371,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Category/Collection/CategoryCollectionTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/Configuration/TCA/Overrides/sys_category.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/irre_tutorial/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_datahandler/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_fluid_email/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_csv/ext_tables.php
-
-		-
 			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, TYPO3\\\\TestIrreForeignfield\\\\Domain\\\\Model\\\\Content given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
@@ -2464,51 +2379,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$iterator of method TYPO3\\\\TestIrreForeignfield\\\\Controller\\\\AbstractController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Classes/Controller/ContentController.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_foreignfield/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mm/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributeinline/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnsymmetric/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_select_flex_mm/ext_tables.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Functional\\\\Fixtures\\\\Frontend\\\\PhpError\\:\\:\\$configuration is never read, only written\\.$#"
@@ -3256,34 +3126,9 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/UnitDeprecated/Database/SoftReferenceIndexTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/ext_tables.php
-
-		-
 			message: "#^Parameter \\#2 \\$widgets of method TYPO3\\\\CMS\\\\Dashboard\\\\DashboardRepository\\:\\:updateWidgetConfig\\(\\) expects array\\<string\\>, array\\<int\\|string, array\\<string, mixed\\>\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/Configuration/TCA/Overrides/be_groups.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/dashboard/ext_tables.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -3726,6 +3571,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
 		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
+
+		-
 			message: "#^Variable \\$object in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
@@ -3759,16 +3609,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Configuration/TCA/Overrides/fe_groups.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Configuration/TCA/Overrides/fe_users.php
 
 		-
 			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
@@ -3824,41 +3664,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Repository/PostRepository.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TCA/Overrides/fe_users.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/b/Configuration/TCA/Overrides/tx_a_domain_model_a.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/class_overriding/b/ext_localconf.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:isDispatched\\(\\)\\.$#"
@@ -4426,11 +4231,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/UnitDeprecated/Utility/ExtensionUtilityTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/ext_localconf.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getArgument\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Controller/AbstractModuleController.php
@@ -4631,16 +4431,6 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Utility/FileHandlingUtilityTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/ext_tables.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\:\\:fromSettings\\(\\) should return static\\(TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\) but returns TYPO3\\\\CMS\\\\FrontendLogin\\\\Configuration\\\\RedirectConfiguration\\.$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Classes/Configuration/RedirectConfiguration.php
@@ -4651,21 +4441,6 @@ parameters:
 			path: ../../typo3/sysext/felogin/Classes/Controller/PasswordRecoveryController.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Configuration/TCA/Overrides/fe_groups.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Configuration/TCA/Overrides/fe_users.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/Configuration/TCA/Overrides/tt_content.php
-
-		-
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$settings$#"
 			count: 1
 			path: ../../typo3/sysext/felogin/Tests/Unit/Redirect/RedirectHandlerTest.php
@@ -4674,11 +4449,6 @@ parameters:
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 4
 			path: ../../typo3/sysext/felogin/Tests/Unit/Validation/RedirectUrlValidatorTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/felogin/ext_localconf.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -4714,21 +4484,6 @@ parameters:
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filelist/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filelist/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filemetadata/Configuration/TCA/Overrides/sys_file_metadata.php
 
 		-
 			message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContext\\:\\:getParserConfiguration\\(\\)\\.$#"
@@ -4976,16 +4731,6 @@ parameters:
 			path: ../../typo3/sysext/fluid_styled_content/Classes/ViewHelpers/Link/ClickEnlargeViewHelper.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid_styled_content/ext_localconf.php
-
-		-
 			message: "#^Call to an undefined method Psr\\\\Http\\\\Message\\\\ServerRequestInterface\\:\\:getArguments\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Controller/FormEditorController.php
@@ -5136,6 +4881,11 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Hooks/DataStructureIdentifierHook.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/Hooks/DataStructureIdentifierHook.php
+
+		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\Renderable\\\\RenderableInterface\\:\\:getRootForm\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Hooks/FormElementHooks.php
@@ -5221,6 +4971,11 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Service/TranslationService.php
 
 		-
+			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/ViewHelpers/GridColumnClassAutoConfigurationViewHelper.php
+
+		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
@@ -5229,16 +4984,6 @@ parameters:
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Exception\\\\StopActionException is never thrown in the try block\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Configuration/TCA/Overrides/tt_content.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Functional\\\\Mvc\\\\Validation\\\\MimeTypeValidatorTest\\:\\:\\$tmp is never read, only written\\.$#"
@@ -5294,16 +5039,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Form\\\\ViewHelpers\\\\Form\\\\DatePickerViewHelper\\:\\:_call\\(\\)\\.$#"
 			count: 10
 			path: ../../typo3/sysext/form/Tests/Unit/ViewHelpers/Form/DatePickerViewHelperTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/ext_tables.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:\\$userTS \\(array\\) on left side of \\?\\? is not nullable\\.$#"
@@ -5571,23 +5306,18 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
-			message: "#^Offset 'table' on \\*NEVER\\* in empty\\(\\) always exists and is always falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
-			message: "#^Offset mixed does not exist on array\\{\\}\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
-
-		-
 			message: "#^Offset mixed on array\\{\\} on left side of \\?\\? does not exist\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
+
+		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 5
+			count: 4
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/RecordsContentObject.php
 
 		-
@@ -6056,22 +5786,17 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/Typolink/AbstractTypolinkBuilderTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/ext_tables.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FileInterface\\:\\:getUid\\(\\)\\.$#"
 			count: 2
 			path: ../../typo3/sysext/impexp/Classes/Import.php
 
 		-
 			message: "#^Empty array passed to foreach\\.$#"
+			count: 2
+			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
+
+		-
+			message: "#^Left side of && is always false\\.$#"
 			count: 2
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
 
@@ -6084,21 +5809,6 @@ parameters:
 			message: "#^Offset 'updatePath' does not exist on array\\{msg\\: string, ref\\: 'FILE', type\\: 'file', preCode\\: non\\-empty\\-string, title\\: string, showDiffContent\\: string\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/Configuration/TCA/Overrides/tt_content.php
 
 		-
 			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Core\\\\Http\\\\PropagateResponseException is never thrown in the try block\\.$#"
@@ -6119,16 +5829,6 @@ parameters:
 			message: "#^Variable \\$subject in PHPDoc tag @var does not match assigned variable \\$importMock\\.$#"
 			count: 1
 			path: ../../typo3/sysext/impexp/Tests/Functional/ImportTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/impexp/ext_tables.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:setArguments\\(\\)\\.$#"
@@ -6196,34 +5896,9 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/ext_tables.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/info/ext_tables.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
@@ -6303,6 +5978,11 @@ parameters:
 		-
 			message: "#^Property PhpParser\\\\Node\\\\Stmt\\\\ClassMethod\\:\\:\\$params \\(array\\<PhpParser\\\\Node\\\\Param\\>\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
+			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 2
 			path: ../../typo3/sysext/install/Classes/ExtensionScanner/Php/Matcher/InterfaceMethodChangedMatcher.php
 
 		-
@@ -6401,6 +6081,11 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
 		-
+			message: "#^Strict comparison using \\=\\=\\= between '' and 'excludeFromUpdates' will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
@@ -6456,16 +6141,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'PhpParser\\\\\\\\Node\\\\\\\\Expr\\\\\\\\StaticCall' and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
-
-		-
-			message: "#^Cannot access property \\$args on null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/GeneratorClassesResolverTest.php
-
-		-
 			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 4
 			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/AbstractNodeTest.php
@@ -6494,16 +6169,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Tests\\\\Unit\\\\Service\\\\SilentConfigurationUpgradeServiceTest\\:\\:\\$backupPackageManager \\(TYPO3\\\\CMS\\\\Core\\\\Package\\\\UnitTestPackageManager\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Tests/Unit/Service/SilentConfigurationUpgradeServiceTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/ext_tables.php
 
 		-
 			message: "#^Parameter \\#2 \\$recordUid of method TYPO3\\\\CMS\\\\Linkvalidator\\\\Repository\\\\BrokenLinkRepository\\:\\:removeBrokenLinksForRecord\\(\\) expects int, string given\\.$#"
@@ -6561,16 +6226,6 @@ parameters:
 			path: ../../typo3/sysext/linkvalidator/Tests/Unit/Linktype/ExternalLinktypeTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/ext_tables.php
-
-		-
 			message: "#^Binary operation \"\\>\\>\" between string and 1 results in an error\\.$#"
 			count: 2
 			path: ../../typo3/sysext/lowlevel/Classes/Database/QueryGenerator.php
@@ -6599,16 +6254,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/lowlevel/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/opendocs/ext_localconf.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:checkActionPermission\\(\\)\\.$#"
@@ -6736,16 +6381,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/ext_tables.php
-
-		-
 			message: "#^Parameter \\#2 \\$str of function explode expects string, SimpleXMLElement given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Functional/Recycle/AbstractRecycleTestCase.php
@@ -6769,16 +6404,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Recycler\\\\Task\\\\CleanerFieldProvider\\:\\:expects\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recycler/ext_tables.php
 
 		-
 			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\Redirects\\\\Command\\\\CheckIntegrityCommand\\:\\:REGISTRY_KEY through static\\:\\:\\.$#"
@@ -6816,39 +6441,14 @@ parameters:
 			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/ext_tables.php
-
-		-
 			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Menu\\\\MenuItem\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
 			count: 2
 			path: ../../typo3/sysext/reports/Classes/Controller/ReportController.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/reports/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/reports/ext_tables.php
-
-		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
 			count: 1
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/rte_ckeditor/ext_localconf.php
 
 		-
 			message: "#^Parameter \\#1 \\$uid of method TYPO3\\\\CMS\\\\Scheduler\\\\Scheduler\\:\\:fetchTask\\(\\) expects int, string given\\.$#"
@@ -6901,34 +6501,9 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Task/AbstractTask.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/Configuration/TCA/Overrides/sys_template.php
-
-		-
 			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
 			count: 2
 			path: ../../typo3/sysext/seo/Tests/Functional/XmlSitemap/XmlSitemapRecordsTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/seo/ext_localconf.php
 
 		-
 			message: "#^Elseif condition is always true\\.$#"
@@ -6946,11 +6521,6 @@ parameters:
 			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/setup/ext_tables.php
-
-		-
 			message: "#^Parameter \\#1 \\$pids of method TYPO3\\\\CMS\\\\SysNote\\\\Controller\\\\NoteController\\:\\:listAction\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/sys_note/Classes/Hook/InfoModuleHook.php
@@ -6961,64 +6531,9 @@ parameters:
 			path: ../../typo3/sysext/sys_note/Classes/Hook/PageHook.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/sys_note/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/sys_note/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/Configuration/TCA/Overrides/be_groups.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/Configuration/TCA/Overrides/be_users.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/Configuration/TCA/Overrides/pages.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/Configuration/TCA/Overrides/sys_template.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/Configuration/TCA/Overrides/tt_content.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/t3editor/ext_localconf.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/tstemplate/Classes/Controller/TypoScriptTemplateConstantEditorModuleFunctionController.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/tstemplate/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/tstemplate/ext_tables.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/viewpage/ext_tables.php
 
 		-
 			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
@@ -7201,22 +6716,7 @@ parameters:
 			path: ../../typo3/sysext/workspaces/Classes/Service/HistoryService.php
 
 		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Configuration/TCA/Overrides/be_users.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/ext_localconf.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/ext_tables.php
 
