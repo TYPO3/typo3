@@ -616,11 +616,6 @@ class ShortcutRepository
         return in_array($routeIdentifier, ['record_edit', 'file_edit', 'wizard_rte'], true);
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

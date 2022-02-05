@@ -680,10 +680,7 @@ class InlineRecordContainer extends AbstractContainer
         }
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

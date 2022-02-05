@@ -329,10 +329,7 @@ class SingleFieldContainer extends AbstractContainer
         return is_array($object) && !empty($object) && array_keys($object) !== range(0, count($object) - 1);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

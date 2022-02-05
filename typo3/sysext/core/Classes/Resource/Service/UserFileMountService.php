@@ -136,11 +136,6 @@ class UserFileMountService
         return $allFolderItems;
     }
 
-    /**
-     * Returns the BE USER Object
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

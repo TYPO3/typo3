@@ -98,10 +98,7 @@ class RecordsOverview extends AbstractNode
         return $result;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

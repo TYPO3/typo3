@@ -190,9 +190,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
         }
     }
 
-    /**
-     * @return BackendUserAuthentication|null
-     */
     protected function getBackendUser(): ?BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;

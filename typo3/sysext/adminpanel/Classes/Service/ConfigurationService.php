@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -99,11 +98,6 @@ class ConfigurationService implements SingletonInterface
         $beUser->writeUC();
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication|FrontendBackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

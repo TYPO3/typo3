@@ -418,9 +418,6 @@ class BackendUser extends AbstractEntity
         $this->lastLoginDateAndTime = $dateAndTime;
     }
 
-    /**
-     * Gets the currently logged in backend user
-     */
     public function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

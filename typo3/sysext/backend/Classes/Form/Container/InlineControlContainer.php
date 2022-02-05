@@ -689,10 +689,7 @@ class InlineControlContainer extends AbstractContainer
         return $flexFormParts;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

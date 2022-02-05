@@ -566,9 +566,6 @@ class BackendUserController extends ActionController
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

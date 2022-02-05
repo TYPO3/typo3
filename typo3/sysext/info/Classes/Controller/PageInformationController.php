@@ -612,9 +612,6 @@ class PageInformationController
         return $out;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

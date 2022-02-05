@@ -58,12 +58,7 @@ class AbstractWizardController
         return (bool)$hasAccess;
     }
 
-    /**
-     * Returns an instance of BackendUserAuthentication
-     *
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

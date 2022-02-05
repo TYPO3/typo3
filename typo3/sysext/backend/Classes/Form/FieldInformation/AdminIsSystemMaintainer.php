@@ -86,9 +86,6 @@ class AdminIsSystemMaintainer extends AbstractNode
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

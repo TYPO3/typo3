@@ -3364,6 +3364,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Returns the current BE user.
+     * @todo: Add PHP return type declaration and ensure, that classes using TSFE in BE/CLI context always instantiate
+     *        a FrontendBackendUserAuthentication object in $GLOBALS['BE_USER'].
      *
      * @return FrontendBackendUserAuthentication|null
      */

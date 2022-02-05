@@ -1755,10 +1755,7 @@ class PageLayoutView implements LoggerAwareInterface
         return GeneralUtility::makeInstance(BackendLayoutView::class);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

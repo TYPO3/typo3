@@ -3538,10 +3538,7 @@ class BackendUtility
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication|null
-     */
-    protected static function getBackendUserAuthentication()
+    protected static function getBackendUserAuthentication(): ?BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;
     }

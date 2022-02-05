@@ -410,9 +410,6 @@ class InfoPageTyposcriptConfigController
             . '</textarea>';
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

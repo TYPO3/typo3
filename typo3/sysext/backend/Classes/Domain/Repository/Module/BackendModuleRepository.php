@@ -367,9 +367,6 @@ class BackendModuleRepository implements SingletonInterface
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

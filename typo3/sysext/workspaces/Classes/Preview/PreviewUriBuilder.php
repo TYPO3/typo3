@@ -306,9 +306,6 @@ class PreviewUriBuilder
         return $languageOptions;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

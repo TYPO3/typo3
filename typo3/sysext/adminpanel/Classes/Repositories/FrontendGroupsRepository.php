@@ -101,11 +101,6 @@ class FrontendGroupsRepository
             ->fetchAllAssociative();
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return FrontendBackendUserAuthentication
-     */
     protected function getBackendUser(): FrontendBackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

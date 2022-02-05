@@ -69,10 +69,7 @@ class RichTextNodeResolver implements NodeResolverInterface
         return null;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

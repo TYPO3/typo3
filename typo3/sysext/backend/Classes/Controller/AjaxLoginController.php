@@ -149,10 +149,7 @@ class AjaxLoginController
         return $loginFormData['status'] === 'login' && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
     }
 
-    /**
-     * @return BackendUserAuthentication|null
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): ?BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;
     }

@@ -714,10 +714,6 @@ page.10.value = HELLO WORLD!
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * Returns the Backend User
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

@@ -156,10 +156,7 @@ class OuterWrapContainer extends AbstractContainer
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

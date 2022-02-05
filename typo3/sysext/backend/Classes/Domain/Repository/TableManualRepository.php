@@ -416,11 +416,6 @@ class TableManualRepository
         return false;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

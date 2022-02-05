@@ -420,9 +420,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

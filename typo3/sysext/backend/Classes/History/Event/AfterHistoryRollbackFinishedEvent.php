@@ -57,9 +57,9 @@ final class AfterHistoryRollbackFinishedEvent
      * @param array $diff
      * @param array $dataHandlerInput
      * @param RecordHistoryRollback $recordHistoryRollback
-     * @param BackendUserAuthentication $backendUserAuthentication
+     * @param BackendUserAuthentication|null $backendUserAuthentication
      */
-    public function __construct(string $rollbackFields, array $diff, array $dataHandlerInput, RecordHistoryRollback $recordHistoryRollback, BackendUserAuthentication $backendUserAuthentication = null)
+    public function __construct(string $rollbackFields, array $diff, array $dataHandlerInput, RecordHistoryRollback $recordHistoryRollback, ?BackendUserAuthentication $backendUserAuthentication = null)
     {
         $this->rollbackFields = $rollbackFields;
         $this->diff = $diff;

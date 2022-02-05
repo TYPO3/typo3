@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recycler\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -195,12 +196,7 @@ class RecyclerUtility
         return $TCA;
     }
 
-    /**
-     * Returns the BackendUser
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected static function getBackendUser()
+    protected static function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

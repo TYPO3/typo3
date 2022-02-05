@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\ModuleApi;
 
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -106,11 +105,6 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
         return $hasSettings;
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication|FrontendBackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

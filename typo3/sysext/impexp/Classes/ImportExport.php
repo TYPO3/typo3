@@ -1487,9 +1487,6 @@ abstract class ImportExport
         return empty($this->errorLog) === false;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

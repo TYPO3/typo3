@@ -23,8 +23,6 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
-use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -135,16 +133,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         );
 
         return $view->render();
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication|FrontendBackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

@@ -729,9 +729,6 @@ class PageTreeRepository
         return $groupedAndSortedPagesByPid;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

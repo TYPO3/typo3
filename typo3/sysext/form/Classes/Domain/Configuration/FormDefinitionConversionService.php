@@ -137,9 +137,6 @@ class FormDefinitionConversionService implements SingletonInterface
         return GeneralUtility::makeInstance(Random::class)->generateRandomHexString(64);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

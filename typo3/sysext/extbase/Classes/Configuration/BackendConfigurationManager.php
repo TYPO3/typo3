@@ -310,9 +310,6 @@ class BackendConfigurationManager extends AbstractConfigurationManager
         return $children;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

@@ -564,11 +564,6 @@ class DeletedRecords
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
-    /**
-     * Returns the BackendUser
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

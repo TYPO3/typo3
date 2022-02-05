@@ -721,9 +721,6 @@ class TreeController
         return GeneralUtility::makeInstance(WorkspaceService::class);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

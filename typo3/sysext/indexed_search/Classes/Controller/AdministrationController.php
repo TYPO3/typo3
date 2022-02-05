@@ -541,10 +541,7 @@ class AdministrationController extends ActionController
         return $this->redirect('statistic', null, null, ['depth' => $depth, 'mode' => $mode]);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

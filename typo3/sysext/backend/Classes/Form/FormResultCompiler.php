@@ -223,10 +223,7 @@ class FormResultCompiler
         return $html . LF . "\t" . GeneralUtility::wrapJS($out);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

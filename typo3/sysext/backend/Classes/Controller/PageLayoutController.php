@@ -1017,11 +1017,6 @@ class PageLayoutController
         return $GLOBALS['LANG'];
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

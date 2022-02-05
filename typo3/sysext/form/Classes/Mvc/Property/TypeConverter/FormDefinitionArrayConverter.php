@@ -200,9 +200,6 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         return GeneralUtility::makeInstance(FormDefinitionConversionService::class);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

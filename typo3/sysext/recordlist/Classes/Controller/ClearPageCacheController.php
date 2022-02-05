@@ -75,9 +75,6 @@ class ClearPageCacheController
         ]);
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

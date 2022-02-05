@@ -616,11 +616,6 @@ class FormManagerController extends AbstractBackendController
         return (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
     }
 
-    /**
-     * Returns the current BE user.
-     *
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];

@@ -57,7 +57,8 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['BE_USER'] = new \stdClass();
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
@@ -101,7 +102,8 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['BE_USER'] = new \stdClass();
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $GLOBALS['BE_USER']->uc = [
             'inlineView' => json_encode($inlineState),
         ];
