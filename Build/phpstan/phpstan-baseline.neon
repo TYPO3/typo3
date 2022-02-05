@@ -11,17 +11,7 @@ parameters:
 			path: ../../typo3/sysext/adminpanel/Classes/Modules/PreviewModule.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Backend/Shortcut/ShortcutRepository.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
 
@@ -119,11 +109,6 @@ parameters:
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/Wizard/AbstractWizardController.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between int and '' will always evaluate to false\\.$#"
@@ -457,11 +442,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between array and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
@@ -941,11 +921,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
 
 		-
-			message: "#^Result of && is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\State\\:\\:\\$states \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
@@ -969,11 +944,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between int\\|string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/PagePermissionAssembler.php
 
 		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
@@ -1942,11 +1912,6 @@ parameters:
 
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
-
-		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/DatabaseTreeDataProvider.php
 
