@@ -37,7 +37,7 @@ abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-sitemap.csv');
         $this->setUpFrontendRootPage(
             1,
             [

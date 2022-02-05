@@ -76,7 +76,7 @@ class DownloadRecordListTest extends FunctionalTestCase
      */
     public function downloadReturnsAListOfSubpages(): void
     {
-        $this->importDataSet('EXT:recordlist/Tests/Functional/RecordList/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $recordList = $this->getContainer()->get(DatabaseRecordList::class);
         $recordList->start(1, 'pages', 0);
         $recordList->setFields['pages'] = [

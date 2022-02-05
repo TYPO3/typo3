@@ -1,0 +1,4 @@
+"sys_news",,,,,,,,,
+,"uid","pid","tstamp","crdate","deleted","hidden","starttime","endtime","title"
+,1,11,1610246150,1610246150,0,0,0,0,"News item 1"
+,2,11,1610246150,1610246150,0,0,0,0,"News item 2"
