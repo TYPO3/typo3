@@ -3,9 +3,16 @@
     data-namespace-typo3-fluid="true"
 >
 
-<form action="{moduleUrlTceFile}" method="post" id="EditFileController" name="editform">
-    <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.pagetitle" /> {fileName}</h1>
-    <f:format.raw>{form}</f:format.raw>
-</form>
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <form action="{moduleUrlTceFile}" method="post" id="EditFileController" name="editform">
+        <h1><f:translate key="LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_edit.php.pagetitle" /> {fileName}</h1>
+        <f:format.raw>{hookContent}</f:format.raw>
+        <f:format.raw>{form}</f:format.raw>
+    </form>
+
+</f:section>
 
 </html>
