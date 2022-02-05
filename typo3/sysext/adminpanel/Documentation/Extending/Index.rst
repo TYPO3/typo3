@@ -6,8 +6,6 @@
 Extending the Admin Panel
 =========================
 
-With EXT:fe_edit you can extend the Admin Panel.
-
 Extension authors can write their own modules or add submodules to existing
 modules.
 
