@@ -96,7 +96,7 @@ class BackendUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array|null Returns the row if found, otherwise NULL
      */
-    public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true)
+    public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true): ?array
     {
         // Ensure we have a valid uid (not 0 and not NEWxxxx) and a valid TCA
         if ((int)$uid && !empty($GLOBALS['TCA'][$table])) {
@@ -138,7 +138,7 @@ class BackendUtility
      * @param string $where Additional WHERE clause, eg. ' AND some_field = 0'
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
-     * @return array Returns the row if found, otherwise nothing
+     * @return array|null Returns the row if found, else NULL
      */
     public static function getRecordWSOL(
         $table,
@@ -147,7 +147,7 @@ class BackendUtility
         $where = '',
         $useDeleteClause = true,
         $unsetMovePointers = false
-    ) {
+    ): ?array {
         if ($fields !== '*') {
             $internalFields = StringUtility::uniqueList($fields . ',uid,pid');
             $row = self::getRecord($table, $uid, $internalFields, $where, $useDeleteClause);
