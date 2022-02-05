@@ -22,193 +22,83 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
-use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Script Class for display up to 10 upload fields
+ * Upload files to a folder. Reachable from click-menu on folders.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class FileUploadController
 {
-    /**
-     * Set with the target path inputted in &target
-     *
-     * @var string
-     */
-    protected $target;
-
-    /**
-     * Return URL of list module.
-     *
-     * @var string
-     */
-    protected $returnUrl;
-
-    /**
-     * Accumulating content
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * The folder object which is the target directory for the upload
-     *
-     * @var File|Folder|null
-     */
-    protected $folderObject;
-
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected PageRenderer $pageRenderer,
-        protected UriBuilder $uriBuilder,
-        protected ResourceFactory $resourceFactory,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
     }
 
     /**
-     * Processes the request, currently everything is handled and put together via "renderContent()"
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
+     * Render upload form.
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $this->init($request);
-        $this->renderContent();
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Initialize
-     *
-     * @param ServerRequestInterface $request
-     * @throws InsufficientFolderAccessPermissionsException
-     */
-    protected function init(ServerRequestInterface $request): void
-    {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
+        $languageService = $this->getLanguageService();
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
 
-        // Initialize GPvars:
-        $this->target = $parsedBody['target'] ?? $queryParams['target'] ?? null;
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
-        if (!$this->returnUrl) {
-            $this->returnUrl = (string)$this->uriBuilder->buildUriFromRoute('file_list', [
-                'id' => rawurlencode($this->target),
-            ]);
-        }
-        // Create the folder object
-        if ($this->target) {
-            $this->folderObject = $this->resourceFactory->retrieveFileOrFolderObject($this->target);
-        }
-        if ($this->folderObject->getStorage()->getUid() === 0) {
-            throw new InsufficientFolderAccessPermissionsException(
-                'You are not allowed to access folders outside your storages',
-                1375889834
-            );
+        $targetFolderCombinedIdentifier = $parsedBody['target'] ?? $queryParams['target'] ?? '';
+        $folder = $this->resourceFactory->retrieveFileOrFolderObject($targetFolderCombinedIdentifier);
+
+        if (!$folder instanceof FolderInterface
+            || $folder->getStorage()->getUid() === 0
+        ) {
+            throw new InsufficientFolderAccessPermissionsException('You are not allowed to access folders outside your storages, or the folder couldn\'t be resolved', 1375889834);
         }
 
-        // Cleaning and checking target directory
-        if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
-            throw new \RuntimeException($title . ': ' . $message, 1294586843);
-        }
+        $returnUrl = GeneralUtility::sanitizeLocalUrl(
+            $parsedBody['returnUrl']
+            ?? $queryParams['returnUrl']
+            ?? (string)$this->uriBuilder->buildUriFromRoute('file_list', [
+                'id' => rawurlencode($targetFolderCombinedIdentifier),
+            ])
+        );
 
-        // Setting up the context sensitive menu
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+        $view->getDocHeaderComponent()->setMetaInformationForResource($folder);
+        $this->addDocHeaderButtons($view, $returnUrl);
+        $view->setTitle($languageService->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.pagetitle'));
 
-        // building pathInfo for metaInformation
-        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
+        $view->assignMultiple([
+            'returnUrl' => $returnUrl,
+            'folderCombinedIdentifier' => $targetFolderCombinedIdentifier,
+        ]);
+
+        return $view->renderResponse('File/UploadFile');
     }
 
-    /**
-     * Render module content
-     */
-    protected function renderContent(): void
+    protected function addDocHeaderButtons(ModuleTemplate $view, string $returnUrl)
     {
-        $lang = $this->getLanguageService();
+        $languageService = $this->getLanguageService();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
-        // set page title
-        $this->moduleTemplate->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.pagetitle'));
-
-        $pageContent = '<form action="'
-            . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('tce_file'))
-            . '" method="post" id="FileUploadController" name="editform" enctype="multipart/form-data">';
-        // Make page header:
-        $pageContent .= '<h1>' . $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.pagetitle') . '</h1>';
-        $pageContent .= $this->renderUploadFormInternal();
-
-        // Header Buttons
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
-        // csh button
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('xMOD_csh_corebe')
             ->setFieldName('file_upload');
         $buttonBar->addButton($cshButton);
 
-        // back button
-        if ($this->returnUrl) {
-            $backButton = $buttonBar->makeLinkButton()
-                ->setHref($this->returnUrl)
-                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-            $buttonBar->addButton($backButton);
-        }
-
-        $pageContent .= '</form>';
-        $this->content .= '<div>' . $pageContent . '</div>';
-        $this->moduleTemplate->setContent($this->content);
-    }
-
-    /**
-     * This function renders the upload form
-     *
-     * @return string The HTML form as a string, ready for outputting
-     */
-    protected function renderUploadFormInternal(): string
-    {
-        $content = '
-            <div class="form-group">
-                <input type="file" multiple="multiple" class="form-control" name="upload_1[]" />
-                <input type="hidden" name="data[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
-                <input type="hidden" name="data[upload][1][data]" value="1" />
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" />
-                <label class="form-check-label" for="overwriteExistingFiles"> ' . htmlspecialchars($this->getLanguageService()->getLL('overwriteExistingFiles')) . '</label>
-            </div>
-            <div>
-                <input type="hidden" name="data[upload][1][redirect]" value="' . $this->returnUrl . '" />
-                <input class="btn btn-primary" type="submit" value="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:file_upload.php.submit')) . '" />
-            </div>
-            <div class="callout callout-warning">
-              ' . htmlspecialchars($this->getLanguageService()->getLL('uploadMultipleFilesInfo')) . '
-            </div>
-        ';
-
-        return $content;
+        $backButton = $buttonBar->makeLinkButton()
+            ->setHref($returnUrl)
+            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+            ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+        $buttonBar->addButton($backButton);
     }
 
     protected function getLanguageService(): LanguageService
