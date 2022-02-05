@@ -74,7 +74,7 @@ class CanonicalGeneratorTest extends FunctionalTestCase
             ]
         );
 
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-canonical.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-canonical.csv');
         $this->setUpFrontendRootPage(
             1,
             ['typo3/sysext/seo/Tests/Functional/Fixtures/Canonical.typoscript']

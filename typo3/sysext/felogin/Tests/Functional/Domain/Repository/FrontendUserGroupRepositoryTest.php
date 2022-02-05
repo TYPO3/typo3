@@ -26,11 +26,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class FrontendUserGroupRepositoryTest extends FunctionalTestCase
 {
     protected $coreExtensionsToLoad = ['felogin'];
-
-    /**
-     * @var FrontendUserGroupRepository
-     */
-    protected $repository;
+    protected FrontendUserGroupRepository $repository;
 
     protected function setUp(): void
     {
@@ -47,7 +43,7 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
             new UserService()
         );
 
-        $this->importDataSet(__DIR__ . '/../../Fixtures/fe_groups.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/fe_groups.csv');
     }
 
     /**

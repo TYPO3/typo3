@@ -1,0 +1,6 @@
+"sys_category",,,,,,,,,,,,,
+,"uid","pid","tstamp","crdate","deleted","hidden","starttime","endtime","sorting","title","sys_language_uid","t3ver_wsid","t3ver_state"
+,1,11,1537545656,1537545656,0,0,0,0,256,"Examples",0,0,0
+,2,11,1537545656,1537545656,0,0,0,0,128,"News",0,0,0
+,3,11,1556568228,1556568228,0,0,0,0,64,"Alternative language",1,0,0
+,4,11,1610245386,1610245386,0,0,0,0,64,"Category in workspace",1,1,1

@@ -30,10 +30,10 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/sys_category.xml');
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/tt_content.xml');
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/sys_news.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages-sitemap.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_category.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_news.csv');
         $this->setUpFrontendRootPage(
             1,
             [
@@ -59,9 +59,6 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     /**
      * @test
      * @dataProvider sitemapEntriesToCheck
-     * @var string $host
-     * @var array $expectedEntries
-     * @var array $notExpectedEntries
      */
     public function checkIfSiteMapIndexContainsSysCategoryLinks(string $sitemap, string $host, array $expectedEntries, array $notExpectedEntries): void
     {
@@ -181,9 +178,6 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     /**
      * @test
      * @dataProvider additionalWhereTypoScriptConfigurationsToCheck
-     * @var string $sitemap
-     * @var array $expectedEntries
-     * @var array $notExpectedEntries
      */
     public function checkSiteMapWithDifferentTypoScriptConfigs(string $sitemap, array $expectedEntries, array $notExpectedEntries): void
     {

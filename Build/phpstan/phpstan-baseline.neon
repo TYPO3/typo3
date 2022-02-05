@@ -6381,11 +6381,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/Task/AbstractTask.php
 
 		-
-			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
-			count: 2
-			path: ../../typo3/sysext/seo/Tests/Functional/XmlSitemap/XmlSitemapRecordsTest.php
-
-		-
 			message: "#^Elseif condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
