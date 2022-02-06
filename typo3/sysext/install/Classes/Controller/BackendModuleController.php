@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -51,28 +50,17 @@ class BackendModuleController
     protected const FLAG_INSTALL_TOOL_PASSWORD = 2;
     protected const ALLOWED_ACTIONS = ['maintenance', 'settings', 'upgrade', 'environment'];
 
-    /**
-     * @var SessionService
-     */
-    protected $sessionService;
-
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ?SessionService $sessionService = null;
 
     public function __construct(
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
      * Shows and handles backend user session confirmation ("sudo mode") for
      * accessing a particular Install Tool controller (as given in `$targetController`).
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function backendUserConfirmationAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -97,8 +85,7 @@ class BackendModuleController
             $flagInvalidPassword = true;
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-install');
         $view->assignMultiple([
             'flagInvalidPassword' => $flagInvalidPassword,
             'flagInstallToolPassword' => $flagInstallToolPassword,
@@ -116,16 +103,12 @@ class BackendModuleController
             ]),
         ]);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->setModuleName('tools_tools' . $targetController);
-        $moduleTemplate->setContent($view->render('BackendModule/BackendUserConfirmation'));
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->setModuleName('tools_tools' . $targetController);
+        return $view->renderResponse('BackendModule/BackendUserConfirmation');
     }
 
     /**
      * Initialize session and redirect to "maintenance"
-     *
-     * @return ResponseInterface
      */
     public function maintenanceAction(): ResponseInterface
     {
@@ -135,8 +118,6 @@ class BackendModuleController
 
     /**
      * Initialize session and redirect to "settings"
-     *
-     * @return ResponseInterface
      */
     public function settingsAction(): ResponseInterface
     {
@@ -146,8 +127,6 @@ class BackendModuleController
 
     /**
      * Initialize session and redirect to "upgrade"
-     *
-     * @return ResponseInterface
      */
     public function upgradeAction(): ResponseInterface
     {
@@ -157,8 +136,6 @@ class BackendModuleController
 
     /**
      * Initialize session and redirect to "environment"
-     *
-     * @return ResponseInterface
      */
     public function environmentAction(): ResponseInterface
     {
@@ -168,9 +145,6 @@ class BackendModuleController
 
     /**
      * Creates redirect response to backend user confirmation (if required).
-     *
-     * @param string $targetController
-     * @return ResponseInterface|null
      */
     protected function getBackendUserConfirmationRedirect(string $targetController): ?ResponseInterface
     {
@@ -198,9 +172,6 @@ class BackendModuleController
     /**
      * Starts / updates the session and redirects to the Install Tool
      * with given action.
-     *
-     * @param string $controller
-     * @return ResponseInterface
      */
     protected function setAuthorizedAndRedirect(string $controller): ResponseInterface
     {
@@ -211,9 +182,6 @@ class BackendModuleController
 
     /**
      * Verifies that provided password matches Install Tool password.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool
      */
     protected function verifyInstallToolPassword(ServerRequestInterface $request): bool
     {
@@ -236,9 +204,6 @@ class BackendModuleController
     /**
      * Verifies that provided password is actually correct for current backend user
      * by stepping through authentication chain in `$GLOBALS['BE_USER]`.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool
      */
     protected function verifyBackendUserPassword(ServerRequestInterface $request): bool
     {
@@ -283,9 +248,6 @@ class BackendModuleController
     /**
      * Initializes authentication services to be used in a foreach loop
      *
-     * @param BackendUserAuthentication $backendUser
-     * @param array $loginData
-     * @param array $authInfo
      * @return \Generator<int, object>
      */
     protected function getAuthServices(BackendUserAuthentication $backendUser, array $loginData, array $authInfo): \Generator
@@ -310,8 +272,6 @@ class BackendModuleController
     /**
      * Install Tool modified sessions meta-data (handler, storage, name) which
      * conflicts with existing session that for instance.
-     *
-     * @return SessionService
      */
     protected function getSessionService(): SessionService
     {
