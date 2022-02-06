@@ -61,7 +61,7 @@ class CheckIntegrityCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->registry->remove(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY);
+        $this->registry->remove(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY);
 
         $list = [];
         $site = $input->getArgument('site') ?: null;
@@ -74,7 +74,7 @@ class CheckIntegrityCommand extends Command
                 $conflict['uri']
             ));
         }
-        $this->registry->set(static::REGISTRY_NAMESPACE, static::REGISTRY_KEY, $list);
+        $this->registry->set(self::REGISTRY_NAMESPACE, self::REGISTRY_KEY, $list);
         return 0;
     }
 }
