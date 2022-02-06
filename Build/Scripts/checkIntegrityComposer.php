@@ -130,6 +130,17 @@ class checkIntegrityComposer
                 ];
             }
         }
+        // Check root composer.json for missing non-sysext required packages
+        foreach ($extensionComposerJson['require'] ?? [] as $requireKey => $requireItem) {
+            if (!str_starts_with($requireKey, 'typo3/cms-') && !isset($this->rootComposerJson['require'][$requireKey])) {
+                $this->testResults['repo-root'][] = [
+                    'type' => 'require',
+                    'dependency' => $requireKey . ' by ' . $extensionKey,
+                    'shouldBe' => $requireItem,
+                    'actuallyIs' => 'missing',
+                ];
+            }
+        }
     }
 
     /**
