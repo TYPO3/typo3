@@ -5366,11 +5366,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/Browser/FileBrowser.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/Controller/AbstractLinkBrowserController.php
-
-		-
 			message: "#^Parameter \\#1 \\$cacheCmd of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:clear_cacheCmd\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\> given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/Controller/ClearPageCacheController.php

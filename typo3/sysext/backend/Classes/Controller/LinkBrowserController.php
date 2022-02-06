@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
@@ -29,14 +32,68 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
  */
 class LinkBrowserController extends AbstractLinkBrowserController
 {
+    public function __construct(
+        protected readonly LinkService $linkService,
+        protected readonly TypoLinkCodecService $typoLinkCodecService,
+    ) {
+    }
+
+    public function getConfiguration(): array
+    {
+        $tsConfig = BackendUtility::getPagesTSconfig($this->getCurrentPageId());
+        return $tsConfig['TCEMAIN.']['linkHandler.']['page.']['configuration.'] ?? [];
+    }
+
     /**
-     * Initialize $this->currentLinkParts
+     * Encode a typolink via ajax.
+     * This avoids implementing the encoding functionality again in JS for the browser.
      */
-    protected function initCurrentUrl()
+    public function encodeTypoLink(ServerRequestInterface $request): ResponseInterface
+    {
+        $typoLinkParts = $request->getQueryParams();
+        if (isset($typoLinkParts['params'])) {
+            $typoLinkParts['additionalParams'] = $typoLinkParts['params'];
+            unset($typoLinkParts['params']);
+        }
+        $typoLink = $this->typoLinkCodecService->encode($typoLinkParts);
+        return new JsonResponse(['typoLink' => $typoLink]);
+    }
+
+    protected function initDocumentTemplate(): void
+    {
+        if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
+            $this->parameters['fieldChangeFunc'] = [];
+        }
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
+                // @todo use a proper constructor when migrating to TypeScript
+                ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
+        );
+    }
+
+    protected function getCurrentPageId(): int
+    {
+        $pageId = 0;
+        $browserParameters = $this->parameters;
+        if (isset($browserParameters['pid'])) {
+            $pageId = $browserParameters['pid'];
+        } elseif (isset($browserParameters['itemName'])) {
+            // parse data[<table>][<uid>]
+            if (preg_match('~data\[([^]]*)\]\[([^]]*)\]~', $browserParameters['itemName'], $matches)) {
+                $recordArray = BackendUtility::getRecord($matches['1'], $matches['2']);
+                if (is_array($recordArray)) {
+                    $pageId = $recordArray['pid'];
+                }
+            }
+        }
+        return (int)BackendUtility::getTSCpidCached($browserParameters['table'], $browserParameters['uid'], $pageId)[0];
+    }
+
+    protected function initCurrentUrl(): void
     {
         $currentLink = isset($this->parameters['currentValue']) ? trim($this->parameters['currentValue']) : '';
         /** @var array<string, string> $currentLinkParts */
-        $currentLinkParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($currentLink);
+        $currentLinkParts = $this->typoLinkCodecService->decode($currentLink);
         $currentLinkParts['params'] = $currentLinkParts['additionalParams'];
         unset($currentLinkParts['additionalParams']);
 
@@ -52,38 +109,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
         parent::initCurrentUrl();
     }
 
-    protected function initDocumentTemplate()
-    {
-        if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
-            $this->parameters['fieldChangeFunc'] = [];
-        }
-        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
-                // @todo use a proper constructor when migrating to TypeScript
-                ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
-        );
-    }
-
-    /**
-     * Encode a typolink via ajax
-     *
-     * This avoids to implement the encoding functionality again in JS for the browser.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function encodeTypoLink(ServerRequestInterface $request): ResponseInterface
-    {
-        $typoLinkParts = $request->getQueryParams();
-        if (isset($typoLinkParts['params'])) {
-            $typoLinkParts['additionalParams'] = $typoLinkParts['params'];
-            unset($typoLinkParts['params']);
-        }
-
-        $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode($typoLinkParts);
-        return new JsonResponse(['typoLink' => $typoLink]);
-    }
-
     /**
      * Determines whether submitted field change functions are valid
      * and are coming from the system and not from an external abuse.
@@ -91,7 +116,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
      * @param bool $handleFlexformSections Whether to handle flexform sections differently
      * @return bool Whether the submitted field change functions are valid
      */
-    protected function areFieldChangeFunctionsValid($handleFlexformSections = false)
+    protected function areFieldChangeFunctionsValid(bool $handleFlexformSections = false): bool
     {
         $result = false;
         if (isset($this->parameters['fieldChangeFunc']) && is_array($this->parameters['fieldChangeFunc']) && isset($this->parameters['fieldChangeFuncHash'])) {
@@ -124,38 +149,5 @@ class LinkBrowserController extends AbstractLinkBrowserController
             }
         }
         return $array;
-    }
-
-    /**
-     * Return the ID of current page
-     *
-     * @return int
-     */
-    protected function getCurrentPageId()
-    {
-        $pageId = 0;
-        $browserParameters = $this->parameters;
-        if (isset($browserParameters['pid'])) {
-            $pageId = $browserParameters['pid'];
-        } elseif (isset($browserParameters['itemName'])) {
-            // parse data[<table>][<uid>]
-            if (preg_match('~data\[([^]]*)\]\[([^]]*)\]~', $browserParameters['itemName'], $matches)) {
-                $recordArray = BackendUtility::getRecord($matches['1'], $matches['2']);
-                if (is_array($recordArray)) {
-                    $pageId = $recordArray['pid'];
-                }
-            }
-        }
-        return (int)BackendUtility::getTSCpidCached($browserParameters['table'], $browserParameters['uid'], $pageId)[0];
-    }
-
-    /**
-     * Retrieve the configuration
-     * @return array
-     */
-    public function getConfiguration(): array
-    {
-        $tsConfig = BackendUtility::getPagesTSconfig($this->getCurrentPageId());
-        return $tsConfig['TCEMAIN.']['linkHandler.']['page.']['configuration.'] ?? [];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,7 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -41,113 +42,90 @@ abstract class AbstractLinkBrowserController
     use PageRendererBackendSetupTrait;
 
     /**
-     * @var array
-     */
-    protected $parameters;
-
-    /**
      * URL of current request
-     *
-     * @var string
      */
-    protected $thisScript = '';
+    protected string $thisScript = '';
 
     /**
-     * @var array<string,array>
+     * @var array<string, array>
      */
-    protected $linkHandlers = [];
+    protected array $linkHandlers = [];
 
     /**
-     * All parts of the current link
-     *
+     * All parts of the current link.
      * Comprised of url information and additional link parameters.
      *
-     * @var array<string,mixed>
+     * @var array<string, mixed>
      */
-    protected $currentLinkParts = [];
+    protected array $currentLinkParts = [];
 
     /**
      * Link handler responsible for the current active link
-     *
-     * @var LinkHandlerInterface|null
      */
-    protected $currentLinkHandler;
+    protected ?LinkHandlerInterface $currentLinkHandler = null;
 
     /**
      * The ID of the currently active link handler
-     *
-     * @var string
      */
-    protected $currentLinkHandlerId;
+    protected string $currentLinkHandlerId;
 
     /**
      * Link handler to be displayed
-     *
-     * @var LinkHandlerInterface $displayedLinkHandler
      */
-    protected $displayedLinkHandler;
+    protected ?LinkHandlerInterface $displayedLinkHandler = null;
 
     /**
      * The ID of the displayed link handler
-     *
      * This is read from the 'act' GET parameter
-     *
-     * @var string
      */
-    protected $displayedLinkHandlerId = '';
+    protected string $displayedLinkHandlerId = '';
 
     /**
      * List of available link attribute fields
      *
      * @var string[]
      */
-    protected $linkAttributeFields = [];
+    protected array $linkAttributeFields = [];
 
     /**
      * Values of the link attributes
      *
      * @var string[]
      */
-    protected $linkAttributeValues = [];
+    protected array $linkAttributeValues = [];
+    protected array $parameters;
+    protected array $hookObjects = [];
 
-    /**
-     * @var array
-     */
-    protected $hookObjects = [];
+    protected DependencyOrderingService $dependencyOrderingService;
+    protected PageRenderer $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected ExtensionConfiguration $extensionConfiguration;
 
-    public function __construct(
-        protected readonly DependencyOrderingService $dependencyOrderingService,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly LinkService $linkService,
-        protected readonly ExtensionConfiguration $extensionConfiguration,
-    ) {
-        $this->initHookObjects();
-        $this->init();
-    }
-
-    /**
-     * Initialize the controller
-     */
-    protected function init()
+    public function injectDependencyOrderingService(DependencyOrderingService $dependencyOrderingService): void
     {
-        $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
+        $this->dependencyOrderingService = $dependencyOrderingService;
     }
 
-    /**
-     * Initialize hook objects implementing the interface
-     *
-     * @throws \UnexpectedValueException
-     */
-    protected function initHookObjects()
+    public function injectPageRenderer(PageRenderer $pageRenderer): void
     {
-        $hooks = $this->dependencyOrderingService->orderByDependencies(
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'] ?? []
-        );
-        foreach ($hooks as $key => $hook) {
-            $this->hookObjects[] = GeneralUtility::makeInstance($hook['handler']);
-        }
+        $this->pageRenderer = $pageRenderer;
     }
+
+    public function injectUriBuilder(UriBuilder $uriBuilder): void
+    {
+        $this->uriBuilder = $uriBuilder;
+    }
+
+    public function injectExtensionConfiguration(ExtensionConfiguration $extensionConfiguration): void
+    {
+        $this->extensionConfiguration = $extensionConfiguration;
+    }
+
+    abstract public function getConfiguration(): array;
+
+    abstract protected function initDocumentTemplate(): void;
+
+    abstract protected function getCurrentPageId(): int;
 
     /**
      * Injects the request object for the current request or subrequest
@@ -158,6 +136,12 @@ abstract class AbstractLinkBrowserController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $hooks = $this->dependencyOrderingService->orderByDependencies($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'] ?? []);
+        foreach ($hooks as $hook) {
+            $this->hookObjects[] = GeneralUtility::makeInstance($hook['handler']);
+        }
+        $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
+
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
@@ -199,9 +183,30 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
+     * @return array{act: string, P: array} Array of parameters which have to be added to URLs
+     */
+    public function getUrlParameters(array $overrides = null): array
+    {
+        return [
+            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
+            'P' => $overrides['P'] ?? $this->parameters,
+        ];
+    }
+
+    public function getScriptUrl(): string
+    {
+        return $this->thisScript;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
      * Sets the script url depending on being a module or script request.
      */
-    protected function determineScriptUrl(ServerRequestInterface $request)
+    protected function determineScriptUrl(ServerRequestInterface $request): void
     {
         if ($route = $request->getAttribute('route')) {
             $this->thisScript = (string)$this->uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
@@ -211,7 +216,7 @@ abstract class AbstractLinkBrowserController
         }
     }
 
-    protected function initVariables(ServerRequestInterface $request)
+    protected function initVariables(ServerRequestInterface $request): void
     {
         $queryParams = $request->getQueryParams();
         $this->displayedLinkHandlerId = $queryParams['act'] ?? '';
@@ -222,7 +227,7 @@ abstract class AbstractLinkBrowserController
     /**
      * @throws \UnexpectedValueException
      */
-    protected function loadLinkHandlers()
+    protected function loadLinkHandlers(): void
     {
         $linkHandlers = $this->getLinkHandlers();
         if (empty($linkHandlers)) {
@@ -262,9 +267,9 @@ abstract class AbstractLinkBrowserController
     /**
      * Reads the configured link handlers from page TSconfig
      *
-     * @return array<string, array<mixed>>
+     * @return array<string, array>
      */
-    protected function getLinkHandlers()
+    protected function getLinkHandlers(): array
     {
         $linkHandlers = (array)(BackendUtility::getPagesTSconfig($this->getCurrentPageId())['TCEMAIN.']['linkHandler.'] ?? []);
         foreach ($this->hookObjects as $hookObject) {
@@ -279,7 +284,7 @@ abstract class AbstractLinkBrowserController
     /**
      * Initialize $this->currentLinkParts and $this->currentLinkHandler
      */
-    protected function initCurrentUrl()
+    protected function initCurrentUrl(): void
     {
         if (empty($this->currentLinkParts)) {
             return;
@@ -310,12 +315,10 @@ abstract class AbstractLinkBrowserController
         }
     }
 
-    abstract protected function initDocumentTemplate();
-
     /**
      * Add the currently set URL to the view
      */
-    protected function renderCurrentUrl(BackendTemplateView $view)
+    protected function renderCurrentUrl(BackendTemplateView $view): void
     {
         $view->assign('currentUrl', $this->currentLinkHandler->formatCurrentUrl());
     }
@@ -323,9 +326,9 @@ abstract class AbstractLinkBrowserController
     /**
      * Returns an array definition of the top menu
      *
-     * @return mixed[][]
+     * @return array[]
      */
-    protected function buildMenuArray()
+    protected function buildMenuArray(): array
     {
         $allowedItems = $this->getAllowedItems();
         if ($this->displayedLinkHandlerId && !in_array($this->displayedLinkHandlerId, $allowedItems, true)) {
@@ -341,7 +344,7 @@ abstract class AbstractLinkBrowserController
 
             /** @var LinkHandlerInterface $handlerInstance */
             $handlerInstance = $configuration['handlerInstance'];
-            $isActive = $this->displayedLinkHandlerId === $identifier || !$this->displayedLinkHandlerId && $handlerInstance === $this->currentLinkHandler;
+            $isActive = $this->displayedLinkHandlerId === $identifier || (!$this->displayedLinkHandlerId && $handlerInstance === $this->currentLinkHandler);
             if ($isActive) {
                 $this->displayedLinkHandler = $handlerInstance;
                 if (!$this->displayedLinkHandlerId) {
@@ -376,11 +379,9 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * Get the allowed items or tabs
-     *
      * @return string[]
      */
-    protected function getAllowedItems()
+    protected function getAllowedItems(): array
     {
         $allowedItems = array_keys($this->linkHandlers);
 
@@ -400,11 +401,9 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * Get the allowed link attributes
-     *
      * @return string[]
      */
-    protected function getAllowedLinkAttributes()
+    protected function getAllowedLinkAttributes(): array
     {
         $allowedLinkAttributes = $this->displayedLinkHandler->getLinkAttributes();
 
@@ -442,7 +441,7 @@ abstract class AbstractLinkBrowserController
      *
      * @return string[]
      */
-    protected function getLinkAttributeFieldDefinitions()
+    protected function getLinkAttributeFieldDefinitions(): array
     {
         $lang = $this->getLanguageService();
 
@@ -506,23 +505,9 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * @param array|null $overrides
-     * @return array Array of parameters which have to be added to URLs
-     */
-    public function getUrlParameters(array $overrides = null)
-    {
-        return [
-            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
-            'P' => $overrides['P'] ?? $this->parameters,
-        ];
-    }
-
-    /**
-     * Get attributes for the body tag
-     *
      * @return string[] Array of body-tag attributes
      */
-    protected function getBodyTagAttributes()
+    protected function getBodyTagAttributes(): array
     {
         $attributes = $this->displayedLinkHandler->getBodyTagAttributes();
         return array_merge(
@@ -535,45 +520,9 @@ abstract class AbstractLinkBrowserController
         );
     }
 
-    /**
-     * Return the ID of current page
-     *
-     * @return int
-     */
-    abstract protected function getCurrentPageId();
-
-    /**
-     * @return array
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * Retrieve the configuration
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDisplayedLinkHandlerId()
+    protected function getDisplayedLinkHandlerId(): string
     {
         return $this->displayedLinkHandlerId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScriptUrl()
-    {
-        return $this->thisScript;
     }
 
     protected function getLanguageService(): LanguageService

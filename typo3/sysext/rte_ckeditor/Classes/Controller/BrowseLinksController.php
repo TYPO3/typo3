@@ -19,6 +19,7 @@ namespace TYPO3\CMS\RteCKEditor\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\Richtext;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -32,109 +33,79 @@ use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
  */
 class BrowseLinksController extends AbstractLinkBrowserController
 {
-    /**
-     * @var string
-     */
-    protected $editorId;
+    protected string $editorId;
 
     /**
      * TYPO3 language code of the content language
-     *
-     * @var string
      */
-    protected $contentsLanguage;
+    protected string $contentsLanguage;
+    protected ?LanguageService $contentLanguageService;
+    protected array $buttonConfig = [];
+    protected array $thisConfig = [];
+    protected array $classesAnchorDefault = [];
+    protected array $classesAnchorDefaultTitle = [];
+    protected array $classesAnchorClassTitle = [];
+    protected array $classesAnchorDefaultTarget = [];
+    protected array $classesAnchorJSOptions = [];
+    protected string $defaultLinkTarget = '';
+    protected array $additionalAttributes = [];
+    protected string $siteUrl = '';
 
-    /**
-     * Language service object for localization to the content language
-     *
-     * @var LanguageService
-     */
-    protected $contentLanguageService;
-
-    /**
-     * @var array
-     */
-    protected $buttonConfig = [];
-
-    /**
-     * @var array
-     */
-    protected $thisConfig = [];
-
-    /**
-     * @var array
-     */
-    protected $classesAnchorDefault = [];
-
-    /**
-     * @var array
-     */
-    protected $classesAnchorDefaultTitle = [];
-
-    /**
-     * @var array
-     */
-    protected $classesAnchorClassTitle = [];
-
-    /**
-     * @var array
-     */
-    protected $classesAnchorDefaultTarget = [];
-
-    /**
-     * @var array
-     */
-    protected $classesAnchorJSOptions = [];
-
-    /**
-     * @var string
-     */
-    protected $defaultLinkTarget = '';
-
-    /**
-     * @var array
-     */
-    protected $additionalAttributes = [];
-
-    /**
-     * @var string
-     */
-    protected $siteUrl = '';
-
-    /**
-     * Initialize controller
-     */
-    protected function init()
-    {
-        parent::init();
-        $this->contentLanguageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+    public function __construct(
+        protected readonly LinkService $linkService,
+        protected readonly Richtext $richtext,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
+    ) {
     }
 
     /**
-     * @param ServerRequestInterface $request
+     * This is only used by RTE currently.
      */
-    protected function initVariables(ServerRequestInterface $request)
+    public function getConfiguration(): array
+    {
+        return $this->buttonConfig;
+    }
+
+    /**
+     * @return array{act: string, P: array, editorId: string, contentsLanguage: string} Array of parameters which have to be added to URLs
+     */
+    public function getUrlParameters(array $overrides = null): array
+    {
+        return [
+            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
+            'P' => $overrides['P'] ?? $this->parameters,
+            'editorId' => $this->editorId,
+            'contentsLanguage' => $this->contentsLanguage,
+        ];
+    }
+
+    protected function initDocumentTemplate(): void
+    {
+        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/RteLinkBrowser')
+                ->invoke('initialize', $this->editorId)
+        );
+    }
+
+    protected function getCurrentPageId(): int
+    {
+        return (int)$this->parameters['pid'];
+    }
+
+    protected function initVariables(ServerRequestInterface $request): void
     {
         parent::initVariables($request);
-
         $queryParameters = $request->getQueryParams();
-
         $this->siteUrl = $request->getAttribute('normalizedParams')->getSiteUrl();
-
         $this->currentLinkParts = $queryParameters['P']['curUrl'] ?? [];
         $this->editorId = $queryParameters['editorId'];
         $this->contentsLanguage = $queryParameters['contentsLanguage'];
-
-        $this->contentLanguageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create($this->contentsLanguage);
-
-        $tcaFieldConf = ['enableRichtext' => true];
-        if (!empty($queryParameters['P']['richtextConfigurationName'])) {
-            $tcaFieldConf['richtextConfiguration'] = $queryParameters['P']['richtextConfigurationName'];
-        }
-
-        /** @var Richtext $richtextConfigurationProvider */
-        $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
-        $this->thisConfig = $richtextConfigurationProvider->getConfiguration(
+        $this->contentLanguageService = $this->languageServiceFactory->create($this->contentsLanguage);
+        $tcaFieldConf = [
+            'enableRichtext' => true,
+            'richtextConfiguration' => $this->parameters['richtextConfigurationName'] ?: null,
+        ];
+        $this->thisConfig = $this->richtext->getConfiguration(
             $this->parameters['table'],
             $this->parameters['fieldName'],
             (int)$this->parameters['pid'],
@@ -144,23 +115,11 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->buttonConfig = $this->thisConfig['buttons']['link'] ?? [];
     }
 
-    protected function initDocumentTemplate()
-    {
-        $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/RteLinkBrowser')
-                ->invoke('initialize', $this->editorId)
-        );
-    }
-
-    /**
-     * Initialize $this->currentLink and $this->currentLinkHandler
-     */
-    protected function initCurrentUrl()
+    protected function initCurrentUrl(): void
     {
         if (empty($this->currentLinkParts)) {
             return;
         }
-
         if (!empty($this->currentLinkParts['url'])) {
             $data = $this->linkService->resolve($this->currentLinkParts['url']);
             $this->currentLinkParts['type'] = $data['type'];
@@ -170,13 +129,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 $this->currentLinkParts['params'] = '&' . $this->currentLinkParts['url']['parameters'];
             }
         }
-
         parent::initCurrentUrl();
     }
 
-    /**
-     * Renders the link attributes for the selected link handler.
-     */
     protected function renderLinkAttributeFields(BackendTemplateView $view): string
     {
         // Processing the classes configuration
@@ -286,12 +241,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
      * Localize a label obtained from Page TSConfig
      *
      * @param string $string The label to be localized
-     * @param bool $JScharCode If needs to be converted to an array of char numbers
+     * @param bool $JScharCode If it needs to be converted to an array of char numbers
      * @return string Localized string
      */
-    protected function getPageConfigLabel($string, $JScharCode = true)
+    protected function getPageConfigLabel(string $string, bool $JScharCode = true): string
     {
-        if (strpos($string, 'LLL:') !== 0) {
+        if (!str_starts_with($string, 'LLL:')) {
             $label = $string;
         } else {
             $label = $this->getLanguageService()->sL(trim($string));
@@ -300,18 +255,16 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }
 
-    protected function renderCurrentUrl(BackendTemplateView $view)
+    protected function renderCurrentUrl(BackendTemplateView $view): void
     {
         $view->assign('removeCurrentLink', true);
         parent::renderCurrentUrl($view);
     }
 
     /**
-     * Get the allowed items or tabs
-     *
      * @return string[]
      */
-    protected function getAllowedItems()
+    protected function getAllowedItems(): array
     {
         $allowedItems = parent::getAllowedItems();
 
@@ -328,11 +281,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
     }
 
     /**
-     * Get the allowed link attributes
-     *
      * @return string[]
      */
-    protected function getAllowedLinkAttributes()
+    protected function getAllowedLinkAttributes(): array
     {
         $allowedLinkAttributes = parent::getAllowedLinkAttributes();
 
@@ -349,7 +300,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      *
      * @return string[]
      */
-    protected function getLinkAttributeFieldDefinitions()
+    protected function getLinkAttributeFieldDefinitions(): array
     {
         $fieldRenderingDefinitions = parent::getLinkAttributeFieldDefinitions();
         $fieldRenderingDefinitions['title'] = $this->getTitleField();
@@ -362,12 +313,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return $fieldRenderingDefinitions;
     }
 
-    /**
-     * Add rel field
-     *
-     * @return string
-     */
-    protected function getRelField()
+    protected function getRelField(): string
     {
         if (empty($this->buttonConfig['relAttribute']['enabled'])) {
             return '';
@@ -396,12 +342,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
             ';
     }
 
-    /**
-     * Add target selector
-     *
-     * @return string
-     */
-    protected function getTargetField()
+    protected function getTargetField(): string
     {
         $targetSelectorConfig = [];
         if (is_array($this->buttonConfig['targetSelector'] ?? null)) {
@@ -438,12 +379,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
 				';
     }
 
-    /**
-     * Add title selector
-     *
-     * @return string
-     */
-    protected function getTitleField()
+    protected function getTitleField(): string
     {
         if ($this->linkAttributeValues['title'] ?? null) {
             $title = $this->linkAttributeValues['title'];
@@ -479,7 +415,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      *
      * @return string the html code to be added to the form
      */
-    protected function getClassField()
+    protected function getClassField(): string
     {
         $selectClass = '';
         if (isset($this->classesAnchorJSOptions[$this->displayedLinkHandlerId])) {
@@ -502,53 +438,14 @@ class BrowseLinksController extends AbstractLinkBrowserController
     }
 
     /**
-     * Return the ID of current page
-     *
-     * @return int
-     */
-    protected function getCurrentPageId()
-    {
-        return (int)$this->parameters['pid'];
-    }
-
-    /**
-     * Retrieve the configuration
-     *
-     * This is only used by RTE currently.
-     *
-     * @return array
-     */
-    public function getConfiguration()
-    {
-        return $this->buttonConfig;
-    }
-
-    /**
-     * Get attributes for the body tag
-     *
      * @return string[] Array of body-tag attributes
      */
-    protected function getBodyTagAttributes()
+    protected function getBodyTagAttributes(): array
     {
         $parameters = parent::getBodyTagAttributes();
         $parameters['data-site-url'] = $this->siteUrl;
         $parameters['data-default-link-target'] = $this->defaultLinkTarget;
         return $parameters;
-    }
-
-    /**
-     * @param array $overrides
-     *
-     * @return array Array of parameters which have to be added to URLs
-     */
-    public function getUrlParameters(array $overrides = null)
-    {
-        return [
-            'act' => $overrides['act'] ?? $this->displayedLinkHandlerId,
-            'P' => $overrides['P'] ?? $this->parameters,
-            'editorId' => $this->editorId,
-            'contentsLanguage' => $this->contentsLanguage,
-        ];
     }
 
     protected function isReadonlyTitle(): bool
