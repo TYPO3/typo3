@@ -6351,16 +6351,6 @@ parameters:
 			path: ../../typo3/sysext/recycler/Tests/Unit/Task/CleanerFieldProviderTest.php
 
 		-
-			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\Redirects\\\\Command\\\\CheckIntegrityCommand\\:\\:REGISTRY_KEY through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/redirects/Classes/Command/CheckIntegrityCommand.php
-
-		-
-			message: "#^Unsafe access to private constant TYPO3\\\\CMS\\\\Redirects\\\\Command\\\\CheckIntegrityCommand\\:\\:REGISTRY_NAMESPACE through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/redirects/Classes/Command/CheckIntegrityCommand.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Classes/Hooks/DataHandlerSlugUpdateHook.php
