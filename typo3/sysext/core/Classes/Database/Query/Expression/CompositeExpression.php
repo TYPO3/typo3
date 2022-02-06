@@ -38,7 +38,7 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
     /**
      * @param string $type
      * @param string[]|self[] $parts
-     * @internal Use the and() / or() factory methods.
+     * @deprecated Direct instantiating deprecated since v12, will be removed in v13. This class will be made immutable. Use and() / or() factory methods instead.
      */
     public function __construct($type, array $parts = [])
     {
@@ -47,6 +47,13 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
         parent::__construct((string)$type, []);
         $this->type = (string)$type;
         $this->addMultiple($parts);
+        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        if (($backTrace[0]['file'] ?? '') !== __FILE__) {
+            trigger_error(
+                'Do not use CompositeExpression constructor directly, use static and() and or() factory methods.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     /**
@@ -54,9 +61,20 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      *
      * @param mixed $part
      * @return self
+     * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
      */
     public function add($part): self
     {
+        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        if (($backTrace[0]['file'] ?? '') !== __FILE__
+            && !str_contains(($backTrace[0]['file'] ?? ''), 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
+        ) {
+            trigger_error(
+                'CompositeExpression::add() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         // Due to a bug in Doctrine DBAL, we must add our own check here,
         // which we luckily can, as we use a subclass anyway.
         // @see https://github.com/doctrine/dbal/issues/2388
@@ -73,9 +91,20 @@ class CompositeExpression extends \Doctrine\DBAL\Query\Expression\CompositeExpre
      *
      * @param string[]|self[] $parts
      * @return self
+     * @deprecated since v12, will be removed in v13. This class will be made immutable. Use with() instead.
      */
     public function addMultiple(array $parts = []): self
     {
+        $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        if (($backTrace[0]['file'] ?? '') !== __FILE__
+            && !str_contains(($backTrace[0]['file'] ?? ''), 'doctrine/dbal/src/Query/Expression/CompositeExpression.php')
+        ) {
+            trigger_error(
+                'CompositeExpression::addMultiple() will be removed in TYPO3 v13.0. Use CompositeExpression::with() instead.',
+                E_USER_DEPRECATED
+            );
+        }
+
         foreach ($parts as $part) {
             // Due to a bug in Doctrine DBAL, we must add our own check here,
             // which we luckily can, as we use a subclass anyway.

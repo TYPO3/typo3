@@ -5253,4 +5253,11 @@ return [
             'Deprecation-97354-ExpressionBuilderMethodsAndXAndOrX.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression->addMultiple' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 999,
+        'restFiles' => [
+            'Deprecation-97244-CompositeExpressionMethodsAddAndAddMultiple.rst',
+        ],
+    ],
 ];
