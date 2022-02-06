@@ -67,10 +67,14 @@ class ExpressionBuilder
      * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
      *
      * @return CompositeExpression
-     * @see ExpressionBuilder::and() which will replace this method in v13.
+     * @deprecated since v12, will be removed in v13. Use ExpressionBuilder::and() instead.
      */
     public function andX(...$expressions): CompositeExpression
     {
+        trigger_error(
+            'ExpressionBuilder::andX() will be removed in TYPO3 v13.0. Use ExpressionBuilder::and() instead.',
+            E_USER_DEPRECATED
+        );
         return CompositeExpression::and(...$expressions);
     }
 
@@ -80,19 +84,19 @@ class ExpressionBuilder
      * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
      *
      * @return CompositeExpression
-     * @see ExpressionBuilder::or() which will replace this method in v13.
+     * @deprecated since v12, will be removed in v13. Use ExpressionBuilder::or() instead.
      */
     public function orX(...$expressions): CompositeExpression
     {
+        trigger_error(
+            'ExpressionBuilder::orX() will be removed in TYPO3 v13.0. Use ExpressionBuilder::or() instead.',
+            E_USER_DEPRECATED
+        );
         return CompositeExpression::or(...$expressions);
     }
 
     /**
      * Creates a conjunction of the given boolean expressions
-     *
-     * @param CompositeExpression|string|null ...$expressions Optional clause. Requires at least one defined when converting to string.
-     *
-     * @return CompositeExpression
      */
     public function and(CompositeExpression|string|null ...$expressions): CompositeExpression
     {
@@ -101,10 +105,6 @@ class ExpressionBuilder
 
     /**
      * Creates a disjunction of the given boolean expressions.
-     *
-     * @param CompositeExpression|string|null ...$expressions Optional clause. Requires at least one defined when converting to string.
-     *
-     * @return CompositeExpression
      */
     public function or(CompositeExpression|string|null ...$expressions): CompositeExpression
     {

@@ -5239,4 +5239,18 @@ return [
             'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->andX' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 999,
+        'restFiles' => [
+            'Deprecation-97354-ExpressionBuilderMethodsAndXAndOrX.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder->orX' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 999,
+        'restFiles' => [
+            'Deprecation-97354-ExpressionBuilderMethodsAndXAndOrX.rst',
+        ],
+    ],
 ];
