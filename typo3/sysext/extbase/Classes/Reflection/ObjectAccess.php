@@ -347,13 +347,13 @@ class ObjectAccess
      */
     private static function createAccessor(): PropertyAccessor
     {
-        if (static::$propertyAccessor === null) {
-            static::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+        if (self::$propertyAccessor === null) {
+            self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableExceptionOnInvalidIndex()
                 ->getPropertyAccessor();
         }
 
-        return static::$propertyAccessor;
+        return self::$propertyAccessor;
     }
 
     /**
