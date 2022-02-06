@@ -235,9 +235,7 @@ class ReportController
         $menu->setIdentifier('WebFuncJumpMenu');
         $menuItem = $menu
             ->makeMenuItem()
-            ->setHref(
-                $this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index'])
-            )
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_reports', ['action' => 'index']))
             ->setTitle($lang->getLL('reports_overview'));
         $menu->addMenuItem($menuItem);
         $this->shortcutName = $lang->getLL('reports_overview');
@@ -249,7 +247,7 @@ class ReportController
             foreach ($reports as $reportName => $report) {
                 $menuItem = $menu
                     ->makeMenuItem()
-                    ->setHref($this->uriBuilder->buildUriFromRoute(
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                         'system_reports',
                         ['action' => 'detail', 'extension' => $extKey, 'report' => $reportName]
                     ))

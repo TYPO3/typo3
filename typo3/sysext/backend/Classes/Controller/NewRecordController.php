@@ -318,7 +318,7 @@ class NewRecordController
             // New page
             if ($this->isRecordCreationAllowedForTable('pages')) {
                 $newPageButton = $buttonBar->makeLinkButton()
-                    ->setHref($this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id, 'returnUrl' => $this->returnUrl]))
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id, 'returnUrl' => $this->returnUrl]))
                     ->setTitle($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'))
                     ->setShowLabelText(true)
                     ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));

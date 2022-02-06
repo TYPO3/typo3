@@ -401,7 +401,7 @@ class MfaConfigurationController extends AbstractMfaController
 
         $closeButton = $buttonBar
             ->makeLinkButton()
-            ->setHref($this->uriBuilder->buildUriFromRoute('mfa', ['action' => 'overview']))
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('mfa', ['action' => 'overview']))
             ->setClasses('t3js-editform-close')
             ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.closeDoc'))
             ->setShowLabelText(true)

@@ -81,16 +81,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/FormInlineAjaxController.php
 
 		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Buttons\\\\LinkButton\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/MfaConfigurationController.php
-
-		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Buttons\\\\LinkButton\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/NewRecordController.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
@@ -6394,11 +6384,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Redirects\\\\Service\\\\RedirectService\\:\\:method\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Unit/Service/RedirectServiceTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Menu\\\\MenuItem\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/reports/Classes/Controller/ReportController.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
