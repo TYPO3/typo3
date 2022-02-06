@@ -669,14 +669,14 @@ MESSAGE;
      */
     private function buildPropertyObjects(): array
     {
-        if (!isset(static::$propertyObjects[$this->className])) {
-            static::$propertyObjects[$this->className] = [];
+        if (!isset(self::$propertyObjects[$this->className])) {
+            self::$propertyObjects[$this->className] = [];
             foreach ($this->properties as $propertyName => $propertyDefinition) {
-                static::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $propertyDefinition);
+                self::$propertyObjects[$this->className][$propertyName] = new Property($propertyName, $propertyDefinition);
             }
         }
 
-        return static::$propertyObjects[$this->className];
+        return self::$propertyObjects[$this->className];
     }
 
     /**
@@ -684,13 +684,13 @@ MESSAGE;
      */
     private function buildMethodObjects(): array
     {
-        if (!isset(static::$methodObjects[$this->className])) {
-            static::$methodObjects[$this->className] = [];
+        if (!isset(self::$methodObjects[$this->className])) {
+            self::$methodObjects[$this->className] = [];
             foreach ($this->methods as $methodName => $methodDefinition) {
-                static::$methodObjects[$this->className][$methodName] = new Method($methodName, $methodDefinition, $this->className);
+                self::$methodObjects[$this->className][$methodName] = new Method($methodName, $methodDefinition, $this->className);
             }
         }
 
-        return static::$methodObjects[$this->className];
+        return self::$methodObjects[$this->className];
     }
 }

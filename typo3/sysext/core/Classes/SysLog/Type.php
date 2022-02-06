@@ -62,7 +62,7 @@ class Type
      */
     public static function levelMap(): array
     {
-        return static::$levelMap;
+        return self::$levelMap;
     }
 
     /**
@@ -70,16 +70,16 @@ class Type
      */
     public static function channelMap(): array
     {
-        return static::$channelMap;
+        return self::$channelMap;
     }
 
     public static function toChannel(int $type): string
     {
-        return static::$channelMap[$type] ?? 'default';
+        return self::$channelMap[$type] ?? 'default';
     }
 
     public static function toLevel(int $type): string
     {
-        return static::$levelMap[$type] ?? LogLevel::INFO;
+        return self::$levelMap[$type] ?? LogLevel::INFO;
     }
 }

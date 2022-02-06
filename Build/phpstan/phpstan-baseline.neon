@@ -1811,16 +1811,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Site/Entity/NullSite.php
 
 		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Core\\\\SysLog\\\\Type\\:\\:\\$channelMap through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/SysLog/Type.php
-
-		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Core\\\\SysLog\\\\Type\\:\\:\\$levelMap through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/SysLog/Type.php
-
-		-
 			message: "#^Parameter \\#1 \\$node of method TYPO3\\\\CMS\\\\Core\\\\Tree\\\\TableConfiguration\\\\ArrayTreeRenderer\\:\\:renderNode\\(\\) expects TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeRepresentationNode, TYPO3\\\\CMS\\\\Backend\\\\Tree\\\\TreeNode given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/ArrayTreeRenderer.php
@@ -3016,16 +3006,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
 
 		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ClassSchema\\:\\:\\$methodObjects through static\\:\\:\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
-
-		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ClassSchema\\:\\:\\$propertyObjects through static\\:\\:\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
-
-		-
 			message: "#^Call to function is_array\\(\\) with object will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
@@ -3038,11 +3018,6 @@ parameters:
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ObjectAccess\\:\\:createAccessor\\(\\) should return Symfony\\\\Component\\\\PropertyAccess\\\\PropertyAccessor but returns Symfony\\\\Component\\\\PropertyAccess\\\\PropertyAccessorInterface\\.$#"
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
-
-		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Extbase\\\\Reflection\\\\ObjectAccess\\:\\:\\$propertyAccessor through static\\:\\:\\.$#"
-			count: 3
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ObjectAccess.php
 
 		-
@@ -5264,16 +5239,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/SystemEnvironment/Check.php
-
-		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Install\\\\SystemEnvironment\\\\DatabaseCheck\\:\\:\\$databaseDriverToPlatformMapping through static\\:\\:\\.$#"
-			count: 4
-			path: ../../typo3/sysext/install/Classes/SystemEnvironment/DatabaseCheck.php
-
-		-
-			message: "#^Unsafe access to private property TYPO3\\\\CMS\\\\Install\\\\SystemEnvironment\\\\DatabaseCheck\\:\\:\\$driverMap through static\\:\\:\\.$#"
-			count: 2
-			path: ../../typo3/sysext/install/Classes/SystemEnvironment/DatabaseCheck.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"

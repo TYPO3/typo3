@@ -201,14 +201,14 @@ class DatabaseCheck implements CheckInterface
     public function checkDatabasePlatformRequirements(string $databaseDriver): FlashMessageQueue
     {
         static $checkedPlatform = [];
-        $databasePlatformClass = static::$databaseDriverToPlatformMapping[$databaseDriver];
+        $databasePlatformClass = self::$databaseDriverToPlatformMapping[$databaseDriver];
 
         // execute platform checks only once
         if (in_array($databasePlatformClass, $checkedPlatform, true)) {
             return $this->messageQueue;
         }
 
-        if (!empty(static::$databaseDriverToPlatformMapping[$databaseDriver])) {
+        if (!empty(self::$databaseDriverToPlatformMapping[$databaseDriver])) {
             $platformMessageQueue = (new $databasePlatformClass())->getStatus();
             foreach ($platformMessageQueue as $message) {
                 $this->messageQueue->enqueue($message);
@@ -267,8 +267,8 @@ class DatabaseCheck implements CheckInterface
     public static function retrieveDatabasePlatformByDriverName(string $databaseDriverName): string
     {
         $databaseDriverClassName = static::retrieveDatabaseDriverClassByDriverName($databaseDriverName);
-        if (!empty(static::$databaseDriverToPlatformMapping[$databaseDriverClassName])) {
-            return static::$databaseDriverToPlatformMapping[$databaseDriverClassName];
+        if (!empty(self::$databaseDriverToPlatformMapping[$databaseDriverClassName])) {
+            return self::$databaseDriverToPlatformMapping[$databaseDriverClassName];
         }
 
         throw new Exception(
@@ -284,8 +284,8 @@ class DatabaseCheck implements CheckInterface
      */
     public static function retrieveDatabaseDriverClassByDriverName(string $driverName): string
     {
-        if (!empty(static::$driverMap[$driverName])) {
-            return static::$driverMap[$driverName];
+        if (!empty(self::$driverMap[$driverName])) {
+            return self::$driverMap[$driverName];
         }
 
         throw new Exception(
