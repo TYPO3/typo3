@@ -91,16 +91,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/LoginController.php
 
 		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Buttons\\\\LinkButton\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/MfaConfigurationController.php
-
-		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Buttons\\\\LinkButton\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/NewRecordController.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/ResetPasswordController.php
@@ -5614,11 +5604,6 @@ parameters:
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\RteCKEditor\\\\Form\\\\Resolver\\\\RichTextNodeResolver has an unused parameter \\$nodeFactory\\.$#"
 			count: 1
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
-
-		-
-			message: "#^Parameter \\#1 \\$href of method TYPO3\\\\CMS\\\\Backend\\\\Template\\\\Components\\\\Buttons\\\\LinkButton\\:\\:setHref\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Http\\\\Uri given\\.$#"
-			count: 4
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
 
 		-
 			message: "#^Parameter \\#2 \\$interval of method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:registerRecurringExecution\\(\\) expects string, int given\\.$#"

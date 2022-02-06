@@ -1019,7 +1019,7 @@ class SchedulerModuleController
         $reloadButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload'))
             ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
-            ->setHref($this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
         $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
     }
 
@@ -1030,7 +1030,7 @@ class SchedulerModuleController
         $addButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add'))
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
-            ->setHref($this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => 'add']));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => 'add']));
         $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
     }
 
@@ -1041,7 +1041,7 @@ class SchedulerModuleController
         $closeButton = $buttonBar->makeLinkButton()
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'))
             ->setIcon($this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL))
-            ->setHref($this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1'));
         $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $saveButtonDropdown = $buttonBar->makeSplitButton();
         $saveButton = $buttonBar->makeInputButton()
@@ -1073,7 +1073,7 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $deleteButton = $buttonBar->makeLinkButton()
-            ->setHref($this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => ['delete' => $taskUid]]))
+            ->setHref((string)$this->uriBuilder->buildUriFromRoute('system_txschedulerM1', ['action' => ['delete' => $taskUid]]))
             ->setClasses('t3js-modal-trigger')
             ->setDataAttributes([
                 'severity' => 'warning',
