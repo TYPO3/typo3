@@ -15,14 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
+namespace TYPO3\CMS\Core\Tests\Functional\Imaging;
 
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -30,31 +25,17 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class IconFactoryTest extends UnitTestCase
+class IconFactoryTest extends FunctionalTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var bool Reset singletons created by subject
-     */
-    protected $resetSingletonInstances = true;
-
-    /**
-     * @var IconFactory
-     */
-    protected $subject;
-
+    protected IconFactory $subject;
     protected string $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
     protected string $registeredIconIdentifier = 'actions-close';
     protected string $registeredSpinningIconIdentifier = 'spinning-icon';
-
-    /** @var ObjectProphecy<IconRegistry> */
-    protected ObjectProphecy $iconRegistryMock;
 
     /**
      * Simulate a tt_content record
@@ -77,49 +58,14 @@ class IconFactoryTest extends UnitTestCase
         'bodytext' => '',
     ];
 
-    /**
-     * Set up
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $this->iconRegistryMock = $this->prophesize(IconRegistry::class);
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $eventDispatcher->dispatch(Argument::any())->willReturnArgument(0);
-        $container = $this->prophesize(ContainerInterface::class);
-        $cacheProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheProphecy->get(Argument::any())->willReturn(false);
-        $cacheProphecy->set(Argument::any(), Argument::any())->willReturn();
-
-        $container->has(FontawesomeIconProvider::class)->willReturn(true);
-        $container->get(FontawesomeIconProvider::class)->willReturn(new FontawesomeIconProvider($cacheProphecy->reveal(), 'FontawesomeSvgIcons'));
-
-        $this->subject = new IconFactory($eventDispatcher->reveal(), $this->iconRegistryMock->reveal(), $container->reveal());
-
-        $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
-        $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(true);
-        $this->iconRegistryMock->isDeprecated(Argument::any())->willReturn(false);
-        $this->iconRegistryMock->getDefaultIconIdentifier()->willReturn('default-not-found');
-        $this->iconRegistryMock->getIconIdentifierForMimeType('application/pdf')->willReturn('mimetypes-pdf');
-        $this->iconRegistryMock->getIconIdentifierForMimeType('image/*')->willReturn('mimetypes-media-image');
-        $this->iconRegistryMock->getIconIdentifierForMimeType(Argument::any())->willReturn(null);
-        $this->iconRegistryMock->getIconIdentifierForFileExtension(Argument::any())->willReturn('mimetypes-other-other');
-        $this->iconRegistryMock->getIconIdentifierForFileExtension('foo')->willReturn('mimetypes-other-other');
-        $this->iconRegistryMock->getIconIdentifierForFileExtension('pdf')->willReturn('mimetypes-pdf');
-        $this->iconRegistryMock->getIconIdentifierForFileExtension('png')->willReturn('mimetypes-media-image');
-        $this->iconRegistryMock->getIconConfigurationByIdentifier(Argument::any())->willReturn([
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'times',
-                'additionalClasses' => 'fa-fw',
-            ],
-        ]);
+        $this->subject = GeneralUtility::getContainer()->get(IconFactory::class);
     }
 
     /**
      * DataProvider for icon sizes
-     *
-     * @return array
      */
     public function differentSizesDataProvider(): array
     {
@@ -181,15 +127,6 @@ class IconFactoryTest extends UnitTestCase
      */
     public function getIconReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(): void
     {
-        $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(false);
-        $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
-        $this->iconRegistryMock->getIconConfigurationByIdentifier('default-not-found')->willReturn([
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'times-circle',
-                'additionalClasses' => 'fa-fw',
-            ],
-        ]);
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-default-not-found" data-identifier="default-not-found">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier)->render()
@@ -202,15 +139,6 @@ class IconFactoryTest extends UnitTestCase
      */
     public function getIconByIdentifierAndSizeReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed(array $size): void
     {
-        $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(false);
-        $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
-        $this->iconRegistryMock->getIconConfigurationByIdentifier('default-not-found')->willReturn([
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'times-circle',
-                'additionalClasses' => 'fa-fw',
-            ],
-        ]);
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found" data-identifier="default-not-found">',
             $this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render()
@@ -222,14 +150,15 @@ class IconFactoryTest extends UnitTestCase
      */
     public function getIconReturnsCorrectMarkupIfIconIsRegisteredAsSpinningIcon(): void
     {
-        $this->iconRegistryMock->getIconConfigurationByIdentifier($this->registeredSpinningIconIdentifier)->willReturn([
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'times-circle',
-                'additionalClasses' => 'fa-fw',
+        $iconRegistry = GeneralUtility::getContainer()->get(IconRegistry::class);
+        $iconRegistry->registerIcon(
+            $this->registeredSpinningIconIdentifier,
+            FontawesomeIconProvider::class,
+            [
+                'name' => 'times',
                 'spinning' => true,
-            ],
-        ]);
+            ]
+        );
         self::assertStringContainsString(
             '<span class="t3js-icon icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin" data-identifier="spinning-icon">',
             $this->subject->getIcon($this->registeredSpinningIconIdentifier)->render()
@@ -567,10 +496,6 @@ class IconFactoryTest extends UnitTestCase
 
     /**
      * Create file object to use as test subject
-     *
-     * @param string $extension
-     * @param string $mimeType
-     * @return \TYPO3\CMS\Core\Resource\File
      */
     protected function getTestSubjectFileObject(string $extension, string $mimeType = ''): File
     {
@@ -585,9 +510,6 @@ class IconFactoryTest extends UnitTestCase
 
     /**
      * Create folder object to use as test subject
-     *
-     * @param string $identifier
-     * @return \TYPO3\CMS\Core\Resource\Folder
      */
     protected function getTestSubjectFolderObject(string $identifier): Folder
     {
