@@ -27,12 +27,10 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -44,209 +42,113 @@ use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Script Class for showing information about an item.
+ * Modal rendering detail about a record. Reached by "Display information" on click menu and list module.
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class ElementInformationController
 {
     /**
-     * Record table name
-     *
-     * @var string
+     * Type of element: "db", "file" or "folder"
      */
-    protected $table;
+    protected string $type = 'db';
 
-    /**
-     * Record uid
-     *
-     * @var int
-     */
-    protected $uid;
-
-    /**
-     * @var string
-     */
-    protected $permsClause;
-
-    /**
-     * @var bool
-     */
-    protected $access = false;
-
-    /**
-     * Which type of element:
-     * - "file"
-     * - "db"
-     *
-     * @var string
-     */
-    protected $type = '';
-
-    /**
-     * For type "db": Set to page record of the parent page of the item set
-     * (if type="db")
-     *
-     * @var array
-     */
-    protected $pageInfo;
-
-    /**
-     * Database records identified by table/uid
-     *
-     * @var array
-     */
-    protected $row;
-
+    protected array $row = [];
+    protected ?string $table = null;
     protected ?File $fileObject = null;
     protected ?Folder $folderObject = null;
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected UriBuilder $uriBuilder,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ResourceFactory $resourceFactory,
     ) {
     }
 
     /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $moduleTemplate->getDocHeaderComponent()->disable();
-        $this->init($request);
-        $this->main($moduleTemplate, $request);
-        return new HtmlResponse($moduleTemplate->renderContent());
-    }
-
-    /**
-     * Determines if table/uid point to database record or file and
-     * if user has access to view information
-     *
-     * @param ServerRequestInterface $request
-     */
-    protected function init(ServerRequestInterface $request): void
-    {
+        $backendUser = $this->getBackendUser();
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view->getDocHeaderComponent()->disable();
         $queryParams = $request->getQueryParams();
         $this->table = $queryParams['table'] ?? null;
-        $this->uid = $queryParams['uid'] ?? null;
-        $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $uid = $queryParams['uid'] ?? '';
+        $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+        // Determines if table/uid point to database record or file and if user has access to view information
+        $accessAllowed = false;
         if (isset($GLOBALS['TCA'][$this->table])) {
-            $this->initDatabaseRecord();
-        } elseif ($this->table === '_FILE' || $this->table === '_FOLDER' || $this->table === 'sys_file') {
-            $this->initFileOrFolderRecord();
-        }
-    }
-
-    /**
-     * Init database records (table)
-     */
-    protected function initDatabaseRecord(): void
-    {
-        $this->type = 'db';
-        $this->uid = (int)$this->uid;
-
-        // Check permissions and uid value:
-        if ($this->uid && $this->getBackendUser()->check('tables_select', $this->table)) {
-            if ((string)$this->table === 'pages') {
-                $this->pageInfo = BackendUtility::readPageAccess($this->uid, $this->permsClause) ?: [];
-                $this->access = $this->pageInfo !== [];
-                $this->row = $this->pageInfo;
-            } else {
-                $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
-                if ($this->row) {
-                    if (!empty($this->row['t3ver_oid'])) {
-                        // Make $this->uid the uid of the versioned record, while $this->row['uid'] is live record uid
-                        $this->uid = (int)$this->row['_ORIG_uid'];
+            $uid = (int)$uid;
+            // Check permissions and uid value:
+            if ($uid && $backendUser->check('tables_select', $this->table)) {
+                if ((string)$this->table === 'pages') {
+                    $this->row = BackendUtility::readPageAccess($uid, $permsClause) ?: [];
+                    $accessAllowed = $this->row !== [];
+                } else {
+                    $this->row = BackendUtility::getRecordWSOL($this->table, $uid);
+                    if ($this->row) {
+                        if (!empty($this->row['t3ver_oid'])) {
+                            // Make $uid the uid of the versioned record, while $this->row['uid'] is live record uid
+                            $uid = (int)$this->row['_ORIG_uid'];
+                        }
+                        $pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $permsClause) ?: [];
+                        $accessAllowed = $pageInfo !== [];
                     }
-                    $this->pageInfo = BackendUtility::readPageAccess((int)$this->row['pid'], $this->permsClause) ?: [];
-                    $this->access = $this->pageInfo !== [];
                 }
             }
-        }
-    }
-
-    /**
-     * Init file/folder parameters
-     */
-    protected function initFileOrFolderRecord(): void
-    {
-        $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->uid);
-
-        if ($fileOrFolderObject instanceof Folder) {
-            $this->folderObject = $fileOrFolderObject;
-            $this->access = $this->folderObject->checkActionPermission('read');
-            $this->type = 'folder';
-        } elseif ($fileOrFolderObject instanceof File) {
-            $this->fileObject = $fileOrFolderObject;
-            $this->access = $this->fileObject->checkActionPermission('read');
-            $this->type = 'file';
-            $this->table = 'sys_file';
-
-            try {
+        } elseif ($this->table === '_FILE' || $this->table === '_FOLDER' || $this->table === 'sys_file') {
+            $fileOrFolderObject = $this->resourceFactory->retrieveFileOrFolderObject($uid);
+            if ($fileOrFolderObject instanceof Folder) {
+                $this->folderObject = $fileOrFolderObject;
+                $accessAllowed = $this->folderObject->checkActionPermission('read');
+                $this->type = 'folder';
+            } elseif ($fileOrFolderObject instanceof File) {
+                $this->fileObject = $fileOrFolderObject;
+                $accessAllowed = $this->fileObject->checkActionPermission('read');
+                $this->type = 'file';
+                $this->table = 'sys_file';
                 $this->row = BackendUtility::getRecordWSOL($this->table, $fileOrFolderObject->getUid());
-            } catch (Exception $e) {
-                $this->row = [];
             }
         }
-    }
-
-    /**
-     * Compiles the whole content to be outputted, which is then set as content to the moduleTemplate
-     * There is a hook to do a custom rendering of a record.
-     */
-    protected function main(ModuleTemplate $moduleTemplate, ServerRequestInterface $request): void
-    {
-        $content = '';
 
         // Rendering of the output via fluid
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-
-        if ($this->access) {
-            // render type by user func
-            $typeRendered = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] ?? [] as $className) {
-                $typeRenderObj = GeneralUtility::makeInstance($className);
-                if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
-                    if ($typeRenderObj->isValid($this->type, $this)) {
-                        $content .= $typeRenderObj->render($this->type, $this);
-                        $typeRendered = true;
-                        break;
-                    }
-                }
-            }
-
-            $pageTitle = $this->getPageTitle();
-            $moduleTemplate->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
-            if (!$typeRendered) {
-                $view->assign('accessAllowed', true);
-                $view->assignMultiple($pageTitle);
-                $view->assignMultiple($this->getPreview());
-                $view->assignMultiple($this->getPropertiesForTable());
-                $view->assignMultiple($this->getReferences($request));
-                $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
-                $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
-                $content .= $view->render('ContentElement/ElementInformation');
-            }
-        } else {
-            $content .= $view->render('ContentElement/ElementInformation');
+        $view->assign('accessAllowed', $accessAllowed);
+        $view->assign('hookContent', '');
+        if (!$accessAllowed) {
+            return $view->renderResponse('ContentElement/ElementInformation');
         }
 
-        $moduleTemplate->setContent($content);
+        // render type by user func
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] ?? [] as $className) {
+            $typeRenderObj = GeneralUtility::makeInstance($className);
+            if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
+                if ($typeRenderObj->isValid($this->type, $this)) {
+                    $view->assign('hookContent', $typeRenderObj->render($this->type, $this));
+                    return $view->renderResponse('ContentElement/ElementInformation');
+                }
+            }
+        }
+
+        $pageTitle = $this->getPageTitle();
+        $view->setTitle($pageTitle['table'] . ': ' . $pageTitle['title']);
+        $view->assignMultiple($pageTitle);
+        $view->assignMultiple($this->getPreview());
+        $view->assignMultiple($this->getPropertiesForTable());
+        $view->assignMultiple($this->getReferences($request, $uid));
+        $view->assign('returnUrl', GeneralUtility::sanitizeLocalUrl($request->getQueryParams()['returnUrl'] ?? ''));
+        $view->assign('maxTitleLength', $this->getBackendUser()->uc['titleLen'] ?? 20);
+
+        return $view->renderResponse('ContentElement/ElementInformation');
     }
 
     /**
      * Get page title with icon, table title and record title
-     *
-     * @return array
      */
     protected function getPageTitle(): array
     {
@@ -269,8 +171,6 @@ class ElementInformationController
 
     /**
      * Get preview for current record
-     *
-     * @return array
      */
     protected function getPreview(): array
     {
@@ -306,8 +206,6 @@ class ElementInformationController
 
     /**
      * Get property array for html table
-     *
-     * @return array
      */
     protected function getPropertiesForTable(): array
     {
@@ -420,10 +318,6 @@ class ElementInformationController
 
     /**
      * Get the list of fields that should be shown for the given table
-     *
-     * @param string $table
-     * @param int $uid
-     * @return array
      */
     protected function getFieldList(string $table, int $uid): array
     {
@@ -455,8 +349,6 @@ class ElementInformationController
 
     /**
      * Get the extra fields (uid, timestamps, creator) for the table
-     *
-     * @return array
      */
     protected function getExtraFields(): array
     {
@@ -516,20 +408,16 @@ class ElementInformationController
 
     /**
      * Get references section (references from and references to current record)
-     *
-     * @param ServerRequestInterface $request
-     * @return array
      */
-    protected function getReferences(ServerRequestInterface $request): array
+    protected function getReferences(ServerRequestInterface $request, int|string $uid): array
     {
         $references = [];
         switch ($this->type) {
             case 'db': {
-                $references['refLines'] = $this->makeRef($this->table, $this->uid, $request);
-                $references['refFromLines'] = $this->makeRefFrom($this->table, $this->uid, $request);
+                $references['refLines'] = $this->makeRef($this->table, $uid, $request);
+                $references['refFromLines'] = $this->makeRefFrom($this->table, $uid, $request);
                 break;
             }
-
             case 'file': {
                 if ($this->fileObject && $this->fileObject->isIndexed()) {
                     $references['refLines'] = $this->makeRef('_FILE', $this->fileObject, $request);
@@ -611,7 +499,7 @@ class ElementInformationController
      * Make reference display
      *
      * @param string $table Table name
-     * @param int|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
+     * @param int|File $ref Filename or uid
      * @param ServerRequestInterface $request
      * @return array
      * @throws RouteNotFoundException
@@ -788,9 +676,6 @@ class ElementInformationController
 
     /**
      * Convert FAL file reference (sys_file_reference) to reference index (sys_refindex) table format
-     *
-     * @param array $referenceRecord
-     * @return array
      */
     protected function transformFileReferenceToRecordReference(array $referenceRecord): array
     {

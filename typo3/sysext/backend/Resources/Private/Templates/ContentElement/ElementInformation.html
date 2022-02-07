@@ -3,148 +3,165 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:if condition="{accessAllowed}">
-    <f:then>
-        <div class="card-container">
-            <div class="card card-size-medium">
 
-                <div class="card-header">
-                    <div class="card-icon">
-                        {icon -> f:format.raw()}
-                    </div>
+<f:layout name="Module" />
 
-                    <div class="card-header-body">
-                        <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)}<f:if condition="{extraFields.uid.value}"><code>[{extraFields.uid.value}]</code></f:if></h1>
-                        <f:if condition="{table}">
-                            <span class="card-subtitle">{table}</span>
-                        </f:if>
-                    </div>
+<f:section name="Content">
+
+    <f:if condition="{accessAllowed}">
+        <f:then>
+            <f:if condition="{hookContent}">
+                <f:then>
+                    <f:format.raw>{hookContent}</f:format.raw>
+                </f:then>
+                <f:else>
+                    <f:render section="nativeContent" arguments="{_all}" />
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <f:be.infobox state="2">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
+        </f:else>
+    </f:if>
+
+</f:section>
+
+
+<f:section name="nativeContent">
+    <div class="card-container">
+        <div class="card card-size-medium">
+            <div class="card-header">
+                <div class="card-icon">
+                    {icon -> f:format.raw()}
                 </div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <f:for each="{extraFields}" as="extraField">
-                            <f:if condition="{extraField.isDatetime}">
-                                <div class="col-md-6">
-                                    <strong>{extraField.fieldLabel}</strong><br>
-                                    {extraField.value}
-                                </div>
-                            </f:if>
-                        </f:for>
-                    </div>
-                    <f:if condition="{extraFields.creatorRecord}">
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <div class="media">
-                                    <div class="media-left">
-                                        {extraFields.creatorRecord.value.icon -> f:format.raw()}
-                                    </div>
-                                    <div class="media-body">
-                                        <strong>{extraFields.creatorRecord.value.username}</strong><br>
-                                        {extraFields.creatorRecord.value.realName}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="card-header-body">
+                    <h1 class="card-title">{title -> f:format.crop(maxCharacters: maxTitleLength)}<f:if condition="{extraFields.uid.value}"><code>[{extraFields.uid.value}]</code></f:if></h1>
+                    <f:if condition="{table}">
+                        <span class="card-subtitle">{table}</span>
                     </f:if>
                 </div>
             </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <f:for each="{extraFields}" as="extraField">
+                        <f:if condition="{extraField.isDatetime}">
+                            <div class="col-md-6">
+                                <strong>{extraField.fieldLabel}</strong><br>
+                                {extraField.value}
+                            </div>
+                        </f:if>
+                    </f:for>
+                </div>
+                <f:if condition="{extraFields.creatorRecord}">
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <div class="media">
+                                <div class="media-left">
+                                    {extraFields.creatorRecord.value.icon -> f:format.raw()}
+                                </div>
+                                <div class="media-body">
+                                    <strong>{extraFields.creatorRecord.value.username}</strong><br>
+                                    {extraFields.creatorRecord.value.realName}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
         </div>
+    </div>
 
-
-        <f:if condition="{missingFile}">
-            <f:be.infobox title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="1">{missingFile}</f:be.infobox>
-        </f:if>
-        <f:if condition="{fileRenderer}">
-            <p>
-                {fileRenderer -> f:format.raw()}
-            </p>
-        </f:if>
-        <f:if condition="{fileObject}">
-            <p>
-                <f:media file="{fileObject}" width="{width}" height="{height}" />
-            </p>
-        </f:if>
-        <f:if condition="{url}">
-            <p>
-                <a class="btn btn-default" href="{url}" target="_blank" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show')}">
-                    <core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show" />
-                </a>
-            </p>
-        </f:if>
-        <div class="table-fit table-fit-wrap">
+    <f:if condition="{missingFile}">
+        <f:be.infobox title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')}" state="1">{missingFile}</f:be.infobox>
+    </f:if>
+    <f:if condition="{fileRenderer}">
+        <p>
+            {fileRenderer -> f:format.raw()}
+        </p>
+    </f:if>
+    <f:if condition="{fileObject}">
+        <p>
+            <f:media file="{fileObject}" width="{width}" height="{height}" />
+        </p>
+    </f:if>
+    <f:if condition="{url}">
+        <p>
+            <a class="btn btn-default" href="{url}" target="_blank" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show')}">
+                <core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show" />
+            </a>
+        </p>
+    </f:if>
+    <div class="table-fit table-fit-wrap">
+        <table class="table table-striped table-hover">
+            <f:for each="{fields}" as="field">
+                <f:render section="fieldRow" arguments="{row: field}" />
+            </f:for>
+        </table>
+    </div>
+    <f:if condition="{returnUrl}">
+        <a class="btn btn-primary" href="{returnUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back')}">
+            <core:icon identifier="actions-view-go-back" size="small" />
+            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back" />
+        </a>
+    </f:if>
+    <f:if condition="{refLines}">
+        <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" /></h3>
+        <div class="table-fit">
             <table class="table table-striped table-hover">
-                <f:for each="{fields}" as="field">
-                    <f:render section="fieldRow" arguments="{row: field}" />
+                <thead>
+                <tr>
+                    <th class="col-icon"></th>
+                    <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:page" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
+                    <th class="col-control"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{refLines}" as="refLine">
+                    <f:render section="refLineRow" arguments="{line: refLine, maxTitleLength: maxTitleLength}" />
                 </f:for>
+                </tbody>
             </table>
         </div>
-        <f:if condition="{returnUrl}">
-            <a class="btn btn-primary" href="{returnUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back')}">
-                <core:icon identifier="actions-view-go-back" size="small" />
-                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back" />
-            </a>
-        </f:if>
-        <f:if condition="{refLines}">
-            <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesToThisItem" /></h3>
-            <div class="table-fit">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th class="col-icon"></th>
-                        <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:page" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
-                        <th class="col-control"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <f:for each="{refLines}" as="refLine">
-                        <f:render section="refLineRow" arguments="{line: refLine, maxTitleLength: maxTitleLength}" />
-                    </f:for>
-                    </tbody>
-                </table>
-            </div>
-        </f:if>
-        <f:if condition="{refFromLines}">
-            <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" /></h3>
-            <div class="table-fit">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th class="col-icon"></th>
-                        <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
-                        <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.refString" /></th>
-                        <th class="col-control"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <f:for each="{refFromLines}" as="refFromLine">
-                        <f:render section="refFromLineRow" arguments="{line: refFromLine, maxTitleLength: maxTitleLength}" />
-                    </f:for>
-                    </tbody>
-                </table>
-            </div>
-        </f:if>
-    </f:then>
-    <f:else>
-        <f:be.infobox state="2">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission')}</f:be.infobox>
-    </f:else>
-</f:if>
+    </f:if>
+    <f:if condition="{refFromLines}">
+        <h3><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.referencesFromThisItem" /></h3>
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th class="col-icon"></th>
+                    <th class="col-title"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.title" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.table" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.uid" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.field" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.flexpointer" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.softrefKey" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.sorting" /></th>
+                    <th><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:show_item.php.refString" /></th>
+                    <th class="col-control"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{refFromLines}" as="refFromLine">
+                    <f:render section="refFromLineRow" arguments="{line: refFromLine, maxTitleLength: maxTitleLength}" />
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+</f:section>
 
 <f:section name="fieldRow">
     <tr>
@@ -238,4 +255,5 @@
         </div>
     </f:if>
 </f:section>
+
 </html>
