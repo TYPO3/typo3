@@ -3,21 +3,35 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'TYPO3/CMS/Backend/ContextMenu.js',
-        1: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
-    }"
-/>
-<form
-    action="{moduleName}"
-    method="post"
-    id="InfoModuleController"
-    name="webinfoForm"
->
-    <f:variable name="args" value="{0: 'web', 1: id}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-    <f:format.raw>{functionMenuModuleContent}</f:format.raw>
-</form>
+<f:layout name="Module"/>
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Backend/ContextMenu.js',
+            1: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
+        }"
+    />
+
+    <f:if condition="{accessContent}">
+        <f:then>
+            <form
+                action="{moduleName}"
+                method="post"
+                id="InfoModuleController"
+                name="webinfoForm"
+            >
+                <f:variable name="args" value="{0: 'web', 1: id}" />
+                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+                <f:format.raw>{functionMenuModuleContent}</f:format.raw>
+            </form>
+        </f:then>
+        <f:else>
+            <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title" /></h1>
+        </f:else>
+    </f:if>
+
+</f:section>
 
 </html>

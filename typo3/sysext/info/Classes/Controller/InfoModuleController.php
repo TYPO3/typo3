@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,7 +32,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Script Class for the Web > Info module
@@ -128,13 +126,6 @@ class InfoModuleController
     protected $extClassConf;
 
     /**
-     * Generally used for accumulating the output content of backend modules
-     *
-     * @var string
-     */
-    protected $content = '';
-
-    /**
      * May contain an instance of a 'Function menu module' which connects to this backend module.
      *
      * @var object
@@ -190,23 +181,20 @@ class InfoModuleController
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
         $access = $this->pageinfo !== [];
+        $accessContent = false;
         if ($this->id && $access || $backendUser->isAdmin() && !$this->id) {
+            $accessContent = true;
             if ($backendUser->isAdmin() && !$this->id) {
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
-            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-            $view->setTemplateRootPaths(['EXT:info/Resources/Private/Templates']);
-            $view->assign('id', (int)$this->id);
-            $view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
-            $view->assign('functionMenuModuleContent', $this->extObjContent($request));
+            $this->moduleTemplate->assign('id', (int)$this->id);
+            $this->moduleTemplate->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
+            $this->moduleTemplate->assign('functionMenuModuleContent', $this->extObjContent($request));
             // Setting up the buttons and markers for doc header
             $this->getButtons($request);
             $this->generateMenu();
-            $this->content = $view->render('Main');
-        } else {
-            // If no access or if ID == zero
-            $this->content = $this->moduleTemplate->header($this->getLanguageService()->getLL('title'), false);
         }
+        $this->moduleTemplate->assign('accessContent', $accessContent);
 
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL($this->extClassConf['title']),
@@ -223,7 +211,7 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-info');
 
         $this->init($request);
 
@@ -231,9 +219,7 @@ class InfoModuleController
         $this->checkExtObj($request);
 
         $this->main($request);
-
-        $this->moduleTemplate->setContent($this->content);
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Main');
     }
 
     /**
