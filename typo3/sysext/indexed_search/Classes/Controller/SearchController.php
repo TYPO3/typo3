@@ -323,7 +323,7 @@ class SearchController extends ActionController
         }
         $this->view->assign('resultsets', $resultsets);
         $this->view->assign('searchParams', $searchData);
-        $this->view->assign('searchWords', $this->searchWords);
+        $this->view->assign('searchWords', array_map([$this, 'addOperatorLabel'], $this->searchWords));
 
         return $this->htmlResponse();
     }
@@ -1630,6 +1630,18 @@ class SearchController extends ActionController
             GeneralUtility::implodeAttributes($attributes, true),
             $linkText
         );
+    }
+
+    /**
+     * Process the search word operator to be used in e.g. locallang keys
+     */
+    protected function addOperatorLabel(array $searchWord): array
+    {
+        if ($searchWord['oper'] ?? false) {
+            $searchWord['operatorLabel'] = strtolower(str_replace(' ', '', (string)($searchWord['oper'])));
+        }
+
+        return $searchWord;
     }
 
     /**
