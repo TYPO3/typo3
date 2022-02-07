@@ -1012,12 +1012,15 @@ class WorkspaceService implements SingletonInterface
                 ->select('pid')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->gt(
-                        't3ver_oid',
-                        $queryBuilder->createNamedParameter(
-                            0,
-                            \PDO::PARAM_INT
-                        )
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq(
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->gt(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        ),
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
