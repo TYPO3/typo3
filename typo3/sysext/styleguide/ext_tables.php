@@ -2,22 +2,6 @@
 
 defined('TYPO3') or die();
 
-// Register "Styleguide" backend module
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'styleguide',
-    'help',
-    'styleguide',
-    '',
-    [
-        \TYPO3\CMS\Styleguide\Controller\BackendController::class => 'index, typography, trees, tables, buttons, infobox, avatar, flashMessages, tca, tcaCreate, tcaDelete, debug, icons, tab, modal, accordion, pagination, frontendCreate, frontendDelete',
-    ],
-    [
-        'access' => 'user,group',
-        'icon'   => 'EXT:styleguide/Resources/Public/Icons/module.svg',
-        'labels' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang_styleguide.xlf',
-    ]
-);
-
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 // Register styleguide module icon
 $iconRegistry->registerIcon(
