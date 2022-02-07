@@ -31,14 +31,13 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -55,98 +54,21 @@ use TYPO3\CMS\Setup\Event\AddJavaScriptModulesEvent;
  */
 class SetupModuleController
 {
+    protected const PASSWORD_NOT_UPDATED = 0;
+    protected const PASSWORD_UPDATED = 1;
+    protected const PASSWORD_NOT_THE_SAME = 2;
+    protected const PASSWORD_OLD_WRONG = 3;
 
-    /**
-     * Flag if password has not been updated
-     */
-    const PASSWORD_NOT_UPDATED = 0;
+    protected array $overrideConf = [];
+    protected bool $languageUpdate = false;
+    protected bool $pagetreeNeedsRefresh = false;
+    protected array $tsFieldConf = [];
+    protected int $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
+    protected bool $passwordIsSubmitted = false;
+    protected bool $setupIsUpdated = false;
+    protected bool $settingsAreResetToDefault = false;
 
-    /**
-     * Flag if password has been updated
-     */
-    const PASSWORD_UPDATED = 1;
-
-    /**
-     * Flag if both new passwords do not match
-     */
-    const PASSWORD_NOT_THE_SAME = 2;
-
-    /**
-     * Flag if the current password given was not identical to the real
-     * current password
-     */
-    const PASSWORD_OLD_WRONG = 3;
-
-    /**
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * @var array
-     */
-    protected $overrideConf;
-
-    /**
-     * @var bool
-     */
-    protected $languageUpdate;
-
-    /**
-     * @var bool
-     */
-    protected $pagetreeNeedsRefresh = false;
-
-    /**
-     * @var array
-     */
-    protected $tsFieldConf;
-
-    /**
-     * @var bool
-     */
-    protected $saveData = false;
-
-    /**
-     * @var int
-     */
-    protected $passwordIsUpdated = self::PASSWORD_NOT_UPDATED;
-
-    /**
-     * @var bool
-     */
-    protected $passwordIsSubmitted = false;
-
-    /**
-     * @var bool
-     */
-    protected $setupIsUpdated = false;
-
-    /**
-     * @var bool
-     */
-    protected $settingsAreResetToDefault = false;
-
-    /**
-     * Form protection instance
-     *
-     * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
-     */
-    protected $formProtection;
-
-    /**
-     * The name of the module
-     *
-     * @var string
-     */
-    protected $moduleName = 'user_setup';
-
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
+    protected AbstractFormProtection $formProtection;
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -156,8 +78,60 @@ class SetupModuleController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly ModuleProvider $moduleProvider,
+        protected readonly UriBuilder $uriBuilder,
     ) {
         $this->formProtection = FormProtectionFactory::get();
+    }
+
+    /**
+     * Injects the request object, checks if data should be saved, and prepares a HTML page
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->initialize($request);
+        $this->storeIncomingData($request);
+        if ($this->pagetreeNeedsRefresh) {
+            BackendUtility::setUpdateSignal('updatePageTree');
+        }
+        $this->addFlashMessages($view);
+        $this->getButtons($view);
+        $view->assignMultiple([
+            'isLanguageUpdate' => $this->languageUpdate,
+            'menuItems' => $this->renderUserSetup(),
+            'menuId' => 'DTM-375167ed176e8c9caf4809cee7df156c',
+            'formToken' => $this->formProtection->generateToken('BE user setup', 'edit'),
+        ]);
+        return $view->renderResponse('Main');
+    }
+
+    /**
+     * Initializes the module for display of the settings form.
+     */
+    protected function initialize(ServerRequestInterface $request): ModuleTemplate
+    {
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-setup');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Setup/SetupModule');
+        $this->processAdditionalJavaScriptModules();
+        $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
+        $this->pageRenderer->addInlineLanguageLabelArray([
+            'FormEngine.remainingCharacters' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
+        ]);
+        $languageService->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
+        $view->setTitle($languageService->getLL('UserSettings'));
+        // Getting the 'override' values as set might be set in User TSconfig
+        $this->overrideConf = $backendUser->getTSConfig()['setup.']['override.'] ?? [];
+        // Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
+        $this->tsFieldConf = $backendUser->getTSConfig()['setup.']['fields.'] ?? [];
+        // if password is disabled, disable repeat of password too (password2)
+        if ($this->tsFieldConf['password.']['disabled'] ?? false) {
+            $this->tsFieldConf['password2.']['disabled'] = 1;
+            $this->tsFieldConf['passwordCurrent.']['disabled'] = 1;
+        }
+        return $view;
     }
 
     protected function processAdditionalJavaScriptModules(): void
@@ -171,47 +145,22 @@ class SetupModuleController
     }
 
     /**
-     * Initializes the module for display of the settings form.
+     * If settings are submitted via POST, store them
      */
-    protected function initialize(ServerRequestInterface $request)
+    protected function storeIncomingData(ServerRequestInterface $request): void
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Setup/SetupModule');
-        $this->processAdditionalJavaScriptModules();
-        $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
-        $this->pageRenderer->addInlineLanguageLabelArray([
-            'FormEngine.remainingCharacters' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
-        ]);
-        $this->getLanguageService()->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
-        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('UserSettings'));
-        // Getting the 'override' values as set might be set in User TSconfig
-        $this->overrideConf = $this->getBackendUser()->getTSConfig()['setup.']['override.'] ?? null;
-        // Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
-        $this->tsFieldConf = $this->getBackendUser()->getTSConfig()['setup.']['fields.'] ?? null;
-        // id password is disabled, disable repeat of password too (password2)
-        if ($this->tsFieldConf['password.']['disabled'] ?? false) {
-            $this->tsFieldConf['password2.']['disabled'] = 1;
-            $this->tsFieldConf['passwordCurrent.']['disabled'] = 1;
+        $postData = $request->getParsedBody();
+        if (!is_array($postData) || empty($postData)) {
+            return;
         }
-    }
 
-    /**
-     * If settings are submitted to _POST[DATA], store them
-     * NOTICE: This method is called before the \TYPO3\CMS\Backend\Template\ModuleTemplate
-     * is included. See bottom of document.
-     *
-     * @param array $postData parsed body of the request
-     */
-    protected function storeIncomingData(array $postData)
-    {
         // First check if something is submitted in the data-array from POST vars
         $d = $postData['data'] ?? null;
         $columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
         $backendUser = $this->getBackendUser();
         $beUserId = $backendUser->user['uid'];
         $storeRec = [];
+        $doSaveData = false;
         $fieldList = $this->getFieldsFromShowItem();
         if (is_array($d) && $this->formProtection->validateToken((string)($postData['formToken'] ?? ''), 'BE user setup', 'edit')) {
             // UC hashed before applying changes
@@ -298,7 +247,7 @@ class SetupModuleController
 
                 $this->setAvatarFileUid($beUserId, $be_user_data['avatar'], $storeRec);
 
-                $this->saveData = true;
+                $doSaveData = true;
             }
             // Inserts the overriding values.
             $backendUser->overrideUC();
@@ -310,7 +259,7 @@ class SetupModuleController
                 $this->setupIsUpdated = true;
             }
             // Persist data if something has changed:
-            if (!empty($storeRec) && $this->saveData) {
+            if (!empty($storeRec) && $doSaveData) {
                 // Set user to admin to circumvent DataHandler restrictions.
                 // Not using isAdmin() to fetch the original value, just in case it has been boolean casted.
                 $savedUserAdminState = $backendUser->user['admin'];
@@ -332,69 +281,11 @@ class SetupModuleController
     }
 
     /**
-     * Injects the request object, checks if data should be saved, and prepares a HTML page
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->initialize($request);
-        if ($request->getMethod() === 'POST') {
-            $postData = $request->getParsedBody();
-            if (is_array($postData) && !empty($postData)) {
-                $this->storeIncomingData($postData);
-            }
-        }
-        if ($this->languageUpdate) {
-            $this->content .= $this->buildInstructionDataTag('TYPO3.ModuleMenu.App.refreshMenu');
-            $this->content .= $this->buildInstructionDataTag('TYPO3.Backend.Topbar.refresh');
-        }
-        if ($this->pagetreeNeedsRefresh) {
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
-
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $this->content .= '<form action="' . $uriBuilder->buildUriFromRoute('user_setup') . '" method="post" id="SetupModuleController" name="usersetup" enctype="multipart/form-data">';
-        $this->content .= '<div id="user-setup-wrapper">';
-        $this->content .= $this->moduleTemplate->header($this->getLanguageService()->getLL('UserSettings'), false);
-        $this->addFlashMessages();
-
-        $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
-
-        // Render the menu items
-        $menuItems = $this->renderUserSetup();
-        $this->content .= $this->moduleTemplate->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
-        $this->content .= '<div>';
-        $this->content .= '<input type="hidden" name="formToken" value="' . htmlspecialchars($formToken) . '" />
-            <input type="hidden" value="1" name="data[save]" />
-            <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />';
-        $this->content .= '</div>';
-        // End of wrapper div
-        $this->content .= '</div>';
-        // Setting up the buttons and markers for docheader
-        $this->getButtons();
-        // Build the <body> for the module
-        // Renders the module page
-        $this->content .= '</form>';
-        $this->moduleTemplate->setContent($this->content);
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    protected function buildInstructionDataTag(string $dispatchAction): string
-    {
-        return sprintf(
-            '<typo3-immediate-action action="%s"></typo3-immediate-action>' . "\n",
-            htmlspecialchars($dispatchAction)
-        );
-    }
-
-    /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getButtons(): void
+    protected function getButtons(ModuleTemplate $view): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $cshButton = $buttonBar->makeHelpButton()
             ->setModuleName('_MOD_user_setup')
             ->setFieldName('');
@@ -410,16 +301,10 @@ class SetupModuleController
 
         $buttonBar->addButton($saveButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setRouteIdentifier($this->moduleName)
+            ->setRouteIdentifier('user_setup')
             ->setDisplayName($this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tablabel'));
         $buttonBar->addButton($shortcutButton);
     }
-
-    /******************************
-     *
-     * Render module
-     *
-     ******************************/
 
     /**
      * renders the data for all tabs in the user setup and returns
@@ -427,10 +312,9 @@ class SetupModuleController
      *
      * @return array Ready to use for the dyntabmenu itemarray
      */
-    protected function renderUserSetup()
+    protected function renderUserSetup(): array
     {
         $backendUser = $this->getBackendUser();
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $html = '';
         $result = [];
         $firstTabLabel = '';
@@ -615,7 +499,7 @@ class SetupModuleController
                     $html .=
                         '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
                             . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
-                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||__IDENTIFIER__'])) . '"'
+                            . ' data-setup-avatar-url="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||__IDENTIFIER__'])) . '"'
                             . '>' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</button></div>';
                     break;
@@ -635,7 +519,7 @@ class SetupModuleController
                         $html .= '<span class="badge badge-danger">' . htmlspecialchars($lang->getLL('mfaProviders.notAvailable')) . '</span>';
                         break;
                     }
-                    $html .= '<a href="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
+                    $html .= '<a href="' . htmlspecialchars((string)$this->uriBuilder->buildUriFromRoute('mfa')) . '" class="btn btn-' . ($hasActiveProviders ? 'default' : 'success') . '">';
                     $html .=    $this->iconFactory->getIcon($hasActiveProviders ? 'actions-cog' : 'actions-add', Icon::SIZE_SMALL);
                     $html .=    ' <span>' . htmlspecialchars($lang->getLL('mfaProviders.' . ($hasActiveProviders ? 'manageLinkTitle' : 'setupLinkTitle'))) . '</span>';
                     $html .= '</a>';
@@ -837,9 +721,6 @@ class SetupModuleController
             }
         }
 
-        if (!is_array($this->tsFieldConf)) {
-            return $allowedFields;
-        }
         foreach ($this->tsFieldConf as $fieldName => $userTsFieldConfig) {
             if (!empty($userTsFieldConfig['disabled'])) {
                 $fieldName = rtrim($fieldName, '.');
@@ -968,6 +849,36 @@ class SetupModuleController
         }
     }
 
+    /**
+     * Add FlashMessages for various actions
+     */
+    protected function addFlashMessages(ModuleTemplate $view): void
+    {
+        $languageService = $this->getLanguageService();
+        if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
+            $view->addFlashMessage($languageService->getLL('setupWasUpdated'), $languageService->getLL('UserSettings'));
+        }
+        if ($this->settingsAreResetToDefault) {
+            $view->addFlashMessage($languageService->getLL('settingsAreReset'), $languageService->getLL('resetConfiguration'));
+        }
+        if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
+            $view->addFlashMessage($languageService->getLL('activateChanges'), '', AbstractMessage::INFO);
+        }
+        if ($this->passwordIsSubmitted) {
+            switch ($this->passwordIsUpdated) {
+                case self::PASSWORD_OLD_WRONG:
+                    $view->addFlashMessage($languageService->getLL('oldPassword_failed'), $languageService->getLL('newPassword'), AbstractMessage::ERROR);
+                    break;
+                case self::PASSWORD_NOT_THE_SAME:
+                    $view->addFlashMessage($languageService->getLL('newPassword_failed'), $languageService->getLL('newPassword'), AbstractMessage::ERROR);
+                    break;
+                case self::PASSWORD_UPDATED:
+                    $view->addFlashMessage($languageService->getLL('newPassword_ok'), $languageService->getLL('newPassword'));
+                    break;
+            }
+        }
+    }
+
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
@@ -976,76 +887,5 @@ class SetupModuleController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Add FlashMessages for various actions
-     */
-    protected function addFlashMessages()
-    {
-        $flashMessages = [];
-
-        // Show if setup was saved
-        if ($this->setupIsUpdated && !$this->settingsAreResetToDefault) {
-            $flashMessages[] = $this->getFlashMessage('setupWasUpdated', 'UserSettings');
-        }
-
-        // Show if temporary data was cleared
-        if ($this->settingsAreResetToDefault) {
-            $flashMessages[] = $this->getFlashMessage('settingsAreReset', 'resetConfiguration');
-        }
-
-        // Notice
-        if ($this->setupIsUpdated || $this->settingsAreResetToDefault) {
-            $flashMessages[] = $this->getFlashMessage('activateChanges', '', FlashMessage::INFO);
-        }
-
-        // If password is updated, output whether it failed or was OK.
-        if ($this->passwordIsSubmitted) {
-            switch ($this->passwordIsUpdated) {
-                case self::PASSWORD_OLD_WRONG:
-                    $flashMessages[] = $this->getFlashMessage('oldPassword_failed', 'newPassword', FlashMessage::ERROR);
-                    break;
-                case self::PASSWORD_NOT_THE_SAME:
-                    $flashMessages[] = $this->getFlashMessage('newPassword_failed', 'newPassword', FlashMessage::ERROR);
-                    break;
-                case self::PASSWORD_UPDATED:
-                    $flashMessages[] = $this->getFlashMessage('newPassword_ok', 'newPassword');
-                    break;
-            }
-        }
-        if (!empty($flashMessages)) {
-            $this->enqueueFlashMessages($flashMessages);
-        }
-    }
-
-    /**
-     * @param array $flashMessages
-     * @throws \TYPO3\CMS\Core\Exception
-     */
-    protected function enqueueFlashMessages(array $flashMessages)
-    {
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        foreach ($flashMessages as $flashMessage) {
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
-    }
-
-    /**
-     * @param string $message
-     * @param string $title
-     * @param int $severity
-     * @return FlashMessage
-     */
-    protected function getFlashMessage($message, $title, $severity = FlashMessage::OK)
-    {
-        $title = !empty($title) ? $this->getLanguageService()->getLL($title) : ' ';
-        return GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $this->getLanguageService()->getLL($message),
-            $title,
-            $severity
-        );
     }
 }

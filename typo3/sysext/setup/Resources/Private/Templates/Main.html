@@ -1,0 +1,59 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:if condition="{isLanguageUpdate}">
+        <typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>
+        <typo3-immediate-action action="TYPO3.Backend.Topbar.refresh"></typo3-immediate-action>
+    </f:if>
+
+    <form
+        action="{f:be.uri(route: 'user_setup')}"
+        method="post"
+        id="SetupModuleController"
+        name="usersetup"
+        enctype="multipart/form-data"
+    >
+        <div id="user-setup-wrapper">
+            <h1>
+                <f:translate key="LLL:EXT:setup/Resources/Private/Language/locallang.xlf:UserSettings" />
+            </h1>
+
+            <div role="tabpanel">
+                <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{menuId}" data-store-last-tab="1">
+                    <f:for each="{menuItems}" as="item" iteration="iteration">
+                        <f:if condition="{item.content}">
+                            <li role="presentation" class="t3js-tabmenu-item nav-item">
+                                <a href="#{menuId}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == 1', then: ' active')}" aria-controls="{menuId}-{iteration.cycle}" role="tab" data-bs-toggle="tab">
+                                    {item.label}
+                                </a>
+                            </li>
+                        </f:if>
+                    </f:for>
+                </ul>
+                <div class="tab-content">
+                    <f:for each="{menuItems}" as="item" iteration="iteration">
+                        <f:if condition="{item.content}">
+                            <div role="tabpanel" class="tab-pane{f:if(condition: '{iteration.cycle} == 1', then: ' active')}" id="{menuId}-{iteration.cycle}">
+                                <f:format.raw>{item.content}</f:format.raw>
+                            </div>
+                        </f:if>
+                    </f:for>
+                </div>
+            </div>
+
+            <div>
+                <input type="hidden" name="formToken" value="{formToken}" />
+                <input type="hidden" value="1" name="data[save]" />
+                <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />';
+            </div>
+        </div>
+    </form>
+</f:section>
+
+</html>
