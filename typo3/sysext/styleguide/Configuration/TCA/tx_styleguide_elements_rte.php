@@ -88,11 +88,6 @@ return [
             'config' => [
                 'type' => 'text',
                 'enableRichtext' => true,
-                'fieldControl' => [
-                    'fullScreenRichtext' => [
-                        'disabled' => false,
-                    ],
-                ],
             ],
         ],
         'rte_2' => [
