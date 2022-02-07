@@ -30,11 +30,7 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class TypoScriptTemplateInformationModuleFunctionController
 {
-
-    /**
-     * @var TypoScriptTemplateModuleController
-     */
-    protected $pObj;
+    protected TypoScriptTemplateModuleController $pObj;
 
     /**
      * The currently selected sys_template record

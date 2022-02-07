@@ -2,24 +2,32 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:if condition="{isPageZero}">
-    <f:then>
-        <f:render partial="PageZero" arguments="{_all}" />
-    </f:then>
-    <f:else>
-        <form
-            action="{f:be.uri(route: 'web_ts', parameters: '{id: pageId, template: \'all\'}')}"
-            method="post"
-            enctype="multipart/form-data"
-            id="TypoScriptTemplateModuleController"
-            name="editForm"
-            class="form"
-        >
-            <f:variable name="args" value="{0: 'web', 1: pageId}" />
-            <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-            <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
-            <f:format.raw>{typoscriptTemplateModuleContent}</f:format.raw>
-        </form>
-    </f:else>
-</f:if>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+
+    <f:if condition="{isPageZero}">
+        <f:then>
+            <f:render partial="PageZero" arguments="{_all}" />
+        </f:then>
+        <f:else>
+            <form
+                action="{f:be.uri(route: 'web_ts', parameters: '{id: pageId, template: \'all\'}')}"
+                method="post"
+                enctype="multipart/form-data"
+                id="TypoScriptTemplateModuleController"
+                name="editForm"
+                class="form"
+            >
+                <f:variable name="args" value="{0: 'web', 1: pageId}" />
+                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+                <h1><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:moduleTitle" /></h1>
+                <f:format.raw>{typoscriptTemplateModuleContent}</f:format.raw>
+            </form>
+        </f:else>
+    </f:if>
+
+</f:section>
+
 </html>

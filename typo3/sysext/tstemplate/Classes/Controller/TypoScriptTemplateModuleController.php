@@ -23,13 +23,13 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 
 /**
@@ -143,21 +142,13 @@ class TypoScriptTemplateModuleController
      */
     protected $request;
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
     /**
@@ -201,7 +192,7 @@ class TypoScriptTemplateModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-tstemplate');
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
         $this->request = $request;
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
@@ -219,15 +210,14 @@ class TypoScriptTemplateModuleController
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         $this->access = $this->pageinfo !== [];
-        $view = $this->getFluidTemplateObject();
         $isPageZero = false;
         if ($this->id && $this->access) {
             // Setting up the context sensitive menu
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
             // Build the module content
-            $view->assign('pageId', $this->id);
-            $view->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());
+            $this->moduleTemplate->assign('pageId', $this->id);
+            $this->moduleTemplate->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for docheader
             $this->getButtons();
             $this->generateMenu();
@@ -272,21 +262,20 @@ class TypoScriptTemplateModuleController
                 $this->setInPageArray($pArray, $rootline, $record);
             }
 
-            $view->assign('pageTree', $pArray);
+            $this->moduleTemplate->assign('pageTree', $pArray);
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
             $this->getButtons();
         }
-        $view->assign('isPageZero', $isPageZero);
-        $this->moduleTemplate->setContent($view->render('Main'));
+        $this->moduleTemplate->assign('isPageZero', $isPageZero);
 
         $this->moduleTemplate->setTitle(
             $this->getLanguageService()->sL($this->extClassConf['title']),
             $this->pageinfo['title'] ?? ''
         );
 
-        return new HtmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Main');
     }
 
     /**
@@ -381,9 +370,8 @@ class TypoScriptTemplateModuleController
      * No template, called from client classes.
      *
      * @param int $newStandardTemplate
-     * @return string
      */
-    public function noTemplate($newStandardTemplate = 0)
+    public function noTemplate($newStandardTemplate = 0): string
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
@@ -413,7 +401,7 @@ class TypoScriptTemplateModuleController
             $moduleContent['staticsText'] = $staticsText;
             $moduleContent['selector'] = $selector;
         }
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
         // Go to previous Page with a template
         $view->assign('previousPage', $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause));
         $view->assign('content', $moduleContent);
@@ -538,14 +526,6 @@ page.10.value = HELLO WORLD!
         uasort($pArray, static function ($a, $b) {
             return $a['sorting'] - $b['sorting'];
         });
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:tstemplate/Resources/Private/Partials']);
-        return $view;
     }
 
     /**
