@@ -1,7 +1,41 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="FormEditor" />
-<f:section name="ElementSidebarTree">
+<html
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <div data-identifier="moduleLoadingIndicator" class="form-editor-loading-spinner">
+        <core:icon identifier="spinner-circle-dark" size="default" />
+        <div class="form-editor-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+    </div>
+    <div data-identifier="moduleWrapper" class="hidden">
+        <f:format.raw>{formEditorTemplates}</f:format.raw>
+        <section id="t3-form-navigation-component" class="t3-form-x-component" data-identifier="structureSection">
+            <div id="t3-form-structure-panel">
+                <f:render section="ElementSidebarTree" />
+            </div>
+        </section>
+        <section id="t3-form-stage-container" data-identifier="stageContainer">
+            <div id="t3-form-stage-inner-container" data-identifier="stageContainerInner">
+                <header id="t3-form-stage-header">
+                    <f:render section="Header" />
+                </header>
+                <div id="t3-form-stage-content">
+                    <f:render section="Stage" />
+                </div>
+            </div>
+        </section>
+        <section id="t3-form-inspector-panels-container" class="t3-form-x-component" data-identifier="inspectorSection">
+            <f:render section="Inspector" />
+        </section>
+    </div>
+</f:section>
+
+<f:section name="ElementSidebarTree">
     <div class="t3-form-x-component-inner-wrapper">
         <div id="t3-form-navigation-component-tree-root-container" data-identifier="treeRootContainer">
             <core:icon identifier="content-form" />
@@ -14,15 +48,13 @@
             </div>
         </div>
     </div>
-
 </f:section>
+
 <f:section name="Header">
-
     <h1><span id="t3-form-form-definition-label" data-identifier="formDefinitionLabel"></span></h1>
-
 </f:section>
-<f:section name="Stage">
 
+<f:section name="Stage">
     <div class="panel panel-default" data-identifier="stagePanel">
         <div class="panel-heading" data-identifier="panelHeading">
             <span data-identifier="stageHeaderToolbar">
@@ -54,15 +86,14 @@
             </div>
         </div>
     </div>
-
 </f:section>
-<f:section name="Inspector">
 
+<f:section name="Inspector">
     <div id="t3-form-inspector-panels">
         <div class="t3-form-x-component-inner-wrapper">
             <div id="t3-form-inspector" data-identifier="inspector"></div>
         </div>
     </div>
-
 </f:section>
+
 </html>

@@ -55,36 +55,20 @@ class FormEditorController extends AbstractBackendController
 {
     protected const JS_MODULE_NAMES = ['app', 'mediator', 'viewModel'];
 
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected FormDefinitionConversionService $formDefinitionConversionService;
-
-    /**
-     * @var array
-     */
-    protected $prototypeConfiguration;
+    protected array $prototypeConfiguration;
 
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        FormDefinitionConversionService $formDefinitionConversionService
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory,
+        protected readonly FormDefinitionConversionService $formDefinitionConversionService,
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->formDefinitionConversionService = $formDefinitionConversionService;
     }
 
     /**
-     * Displays the form editor
+     * Display the form editor.
      *
-     * @param string $formPersistenceIdentifier
-     * @param string|null $prototypeName
-     * @return ResponseInterface
      * @throws PersistenceManagerException
-     * @internal
      */
     public function indexAction(string $formPersistenceIdentifier, string $prototypeName = null): ResponseInterface
     {
@@ -145,7 +129,8 @@ class FormEditorController extends AbstractBackendController
             'maximumUndoSteps' => $this->prototypeConfiguration['formEditor']['maximumUndoSteps'],
         ];
 
-        $this->view->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->assign('formEditorTemplates', $this->renderFormEditorTemplates($formEditorDefinitions));
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $addInlineSettings = [
@@ -196,35 +181,26 @@ class FormEditorController extends AbstractBackendController
             $pageRenderer->addCssFile($stylesheet);
         }
 
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab'),
             $formDefinition['label']
         );
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Backend/FormEditor/Index');
     }
 
     /**
      * Initialize the save action.
      * This action uses the Fluid JsonView::class as view.
-     *
-     * @internal
      */
-    public function initializeSaveFormAction()
+    public function initializeSaveFormAction(): void
     {
         $this->defaultViewObjectName = JsonView::class;
     }
 
     /**
      * Save a formDefinition which was build by the form editor.
-     *
-     * @param string $formPersistenceIdentifier
-     * @param FormDefinitionArray $formDefinition
-     * @return ResponseInterface
-     * @internal
      */
     public function saveFormAction(string $formPersistenceIdentifier, FormDefinitionArray $formDefinition): ResponseInterface
     {
@@ -274,12 +250,6 @@ class FormEditorController extends AbstractBackendController
     /**
      * Render a page from the formDefinition which was build by the form editor.
      * Use the frontend rendering and set the form framework to preview mode.
-     *
-     * @param FormDefinitionArray $formDefinition
-     * @param int $pageIndex
-     * @param string $prototypeName
-     * @return ResponseInterface
-     * @internal
      */
     public function renderFormPageAction(
         FormDefinitionArray $formDefinition,
@@ -302,10 +272,6 @@ class FormEditorController extends AbstractBackendController
     /**
      * Build a SiteLanguage object to render the form preview with a
      * specific language.
-     *
-     * @param int $pageId
-     * @param int $languageId
-     * @return SiteLanguage
      */
     protected function buildFakeSiteLanguage(int $pageId, int $languageId): SiteLanguage
     {
@@ -325,7 +291,7 @@ class FormEditorController extends AbstractBackendController
             ],
         ];
 
-        /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $currentSiteLanguage */
+        /** @var SiteLanguage $currentSiteLanguage */
         $currentSiteLanguage = GeneralUtility::makeInstance(Site::class, 'form-dummy', $pageId, $fakeSiteConfiguration)
             ->getLanguageById($languageId);
         return $currentSiteLanguage;
@@ -334,9 +300,6 @@ class FormEditorController extends AbstractBackendController
     /**
      * Prepare the formElements.*.formEditor section from the YAML settings.
      * Sort all formElements into groups and add additional data.
-     *
-     * @param array $formElementsDefinition
-     * @return array
      */
     protected function getInsertRenderablesPanelConfiguration(array $formElementsDefinition): array
     {
@@ -393,8 +356,6 @@ class FormEditorController extends AbstractBackendController
 
     /**
      * Reduce the YAML settings by the 'formEditor' keyword.
-     *
-     * @return array
      */
     protected function getFormEditorDefinitions(): array
     {
@@ -428,7 +389,7 @@ class FormEditorController extends AbstractBackendController
      */
     protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-form');
 
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $getVars = $request->getArguments();
@@ -498,9 +459,6 @@ class FormEditorController extends AbstractBackendController
 
     /**
      * Render the "text/x-formeditor-template" templates.
-     *
-     * @param array $formEditorDefinitions
-     * @return string
      */
     protected function renderFormEditorTemplates(array $formEditorDefinitions): string
     {
@@ -548,8 +506,6 @@ class FormEditorController extends AbstractBackendController
 
     /**
      * @todo move this to FormDefinitionConversionService
-     * @param array $formDefinition
-     * @return array
      */
     protected function transformFormDefinitionForFormEditor(array $formDefinition): array
     {
@@ -630,11 +586,6 @@ class FormEditorController extends AbstractBackendController
      *     _value => 3
      *   ],
      * ]
-     *
-     * @param array $formDefinition
-     * @param string $identifierProperty
-     * @param array $multiValueProperties
-     * @return array
      */
     protected function transformMultiValuePropertiesForFormEditor(
         array $formDefinition,
@@ -688,9 +639,6 @@ class FormEditorController extends AbstractBackendController
 
     /**
      * Remove keys from an array if the key value is an empty array
-     *
-     * @param array $array
-     * @return array
      */
     protected function filterEmptyArrays(array $array): array
     {
@@ -713,9 +661,6 @@ class FormEditorController extends AbstractBackendController
 
     /**
      * Migrate single recipient options to their list successors
-     *
-     * @param array $formDefinition
-     * @return array
      */
     protected function migrateEmailFinisherRecipients(array $formDefinition): array
     {

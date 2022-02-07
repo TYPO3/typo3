@@ -53,46 +53,33 @@ class FormManagerController extends AbstractBackendController
 {
     protected const JS_MODULE_NAMES = ['app', 'viewModel'];
 
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-    protected IconFactory $iconFactory;
-    protected DatabaseService $databaseService;
-
     protected int $limit = 20;
 
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer,
-        IconFactory $iconFactory,
-        DatabaseService $databaseService
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly IconFactory $iconFactory,
+        // @todo: unit tests set next one, so no readonly. refactor them to functionals?!
+        protected DatabaseService $databaseService,
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->iconFactory = $iconFactory;
-        $this->databaseService = $databaseService;
     }
 
     /**
-     * Displays the Form Manager
-     *
-     * @param int $page
-     * @return ResponseInterface
-     * @internal
+     * Display the Form Manager. The main showing available forms.
      */
-    public function indexAction(int $page = 1): ResponseInterface
+    protected function indexAction(int $page = 1): ResponseInterface
     {
         $forms = $this->getAvailableFormDefinitions();
         $arrayPaginator = new ArrayPaginator($forms, $page, $this->limit);
         $pagination = new SimplePagination($arrayPaginator);
 
-        $this->view->assignMultiple(
-            [
-                'paginator' => $arrayPaginator,
-                'pagination' => $pagination,
-                'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
-                'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
-            ]
-        );
+        $moduleTemplate = $this->initializeModuleTemplate($this->request);
+        $moduleTemplate->assignMultiple([
+            'paginator' => $arrayPaginator,
+            'pagination' => $pagination,
+            'stylesheets' => $this->resolveResourcePaths($this->formSettings['formManager']['stylesheets']),
+            'formManagerAppInitialData' => json_encode($this->getFormManagerAppInitialData()),
+        ]);
         if (!empty($this->formSettings['formManager']['javaScriptTranslationFile'])) {
             $this->pageRenderer->addInlineLanguageLabelFile($this->formSettings['formManager']['javaScriptTranslationFile']);
         }
@@ -123,23 +110,19 @@ class FormManagerController extends AbstractBackendController
             JavaScriptModuleInstruction::create('TYPO3/CMS/Form/Backend/Helper.js', 'Helper')
                 ->invoke('dispatchFormManager', $jsModules, $this->getFormManagerAppInitialData())
         );
-        $moduleTemplate = $this->initializeModuleTemplate($this->request);
         $moduleTemplate->setModuleClass($this->request->getPluginName() . '_' . $this->request->getControllerName());
         $moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $moduleTemplate->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:form/Resources/Private/Language/locallang_module.xlf:mlang_tabs_tab')
         );
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Backend/FormManager/Index');
     }
 
     /**
-     * Initialize the create action.
+     * Initialize the "create" action.
      * This action uses the Fluid JsonView::class as view.
-     *
-     * @internal
      */
-    public function initializeCreateAction()
+    protected function initializeCreateAction(): void
     {
         $this->defaultViewObjectName = JsonView::class;
     }
@@ -147,16 +130,10 @@ class FormManagerController extends AbstractBackendController
     /**
      * Creates a new Form and redirects to the Form Editor
      *
-     * @param string $formName
-     * @param string $templatePath
-     * @param string $prototypeName
-     * @param string $savePath
-     * @return ResponseInterface
      * @throws FormException
      * @throws PersistenceManagerException
-     * @internal
      */
-    public function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath): ResponseInterface
+    protected function createAction(string $formName, string $templatePath, string $prototypeName, string $savePath): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500657);
@@ -215,10 +192,8 @@ class FormManagerController extends AbstractBackendController
     /**
      * Initialize the duplicate action.
      * This action uses the Fluid JsonView::class as view.
-     *
-     * @internal
      */
-    public function initializeDuplicateAction()
+    protected function initializeDuplicateAction(): void
     {
         $this->defaultViewObjectName = JsonView::class;
     }
@@ -226,14 +201,9 @@ class FormManagerController extends AbstractBackendController
     /**
      * Duplicates a given formDefinition and redirects to the Form Editor
      *
-     * @param string $formName
-     * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
-     * @param string $savePath
-     * @return ResponseInterface
      * @throws PersistenceManagerException
-     * @internal
      */
-    public function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath): ResponseInterface
+    protected function duplicateAction(string $formName, string $formPersistenceIdentifier, string $savePath): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($savePath)) {
             throw new PersistenceManagerException(sprintf('Save to path "%s" is not allowed', $savePath), 1614500658);
@@ -286,10 +256,8 @@ class FormManagerController extends AbstractBackendController
     /**
      * Initialize the references action.
      * This action uses the Fluid JsonView::class as view.
-     *
-     * @internal
      */
-    public function initializeReferencesAction()
+    protected function initializeReferencesAction(): void
     {
         $this->defaultViewObjectName = JsonView::class;
     }
@@ -297,12 +265,9 @@ class FormManagerController extends AbstractBackendController
     /**
      * Show references to this persistence identifier
      *
-     * @param string $formPersistenceIdentifier persistence identifier of the form to duplicate
-     * @return ResponseInterface
      * @throws PersistenceManagerException
-     * @internal
      */
-    public function referencesAction(string $formPersistenceIdentifier): ResponseInterface
+    protected function referencesAction(string $formPersistenceIdentifier): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Read from "%s" is not allowed', $formPersistenceIdentifier), 1614500660);
@@ -323,11 +288,9 @@ class FormManagerController extends AbstractBackendController
     /**
      * Delete a formDefinition identified by the $formPersistenceIdentifier.
      *
-     * @param string $formPersistenceIdentifier persistence identifier to delete
      * @throws PersistenceManagerException
-     * @internal
      */
-    public function deleteAction(string $formPersistenceIdentifier): ResponseInterface
+    protected function deleteAction(string $formPersistenceIdentifier): ResponseInterface
     {
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier)) {
             throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
@@ -363,12 +326,10 @@ class FormManagerController extends AbstractBackendController
     /**
      * Return a list of all accessible file mountpoints.
      *
-     * Only registered mountpoints from
+     * Only registered mount points from
      * TYPO3.CMS.Form.persistenceManager.allowedFileMounts
      * are listed. This list will be reduced by the configured
-     * mountpoints for the current backend user.
-     *
-     * @return array
+     * mount points for the current backend user.
      */
     protected function getAccessibleFormStorageFolders(): array
     {
@@ -395,8 +356,6 @@ class FormManagerController extends AbstractBackendController
     /**
      * Returns the json encoded data which is used by the form editor
      * JavaScript app.
-     *
-     * @return array
      */
     protected function getFormManagerAppInitialData(): array
     {
@@ -422,7 +381,6 @@ class FormManagerController extends AbstractBackendController
     /**
      * List all formDefinitions which can be loaded through t form persistence
      * manager. Enrich this data by a reference counter.
-     * @return array
      */
     protected function getAvailableFormDefinitions(): array
     {
@@ -452,8 +410,6 @@ class FormManagerController extends AbstractBackendController
      * Returns an array with information about the references for a
      * formDefinition identified by $persistenceIdentifier.
      *
-     * @param string $persistenceIdentifier
-     * @return array
      * @throws \InvalidArgumentException
      */
     protected function getProcessedReferencesRows(string $persistenceIdentifier): array
@@ -498,10 +454,6 @@ class FormManagerController extends AbstractBackendController
      *
      * Valid template paths has to be configured within
      * TYPO3.CMS.Form.formManager.selectablePrototypesConfiguration.[('identifier':  $prototypeName)].newFormTemplates.[('templatePath': $templatePath)]
-     *
-     * @param string $prototypeName
-     * @param string $templatePath
-     * @return bool
      */
     protected function isValidTemplatePath(string $prototypeName, string $templatePath): bool
     {
@@ -532,7 +484,7 @@ class FormManagerController extends AbstractBackendController
      */
     protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-form');
 
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -562,9 +514,6 @@ class FormManagerController extends AbstractBackendController
 
     /**
      * Returns a form identifier which is the lower cased form name.
-     *
-     * @param string $formName
-     * @return string
      */
     protected function convertFormNameToIdentifier(string $formName): string
     {
@@ -579,23 +528,14 @@ class FormManagerController extends AbstractBackendController
 
     /**
      * Wrapper used for unit testing.
-     *
-     * @param string $table
-     * @param int $uid
-     * @return array|null
      */
-    protected function getRecord(string $table, int $uid)
+    protected function getRecord(string $table, int $uid): ?array
     {
         return BackendUtility::getRecord($table, $uid);
     }
 
     /**
      * Wrapper used for unit testing.
-     *
-     * @param string $table
-     * @param array $row
-     * @param bool $prep
-     * @return string
      */
     protected function getRecordTitle(string $table, array $row, bool $prep = false): string
     {
@@ -604,14 +544,9 @@ class FormManagerController extends AbstractBackendController
 
     /**
      * Wrapper used for unit testing.
-     *
-     * @param string $moduleName
-     * @param array $urlParameters
-     * @return string
      */
     protected function getModuleUrl(string $moduleName, array $urlParameters = []): string
     {
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute($moduleName, $urlParameters);
     }

@@ -32,11 +32,6 @@ call_user_func(static function () {
             10 = EXT:form/Configuration/Yaml/FormSetup.yaml
         }
     }
-    view {
-        templateRootPaths.10 = EXT:form/Resources/Private/Backend/Templates/
-        partialRootPaths.10 = EXT:form/Resources/Private/Backend/Partials/
-        layoutRootPaths.10 = EXT:form/Resources/Private/Backend/Layouts/
-    }
 }'
     );
 

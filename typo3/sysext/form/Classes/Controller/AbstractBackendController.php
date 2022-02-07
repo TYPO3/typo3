@@ -31,29 +31,14 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  */
 abstract class AbstractBackendController extends ActionController
 {
+    protected array $formSettings;
+    protected FormPersistenceManagerInterface $formPersistenceManager;
 
-    /**
-     * @var array
-     */
-    protected $formSettings;
-
-    /**
-     * @var \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface
-     */
-    protected $formPersistenceManager;
-
-    /**
-     * @param \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface $formPersistenceManager
-     * @internal
-     */
     public function injectFormPersistenceManager(FormPersistenceManagerInterface $formPersistenceManager)
     {
         $this->formPersistenceManager = $formPersistenceManager;
     }
 
-    /**
-     * @internal
-     */
     public function initializeObject()
     {
         $this->formSettings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
@@ -73,9 +58,6 @@ abstract class AbstractBackendController extends ActionController
      * [
      *   0 => 'typo3/sysext/form/Resources/Public/Css/form.css'
      * ]
-     *
-     * @param array $resourcePaths
-     * @return array
      */
     protected function resolveResourcePaths(array $resourcePaths): array
     {
@@ -87,7 +69,6 @@ abstract class AbstractBackendController extends ActionController
             }
             $return[] = $resourcePath;
         }
-
         return $return;
     }
 }
