@@ -1353,16 +1353,12 @@ class EditDocumentController
             ) {
                 $previewPageId = $this->getPreviewPageId();
                 try {
-                    $previewUrl = BackendUtility::getPreviewUrl(
-                        $previewPageId,
-                        '',
-                        BackendUtility::BEgetRootLine($previewPageId),
-                        $this->getPreviewUrlAnchorSection(),
-                        $this->viewUrl,
-                        $this->getPreviewUrlParameters($previewPageId)
-                    );
+                    $previewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class, $previewPageId)
+                        ->withSection($this->getPreviewUrlAnchorSection())
+                        ->withAdditionalQueryParameters($this->getPreviewUrlParameters($previewPageId))
+                        ->buildUri();
                     $viewButton = $buttonBar->makeLinkButton()
-                        ->setHref($previewUrl)
+                        ->setHref((string)$previewUrl)
                         ->setIcon($this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))

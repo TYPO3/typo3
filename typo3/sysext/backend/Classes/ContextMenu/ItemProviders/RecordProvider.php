@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -456,14 +457,10 @@ class RecordProvider extends AbstractProvider
         }
 
         try {
-            return BackendUtility::getPreviewUrl(
-                $this->getPreviewPid(),
-                '',
-                null,
-                $anchorSection,
-                '',
-                $additionalParams
-            );
+            return (string)GeneralUtility::makeInstance(PreviewUriBuilder::class, $this->getPreviewPid())
+                ->withAdditionalQueryParameters($additionalParams)
+                ->withSection($anchorSection)
+                ->buildUri();
         } catch (UnableToLinkToPageException $e) {
             return '';
         }

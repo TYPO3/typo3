@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Viewpage\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -82,7 +83,10 @@ class ViewModuleController
 
         try {
             $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
-            $targetUrl = BackendUtility::getPreviewUrl($pageId, '', null, '', '', $this->getTypeParameterIfSet($pageId) . '&L=' . $languageId);
+            $targetUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class, $pageId)
+                ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId) . '&L=' . $languageId)
+                ->buildUri();
+            $targetUrl = (string)$targetUrl;
         } catch (UnableToLinkToPageException $e) {
             $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noSiteConfiguration'),
