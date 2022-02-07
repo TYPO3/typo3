@@ -1,6 +1,12 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Administration" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
 <f:section name="Content">
+    <h1><f:translate key="administration.statistics" /></h1>
 
     <p class="lead"><f:translate key="administration.index.description" /></p>
     <div class="row">
@@ -78,10 +84,9 @@
             </f:be.infobox>
         </f:else>
     </f:if>
-
 </f:section>
-<f:section name="statistic">
 
+<f:section name="statistic">
     <h4>
         <f:translate key="administration.statistics.mostSearched.{title}" />
     </h4>
@@ -112,6 +117,6 @@
             </f:be.infobox>
         </f:else>
     </f:if>
-
 </f:section>
+
 </html>

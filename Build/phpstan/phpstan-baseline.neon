@@ -4936,11 +4936,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
 
 		-
-			message: "#^Parameter \\#2 \\$returnRawMetaphoneValue of method TYPO3\\\\CMS\\\\IndexedSearch\\\\Indexer\\:\\:metaphone\\(\\) expects bool, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Controller/AdministrationController.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Controller/SearchController.php

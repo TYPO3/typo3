@@ -1,7 +1,13 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Administration" />
-<f:section name="Content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1><f:translate key="administration.statistics" /></h1>
     <p class="lead"><f:translate key="administration.document.description" /></p>
     <f:if condition="{phashRow}">
         <f:then>
@@ -111,10 +117,9 @@
             <f:be.infobox state="2" message="no record found" />
         </f:else>
     </f:if>
-
 </f:section>
-<f:section name="wordlisting">
 
+<f:section name="wordlisting">
     <h4><f:translate key="administration.document.{title}" />
     <f:if condition="{title}=='words'">
         ({f:count(subject:words)})
@@ -184,6 +189,6 @@
             </f:if>
         </f:form>
     </f:if>
-
 </f:section>
+
 </html>

@@ -1,7 +1,14 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Administration" />
-<f:section name="Content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1><f:translate key="administration.statistics" /></h1>
     <f:if condition="{tree}">
         <f:then>
             <f:form name="statistic" action="statistic" class="form-horizontal" arguments="{id:pageUid}">
@@ -137,6 +144,6 @@
             <h2><f:translate key="administration.noPageSelected" /></h2>
         </f:else>
     </f:if>
-
 </f:section>
+
 </html>

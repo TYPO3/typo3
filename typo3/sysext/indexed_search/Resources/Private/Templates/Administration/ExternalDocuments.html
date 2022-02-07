@@ -1,7 +1,13 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Administration" />
-<f:section name="Content">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:is="http://typo3.org/ns/TYPO3/CMS/IndexedSearch/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
 
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1><f:translate key="administration.statistics" /></h1>
     <h2><f:translate key="administration.external.title" /></h2>
     <f:if condition="{records}">
         <table class="table table-striped table-hover">
@@ -64,6 +70,6 @@
             </tbody>
         </table>
     </f:if>
-
 </f:section>
+
 </html>
