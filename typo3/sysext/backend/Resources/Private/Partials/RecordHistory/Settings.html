@@ -6,8 +6,8 @@
     <form action="{settingsFormUrl}" name="recordHistorySettingsForm" method="post">
         <div class="row row-cols-auto g-3">
             <div class="col">
-                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:maxSteps" /></label>
-                <select class="form-select form-select-sm" name="settings[maxSteps]" data-global-event="change" data-action-submit="$form">
+                <label class="form-label" for="maxSteps"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:maxSteps" /></label>
+                <select class="form-select form-select-sm" id="maxSteps" name="settings[maxSteps]" data-global-event="change" data-action-submit="$form">
                     <option value="10" {f:if(condition: '{moduleSettings.maxSteps} == 10', then :'selected')}>10</option>
                     <option value="20" {f:if(condition: '{moduleSettings.maxSteps} == 20', then :'selected')}>20</option>
                     <option value="50" {f:if(condition: '{moduleSettings.maxSteps} == 50', then :'selected')}>50</option>
@@ -16,20 +16,20 @@
                 </select>
             </div>
             <div class="col">
-                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showDiff" /></label>
+                <label class="form-label" for="showDiff"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showDiff" /></label>
                 <div class="form-check form-switch">
                     <input type="hidden" value="0" name="settings[showDiff]" />
-                    <input type="checkbox" value="1" name="settings[showDiff]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showDiff}', then: 'checked')} />
+                    <input type="checkbox" id="showDiff" value="1" name="settings[showDiff]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showDiff}', then: 'checked')} />
                     <label class="form-check-label">
                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showDiff_inline" />
                     </label>
                 </div>
             </div>
             <div class="col">
-                <label class="form-label"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showSubElements" /></label>
+                <label class="form-label" for="showSubElements"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:showSubElements" /></label>
                 <div class="form-check form-switch">
                     <input type="hidden" value="0" name="settings[showSubElements]" />
-                    <input type="checkbox" value="1" name="settings[showSubElements]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showSubElements}', then: 'checked')} />
+                    <input type="checkbox" id="showSubElements" value="1" name="settings[showSubElements]" data-global-event="change" data-action-submit="$form" class="form-check-input" {f:if(condition: '{moduleSettings.showSubElements}', then: 'checked')} />
                     <label class="form-check-label">
                         <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes" />
                     </label>
