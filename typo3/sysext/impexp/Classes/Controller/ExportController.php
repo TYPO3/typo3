@@ -25,7 +25,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception as CoreException;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -37,7 +36,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Impexp\Domain\Repository\PresetRepository;
 use TYPO3\CMS\Impexp\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Impexp\Exception\MalformedPresetException;
@@ -73,21 +71,12 @@ class ExportController
         'list' => [],
     ];
 
-    protected IconFactory $iconFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ResponseFactoryInterface $responseFactory;
-    protected PresetRepository $presetRepository;
-
     public function __construct(
-        IconFactory $iconFactory,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ResponseFactoryInterface $responseFactory,
-        PresetRepository $presetRepository
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly PresetRepository $presetRepository
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->responseFactory = $responseFactory;
-        $this->presetRepository = $presetRepository;
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -114,10 +103,10 @@ class ExportController
         }
         $inputData['preset']['public'] = (int)($inputData['preset']['public'] ?? 0);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-impexp');
 
         $presetAction = $parsedBody['preset'] ?? [];
-        $inputData = $this->processPresets($moduleTemplate, $presetAction, $inputData);
+        $inputData = $this->processPresets($view, $presetAction, $inputData);
 
         $export = $this->configureExportFromFormData($inputData);
         $export->process();
@@ -127,13 +116,10 @@ class ExportController
         }
         $saveFolder = $export->getOrCreateDefaultImportExportFolder();
         if (($inputData['save_export'] ?? false) && ($saveFolder instanceof Folder)) {
-            $this->saveExportToFile($moduleTemplate, $export, $saveFolder);
+            $this->saveExportToFile($view, $export, $saveFolder);
         }
         $inputData['filename'] = $export->getExportFileName();
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:impexp/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:impexp/Resources/Private/Partials']);
         $view->assignMultiple([
             'id' => $id,
             'errors' => $export->getErrorLog(),
@@ -153,13 +139,12 @@ class ExportController
             'extensions' => $this->getExtensionList(),
             'inData' => $inputData,
         ]);
-        $moduleTemplate->setContent($view->render('Export.html'));
-        $moduleTemplate->setModuleName('');
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfo);
-        return new HtmlResponse($moduleTemplate->renderContent());
+        $view->setModuleName('');
+        $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
+        return $view->renderResponse('Export');
     }
 
-    protected function processPresets(ModuleTemplate $moduleTemplate, array $presetAction, array $inputData): array
+    protected function processPresets(ModuleTemplate $view, array $presetAction, array $inputData): array
     {
         if (empty($presetAction)) {
             return $inputData;
@@ -170,19 +155,19 @@ class ExportController
                 if ($presetUid > 0) {
                     // Update existing
                     $this->presetRepository->updatePreset($presetUid, $inputData);
-                    $moduleTemplate->addFlashMessage('Preset #' . $presetUid . ' saved!', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('Preset #' . $presetUid . ' saved!', 'Presets', AbstractMessage::INFO);
                 } else {
                     // Insert new
                     $this->presetRepository->createPreset($inputData);
-                    $moduleTemplate->addFlashMessage('New preset "' . $inputData['preset']['title'] . '" is created', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('New preset "' . $inputData['preset']['title'] . '" is created', 'Presets', AbstractMessage::INFO);
                 }
             }
             if (isset($presetAction['delete'])) {
                 if ($presetUid > 0) {
                     $this->presetRepository->deletePreset($presetUid);
-                    $moduleTemplate->addFlashMessage('Preset #' . $presetUid . ' deleted!', 'Presets', AbstractMessage::INFO);
+                    $view->addFlashMessage('Preset #' . $presetUid . ' deleted!', 'Presets', AbstractMessage::INFO);
                 } else {
-                    $moduleTemplate->addFlashMessage('ERROR: No preset selected for deletion.', 'Presets', AbstractMessage::ERROR);
+                    $view->addFlashMessage('ERROR: No preset selected for deletion.', 'Presets', AbstractMessage::ERROR);
                 }
             }
             if (isset($presetAction['load']) || isset($presetAction['merge'])) {
@@ -197,17 +182,17 @@ class ExportController
                         if (is_array($presetData['list'] ?? null)) {
                             $inputData['list'] = array_merge((array)$inputData['list'], $presetData['list']);
                         }
-                        $moduleTemplate->addFlashMessage('Preset #' . $presetUid . ' merged!', 'Presets', AbstractMessage::INFO);
+                        $view->addFlashMessage('Preset #' . $presetUid . ' merged!', 'Presets', AbstractMessage::INFO);
                     } else {
                         $inputData = $presetData;
-                        $moduleTemplate->addFlashMessage('Preset #' . $presetUid . ' loaded!', 'Presets', AbstractMessage::INFO);
+                        $view->addFlashMessage('Preset #' . $presetUid . ' loaded!', 'Presets', AbstractMessage::INFO);
                     }
                 } else {
-                    $moduleTemplate->addFlashMessage('ERROR: No preset selected for loading.', 'Presets', AbstractMessage::ERROR);
+                    $view->addFlashMessage('ERROR: No preset selected for loading.', 'Presets', AbstractMessage::ERROR);
                 }
             }
         } catch (PresetNotFoundException|InsufficientUserPermissionsException|MalformedPresetException $e) {
-            $moduleTemplate->addFlashMessage($e->getMessage(), 'Presets', AbstractMessage::ERROR);
+            $view->addFlashMessage($e->getMessage(), 'Presets', AbstractMessage::ERROR);
         }
         return $inputData;
     }
@@ -257,18 +242,18 @@ class ExportController
         return $response;
     }
 
-    protected function saveExportToFile(ModuleTemplate $moduleTemplate, Export $export, Folder $saveFolder): void
+    protected function saveExportToFile(ModuleTemplate $view, Export $export, Folder $saveFolder): void
     {
         $languageService = $this->getLanguageService();
         try {
             $saveFile = $export->saveToFile();
             $saveFileSize = $saveFile->getProperty('size');
-            $moduleTemplate->addFlashMessage(
+            $view->addFlashMessage(
                 sprintf($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_savedInSBytes'), $saveFile->getPublicUrl(), GeneralUtility::formatSize($saveFileSize)),
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_savedFile')
             );
         } catch (CoreException $e) {
-            $moduleTemplate->addFlashMessage(
+            $view->addFlashMessage(
                 sprintf($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_badPathS'), $saveFolder->getPublicUrl()),
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_problemsSavingFile'),
                 AbstractMessage::ERROR

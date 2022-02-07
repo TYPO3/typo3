@@ -3,85 +3,92 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'TYPO3/CMS/Backend/ContextMenu.js',
-        1: 'TYPO3/CMS/Impexp/ImportExport.js',
-        2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
-    }"
-/>
-<form action="{f:be.uri(route:'tx_impexp_export')}" method="post" id="ImportExportController">
-    <f:variable name="args" value="{0: 'web', 1: id}" />
-    <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-    <input type="hidden" name="id" value="{id}" />
 
-    <h1>
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export"/>
-    </h1>
+<f:layout name="Module" />
 
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration" role="tab" data-bs-toggle="tab">
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:tableselec_configuration" />
-            </a>
-        </li>
-        <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-bs-toggle="tab">
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_filePreset" />
-            </a>
-        </li>
-        <li role="presentation" class="nav-item">
-            <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-bs-toggle="tab">
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_advancedOptions" />
-            </a>
-        </li>
-        <f:if condition="{errors -> f:count()} > 0">
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: 'TYPO3/CMS/Backend/ContextMenu.js',
+            1: 'TYPO3/CMS/Impexp/ImportExport.js',
+            2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
+        }"
+    />
+    <form action="{f:be.uri(route:'tx_impexp_export')}" method="post" id="ImportExportController">
+        <f:variable name="args" value="{0: 'web', 1: id}" />
+        <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+        <input type="hidden" name="id" value="{id}" />
+
+        <h1>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:title_export"/>
+        </h1>
+
+        <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="nav-item">
-                <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-bs-toggle="tab">
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_messages" />
-                    <core:icon identifier="status-dialog-warning" />
+                <a class="nav-link text-capitalize active" href="#export-configuration" aria-controls="export-configuration" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:tableselec_configuration" />
                 </a>
             </li>
-        </f:if>
-    </ul>
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="export-configuration">
-            <div class="panel panel-tab">
-                <div class="panel-body">
-                    <f:render partial="Export/Configuration" arguments="{_all}"/>
-                </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="export-filepreset">
-            <div class="panel panel-tab">
-                <div class="panel-body">
-                    <f:render partial="Export/Save" arguments="{_all}"/>
-                </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="export-advancedoptions">
-            <div class="panel panel-tab">
-                <div class="panel-body">
-                    <f:render partial="Export/AdvancedOptions" arguments="{_all}"/>
-                </div>
-            </div>
-        </div>
-        <f:if condition="{errors -> f:count()} > 0">
-            <div role="tabpanel" class="tab-pane" id="export-errors">
+            <li role="presentation" class="nav-item">
+                <a class="nav-link text-capitalize" href="#export-filepreset" aria-controls="export-filepreset" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_filePreset" />
+                </a>
+            </li>
+            <li role="presentation" class="nav-item">
+                <a class="nav-link text-capitalize" href="#export-advancedoptions" aria-controls="export-advancedoptions" role="tab" data-bs-toggle="tab">
+                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_advancedOptions" />
+                </a>
+            </li>
+            <f:if condition="{errors -> f:count()} > 0">
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link text-capitalize" href="#export-errors" aria-controls="export-errors" role="tab" data-bs-toggle="tab">
+                        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:exportdata_messages" />
+                        <core:icon identifier="status-dialog-warning" />
+                    </a>
+                </li>
+            </f:if>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="export-configuration">
                 <div class="panel panel-tab">
                     <div class="panel-body">
-                        <div class="callout callout-danger">
-                            <f:for each="{errors}" as="error">
-                                <p>{error}</p>
-                            </f:for>
-                        </div>
+                        <f:render partial="Export/Configuration" arguments="{_all}"/>
                     </div>
                 </div>
             </div>
-        </f:if>
-    </div>
+            <div role="tabpanel" class="tab-pane" id="export-filepreset">
+                <div class="panel panel-tab">
+                    <div class="panel-body">
+                        <f:render partial="Export/Save" arguments="{_all}"/>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="export-advancedoptions">
+                <div class="panel panel-tab">
+                    <div class="panel-body">
+                        <f:render partial="Export/AdvancedOptions" arguments="{_all}"/>
+                    </div>
+                </div>
+            </div>
+            <f:if condition="{errors -> f:count()} > 0">
+                <div role="tabpanel" class="tab-pane" id="export-errors">
+                    <div class="panel panel-tab">
+                        <div class="panel-body">
+                            <div class="callout callout-danger">
+                                <f:for each="{errors}" as="error">
+                                    <p>{error}</p>
+                                </f:for>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </f:if>
+        </div>
 
-    <f:render partial="Preview" arguments="{_all}"/>
-</form>
+        <f:render partial="Preview" arguments="{_all}"/>
+    </form>
+
+</f:section>
 
 </html>

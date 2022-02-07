@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -37,7 +36,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Impexp\Import;
 
 /**
@@ -51,21 +49,12 @@ class ImportController
     protected const UPLOAD_DONE = 1;
     protected const UPLOAD_FAILED = 2;
 
-    protected IconFactory $iconFactory;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ExtendedFileUtility $fileProcessor;
-    protected ResourceFactory $resourceFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ExtendedFileUtility $fileProcessor,
-        ResourceFactory $resourceFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly ExtendedFileUtility $fileProcessor,
+        protected readonly ResourceFactory $resourceFactory
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->fileProcessor = $fileProcessor;
-        $this->resourceFactory = $resourceFactory;
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -94,13 +83,13 @@ class ImportController
             unset($inputData['import_mode']);
         }
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-impexp');
 
         $uploadStatus = self::NO_UPLOAD;
         $uploadedFileName = '';
         if ($request->getMethod() === 'POST' && empty($parsedBody)) {
             // This happens if the post request was larger than allowed on the server.
-            $moduleTemplate->addFlashMessage(
+            $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_nodata'),
                 $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_upload_error'),
                 AbstractMessage::ERROR
@@ -116,12 +105,9 @@ class ImportController
             }
         }
 
-        $import = $this->configureImportFromFormDataAndImportIfRequested($moduleTemplate, $id, $inputData);
+        $import = $this->configureImportFromFormDataAndImportIfRequested($view, $id, $inputData);
         $importFolder = $import->getOrCreateDefaultImportExportFolder();
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:impexp/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:impexp/Resources/Private/Partials']);
         $view->assignMultiple([
             'importFolder' => ($importFolder instanceof Folder) ? $importFolder->getCombinedIdentifier(): '',
             'import' => $import,
@@ -134,18 +120,17 @@ class ImportController
             'uploadedFile' => $uploadedFileName,
             'uploadStatus' => $uploadStatus,
         ]);
-        $moduleTemplate->setContent($view->render('Import.html'));
-        $moduleTemplate->setModuleName('');
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageInfo);
+        $view->setModuleName('');
+        $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
         if ((int)($pageInfo['uid'] ?? 0) > 0) {
-            $this->addDocHeaderPreviewButton($moduleTemplate, (int)$pageInfo['uid']);
+            $this->addDocHeaderPreviewButton($view, (int)$pageInfo['uid']);
         }
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $view->renderResponse('Import');
     }
 
-    protected function addDocHeaderPreviewButton(ModuleTemplate $moduleTemplate, int $pageUid): void
+    protected function addDocHeaderPreviewButton(ModuleTemplate $view, int $pageUid): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $previewDataAttributes = PreviewUriBuilder::create($pageUid)
             ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
             ->buildDispatcherDataAttributes();
@@ -187,7 +172,7 @@ class ImportController
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    protected function configureImportFromFormDataAndImportIfRequested(ModuleTemplate $moduleTemplate, int $id, array $inputData): Import
+    protected function configureImportFromFormDataAndImportIfRequested(ModuleTemplate $view, int $id, array $inputData): Import
     {
         $import = GeneralUtility::makeInstance(Import::class);
         $import->setPid($id);
@@ -208,7 +193,7 @@ class ImportController
                     BackendUtility::setUpdateSignal('updatePageTree');
                 }
             } catch (\Exception $e) {
-                $moduleTemplate->addFlashMessage($e->getMessage(), '', AbstractMessage::ERROR);
+                $view->addFlashMessage($e->getMessage(), '', AbstractMessage::ERROR);
             }
         }
         return $import;
