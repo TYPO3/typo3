@@ -81,15 +81,25 @@ class TcaItemsProcessorFunctions
         $languageService = $this->getLanguageService();
         foreach ($modules as $identifier => $module) {
             // Item configuration
+            $label = $languageService->sL($module->getTitle());
+            $parentModule = $module->getParentModule();
+            while ($parentModule) {
+                $label = $languageService->sL($parentModule->getTitle()) . ' > ' . $label;
+                $parentModule = $parentModule->getParentModule();
+            }
+            $help = null;
+            if ($module->getDescription()) {
+                $help = [
+                    'title' =>  $languageService->sL($module->getShortDescription()),
+                    'description' => $languageService->sL($module->getDescription()),
+                ];
+            }
             $fieldDefinition['items'][] = [
-                ($module->hasParentModule() ? $languageService->sL($module->getParentModule()->getTitle()) . '>' : '') . $languageService->sL($module->getTitle()),
+                $label,
                 $identifier,
                 $module->getIconIdentifier(),
                 null,
-                [
-                    'title' => $languageService->sL($module->getShortDescription()),
-                    'description' => $languageService->sL($module->getDescription()),
-                ],
+                $help,
             ];
         }
     }

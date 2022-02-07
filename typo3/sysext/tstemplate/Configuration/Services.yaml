@@ -7,16 +7,13 @@ services:
   TYPO3\CMS\Tstemplate\:
     resource: '../Classes/*'
 
-  TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController:
-    public: true
-
   TYPO3\CMS\Tstemplate\Hooks\DataHandlerClearCachePostProcHook:
     public: true
 
   TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController:
     tags: [ 'backend.controller' ]
 
-  TYPO3\CMS\Tstemplate\Controller\TyposcriptConstantEditorController:
+  TYPO3\CMS\Tstemplate\Controller\TypoScriptConstantEditorController:
     tags: [ 'backend.controller' ]
 
   TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationController:

@@ -7,30 +7,9 @@
 
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/context-menu.js',
-            1: '@typo3/backend/element/immediate-action-element.js'
-        }"
-    />
-
-    <f:if condition="{accessContent}">
-        <f:then>
-            <form
-                action="{formAction}"
-                method="post"
-                id="InfoModuleController"
-                name="webinfoForm"
-            >
-                <f:variable name="args" value="{0: 'web', 1: id}" />
-                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-                <f:format.raw>{functionMenuModuleContent}</f:format.raw>
-            </form>
-        </f:then>
-        <f:else>
-            <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title" /></h1>
-        </f:else>
-    </f:if>
+    <f:be.infobox title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title')}" state="2">
+        <p><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:message" /></p>
+    </f:be.infobox>
 
 </f:section>
 

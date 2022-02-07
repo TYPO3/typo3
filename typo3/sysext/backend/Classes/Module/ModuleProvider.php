@@ -51,7 +51,15 @@ class ModuleProvider
         if (($user === null && $this->moduleRegistry->hasModule($identifier))
             || $this->accessGranted($identifier, $user, $respectWorkspaceRestrictions)
         ) {
-            return $this->moduleRegistry->getModule($identifier);
+            $module = $this->moduleRegistry->getModule($identifier);
+            if ($module->hasSubModules()) {
+                foreach ($module->getSubModules() as $subModuleIdentifier => $subModule) {
+                    if ($user !== null && !$this->accessGranted($subModuleIdentifier, $user, $respectWorkspaceRestrictions)) {
+                        $module->removeSubModule($subModuleIdentifier);
+                    }
+                }
+            }
+            return $module;
         }
 
         return null;
@@ -102,16 +110,13 @@ class ModuleProvider
         BackendUserAuthentication $user,
         bool $respectWorkspaceRestrictions = true
     ): ?MenuModule {
-        if (!$this->accessGranted($identifier, $user, $respectWorkspaceRestrictions)) {
+        $module = $this->getModule($identifier, $user, $respectWorkspaceRestrictions);
+        if ($module === null) {
             return null;
         }
         // Before preparing the module for the menu, check if it is defined ad hidden in TSconfig
         $hideModules = GeneralUtility::trimExplode(',', $user->getTSConfig()['options.']['hideModules'] ?? '', true);
         if (in_array($identifier, $hideModules, true)) {
-            return null;
-        }
-        $module = $this->moduleRegistry->getModule($identifier);
-        if ($module->hasParentModule()) {
             return null;
         }
         $menuItem = new MenuModule(clone $module);

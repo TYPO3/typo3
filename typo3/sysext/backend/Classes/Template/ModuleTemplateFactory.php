@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Template;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -32,6 +34,8 @@ final class ModuleTemplateFactory
     public function __construct(
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleProvider $moduleProvider,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
@@ -43,6 +47,8 @@ final class ModuleTemplateFactory
         return new ModuleTemplate(
             $this->pageRenderer,
             $this->iconFactory,
+            $this->uriBuilder,
+            $this->moduleProvider,
             $this->flashMessageService,
             $this->extensionConfiguration,
             $this->viewFactory->create($request),

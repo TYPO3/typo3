@@ -1,0 +1,56 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/backend/element/immediate-action-element.js',
+            2: '@typo3/info/translation-status.js'
+        }"
+    />
+
+    <f:if condition="{accessContent}">
+        <f:then>
+            <form
+                action="{formAction}"
+                method="post"
+                id="InfoModuleController"
+                name="webinfoForm"
+            >
+                <f:variable name="args" value="{0: 'web', 1: id}" />
+                <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
+                <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title" /></h1>
+                <f:if condition="{content}">
+                    <div class="row row-cols-auto mb-3 g-3 align-items-center">
+                        <div class="col">
+                            <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" /></label>
+                            {depthSelector -> f:format.raw()}
+                        </div>
+                        <f:if condition="{languageSelector}">
+                            <div class="col">
+                                <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.lang" /></label>
+                                {languageSelector -> f:format.raw()}
+                            </div>
+                        </f:if>
+                        {csh -> f:format.raw()}
+                    </div>
+                    <f:format.raw>{content}</f:format.raw>
+                </f:if>
+            </form>
+        </f:then>
+        <f:else>
+            <f:be.infobox title="{f:translate(key: 'LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:title')}" state="2">
+                <p><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf:message" /></p>
+            </f:be.infobox>
+        </f:else>
+    </f:if>
+
+</f:section>
+
+</html>

@@ -5076,11 +5076,6 @@ parameters:
 			path: ../../typo3/sysext/setup/Classes/Controller/SetupModuleController.php
 
 		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/tstemplate/Classes/Controller/TyposcriptConstantEditorController.php
-
-		-
 			message: "#^Argument of an invalid type stdClass supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php

@@ -20,8 +20,11 @@ namespace TYPO3\CMS\Backend\Template;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -67,6 +70,8 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     public function __construct(
         protected readonly PageRenderer $pageRenderer,
         protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleProvider $moduleProvider,
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ViewInterface $view,
@@ -74,6 +79,12 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     ) {
         $module = $request->getAttribute('module');
         if ($module instanceof ModuleInterface) {
+            // third level, needs the second level in order to keep highlighting in the module menu
+            if ($module->getParentModule()?->getParentModule()) {
+                $this->setModuleName($module->getParentModule()->getIdentifier());
+            } else {
+                $this->setModuleName($module->getIdentifier());
+            }
             $this->setModuleName($module->getIdentifier());
         } else {
             $this->setModuleName($request->getAttribute('route')?->getOption('_identifier') ?? '');
@@ -196,8 +207,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     public function setModuleId(string $moduleId): self
     {
         $this->moduleId = $moduleId;
-        // @deprecated: Remove together with registerModuleMenu() in v13.
-        $this->registerModuleMenu($moduleId);
         return $this;
     }
 
@@ -345,18 +354,46 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     public function registerModuleMenu(string $moduleMenuIdentifier): self
     {
         trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
-        if (isset($GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier])) {
-            $menuEntries =
-                $GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier]['MOD_MENU']['function'];
-            $menu = $this->getDocHeaderComponent()->getMenuRegistry()->makeMenu()->setIdentifier('MOD_FUNC');
-            foreach ($menuEntries as $menuEntry) {
-                $menuItem = $menu->makeMenuItem()
-                    ->setTitle($menuEntry['title'])
-                    ->setHref('#');
-                $menu->addMenuItem($menuItem);
-            }
-            $this->docHeaderComponent->getMenuRegistry()->addMenu($menu);
+        return $this;
+    }
+
+    /**
+     * Generates a menu in the docheader to access third-level modules
+     */
+    public function makeDocHeaderModuleMenu(array $additionalQueryParams = []): self
+    {
+        $currentModule = $this->request->getAttribute('module');
+        if (!($currentModule instanceof ModuleInterface)) {
+            // Early return in case the current request does not provide a module
+            return $this;
         }
+        if ($currentModule->getParentModule()?->hasParentModule()) {
+            $menuModule = $this->moduleProvider->getModuleForMenu($currentModule->getParentIdentifier(), $this->getBackendUser());
+        } else {
+            // This is a fallback in case a second level module is called here
+            $menuModule = $this->moduleProvider->getModuleForMenu($currentModule->getIdentifier(), $this->getBackendUser());
+        }
+        if ($menuModule === null) {
+            return $this;
+        }
+        $menu = $this->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('moduleMenu');
+        foreach ($menuModule->getSubModules() as $module) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    (string)$this->uriBuilder->buildUriFromRoute(
+                        $module->getIdentifier(),
+                        $additionalQueryParams,
+                    )
+                )
+                ->setTitle($this->getLanguageService()->sL($module->getTitle()));
+            if ($module->getIdentifier() === $currentModule->getIdentifier()) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
         return $this;
     }
 
@@ -431,5 +468,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

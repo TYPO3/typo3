@@ -2223,7 +2223,7 @@ class BackendUtility
      *
      * @param mixed $mainParams The "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
      * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string $currentValue The value to be selected currently.
+     * @param string|int $currentValue The value to be selected currently.
      * @param array $menuItems An array with the menu items for the selector box
      * @param string $script The script to send the &id to, if empty it's automatically found
      * @param string $addParams Additional parameters to pass to the script.

@@ -783,14 +783,12 @@ class ExtensionManagementUtility
      * @param string $title Title of module
      * @param string $MM_key Menu array key - default is "function
      * @param string $WS Workspace conditions. Blank means all workspaces, any other string can be a comma list of "online", "offline" and "custom
+     * @deprecated use the Module Registration API to define calls, will be removed in TYPO3 v13.0.
      */
     public static function insertModuleFunction($modname, $className, $_unused, $title, $MM_key = 'function', $WS = '')
     {
-        $GLOBALS['TBE_MODULES_EXT'][$modname]['MOD_MENU'][$MM_key][$className] = [
-            'name' => $className,
-            'title' => $title,
-            'ws' => $WS,
-        ];
+        // no-op: This is not in use anymore, use Modules.php instead
+        // This does not trigger a deprecation message as everything continues to work
     }
 
     /**

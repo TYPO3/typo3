@@ -67,6 +67,24 @@ class BackendModuleValidator implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+        // If on a second level module with further sub modules, jump to the third-level modules
+        // (either the last used or the first in the list) and store this selection for the user.
+        /** @var $module ModuleInterface */
+        if ($module->getParentModule() && $module->hasSubModules()) {
+            // Note: "action" is a special setting, which is evaluated here individually
+            $subModuleIdentifier = (string)($backendUser->getModuleData($module->getIdentifier())['action'] ?? '');
+            if ($module->hasSubModule($subModuleIdentifier)) {
+                $selectedSubModule = $module->getSubModule($subModuleIdentifier);
+            } else {
+                $subModules = $module->getSubModules();
+                $selectedSubModule = reset($subModules);
+            }
+            // Overwrite the requested module and the route target
+            $module = $selectedSubModule;
+            $route->setOptions(array_replace_recursive($route->getOptions(), $module->getDefaultRouteOptions()));
+        }
+
+        // Validate the requested module
         $this->validateModuleAccess($request, $module);
 
         // This module request (which is usually opened inside the list_frame)
@@ -81,6 +99,16 @@ class BackendModuleValidator implements MiddlewareInterface
                     RouteRedirect::createFromRoute($route, $request->getQueryParams())
                 )
             );
+        }
+
+        // Third-level module, make sure to remember the previously selected module in the parent module
+        if ($module->getParentModule()?->getParentModule()) {
+            $parentModuleData = $backendUser->getModuleData($module->getParentIdentifier());
+            if (($parentModuleData['action'] ?? '') !== $module->getIdentifier()) {
+                $parentModuleData['action'] = $module->getIdentifier();
+                $backendUser->pushModuleData($module->getParentIdentifier(), $parentModuleData, true);
+                $ensureToPersistUserSettings = true;
+            }
         }
 
         // Check for module data, send via GET/POST parameters.

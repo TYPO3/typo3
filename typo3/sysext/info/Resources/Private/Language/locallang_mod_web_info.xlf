@@ -6,6 +6,9 @@
 			<trans-unit id="title" resname="title">
 				<source>Page information</source>
 			</trans-unit>
+			<trans-unit id="message" resname="message">
+				<source>There are no page information available.</source>
+			</trans-unit>
 			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
 				<source>Page related information, eg. hit statistics, change log, record counts</source>
 			</trans-unit>

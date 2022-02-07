@@ -98,7 +98,6 @@ class ConfigurationModuleProviderCest
             '$GLOBALS[\'TCA\'] (Table configuration array)',
             '$GLOBALS[\'TCA_DESCR\'] (Table Help Description)',
             '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
-            '$GLOBALS[\'TBE_MODULES_EXT\'] (BE Modules Extensions)',
             '$GLOBALS[\'TBE_STYLES\'] (Skinning Styles)',
             '$GLOBALS[\'TYPO3_USER_SETTINGS\'] (User Settings Configuration)',
             '$GLOBALS[\'PAGES_TYPES\'] (Table permissions by page type)',

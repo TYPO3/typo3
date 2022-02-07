@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -40,67 +41,34 @@ class TranslationStatusController extends InfoModuleController
     /**
      * @var SiteLanguage[]
      */
-    protected $siteLanguages;
+    protected array $siteLanguages = [];
+    protected int $currentDepth = 0;
+    protected int $currentLanguageId = 0;
 
-    /**
-     * @var InfoModuleController Contains a reference to the parent calling object
-     */
-    protected $pObj;
-
-    /**
-     * Init, called from parent object
-     *
-     * @param InfoModuleController $pObj A reference to the parent (calling) object
-     */
-    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initialize($request);
+        $this->init($request);
         $this->initializeSiteLanguages($request);
-        $this->pObj = $pObj;
-
-        // Setting MOD_MENU items as we need them for logging:
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-    }
-
-    /**
-     * Main, called from parent object
-     *
-     * @return string Output HTML for the module.
-     */
-    public function main(ServerRequestInterface $request)
-    {
-        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_title')) . '</h1>';
-        if ($this->id) {
-            $this->pageRenderer->loadJavaScriptModule('@typo3/info/translation-status.js');
-
-            $moduleMenu = '';
-
-            foreach (['depth' => false, 'lang' => true] as $name => $addCsh) {
-                $menu = BackendUtility::getDropdownMenu($this->id, 'SET[' . $name . ']', $this->pObj->MOD_SETTINGS[$name], $this->pObj->MOD_MENU[$name]);
-                if ($menu !== '') {
-                    $moduleMenu .= '
-                        <div class="col">
-                           <label class="form-label">' .
-                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.' . $name)) .
-                           '</label>' .
-                           $menu .
-                        '</div>';
-                    if ($addCsh) {
-                        $moduleMenu .= BackendUtility::cshItem('_MOD_web_info', $name, '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>');
-                    }
-                }
-            }
-
-            if ($moduleMenu !== '') {
-                $theOutput .= '<div class="row row-cols-auto mb-3 g-3 align-items-center">' . $moduleMenu . '</div>';
-            }
-
-            // Showing the tree
-            $tree = $this->getTree();
-            // Render information table
-            $theOutput .= $this->renderL10nTable($tree, $request);
+        $backendUser = $this->getBackendUser();
+        $moduleData = $request->getAttribute('moduleData');
+        $allowedModuleOptions = $this->getAllowedModuleOptions();
+        if ($moduleData->cleanUp($allowedModuleOptions)) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
-        return $theOutput;
+        $this->currentDepth = (int)$moduleData->get('depth');
+        $this->currentLanguageId = (int)$moduleData->get('lang');
+        if ($this->id) {
+            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $this->currentDepth, $allowedModuleOptions['depth']));
+            if (!empty($allowedModuleOptions['lang'])) {
+                $this->view->assign('languageSelector', BackendUtility::getDropdownMenu($this->id, 'lang', $this->currentLanguageId, $allowedModuleOptions['lang']));
+            }
+            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>'));
+
+            $tree = $this->getTree();
+            $content = $this->renderL10nTable($tree, $request);
+            $this->view->assign('content', $content);
+        }
+        return $this->view->renderResponse('TranslationStatus');
     }
 
     protected function getTree(): PageTreeView
@@ -108,7 +76,6 @@ class TranslationStatusController extends InfoModuleController
         // Initialize starting point of page tree
         $treeStartingPoint = $this->id;
         $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
-        $depth = (int)$this->pObj->MOD_SETTINGS['depth'];
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         $tree->addField('l18n_cfg');
@@ -118,18 +85,13 @@ class TranslationStatusController extends InfoModuleController
             'HTML' => $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render(),
         ];
         // Create the tree from starting point
-        if ($depth) {
-            $tree->getTree($treeStartingPoint, $depth);
+        if ($this->currentDepth) {
+            $tree->getTree($treeStartingPoint, $this->currentDepth);
         }
         return $tree;
     }
 
-    /**
-     * Returns the menu array
-     *
-     * @return array
-     */
-    protected function modMenu()
+    protected function getAllowedModuleOptions(): array
     {
         $lang = $this->getLanguageService();
         $menuArray = [
@@ -146,7 +108,7 @@ class TranslationStatusController extends InfoModuleController
         $menuArray['lang'] = [];
         foreach ($this->siteLanguages as $language) {
             if ($language->getLanguageId() === 0) {
-                $menuArray['lang'][0] = '[All]';
+                $menuArray['lang'][0] = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages');
             } else {
                 $menuArray['lang'][$language->getLanguageId()] = $language->getTitle();
             }
@@ -161,7 +123,7 @@ class TranslationStatusController extends InfoModuleController
      * @param ServerRequestInterface $request
      * @return string HTML for the localization information table.
      */
-    protected function renderL10nTable(PageTreeView $tree, ServerRequestInterface $request)
+    protected function renderL10nTable(PageTreeView $tree, ServerRequestInterface $request): string
     {
         $lang = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
@@ -226,15 +188,15 @@ class TranslationStatusController extends InfoModuleController
             $tCells[] = '<td class="' . $status . ' col-border-left"><div class="btn-group">' . $info . '</div></td>';
             $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
-            ) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
+            ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], 0) ?: '-') . '</td>';
             // Traverse system languages:
             foreach ($this->siteLanguages as $siteLanguage) {
                 $languageId = $siteLanguage->getLanguageId();
                 if ($languageId === 0) {
                     continue;
                 }
-                if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === $languageId) {
-                    $row = $this->getLangStatus($data['row']['uid'], $languageId);
+                if ($this->currentLanguageId === 0 || $this->currentLanguageId === $languageId) {
+                    $row = $this->getLangStatus((int)$data['row']['uid'], $languageId);
                     if ($pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() || $pageTranslationVisibility->shouldHideTranslationIfNoTranslatedRecordExists()) {
                         $status = 'danger';
                     } else {
@@ -286,7 +248,7 @@ class TranslationStatusController extends InfoModuleController
                         $tCells[] = '<td class="' . $status . '"><div class="btn-group">' . $info . '</div></td>';
                         $tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
                             'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
-                        ) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $languageId) . '</td>';
+                        ) . '" align="center">' . ($this->getContentElementCount((int)$data['row']['uid'], $languageId) ?: '-') . '</td>';
                     } else {
                         $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
                         $info .= '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
@@ -334,7 +296,7 @@ class TranslationStatusController extends InfoModuleController
             if ($languageId === 0) {
                 continue;
             }
-            if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === $languageId) {
+            if ($this->currentLanguageId === 0 || $this->currentLanguageId === $languageId) {
                 // Title:
                 $headerCells[] = '<th class="col-border-left">' . htmlspecialchars($siteLanguage->getTitle()) . '</th>';
                 // Edit language overlay records:
@@ -389,16 +351,16 @@ class TranslationStatusController extends InfoModuleController
      *
      * @param int $pageId Page ID to look up for.
      * @param int $langId Language UID to select for.
-     * @return array|null translated pages record
+     * @return array|bool translated pages record
      */
-    protected function getLangStatus($pageId, $langId)
+    protected function getLangStatus(int $pageId, int $langId): bool|array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace))
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $result = $queryBuilder
             ->select('*')
@@ -434,15 +396,15 @@ class TranslationStatusController extends InfoModuleController
      * @param int $sysLang Sys language uid
      * @return int Number of content elements from the PID where the language is set to a certain value.
      */
-    protected function getContentElementCount($pageId, $sysLang)
+    protected function getContentElementCount(int $pageId, int $sysLang): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->getBackendUser()->workspace));
-        $count = $queryBuilder
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+        return (int)$queryBuilder
             ->count('uid')
             ->from('tt_content')
             ->where(
@@ -459,17 +421,16 @@ class TranslationStatusController extends InfoModuleController
             )
             ->executeQuery()
             ->fetchOne();
-        return $count ?: '-';
     }
 
     /**
      * Since the controller does not access the current request yet, we'll do it "old school"
      * to fetch the Site based on the current ID.
      */
-    protected function initializeSiteLanguages(ServerRequestInterface $request)
+    protected function initializeSiteLanguages(ServerRequestInterface $request): void
     {
         /** @var SiteInterface $currentSite */
         $currentSite = $request->getAttribute('site');
-        $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->id);
+        $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id);
     }
 }

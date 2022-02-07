@@ -17,10 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -28,12 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleController
 {
-    /**
-     * The currently selected sys_template record
-     * @var array|false|null
-     */
-    protected $templateRow;
-
     /**
      * Gets the data for a row of a HTML table in the fluid template
      *
@@ -43,7 +38,7 @@ class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleCo
      * @param int $id The field/variable to be sent on clicking the edit icon (e.g. 'title')
      * @return array Data for a row of a HTML table
      */
-    protected function tableRowData($label, $data, $field, $id)
+    protected function tableRowData(string $label, string $data, string $field, int $id): array
     {
         $urlParameters = [
             'id' => $this->id,
@@ -66,56 +61,47 @@ class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleCo
     }
 
     /**
-     * Create an instance of \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
-     * and looks for the first (visible) template
-     * record. If $template_uid was given and greater than zero, this record will be checked.
-     *
-     * Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-     *
-     * @param int $pageId The uid of the current page
-     * @param int $template_uid The uid of the template record to be rendered (only if more than one template on the current page)
-     * @return bool Returns TRUE if a template record was found, otherwise FALSE
+     * Fetch a template record on the current page. If $selectedTemplateRecord is given
+     * and greater than zero, this record will be checked.
      */
-    protected function initialize_editor($pageId, $template_uid = 0)
+    protected function initialize_editor(int $selectedTemplateRecord): bool
     {
-        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage($this->id, $selectedTemplateRecord);
         if (is_array($this->templateRow)) {
             return true;
         }
         return false;
     }
 
-    /**
-     * Main, called from parent object
-     *
-     * @return string Information of the template status or the taken actions as HTML string
-     */
-    public function main()
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->templateMenu($this->request);
-        $template_uid = 0;
+        $this->init($request);
+        // Fallback to regular module when on root level
+        if ($this->id === 0) {
+            return $this->overviewAction();
+        }
+        // Checking for more than one sys_template an if, set a menu
+        $manyTemplatesMenu = $this->templateMenu();
+        $selectedTemplateRecord = 0;
         if ($manyTemplatesMenu) {
-            $template_uid = $this->MOD_SETTINGS['templatesOnPage'];
+            $selectedTemplateRecord = (int)$this->moduleData->get('templatesOnPage');
         }
         // Initialize
-        $existTemplate = $this->initialize_editor($this->id, $template_uid);
+        $existTemplate = $this->initialize_editor($selectedTemplateRecord);
         $saveId = 0;
         if ($existTemplate) {
             $saveId = empty($this->templateRow['_ORIG_uid']) ? $this->templateRow['uid'] : $this->templateRow['_ORIG_uid'];
         }
         // Create extension template
-        $newId = $this->createTemplate($this->id, (int)$saveId);
+        $newId = $this->createTemplate((int)$saveId);
         if ($newId) {
             // Switch to new template
             $urlParameters = [
                 'id' => $this->id,
-                'SET[templatesOnPage]' => $newId,
+                'templatesOnPage' => $newId,
             ];
-            $url = $this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $url = $this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier(), $urlParameters);
             throw new PropagateResponseException(new RedirectResponse($url, 303), 1607271781);
         }
         if ($existTemplate) {
@@ -127,10 +113,10 @@ class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleCo
 
             // Processing:
             $tableRows = [];
-            $tableRows[] = $this->tableRowData($lang->getLL('title'), $this->templateRow['title'], 'title', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('description'), $this->templateRow['description'], 'description', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['constants']) ? count(explode(LF, (string)$this->templateRow['constants'])) : 0), 'constants', $this->templateRow['uid']);
-            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['config']) ? count(explode(LF, (string)$this->templateRow['config'])) : 0), 'config', $this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('title'), $this->templateRow['title'] ?? '', 'title', (int)$this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('description'), $this->templateRow['description'] ?? '', 'description', (int)$this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('constants'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['constants']) ? count(explode(LF, (string)$this->templateRow['constants'])) : 0), 'constants', (int)$this->templateRow['uid']);
+            $tableRows[] = $this->tableRowData($lang->getLL('setup'), sprintf($lang->getLL('editToView'), trim((string)$this->templateRow['config']) ? count(explode(LF, (string)$this->templateRow['config'])) : 0), 'config', (int)$this->templateRow['uid']);
             $assigns['tableRows'] = $tableRows;
 
             // Edit all icon:
@@ -145,12 +131,31 @@ class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleCo
             ];
             $assigns['editAllUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
-            $view = $this->backendViewFactory->create($this->request);
-            $view->assignMultiple($assigns);
-            $theOutput = $view->render('InformationModule');
-        } else {
-            $theOutput = $this->noTemplate(1);
+            $this->view->assignMultiple($assigns);
+            return $this->view->renderResponse('InformationModule');
         }
-        return $theOutput;
+        return $this->noTemplateAction();
+    }
+
+    /**
+     * Add additional "NEW" button to the button bar
+     */
+    protected function getButtons(): void
+    {
+        parent::getButtons();
+
+        if ($this->id && $this->access) {
+            $urlParameters = [
+                'id' => $this->id,
+                'template' => 'all',
+                'createExtension' => 'new',
+            ];
+            $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
+            $newButton = $buttonBar->makeLinkButton()
+                ->setHref((string)$this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier(), $urlParameters))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
+                ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
+            $buttonBar->addButton($newButton);
+        }
     }
 }

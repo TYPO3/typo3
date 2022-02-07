@@ -17,9 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -30,21 +31,15 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
  */
 class TemplateAnalyzerController extends TypoScriptTemplateModuleController
 {
-    /**
-     * The currently selected sys_template record
-     * @var array|false|null
-     */
-    protected $templateRow;
-
-    /**
-     * Main, called from parent object
-     *
-     * @return string
-     */
-    public function main()
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $this->init($request);
+        // Fallback to regular module when on root level
+        if ($this->id === 0) {
+            return $this->overviewAction();
+        }
         // Set if user clicked on one template to show content of this specific one
-        $selectedTemplate = ($this->request->getQueryParams()['template'] ?? '');
+        $selectedTemplate = (string)($this->request->getQueryParams()['template'] ?? '');
         // The template object browser shows info boxes with parser errors and links to template analyzer to highlight
         // affected line. Increased by one if set to avoid an off-by-one error.
         $highlightLine = (int)($this->request->getQueryParams()['highlightLine'] ?? 0);
@@ -56,12 +51,12 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
         ];
 
         $templateUid = 0;
-        $assigns['manyTemplatesMenu'] = $this->templateMenu($this->request);
+        $assigns['manyTemplatesMenu'] = $this->templateMenu();
         if ($assigns['manyTemplatesMenu']) {
-            $templateUid = (int)$this->MOD_SETTINGS['templatesOnPage'];
+            $templateUid = (int)$this->moduleData->get('templatesOnPage');
         }
 
-        $assigns['existTemplate'] = $this->initializeTemplates($this->id, $templateUid);
+        $assigns['existTemplate'] = $this->initializeTemplates($templateUid);
         if ($assigns['existTemplate']) {
             $assigns['templateRecord'] = $this->templateRow;
             $assigns['linkWrappedTemplateTitle'] = $this->linkWrapTemplateTitle($this->templateRow['title']);
@@ -88,25 +83,21 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
-        $view = $this->backendViewFactory->create($this->request);
-        $view->assignMultiple($assigns);
-        return $view->render('TemplateAnalyzerModuleFunction');
+        $this->view->assignMultiple($assigns);
+        return $this->view->renderResponse('TemplateAnalyzer');
     }
 
-    protected function initializeTemplates(int $pageId, int $templateUid = 0): bool
+    protected function initializeTemplates(int $templateUid): bool
     {
-        // Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-        $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-
         // Gets the rootLine
-        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId);
+        $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $this->id);
         $rootLine = $rootlineUtility->get();
 
         // This generates the constants/config + hierarchy info for the template.
         $this->templateService->runThroughTemplates($rootLine, $templateUid);
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->getFirstTemplateRecordOnPage($pageId, $templateUid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage($this->id, $templateUid);
         return is_array($this->templateRow);
     }
 
@@ -123,7 +114,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
     {
         $templatesMarkup = [];
         $totalLines = 0;
-        foreach ($templates as $templateNumber => $templateContent) {
+        foreach ($templates as $templateContent) {
             $totalLines += 1 + count(explode(LF, $templateContent));
         }
         $thisLineOffset = $nextLineOffset = 0;
@@ -133,12 +124,17 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             // Prefix content with '[GLOBAL]' even for empty strings, the TemplateService does that, too.
             // Not replicating this leads to shifted line numbers when parser errors are reported in FE and object browser.
             // @todo: Locate where TemplateService hard prefixes this for empty strings and drop it.
-            $templateContent = '[GLOBAL]' . LF . (string)$templateContent;
+            $templateContent = '[GLOBAL]' . LF . $templateContent;
             $linesInTemplate = count(explode(LF, $templateContent));
             $nextLineOffset += $linesInTemplate;
             if ($selectedTemplate === 'all'
                 || $templateId === $selectedTemplate
-                || $highlight && $highlightLine && $highlightLine > $thisLineOffset && $highlightLine <= $nextLineOffset
+                || (
+                    $highlight
+                    && $highlightLine
+                    && $highlightLine > $thisLineOffset
+                    && $highlightLine <= $nextLineOffset
+                )
             ) {
                 if (ExtensionManagementUtility::isLoaded('t3editor')) {
                     // @todo: Fire event and let EXT:t3editor fill the markup
@@ -254,7 +250,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
                     'id' => $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null,
                     'template' => $row['templateID'],
                 ];
-                $aHref = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+                $aHref = (string)$this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier(), $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
                 $A_E = '</a>';
                 if (($this->request->getParsedBody()['template'] ?? $this->request->getQueryParams()['template'] ?? null) == $row['templateID']) {

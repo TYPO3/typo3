@@ -54,9 +54,6 @@
 			<trans-unit id="t3services" resname="t3services">
 				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
 			</trans-unit>
-			<trans-unit id="tbemodulesext" resname="tbemodulesext">
-				<source>$GLOBALS['TBE_MODULES_EXT'] (BE Modules Extensions)</source>
-			</trans-unit>
 			<trans-unit id="backendModules" resname="backendModules">
 				<source>Backend Modules</source>
 			</trans-unit>

@@ -58,9 +58,9 @@ class ExtendedTemplateService extends TemplateService
     public $constantMode = '';
 
     /**
-     * @var string
+     * @var bool
      */
-    public $regexMode = '';
+    public $regexMode = false;
 
     /**
      * @var int
@@ -103,11 +103,6 @@ class ExtendedTemplateService extends TemplateService
      * @var bool
      */
     public $linkObjects = false;
-
-    /**
-     * @var bool
-     */
-    public $changed = false;
 
     /**
      * @var int[]
@@ -243,7 +238,7 @@ class ExtendedTemplateService extends TemplateService
      * @param bool $alphaSort sorts the array keys / tree by alphabet when set
      * @return string
      */
-    public function ext_getObjTree($arr, $depth_in, $depthData, bool $alphaSort = false)
+    public function ext_getObjTree($arr, $depth_in, $depthData, bool $alphaSort = false, string $targetRoute = 'web_ts')
     {
         $HTML = '';
         if ($alphaSort) {
@@ -283,7 +278,7 @@ class ExtendedTemplateService extends TemplateService
                         'id' => (int)GeneralUtility::_GP('id'),
                         'tsbr[' . $depth . ']' => $deeper ? 0 : 1,
                     ];
-                    $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters) . '#' . $goto;
+                    $aHref = $uriBuilder->buildUriFromRoute($targetRoute, $urlParameters) . '#' . $goto;
                     $HTML .= '<a class="list-tree-control' . ($PM === 'minus' ? ' list-tree-control-open' : ' list-tree-control-closed') . '" name="' . $goto . '" href="' . htmlspecialchars($aHref) . '"><i class="fa"></i></a>';
                 }
                 $label = $key;
@@ -296,7 +291,7 @@ class ExtendedTemplateService extends TemplateService
                             'id' => (int)GeneralUtility::_GP('id'),
                             'sObj' => $depth,
                         ];
-                        $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+                        $aHref = (string)$uriBuilder->buildUriFromRoute($targetRoute, $urlParameters);
                         if ($this->bType !== 'const') {
                             $ln = is_array($arr[$key . '.ln..'] ?? null) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
                         } else {
@@ -336,7 +331,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $HTML .= '</span>';
                 if ($deeper) {
-                    $HTML .= $this->ext_getObjTree($arr[$key . '.'] ?? [], $depth, $depthData, $alphaSort);
+                    $HTML .= $this->ext_getObjTree($arr[$key . '.'] ?? [], $depth, $depthData, $alphaSort, $targetRoute);
                 }
             }
         }
@@ -599,7 +594,6 @@ class ExtendedTemplateService extends TemplateService
         } else {
             $this->raw[] = $key . ' =' . $theValue;
         }
-        $this->changed = true;
     }
 
     /**
@@ -612,11 +606,11 @@ class ExtendedTemplateService extends TemplateService
             $lineNum = $this->objReg[$key];
             unset($this->raw[$lineNum]);
         }
-        $this->changed = true;
     }
 
     public function ext_procesInput(array $http_post_vars, array $theConstants)
     {
+        $valuesHaveChanged = false;
         $data = $http_post_vars['data'] ?? null;
         $check = $http_post_vars['check'] ?? [];
         $Wdata = $http_post_vars['Wdata'] ?? [];
@@ -701,11 +695,13 @@ class ExtendedTemplateService extends TemplateService
                         if ((string)($theConstants[$key]['value'] ?? '') !== (string)$var) {
                             // Put value in, if changed.
                             $this->ext_putValueInConf($key, $var);
+                            $valuesHaveChanged = true;
                         }
                         // Remove the entry because it has been "used"
                         unset($check[$key]);
                     } else {
                         $this->ext_removeValueInConf($key);
+                        $valuesHaveChanged = true;
                     }
                 }
             }
@@ -716,8 +712,10 @@ class ExtendedTemplateService extends TemplateService
             if (isset($theConstants[$key])) {
                 $dValue = $theConstants[$key]['default_value'];
                 $this->ext_putValueInConf($key, $dValue);
+                $valuesHaveChanged = true;
             }
         }
+        return $valuesHaveChanged;
     }
 
     /**

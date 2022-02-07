@@ -24,13 +24,20 @@
             >
                 <f:variable name="args" value="{0: 'web', 1: id}" />
                 <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.update" args="{args -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
-                <f:if condition="{pageZero}">
-                    <f:then>
-                        <f:render partial="PageTsConfig/PageZero" arguments="{_all}" />
-                    </f:then>
-                    <f:else>
-                        <f:render partial="PageTsConfig/Page" arguments="{_all}" />
-                    </f:else>
+                <h1><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title" /></h1>
+                <f:if condition="{content}">
+                    <div class="row row-cols-auto mb-3 g-3 align-items-center">
+                        <div class="col">
+                            <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" /></label>
+                            {depthSelector -> f:format.raw()}
+                        </div>
+                        <div class="col">
+                            <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type" /></label>
+                            {pagesSelector -> f:format.raw()}
+                        </div>
+                        {csh -> f:format.raw()}
+                    </div>
+                    <f:format.raw>{content}</f:format.raw>
                 </f:if>
             </form>
         </f:then>

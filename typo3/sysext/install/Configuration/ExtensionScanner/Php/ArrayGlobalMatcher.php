@@ -53,4 +53,9 @@ return [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
         ],
     ],
+    '$GLOBALS[\'TBE_MODULES_EXT\']' => [
+        'restFiles' => [
+            'Breaking-97135-RemovedSupportForModuleHandlingBasedOnTBE_MODULES_EXT.rst',
+        ],
+    ],
 ];

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
@@ -35,178 +36,158 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class InfoPageTyposcriptConfigController extends InfoModuleController
 {
-    /**
-     * @var InfoModuleController Contains a reference to the parent calling object
-     */
-    protected $pObj;
-
-    /**
-     * Init, called from parent object
-     *
-     * @param InfoModuleController $pObj A reference to the parent (calling) object
-     */
-    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initialize($request);
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
-        $this->pObj = $pObj;
-        // Setting MOD_MENU items as we need them for logging:
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-    }
+        $this->init($request);
 
-    /**
-     * Main, called from parent object
-     *
-     * @return string HTML output
-     */
-    public function main(ServerRequestInterface $request)
-    {
-        $view = $this->backendViewFactory->create($request);
+        $backendUser = $this->getBackendUser();
+        $moduleData = $request->getAttribute('moduleData');
+        $allowedModuleOptions = $this->getAllowedModuleOptions();
+        if ($moduleData->cleanUp($allowedModuleOptions)) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+
         if ($this->id === 0) {
-            $view->assign('pageZero', true);
+            $this->view->assign('pageZero', true);
             $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();
             if (count($pagesUsingTSConfig) > 0) {
-                $view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
+                $this->view->assign('overviewOfPagesUsingTSConfig', $pagesUsingTSConfig);
             }
-        } else {
-            if ((int)$this->pObj->MOD_SETTINGS['tsconf_parts'] === 99) {
-                $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
-                /** @var array<string, string> $TSparts */
-                $TSparts = GeneralUtility::makeInstance(PageTsConfigLoader::class)->collect($rootLine);
-                $lines = [];
-                $pUids = [];
+            return $this->view->renderResponse('PageTsConfig');
+        }
 
-                foreach ($TSparts as $k => $v) {
-                    $line = [];
-                    if ($k === 'default') {
-                        $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default');
-                        $line['title'] = $title;
-                    } else {
-                        // Remove the "page_" prefix
-                        [, $pageId] = explode('_', $k, 3);
-                        $pageId = (int)$pageId;
-                        $pUids[] = $pageId;
-                        $row = BackendUtility::getRecordWSOL('pages', $pageId);
+        if ((int)$moduleData->get('tsconf_parts') === 99) {
+            $rootLine = BackendUtility::BEgetRootLine($this->id, '', true);
+            /** @var array<string, string> $TSparts */
+            $TSparts = GeneralUtility::makeInstance(PageTsConfigLoader::class)->collect($rootLine);
+            $lines = [];
+            $pUids = [];
 
-                        $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
-                        $urlParameters = [
-                            'edit' => [
-                                'pages' => [
-                                    $pageId => 'edit',
-                                ],
-                            ],
-                            'columnsOnly' => 'TSconfig,tsconfig_includes',
-                            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
-                        ];
-                        $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $line['editTitle'] = 'editTSconfig';
-                        $title = BackendUtility::getRecordTitle('pages', $row);
-                        $line['title'] = BackendUtility::wrapClickMenuOnIcon((string)$icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
-                    }
-
-                    if (ExtensionManagementUtility::isLoaded('t3editor')) {
-                        // @todo: Let EXT:t3editor add the deps via events in the render-loops above
-                        $line['content'] = $this->getCodeMirrorHtml(
-                            $title,
-                            trim($v)
-                        );
-                        $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
-                        $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
-                        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
-                    } else {
-                        $line['content'] = $this->getTextareaMarkup(trim($v));
-                    }
-
-                    $lines[] = $line;
-                }
-
-                if (!empty($pUids)) {
+            foreach ($TSparts as $key => $value) {
+                $line = [];
+                if ($key === 'global') {
+                    $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_global');
+                    $line['title'] = $title;
+                } elseif ($key === 'default') {
+                    $title = $this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf:editTSconfig_default');
+                    $line['title'] = $title;
+                } else {
+                    // Remove the "page_" prefix
+                    [, $pageId] = explode('_', $key, 3);
+                    $pageId = (int)$pageId;
+                    $pUids[] = $pageId;
+                    $row = BackendUtility::getRecordWSOL('pages', $pageId);
+                    $icon = $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL);
                     $urlParameters = [
                         'edit' => [
                             'pages' => [
-                                implode(',', $pUids) => 'edit',
+                                $pageId => 'edit',
                             ],
                         ],
                         'columnsOnly' => 'TSconfig,tsconfig_includes',
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ];
-                    $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                    $editIcon = htmlspecialchars($url);
-                    $editTitle = 'editTSconfig_all';
+                    $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                    $line['editTitle'] = 'editTSconfig';
+                    $title = BackendUtility::getRecordTitle('pages', $row);
+                    $line['title'] = BackendUtility::wrapClickMenuOnIcon((string)$icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
+                }
+
+                if (ExtensionManagementUtility::isLoaded('t3editor')) {
+                    // @todo: Let EXT:t3editor add the deps via events in the render-loops above
+                    $line['content'] = $this->getCodeMirrorHtml($title, trim($value));
+                    $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+                    $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+                    $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
                 } else {
-                    $editIcon = '';
-                    $editTitle = '';
+                    $line['content'] = $this->getTextareaMarkup(trim($value));
                 }
 
-                $view->assign('tsconfParts99', true);
-                $view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
-                $view->assign('lines', $lines);
-                $view->assign('editIcon', $editIcon);
-                $view->assign('editTitle', $editTitle);
-            } else {
-                $view->assign('tsconfParts99', false);
-                // Defined global here!
-                $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
-                $tmpl->ext_expandAllNotes = 1;
-                $tmpl->ext_noPMicons = 1;
-
-                $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
-                switch ($this->pObj->MOD_SETTINGS['tsconf_parts']) {
-                    case '1':
-                        $pageTsConfig = $pageTsConfig['mod.'] ?? [];
-                        break;
-                    case '1a':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_layout.'] ?? [];
-                        break;
-                    case '1b':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_view.'] ?? [];
-                        break;
-                    case '1d':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_list.'] ?? [];
-                        break;
-                    case '1e':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_info.'] ?? [];
-                        break;
-                    case '1g':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_ts.'] ?? [];
-                        break;
-                    case '2':
-                        $pageTsConfig = $pageTsConfig['RTE.'] ?? [];
-                        break;
-                    case '5':
-                        $pageTsConfig = $pageTsConfig['TCEFORM.'] ?? [];
-                        break;
-                    case '6':
-                        $pageTsConfig = $pageTsConfig['TCEMAIN.'] ?? [];
-                        break;
-                    case '7':
-                        $pageTsConfig = $pageTsConfig['TCAdefaults.'] ?? [];
-                        break;
-                    case '4':
-                        $pageTsConfig = $pageTsConfig['user.'] ?? [];
-                        break;
-                    default:
-                        // Entire array
-                }
-
-                $view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
-                $view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)($this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false)));
+                $lines[] = $line;
             }
-            $view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'] ?? false, '', '', 'id="checkTsconf_alphaSort"'));
-            $view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']));
+
+            if (!empty($pUids)) {
+                $urlParameters = [
+                    'edit' => [
+                        'pages' => [
+                            implode(',', $pUids) => 'edit',
+                        ],
+                    ],
+                    'columnsOnly' => 'TSconfig,tsconfig_includes',
+                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                ];
+                $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+                $editIcon = htmlspecialchars($url);
+                $editTitle = 'editTSconfig_all';
+            } else {
+                $editIcon = '';
+                $editTitle = '';
+            }
+
+            $this->view->assign('tsconfParts99', true);
+            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
+            $this->view->assign('lines', $lines);
+            $this->view->assign('editIcon', $editIcon);
+            $this->view->assign('editTitle', $editTitle);
+        } else {
+            $this->view->assign('tsconfParts99', false);
+            // Defined global here!
+            $tmpl = GeneralUtility::makeInstance(ExtendedTemplateService::class);
+            $tmpl->ext_expandAllNotes = 1;
+            $tmpl->ext_noPMicons = 1;
+
+            $pageTsConfig = BackendUtility::getPagesTSconfig($this->id);
+            switch ((string)$moduleData->get('tsconf_parts')) {
+                case '1':
+                    $pageTsConfig = $pageTsConfig['mod.'] ?? [];
+                    break;
+                case '1a':
+                    $pageTsConfig = $pageTsConfig['mod.']['web_layout.'] ?? [];
+                    break;
+                case '1b':
+                    $pageTsConfig = $pageTsConfig['mod.']['web_view.'] ?? [];
+                    break;
+                case '1d':
+                    $pageTsConfig = $pageTsConfig['mod.']['web_list.'] ?? [];
+                    break;
+                case '1e':
+                    $pageTsConfig = $pageTsConfig['mod.']['web_info.'] ?? [];
+                    break;
+                case '1g':
+                    $pageTsConfig = $pageTsConfig['mod.']['web_ts.'] ?? [];
+                    break;
+                case '2':
+                    $pageTsConfig = $pageTsConfig['RTE.'] ?? [];
+                    break;
+                case '5':
+                    $pageTsConfig = $pageTsConfig['TCEFORM.'] ?? [];
+                    break;
+                case '6':
+                    $pageTsConfig = $pageTsConfig['TCEMAIN.'] ?? [];
+                    break;
+                case '7':
+                    $pageTsConfig = $pageTsConfig['TCAdefaults.'] ?? [];
+                    break;
+                case '4':
+                    $pageTsConfig = $pageTsConfig['user.'] ?? [];
+                    break;
+                default:
+                    // Entire array
+            }
+
+            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
+            $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)$moduleData->get('tsconf_alphaSort'), $this->currentModule->getIdentifier()));
         }
-        return $view->render('PageTsConfig');
+        $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
+        $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'tsconf_parts', $moduleData->get('tsconf_parts'), $allowedModuleOptions['tsconf_parts']));
+        return $this->view->renderResponse('PageTsConfig');
     }
 
-    /**
-     * Function menu initialization
-     *
-     * @return array Menu array
-     */
-    protected function modMenu()
+    protected function getAllowedModuleOptions(): array
     {
         $lang = $this->getLanguageService();
-        $modMenuAdd = [
+        $allowedModuleOptions = [
             'tsconf_parts' => [
                 0 => $lang->getLL('tsconf_parts_0'),
                 1 => $lang->getLL('tsconf_parts_1') . ' [mod.]',
@@ -222,12 +203,11 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                 4 => '[user.]',
                 99 => $lang->getLL('tsconf_configFields'),
             ],
-            'tsconf_alphaSort' => '1',
         ];
         if (!$this->getBackendUser()->isAdmin()) {
-            unset($modMenuAdd['tsconf_parts'][99]);
+            unset($allowedModuleOptions['tsconf_parts'][99]);
         }
-        return $modMenuAdd;
+        return $allowedModuleOptions;
     }
 
     /**
@@ -235,7 +215,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      *
      * @return array
      */
-    protected function getOverviewOfPagesUsingTSConfig()
+    protected function getOverviewOfPagesUsingTSConfig(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
@@ -249,7 +229,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
             ->where(
                 $queryBuilder->expr()->neq(
                     'TSconfig',
-                    $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('')
                 )
             )
             ->executeQuery();
@@ -271,18 +251,18 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      * @param array $rootlineArray The rootline array
      * @param array $row The row from the database containing the uid and TSConfig fields
      */
-    protected function setInPageArray(&$hierarchicArray, $rootlineArray, $row)
+    protected function setInPageArray(array &$hierarchicArray, array $rootlineArray, array $row): void
     {
         ksort($rootlineArray);
         reset($rootlineArray);
-        if (!$rootlineArray[0]['uid']) {
+        if (!($rootlineArray[0]['uid'] ?? false)) {
             array_shift($rootlineArray);
         }
         $currentElement = current($rootlineArray);
         $hierarchicArray[$currentElement['uid']] = htmlspecialchars($currentElement['title']);
         array_shift($rootlineArray);
         if (!empty($rootlineArray)) {
-            if (!isset($hierarchicArray[$currentElement['uid'] . '.'])) {
+            if (!is_array($hierarchicArray[$currentElement['uid'] . '.'] ?? null)) {
                 $hierarchicArray[$currentElement['uid'] . '.'] = [];
             }
             $this->setInPageArray($hierarchicArray[$currentElement['uid'] . '.'], $rootlineArray, $row);
@@ -297,7 +277,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      * @param array $row The row from the database containing the uid and TSConfig fields
      * @return array
      */
-    protected function extractLinesFromTSConfig(array $row)
+    protected function extractLinesFromTSConfig(array $row): array
     {
         $out = [];
         $includeLines = 0;
@@ -322,30 +302,30 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      * @param int $pageDepth The level of the current $pageArray being processed
      * @return array
      */
-    protected function getList($pageArray, $lines = [], $pageDepth = 0)
+    protected function getList(array $pageArray, array $lines = [], int $pageDepth = 0): array
     {
-        if (!is_array($pageArray)) {
+        if ($pageArray === []) {
             return $lines;
         }
 
-        foreach ($pageArray as $identifier => $_) {
+        foreach ($pageArray as $identifier => $title) {
             if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
                 continue;
             }
             $line = [];
             $line['padding'] = ($pageDepth * 20) + 10;
             if (isset($pageArray[$identifier . '_'])) {
-                $line['link'] = $this->uriBuilder->buildUriFromRoute('web_info', ['id' => $identifier]);
+                $line['link'] = $this->uriBuilder->buildUriFromRoute($this->currentModule->getIdentifier(), ['id' => $identifier]);
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = 'ID: ' . $identifier;
-                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
+                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['includedFiles'] = ($pageArray[$identifier . '_']['includeLines'] === 0 ? '' : $pageArray[$identifier . '_']['includeLines']);
                 $line['lines'] = ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']);
             } else {
                 $line['link'] = '';
                 $line['icon'] = $this->iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render();
                 $line['title'] = '';
-                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30);
+                $line['pageTitle'] = GeneralUtility::fixed_lgd_cs($title, 30);
                 $line['includedFiles'] = '';
                 $line['lines'] = '';
             }
@@ -383,7 +363,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
 
     protected function getTextareaMarkup(string $content): string
     {
-        return '<textarea class="form-control" rows="' . (string)count(explode(LF, $content)) . '" disabled>'
+        return '<textarea class="form-control" rows="' . count(explode(LF, $content)) . '" disabled>'
             . htmlspecialchars($content)
             . '</textarea>';
     }

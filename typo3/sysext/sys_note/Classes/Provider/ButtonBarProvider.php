@@ -38,7 +38,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class ButtonBarProvider
 {
     private const TABLE_NAME = 'sys_note';
-    private const ALLOWED_MODULES = ['web_layout', 'web_list', 'web_info'];
+    private const ALLOWED_MODULES = [
+        'web_layout',
+        'web_list',
+        'web_info_overview',
+        'web_info_translations',
+        'web_info_pagets',
+    ];
 
     /**
      * Add a sys_note creation button to the button bar of defined modules

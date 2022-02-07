@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
@@ -35,98 +37,43 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageInformationController extends InfoModuleController
 {
-    /**
-     * @var array
-     */
-    protected $fieldConfiguration = [];
-
-    /**
-     * @var InfoModuleController Contains a reference to the parent calling object
-     */
-    protected $pObj;
-
     protected ?BackendLayoutView $backendLayoutView = null;
-
-    /**
-     * @var array
-     */
-    protected $fieldArray;
+    protected array $fieldConfiguration = [];
+    protected array $fieldArray = [];
 
     /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
-     *
-     * @var array
      */
-    protected $addElement_tdCssClass = [];
+    protected array $addElement_tdCssClass = [];
 
-    /**
-     * Init, called from parent object
-     *
-     * @param InfoModuleController $pObj A reference to the parent (calling) object
-     * @param ServerRequestInterface $request
-     */
-    public function init(InfoModuleController $pObj, ServerRequestInterface $request)
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initialize($request);
-        $this->pObj = $pObj;
-        // Setting MOD_MENU items as we need them for logging:
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-    }
+        $this->init($request);
 
-    /**
-     * Main, called from parent object
-     *
-     * @param ServerRequestInterface $request
-     * @return string Output HTML for the module.
-     */
-    public function main(ServerRequestInterface $request)
-    {
-        $theOutput = '<h1>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
+        $backendUser = $this->getBackendUser();
+        $moduleData = $request->getAttribute('moduleData');
+        $allowedModuleOptions = $this->getAllowedModuleOptions();
+        if ($moduleData->cleanUp($allowedModuleOptions)) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        $depth = (int)$moduleData->get('depth');
+        $pages = (string)$moduleData->get('pages');
 
-        if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
-            $this->fieldArray = $this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']]['fields'];
+        if (isset($this->fieldConfiguration[$pages])) {
+            $this->fieldArray = $this->fieldConfiguration[$pages]['fields'];
         }
 
-        $theOutput .= '
-        <div class="row row-cols-auto mb-3 g-3 align-items-center">
-            <div class="col">
-                <label class="form-lable">' .
-                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth')) .
-                '</label> ' .
-                BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']) .
-            '</div>
-            <div class="col">
-                <label class="form-lable">' .
-                    htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type')) .
-                '</label> ' .
-                BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']) .
-            '</div>' .
-            BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>') .
-        '</div>'
-            . $this->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth'], $request);
-
-        // This is a hack to close the default form created by InfoModuleController so the hook below can have own form tags
-        $theOutput .= '</form>';
-
-        // Additional footer content
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = [
-                'request' => $request,
-            ];
-            $theOutput .= GeneralUtility::callUserFunction($hook, $params, $this);
+        if ($this->id) {
+            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $depth, $allowedModuleOptions['depth']));
+            $this->view->assign('pagesSelector', BackendUtility::getDropdownMenu($this->id, 'pages', $pages, $allowedModuleOptions['pages']));
+            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'func_' . $pages, '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>'));
+            $this->view->assign('content', $this->getTable_pages($this->id, $depth, $request));
         }
 
-        // Open the form again to have valid HTML
-        $theOutput .= '<form action="">';
-        return $theOutput;
+        return $this->view->renderResponse('PageInformation');
     }
 
-    /**
-     * Returns the menu array
-     *
-     * @return array
-     */
-    protected function modMenu()
+    protected function getAllowedModuleOptions(): array
     {
         $menu = [
             'pages' => [],
@@ -151,38 +98,34 @@ class PageInformationController extends InfoModuleController
      * Function, which returns all tables to
      * which the user has access. Also a set of standard tables (pages, sys_filemounts, etc...)
      * are filtered out. So what is left is basically all tables which makes sense to list content from.
-     *
-     * @return string
      */
     protected function cleanTableNames(): string
     {
         // Get all table names:
         $tableNames = array_flip(array_keys($GLOBALS['TCA']));
         // Unset common names:
-        unset($tableNames['pages']);
-        unset($tableNames['sys_filemounts']);
-        unset($tableNames['sys_action']);
-        unset($tableNames['sys_workflows']);
-        unset($tableNames['be_users']);
-        unset($tableNames['be_groups']);
+        unset(
+            $tableNames['pages'],
+            $tableNames['sys_filemounts'],
+            $tableNames['sys_action'],
+            $tableNames['sys_workflows'],
+            $tableNames['be_users'],
+            $tableNames['be_groups']
+        );
         $allowedTableNames = [];
         // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-        if (is_array($tableNames)) {
-            foreach ($tableNames as $k => $v) {
-                if (!($GLOBALS['TCA'][$k]['ctrl']['hideTable'] ?? false) && $this->getBackendUser()->check('tables_select', $k)) {
-                    $allowedTableNames['table_' . $k] = $k;
-                }
+        foreach (array_keys($tableNames) as $tableName) {
+            if (!($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false) && $this->getBackendUser()->check('tables_select', $tableName)) {
+                $allowedTableNames[$tableName] = 'table_' . $tableName;
             }
         }
-        return implode(',', array_keys($allowedTableNames));
+        return implode(',', $allowedTableNames);
     }
 
     /**
      * Generate configuration for field selection
-     *
-     * @param int $pageId current page id
      */
-    protected function fillFieldConfiguration(int $pageId)
+    protected function fillFieldConfiguration(int $pageId): void
     {
         $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
         foreach ($modTSconfig as $key => $item) {
@@ -199,13 +142,10 @@ class PageInformationController extends InfoModuleController
     /**
      * Renders records from the pages table from page id
      *
-     * @param int $id Page id
-     * @param int $depth
-     * @param ServerRequestInterface $request
      * @return string HTML for the listing
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
-    protected function getTable_pages($id, int $depth, ServerRequestInterface $request)
+    protected function getTable_pages(int $id, int $depth, ServerRequestInterface $request): string
     {
         $out = '';
         $lang = $this->getLanguageService();
@@ -233,13 +173,13 @@ class PageInformationController extends InfoModuleController
             if ($this->getBackendUser()->doesUserHaveAccess($row, Permission::PAGE_EDIT) && $row['uid'] > 0) {
                 $editUids[] = $row['uid'];
             }
-            $out .= $this->pages_drawItem($row, $this->fieldArray, $request);
+            $out .= $this->pages_drawItem($row, $request);
             // Traverse all pages selected:
             foreach ($theRows as $sRow) {
                 if ($this->getBackendUser()->doesUserHaveAccess($sRow, Permission::PAGE_EDIT)) {
                     $editUids[] = $sRow['uid'];
                 }
-                $out .= $this->pages_drawItem($sRow, $this->fieldArray, $request);
+                $out .= $this->pages_drawItem($sRow, $request);
             }
             // Header line is drawn
             $headerCells = [];
@@ -284,7 +224,7 @@ class PageInformationController extends InfoModuleController
                         $headerCells[$field] = htmlspecialchars($lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:actual_backend_layout'));
                         break;
                     default:
-                        if (strpos($field, 'table_') === 0) {
+                        if (str_starts_with($field, 'table_')) {
                             $f2 = substr($field, 6);
                             if ($GLOBALS['TCA'][$f2]) {
                                 $headerCells[$field] = '&nbsp;' .
@@ -301,17 +241,28 @@ class PageInformationController extends InfoModuleController
                         }
                 }
             }
-            $out = '<div class="table-responsive">'
-                . '<table class="table table-striped table-hover mb-0">'
-                . '<thead>'
-                . $this->addElement($headerCells)
-                . '</thead>'
-                . '<tbody>'
-                . $out
-                . '</tbody>'
-                . '</table>'
-                . '</div>';
+            $out = '
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead>
+                            ' . $this->addElement($headerCells) . '
+                        </thead>
+                        <tbody>
+                            ' . $out . '
+                        </tbody>
+                    </table>
+                </div>';
         }
+
+        // Additional footer content
+        // @todo Replace with an event
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
+            $params = [
+                'request' => $request,
+            ];
+            $out .= GeneralUtility::callUserFunction($hook, $params, $this);
+        }
+
         return $out;
     }
 
@@ -378,14 +329,8 @@ class PageInformationController extends InfoModuleController
 
     /**
      * Adds a list item for the pages-rendering
-     *
-     * @param array $row Record array
-     * @param array $fieldArr Field list
-     * @param ServerRequestInterface $request
-     * @return string HTML for the item
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function pages_drawItem($row, $fieldArr, ServerRequestInterface $request)
+    protected function pages_drawItem(array $row, ServerRequestInterface $request): string
     {
         $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
         $backendLayouts = $this->getBackendLayouts($row, 'backend_layout');
@@ -394,7 +339,7 @@ class PageInformationController extends InfoModuleController
         $theIcon = $this->getIcon($row);
         // Preparing and getting the data-array
         $theData = [];
-        foreach ($fieldArr as $field) {
+        foreach ($this->fieldArray as $field) {
             switch ($field) {
                 case 'title':
                     $showPageId = !empty($userTsConfig['options.']['pageTree.']['showPageIdWithTitle']);
@@ -464,10 +409,10 @@ class PageInformationController extends InfoModuleController
                     }
                     break;
                 default:
-                    if (strpos($field, 'table_') === 0) {
+                    if (str_starts_with($field, 'table_')) {
                         $f2 = substr($field, 6);
                         if ($GLOBALS['TCA'][$f2]) {
-                            $c = $this->numberOfRecords($f2, $row['uid']);
+                            $c = $this->numberOfRecords($f2, (int)$row['uid']);
                             $theData[$field] = ($c ?: '');
                         }
                     } else {
@@ -481,14 +426,11 @@ class PageInformationController extends InfoModuleController
 
     /**
      * Creates the icon image tag for the page and wraps it in a link which will trigger the click menu.
-     *
-     * @param array $row Record array
-     * @return string HTML for the icon
      */
-    protected function getIcon($row)
+    protected function getIcon(array $row): string
     {
         // Initialization
-        $toolTip = BackendUtility::getRecordToolTip($row, 'pages');
+        $toolTip = BackendUtility::getRecordToolTip($row);
         $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render() . '</span>';
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals('pages', $row)) {
@@ -504,38 +446,33 @@ class PageInformationController extends InfoModuleController
      * @param array $row The pages table row as an associative array.
      * @return string The rendered table field value.
      */
-    protected function getPagesTableFieldValue($field, array $row)
+    protected function getPagesTableFieldValue(string $field, array $row): string
     {
         return htmlspecialchars((string)BackendUtility::getProcessedValue('pages', $field, $row[$field]));
     }
 
     /**
      * Counts and returns the number of records on the page with $pid
-     *
-     * @param string $table Table name
-     * @param int $pid Page id
-     * @return int Number of records.
      */
-    protected function numberOfRecords($table, $pid)
+    protected function numberOfRecords(string $table, int $pid): int
     {
-        $count = 0;
-        if ($GLOBALS['TCA'][$table]) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $count = (int)$queryBuilder->count('uid')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
-                )
-                ->executeQuery()
-                ->fetchOne();
+        if (!isset($GLOBALS['TCA'][$table])) {
+            return 0;
         }
 
-        return $count;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+
+        return (int)$queryBuilder->count('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**
@@ -545,7 +482,7 @@ class PageInformationController extends InfoModuleController
      * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
      * @return string HTML content for the table row
      */
-    protected function addElement($data)
+    protected function addElement(array $data): string
     {
         // Start up:
         $attributes = '';
@@ -634,5 +571,17 @@ class PageInformationController extends InfoModuleController
         }
 
         return $layoutValue;
+    }
+
+    protected function getButtons(): void
+    {
+        parent::getButtons();
+        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
+
+        // CSH
+        $cshButton = $buttonBar->makeHelpButton()
+            ->setModuleName('xMOD_csh_corebe')
+            ->setFieldName('pagetree_overview');
+        $buttonBar->addButton($cshButton);
     }
 }

@@ -629,4 +629,14 @@ return [
             'Breaking-96996-HookCheckEnableFieldsRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController\'][\'newStandardTemplateView\']' => [
+        'restFiles' => [
+            'Breaking-97135-RemovedSupportForModuleHandlingBasedOnTBE_MODULES_EXT.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController\'][\'newStandardTemplateHandler\']' => [
+        'restFiles' => [
+            'Breaking-97135-RemovedSupportForModuleHandlingBasedOnTBE_MODULES_EXT.rst',
+        ],
+    ],
 ];

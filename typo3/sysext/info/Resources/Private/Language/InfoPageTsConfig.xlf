@@ -36,6 +36,9 @@
 			<trans-unit id="editTSconfig_all" resname="editTSconfig_all">
 				<source>Edit TSconfig for all shown pages</source>
 			</trans-unit>
+			<trans-unit id="editTSconfig_global" resname="editTSconfig_global">
+				<source>Global Configuration</source>
+			</trans-unit>
 			<trans-unit id="editTSconfig_default" resname="editTSconfig_default">
 				<source>Default Configuration from TYPO3_CONF_VARS</source>
 			</trans-unit>

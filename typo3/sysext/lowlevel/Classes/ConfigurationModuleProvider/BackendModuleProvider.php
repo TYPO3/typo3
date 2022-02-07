@@ -32,6 +32,7 @@ class BackendModuleProvider extends AbstractProvider
         foreach ($this->provider->getModules(respectWorkspaceRestrictions: false, grouped: false) as $identifier => $module) {
             $configurationArray[$identifier] = [
                 'identifier' => $module->getIdentifier(),
+                'parentIdentifier' => $module->getParentIdentifier(),
                 'iconIdentifier' => $module->getIconIdentifier(),
                 'title' => $module->getTitle(),
                 'description' => $module->getDescription(),
@@ -40,6 +41,7 @@ class BackendModuleProvider extends AbstractProvider
                 'position' => $module->getPosition(),
                 'workspaces' => $module->getWorkspaceAccess(),
                 'isStandalone' => $module->isStandalone() ? 'true' : 'false',
+                'submodules' => $module->hasSubModules() ? implode(',', array_keys($module->getSubModules())) : '',
                 'path' => $module->getPath(),
             ];
         }
