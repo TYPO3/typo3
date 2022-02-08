@@ -25,15 +25,14 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -50,11 +49,6 @@ class LinkValidatorController
      * Information about the current page record
      */
     protected array $pageRecord = [];
-
-    /**
-     * Link validation class
-     */
-    protected LinkAnalyzer $linkAnalyzer;
 
     /**
      * TSconfig of the current module
@@ -95,29 +89,32 @@ class LinkValidatorController
     protected ServerRequestInterface $request;
 
     public function __construct(
-        protected Context $context,
-        protected UriBuilder $uriBuilder,
-        protected IconFactory $iconFactory,
-        protected PagesRepository $pagesRepository,
-        protected BrokenLinkRepository $brokenLinkRepository,
-        protected ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly Context $context,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly IconFactory $iconFactory,
+        protected readonly PagesRepository $pagesRepository,
+        protected readonly BrokenLinkRepository $brokenLinkRepository,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly LinkAnalyzer $linkAnalyzer,
     ) {
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
+        $backendUser = $this->getBackendUser();
+        $languageService = $this->getLanguageService();
+        $languageService->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
+
         $this->request = $request;
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->id = (int)($this->request->getQueryParams()['id'] ?? 0);
         $this->modTS = BackendUtility::getPagesTSconfig($this->id)['mod.']['linkvalidator.'] ?? [];
-
-        // Get the current page record
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+
+        $view = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-linkvalidator');
         if ($this->pageRecord !== []) {
-            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
+            $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
 
-        // Get the hook objects
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $className) {
             $hookObject = GeneralUtility::makeInstance($className);
             if (!$hookObject instanceof LinktypeInterface) {
@@ -126,7 +123,6 @@ class LinkValidatorController
             $this->hookObjectsArr[$linkType] = $hookObject;
         }
 
-        $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
         $this->validateSettings();
         $this->initializeLinkAnalyzer();
 
@@ -134,7 +130,7 @@ class LinkValidatorController
             $this->updateBrokenLinks();
         } elseif ($this->lastEditedRecord['uid']) {
             if (($this->modTS['actionAfterEditRecord'] ?? '') === 'recheck') {
-                // recheck broken links for last edited reccord
+                // recheck broken links for last edited record
                 $this->linkAnalyzer->recheckLinks(
                     $this->checkOpt['check'],
                     $this->lastEditedRecord['uid'],
@@ -151,43 +147,30 @@ class LinkValidatorController
             }
         }
 
-        $moduleTemplate->setTitle($this->getModuleTitle());
+        $view->setTitle($this->getModuleTitle());
 
-        $content = $this->createModuleContent($moduleTemplate);
-        return new HtmlResponse($moduleTemplate->setContent($content)->renderContent());
-    }
-
-    /**
-     * Create tabs to split the report and the checkLink functions
-     */
-    protected function createModuleContent(ModuleTemplate $moduleTemplate): string
-    {
-        if ($this->getBackendUser()->workspace !== 0
-            || !(($this->id && $this->pageRecord !== []) || (!$this->id && $this->getBackendUser()->isAdmin()))
-        ) {
-            $moduleTemplate->addFlashMessage(
-                $this->getLanguageService()->getLL('no.access'),
-                $this->getLanguageService()->getLL('no.access.title'),
-                FlashMessage::ERROR
-            );
-            return '';
+        if ($backendUser->workspace !== 0 || !(($this->id && $this->pageRecord !== []) || (!$this->id && $backendUser->isAdmin()))) {
+            $view->addFlashMessage($languageService->getLL('no.access'), $languageService->getLL('no.access.title'), AbstractMessage::ERROR);
+            return $view->renderResponse('Backend/Empty');
         }
 
-        $action = $this->request->getQueryParams()['action'] ?? null;
-        $moduleData = $this->getBackendUser()->getModuleData('web_linkvalidator') ?? [];
-        if (in_array($action, ['report', 'check'], true)) {
-            $moduleData['action'] = $action;
-            $this->getBackendUser()->pushModuleData('web_linkvalidator', $moduleData);
-        } else {
-            $action = $moduleData['action'] ?? 'report';
+        $moduleData = $backendUser->getModuleData('web_linkvalidator') ?? [];
+        $action = $this->request->getQueryParams()['action'] ?? $moduleData['action'] ?? 'report';
+        if (!in_array($action, ['report', 'check'], true) || !($this->modTS['showCheckLinkTab'] ?? false)) {
+            $action = 'report';
+        }
+        if ($action !== ($moduleData['action'] ?? '')) {
+            $backendUser->pushModuleData('web_linkvalidator', $moduleData);
         }
 
-        $languageService = $this->getLanguageService();
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:linkvalidator/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:linkvalidator/Resources/Private/Partials']);
+        $this->addDocHeaderShortCutButton($view, $action);
+        if ($this->modTS['showCheckLinkTab'] ?? false) {
+            // Add doc header drop down if user is allowed to see both 'report' and 'check'
+            $this->addDocHeaderDropDown($view, $action);
+        }
+
         if ($action === 'report') {
-            $content = $view->assignMultiple([
+            $view->assignMultiple([
                 'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
                 'prefix' => 'report',
                 'selectedLevel' => $this->searchLevel['report'],
@@ -199,53 +182,16 @@ class LinkValidatorController
                 'tableheadLinktarget' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linktarget', $languageService->getLL('list.tableHead.linktarget')),
                 'tableheadLinkmessage' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linkmessage', $languageService->getLL('list.tableHead.linkmessage')),
                 'tableheadLastcheck' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_lastcheck', $languageService->getLL('list.tableHead.lastCheck')),
-            ])->render('Backend/Report');
-        } elseif ($action === 'check') {
-            $content = $view->assignMultiple([
+            ]);
+            return $view->renderResponse('Backend/Report');
+        }
+        $view->assignMultiple([
                 'title' => $this->pageRecord ? BackendUtility::getRecordTitle('pages', $this->pageRecord) : '',
                 'prefix' => 'check',
                 'selectedLevel' => $this->searchLevel['check'],
                 'options' => $this->getCheckOptions('check'),
-            ])->render('Backend/CheckLinks');
-        } else {
-            $content = '';
-        }
-
-        $this->registerDocHeaderButtons($moduleTemplate, $action);
-
-        // In case user is not allowed to change the tab (action), return content and skip action menu generation
-        if (!($this->modTS['showCheckLinkTab'] ?? false)) {
-            return $content;
-        }
-
-        $actions = [
-            'report' => [
-                'label' => $languageService->getLL('Report'),
-                'href' => $this->getModuleUri('report'),
-                'active' => $action === 'report',
-            ],
-            'check' => [
-                'label' => $languageService->getLL('CheckLink'),
-                'href' => $this->getModuleUri('check'),
-                'active' => $action === 'check',
-            ],
-        ];
-
-        $actionMenu = $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier('reportLinkvalidatorSelector');
-        foreach ($actions as $action) {
-            $menuItem = $actionMenu
-                ->makeMenuItem()
-                ->setTitle($action['label'])
-                ->setHref($action['href']);
-            if ($action['active']) {
-                $menuItem->setActive(true);
-            }
-            $actionMenu->addMenuItem($menuItem);
-        }
-        $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
-
-        return $content;
+            ]);
+        return $view->renderResponse('Backend/CheckLinks');
     }
 
     /**
@@ -253,6 +199,8 @@ class LinkValidatorController
      */
     protected function validateSettings(): void
     {
+        $backendUser = $this->getBackendUser();
+
         $prefix = 'check';
         $other = 'report';
         if (empty($this->request->getParsedBody()['updateLinkList'] ?? false)) {
@@ -261,7 +209,7 @@ class LinkValidatorController
         }
 
         // get linkvalidator module data
-        $moduleData = $this->getBackendUser()->getModuleData('web_linkvalidator');
+        $moduleData = $backendUser->getModuleData('web_linkvalidator');
 
         // get information for last edited record
         $this->lastEditedRecord['uid'] = $this->request->getQueryParams()['last_edited_record_uid'] ?? 0;
@@ -313,7 +261,7 @@ class LinkValidatorController
         }
 
         // save settings
-        $this->getBackendUser()->pushModuleData('web_linkvalidator', $moduleData);
+        $backendUser->pushModuleData('web_linkvalidator', $moduleData);
     }
 
     /**
@@ -321,7 +269,6 @@ class LinkValidatorController
      */
     protected function initializeLinkAnalyzer(): void
     {
-        $this->linkAnalyzer = GeneralUtility::makeInstance(LinkAnalyzer::class);
         // Get the searchFields from TSconfig
         foreach ($this->modTS['searchFields.'] ?? [] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
@@ -334,7 +281,6 @@ class LinkValidatorController
                 }
             }
         }
-
         $rootLineHidden = $this->pagesRepository->doesRootLineContainHiddenPages($this->pageRecord);
         if (!$rootLineHidden || ($this->modTS['checkhidden'] ?? false)) {
             $this->linkAnalyzer->init($this->searchFields, $this->getPageList(), $this->modTS);
@@ -391,8 +337,9 @@ class LinkValidatorController
      */
     protected function getPageList(): array
     {
+        $backendUser = $this->getBackendUser();
         $checkForHiddenPages = (bool)($this->modTS['checkhidden'] ?? false);
-        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageList = $this->pagesRepository->getAllSubpagesForPage(
             $this->id,
             (int)$this->searchLevel['report'],
@@ -414,11 +361,12 @@ class LinkValidatorController
      */
     protected function createFlashMessagesForNoBrokenLinks(): void
     {
+        $languageService = $this->getLanguageService();
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
-            $this->getLanguageService()->getLL('list.no.broken.links'),
-            $this->getLanguageService()->getLL('list.no.broken.links.title'),
-            FlashMessage::OK,
+            $languageService->getLL('list.no.broken.links'),
+            $languageService->getLL('list.no.broken.links.title'),
+            AbstractMessage::OK,
             false
         );
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -513,15 +461,34 @@ class LinkValidatorController
         return $options;
     }
 
-    protected function registerDocHeaderButtons(ModuleTemplate $moduleTemplate, string $action): void
+    protected function addDocHeaderShortCutButton(ModuleTemplate $view, string $action): void
     {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('web_linkvalidator')
             ->setDisplayName($this->getModuleTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
         $buttonBar->addButton($shortcutButton);
+    }
+
+    protected function addDocHeaderDropDown(ModuleTemplate $view, string $currentAction): void
+    {
+        $languageService = $this->getLanguageService();
+        $actionMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu->setIdentifier('reportLinkvalidatorSelector');
+        $actionMenu->addMenuItem(
+            $actionMenu->makeMenuItem()
+                ->setTitle($languageService->getLL('Report'))
+                ->setHref($this->getModuleUri('report'))
+                ->setActive($currentAction === 'report')
+        );
+        $actionMenu->addMenuItem(
+            $actionMenu->makeMenuItem()
+                ->setTitle($languageService->getLL('CheckLink'))
+                ->setHref($this->getModuleUri('check'))
+                ->setActive($currentAction === 'check')
+        );
+        $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
     protected function getModuleUri(string $action = null, array $additionalPramaters = []): string
@@ -537,8 +504,9 @@ class LinkValidatorController
 
     protected function getModuleTitle(): string
     {
+        $languageService = $this->getLanguageService();
         $pageTitle = '';
-        $moduleName = $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf:mlang_labels_tablabel');
+        $moduleName = $languageService->sL('LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang_mod.xlf:mlang_labels_tablabel');
         if ($this->id === 0) {
             $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } elseif ($this->pageRecord !== []) {

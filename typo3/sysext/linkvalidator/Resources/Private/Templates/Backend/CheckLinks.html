@@ -3,34 +3,40 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer includeJavaScriptModules="{0: 'TYPO3/CMS/Linkvalidator/Linkvalidator.js'}"/>
+<f:layout name="Module" />
 
-<form method="post" id="linkValidatorReportController">
-    <div id="linkvalidator-modfuncreport">
-        <f:if condition="{title}">
-            <h1>{title}</h1>
-        </f:if>
-        <div class="row row-cols-auto align-items-start t3js-linkvalidator-settings">
-            <div class="col">
-                <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:checklinks.statistics.header" /></h4>
-                <f:render partial="CheckOptions" arguments="{_all}" />
-            </div>
-            <div class="col mb-3">
-                <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:checklinks.func.title" /></h4>
-                <f:render partial="LevelSelector" arguments="{_all}" />
-            </div>
-            <div class="col-12">
-                <input
-                    type="submit"
-                    class="btn btn-default t3js-linkvalidator-action-button"
-                    name="updateLinkList"
-                    disabled
-                    value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update')}"
-                    data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update-link-list')}"
-                />
+<f:section name="Content">
+
+    <f:be.pageRenderer includeJavaScriptModules="{0: 'TYPO3/CMS/Linkvalidator/Linkvalidator.js'}"/>
+
+    <form method="post" id="linkValidatorReportController">
+        <div id="linkvalidator-modfuncreport">
+            <f:if condition="{title}">
+                <h1>{title}</h1>
+            </f:if>
+            <div class="row row-cols-auto align-items-start t3js-linkvalidator-settings">
+                <div class="col">
+                    <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:checklinks.statistics.header" /></h4>
+                    <f:render partial="CheckOptions" arguments="{_all}" />
+                </div>
+                <div class="col mb-3">
+                    <h4><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:checklinks.func.title" /></h4>
+                    <f:render partial="LevelSelector" arguments="{_all}" />
+                </div>
+                <div class="col-12">
+                    <input
+                        type="submit"
+                        class="btn btn-default t3js-linkvalidator-action-button"
+                        name="updateLinkList"
+                        disabled
+                        value="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update')}"
+                        data-notification-message="{f:translate(key: 'LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:label_update-link-list')}"
+                    />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+
+</f:section>
 
 </html>
