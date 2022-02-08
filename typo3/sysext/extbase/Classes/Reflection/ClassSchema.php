@@ -223,7 +223,7 @@ class ClassSchema
                     Lazy::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY,
                     Transient::class => $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT,
                     Cascade::class => $this->properties[$propertyName]['c'] = ($attribute->newInstance())->value,
-                    'default' => '' // non-extbase attributes
+                    default => '' // non-extbase attributes
                 };
             }
             foreach ($validateAttributes as $attribute) {
@@ -332,7 +332,7 @@ class ClassSchema
                 match ($attribute->getName()) {
                     Validate::class => $validateAttributes[] = $attribute,
                     IgnoreValidation::class => $this->methods[$methodName]['tags']['ignorevalidation'][] = $attribute->newInstance()->argumentName,
-                    'default' => '' // non-extbase attributes
+                    default => '' // non-extbase attributes
                 };
             }
 
