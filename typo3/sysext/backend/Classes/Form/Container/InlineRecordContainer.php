@@ -169,7 +169,7 @@ class InlineRecordContainer extends AbstractContainer
 
         if ($inlineConfig['renderFieldsOnly'] ?? false) {
             // Render "body" part only
-            $html .= $combinationHtml;
+            $html .= $hiddenFieldHtml . $combinationHtml;
         } else {
             // Render header row and content (if expanded)
             if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {

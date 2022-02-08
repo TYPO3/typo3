@@ -97,6 +97,8 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
         return [
             // @todo deprecate inline JavaScript in TYPO3 v12.0
             'additionalJavaScriptPost' => [],
+            // @todo deprecate additionalHiddenFields in TYPO3 v12.0 - this return key is essentially
+            //       useless. Elements can simply submit their hidden HTML fields in the html key.
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
