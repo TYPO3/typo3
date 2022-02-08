@@ -78,7 +78,7 @@ abstract class AbstractElementsBasicCest
 
         // Validate save was successful
         $I->comment('Test value of visible and hidden field');
-        $I->seeInField($inputField, $testData['expectedValue']);
+        $I->seeInField($inputField, $testData['expectedInternalValueAfterSave'] ?? $testData['expectedValue']);
         $I->seeInField($hiddenField, $testData['expectedValueAfterSave']);
     }
 

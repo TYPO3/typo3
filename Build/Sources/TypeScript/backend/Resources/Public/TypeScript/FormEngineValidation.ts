@@ -518,12 +518,10 @@ export default (function() {
         // password is only a display evaluation, we ignore it
         break;
       default:
-        if (typeof TBE_EDITOR === 'object' && typeof TBE_EDITOR.customEvalFunctions !== 'undefined') {
-          if (customEvaluations.has(command)) {
-            returnValue = customEvaluations.get(command).call(null, value);
-          } else if (typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
-            returnValue = TBE_EDITOR.customEvalFunctions[command](value);
-          }
+        if (customEvaluations.has(command)) {
+          returnValue = customEvaluations.get(command).call(null, value);
+        } else if (typeof TBE_EDITOR === 'object' && typeof TBE_EDITOR.customEvalFunctions !== 'undefined' && typeof TBE_EDITOR.customEvalFunctions[command] === 'function') {
+          returnValue = TBE_EDITOR.customEvalFunctions[command](value);
         }
     }
     return returnValue;
