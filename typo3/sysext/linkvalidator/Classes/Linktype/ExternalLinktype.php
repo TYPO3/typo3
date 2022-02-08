@@ -323,7 +323,7 @@ class ExternalLinktype extends AbstractLinktype
      */
     public function fetchType($value, $type, $key)
     {
-        preg_match_all('/((?:http|https))(?::\\/\\/)(?:[^\\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
+        preg_match_all('/((?:http|https))(?::\\/\\/)(?:[^\\s<>]+)/i', $value['tokenValue'] ?? '', $urls, PREG_PATTERN_ORDER);
         if (!empty($urls[0][0])) {
             $type = 'external';
         }

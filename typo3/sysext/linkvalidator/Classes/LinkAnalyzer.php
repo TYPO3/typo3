@@ -404,13 +404,13 @@ class LinkAnalyzer
      */
     protected function analyzeTypoLinks(SoftReferenceParserResult $parserResult, array &$results, $htmlParser, array $record, $field, $table)
     {
-        $currentR = [];
         $linkTags = $htmlParser->splitIntoBlock('a,link', $parserResult->getContent());
         $idRecord = $record['uid'];
         $type = '';
         $title = '';
         $countLinkTags = count($linkTags);
         for ($i = 1; $i < $countLinkTags; $i += 2) {
+            $currentR = [];
             $referencedRecordType = '';
             foreach ($parserResult->getMatchedElements() as $element) {
                 $type = '';
@@ -432,6 +432,12 @@ class LinkAnalyzer
                     $currentR = $r;
                 }
                 $title = strip_tags($linkTags[$i]);
+            }
+            // @todo Should be checked why it could be that $currentR stays empty which breaks further processing with
+            //       chained PHP array access errors in hooks fetchType() and the $result[] build lines below. Further
+            //       $currentR could be overwritten in the inner loop, thus not checking all elements.
+            if (empty($currentR)) {
+                continue;
             }
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($currentR, $type, $keyArr);
