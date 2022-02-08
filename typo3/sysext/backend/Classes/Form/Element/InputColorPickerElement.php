@@ -121,8 +121,8 @@ class InputColorPickerElement extends AbstractFormElement
         }
 
         // Load needed js library
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/Backend/ColorPicker'
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+            'TYPO3/CMS/Backend/ColorPicker.js'
         )->invoke('initialize');
 
         $attributes = [

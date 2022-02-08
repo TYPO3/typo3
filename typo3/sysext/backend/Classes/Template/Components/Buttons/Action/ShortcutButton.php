@@ -246,7 +246,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         }
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/CopyToClipboard');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/CopyToClipboard.js');
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
 
         $currentUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(

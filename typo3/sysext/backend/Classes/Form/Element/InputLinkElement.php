@@ -201,7 +201,7 @@ class InputLinkElement extends AbstractFormElement
             $valuePickerHtml[] = '</select>';
             $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
 
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/FieldWizard/ValuePicker');
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldWizard/ValuePicker.js');
         }
 
         $fieldWizardResult = $this->renderFieldWizard();
@@ -302,8 +302,8 @@ class InputLinkElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/Backend/FormEngine/Element/InputLinkElement'
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+            'TYPO3/CMS/Backend/FormEngine/Element/InputLinkElement.js'
         )->instance($fieldId);
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;

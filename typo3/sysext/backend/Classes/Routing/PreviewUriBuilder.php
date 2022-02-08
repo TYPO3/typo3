@@ -296,7 +296,7 @@ class PreviewUriBuilder
             return;
         }
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
     }
 
     protected function loadImmediateActionElement(): void
@@ -305,7 +305,7 @@ class PreviewUriBuilder
             return;
         }
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
     }
 
     protected function prefixAttributeNames(string $prefix, array $attributes): array

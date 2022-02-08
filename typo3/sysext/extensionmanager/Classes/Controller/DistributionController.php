@@ -52,7 +52,7 @@ class DistributionController extends AbstractController
         $view = $this->registerDocHeaderButtons($view);
         $view->assign('distributionActive', $active);
         $view->assign('extension', $extension);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Extensionmanager/DistributionImage.js');
         return $view->renderResponse('Distribution/Show');
     }
 

@@ -231,7 +231,7 @@ class PageLayoutView implements LoggerAwareInterface
         $this->pageinfo = BackendUtility::readPageAccess($this->id, '') ?: [];
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        $pageActionsInstruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/PageActions');
+        $pageActionsInstruction = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/PageActions.js');
         if ($this->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->tt_contentConfig['sys_language_uid']);

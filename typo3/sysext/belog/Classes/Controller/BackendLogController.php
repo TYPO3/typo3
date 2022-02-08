@@ -63,8 +63,8 @@ class BackendLogController extends ActionController
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/GlobalEventHandler');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Belog/BackendLog');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
+        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Belog/BackendLog.js');
     }
 
     /**

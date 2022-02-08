@@ -100,7 +100,7 @@ class AddRecord extends AbstractNode
                 'href' => (string)$uriBuilder->buildUriFromRoute('wizard_add', $urlParameters),
             ],
             'requireJsModules' => [
-                JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/FieldControl/AddRecord')->instance('#' . $id),
+                JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldControl/AddRecord.js')->instance('#' . $id),
             ],
         ];
     }

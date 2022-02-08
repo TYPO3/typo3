@@ -86,7 +86,7 @@ class MoveElementController
         }
         $assigns = [];
         $backendUser = $this->getBackendUser();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tooltip.js');
         // Get record for element:
         $elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
         // Headerline: Icon, record title:

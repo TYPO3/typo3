@@ -334,11 +334,19 @@ abstract class AbstractFormElement extends AbstractNode
 
         $javaScriptEvaluation = $evalObject->returnFieldJS();
         if ($javaScriptEvaluation instanceof JavaScriptModuleInstruction) {
-            // just use the module name and export-name
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                $javaScriptEvaluation->getName(),
-                $javaScriptEvaluation->getExportName()
-            )->invoke('registerCustomEvaluation', $name);
+            if ($javaScriptEvaluation->shallLoadRequireJs()) {
+                // just use the module name and export-name
+                $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
+                    $javaScriptEvaluation->getName(),
+                    $javaScriptEvaluation->getExportName()
+                )->invoke('registerCustomEvaluation', $name);
+            } else {
+                // just use the module name and export-name
+                $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+                    $javaScriptEvaluation->getName(),
+                    $javaScriptEvaluation->getExportName()
+                )->invoke('registerCustomEvaluation', $name);
+            }
         } else {
             // @todo deprecate inline JavaScript in TYPO3 v12.0
             $resultArray['additionalJavaScriptPost'][] = sprintf(

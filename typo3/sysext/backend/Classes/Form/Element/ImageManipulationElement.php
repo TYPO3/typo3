@@ -194,8 +194,8 @@ class ImageManipulationElement extends AbstractFormElement
         ];
 
         if ($arguments['isAllowedFileExtension']) {
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-                'TYPO3/CMS/Backend/ImageManipulation'
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+                'TYPO3/CMS/Backend/ImageManipulation.js'
             )->invoke('initializeTrigger');
             $arguments['formEngine']['field']['id'] = StringUtility::getUniqueId('formengine-image-manipulation-');
             if (GeneralUtility::inList($config['eval'] ?? '', 'required')) {

@@ -197,8 +197,8 @@ class BackendLayoutWizardElement extends AbstractFormElement
 
         $html = implode(LF, $html);
         $resultArray['html'] = $html;
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/Backend/GridEditor',
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
+            'TYPO3/CMS/Backend/GridEditor.js',
             'GridEditor'
         )->instance();
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';

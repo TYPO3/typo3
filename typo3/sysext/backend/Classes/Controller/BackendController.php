@@ -85,7 +85,7 @@ class BackendController
 
         $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $javaScriptRenderer->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/LoginRefresh')
+            JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/LoginRefresh.js')
                 ->invoke('initialize', [
                     'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
                     'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),

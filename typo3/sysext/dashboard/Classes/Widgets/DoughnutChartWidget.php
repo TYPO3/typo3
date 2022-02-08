@@ -90,8 +90,8 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
     public function getJavaScriptModuleInstructions(): array
     {
         return [
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Dashboard/Contrib/chartjs'),
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Dashboard/ChartInitializer'),
+            JavaScriptModuleInstruction::create('TYPO3/CMS/Dashboard/Contrib/chartjs.js'),
+            JavaScriptModuleInstruction::create('TYPO3/CMS/Dashboard/ChartInitializer.js'),
         ];
     }
 

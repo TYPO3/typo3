@@ -200,7 +200,7 @@ class SiteLanguageContainer extends AbstractContainer
         ]);
 
         $resultArray['html'] = $view->render('Form/SiteLanguageContainer');
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/Container/SiteLanguageContainer');
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/Container/SiteLanguageContainer.js');
 
         return $resultArray;
     }

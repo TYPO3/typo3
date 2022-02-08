@@ -230,7 +230,7 @@ class RichTextElement extends AbstractFormElement
         // Make a hash of the configuration and append it to CKEDITOR.timestamp
         // This will mitigate browser caching issue when plugins are updated
         $configurationHash = md5((string)json_encode($configuration));
-        return JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/RteCkeditor/FormEngineInitializer', 'FormEngineInitializer')
+        return JavaScriptModuleInstruction::create('TYPO3/CMS/RteCkeditor/FormEngineInitializer.js', 'FormEngineInitializer')
             ->invoke('initializeCKEditor', [
                 'fieldId' => $fieldId,
                 'configuration' => $configuration,

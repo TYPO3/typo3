@@ -116,12 +116,12 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $clickTitleMode = $this->arguments['clickTitleMode'];
         $enableControlPanels = $this->arguments['enableControlPanels'];
 
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ActionDispatcher');
+        $this->getPageRenderer()->loadJavaScriptModule('TYPO3/CMS/Recordlist/Recordlist.js');
+        $this->getPageRenderer()->loadJavaScriptModule('TYPO3/CMS/Recordlist/RecordDownloadButton.js');
+        $this->getPageRenderer()->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
         if ($enableControlPanels === true) {
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $this->getPageRenderer()->loadJavaScriptModule('TYPO3/CMS/Backend/MultiRecordSelection.js');
+            $this->getPageRenderer()->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
         }
         // We need to include the language file, since DatabaseRecordList is heavily using ->getLL
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');

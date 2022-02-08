@@ -139,8 +139,8 @@ class RenameFileController
         $this->moduleTemplate->getDocHeaderComponent()->setMetaInformationForResource($this->fileOrFolderObject);
 
         // Setting up the context sensitive menu
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/RenameFile');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Filelist/RenameFile.js');
     }
 
     /**

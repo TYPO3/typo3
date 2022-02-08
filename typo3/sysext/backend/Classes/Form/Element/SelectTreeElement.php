@@ -194,8 +194,8 @@ class SelectTreeElement extends AbstractFormElement
         }
 
         $onFieldChangeItems = $this->getOnFieldChangeItems($this->getFieldChangeFuncs());
-        $resultArray['requireJsModules']['selectTreeElement'] = JavaScriptModuleInstruction::forRequireJS(
-            'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement',
+        $resultArray['requireJsModules']['selectTreeElement'] = JavaScriptModuleInstruction::create(
+            'TYPO3/CMS/Backend/FormEngine/Element/SelectTreeElement.js',
             'SelectTreeElement'
         )->instance($treeWrapperId, $fieldId, null, $onFieldChangeItems);
 

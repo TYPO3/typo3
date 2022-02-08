@@ -350,7 +350,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      */
     public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tabs.js');
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);

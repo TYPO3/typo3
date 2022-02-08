@@ -162,7 +162,7 @@ class ListController extends AbstractController
      */
     protected function distributionsAction(bool $showUnsuitableDistributions = false): ResponseInterface
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Extensionmanager/DistributionImage');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Extensionmanager/DistributionImage.js');
         $this->addComposerModeNotification();
         $importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
         $view = $this->initializeModuleTemplate($this->request);

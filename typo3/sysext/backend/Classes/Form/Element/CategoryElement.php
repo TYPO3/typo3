@@ -165,7 +165,7 @@ class CategoryElement extends AbstractFormElement
             $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
         }
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngine/Element/CategoryElement');
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/Element/CategoryElement.js');
 
         return $resultArray;
     }

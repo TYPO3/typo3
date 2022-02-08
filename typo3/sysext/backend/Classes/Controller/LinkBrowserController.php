@@ -65,7 +65,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
             $this->parameters['fieldChangeFunc'] = [];
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter')
+            JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter.js')
                 // @todo use a proper constructor when migrating to TypeScript
                 ->invoke('setOnFieldChangeItems', $this->parameters['fieldChangeFunc'])
         );
