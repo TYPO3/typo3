@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -162,7 +164,7 @@ class BackendUserController extends ActionController
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
@@ -220,12 +222,12 @@ class BackendUserController extends ActionController
         $backButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
         $buttonBar->addButton($backButton);
         $editButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
@@ -233,7 +235,7 @@ class BackendUserController extends ActionController
         $addUserButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
@@ -274,7 +276,7 @@ class BackendUserController extends ActionController
         $backButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('system_BeuserTxBeuser'));
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
@@ -401,7 +403,7 @@ class BackendUserController extends ActionController
         $addGroupButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL))
             ->setTitle(LocalizationUtility::translate('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral'))
-            ->setHref($this->backendUriBuilder->buildUriFromRoute('record_edit', [
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
