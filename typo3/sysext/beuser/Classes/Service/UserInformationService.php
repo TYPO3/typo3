@@ -147,7 +147,9 @@ class UserInformationService
         foreach (['tables_select', 'tables_modify'] as $tableField) {
             $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField], true);
             foreach ($temp as $tableName) {
-                $data['tables'][$tableField][$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['title'];
+                if (isset($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
+                    $data['tables'][$tableField][$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['title'];
+                }
             }
         }
         $data['tables']['all'] = array_replace($data['tables']['tables_select'] ?? [], $data['tables']['tables_modify'] ?? []);
@@ -215,8 +217,10 @@ class UserInformationService
         $fieldList = [];
         foreach ($fieldListTmp as $item) {
             $split = explode(':', $item);
-            $fieldList[$split[0]]['label'] = $GLOBALS['TCA'][$split[0]]['ctrl']['title'];
-            $fieldList[$split[0]]['fields'][$split[1]] = $GLOBALS['TCA'][$split[0]]['columns'][$split[1]]['label'] ?? $split[1];
+            if (isset($GLOBALS['TCA'][$split[0]]['ctrl']['title'])) {
+                $fieldList[$split[0]]['label'] = $GLOBALS['TCA'][$split[0]]['ctrl']['title'];
+                $fieldList[$split[0]]['fields'][$split[1]] = $GLOBALS['TCA'][$split[0]]['columns'][$split[1]]['label'] ?? $split[1];
+            }
         }
         ksort($fieldList);
         foreach ($fieldList as &$fieldListItem) {
