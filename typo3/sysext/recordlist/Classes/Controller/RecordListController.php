@@ -16,11 +16,10 @@
 namespace TYPO3\CMS\Recordlist\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -36,11 +35,9 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -50,23 +47,12 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
 
 /**
- * Script Class for the Web > List module; rendering the listing of records on a page
+ * The Web > List module: Rendering the listing of records on a page.
+ *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
 class RecordListController
 {
-    /**
-     * ModuleTemplate object
-     *
-     * @var ModuleTemplate
-     */
-    protected $moduleTemplate;
-
-    /**
-     * @var SiteLanguage[]
-     */
-    protected $siteLanguages = [];
-
     /**
      * @var Permission
      */
@@ -77,77 +63,42 @@ class RecordListController
     protected string $returnUrl = '';
     protected array $modTSconfig = [];
 
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ResponseFactoryInterface $responseFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        EventDispatcherInterface $eventDispatcher,
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ResponseFactoryInterface $responseFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->responseFactory = $responseFactory;
     }
 
-    /**
-     * Injects the request object for the current request or subrequest
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordDownloadButton');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/RecordSearch');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ColumnSelectorButton');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/MultiRecordSelection');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardPanel');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/NewContentElementWizardButton');
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUserAuthentication();
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        $languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         BackendUtility::lockRecords();
-        $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
-        $backendUser = $this->getBackendUserAuthentication();
         $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
-        // GPvars:
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
-        $table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
+        $singleTable = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
         $search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? '');
         $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
         $cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
-        // Set site languages
-        $site = $request->getAttribute('site');
-        $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
-        // Loading module configuration:
+        $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($this->getBackendUserAuthentication(), false, $this->id);
+
+        // Loading module configuration, clean up settings, current page and page access
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        // Clean up settings:
         $MOD_SETTINGS = BackendUtility::getModuleData(['clipBoard' => ''], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
-        // main
-        $lang = $this->getLanguageService();
-        // Loading current page record and checking access:
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $access = is_array($pageinfo);
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
-
         $this->pagePermissions = new Permission($backendUser->calcPerms($pageinfo));
         $userCanEditPage = $this->pagePermissions->editPagePermissionIsGranted() && !empty($this->id) && ($backendUser->isAdmin() || (int)$pageinfo['editlock'] === 0);
         $pageActionsInstruction = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/PageActions');
@@ -155,8 +106,8 @@ class RecordListController
             $pageActionsInstruction->invoke('setPageId', $this->id);
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
-        // Apply predefined values for hidden checkboxes
-        // Set predefined value for Clipboard:
+
+        $MOD_SETTINGS['clipBoard'] = true;
         if (isset($this->modTSconfig['enableClipBoard'])) {
             if ($this->modTSconfig['enableClipBoard'] === 'activated') {
                 $MOD_SETTINGS['clipBoard'] = true;
@@ -164,192 +115,101 @@ class RecordListController
                 $MOD_SETTINGS['clipBoard'] = false;
             }
         }
-        if (!isset($MOD_SETTINGS['clipBoard'])) {
-            $MOD_SETTINGS['clipBoard'] = true;
-        }
-        $clipboard = $this->initializeClipboard($request, (bool)$MOD_SETTINGS['clipBoard']);
-        $enableListing = $access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '');
 
-        // Initialize the dblist object:
-        $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dblist->setModuleData($MOD_SETTINGS ?? []);
-        $dblist->calcPerms = $this->pagePermissions;
-        $dblist->returnUrl = $this->returnUrl;
-        $dblist->showClipboardActions = true;
-        $dblist->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
-        $dblist->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
-        $dblist->hideTables = $this->modTSconfig['hideTables'] ?? false;
-        $dblist->hideTranslations = $this->modTSconfig['hideTranslations'] ?? false;
-        $dblist->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? false;
-        $dblist->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
-        $dblist->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
-        $dblist->pageRow = $this->pageInfo;
-        $dblist->modTSconfig = $this->modTSconfig;
-        $dblist->setLanguagesAllowedForUser($this->siteLanguages);
+        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->setModuleData($MOD_SETTINGS ?? []);
+        $dbList->calcPerms = $this->pagePermissions;
+        $dbList->returnUrl = $this->returnUrl;
+        $dbList->showClipboardActions = true;
+        $dbList->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
+        $dbList->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
+        $dbList->hideTables = $this->modTSconfig['hideTables'] ?? false;
+        $dbList->hideTranslations = $this->modTSconfig['hideTranslations'] ?? false;
+        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? false;
+        $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
+        $dbList->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
+        $dbList->pageRow = $this->pageInfo;
+        $dbList->modTSconfig = $this->modTSconfig;
+        $dbList->setLanguagesAllowedForUser($siteLanguages);
         $clickTitleMode = trim($this->modTSconfig['clickTitleMode'] ?? '');
-        $dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
+        $dbList->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
         if (isset($this->modTSconfig['tableDisplayOrder.'])) {
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $dblist->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
+            $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
         }
+        $clipboard = $this->initializeClipboard($request, (bool)$MOD_SETTINGS['clipBoard']);
+        $dbList->clipObj = $clipboard;
+        /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
+        $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
 
-        $dblist->clipObj = $clipboard;
-        // If there is access to the page or root page is used for searching, then render the list contents and set up the document template object:
-        $tableOutput = '';
-        if ($enableListing) {
-            // Deleting records...:
-            // Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-recordlist');
+
+        $tableListHtml = '';
+        if ($access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '')) {
+            // If there is access to the page or root page is used for searching, then perform actions and render table list.
             if ($cmd === 'delete' && $request->getMethod() === 'POST') {
-                $items = $clipboard->cleanUpCBC((array)($parsedBody['CBC'] ?? []), (string)($parsedBody['cmd_table'] ?? ''), true);
-                if (!empty($items)) {
-                    // Create data handler command array
-                    $dataHandlerCmd = [];
-                    foreach ($items as $iK => $value) {
-                        $iKParts = explode('|', (string)$iK);
-                        $dataHandlerCmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
-                    }
-                    $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->start([], $dataHandlerCmd);
-                    $tce->process_cmdmap();
-                    if (isset($dataHandlerCmd['pages'])) {
-                        BackendUtility::setUpdateSignal('updatePageTree');
-                    }
-                    $tce->printLogErrorMessages();
-                }
+                $this->deleteRecords($request, $clipboard);
             }
-            // Initialize the listing object, dblist, for rendering the list:
-            $dblist->start($this->id, $table, $pointer, $search_field, $search_levels);
-            $dblist->setDispFields();
-            // Render the list of tables:
-            $tableOutput = $dblist->generateList();
-
-            // Add JavaScript functions to the page:
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Element/ImmediateActionElement');
-
-            // Setting up the context sensitive menu:
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
+            $dbList->start($this->id, $singleTable, $pointer, $search_field, $search_levels);
+            $dbList->setDispFields();
+            $tableListHtml = $dbList->generateList();
         }
-        // access
-        // Begin to compile the whole page, starting out with page header:
+
         if (!$this->id) {
             $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         } else {
             $title = $pageinfo['title'] ?? '';
         }
-        $body = ImmediateActionElement::moduleStateUpdate('web', (int)$this->id);
-        $body .= $this->moduleTemplate->header($title, $this->isPageEditable());
-
-        // Additional header content
-        /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
-        $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
-        $body .= $additionalRecordListEvent->getAdditionalContentAbove();
-        $this->moduleTemplate->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'),
-            $title
-        );
-
-        $beforeOutput = '';
-        $output = '';
-        // Show the selector to add page translations, but only when in "default" mode.
-        // If not disabled via module TSconfig and the user is allowed, also show the page translations table.
-        if ($this->id && !$search_field && !$cmd && !$table) {
-            $beforeOutput .= $this->languageSelector($request->getAttribute('normalizedParams')->getRequestUri());
-            if ($this->showPageTranslations()) {
-                $pageTranslationsDatabaseRecordList = clone $dblist;
-                $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
-                $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
-                $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
-                $pageTranslationsDatabaseRecordList->hideTranslations = '';
-                $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
-                $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
-                $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
-            }
+        $languageSelectorHtml = '';
+        if ($this->id && !$search_field && !$cmd && !$singleTable) {
+            // Show the selector to add page translations, but only when in "default" mode.
+            $languageSelectorHtml = $this->languageSelector($siteLanguages, $request->getAttribute('normalizedParams')->getRequestUri());
+        }
+        $pageTranslationsHtml = '';
+        if ($this->id && !$search_field && !$cmd && !$singleTable && $this->showPageTranslations()) {
+            // Show page translation table if there are any and display is allowed.
+            $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages, $this->id);
+        }
+        $searchBoxHtml = '';
+        if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableListHtml || !empty($search_field))) {
+            $searchBoxHtml = $this->renderSearchBox($view, $dbList, $search_field, $search_levels);
+        }
+        $toggleClipboardHtml = '';
+        if ($tableListHtml && ($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
+            $toggleClipboardHtml = $this->renderToggleClipboardHtml($this->id, $singleTable, $MOD_SETTINGS['clipBoard'] ?? false);
+        }
+        $clipboardHtml = '';
+        if ($MOD_SETTINGS['clipBoard'] && ($tableListHtml || $clipboard->hasElements())) {
+            $clipboardHtml = '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
-        // search box toolbar
-        if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableOutput || !empty($search_field))) {
-            $beforeOutput .= $this->renderSearchBox($dblist, $search_field, $search_levels);
+        $view->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'), $title);
+        if (empty($tableListHtml)) {
+            $this->addNoRecordsFlashMessage($view, $singleTable);
         }
-
-        if (!empty($tableOutput)) {
-            $output .= $tableOutput;
-        } else {
-            if (isset($GLOBALS['TCA'][$table]['ctrl']['title'])) {
-                if (strpos($GLOBALS['TCA'][$table]['ctrl']['title'], 'LLL:') === 0) {
-                    $ll = sprintf($lang->getLL('noRecordsOfTypeOnThisPage'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
-                } else {
-                    $ll = sprintf($lang->getLL('noRecordsOfTypeOnThisPage'), $GLOBALS['TCA'][$table]['ctrl']['title']);
-                }
-            } else {
-                $ll = $lang->getLL('noRecordsOnThisPage');
-            }
-            $flashMessage = GeneralUtility::makeInstance(
-                FlashMessage::class,
-                $ll,
-                '',
-                FlashMessage::INFO
-            );
-            unset($ll);
-            /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            $defaultFlashMessageQueue->enqueue($flashMessage);
-        }
-
-        if ($beforeOutput) {
-            $body .= '<div class="row">' . $beforeOutput . '</div>';
-        }
-        $body .= $output;
-        // If a listing was produced, create the page footer
-        if ($tableOutput) {
-            // Adding checkbox option for clipboard display
-            $body .= '
-					<div class="mb-3">
-						<form action="" method="post">';
-
-            // Add "clipboard" checkbox:
-            if (($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
-                $body .= '<div class="form-check form-switch">' .
-                    BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', ($MOD_SETTINGS['clipBoard'] ?? ''), '', $table ? '&table=' . $table : '', 'id="checkShowClipBoard"') .
-                    '<label class="form-check-label" for="checkShowClipBoard">' .
-                    BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($lang->getLL('showClipBoard'))) .
-                    '</label>' .
-                    '</div>';
-            }
-
-            $body .= '
-						</form>
-					</div>';
-        }
-        // Printing clipboard if enabled
-        if ($MOD_SETTINGS['clipBoard'] && ($tableOutput || $clipboard->hasElements())) {
-            $body .= '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dblist->listURL()) . '"></typo3-backend-clipboard-panel>';
-        }
-        // Additional footer content
-        $body .= $additionalRecordListEvent->getAdditionalContentBelow();
-        // Setting up the buttons for docheader
-        $this->getDocHeaderButtons(
-            $clipboard,
-            $queryParams,
-            $table,
-            $dblist->listURL(),
-            $MOD_SETTINGS
-        );
-
         if ($pageinfo) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageinfo);
+            $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
-
-        $this->moduleTemplate->setContent($body);
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        $this->getDocHeaderButtons($view, $clipboard, $queryParams, $singleTable, $dbList->listURL(), $MOD_SETTINGS);
+        $view->assignMultiple([
+            'pageId' => $this->id,
+            'pageTitle' => $title,
+            'isPageEditable' => $this->isPageEditable(),
+            'singleTable' => $singleTable,
+            'additionalContentTop' => $additionalRecordListEvent->getAdditionalContentAbove(),
+            'languageSelectorHtml' => $languageSelectorHtml,
+            'pageTranslationsHtml' => $pageTranslationsHtml,
+            'searchBoxHtml' => $searchBoxHtml,
+            'tableListHtml' => $tableListHtml,
+            'toggleClipboardHtml' => $toggleClipboardHtml,
+            'clipboardHtml' => $clipboardHtml,
+            'additionalContentBottom' => $additionalRecordListEvent->getAdditionalContentBelow(),
+        ]);
+        return $view->renderResponse('RecordList');
     }
 
     /**
-     * Processing incoming data and configures the clipboard.
-     *
-     * @param ServerRequestInterface $request
-     * @param bool $isClipboardShown
-     * @return Clipboard
+     * Process incoming data and configure the clipboard.
      */
     protected function initializeClipboard(ServerRequestInterface $request, bool $isClipboardShown): Clipboard
     {
@@ -358,21 +218,20 @@ class RecordListController
         // Initialize - reads the clipboard content from the user session
         $clipboard->initializeClipboard($request);
         // Clipboard actions are handled:
-        // CB is the clipboard command array
-        $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
+        $clipboardCommandArray = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
         if ($cmd === 'copyMarked' || $cmd === 'removeMarked') {
             // Get CBC from request, and map the element values (true => copy, false => remove)
             $CBC = array_map(static fn () => ($cmd === 'copyMarked'), (array)($request->getParsedBody()['CBC'] ?? []));
             $cmd_table = (string)($request->getParsedBody()['cmd_table'] ?? $request->getQueryParams()['cmd_table'] ?? '');
             // Cleanup CBC
-            $CB['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);
+            $clipboardCommandArray['el'] = $clipboard->cleanUpCBC($CBC, $cmd_table);
         }
         if (!$isClipboardShown) {
             // If the clipboard is NOT shown, set the pad to 'normal'.
-            $CB['setP'] = 'normal';
+            $clipboardCommandArray['setP'] = 'normal';
         }
         // Execute commands.
-        $clipboard->setCmd($CB);
+        $clipboard->setCmd($clipboardCommandArray);
         // Clean up pad
         $clipboard->cleanCurrent();
         // Save the clipboard content
@@ -380,16 +239,39 @@ class RecordListController
         return $clipboard;
     }
 
-    protected function renderSearchBox(DatabaseRecordList $dblist, string $searchWord, int $searchLevels): string
+    protected function deleteRecords(ServerRequestInterface $request, Clipboard $clipboard): void
     {
-        $searchBoxVisible = !empty($dblist->searchString);
+        // This is the 'delete' button in table header with multi record selection.
+        // The clipboard object is used to clean up the submitted entries to only the selected table.
+        $parsedBody = $request->getParsedBody();
+        $items = $clipboard->cleanUpCBC((array)($parsedBody['CBC'] ?? []), (string)($parsedBody['cmd_table'] ?? ''), true);
+        if (!empty($items)) {
+            // Create data handler command array
+            $dataHandlerCmd = [];
+            foreach ($items as $iK => $value) {
+                $iKParts = explode('|', (string)$iK);
+                $dataHandlerCmd[$iKParts[0]][$iKParts[1]]['delete'] = 1;
+            }
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
+            $tce->start([], $dataHandlerCmd);
+            $tce->process_cmdmap();
+            if (isset($dataHandlerCmd['pages'])) {
+                BackendUtility::setUpdateSignal('updatePageTree');
+            }
+            $tce->printLogErrorMessages();
+        }
+    }
+
+    protected function renderSearchBox(ModuleTemplate $view, DatabaseRecordList $dbList, string $searchWord, int $searchLevels): string
+    {
+        $searchBoxVisible = !empty($dbList->searchString);
         $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($dblist->listURL('', '-1', 'pointer,search_field'));
+            ->render($dbList->listURL('', '-1', 'pointer,search_field'));
 
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $searchButton = $buttonBar->makeLinkButton();
         $searchButton
             ->setHref('#')
@@ -405,19 +287,11 @@ class RecordListController
     }
 
     /**
-     * Create the panel of buttons for submitting the form or otherwise perform
-     * operations.
-     *
-     * @param Clipboard $clipboard
-     * @param array $queryParams
-     * @param string $table
-     * @param string $listUrl
-     * @param array $moduleSettings
+     * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getDocHeaderButtons(Clipboard $clipboard, array $queryParams, string $table, string $listUrl, array $moduleSettings): void
+    protected function getDocHeaderButtons(ModuleTemplate $view, Clipboard $clipboard, array $queryParams, string $table, string $listUrl, array $moduleSettings): void
     {
-        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $backendUser = $this->getBackendUserAuthentication();
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
         // CSH
         if (!$this->id) {
@@ -433,7 +307,7 @@ class RecordListController
         if (!($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
             $newRecordButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
-                ->setTitle($lang->getLL('newRecordGeneral'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
                 ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
             $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
         }
@@ -450,8 +324,7 @@ class RecordListController
                     ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL));
                 $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
-            // If edit permissions are set, see
-            // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+            // If edit permissions are set, see BackendUserAuthentication
             if ($this->isPageEditable()) {
                 // Edit
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
@@ -464,7 +337,7 @@ class RecordListController
                 ]);
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref($editLink)
-                    ->setTitle($lang->getLL('editPage'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
                 $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
@@ -477,12 +350,12 @@ class RecordListController
                 $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageInfo, 'into', $elFromTable);
                 $pasteButton = $buttonBar->makeLinkButton()
                     ->setHref($clipboard->pasteUrl('', $this->id))
-                    ->setTitle($lang->getLL('clip_paste'))
+                    ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'))
                     ->setClasses('t3js-modal-trigger')
                     ->setDataAttributes([
                         'severity' => 'warning',
                         'bs-content' => $confirmMessage,
-                        'title' => $lang->getLL('clip_paste'),
+                        'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'),
                     ])
                     ->setIcon($this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL));
                 $buttonBar->addButton($pasteButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
@@ -555,6 +428,21 @@ class RecordListController
         }
     }
 
+    protected function addNoRecordsFlashMessage(ModuleTemplate $view, string $singleTable)
+    {
+        $languageService = $this->getLanguageService();
+        if ($singleTable && isset($GLOBALS['TCA'][$singleTable]['ctrl']['title'])) {
+            if (str_starts_with($GLOBALS['TCA'][$singleTable]['ctrl']['title'], 'LLL:')) {
+                $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($GLOBALS['TCA'][$singleTable]['ctrl']['title']));
+            } else {
+                $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $GLOBALS['TCA'][$singleTable]['ctrl']['title']);
+            }
+        } else {
+            $message = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOnThisPage');
+        }
+        $view->addFlashMessage($message, '', AbstractMessage::INFO);
+    }
+
     /**
      * Make selector box for creating new translation in a language
      * Displays only languages which are not yet present for the current page and
@@ -562,15 +450,15 @@ class RecordListController
      *
      * @param string $requestUri
      * @return string HTML <select> element (if there were items for the box anyways...)
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
-    protected function languageSelector(string $requestUri): string
+    protected function languageSelector(array $siteLanguages, string $requestUri): string
     {
         if (!$this->getBackendUserAuthentication()->check('tables_modify', 'pages')) {
             return '';
         }
         $availableTranslations = [];
-        foreach ($this->siteLanguages as $siteLanguage) {
+        foreach ($siteLanguages as $siteLanguage) {
             if ($siteLanguage->getLanguageId() === 0) {
                 continue;
             }
@@ -636,15 +524,11 @@ class RecordListController
                 PageRepository::DOKTYPE_RECYCLER,
             ];
         }
-
         return !in_array($this->pageInfo['doktype'] ?? 0, $noViewDokTypes);
     }
 
     /**
-     * Check whether or not the current backend user is an admin or the current page is
-     * locked by editlock.
-     *
-     * @return bool
+     * Check whether the current backend user is an admin or the current page is locked by edit lock.
      */
     protected function editLockPermissions(): bool
     {
@@ -652,25 +536,19 @@ class RecordListController
     }
 
     /**
-     * Returns the shortcut title for the current page
-     *
-     * @param array $arguments
-     * @return string
+     * Returns the shortcut title for the current page.
      */
     protected function getShortcutTitle(array $arguments): string
     {
         $pageTitle = '';
         $tableTitle = '';
         $languageService = $this->getLanguageService();
-
         if (isset($arguments['table'])) {
             $tableTitle = ': ' . (isset($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) ? $languageService->sL($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) : $arguments['table']);
         }
-
         if ($this->pageInfo !== []) {
             $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
         }
-
         return trim(sprintf(
             $languageService->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:shortcut.title'),
             $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:mlang_tabs_tab'),
@@ -685,39 +563,44 @@ class RecordListController
         if (!$this->getBackendUserAuthentication()->check('tables_select', 'pages')) {
             return false;
         }
-
         if (isset($this->modTSconfig['table.']['pages.']['hideTable'])) {
             return !$this->modTSconfig['table.']['pages.']['hideTable'];
         }
-
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
         return !($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
             && $hideTables !== '*'
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
 
-    protected function htmlResponse(string $html): ResponseInterface
+    protected function renderPageTranslations(DatabaseRecordList $dbList, array $siteLanguages, int $pageId): string
     {
-        $response = $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'text/html; charset=utf-8');
-        $response->getBody()->write($html);
-        return $response;
+        $pageTranslationsDatabaseRecordList = clone $dbList;
+        $pageTranslationsDatabaseRecordList->listOnlyInSingleTableMode = false;
+        $pageTranslationsDatabaseRecordList->disableSingleTableView = true;
+        $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
+        $pageTranslationsDatabaseRecordList->hideTranslations = '';
+        $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($siteLanguages);
+        $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
+        return $pageTranslationsDatabaseRecordList->getTable('pages', $pageId);
     }
 
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    public function renderToggleClipboardHtml(int $pageId, string $singleTable, bool $checked): string
     {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
+        $languageService = $this->getLanguageService();
+        $html = [];
+        $html[] = '<div class="mb-3">';
+        $html[] =   '<div class="form-check form-switch">';
+        $html[] =       BackendUtility::getFuncCheck($pageId, 'SET[clipBoard]', $checked, '', $singleTable ? '&table=' . $singleTable : '', 'id="checkShowClipBoard"');
+        $html[] =       '<label class="form-check-label" for="checkShowClipBoard">';
+        $html[] =           BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard')));
+        $html[] =       '</label>';
+        $html[] =   '</div>';
+        $html[] = '</div>';
+        return implode(LF, $html);
     }
 
     /**
      * Check if page can be edited by current user
-     *
-     * @return bool
      */
     protected function isPageEditable(): bool
     {
@@ -737,5 +620,15 @@ class RecordListController
             && $this->pagePermissions->editPagePermissionIsGranted()
             && $backendUser->checkLanguageAccess(0)
             && $backendUser->check('tables_modify', 'pages');
+    }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
