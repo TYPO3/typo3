@@ -774,15 +774,40 @@ class GeneralUtilityTest extends UnitTestCase
     //////////////////////////////////
     // Tests concerning intExplode
     //////////////////////////////////
+
+    public function intExplodeDataProvider(): array
+    {
+        return [
+            'convertStringToInteger' => [
+                '1,foo,2',
+                false,
+                [1, 0, 2],
+            ],
+            'zerosAreKept' => [
+                '0,1, 0, 2,0',
+                false,
+                [0, 1, 0, 2, 0],
+            ],
+            'emptyValuesAreKept' => [
+                '0,1,, 0, 2,,0',
+                false,
+                [0, 1, 0, 0, 2, 0, 0],
+            ],
+            'emptyValuesAreRemoved' => [
+                '0,1,, 0, 2,,0',
+                true,
+                [0=>0, 1=>1, 3=>0, 4=>2, 6=>0], // note does not renumber keys!
+            ],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider intExplodeDataProvider
      */
-    public function intExplodeConvertsStringsToInteger(): void
+    public function intExplodeReturnsExplodedArray(string $input, bool $removeEmpty, array $expected): void
     {
-        $testString = '1,foo,2';
-        $expectedArray = [1, 0, 2];
-        $actualArray = GeneralUtility::intExplode(',', $testString);
-        self::assertEquals($expectedArray, $actualArray);
+        self::assertSame($expected, GeneralUtility::intExplode(',', $input, $removeEmpty));
     }
 
     //////////////////////////////////
