@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -318,7 +320,7 @@ class BackendController
 
                 // check if the start module has additional parameters, so a redirect to a specific
                 // action is possible
-                if (str_contains($startModule, '->')) {
+                if (is_string($startModule) && str_contains($startModule, '->')) {
                     [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
                     // if no GET parameters are set, check if there are parameters given from the UC
                     if (!$moduleParameters && $startModuleParameters) {
