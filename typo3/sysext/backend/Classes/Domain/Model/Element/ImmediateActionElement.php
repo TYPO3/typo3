@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ImmediateActionElement
 {
-    public const MODULE_NAME = 'TYPO3/CMS/Backend/Storage/ModuleStateStorage';
-
     protected string $action;
     protected ?array $args = null;
 
