@@ -2175,6 +2175,16 @@ class ContentObjectRendererTest extends UnitTestCase
                 'mailto:some.body@test.typo3.org',
                 '<a href="#" data-mailto-token="lzhksn9rnld-ancxZsdrs-sxon2-nqf" data-mailto-vector="-1">some.body(at)test.typo3(dot)org</a>',
             ],
+            'mono-alphabetic substitution offset -1 with at and dot markup substitution' => [
+                [
+                    'spamProtectEmailAddresses' => -1,
+                    'spamProtectEmailAddresses_atSubst' => '<span class="at"></span>',
+                    'spamProtectEmailAddresses_lastDotSubst' => '<span class="dot"></span>',
+                ],
+                'some.body@test.typo3.org',
+                'mailto:some.body@test.typo3.org',
+                '<a href="#" data-mailto-token="lzhksn9rnld-ancxZsdrs-sxon2-nqf" data-mailto-vector="-1">some.body<span class="at"></span>test.typo3<span class="dot"></span>org</a>',
+            ],
             'mono-alphabetic substitution offset 2 with at and dot substitution and encoded subject' => [
                 [
                     'spamProtectEmailAddresses' => 2,
@@ -2183,6 +2193,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
                 'some.body@test.typo3.org',
                 'mailto:some.body@test.typo3.org?subject=foo%20bar',
+                // @todo no substitution, due to `?subject=` extension (which cannot be found in the link-text)
                 '<a href="#" data-mailto-token="ocknvq,uqog0dqfaBvguv0varq50qti?uwdlgev=hqq%42dct" data-mailto-vector="2">some.body@test.typo3.org</a>',
             ],
         ];
