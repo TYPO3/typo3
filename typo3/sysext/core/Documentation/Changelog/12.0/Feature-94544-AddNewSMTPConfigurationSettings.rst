@@ -31,6 +31,7 @@ It is now also possible to define an array with SMTP stream options in the Addit
 Configuration Example:
 
 .. code-block:: php
+
     return [
         //....
         'MAIL' => [
