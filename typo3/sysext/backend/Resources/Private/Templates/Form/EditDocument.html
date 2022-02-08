@@ -1,0 +1,20 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0: 'TYPO3/CMS/Backend/ContextMenu'
+        }"
+    />
+
+    <f:format.raw>{bodyHtml}</f:format.raw>
+
+</f:section>
+
+</html>

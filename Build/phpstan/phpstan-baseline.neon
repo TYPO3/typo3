@@ -61,11 +61,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
 
 		-
-			message: "#^Variable \\$keys in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/EditDocumentController.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/File/FileController.php
