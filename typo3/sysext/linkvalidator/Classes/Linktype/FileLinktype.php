@@ -35,7 +35,7 @@ class FileLinktype extends AbstractLinktype
      */
     public function fetchType($value, $type, $key)
     {
-        if (strpos(strtolower($value['tokenValue']), 'file:') === 0) {
+        if (strpos(strtolower($value['tokenValue'] ?? ''), 'file:') === 0) {
             $type = 'file';
         }
         return $type;
