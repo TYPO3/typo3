@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "11.5.*@dev"
+		"typo3/cms-core": "11.5.6"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Determine system's status and send it via email"
