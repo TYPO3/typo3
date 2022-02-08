@@ -983,10 +983,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Stores data for a module.
-     * The data is stored with the session id so you can even check upon retrieval
+     * The data is stored with the session ID, so you can even check upon retrieval
      * if the module data is from a previous session or from the current session.
      *
-     * @param string $module Is the name of the module ($MCONF['name'])
+     * @param string $module Is the identifier of the module, e.g. "web_info"
      * @param mixed $data Is the data you want to store for that module (array, string, ...)
      * @param bool|int $noSave If $noSave is set, then the ->uc array (which carries all kinds of user data) is NOT written immediately, but must be written by some subsequent call.
      */
@@ -1006,7 +1006,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * Gets module data for a module (from a loaded ->uc array)
      *
-     * @param string $module Is the name of the module ($MCONF['name'])
+     * @param string $module Is the identifier of the module, e.g. "web_info"
      * @param string $type If $type = 'ses' then module data is returned only if it was stored in the current session, otherwise data from a previous session will be returned (if available).
      * @return mixed The module data if available: $this->uc['moduleData'][$module];
      */

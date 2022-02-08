@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use TYPO3\CMS\Backend\Routing\Route;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -76,13 +76,11 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         protected readonly StreamFactoryInterface $streamFactory,
         protected readonly ServerRequestInterface $request,
     ) {
-        $currentRoute = $request->getAttribute('route');
-        if ($currentRoute instanceof Route) {
-            if ($currentRoute->hasOption('module')) {
-                $this->setModuleName($currentRoute->getOption('module')?->getIdentifier() ?? '');
-            } else {
-                $this->setModuleName($currentRoute->getOption('_identifier'));
-            }
+        $module = $request->getAttribute('module');
+        if ($module instanceof ModuleInterface) {
+            $this->setModuleName($module->getIdentifier());
+        } else {
+            $this->setModuleName($request->getAttribute('route')?->getOption('_identifier') ?? '');
         }
         $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);

@@ -54,17 +54,17 @@ class ButtonBarHook
         $request = $this->getRequest();
 
         $id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
-        $route = $request->getAttribute('route');
+        $module = $request->getAttribute('module');
         $normalizedParams = $request->getAttribute('normalizedParams');
         $pageTSconfig = BackendUtility::getPagesTSconfig($id);
 
         if (!$id
-            || $route === null
+            || $module === null
             || $normalizedParams === null
             || !empty($pageTSconfig['mod.']['SHARED.']['disableSysNoteButton'])
             || !$this->canCreateNewRecord($id)
-            || !in_array($route->getOption('moduleName'), self::ALLOWED_MODULES, true)
-            || ($route->getOption('moduleName') === 'web_list' && !$this->isCreationAllowed($pageTSconfig['mod.']['web_list.'] ?? []))
+            || !in_array($module->getIdentifier(), self::ALLOWED_MODULES, true)
+            || ($module->getIdentifier() === 'web_list' && !$this->isCreationAllowed($pageTSconfig['mod.']['web_list.'] ?? []))
         ) {
             return $buttons;
         }

@@ -565,8 +565,7 @@ class ShortcutRepository
             return $routeIdentifier;
         }
 
-        $route = $this->getRoute($routeIdentifier);
-        return $route !== null ? (string)($route->getOption('moduleName') ?? '') : '';
+        return (string)($this->getRoute($routeIdentifier)?->getOption('module')?->getIdentifier() ?? '');
     }
 
     /**

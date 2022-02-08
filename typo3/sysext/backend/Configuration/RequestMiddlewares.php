@@ -47,10 +47,16 @@ return [
                 'typo3/cms-backend/backend-routing',
             ],
         ],
+        'typo3/cms-backend/backend-module-validator' => [
+            'target' => \TYPO3\CMS\Backend\Middleware\BackendModuleValidator::class,
+            'after' => [
+                'typo3/cms-backend/authentication',
+            ],
+        ],
         'typo3/cms-backend/site-resolver' => [
             'target' => \TYPO3\CMS\Backend\Middleware\SiteResolver::class,
             'after' => [
-                'typo3/cms-backend/backend-routing',
+                'typo3/cms-backend/backend-module-validator',
             ],
         ],
         /** internal: do not use or reference this middleware in your own code */

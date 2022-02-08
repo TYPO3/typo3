@@ -166,15 +166,7 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
         }
 
         if ($this->moduleProvider->isModuleRegistered($moduleName)) {
-            return $this->moduleProvider->getModule($moduleName)->getIdentifier();
-        }
-
-        // If the defined route identifier can't be fetched, try from the other side
-        // by iterating over the routes to match a route by the defined module name
-        foreach ($this->routes as $identifier => $route) {
-            if ($route->hasOption('moduleName') && $route->getOption('moduleName') === $moduleName) {
-                return $identifier;
-            }
+            return $moduleName;
         }
 
         return '';

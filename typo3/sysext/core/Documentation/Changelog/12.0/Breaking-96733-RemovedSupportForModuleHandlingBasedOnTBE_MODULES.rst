@@ -89,8 +89,19 @@ Migrate to the new Module Registration API, and use the :php:`ModuleProvider`
 class to get allowed modules and work with the objects. The current module
 information (an implementation of :php:`ModuleInterface`) is stored in a
 TYPO3 Backend request within the `module` option of a TYPO3 Backend route,
-which can be accessed via
-:php:`$request->getAttribute('route')->getOption('module')`.
+which can be accessed via :php:`$request->getAttribute('route')->getOption('module')`.
+
+As soon as the new TYPO3 :php:`BackendModuleValidator` PSR-15 middleware
+has validated the module for the current user, the :php:`ModuleInterface`
+object is also added to the current request and can then be accessed
+via :php:`$request->getAttribute('module')` in custom middlewares or
+components.
+
+.. note::
+
+    With the new module registration, the module identifier is also used
+    as the route identifier. Therefore, the `moduleName` option is removed
+    form the TYPO3 backend route object.
 
 The registration has to be moved from :file:`ext_tables.php` to the
 :file:`Configuration/Backend/Modules.php` file. See the

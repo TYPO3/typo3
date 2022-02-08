@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Web;
 use ExtbaseTeam\BlogExample\Controller\BlogController;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
@@ -60,7 +59,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -93,7 +92,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -126,7 +125,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['format' => 'json']]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -197,7 +196,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -255,7 +254,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -308,7 +307,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -344,7 +343,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -398,7 +397,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -432,8 +431,8 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'User']]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -469,7 +468,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -504,7 +503,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -535,7 +534,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -568,7 +567,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -605,7 +604,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -630,7 +629,7 @@ class RequestBuilderTest extends FunctionalTestCase
                 BlogController::class => ['list', 'show'],
             ],
         ]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -668,7 +667,7 @@ class RequestBuilderTest extends FunctionalTestCase
                 BlogController::class => ['list', 'show'],
             ],
         ]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -704,7 +703,7 @@ class RequestBuilderTest extends FunctionalTestCase
                 BlogController::class => ['list', 'show'],
             ],
         ]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
@@ -743,7 +742,7 @@ class RequestBuilderTest extends FunctionalTestCase
                 BlogController::class => ['list', 'show'],
             ],
         ]);
-        $mainRequest = $mainRequest->withAttribute('route', new Route($module->getPath(), ['module' => $module]));
+        $mainRequest = $mainRequest->withAttribute('module', $module);
 
         $configuration = [];
         $configuration['extensionName'] = $extensionName;

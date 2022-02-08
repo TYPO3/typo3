@@ -162,7 +162,7 @@ class RequestBuilder implements SingletonInterface
     {
         $configuration = [];
         // Load values from the route object, this is used for TYPO3 Backend Modules
-        $module = $mainRequest->getAttribute('route')?->getOption('module');
+        $module = $mainRequest->getAttribute('module');
         if ($module instanceof ExtbaseModule) {
             $configuration = [
                 'controllerConfiguration' => $module->getControllerActions(),

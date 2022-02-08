@@ -39,7 +39,6 @@ class Module extends BaseModule implements ModuleInterface
         }
         return [
             'module' => $this,
-            'moduleName' => $this->identifier,
             'access' => $this->access,
             'target' => $this->routes['_default']['target'],
         ];

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Core;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
@@ -216,12 +215,11 @@ class Bootstrap
      */
     public function handleBackendRequest(ServerRequestInterface $request): ResponseInterface
     {
-        // build the configuration from the Server request / route
-        /** @var Route $route */
-        $route = $request->getAttribute('route');
+        // build the configuration from the module, included in the current request
+        $module = $request->getAttribute('module');
         $configuration = [
-            'extensionName' => $route->getOption('module')?->getExtensionName(),
-            'pluginName' => $route->getOption('module')?->getIdentifier(),
+            'extensionName' => $module?->getExtensionName(),
+            'pluginName' => $module?->getIdentifier(),
         ];
 
         $this->initialize($configuration);

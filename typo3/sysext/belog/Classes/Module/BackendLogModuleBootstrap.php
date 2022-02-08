@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Belog\Module;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Core\Bootstrap as ExtbaseBootstrap;
 
@@ -48,16 +47,11 @@ class BackendLogModuleBootstrap
         $queryParams = $request->getQueryParams();
         $queryParams['tx_belog_system_beloglog']['pageId'] = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
         $queryParams['tx_belog_system_beloglog']['layout'] = 'Plain';
-        $request = $request->withQueryParams($queryParams);
-
-        $routePath = $this->uriBuilder->buildUriFromRoute('system_BelogLog')->getPath();
-        $routeOptions = $this->moduleProvider->getModule('system_BelogLog')?->getDefaultRouteOptions() ?? [];
 
         return $this->extbaseBootstrap->handleBackendRequest(
-            $request->withAttribute(
-                'route',
-                new Route($routePath, $routeOptions)
-            )
+            $request
+                ->withQueryParams($queryParams)
+                ->withAttribute('module', $this->moduleProvider->getModule('system_BelogLog'))
         );
     }
 }
