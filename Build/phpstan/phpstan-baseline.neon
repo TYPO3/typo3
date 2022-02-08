@@ -421,11 +421,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/Grid.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:setRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/Drawing/BackendLayoutRenderer.php
-
-		-
 			message: "#^Left side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/View/PageLayoutView.php

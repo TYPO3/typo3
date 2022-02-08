@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -30,56 +32,36 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * @see ListDataProviderInterface
  * @see ButtonProviderInterface
  */
-class ListWidget implements WidgetInterface
+class ListWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
-     * @var array
-     */
-    private $options;
-    /**
-     * @var ButtonProviderInterface|null
-     */
-    private $buttonProvider;
-
-    /**
-     * @var ListDataProviderInterface
-     */
-    private $dataProvider;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        ListDataProviderInterface $dataProvider,
-        StandaloneView $view,
-        $buttonProvider = null,
-        array $options = []
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly ListDataProviderInterface $dataProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
+        protected readonly ?StandaloneView $view = null,
+        private readonly ?ButtonProviderInterface $buttonProvider = null,
+        private readonly array $options = [],
     ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->options = $options;
-        $this->buttonProvider = $buttonProvider;
-        $this->dataProvider = $dataProvider;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/ListWidget');
-        $this->view->assignMultiple([
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view->assignMultiple([
             'items' => $this->getItems(),
             'options' => $this->options,
             'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
         ]);
-        return $this->view->render();
+        return $view->render('Widget/ListWidget');
     }
 
     protected function getItems(): array
@@ -87,9 +69,6 @@ class ListWidget implements WidgetInterface
         return $this->dataProvider->getItems();
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;

@@ -59,11 +59,14 @@ services:
     class: 'TYPO3\CMS\Fluid\View\StandaloneView'
     public: true
     factory: ['TYPO3\CMS\Dashboard\Views\Factory', 'widgetTemplate']
+    deprecated:
+      package: 'typo3/cms-dashboard'
+      version: '12.0'
+      message: 'Injection of "%service_id%" should not be injected due to a dependency to ServerRequestInterface. Inject BackendViewFactory instead and implement RequestAwareWidgetInterface.'
 
   dashboard.widget.t3news:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3news'
       $options:
@@ -82,7 +85,6 @@ services:
     class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
     arguments:
       $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogErrorsDataProvider'
-      $view: '@dashboard.views.widget'
       $buttonProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\SysLogButtonProvider'
       $options:
         refreshAvailable: true
@@ -99,7 +101,6 @@ services:
   dashboard.widget.docGettingStarted:
     class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $buttonProvider: '@dashboard.buttons.docGettingStarted'
       $options:
         text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.text'
@@ -115,7 +116,6 @@ services:
   dashboard.widget.docTypoScriptReference:
     class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $buttonProvider: '@dashboard.buttons.docTypoScriptReference'
       $options:
         text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.typoscriptReference.text'
@@ -131,7 +131,6 @@ services:
   dashboard.widget.docTSconfig:
     class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $buttonProvider: '@dashboard.buttons.docTSconfig'
       $options:
         text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.text'
@@ -146,8 +145,6 @@ services:
 
   dashboard.widget.t3information:
     class: 'TYPO3\CMS\Dashboard\Widgets\T3GeneralInformationWidget'
-    arguments:
-      $view: '@dashboard.views.widget'
     tags:
       - name: dashboard.widget
         identifier: 't3information'
@@ -161,7 +158,6 @@ services:
   dashboard.widget.typeOfUsers:
     class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\TypeOfUsersChartDataProvider'
     tags:
       - name: dashboard.widget
@@ -175,7 +171,6 @@ services:
   dashboard.widget.t3securityAdvisories:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $cache: '@cache.dashboard.rss'
       $buttonProvider: '@dashboard.buttons.t3securityAdvisories'
       $options:
@@ -194,7 +189,6 @@ services:
     class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
     arguments:
       $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
-      $view: '@dashboard.views.widget'
       $options:
         title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
         subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'

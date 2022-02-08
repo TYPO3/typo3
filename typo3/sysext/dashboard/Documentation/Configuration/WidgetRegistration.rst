@@ -52,7 +52,6 @@ the following service registration can be used inside of :file:`Configuration/Se
      dashboard.widget.t3news:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
-         $view: '@dashboard.views.widget'
          $buttonProvider: '@dashboard.buttons.t3news'
          $cache: '@cache.dashboard.rss'
          $options:
@@ -207,7 +206,6 @@ An example to split up all Widget related configuration would look like:
      dashboard.widget.t3news:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
-         $view: '@dashboard.views.widget'
          $buttonProvider: '@dashboard.buttons.t3news'
          $cache: '@cache.dashboard.rss'
          $options:
@@ -263,7 +261,6 @@ The following example demonstrates how a widget can be registered via :file:`Ser
        if ($containerBuilder->hasDefinition(Status::class)) {
            $services->set('widgets.dashboard.widget.exampleWidget')
                ->class(ExampleWidget::class)
-               ->arg('$view', new Reference('dashboard.views.widget'))
                ->arg('$buttonProvider', new Reference(ExampleProvider::class))
                ->arg('$options', ['template' => 'Widget/ExampleWidget'])
                ->tag('dashboard.widget', [

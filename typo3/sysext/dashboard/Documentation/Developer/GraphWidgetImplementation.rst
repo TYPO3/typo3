@@ -28,20 +28,9 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
 
    class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, RequireJsModuleInterface
    {
-       /**
-        * @var ChartDataProviderInterface
-        */
-       private $dataProvider;
-
-       /**
-        * @var array
-        */
-       private options;
-
        public function __construct(
            // …
-           ChartDataProviderInterface $dataProvider,
-           array $options = [],
+           private readonly ChartDataProviderInterface $dataProvider,
            // …
        ) {
            // …
@@ -51,13 +40,13 @@ An example would be :file:`Classes/Widgets/BarChartWidget.php`::
 
        public function renderWidgetContent(): string
        {
-           $this->view->setTemplate('Widget/ChartWidget');
+           // …
            $this->view->assignMultiple([
                // …
                'configuration' => $this->configuration,
                // …
            ]);
-           return $this->view->render();
+           // …
        }
 
        public function getEventData(): array

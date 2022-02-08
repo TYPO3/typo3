@@ -22,6 +22,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * @internal
+ * @deprecated since v12, will be removed in v13 along with 'dashboard.views.widget' DI.
  */
 class Factory
 {

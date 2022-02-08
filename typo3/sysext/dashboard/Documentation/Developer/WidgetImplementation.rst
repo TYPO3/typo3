@@ -32,74 +32,48 @@ PHP class
 Each Widget has to be a PHP class.
 This class has to implement the :php:class:`WidgetInterface` and could look like this::
 
-   class RssWidget implements WidgetInterface
-   {
-       /**
-        * @var WidgetConfigurationInterface
-        */
-       private $configuration;
+    class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
+    {
+        private ServerRequestInterface $request;
 
-       /**
-        * @var StandaloneView
-        */
-       private $view;
+        public function __construct(
+            private readonly WidgetConfigurationInterface $configuration,
+            private readonly  Cache $cache,
+            private readonly BackendViewFactory $backendViewFactory,
+            private readonly ButtonProviderInterface $buttonProvider = null,
+            private readonly  array $options = []
+        ) {
+        }
 
-       /**
-        * @var Cache
-        */
-       private $cache;
+        public function setRequest(ServerRequestInterface $request): void
+        {
+            $this->request = $request;
+        }
 
-       /**
-        * @var ButtonProviderInterface|null
-        */
-       private $buttonProvider;
+        public function renderWidgetContent(): string
+        {
+            // @todo: The second argument will fall with one of the next patches, adapt this then.
+            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+            $this->view->assignMultiple([
+                'items' => $this->getRssItems(),
+                'options' => $this->options,
+                'button' => $this->getButton(),
+                'configuration' => $this->configuration,
+            ]);
+            return $this->view->render('Widget/RssWidget');
+        }
 
-       /**
-        * @var array
-        */
-       private options;
+        protected function getRssItems(): array
+        {
+            $items = [];
+            // Logic to populate $items array
+            return $items;
+        }
 
-       public function __construct(
-           WidgetConfigurationInterface $configuration,
-           Cache $cache,
-           StandaloneView $view,
-           ButtonProviderInterface $buttonProvider = null,
-           array $options = []
-       ) {
-           $this->configuration = $configuration;
-           $this->view = $view;
-           $this->cache = $cache;
-           $this->options = [
-               'limit' => 5,
-           ] + $options;
-           $this->buttonProvider = $buttonProvider;
-       }
-
-       public function renderWidgetContent(): string
-       {
-           $this->view->setTemplate('Widget/RssWidget');
-           $this->view->assignMultiple([
-               'items' => $this->getRssItems(),
-               'options' => $this->options,
-               'button' => $this->getButton(),
-               'configuration' => $this->configuration,
-           ]);
-           return $this->view->render();
-       }
-
-       protected function getRssItems(): array
-       {
-           $items = [];
-
-           // Logic to populate $items array
-
-           return $items;
-       }
-
-       public function getOptions(): array
-       {
-           return $this->options;
-       }
+        public function getOptions(): array
+        {
+            return $this->options;
+        }
    }
 
 The class should always provide documentation how to use in :file:`Services.yaml`.
@@ -118,20 +92,9 @@ Using Fluid
 -----------
 
 Most widgets will need a template.
-Therefore each widget can define :php:`StandaloneView` as requirement for DI in
+Therefore each widget can define :php:`BackendViewFactory` as requirement for DI in
 constructor, like done in RSS example.
-In order to provide a common configured instance to all widgets,
-the following service can be used in :file:`Services.yaml` to provide the instance:
 
-.. code-block:: yaml
-
-   dashboard.widget.t3news:
-     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
-     arguments:
-       $view: '@dashboard.views.widget'
-
-The instance will be pre configured with paths, see :ref:`adjust-template-of-widget`,
-and can be used as shown in RSS widget example above.
 
 .. _implement-new-widget-custom-js:
 

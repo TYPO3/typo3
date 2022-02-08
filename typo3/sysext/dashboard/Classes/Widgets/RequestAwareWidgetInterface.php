@@ -17,16 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
- * The data provider of a ListWidget, should implement this interface
+ * Interface for widgets that need the ServerRequestInterface Request.
+ * The setter is called immediately after class instantiation.
+ * Useful for Widgets that depend on a request, for instance when dealing
+ * with views based on BackendViewFactory.
  */
-interface ListDataProviderInterface
+interface RequestAwareWidgetInterface
 {
-    /**
-     * Return the items to be shown. This should be an array like ['item 1', 'item 2', 'item 3']. This is a
-     * real simple list of items.
-     *
-     * @return array
-     */
-    public function getItems(): array;
+    public function setRequest(ServerRequestInterface $request): void;
 }

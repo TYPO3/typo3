@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 
@@ -111,14 +112,14 @@ class Dashboard
      * This will return a list of all widgets of the current dashboard object. It will only include available
      * widgets and will add the initialized object of the widget itself
      */
-    public function initializeWidgets(): void
+    public function initializeWidgets(ServerRequestInterface $request): void
     {
         $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
             if (array_key_exists($widgetConfig['identifier'], $availableWidgets)) {
                 $this->widgets[$hash] = $availableWidgets[$widgetConfig['identifier']];
 
-                $widgetObject = $this->widgetRegistry->getAvailableWidget($widgetConfig['identifier']);
+                $widgetObject = $this->widgetRegistry->getAvailableWidget($request, $widgetConfig['identifier']);
                 $this->widgetOptions[$hash] = $widgetObject->getOptions();
             }
         }

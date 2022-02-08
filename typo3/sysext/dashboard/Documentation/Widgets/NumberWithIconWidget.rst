@@ -25,7 +25,6 @@ Example
        class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
        arguments:
          $dataProvider: '@TYPO3\CMS\Dashboard\Widgets\Provider\NumberOfFailedLoginsDataProvider'
-         $view: '@dashboard.views.widget'
          $options:
            title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
            subtitle: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.subtitle'
@@ -68,11 +67,3 @@ Dependencies
 
    This class should provide the number to show.
    This data provider needs to implement the :php:class:`NumberWithIconDataProviderInterface`.
-
-.. option:: $view
-
-   Used to render a Fluidtemplate.
-   This should not be changed.
-   The default is to use the pre configured Fluid StandaloneView for EXT:dashboard.
-
-   See :ref:`implement-new-widget-fluid` for further information.

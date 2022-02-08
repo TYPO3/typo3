@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -28,40 +30,30 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * There are no options available for this widget
  */
-class T3GeneralInformationWidget implements WidgetInterface
+class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
-     * @var array
-     */
-    private $options;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        StandaloneView $view,
-        array $options = []
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly BackendViewFactory $backendViewFactory,
+        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
+        protected readonly ?StandaloneView $view = null,
+        private readonly array $options = [],
     ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->options = $options;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     public function renderWidgetContent(): string
     {
         $typo3Information = new Typo3Information();
         $typo3Version = new Typo3Version();
-
-        $this->view->setTemplate('Widget/T3GeneralInformationWidget');
-        $this->view->assignMultiple([
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view->assignMultiple([
             'title' => 'TYPO3 CMS ' . $typo3Version->getVersion(),
             'copyrightYear' => $typo3Information->getCopyrightYear(),
             'currentVersion' => $typo3Version->getVersion(),
@@ -70,12 +62,9 @@ class T3GeneralInformationWidget implements WidgetInterface
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $this->view->render();
+        return $view->render('Widget/T3GeneralInformationWidget');
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -31,56 +33,35 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * @see ChartDataProviderInterface
  * @see ButtonProviderInterface
  */
-class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalCssInterface, JavaScriptInterface
+class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, EventDataInterface, AdditionalCssInterface, JavaScriptInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-
-    /**
-     * @var ChartDataProviderInterface
-     */
-    private $dataProvider;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
-     * @var ButtonProviderInterface|null
-     */
-    private $buttonProvider;
-
-    /**
-     * @var array
-     */
-    private $options;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        ChartDataProviderInterface $dataProvider,
-        StandaloneView $view,
-        $buttonProvider = null,
-        array $options = []
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly ChartDataProviderInterface $dataProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
+        protected readonly ?StandaloneView $view = null,
+        private readonly ?ButtonProviderInterface $buttonProvider = null,
+        private readonly array $options = [],
     ) {
-        $this->configuration = $configuration;
-        $this->dataProvider = $dataProvider;
-        $this->view = $view;
-        $this->options = $options;
-        $this->buttonProvider = $buttonProvider;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/ChartWidget');
-        $this->view->assignMultiple([
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view->assignMultiple([
             'button' => $this->buttonProvider,
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $this->view->render();
+        return $view->render('Widget/ChartWidget');
     }
 
     public function getEventData(): array
@@ -128,9 +109,6 @@ class BarChartWidget implements WidgetInterface, EventDataInterface, AdditionalC
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;

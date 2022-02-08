@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,12 +76,11 @@ class DashboardInitializationService
         $this->dashboardPresetRegistry = $dashboardPresetRegistry;
     }
 
-    public function initializeDashboards(BackendUserAuthentication $user): void
+    public function initializeDashboards(ServerRequestInterface $request, BackendUserAuthentication $user): void
     {
         $this->user = $user;
         $this->currentDashboard = $this->defineCurrentDashboard();
-
-        $this->currentDashboard->initializeWidgets();
+        $this->currentDashboard->initializeWidgets($request);
         $this->defineResourcesOfWidgets($this->currentDashboard->getWidgets());
     }
 

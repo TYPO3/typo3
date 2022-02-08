@@ -35,7 +35,11 @@ looked like this until now:
         ->withHeader('Content-Type', 'text/html; charset=utf-8')
         ->withBody($this->streamFactory->createStream($moduleTemplate->renderContent($templateFileName)));
 
-This can be streamline to:
+This can be streamlined as shown below. Template paths (Templates, Layouts, Partials)
+are configured automatically, calling :php:`renderResponse('SomeController/SomeAction')` will look for file
+:file:`Resources/Private/Templates/SomeController/SomeAction.html`. Templates can be
+overridden by other extensions using TsConfig, see :doc:`this changelog entry <Feature-96812-OverrideBackendTemplatesWithTSconfig>`
+for details on this.
 
 .. code-block:: php
 

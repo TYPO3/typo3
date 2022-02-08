@@ -19,79 +19,62 @@ namespace TYPO3\CMS\Dashboard\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException as RouteNotFoundExceptionAlias;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardInitializationService;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
 use TYPO3\CMS\Dashboard\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * @internal
  */
-class DashboardController extends AbstractController
+class DashboardController
 {
-    protected PageRenderer $pageRenderer;
-    protected UriBuilder $uriBuilder;
     protected Dashboard $currentDashboard;
-    protected DashboardPresetRegistry $dashboardPresetRepository;
-    protected DashboardRepository $dashboardRepository;
-    protected DashboardInitializationService $dashboardInitializationService;
-    protected WidgetGroupInitializationService $widgetGroupInitializationService;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
-    private ?ModuleTemplate $moduleTemplate = null;
-    protected StandaloneView $view;
 
     public function __construct(
-        PageRenderer $pageRenderer,
-        UriBuilder $uriBuilder,
-        DashboardPresetRegistry $dashboardPresetRepository,
-        DashboardRepository $dashboardRepository,
-        DashboardInitializationService $dashboardInitializationService,
-        WidgetGroupInitializationService $widgetGroupInitializationService,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly DashboardPresetRegistry $dashboardPresetRepository,
+        protected readonly DashboardRepository $dashboardRepository,
+        protected readonly DashboardInitializationService $dashboardInitializationService,
+        protected readonly WidgetGroupInitializationService $widgetGroupInitializationService,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
-        $this->pageRenderer = $pageRenderer;
-        $this->uriBuilder = $uriBuilder;
-        $this->dashboardPresetRepository = $dashboardPresetRepository;
-        $this->dashboardRepository = $dashboardRepository;
-        $this->dashboardInitializationService = $dashboardInitializationService;
-
-        $this->dashboardInitializationService->initializeDashboards($this->getBackendUser());
-        $this->currentDashboard = $this->dashboardInitializationService->getCurrentDashboard();
-        $this->widgetGroupInitializationService = $widgetGroupInitializationService;
-
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-
-        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
     }
 
     /**
-     * This action is responsible for the main view of the dashboard and is just adding all collected data
-     * to the view
-     *
-     * @throws RouteNotFoundExceptionAlias
+     * Main entry method: Dispatch to other actions - those method names that end with "Action".
      */
-    protected function mainAction(): void
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate->setTitle(
+        $this->dashboardInitializationService->initializeDashboards($request, $this->getBackendUser());
+        $this->currentDashboard = $this->dashboardInitializationService->getCurrentDashboard();
+        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'main';
+        return $this->{$action . 'Action'}($request);
+    }
+
+    /**
+     * This action is responsible for the main view of the dashboard and is just adding all collected data to the view.
+     */
+    protected function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-dashboard');
+        $this->preparePageRenderer();
+        $this->addFrontendResources();
+        $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $this->currentDashboard->getTitle()
         );
-
-        $this->view->assignMultiple([
+        $view->assignMultiple([
             'availableDashboards' => $this->dashboardInitializationService->getDashboardsForUser(),
             'dashboardPresets' => $this->dashboardPresetRepository->getDashboardPresets(),
             'widgetGroups' => $this->widgetGroupInitializationService->buildWidgetGroupsConfiguration(),
@@ -101,53 +84,20 @@ class DashboardController extends AbstractController
             'deleteDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'deleteDashboard']),
             'configureDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'configureDashboard']),
         ]);
+        return $view->renderResponse('Dashboard/Main');
     }
 
-    /**
-     * Main entry method: Dispatch to other actions - those method names that end with "Action".
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $this->preparePageRenderer();
-
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'main';
-        $this->initializeView('Dashboard/' . ucfirst($action));
-        $result = $this->{$action . 'Action'}($request);
-        if ($result instanceof ResponseInterface) {
-            return $result;
-        }
-        $this->addFrontendResources();
-        $this->moduleTemplate->setContent($this->view->render());
-        return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     */
     protected function configureDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getParsedBody();
         $currentDashboard = $parameters['currentDashboard'] ?? '';
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main'], UriBuilder::ABSOLUTE_URL);
-
         if ($currentDashboard !== '' && isset($parameters['dashboard'])) {
             $this->dashboardRepository->updateDashboardSettings($currentDashboard, $parameters['dashboard']);
         }
-
         return new RedirectResponse($route);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     */
     protected function setActiveDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->saveCurrentDashboard($request->getQueryParams()['currentDashboard']);
@@ -155,89 +105,50 @@ class DashboardController extends AbstractController
         return new RedirectResponse($route);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     */
     protected function addDashboardAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getParsedBody();
         $dashboardIdentifier = $parameters['dashboard'] ?? '';
-
         if ($dashboardIdentifier !== '') {
             $dashboard = $this->dashboardRepository->create($this->dashboardPresetRepository->getDashboardPresets()[$dashboardIdentifier], (int)$this->getBackendUser()->user['uid'], $parameters['dashboard-title']);
-
             if ($dashboard instanceof Dashboard) {
                 $this->saveCurrentDashboard($dashboard->getIdentifier());
             }
         }
-
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']));
     }
 
-    /**
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     */
     protected function deleteDashboardAction(): ResponseInterface
     {
         $this->dashboardRepository->delete($this->currentDashboard);
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']));
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     * @throws RequiredArgumentMissingException
-     */
     protected function addWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
         $widgetKey = (string)($request->getQueryParams()['widget'] ?? '');
-
         if ($widgetKey === '') {
             throw new RequiredArgumentMissingException('Argument "widget" not set.', 1624436360);
         }
-
         $widgets = $this->currentDashboard->getWidgetConfig();
         $hash = sha1($widgetKey . '-' . time());
         $widgets[$hash] = ['identifier' => $widgetKey];
         $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
-
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
         return new RedirectResponse($route);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     * @throws RouteNotFoundExceptionAlias
-     */
     protected function removeWidgetAction(ServerRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getQueryParams();
         $widgetHash = $parameters['widgetHash'];
         $widgets = $this->currentDashboard->getWidgetConfig();
-
         if (array_key_exists($widgetHash, $widgets)) {
             unset($widgets[$widgetHash]);
             $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
         }
         $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
         return new RedirectResponse($route);
-    }
-
-    /**
-     * Sets up the Fluid View.
-     *
-     * @param string $templateName
-     */
-    protected function initializeView(string $templateName): void
-    {
-        $this->view->setTemplate($templateName);
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('dashboard');
-        $this->moduleTemplate->getDocHeaderComponent()->disable();
     }
 
     /**
@@ -271,8 +182,6 @@ class DashboardController extends AbstractController
      */
     protected function preparePageRenderer(): void
     {
-        $publicResourcesPath = PathUtility::getPublicResourceWebPath('EXT:dashboard/Resources/Public/');
-
         $this->pageRenderer->loadJavaScriptModule('muuri');
         $this->pageRenderer->loadJavaScriptModule('web-animate');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/Grid.js');
@@ -283,5 +192,20 @@ class DashboardController extends AbstractController
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardModal.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardDelete.js');
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
+    }
+
+    protected function saveCurrentDashboard(string $identifier): void
+    {
+        $this->getBackendUser()->pushModuleData('dashboard/current_dashboard/', $identifier);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

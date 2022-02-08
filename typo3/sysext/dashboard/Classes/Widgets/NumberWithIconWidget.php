@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -37,44 +39,29 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @see NumberWithIconDataProviderInterface
  */
-class NumberWithIconWidget implements WidgetInterface
+class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-    /**
-     * @var array
-     */
-    private $options;
-    /**
-     * @var NumberWithIconDataProviderInterface
-     */
-    private $dataProvider;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        NumberWithIconDataProviderInterface $dataProvider,
-        StandaloneView $view,
-        array $options = []
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly NumberWithIconDataProviderInterface $dataProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
+        protected readonly ?StandaloneView $view = null,
+        private readonly array $options = [],
     ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->options = $options;
-        $this->dataProvider = $dataProvider;
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/NumberWithIconWidget');
-        $this->view->assignMultiple([
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view->assignMultiple([
             'icon' => $this->options['icon'] ?? '',
             'title' => $this->options['title'] ?? '',
             'subtitle' => $this->options['subtitle'] ?? '',
@@ -82,12 +69,9 @@ class NumberWithIconWidget implements WidgetInterface
             'options' => $this->options,
             'configuration' => $this->configuration,
         ]);
-        return $this->view->render();
+        return $view->render('Widget/NumberWithIconWidget');
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;

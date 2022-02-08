@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Dashboard;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
@@ -68,12 +70,15 @@ class WidgetRegistry implements SingletonInterface
     /**
      * @throws \InvalidArgumentException If requested identifier does not exist.
      */
-    public function getAvailableWidget(string $identifier): WidgetInterface
+    public function getAvailableWidget(ServerRequestInterface $request, string $identifier): WidgetInterface
     {
         if (array_key_exists($identifier, $this->getAvailableWidgets())) {
-            return $this->container->get($this->widgets[$identifier]->getServiceName());
+            $widget = $this->container->get($this->widgets[$identifier]->getServiceName());
+            if ($widget instanceof RequestAwareWidgetInterface) {
+                $widget->setRequest($request);
+            }
+            return $widget;
         }
-
         throw new \InvalidArgumentException('Requested widget "' . $identifier . '" does not exist.', 1584777201);
     }
 

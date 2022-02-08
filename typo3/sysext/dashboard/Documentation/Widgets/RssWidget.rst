@@ -36,7 +36,6 @@ Example
      dashboard.widget.t3news:
        class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
        arguments:
-         $view: '@dashboard.views.widget'
          $cache: '@cache.dashboard.rss'
          $buttonProvider: '@dashboard.buttons.t3news'
          $options:
@@ -87,14 +86,6 @@ Dependencies
    This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
-
-.. option:: $view
-
-   Used to render a Fluidtemplate.
-   This should not be changed.
-   The default is to use the pre configured Fluid StandaloneView for EXT:dashboard.
-
-   See :ref:`implement-new-widget-fluid` for further information.
 
 .. option:: $cache
 

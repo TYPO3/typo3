@@ -28,6 +28,17 @@ For up to date information, please check the source code.
       :returntype: array
       :returns: The options of the widget as set in the registration.
 
+.. php:class:: RequestAwareWidgetInterface
+
+   This interface declares a widget has a dependency to the current PSR-7 request.
+   When implemented, the dashboard controller will call :php:`setRequest()` immediately
+   after widget instantiation to hand over the current request. Widgets that rely on
+   :php:`BackendViewFactory` typically need the current request.
+
+   .. php:method:: setRequest(ServerRequestInterface $request)
+
+      :returntype: void
+
 .. php:class:: WidgetConfigurationInterface
 
    Used internally in ext:dashboard.

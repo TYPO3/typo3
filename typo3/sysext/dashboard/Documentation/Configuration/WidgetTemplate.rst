@@ -8,22 +8,19 @@ Adjust template of widgets
 
 When adding own widgets, it might be necessary to provide custom templates.
 In such a case the file path containing the template files needs to be added.
-Thats done in the same way as for other Extbase backend modules:
+
+This is done using a :file:`Configuration/page.tsconfig` file, see
+:doc:`changelog <t3core:Changelog/12.0/Feature-96812-OverrideBackendTemplatesWithTSconfig>` and
+:doc:`changelog <t3core:Changelog/12.0/Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions.rst>`
+for details on this:
 
 .. code-block:: typoscript
 
-   module.tx_dashboard {
-       view {
-           templateRootPaths {
-               110 = EXT:extension_key/Resources/Private/Templates/Dashboard/Widgets/
-           }
-       }
-   }
+    # Pattern: templates.typo3/cms-dashboard."something-unique" = "overriding-extension-composer-name":"entry-path"
+    templates.typo3/cms-dashboard.1644485473 = myvendor/myext:Resources/Private
 
-The location of that snippet depends on your setup and preferences.
-Add it in database "Setup" ``config`` field of an "Template" ``sys_template`` record.
-Or follow one of the other file based ways. See :ref:`t3sitepackage:typoscript-configuration`.
-
-.. note::
-
-   Keys ``0 - 100`` are reserved for TYPO3 system extension.
+A template file can then be added to path :file:`Resources/Private/Templates/Widgets/MyExtensionsGreatWidget.html`
+and is referenced in the PHP class using :php:`->render('Widgets/MyExtensionsGreatWidget');`. The registration
+into namespace :php:`typo3/cms-dashboard` is shared between all extensions. It is thus a good idea to give
+template file names unique names (for instance by prefixing them with the extension name), to avoid situations
+where templates from multiple extensions that provide different widgets override each other.

@@ -28,8 +28,6 @@ use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
  * Creates a View for backend usage. This is a low level factory. Extensions typically use ModuleTemplate instead.
- *
- * @internal
  */
 final class BackendViewFactory
 {

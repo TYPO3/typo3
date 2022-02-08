@@ -74,34 +74,22 @@ An example implementation could look like this:
 
    class RssWidget implements WidgetInterface
    {
-       /**
-        * @var ButtonProviderInterface|null
-        */
-       private $buttonProvider;
-
-       /**
-        * @var array
-        */
-       private options;
-
        public function __construct(
            // …
-           ButtonProviderInterface $buttonProvider = null,
-           array $options = [],
+           private readonly ButtonProviderInterface $buttonProvider = null,
            // …
        ) {
-           $this->buttonProvider = $buttonProvider;
        }
 
        public function renderWidgetContent(): string
        {
-           $this->view->setTemplate('Widget/RssWidget');
+           // …
            $this->view->assignMultiple([
                // …
                'button' => $this->buttonProvider,
                // …
            ]);
-           return $this->view->render();
+           // …
        }
 
        public function getOptions(): array

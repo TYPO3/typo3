@@ -26,7 +26,6 @@ Example
       dashboard.widget.docGettingStarted:
        class: 'TYPO3\CMS\Dashboard\Widgets\CtaWidget'
        arguments:
-         $view: '@dashboard.views.widget'
          $buttonProvider: '@dashboard.buttons.docGettingStarted'
          $options:
            text: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.text'
@@ -60,11 +59,3 @@ Dependencies
    This button should be provided by a ButtonProvider that implements the interface :php:class:`ButtonProviderInterface`.
 
    See :ref:`adding-buttons` for further info and configuration options.
-
-.. option:: $view
-
-   Used to render a Fluidtemplate.
-   This should not be changed.
-   The default is to use the pre configured Fluid StandaloneView for EXT:dashboard.
-
-   See :ref:`implement-new-widget-fluid` for further information.

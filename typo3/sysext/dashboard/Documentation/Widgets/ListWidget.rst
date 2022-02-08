@@ -23,7 +23,6 @@ Example
        class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
        arguments:
          $dataProvider: '@Vendor\Ext\Widgets\Provider\TestListWidgetDataProvider'
-         $view: '@dashboard.views.widget'
          $options:
             refreshAvailable: true
        tags:
@@ -48,11 +47,3 @@ Dependencies
 
    This class should provide the items to show.
    This data provider needs to implement the :php:class:`ListDataProviderInterface`.
-
-.. option:: $view
-
-   Used to render a Fluidtemplate.
-   This should not be changed.
-   The default is to use the pre configured Fluid StandaloneView for EXT:dashboard.
-
-   See :ref:`implement-new-widget-fluid` for further information.

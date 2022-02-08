@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard\Widgets;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -35,43 +37,20 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @see ButtonProviderInterface
  */
-class RssWidget implements WidgetInterface
+class RssWidget implements WidgetInterface, RequestAwareWidgetInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
-     * @var Cache
-     */
-    private $cache;
-
-    /**
-     * @var array
-     */
-    private $options;
-
-    /**
-     * @var ButtonProviderInterface|null
-     */
-    private $buttonProvider;
+    private readonly array $options;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        WidgetConfigurationInterface $configuration,
-        Cache $cache,
-        StandaloneView $view,
-        $buttonProvider = null,
-        array $options = []
+        private readonly WidgetConfigurationInterface $configuration,
+        private readonly Cache $cache,
+        private readonly BackendViewFactory $backendViewFactory,
+        // @deprecated since v12, will be removed in v13 together with services 'dashboard.views.widget' and Factory
+        protected readonly ?StandaloneView $view = null,
+        private readonly ?ButtonProviderInterface $buttonProvider = null,
+        array $options = [],
     ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->cache = $cache;
         $this->options = array_merge(
             [
                 'limit' => 5,
@@ -79,19 +58,23 @@ class RssWidget implements WidgetInterface
             ],
             $options
         );
-        $this->buttonProvider = $buttonProvider;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/RssWidget');
-        $this->view->assignMultiple([
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view->assignMultiple([
             'items' => $this->getRssItems(),
             'options' => $this->options,
             'button' => $this->buttonProvider,
             'configuration' => $this->configuration,
         ]);
-        return $this->view->render();
+        return $view->render('Widget/RssWidget');
     }
 
     protected function getRssItems(): array
@@ -125,9 +108,6 @@ class RssWidget implements WidgetInterface
         return $items;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;

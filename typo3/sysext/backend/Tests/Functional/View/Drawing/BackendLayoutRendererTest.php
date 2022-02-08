@@ -17,20 +17,20 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Functional\View\Drawing;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\View\Drawing\BackendLayoutRenderer;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testing rendering of backend layouts.
- */
 class BackendLayoutRendererTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
@@ -39,17 +39,12 @@ class BackendLayoutRendererTest extends FunctionalTestCase
 
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    /**
-     * @var BackendUserAuthentication
-     */
     private BackendUserAuthentication $backendUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->backendUser = $this->setUpBackendUserFromFixture(1);
-
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
@@ -64,7 +59,6 @@ class BackendLayoutRendererTest extends FunctionalTestCase
     protected function setUpDatabase(): void
     {
         Bootstrap::initializeLanguageObject();
-
         $scenarioFile = __DIR__ . '/../Fixtures/DefaultViewScenario.yaml';
         $factory = DataHandlerFactory::fromYamlFile($scenarioFile);
         $writer = DataHandlerWriter::withBackendUser($this->backendUser);
@@ -74,17 +68,9 @@ class BackendLayoutRendererTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @param int   $pageId
-     * @param array $configuration BackendLayout configuration
-     * @return PageLayoutContext|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getPageLayoutContext(int $pageId, array $configuration)
+    protected function getPageLayoutContext(int $pageId, array $configuration): PageLayoutContext|MockObject
     {
-        // Create a BackendLayout
         $backendLayout = new BackendLayout('layout1', 'Layout 1', $configuration);
-
-        // Create a mock for the PageLayoutContext class
         return $this->createConfiguredMock(
             PageLayoutContext::class,
             [
@@ -92,15 +78,6 @@ class BackendLayoutRendererTest extends FunctionalTestCase
                 'getPageId' => $pageId,
             ]
         );
-    }
-
-    /**
-     * @param PageLayoutContext|\PHPUnit\Framework\MockObject\MockObject $context
-     * @return BackendLayoutRenderer
-     */
-    protected function getSubject(PageLayoutContext $context): BackendLayoutRenderer
-    {
-        return GeneralUtility::makeInstance(BackendLayoutRenderer::class, $context);
     }
 
     /**
@@ -112,9 +89,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             'rows.' => [],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
     }
 
@@ -131,9 +106,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
@@ -154,9 +127,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
@@ -178,9 +149,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -208,9 +177,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -242,9 +209,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -282,9 +247,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(4, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -310,9 +273,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = $this->getSubject($pageLayoutContext);
-
-        // Test the subject
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
