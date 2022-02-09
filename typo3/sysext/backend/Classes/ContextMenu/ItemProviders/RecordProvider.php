@@ -457,7 +457,7 @@ class RecordProvider extends AbstractProvider
         }
 
         try {
-            return (string)GeneralUtility::makeInstance(PreviewUriBuilder::class, $this->getPreviewPid())
+            return (string)PreviewUriBuilder::create($this->getPreviewPid())
                 ->withAdditionalQueryParameters($additionalParams)
                 ->withSection($anchorSection)
                 ->buildUri();

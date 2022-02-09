@@ -584,10 +584,9 @@ class PageProvider extends RecordProvider
         $additionalParams = ($language > 0) ? '&L=' . $language : '';
 
         try {
-            $uri = GeneralUtility::makeInstance(PreviewUriBuilder::class, $this->getPreviewPid())
+            return (string)PreviewUriBuilder::create($this->getPreviewPid())
                 ->withAdditionalQueryParameters($additionalParams)
                 ->buildUri();
-            return (string)$uri;
         } catch (UnableToLinkToPageException $e) {
             return '';
         }
