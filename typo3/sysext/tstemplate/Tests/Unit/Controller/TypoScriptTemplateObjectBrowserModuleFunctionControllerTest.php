@@ -15,50 +15,31 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
+namespace TYPO3\CMS\Tstemplate\Tests\Unit\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
-class ExtendedTemplateServiceTest extends UnitTestCase
+class TypoScriptTemplateObjectBrowserModuleFunctionControllerTest extends UnitTestCase
 {
-
     /**
-     * @var ExtendedTemplateService|MockObject|AccessibleObjectInterface
+     * @dataProvider getSetupDataProvider
+     * @test
      */
-    protected $extendedTemplateServiceMock;
-
-    /**
-     * Set up
-     */
-    protected function setUp(): void
+    public function getSetupTest($setup, $key, $expected): void
     {
-        parent::setUp();
-        $this->extendedTemplateServiceMock = $this->getAccessibleMock(
-            ExtendedTemplateService::class,
+        $subject = $this->getAccessibleMock(
+            TypoScriptTemplateObjectBrowserModuleFunctionController::class,
             null,
             [],
             '',
             false
         );
-    }
-
-    /**
-     * @dataProvider ext_getSetupDataProvider
-     * @test
-     */
-    public function ext_getSetupTest($setup, $key, $expected): void
-    {
-        $actual = $this->extendedTemplateServiceMock->ext_getSetup($setup, $key);
+        $actual = $subject->_call('getSetup', $setup, $key);
         self::assertEquals($expected, $actual);
     }
 
-    public function ext_getSetupDataProvider(): array
+    public function getSetupDataProvider(): array
     {
         return [
             'empty setup and key' => [

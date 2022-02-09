@@ -142,7 +142,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // Defined global here!
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
-        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
+        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
         $hasFirstTemplate = is_array($this->templateRow);
         // No explicitly selected template on this page was found, so we behave like the Frontend (e.g. when a template is hidden but on the page above)
         if (!$hasFirstTemplate) {
@@ -241,7 +241,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $update = 0;
         if (is_array($tsbr)) {
             // If any plus-signs were clicked, it's registered.
-            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? []);
+            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? []);
             $update = 1;
         }
         if ($POST['Submit'] ?? false) {
@@ -275,7 +275,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // EDIT A VALUE:
         $assigns['typoScriptPath'] = $sObj;
         if (!empty($sObj)) {
-            [$theSetup, $theSetupValue] = $this->templateService->ext_getSetup($theSetup, $sObj);
+            [$theSetup, $theSetupValue] = $this->getSetup($theSetup, $sObj);
             $assigns['theSetupValue'] = $theSetupValue;
             if ($existTemplate === false) {
                 $noTemplateMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noCurrentTemplate'), $lang->getLL('edit'), FlashMessage::ERROR);
@@ -331,7 +331,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            [$theSetup] = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
+            [$theSetup] = $this->getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
             $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', (bool)($this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? false));
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
@@ -410,6 +410,59 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    /**
+     * @param array $theSetup
+     * @param string $theKey
+     * @return array{0: array, 1: string}
+     */
+    protected function getSetup(array $theSetup, string $theKey): array
+    {
+        $theKey = trim((string)$theKey);
+        if (empty($theKey)) {
+            // Early return the whole setup in case key is empty
+            return [(array)$theSetup, ''];
+        }
+        // 'a.b.c' --> ['a', 'b.c']
+        $parts = explode('.', $theKey, 2);
+        $pathSegment = $parts[0] ?? '';
+        $pathRest = trim($parts[1] ?? '');
+        if ($pathSegment !== '' && is_array($theSetup[$pathSegment . '.'] ?? false)) {
+            if ($pathRest !== '') {
+                // Current path segment is a sub array, check it recursively by applying the rest of the key
+                return $this->getSetup($theSetup[$pathSegment . '.'], $pathRest);
+            }
+            // No further path to evaluate, return current setup and the value for the current path segment - if any
+            return [$theSetup[$pathSegment . '.'], $theSetup[$pathSegment] ?? ''];
+        }
+        // Return the key value - if any - along with an empty setup since no sub array exists
+        return [[], $theSetup[$theKey] ?? ''];
+    }
+
+    protected function depthKeys(array $arr, array $settings): array
+    {
+        $tsbrArray = [];
+        foreach ($arr as $theK => $theV) {
+            $theKeyParts = explode('.', $theK);
+            $depth = '';
+            $c = count($theKeyParts);
+            $a = 0;
+            foreach ($theKeyParts as $p) {
+                $a++;
+                $depth .= ($depth ? '.' : '') . $p;
+                $tsbrArray[$depth] = $c == $a ? $theV : 1;
+            }
+        }
+        // Modify settings
+        foreach ($tsbrArray as $theK => $theV) {
+            if ($theV) {
+                $settings[$theK] = 1;
+            } else {
+                unset($settings[$theK]);
+            }
+        }
+        return $settings;
     }
 
     protected function getLanguageService(): LanguageService

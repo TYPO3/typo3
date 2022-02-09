@@ -119,7 +119,7 @@ class TypoScriptTemplateInformationModuleFunctionController
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $template_uid);
+        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
         if (is_array($this->templateRow)) {
             return true;
         }

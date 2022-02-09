@@ -403,7 +403,7 @@ class TypoScriptTemplateModuleController
         }
         $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
         // Go to previous Page with a template
-        $view->assign('previousPage', $this->templateService->ext_prevPageWithTemplate($this->id, $this->perms_clause));
+        $view->assign('previousPage', $this->getClosestAncestorPageWithTemplateRecord($this->id, $this->perms_clause));
         $view->assign('content', $moduleContent);
         return $view->render('NoTemplate');
     }
@@ -418,7 +418,7 @@ class TypoScriptTemplateModuleController
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
-        $all = $this->templateService->ext_getAllTemplates($this->id);
+        $all = $this->getAllTemplateRecordsForPage($this->id);
         if (count($all) > 1) {
             $this->MOD_MENU['templatesOnPage'] = [];
             foreach ($all as $d) {
@@ -687,6 +687,96 @@ page.10.value = HELLO WORLD!
             BackendUtility::getRecordTitle('pages', $this->pageinfo),
             $this->id
         );
+    }
+
+    protected function getClosestAncestorPageWithTemplateRecord($id, string $perms_clause): array
+    {
+        $rootLine = BackendUtility::BEgetRootLine($id, $perms_clause ? ' AND ' . $perms_clause : '');
+        foreach ($rootLine as $p) {
+            if ($this->getFirstTemplateRecordOnPage((int)$p['uid'])) {
+                return $p;
+            }
+        }
+        return [];
+    }
+
+    /**
+     * Get an array of all template records on a page.
+     *
+     * @param int $pid Pid to fetch sys_template records for
+     * @return array[] Array of template records
+     */
+    protected function getAllTemplateRecordsForPage(int $pid): array
+    {
+        if (empty($pid)) {
+            return [];
+        }
+        $result = $this->getTemplateQueryBuilder($pid)->executeQuery();
+        $outRes = [];
+        while ($row = $result->fetchAssociative()) {
+            BackendUtility::workspaceOL('sys_template', $row);
+            if (is_array($row)) {
+                $outRes[] = $row;
+            }
+        }
+        return $outRes;
+    }
+
+    /**
+     * Get a single sys_template record attached to a single page.
+     * If multiple template records are on this page, the first (order by sorting)
+     * record will be returned, unless a specific template uid is specified via $templateUid
+     *
+     * @param int $pid The pid to select sys_template records from
+     * @param int $templateUid Optional template uid
+     * @return array|null Returns the template record or null if none was found
+     */
+    public function getFirstTemplateRecordOnPage(int $pid, int $templateUid = 0)
+    {
+        if (empty($pid)) {
+            return null;
+        }
+
+        // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
+        $queryBuilder = $this->getTemplateQueryBuilder($pid)
+            ->setMaxResults(1);
+        if ($templateUid) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
+            );
+        }
+        $row = $queryBuilder->executeQuery()->fetchAssociative();
+        BackendUtility::workspaceOL('sys_template', $row);
+
+        return $row;
+    }
+
+    /**
+     * Internal helper method to prepare the query builder for
+     * getting sys_template records from a given pid
+     *
+     * @param int $pid The pid to select sys_template records from
+     * @return QueryBuilder Returns a QueryBuilder
+     */
+    protected function getTemplateQueryBuilder(int $pid): QueryBuilder
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_template');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $GLOBALS['BE_USER']->workspace));
+
+        $queryBuilder->select('*')
+            ->from('sys_template')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
+            );
+        if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
+            $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
+        }
+
+        return $queryBuilder;
     }
 
     protected function getLanguageService(): LanguageService

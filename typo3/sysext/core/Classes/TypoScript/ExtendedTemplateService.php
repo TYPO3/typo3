@@ -16,17 +16,8 @@
 namespace TYPO3\CMS\Core\TypoScript;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -42,23 +33,6 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
  */
 class ExtendedTemplateService extends TemplateService
 {
-    /**
-     * @var array
-     */
-    protected $categories = [
-        'basic' => [],
-        // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
-        'menu' => [],
-        // Menu setup. This includes fontfiles, sizes, background images. Depending on the menutype.
-        'content' => [],
-        // All constants related to the display of pagecontent elements
-        'page' => [],
-        // General configuration like metatags, link targets
-        'advanced' => [],
-        // Advanced functions, which are used very seldom.
-        'all' => [],
-    ];
-
     /**
      * Tsconstanteditor
      *
@@ -138,7 +112,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var int[]
      */
-    protected $objReg = [];
+    public $objReg = [];
 
     /**
      * @var array
@@ -155,11 +129,6 @@ class ExtendedTemplateService extends TemplateService
      */
     public $lastComment = '';
 
-    /**
-     * @var array<string, JavaScriptModuleInstruction>
-     */
-    protected $javaScriptInstructions = [];
-
     private ConstantConfigurationParser $constantParser;
 
     public function __construct(Context $context = null, ConstantConfigurationParser $constantParser = null)
@@ -169,14 +138,6 @@ class ExtendedTemplateService extends TemplateService
         // Disabled in backend context
         $this->tt_track = false;
         $this->verbose = false;
-    }
-
-    /**
-     * @return array<string, JavaScriptModuleInstruction>
-     */
-    public function getJavaScriptInstructions(): array
-    {
-        return $this->javaScriptInstructions;
     }
 
     /**
@@ -271,34 +232,6 @@ class ExtendedTemplateService extends TemplateService
             $flatSetup,
             $defaultConstants
         );
-    }
-
-    /**
-     * @param array $theSetup
-     * @param string $theKey
-     * @return array{0: array, 1: string}
-     */
-    public function ext_getSetup($theSetup, $theKey)
-    {
-        $theKey = trim((string)$theKey);
-        if (empty($theKey)) {
-            // Early return the whole setup in case key is empty
-            return [(array)$theSetup, ''];
-        }
-        // 'a.b.c' --> ['a', 'b.c']
-        $parts = explode('.', $theKey, 2);
-        $pathSegment = $parts[0] ?? '';
-        $pathRest = trim($parts[1] ?? '');
-        if ($pathSegment !== '' && is_array($theSetup[$pathSegment . '.'] ?? false)) {
-            if ($pathRest !== '') {
-                // Current path segment is a sub array, check it recursively by applying the rest of the key
-                return $this->ext_getSetup($theSetup[$pathSegment . '.'], $pathRest);
-            }
-            // No further path to evaluate, return current setup and the value for the current path segment - if any
-            return [$theSetup[$pathSegment . '.'], $theSetup[$pathSegment] ?? ''];
-        }
-        // Return the key value - if any - along with an empty setup since no sub array exists
-        return [[], $theSetup[$theKey] ?? ''];
     }
 
     /**
@@ -523,93 +456,6 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * @param int $pid
-     * @return int
-     */
-    public function ext_getRootlineNumber($pid)
-    {
-        if ($pid) {
-            foreach ($this->getRootLine() as $key => $val) {
-                if ((int)$val['uid'] === (int)$pid) {
-                    return (int)$key;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * @param array $arr
-     * @param string $depthData
-     * @param array $keyArray
-     * @param int $first
-     * @return array
-     */
-    public function ext_getTemplateHierarchyArr($arr, $depthData, $keyArray, $first = 0)
-    {
-        $keyArr = [];
-        foreach ($arr as $key => $value) {
-            $key = preg_replace('/\\.$/', '', $key) ?? '';
-            if (substr($key, -1) !== '.') {
-                $keyArr[$key] = 1;
-            }
-        }
-        $a = 0;
-        $c = count($keyArr);
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        foreach ($keyArr as $key => $value) {
-            $HTML = '';
-            $a++;
-            $deeper = is_array($arr[$key . '.'] ?? false);
-            $row = $arr[$key];
-            $LN = $a == $c ? 'blank' : 'line';
-            $BTM = $a == $c ? 'top' : '';
-            $HTML .= $depthData;
-            $alttext = '[' . $row['templateID'] . ']';
-            $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
-            $icon = strpos($row['templateID'], 'sys') === 0
-                ? '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
-                : '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
-            if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
-                $urlParameters = [
-                    'id' => (int)GeneralUtility::_GP('id'),
-                    'template' => $row['templateID'],
-                ];
-                $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-                $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
-                $A_E = '</a>';
-                if (GeneralUtility::_GP('template') == $row['templateID']) {
-                    $A_B = '<strong>' . $A_B;
-                    $A_E .= '</strong>';
-                }
-            } else {
-                $A_B = '';
-                $A_E = '';
-            }
-            $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
-                . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
-                . $A_E . '&nbsp;&nbsp;';
-            $RL = $this->ext_getRootlineNumber($row['pid']);
-            $statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
-            $keyArray[] = '<tr>
-							<td class="nowrap">' . $HTML . '</td>
-							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
-							<td align="center">' . ($row['pid'] ?: '') . '</td>
-							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
-						</tr>';
-            if ($deeper) {
-                $keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
-            }
-        }
-        return $keyArray;
-    }
-
-    /**
      * Processes the flat array from TemplateService->hierarchyInfo
      * and turns it into a hierarchical array to show dependencies (used by TemplateAnalyzer)
      *
@@ -632,121 +478,6 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         return $depthDataArr;
-    }
-
-    /**
-     * Get a single sys_template record attached to a single page.
-     * If multiple template records are on this page, the first (order by sorting)
-     * record will be returned, unless a specific template uid is specified via $templateUid
-     *
-     * @param int $pid The pid to select sys_template records from
-     * @param int $templateUid Optional template uid
-     * @return array|null Returns the template record or null if none was found
-     */
-    public function ext_getFirstTemplate($pid, $templateUid = 0)
-    {
-        if (empty($pid)) {
-            return null;
-        }
-
-        // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-        $queryBuilder = $this->getTemplateQueryBuilder($pid)
-            ->setMaxResults(1);
-        if ($templateUid) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($templateUid, \PDO::PARAM_INT))
-            );
-        }
-        $row = $queryBuilder->executeQuery()->fetchAssociative();
-        BackendUtility::workspaceOL('sys_template', $row);
-
-        return $row;
-    }
-
-    /**
-     * Get an array of all template records on a page.
-     *
-     * @param int $pid Pid to fetch sys_template records for
-     * @return array[] Array of template records
-     */
-    public function ext_getAllTemplates($pid): array
-    {
-        if (empty($pid)) {
-            return [];
-        }
-        $result = $this->getTemplateQueryBuilder($pid)->executeQuery();
-        $outRes = [];
-        while ($row = $result->fetchAssociative()) {
-            BackendUtility::workspaceOL('sys_template', $row);
-            if (is_array($row)) {
-                $outRes[] = $row;
-            }
-        }
-        return $outRes;
-    }
-
-    /**
-     * Internal helper method to prepare the query builder for
-     * getting sys_template records from a given pid
-     *
-     * @param int $pid The pid to select sys_template records from
-     * @return QueryBuilder Returns a QueryBuilder
-     */
-    protected function getTemplateQueryBuilder(int $pid): QueryBuilder
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_template');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $GLOBALS['BE_USER']->workspace));
-
-        $queryBuilder->select('*')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
-            );
-        if (!empty($GLOBALS['TCA']['sys_template']['ctrl']['sortby'])) {
-            $queryBuilder->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
-        }
-
-        return $queryBuilder;
-    }
-
-    /**
-     * @param array $editConstArray
-     */
-    public function ext_categorizeEditableConstants($editConstArray)
-    {
-        // Runs through the available constants and fills the $this->categories array with pointers and priority-info
-        foreach ($editConstArray as $constName => $constData) {
-            if (!$constData['type']) {
-                $constData['type'] = 'string';
-            }
-            $cats = explode(',', $constData['cat']);
-            // if = only one category, while allows for many. We have agreed on only one category is the most basic way...
-            foreach ($cats as $theCat) {
-                $theCat = trim($theCat);
-                if ($theCat) {
-                    $this->categories[$theCat][$constName] = $constData['subcat'];
-                }
-            }
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function ext_getCategoryLabelArray()
-    {
-        // Returns array used for labels in the menu.
-        $retArr = [];
-        foreach ($this->categories as $k => $v) {
-            if (!empty($v)) {
-                $retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
-            }
-        }
-        return $retArr;
     }
 
     /**
@@ -790,241 +521,6 @@ class ExtendedTemplateService extends TemplateService
             }
         }
         return $retArr;
-    }
-
-    /**
-     * @param array $params
-     * @return array
-     */
-    public function ext_fNandV($params)
-    {
-        $fN = 'data[' . $params['name'] . ']';
-        $idName = str_replace('.', '-', $params['name']);
-        $fV = $params['value'];
-        // Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
-        if (preg_match('/^{[\\$][a-zA-Z0-9\\.]*}$/', trim($fV), $reg)) {
-            $fV = '';
-        }
-        $fV = htmlspecialchars($fV);
-        return [$fN, $fV, $params, $idName];
-    }
-
-    /**
-     * This functions returns the HTML-code that creates the editor-layout of the module.
-     *
-     * @param array $theConstants
-     * @param string $category
-     * @return array
-     */
-    public function ext_printFields($theConstants, $category): array
-    {
-        reset($theConstants);
-        $groupedOutput = [];
-        $subcat = '';
-        if (!empty($this->categories[$category]) && is_array($this->categories[$category])) {
-            asort($this->categories[$category]);
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $categoryLoop = 0;
-            foreach ($this->categories[$category] as $name => $type) {
-                $params = $theConstants[$name];
-                if (is_array($params)) {
-                    if ($subcat !== (string)($params['subcat_name'] ?? '')) {
-                        $categoryLoop++;
-                        $subcat = (string)($params['subcat_name'] ?? '');
-                        $subcat_name = $subcat ? (string)($this->constantParser->getSubCategories()[$subcat][0] ?? '') : 'Others';
-                        $groupedOutput[$categoryLoop] = [
-                            'label' => $subcat_name,
-                            'fields' => [],
-                        ];
-                    }
-                    $label = $this->getLanguageService()->sL($params['label']);
-                    $label_parts = explode(':', $label, 2);
-                    if (count($label_parts) === 2) {
-                        $head = trim($label_parts[0]);
-                        $body = trim($label_parts[1]);
-                    } else {
-                        $head = trim($label_parts[0]);
-                        $body = '';
-                    }
-                    $typeDat = $this->ext_getTypeData($params['type']);
-                    $p_field = '';
-                    $fragmentName = substr(md5($params['name']), 0, 10);
-                    $fragmentNameEscaped = htmlspecialchars($fragmentName);
-                    [$fN, $fV, $params, $idName] = $this->ext_fNandV($params);
-                    $idName = htmlspecialchars($idName);
-                    $hint = '';
-                    switch ($typeDat['type']) {
-                        case 'int':
-                        case 'int+':
-                            $additionalAttributes = '';
-                            if ($typeDat['paramstr'] ?? false) {
-                                $hint = ' Range: ' . $typeDat['paramstr'];
-                            } elseif ($typeDat['type'] === 'int+') {
-                                $hint = ' Range: 0 - ';
-                                $typeDat['min'] = 0;
-                            } else {
-                                $hint = ' (Integer)';
-                            }
-
-                            if (isset($typeDat['min'])) {
-                                $additionalAttributes .= ' min="' . (int)$typeDat['min'] . '" ';
-                            }
-                            if (isset($typeDat['max'])) {
-                                $additionalAttributes .= ' max="' . (int)$typeDat['max'] . '" ';
-                            }
-
-                            $p_field =
-                                '<input class="form-control" id="' . $idName . '" type="number"'
-                                . ' name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" ' . $additionalAttributes . ' />';
-                            break;
-                        case 'color':
-                            $p_field = '
-                                <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
-                                '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
-
-                            $this->javaScriptInstructions['color'] ??= JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Backend/ColorPicker')
-                                ->invoke('initialize');
-                            break;
-                        case 'wrap':
-                            $wArr = explode('|', $fV);
-                            $p_field = '<div class="input-group">
-                                            <input class="form-control form-control-adapt" type="text" id="' . $idName . '" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
-                                            <span class="input-group-addon input-group-icon">|</span>
-                                            <input class="form-control form-control-adapt" type="text" name="W' . $fN . '" value="' . $wArr[1] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />
-                                         </div>';
-                            break;
-                        case 'offset':
-                            $wArr = explode(',', $fV);
-                            $labels = GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-                            $p_field = '<span class="input-group-addon input-group-icon">' . ($labels[0] ?: 'x') . '</span><input type="text" class="form-control form-control-adapt" name="' . $fN . '" value="' . $wArr[0] . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                            $p_field .= '<span class="input-group-addon input-group-icon">' . ($labels[1] ?: 'y') . '</span><input type="text" name="W' . $fN . '" value="' . $wArr[1] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                            $labelsCount = count($labels);
-                            for ($aa = 2; $aa < $labelsCount; $aa++) {
-                                if ($labels[$aa]) {
-                                    $p_field .= '<span class="input-group-addon input-group-icon">' . $labels[$aa] . '</span><input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" class="form-control form-control-adapt" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                                } else {
-                                    $p_field .= '<input type="hidden" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" />';
-                                }
-                            }
-                            $p_field = '<div class="input-group">' . $p_field . '</div>';
-                            break;
-                        case 'options':
-                            if (is_array($typeDat['params'])) {
-                                $p_field = '';
-                                foreach ($typeDat['params'] as $val) {
-                                    $vParts = explode('=', $val, 2);
-                                    $label = $vParts[0];
-                                    $val = $vParts[1] ?? $vParts[0];
-                                    // option tag:
-                                    $sel = '';
-                                    if ($val === $params['value']) {
-                                        $sel = ' selected';
-                                    }
-                                    $p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $this->getLanguageService()->sL($label) . '</option>';
-                                }
-                                $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
-                            }
-                            break;
-                        case 'boolean':
-                            $sel = $fV ? 'checked' : '';
-                            $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="0" />'
-                                . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="' . (($typeDat['paramstr'] ?? false) ?: 1) . '" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<span class="t3-icon fa"></span>'
-                                . '</label>';
-                            break;
-                        case 'comment':
-                            $sel = $fV ? '' : 'checked';
-                            $p_field =
-                                '<input type="hidden" name="' . $fN . '" value="" />'
-                                . '<label class="btn btn-default btn-checkbox">'
-                                . '<input id="' . $idName . '" type="checkbox" name="' . $fN . '" value="1" ' . $sel . ' data-form-update-fragment="' . $fragmentNameEscaped . '" />'
-                                . '<span class="t3-icon fa"></span>'
-                                . '</label>';
-                            break;
-                        case 'file':
-                            // extensionlist
-                            $extList = $typeDat['paramstr'];
-                            if ($extList === 'IMAGE_EXT') {
-                                $extList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-                            }
-                            $p_field = '<option value="">(' . $extList . ')</option>';
-                            if (trim($params['value'])) {
-                                $val = $params['value'];
-                                $p_field .= '<option value=""></option>';
-                                $p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
-                            }
-                            $p_field = '<select class="form-select" id="' . $idName . '" name="' . $fN . '" data-form-update-fragment="' . $fragmentNameEscaped . '">' . $p_field . '</select>';
-                            break;
-                        case 'user':
-                            $userFunction = $typeDat['paramstr'];
-                            $userFunctionParams = ['fieldName' => $fN, 'fieldValue' => $fV];
-                            $p_field = GeneralUtility::callUserFunction($userFunction, $userFunctionParams, $this);
-                            break;
-                        default:
-                            $p_field = '<input class="form-control" id="' . $idName . '" type="text" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '" />';
-                    }
-                    // Define default names and IDs
-                    $userTyposcriptID = 'userTS-' . $idName;
-                    $defaultTyposcriptID = 'defaultTS-' . $idName;
-                    $userTyposcriptStyle = '';
-                    // Set the default styling options
-                    if (isset($this->objReg[$params['name']])) {
-                        $checkboxValue = 'checked';
-                        $defaultTyposcriptStyle = 'style="display:none;"';
-                    } else {
-                        $checkboxValue = '';
-                        $userTyposcriptStyle = 'style="display:none;"';
-                        $defaultTyposcriptStyle = '';
-                    }
-                    $deleteIconHTML =
-                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
-                            . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
-                                . $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
-                            . '</span>'
-                        . '</button>';
-                    $editIconHTML =
-                        '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
-                            . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
-                                . $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
-                            . '</span>'
-                        . '</button>';
-                    $constantCheckbox = '<input type="hidden" name="check[' . $params['name'] . ']" id="check-' . $idName . '" value="' . $checkboxValue . '"/>';
-                    // If there's no default value for the field, use a static label.
-                    if (!$params['default_value']) {
-                        $params['default_value'] = '[Empty]';
-                    }
-                    $constantDefaultRow =
-                        '<div class="input-group defaultTS" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>'
-                            . '<span class="input-group-btn">' . $editIconHTML . '</span>'
-                            . '<input class="form-control" type="text" placeholder="' . htmlspecialchars($params['default_value']) . '" readonly>'
-                        . '</div>';
-                    $constantEditRow =
-                        '<div class="input-group userTS" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>'
-                            . '<span class="input-group-btn">' . $deleteIconHTML . '</span>'
-                            . $p_field
-                        . '</div>';
-                    $constantData =
-                        $constantCheckbox
-                        . $constantEditRow
-                        . $constantDefaultRow;
-
-                    $groupedOutput[$categoryLoop]['items'][] = [
-                        'identifier' => $fragmentName,
-                        'label' => $head,
-                        'name' => $params['name'],
-                        'description' => $body,
-                        'hint' => $hint,
-                        'data' => $constantData,
-                    ];
-                } else {
-                    debug('Error. Constant did not exist. Should not happen.');
-                }
-            }
-        }
-        return $groupedOutput;
     }
 
     /***************************
@@ -1119,45 +615,7 @@ class ExtendedTemplateService extends TemplateService
         $this->changed = true;
     }
 
-    /**
-     * @param array $arr
-     * @param array $settings
-     * @return array
-     */
-    public function ext_depthKeys($arr, $settings)
-    {
-        $tsbrArray = [];
-        foreach ($arr as $theK => $theV) {
-            $theKeyParts = explode('.', $theK);
-            $depth = '';
-            $c = count($theKeyParts);
-            $a = 0;
-            foreach ($theKeyParts as $p) {
-                $a++;
-                $depth .= ($depth ? '.' : '') . $p;
-                $tsbrArray[$depth] = $c == $a ? $theV : 1;
-            }
-        }
-        // Modify settings
-        foreach ($tsbrArray as $theK => $theV) {
-            if ($theV) {
-                $settings[$theK] = 1;
-            } else {
-                unset($settings[$theK]);
-            }
-        }
-        return $settings;
-    }
-
-    /**
-     * Process input
-     *
-     * @param array $http_post_vars
-     * @param array $http_post_files (not used anymore)
-     * @param array $theConstants
-     * @param array $tplRow Not used
-     */
-    public function ext_procesInput($http_post_vars, $http_post_files, $theConstants, $tplRow)
+    public function ext_procesInput(array $http_post_vars, array $theConstants)
     {
         $data = $http_post_vars['data'] ?? null;
         $check = $http_post_vars['check'] ?? [];
@@ -1263,33 +721,10 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * @param int $id
-     * @param string $perms_clause
-     * @return array
-     */
-    public function ext_prevPageWithTemplate($id, $perms_clause)
-    {
-        $rootLine = BackendUtility::BEgetRootLine($id, $perms_clause ? ' AND ' . $perms_clause : '');
-        foreach ($rootLine as $p) {
-            if ($this->ext_getFirstTemplate($p['uid'])) {
-                return $p;
-            }
-        }
-        return [];
-    }
-
-    /**
      * Is set by runThroughTemplates(), previously set via TemplateAnalyzerModuleFunctionController from the outside
-     *
-     * @return array
      */
-    protected function getRootLine()
+    public function getRootLine(): array
     {
         return is_array($this->absoluteRootLine) ? $this->absoluteRootLine : [];
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

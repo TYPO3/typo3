@@ -16,6 +16,10 @@
 namespace TYPO3\CMS\Tstemplate\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -96,11 +100,11 @@ class TemplateAnalyzerModuleFunctionController
         $this->templateService->clearList_setup_temp = array_flip($this->templateService->clearList_setup);
         $pointer = count($this->templateService->hierarchyInfo);
         $hierarchyInfo = $this->templateService->ext_process_hierarchyInfo([], $pointer);
-        $assigns['hierarchy'] = implode('', array_reverse($this->templateService->ext_getTemplateHierarchyArr(
+        $assigns['hierarchy'] = implode('', array_reverse($this->getTemplateHierarchyArr(
             $hierarchyInfo,
             '',
             [],
-            1
+            true
         )));
 
         $assigns['constants'] =  $this->renderTemplates($this->templateService->constants, $selectedTemplate, $highlightType === 'const', $highlightLine);
@@ -133,7 +137,7 @@ class TemplateAnalyzerModuleFunctionController
         $this->templateService->runThroughTemplates($rootLine, $templateUid);
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->templateService->ext_getFirstTemplate($pageId, $templateUid);
+        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage($pageId, $templateUid);
         return is_array($this->templateRow);
     }
 
@@ -250,5 +254,79 @@ class TemplateAnalyzerModuleFunctionController
             . '<textarea class="form-control" rows="' . ($linesInTemplate + 1) . '" disabled>'
             . htmlspecialchars($content)
             . '</textarea>';
+    }
+
+    protected function getTemplateHierarchyArr(array $arr, string $depthData, array $keyArray, bool $first = false): array
+    {
+        $keyArr = [];
+        foreach ($arr as $key => $value) {
+            $key = preg_replace('/\\.$/', '', $key) ?? '';
+            if (substr($key, -1) !== '.') {
+                $keyArr[$key] = 1;
+            }
+        }
+        $a = 0;
+        $c = count($keyArr);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        foreach ($keyArr as $key => $value) {
+            $HTML = '';
+            $a++;
+            $deeper = is_array($arr[$key . '.'] ?? false);
+            $row = $arr[$key];
+            $LN = $a == $c ? 'blank' : 'line';
+            $BTM = $a == $c ? 'top' : '';
+            $HTML .= $depthData;
+            $alttext = '[' . $row['templateID'] . ']';
+            $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
+            $icon = strpos($row['templateID'], 'sys') === 0
+                ? '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
+                : '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
+            if (in_array($row['templateID'], $this->templateService->clearList_const) || in_array($row['templateID'], $this->templateService->clearList_setup)) {
+                $urlParameters = [
+                    'id' => $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null,
+                    'template' => $row['templateID'],
+                ];
+                $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+                $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
+                $A_E = '</a>';
+                if (($this->request->getParsedBody()['template'] ?? $this->request->getQueryParams()['template'] ?? null) == $row['templateID']) {
+                    $A_B = '<strong>' . $A_B;
+                    $A_E .= '</strong>';
+                }
+            } else {
+                $A_B = '';
+                $A_E = '';
+            }
+            $HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . ' ' . $A_B
+                . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
+                . $A_E . '&nbsp;&nbsp;';
+            $RL = $this->getRootlineNumber((int)$row['pid']);
+            $statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
+            $keyArray[] = '<tr>
+							<td class="nowrap">' . $HTML . '</td>
+							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
+							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '</td>
+							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
+							<td align="center">' . ($row['pid'] ?: '') . '</td>
+							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
+						</tr>';
+            if ($deeper) {
+                $keyArray = $this->getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
+            }
+        }
+        return $keyArray;
+    }
+
+    protected function getRootlineNumber(int $pid): int
+    {
+        if ($pid) {
+            foreach ($this->templateService->getRootLine() as $key => $val) {
+                if ((int)$val['uid'] === (int)$pid) {
+                    return (int)$key;
+                }
+            }
+        }
+        return -1;
     }
 }
