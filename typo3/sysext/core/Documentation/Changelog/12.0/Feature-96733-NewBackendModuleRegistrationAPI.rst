@@ -141,8 +141,17 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | icon (:php:`string`)                                     | Path to a module icon (Deprecated: Use `iconIdentifier` instead) |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| labels (:php:`string`)                                   | The locallang path for the module labels. The referenced file    |
-|                                                          | should contain the following labels:                             |
+| labels (:php:`array` or :php:`string`)                   | An :php:`array` with following keys:                             |
+|                                                          |                                                                  |
+|                                                          | - `title`                                                        |
+|                                                          | - `description`                                                  |
+|                                                          | - `shortDescription`                                             |
+|                                                          |                                                                  |
+|                                                          | The value can either be a static string or a locallang label     |
+|                                                          | reference.                                                       |
+|                                                          |                                                                  |
+|                                                          | It's also possible to define the path to a locallang file.       |
+|                                                          | The referenced file should contain the following label keys:     |
 |                                                          |                                                                  |
 |                                                          | - `mlang_tabs_tab` (Used as module title)                        |
 |                                                          | - `mlang_labels_tabdescr` (Used as module description)           |

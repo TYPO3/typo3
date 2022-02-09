@@ -212,7 +212,11 @@ abstract class BaseModule
             $obj->component = (string)$configuration['component'];
         }
 
-        if (str_starts_with((string)($configuration['labels'] ?? ''), 'LLL:')) {
+        if (is_array($configuration['labels'] ?? null)) {
+            $obj->title = (string)($configuration['labels']['title'] ?? '');
+            $obj->description = (string)($configuration['labels']['description'] ?? '');
+            $obj->shortDescription = (string)($configuration['labels']['shortDescription'] ?? '');
+        } elseif (str_starts_with((string)($configuration['labels'] ?? ''), 'LLL:')) {
             $labelsFile = $configuration['labels'];
             $obj->title = $labelsFile . ':mlang_tabs_tab';
             $obj->description = $labelsFile . ':mlang_labels_tabdescr';
