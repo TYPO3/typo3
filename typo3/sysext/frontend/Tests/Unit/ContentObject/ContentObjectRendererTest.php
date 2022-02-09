@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -314,7 +315,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsExcludesParameters(): void
     {
-        $_GET = [
+        $queryParameters = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => [
@@ -325,6 +326,8 @@ class ContentObjectRendererTest extends UnitTestCase
                 ],
             ],
         ];
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withQueryParams($queryParameters);
         $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
@@ -332,6 +335,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
+        $this->subject->setRequest($request);
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
         self::assertEquals($expectedResult, $actualResult);
     }
@@ -1148,14 +1152,18 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeGp(string $key, string $expectedValue): void
     {
-        $_GET = [
+        $queryArguments = [
             'onlyInGet' => 'GetValue',
             'inGetAndPost' => 'ValueInGet',
         ];
-        $_POST = [
+        $postParameters = [
             'onlyInPost' => 'PostValue',
             'inGetAndPost' => 'ValueInPost',
         ];
+        $request = new ServerRequest('https://example.com');
+        $request = $request->withQueryParams($queryArguments)
+            ->withParsedBody($postParameters);
+        $this->subject->setRequest($request);
         self::assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
     }
 

@@ -4106,9 +4106,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 switch ($type) {
                     case 'gp':
                         // Merge GET and POST and get $key out of the merged array
-                        $getPostArray = GeneralUtility::_GET();
-                        ArrayUtility::mergeRecursiveWithOverrule($getPostArray, GeneralUtility::_POST());
-                        $retVal = $this->getGlobal($key, $getPostArray);
+                        $requestParameters = $this->getRequest()->getQueryParams();
+                        $requestParameters = array_replace_recursive($requestParameters, (array)$this->getRequest()->getParsedBody());
+                        $retVal = $this->getGlobal($key, $requestParameters);
                         break;
                     case 'tsfe':
                         $retVal = $this->getGlobal('TSFE|' . $key);
@@ -4925,7 +4925,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getQueryArguments($conf)
     {
-        $currentQueryArray = GeneralUtility::_GET();
+        $currentQueryArray = $this->getRequest()->getQueryParams();
         if ($conf['exclude'] ?? false) {
             $excludeString = str_replace(',', '&', $conf['exclude']);
             $excludedQueryParts = [];
