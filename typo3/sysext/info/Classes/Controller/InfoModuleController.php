@@ -188,7 +188,7 @@ class InfoModuleController
                 $this->pageinfo = ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
             }
             $this->moduleTemplate->assign('id', (int)$this->id);
-            $this->moduleTemplate->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
+            $this->moduleTemplate->assign('formAction', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
             $this->moduleTemplate->assign('functionMenuModuleContent', $this->extObjContent($request));
             // Setting up the buttons and markers for doc header
             $this->getButtons($request);
