@@ -4511,11 +4511,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/LanguageMenuProcessor.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\DataProcessing\\\\SiteProcessor\\:\\:getCurrentSite\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site\\|null but returns TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/DataProcessing/SiteProcessor.php
-
-		-
 			message: "#^Variable \\$processorConfiguration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/SplitProcessor.php

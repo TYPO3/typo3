@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
 
-use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\DataProcessing\SiteProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,24 +28,23 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteProcessorTest extends UnitTestCase
 {
-    use ProphecyTrait;
 
     /**
      * @test
      */
     public function siteIsRetrieved(): void
     {
-        $processorConfiguration = ['as' => 'variable'];
-        $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $expectedName = 'currentSite';
+        $processorConfiguration = ['as' => $expectedName];
+        $request = new ServerRequest('https://example.com/lotus/');
+        $site = new Site('main', 123, []);
+        $request = $request->withAttribute('site', $site);
+        $cObj = new ContentObjectRenderer();
+        $cObj->setRequest($request);
 
-        $site = new Site('site123', 123, []);
-        $tsfeProphecy = $this->prophesize(TypoScriptFrontendController::class);
-        $tsfeProphecy->getSite()->willReturn($site);
-
-        $subject = new SiteProcessor($tsfeProphecy->reveal());
-        $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
-        self::assertEquals($site, $processedData['variable']);
+        $subject = new SiteProcessor();
+        $processedData = $subject->process($cObj, [], $processorConfiguration, []);
+        self::assertEquals($site, $processedData[$expectedName]);
     }
 
     /**
@@ -54,13 +52,14 @@ class SiteProcessorTest extends UnitTestCase
      */
     public function nullIsProvidedIfSiteCouldNotBeRetrieved(): void
     {
-        $processorConfiguration = ['as' => 'variable'];
-        $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $expectedName = 'currentSite';
+        $processorConfiguration = ['as' => $expectedName];
+        $request = new ServerRequest('https://example.com/lotus/');
+        $cObj = new ContentObjectRenderer();
+        $cObj->setRequest($request);
 
         $subject = new SiteProcessor();
-        $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
-
-        self::assertNull($processedData['variable']);
+        $processedData = $subject->process($cObj, [], $processorConfiguration, []);
+        self::assertNull($processedData[$expectedName]);
     }
 }
