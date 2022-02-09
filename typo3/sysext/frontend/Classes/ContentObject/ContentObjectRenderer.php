@@ -3246,7 +3246,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $objName = (int)$splitArr[$a]['cObjNum'];
                 $value = (string)(isset($conf[$objName . '.'])
                     ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.'])
-                    : $this->cObjGet($conf[$objName . '.'], $objName . '.'));
+                    : '');
             }
             $wrap = (string)$this->stdWrapValue('wrap', $splitArr[$a] ?? []);
             if ($wrap) {
