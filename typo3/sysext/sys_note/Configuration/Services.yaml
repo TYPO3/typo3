@@ -18,3 +18,7 @@ services:
     tags:
       - name: event.listener
         identifier: 'note-to-page-module'
+  TYPO3\CMS\SysNote\Provider\ButtonBarProvider:
+    tags:
+      - name: event.listener
+        identifier: 'note-to-button-bar'

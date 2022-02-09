@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
@@ -160,19 +161,18 @@ class ButtonBar
      *
      * @return array
      */
-    public function getButtons()
+    public function getButtons(): array
     {
         // here we need to call the sorting methods and stuff.
         foreach ($this->buttons as $position => $_) {
             ksort($this->buttons[$position]);
         }
-        // Hook for manipulating the docHeaderButtons
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend\Template\Components\ButtonBar']['getButtonsHook'] ?? [] as $funcRef) {
-            $params = [
-                'buttons' => $this->buttons,
-            ];
-            $this->buttons = GeneralUtility::callUserFunction($funcRef, $params, $this);
-        }
+
+        // Dispatch event for manipulating the docHeaderButtons
+        $this->buttons = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new ModifyButtonBarEvent($this->buttons, $this)
+        )->getButtons();
+
         return $this->buttons;
     }
 }

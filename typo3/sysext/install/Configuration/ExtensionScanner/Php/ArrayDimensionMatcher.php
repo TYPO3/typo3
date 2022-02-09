@@ -599,4 +599,9 @@ return [
             'Breaking-96659-RegistrationOfCObjectsViaTYPO3_CONF_VARS.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'Backend\Template\Components\ButtonBar\'][\'getButtonsHook\']' => [
+        'restFiles' => [
+            'Breaking-96806-RemovedHookForForModifyingButtonBar.rst',
+        ],
+    ],
 ];

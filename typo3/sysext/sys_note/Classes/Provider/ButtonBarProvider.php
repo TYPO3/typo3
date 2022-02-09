@@ -15,12 +15,13 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\SysNote\Hook;
+namespace TYPO3\CMS\SysNote\Provider;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,11 +31,11 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Hook for the button bar
+ * Event listener to add the sys_note button to the button bar
  *
- * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
+ * @internal This is a specific listener implementation and is not considered part of the Public TYPO3 API.
  */
-class ButtonBarHook
+final class ButtonBarProvider
 {
     private const TABLE_NAME = 'sys_note';
     private const ALLOWED_MODULES = ['web_layout', 'web_list', 'web_info'];
@@ -42,15 +43,11 @@ class ButtonBarHook
     /**
      * Add a sys_note creation button to the button bar of defined modules
      *
-     * @param array $params
-     * @param ButtonBar $buttonBar
-     *
-     * @return array
      * @throws RouteNotFoundException
      */
-    public function getButtons(array $params, ButtonBar $buttonBar): array
+    public function __invoke(ModifyButtonBarEvent $event): void
     {
-        $buttons = $params['buttons'];
+        $buttons = $event->getButtons();
         $request = $this->getRequest();
 
         $id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
@@ -66,7 +63,7 @@ class ButtonBarHook
             || !in_array($module->getIdentifier(), self::ALLOWED_MODULES, true)
             || ($module->getIdentifier() === 'web_list' && !$this->isCreationAllowed($pageTSconfig['mod.']['web_list.'] ?? []))
         ) {
-            return $buttons;
+            return;
         }
 
         $uri = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
@@ -81,7 +78,7 @@ class ButtonBarHook
             ]
         );
 
-        $buttons[ButtonBar::BUTTON_POSITION_RIGHT][2][] = $buttonBar
+        $buttons[ButtonBar::BUTTON_POSITION_RIGHT][2][] = $event->getButtonBar()
             ->makeLinkButton()
             ->setTitle(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang.xlf:new_internal_note')))
             ->setIcon(GeneralUtility::makeInstance(IconFactory::class)->getIcon('sysnote-type-0', Icon::SIZE_SMALL))
@@ -89,7 +86,7 @@ class ButtonBarHook
 
         ksort($buttons[ButtonBar::BUTTON_POSITION_RIGHT]);
 
-        return $buttons;
+        $event->setButtons($buttons);
     }
 
     /**
