@@ -197,7 +197,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
                     $this->addFileObjects(array_values($files));
                 }
             } catch (Exception $e) {
-                $this->logger->warning('The folder with identifier  "{folder}" could not be found and won\'t be included in frontend output', [
+                $this->logger->warning('The folder with identifier "{folder}" could not be found and won\'t be included in frontend output', [
                     'folder' => $folderIdentifier,
                     'exception' => $e,
                 ]);
