@@ -176,3 +176,6 @@ page {
 	}
 	stdWrap.postUserFunc = TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Renderer->renderSections
 }
+
+ALTERNATIVE < page
+ALTERNATIVE.typeNum = 1
