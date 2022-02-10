@@ -2,39 +2,65 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:if condition="{hasAccess}">
-    <f:then>
-        <div class="t3-new-content-element-wizard-inner">
-            <f:if condition="{positionSelection}">
-                <div class="t3-new-content-element-wizard-title">
-                    <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
-                </div>
-            </f:if>
-            <div class="container-fluid mt-2">
-                <div class="navbar-header">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.label')}</span>
-                            <input
-                                type="search"
-                                autocomplete="off"
-                                class="form-control t3js-contentWizard-search"
-                                placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.placeholder')}"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {renderedTabs -> f:format.raw()}
-            <div class="container-fluid">
-                <div class="alert alert-danger hidden t3js-filter-noresult" role="alert">
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.noResults" />
+
+<f:be.pageRenderer
+    includeRequireJsModules="{
+        0: 'TYPO3/CMS/Backend/Tabs'
+    }"
+/>
+
+<div class="t3-new-content-element-wizard-inner">
+    <f:if condition="{positionSelection}">
+        <div class="t3-new-content-element-wizard-title">
+            <h2>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:1_selectType')}</h2>
+        </div>
+    </f:if>
+    <div class="container-fluid mt-2">
+        <div class="navbar-header">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.label')}</span>
+                    <input
+                        type="search"
+                        autocomplete="off"
+                        class="form-control t3js-contentWizard-search"
+                        placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.placeholder')}"
+                    />
                 </div>
             </div>
         </div>
-    </f:then>
-    <f:else>
-        <h1>{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement')}</h1>
-    </f:else>
-</f:if>
+    </div>
+
+    <div role="tabpanel">
+        <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-{tabsMenuId}" data-store-last-tab="1">
+            <f:for each="{tabsMenuItems}" as="item" iteration="iteration">
+                <li role="presentation" class="t3js-tabmenu-item nav-item">
+                    <a href="#{tabsMenuId}-{iteration.cycle}" class="nav-link {f:if(condition: '{iteration.cycle} == 1', then: ' active')}" aria-controls="{tabsMenuId}-{iteration.cycle}" role="tab" data-bs-toggle="tab">
+                        {item.label}
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+        <div class="tab-content">
+            <f:for each="{tabsMenuItems}" as="item" iteration="iteration">
+                <div role="tabpanel" class="tab-pane{f:if(condition: '{iteration.cycle} == 1', then: ' active')}" id="{tabsMenuId}-{iteration.cycle}">
+                    <div class="panel panel-tab">
+                        <div class="panel-body">
+                            <f:for each="{item.contentItems}" as="contentItem">
+                                <f:render partial="NewContentElement/MenuItem" arguments="{item: contentItem}" />
+                            </f:for>
+                        </div>
+                    </div>
+                </div>
+            </f:for>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="alert alert-danger hidden t3js-filter-noresult" role="alert">
+            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:newContentElement.filter.noResults" />
+        </div>
+    </div>
+</div>
+
 </html>

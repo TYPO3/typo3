@@ -20,25 +20,27 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
- * Script Class for the New Content element wizard
+ * New Content element wizard. This is the modal that pops up when clicking "+content" in page module, which
+ * will trigger wizardAction() since there is a colPos given. Method positionMapAction() is triggered for
+ * instance from the list module "+content" on tt_content table header, and from list module doc-header "+"
+ * and then "Click here for wizard".
+ *
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class NewContentElementController
@@ -82,18 +84,14 @@ class NewContentElementController
     protected $pageInfo;
 
     public function __construct(
-        protected IconFactory $iconFactory,
-        protected PageRenderer $pageRenderer,
-        protected UriBuilder $uriBuilder,
-        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
     /**
      * Process incoming request and dispatch to the requested action
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -123,19 +121,14 @@ class NewContentElementController
     /**
      * Renders the wizard
      */
-    public function wizardAction(ServerRequestInterface $request): ResponseInterface
+    protected function wizardAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->getFluidTemplateObject();
-
-        $hasAccess = $this->id && $this->pageInfo !== [];
-        $view->assign('hasAccess', $hasAccess);
-        if (!$hasAccess) {
-            return new HtmlResponse($view->render());
+        if (!$this->id || $this->pageInfo === []) {
+            // No pageId or no access.
+            return new HtmlResponse('No Access');
         }
         // Whether position selection must be performed (no colPos was yet defined)
         $positionSelection = !isset($this->colPos);
-        $view->assign('positionSelection', $positionSelection);
-
         // Get processed wizard items from configuration
         $wizardItems = $this->getWizards();
 
@@ -153,13 +146,12 @@ class NewContentElementController
 
         $key = 0;
         $menuItems = [];
-        // Traverse items for the wizard.
-        // An item is either a header or an item rendered with title/description and icon:
         foreach ($wizardItems as $wizardKey => $wInfo) {
+            // An item is either a header or an item rendered with title/description and icon:
             if (isset($wInfo['header'])) {
                 $menuItems[] = [
                     'label' => $wInfo['header'] ?: '-',
-                    'content' => '',
+                    'contentItems' => [],
                 ];
                 $key = count($menuItems) - 1;
             } else {
@@ -169,16 +161,14 @@ class NewContentElementController
                     'wizardKey' => $wizardKey,
                     'icon' => $this->iconFactory->getIcon(($wInfo['iconIdentifier'] ?? ''), Icon::SIZE_DEFAULT, ($wInfo['iconOverlay'] ?? ''))->render(),
                 ];
-
                 // Check wizardItem for defVals
                 $itemParams = [];
                 parse_str($wInfo['params'] ?? '', $itemParams);
                 $defVals = $itemParams['defVals']['tt_content'] ?? [];
-
-                // In case no position has to be selected, we can just add the target
                 if (!$positionSelection) {
-                    // Go to DataHandler directly instead of FormEngine
+                    // In case no position has to be selected, we can just add the target
                     if (($wInfo['saveAndClose'] ?? false)) {
+                        // Go to DataHandler directly instead of FormEngine
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                             'data' => [
                                 'tt_content' => [
@@ -219,30 +209,30 @@ class NewContentElementController
                         'saveAndClose' => (bool)($wInfo['saveAndClose'] ?? false),
                     ], true);
                 }
-
-                $menuItems[$key]['content'] .= $this->getFluidTemplateObject()->assignMultiple($viewVariables)->render('NewContentElement/MenuItem');
+                $menuItems[$key]['contentItems'][] = $viewVariables;
             }
         }
 
-        $view->assign('renderedTabs', $this->moduleTemplateFactory->create($request)->getDynamicTabMenu(
-            $menuItems,
-            'new-content-element-wizard'
-        ));
-
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view->assignMultiple([
+            'positionSelection' => $positionSelection,
+            'tabsMenuItems' => $menuItems,
+            'tabsMenuId' => 'DTM-a31afc8fb616dc290e6626a9f3c9c433', // Just a unique id starting with DTM-
+        ]);
         return new HtmlResponse($view->render('NewContentElement/Wizard'));
     }
 
     /**
      * Renders the position map
      */
-    public function positionMapAction(ServerRequestInterface $request): ResponseInterface
+    protected function positionMapAction(ServerRequestInterface $request): ResponseInterface
     {
         $posMap = GeneralUtility::makeInstance(ContentCreationPagePositionMap::class);
         $posMap->cur_sys_language = $this->sys_language;
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
         $posMap->R_URI =  $this->R_URI;
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
         $view->assign('posMap', $posMap->printContentElementColumns($this->id));
         return new HtmlResponse($view->render('NewContentElement/PositionMap'));
     }
@@ -250,8 +240,6 @@ class NewContentElementController
     /**
      * Returns the array of elements in the wizard display.
      * For the plugin section there is support for adding elements there from a global variable.
-     *
-     * @return array
      */
     protected function getWizards(): array
     {
@@ -298,10 +286,6 @@ class NewContentElementController
         return $wizardItems;
     }
 
-    /**
-     * @param array $wizardElements
-     * @return array
-     */
     protected function getAppendWizards(array $wizardElements): array
     {
         $returnElements = [];
@@ -313,10 +297,6 @@ class NewContentElementController
         return $returnElements;
     }
 
-    /**
-     * @param array $itemConf
-     * @return array
-     */
     protected function getWizardItem(array $itemConf): array
     {
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
@@ -327,10 +307,6 @@ class NewContentElementController
         return $itemConf;
     }
 
-    /**
-     * @param array $wizardGroup
-     * @return array
-     */
     protected function getWizardGroupHeader(array $wizardGroup): array
     {
         return [
@@ -445,13 +421,6 @@ class NewContentElementController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     /**
