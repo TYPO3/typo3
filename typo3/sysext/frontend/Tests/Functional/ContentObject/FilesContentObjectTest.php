@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
@@ -38,6 +39,12 @@ class FilesContentObjectTest extends FunctionalTestCase
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
         $this->importCSVDataSet(__DIR__ . '/DataSet/FilesContentObjectDataSet.csv');
+
+        $typoScriptFrontendController = new class() {
+            public PageRepository $sys_page;
+        };
+        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $GLOBALS['TSFE'] = $typoScriptFrontendController;
         $contentObjectRenderer = GeneralUtility::getContainer()->get(ContentObjectRenderer::class);
         $request = new ServerRequest();
         $contentObjectRenderer->setRequest($request);
@@ -699,7 +706,6 @@ class FilesContentObjectTest extends FunctionalTestCase
                     ],
                 ],
                 '<p>afilesub1.jpg</p><p>afilesub2.jpg</p><p>afilesub3.jpg</p><p>bfilesub1.jpg</p><p>bfilesub2.jpg</p><p>bfilesub3.jpg</p><p>file4.jpg</p><p>file5.jpg</p><p>file6.jpg</p>',
-                true,
             ],
             'Multiple folders recursively, sorted by name' => [
                 [
@@ -715,7 +721,6 @@ class FilesContentObjectTest extends FunctionalTestCase
                     ],
                 ],
                 '<p>afilesub1.jpg</p><p>afilesub2.jpg</p><p>afilesub3.jpg</p><p>bfilesub1.jpg</p><p>bfilesub2.jpg</p><p>bfilesub3.jpg</p><p>file4.jpg</p><p>file5.jpg</p><p>file6.jpg</p>',
-                true,
             ],
         ];
     }
@@ -726,6 +731,137 @@ class FilesContentObjectTest extends FunctionalTestCase
      */
     public function renderReturnsFilesForFolders(array $configuration, string $expected): void
     {
+        self::assertSame($expected, $this->subject->render($configuration));
+    }
+
+    public function renderReturnsFilesForReferencesAsArrayDataProvider(): iterable
+    {
+        yield 'references option as array with nothing provided returns nothing' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => '',
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [],
+            'table' => 'tt_content',
+            'expected' => '',
+        ];
+
+        yield 'references option as array and field name provided takes row of current data' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => 'image',
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [
+                'uid' => 298,
+                'image' => 3,
+            ],
+            'table' => 'tt_content',
+            'expected' => '<p>file4.jpg</p><p>file5.jpg</p><p>file6.jpg</p>',
+        ];
+
+        yield 'references option as array with uid provided overrides current uid, but uses same current table' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => 'image',
+                    'uid' => '297',
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [
+                'uid' => 298,
+                'image' => 3,
+            ],
+            'table' => 'tt_content',
+            'expected' => '<p>team-t3board10.jpg</p><p>kasper-skarhoj1.jpg</p><p>typo3-logo.png</p>',
+        ];
+
+        yield 'references option as array with uid and table provided ignores current data completely' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => 'media',
+                    'uid' => '1',
+                    'table' => 'pages',
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [
+                'uid' => 298,
+                'image' => 3,
+            ],
+            'table' => 'tt_content',
+            'expected' => '<p>file7.jpg</p>',
+        ];
+
+        yield 'references option as array where uid results in nothing, falls back to current data' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => 'image',
+                    'uid.' => [
+                        'field' => 'not_existing_field',
+                    ],
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [
+                'uid' => 298,
+                'image' => 3,
+            ],
+            'table' => 'tt_content',
+            'expected' => '<p>file4.jpg</p><p>file5.jpg</p><p>file6.jpg</p>',
+        ];
+
+        yield 'references option as array where table results in nothing, falls back to current data' => [
+            'configuration' => [
+                'references.' => [
+                    'fieldName' => 'image',
+                    'table' => '',
+                ],
+                'renderObj' => 'TEXT',
+                'renderObj.' => [
+                    'data' => 'file:current:name',
+                    'wrap' => '<p>|</p>',
+                ],
+            ],
+            'data' => [
+                'uid' => 298,
+                'image' => 3,
+            ],
+            'table' => 'tt_content',
+            'expected' => '<p>file4.jpg</p><p>file5.jpg</p><p>file6.jpg</p>',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider renderReturnsFilesForReferencesAsArrayDataProvider
+     */
+    public function renderReturnsFilesForReferencesAsArray(array $configuration, array $data, string $table, string $expected): void
+    {
+        $this->subject->getContentObjectRenderer()->start($data, $table);
         self::assertSame($expected, $this->subject->render($configuration));
     }
 }

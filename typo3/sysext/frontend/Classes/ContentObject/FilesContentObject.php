@@ -165,12 +165,15 @@ class FilesContentObject extends AbstractContentObject
         $tableName = $this->cObj->getCurrentTable();
 
         // Fetch the references of the default element
-        $referencesForeignTable = $this->cObj->stdWrapValue('table', $configuration['references.'], $tableName);
-        $referencesForeignUid = $this->cObj->stdWrapValue('uid', $configuration['references.'], $currentId);
+        $referencesForeignTable = (string)$this->cObj->stdWrapValue('table', $configuration['references.'], $tableName);
+        $referencesForeignUid = (int)$this->cObj->stdWrapValue('uid', $configuration['references.'], $currentId);
 
         $pageRepository = $this->getPageRepository();
         // Fetch element if definition has been modified via TypoScript
-        if ($referencesForeignTable !== $tableName || $referencesForeignUid !== $currentId) {
+        if (
+            ($referencesForeignTable !== '' && $referencesForeignTable !== $tableName)
+            || ($referencesForeignUid !== 0 && $referencesForeignUid !== $currentId)
+        ) {
             $element = $pageRepository->getRawRecord($referencesForeignTable, $referencesForeignUid);
 
             $pageRepository->versionOL($referencesForeignTable, $element, true);
@@ -180,7 +183,7 @@ class FilesContentObject extends AbstractContentObject
         }
 
         if (is_array($element)) {
-            $fileCollector->addFilesFromRelation($referencesForeignTable, $referencesFieldName, $element);
+            $fileCollector->addFilesFromRelation($referencesForeignTable ?: $tableName, $referencesFieldName, $element);
         }
     }
 
