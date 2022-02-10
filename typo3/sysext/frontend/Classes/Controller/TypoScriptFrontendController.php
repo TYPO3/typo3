@@ -2294,7 +2294,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->typoLink_URL([
             'parameter' => $parameter,
             'addQueryString' => true,
-            'addQueryString.' => ['exclude' => 'id'],
+            'addQueryString.' => ['exclude' => 'id,type'],
             'forceAbsoluteUrl' => true,
         ]);
     }
