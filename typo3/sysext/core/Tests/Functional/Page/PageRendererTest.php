@@ -89,8 +89,8 @@ class PageRendererTest extends FunctionalTestCase
         $headerData = $expectedHeaderData = '<tag method="private" name="test" />';
         $subject->addHeaderData($headerData);
 
-        $subject->loadJavaScriptModule('TYPO3/CMS/Core/Ajax/AjaxRequest.js');
-        $expectedJavaScriptModuleString = '"type":"javaScriptModuleInstruction","payload":{"name":"TYPO3\\/CMS\\/Core\\/Ajax\\/AjaxRequest.js"';
+        $subject->loadJavaScriptModule('@typo3/core/ajax/ajax-request.js');
+        $expectedJavaScriptModuleString = '"type":"javaScriptModuleInstruction","payload":{"name":"@typo3\/core\/ajax\/ajax-request.js"';
 
         $subject->addJsLibrary(
             'test',
@@ -263,7 +263,7 @@ class PageRendererTest extends FunctionalTestCase
         if ($requestType === SystemEnvironmentBuilder::REQUESTTYPE_FE) {
             $expectedInlineAssignmentsPrefix = 'var TYPO3 = Object.assign(TYPO3 || {}, Object.fromEntries(Object.entries({"settings":';
         } else {
-            $expectedInlineAssignmentsPrefix = '<script src="typo3/sysext/core/Resources/Public/JavaScript/JavaScriptItemHandler.js?%i" async="async">/* [{"type":"globalAssignment","payload":{"TYPO3":{"settings":';
+            $expectedInlineAssignmentsPrefix = '<script src="typo3/sysext/core/Resources/Public/JavaScript/java-script-item-handler.js?%i" async="async">/* [{"type":"globalAssignment","payload":{"TYPO3":{"settings":';
         }
 
         $renderedString = $subject->render();

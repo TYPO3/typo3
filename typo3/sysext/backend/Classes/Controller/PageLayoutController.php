@@ -409,7 +409,7 @@ class PageLayoutController
 
     protected function addJavaScriptModuleInstructions(int $pageId, PageLayoutContext $pageLayoutContext, int $currentSelectedLanguage): void
     {
-        $pageActionsInstruction = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/PageActions.js');
+        $pageActionsInstruction = JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js');
         if ($pageLayoutContext->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $pageId, $currentSelectedLanguage);
@@ -497,7 +497,7 @@ class PageLayoutController
             $pasteRecord = BackendUtility::getRecordWSOL('tt_content', $pasteItem);
             $pasteTitle = BackendUtility::getRecordTitle('tt_content', $pasteRecord, false, true);
             $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-                JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/LayoutModule/Paste.js')
+                JavaScriptModuleInstruction::create('@typo3/backend/layout-module/paste.js')
                     ->assign([
                         'itemOnClipboardUid' => $pasteItem,
                         'itemOnClipboardTitle' => $pasteTitle,

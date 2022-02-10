@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Viewpage/' => 'EXT:viewpage/Resources/Public/JavaScript/',
+        '@typo3/viewpage/' => 'EXT:viewpage/Resources/Public/JavaScript/',
     ],
 ];

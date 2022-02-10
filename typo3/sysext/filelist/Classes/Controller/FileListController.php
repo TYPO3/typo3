@@ -178,12 +178,12 @@ class FileListController implements LoggerAwareInterface
         }
 
         $this->view->assign('currentIdentifier', $this->folderObject ? $this->folderObject->getCombinedIdentifier() : '');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Filelist/FileList.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Filelist/FileDelete.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ClipboardPanel.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/MultiRecordSelection.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ColumnSelectorButton.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-delete.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/clipboard-panel.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
         $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             'buttons'
@@ -399,7 +399,7 @@ class FileListController implements LoggerAwareInterface
             && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
         ) {
             $lang = $this->getLanguageService();
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DragUploader.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/drag-uploader.js');
             $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_upload');
             $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf', 'file_download');
             $this->pageRenderer->addInlineLanguageLabelArray([

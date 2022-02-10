@@ -201,7 +201,7 @@ for setting up your own module.
     * Module: @my-vendor/my-site-package/backend/form-editor/view-model.js
     */
    import $ from 'jquery';
-   import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js'
+   import * as Helper from '@typo3/form/backend/form-editor/helper.js'
 
    /**
     * @private

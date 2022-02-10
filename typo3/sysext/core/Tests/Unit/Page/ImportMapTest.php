@@ -137,14 +137,14 @@ class ImportMapTest extends UnitTestCase
         $this->packages = ['package2', 'package3'];
 
         $importMap = new ImportMap($this->getPackages());
-        $importMap->includeImportsFor('TYPO3/CMS/Package2/File.js');
+        $importMap->includeImportsFor('@typo3/package2/File.js');
         $output = $importMap->render('/', 'rAnd0m');
 
-        self::assertStringContainsString('"TYPO3/CMS/Package2/File.js":"/Fixtures/ImportMap/package3/Resources/Public/JavaScript/Overrides/Package2/File.js?bust=', $output);
+        self::assertStringContainsString('"@typo3/package2/File.js":"/Fixtures/ImportMap/package3/Resources/Public/JavaScript/Overrides/Package2/File.js?bust=', $output);
         self::assertThat(
             $output,
             self::logicalNot(
-                self::stringContains('"TYPO3/CMS/Package2/File.js":"/Fixtures/ImportMap/package2/')
+                self::stringContains('"@typo3/package2/File.js":"/Fixtures/ImportMap/package2/')
             )
         );
     }
@@ -156,7 +156,7 @@ class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core', 'package2'];
         $importMap = new ImportMap($this->getPackages());
-        $importMap->includeImportsFor('TYPO3/CMS/Package2/File.js');
+        $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', 'rAnd0m');
 
         self::assertStringContainsString('@typo3/core/', $output);
@@ -169,7 +169,7 @@ class ImportMapTest extends UnitTestCase
     {
         $this->packages = ['core', 'package2', 'package4'];
         $importMap = new ImportMap($this->getPackages());
-        $importMap->includeImportsFor('TYPO3/CMS/Package2/File.js');
+        $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', 'rAnd0m');
 
         self::assertThat(
@@ -188,7 +188,7 @@ class ImportMapTest extends UnitTestCase
         $this->packages = ['core', 'package2', 'package4'];
         $importMap = new ImportMap($this->getPackages());
         $importMap->includeAllImports();
-        $importMap->includeImportsFor('TYPO3/CMS/Package2/File.js');
+        $importMap->includeImportsFor('@typo3/package2/file.js');
         $output = $importMap->render('/', 'rAnd0m');
 
         self::assertStringContainsString('@typo3/core/', $output);

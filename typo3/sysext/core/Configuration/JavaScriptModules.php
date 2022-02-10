@@ -3,7 +3,7 @@
 return [
     'dependencies' => [],
     'imports' => [
-        'TYPO3/CMS/Core/' => [
+        '@typo3/core/' => [
             'path' => 'EXT:core/Resources/Public/JavaScript/',
             'exclude' => [
                 'EXT:core/Resources/Public/JavaScript/Contrib/',

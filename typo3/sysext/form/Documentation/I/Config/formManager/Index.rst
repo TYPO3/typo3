@@ -67,8 +67,8 @@ dynamicJavaScriptModules.viewModel
          :emphasize-lines: 3
 
          dynamicJavaScriptModules:
-           app: TYPO3/CMS/Form/Backend/FormManager.js
-           viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel.js
+           app: @typo3/form/backend/form-manager.js
+           viewModel: @typo3/form/backend/form-manager/view-model.js
 
 :aspect:`Description`
       Internal setting. ES6 module specifier for the form manager JavaScript view model.

@@ -76,7 +76,7 @@ class LayoutController extends AbstractController
         ];
         $importMap = new ImportMap($packages);
         $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
-        $initModule = $sitePath . $importMap->resolveImport('TYPO3/CMS/Install/InitInstall.js');
+        $initModule = $sitePath . $importMap->resolveImport('@typo3/install/init-install.js');
 
         $view = $this->initializeView($request);
         $view->assignMultiple([

@@ -3768,9 +3768,9 @@ Full default configuration
           translationFiles:
             10: 'EXT:form/Resources/Private/Language/Database.xlf'
           dynamicJavaScriptModules:
-            app: TYPO3/CMS/Form/Backend/FormEditor.js
-            mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator.js
-            viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel.js
+            app: @typo3/form/backend/form-editor.js
+            mediator: @typo3/form/backend/form-editor/mediator.js
+            viewModel: @typo3/form/backend/form-editor/view-model.js
           addInlineSettings: {  }
           maximumUndoSteps: 10
           stylesheets:
@@ -4650,8 +4650,8 @@ Full default configuration
                   - plaintext
     formManager:
       dynamicJavaScriptModules:
-        app: TYPO3/CMS/Form/Backend/FormManager.js
-        viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel.js
+        app: @typo3/form/backend/form-manager.js
+        viewModel: @typo3/form/backend/form-manager/view-model.js
       stylesheets:
         100: 'EXT:form/Resources/Public/Css/form.css'
       translationFiles:

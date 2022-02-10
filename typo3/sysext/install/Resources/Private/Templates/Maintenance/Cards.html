@@ -9,7 +9,7 @@
             <p class="card-text">This action directly clears all registered caches including opcode and dependency injection cache.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-primary " data-inline="1"  data-import="TYPO3/CMS/Install/Module/Maintenance/Cache.js">Flush cache</button>
+            <button type="button" class="btn btn-primary " data-inline="1"  data-import="@typo3/install/module/maintenance/cache.js">Flush cache</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -18,7 +18,7 @@
             <p class="card-text">Compare and update the database table and field definitions of your installation against the specification defined for every activated extension.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Maintenance/DatabaseAnalyzer.js">Analyze database</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/database-analyzer.js">Analyze database</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -27,7 +27,7 @@
             <p class="card-text">Clears temporary files including concatenated JS/CSS files and processed images.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Maintenance/ClearTypo3tempFiles.js">Scan temporary files</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/clear-typo3temp-files.js">Scan temporary files</button>
         </div>
     </div>
     <div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
@@ -44,7 +44,7 @@
             </f:then>
             <f:else>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-primary " data-inline="1"  data-import="TYPO3/CMS/Install/Module/Maintenance/DumpAutoload.js">Dump autoload</button>
+                    <button type="button" class="btn btn-primary " data-inline="1"  data-import="@typo3/install/module/maintenance/dump-autoload.js">Dump autoload</button>
                 </div>
             </f:else>
         </f:if>
@@ -55,7 +55,7 @@
             <p class="card-text">Truncates persistent database tables, which are not related to caching.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Maintenance/ClearTables.js">Scan tables</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/clear-tables.js">Scan tables</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -64,7 +64,7 @@
             <p class="card-text">Create new administrative users and grant them system maintainer privileges (optional).</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-modal-size="small" data-import="TYPO3/CMS/Install/Module/Maintenance/CreateAdmin.js">Create Administrator</button>
+            <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/maintenance/create-admin.js">Create Administrator</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -73,7 +73,7 @@
             <p class="card-text">Clears preferences and settings for all backend users. The <code>uc</code> field is then set to an empty string.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-primary " data-inline="1"  data-import="TYPO3/CMS/Install/Module/Maintenance/ResetBackendUserUc.js">Reset backend user preferences</button>
+            <button type="button" class="btn btn-primary " data-inline="1"  data-import="@typo3/install/module/maintenance/reset-backend-user-uc.js">Reset backend user preferences</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -82,7 +82,7 @@
             <p class="card-text">Download and update language packs for installed extensions.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Maintenance/LanguagePacks.js">Manage languages</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/maintenance/language-packs.js">Manage languages</button>
         </div>
     </div>
 </div>

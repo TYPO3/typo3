@@ -12,13 +12,13 @@
  */
 
 /**
- * Module: TYPO3/CMS/Form/Backend/FormEditor/ModalsComponent
+ * Module: @typo3/form/backend/form-editor/modals-component
  */
 import $ from 'jquery';
-import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
-import Modal from 'TYPO3/CMS/Backend/Modal.js';
-import Severity from 'TYPO3/CMS/Backend/Severity.js';
-import Icons from 'TYPO3/CMS/Backend/Icons.js';
+import * as Helper from '@typo3/form/backend/form-editor/helper.js';
+import Modal from '@typo3/backend/modal.js';
+import Severity from '@typo3/backend/severity.js';
+import Icons from '@typo3/backend/icons.js';
 
 const {
   bootstrap,

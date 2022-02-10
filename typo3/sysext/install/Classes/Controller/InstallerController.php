@@ -160,7 +160,7 @@ class InstallerController
         ];
         $importMap = new ImportMap($packages);
         $sitePath = $request->getAttribute('normalizedParams')->getSitePath();
-        $initModule = $sitePath . $importMap->resolveImport('TYPO3/CMS/Install/InitInstaller.js');
+        $initModule = $sitePath . $importMap->resolveImport('@typo3/install/init-installer.js');
         $view = $this->initializeView();
         $view->assign('bust', $bust);
         $view->assign('initModule', $initModule);

@@ -63,7 +63,7 @@ class TabsContainer extends AbstractContainer
         }
 
         $resultArray = $this->initializeResultArray();
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/Tabs.js');
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tabs.js');
 
         $domIdPrefix = 'DTM-' . md5($this->data['tableName'] . $this->data['databaseRow']['uid']);
         $tabCounter = 0;

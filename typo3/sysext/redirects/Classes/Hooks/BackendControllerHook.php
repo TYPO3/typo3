@@ -28,7 +28,7 @@ class BackendControllerHook
     public function registerClientSideEventHandler(): void
     {
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Redirects/EventHandler.js');
+        $pageRenderer->loadJavaScriptModule('@typo3/redirects/event-handler.js');
         $pageRenderer->addInlineLanguageLabelFile('EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf');
     }
 }

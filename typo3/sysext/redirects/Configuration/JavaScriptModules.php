@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Redirects/' => 'EXT:redirects/Resources/Public/JavaScript/',
+        '@typo3/redirects/' => 'EXT:redirects/Resources/Public/JavaScript/',
     ],
 ];

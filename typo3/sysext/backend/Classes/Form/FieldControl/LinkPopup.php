@@ -83,7 +83,7 @@ class LinkPopup extends AbstractNode
                 'data-item-name' => htmlspecialchars($itemName),
             ],
             'requireJsModules' => [
-                JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldControl/LinkPopup.js')->instance('#' . $id),
+                JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/link-popup.js')->instance('#' . $id),
             ],
         ];
     }

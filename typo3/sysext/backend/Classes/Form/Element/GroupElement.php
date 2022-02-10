@@ -373,7 +373,7 @@ class GroupElement extends AbstractFormElement
         $html[] = '</div>';
 
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Element/GroupElement.js'
+            '@typo3/backend/form-engine/element/group-element.js'
         )->instance($fieldId);
 
         $resultArray['html'] = implode(LF, $html);

@@ -19,7 +19,7 @@ const mapImport = (targetModule, context) => {
   if (targetModule.charAt(0) === '.') {
     targetModule = path
       .resolve(path.dirname(context), targetModule)
-      .replace(/^.*\/Build\/JavaScript\/([^\/]+?)\/Resources\/Public\/TypeScript/, (match, extname) => 'TYPO3/CMS/' + ('_' + extname).replace(/_./g, (e) => e.charAt(1).toUpperCase()));
+      .replace(/^.*\/Build\/JavaScript\/([^\/]+?)/, (match, extname) => '@typo3/' + extname.replace(/_/g, '-'));
   }
 
   return targetModule + suffix;

@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Beuser/' => 'EXT:beuser/Resources/Public/JavaScript/',
+        '@typo3/beuser/' => 'EXT:beuser/Resources/Public/JavaScript/',
     ],
 ];

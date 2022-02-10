@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Recycler/' => 'EXT:recycler/Resources/Public/JavaScript/',
+        '@typo3/recycler/' => 'EXT:recycler/Resources/Public/JavaScript/',
     ],
 ];

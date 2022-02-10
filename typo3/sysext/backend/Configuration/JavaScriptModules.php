@@ -9,6 +9,6 @@ return [
         'backend.navigation-component',
     ],
     'imports' => [
-        'TYPO3/CMS/Backend/' => 'EXT:backend/Resources/Public/JavaScript/',
+        '@typo3/backend/' => 'EXT:backend/Resources/Public/JavaScript/',
     ],
 ];

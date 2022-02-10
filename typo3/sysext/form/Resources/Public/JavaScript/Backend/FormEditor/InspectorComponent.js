@@ -12,16 +12,16 @@
  */
 
 /**
- * Module: TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent
+ * Module: @typo3/form/backend/form-editor/inspector-component
  */
 
 import $ from 'jquery';
-import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
-import Icons from 'TYPO3/CMS/Backend/Icons.js';
-import Notification from 'TYPO3/CMS/Backend/Notification.js';
-import Modal from 'TYPO3/CMS/Backend/Modal.js';
-import {MessageUtility} from 'TYPO3/CMS/Backend/Utility/MessageUtility.js';
-import 'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable.js';
+import * as Helper from '@typo3/form/backend/form-editor/helper.js';
+import Icons from '@typo3/backend/icons.js';
+import Notification from '@typo3/backend/notification.js';
+import Modal from '@typo3/backend/modal.js';
+import {MessageUtility} from '@typo3/backend/utility/message-utility.js';
+import '@typo3/form/backend/contrib/jquery.mjs.nested-sortable.js';
 
 const {
   bootstrap,

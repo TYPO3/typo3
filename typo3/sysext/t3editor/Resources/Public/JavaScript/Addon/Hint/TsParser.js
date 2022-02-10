@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/T3editor/Addon/Hint/TsParser
+ * Module: @typo3/t3editor/addon/hint/ts-parser
  * Contains the TsCodeCompletion class
  */
 define([
@@ -21,7 +21,7 @@ define([
   /**
    *
    * @type {{typeId: null, properties: null, typeTree: Array, doc: null, tsRef: null, extTsObjTree: Array, tsTree: null}}
-   * @exports TYPO3/CMS/T3editor/Addon/Hint/TsParser
+   * @exports @typo3/t3editor/addon/hint/ts-parser
    */
   var TsParser = {
     typeId: null,

@@ -172,7 +172,7 @@ class MfaInfoElement extends AbstractFormElement
         // JavaScript is not needed in case deactivation is not allowed or no active providers exist
         if ($isDeactivationAllowed && $activeProviders !== []) {
             $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-                'TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement.js'
+                '@typo3/backend/form-engine/element/mfa-info-element.js'
             )->instance('#' . $fieldId, ['userId' => $userId, 'tableName' => $tableName]);
         }
 

@@ -115,12 +115,12 @@ declare namespace TBE_EDITOR {
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */
 
-declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
+declare module '@typo3/backend/form-engine-validation' {
   const _exported: TYPO3.CMS.Backend.FormEngineValidation;
   export default _exported;
 }
 
-declare module 'TYPO3/CMS/Backend/FormEngine' {
+declare module '@typo3/backend/form-engine' {
   const _exported: TYPO3.CMS.Backend.FormEngine;
   export default _exported;
 }
@@ -147,10 +147,10 @@ declare module 'codemirror';
 declare module 'flatpickr/flatpickr.min';
 declare module 'flatpickr/locales';
 declare module 'moment';
-declare module 'TYPO3/CMS/Backend/LegacyTree';
-declare module 'TYPO3/CMS/Install/chosen.jquery.min';
-declare module 'TYPO3/CMS/Recordlist/LinkBrowser';
-declare module 'TYPO3/CMS/Dashboard/Contrib/chartjs';
+declare module '@typo3/backend/legacy-tree';
+declare module '@typo3/install/chosen.jquery.min';
+declare module '@typo3/recordlist/link-browser';
+declare module '@typo3/dashboard/contrib/chartjs';
 interface Taboverride {
   set(elems: HTMLElement|HTMLElement[], enable?: boolean): Taboverride
 }

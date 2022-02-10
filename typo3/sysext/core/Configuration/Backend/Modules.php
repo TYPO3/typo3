@@ -7,7 +7,7 @@ return [
     'web' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
         'iconIdentifier' => 'modulegroup-web',
-        'navigationComponent' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
+        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
     ],
     'site' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
@@ -17,7 +17,7 @@ return [
     'file' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
         'iconIdentifier' => 'modulegroup-file',
-        'navigationComponent' => 'TYPO3/CMS/Backend/Tree/FileStorageTreeContainer',
+        'navigationComponent' => '@typo3/backend/tree/file-storage-tree-container',
     ],
     'user' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',

@@ -23,7 +23,7 @@ class ImportMapConfigurator
 {
     public function __invoke(ResolveJavaScriptImportEvent $event): void
     {
-        if ($event->specifier === 'TYPO3/CMS/Backend/ContextMenu.js') {
+        if ($event->specifier === '@typo3/backend/context-menu.js') {
             $event->importMap->includeTaggedImports('backend.contextmenu');
         }
     }

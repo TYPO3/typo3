@@ -171,7 +171,7 @@ class FormEditorController extends AbstractBackendController
         $jsModules = $requireJsModules + $javaScriptModules;
         $pageRenderer = $this->pageRenderer;
         $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Form/Backend/Helper.js', 'Helper')
+            JavaScriptModuleInstruction::create('@typo3/form/backend/helper.js', 'Helper')
                 ->invoke('dispatchFormEditor', $jsModules, $formEditorAppInitialData)
         );
         $pageRenderer->addInlineSettingArray(null, $addInlineSettings);

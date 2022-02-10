@@ -12,14 +12,14 @@
  */
 
 /**
- * Module: TYPO3/CMS/T3editor/CodeCompletion/TsRef
+ * Module: @typo3/t3editor/code-completion/ts-ref
  * Contains the TsCodeCompletion class
  */
 define(['jquery'], function($) {
   /**
    *
    * @type {{typeId: null, properties: null, typeTree: Array, doc: null}}
-   * @exports TYPO3/CMS/T3editor/CodeCompletion/TsRef
+   * @exports @typo3/t3editor/code-completion/ts-ref
    */
   var TsRef = {
     typeId: null,

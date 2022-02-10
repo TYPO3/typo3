@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Belog/' => 'EXT:belog/Resources/Public/JavaScript/',
+        '@typo3/belog/' => 'EXT:belog/Resources/Public/JavaScript/',
     ],
 ];

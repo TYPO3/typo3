@@ -3,6 +3,6 @@
 return [
     'dependencies' => [],
     'imports' => [
-        'TYPO3/CMS/Info/' => 'EXT:info/Resources/Public/JavaScript/',
+        '@typo3/info/' => 'EXT:info/Resources/Public/JavaScript/',
     ],
 ];

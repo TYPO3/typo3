@@ -248,7 +248,7 @@ class InputSlugElement extends AbstractFormElement
             'includeUidInValues' => $includeUidInValues,
         ];
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Element/SlugElement.js'
+            '@typo3/backend/form-engine/element/slug-element.js'
         )->instance('#' . $thisSlugId, $optionsForModule);
         return $resultArray;
     }

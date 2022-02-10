@@ -160,7 +160,7 @@
   req.load = function(context, name, url) {
 
     /* Shim to load module via ES6 if available, fallback to original loading otherwise */
-    const esmName = name in importMap ? name : name + '.js';
+    const esmName = name in importMap ? name : name.replace(/^TYPO3\/CMS\//, '@typo3/').replace(/[A-Z]+/g, str => '-' + str.toLowerCase()).replace(/(\/|^)-/g, '$1') + '.js';
     if (isDefinedInImportMap(esmName)) {
       const importPromise = moduleImporter(esmName);
       importPromise.catch(function(e) {

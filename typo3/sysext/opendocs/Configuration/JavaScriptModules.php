@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Opendocs/' => 'EXT:opendocs/Resources/Public/JavaScript/',
+        '@typo3/opendocs/' => 'EXT:opendocs/Resources/Public/JavaScript/',
     ],
 ];

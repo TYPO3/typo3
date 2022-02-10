@@ -12,17 +12,17 @@
  */
 
 /**
- * Module: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
+ * Module: @typo3/form/backend/form-editor/view-model
  */
 import $ from 'jquery';
-import * as TreeComponent from 'TYPO3/CMS/Form/Backend/FormEditor/TreeComponent.js';
-import * as ModalsComponent from 'TYPO3/CMS/Form/Backend/FormEditor/ModalsComponent.js';
-import * as InspectorComponent from 'TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent.js';
-import * as StageComponent from 'TYPO3/CMS/Form/Backend/FormEditor/StageComponent.js';
-import * as Helper from 'TYPO3/CMS/Form/Backend/FormEditor/Helper.js';
-import Icons from 'TYPO3/CMS/Backend/Icons.js';
-import Notification from 'TYPO3/CMS/Backend/Notification.js';
-import {loadModule} from 'TYPO3/CMS/Core/JavaScriptItemProcessor.js';
+import * as TreeComponent from '@typo3/form/backend/form-editor/tree-component.js';
+import * as ModalsComponent from '@typo3/form/backend/form-editor/modals-component.js';
+import * as InspectorComponent from '@typo3/form/backend/form-editor/inspector-component.js';
+import * as StageComponent from '@typo3/form/backend/form-editor/stage-component.js';
+import * as Helper from '@typo3/form/backend/form-editor/helper.js';
+import Icons from '@typo3/backend/icons.js';
+import Notification from '@typo3/backend/notification.js';
+import {loadModule} from '@typo3/core/java-script-item-processor.js';
 
 const {
   addAbstractViewValidationResults,

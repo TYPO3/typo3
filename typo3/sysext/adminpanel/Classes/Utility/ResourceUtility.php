@@ -128,7 +128,7 @@ class ResourceUtility
      */
     public static function getResources(): array
     {
-        $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/AdminPanel.js';
+        $jsFileLocation = 'EXT:adminpanel/Resources/Public/JavaScript/admin-panel.js';
         $js = self::getJsTag($jsFileLocation);
         $cssFileLocation = 'EXT:adminpanel/Resources/Public/Css/adminpanel.css';
         $css = self::getCssTag($cssFileLocation);

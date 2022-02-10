@@ -46,11 +46,11 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
     protected function initialize()
     {
         parent::initialize();
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/BrowseDatabase.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tree/PageBrowser.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ColumnSelectorButton.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/Recordlist.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/RecordSearch.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/browse-database.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/recordlist.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/record-search.js');
     }
 
     protected function initVariables()

@@ -84,8 +84,8 @@ abstract class AbstractElementBrowser
         $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
         $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
         $this->view = $view;
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/ElementBrowser.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/element-browser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->determineScriptUrl();

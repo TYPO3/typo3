@@ -18,80 +18,80 @@
         "pretty": true,
         "baseUrl": "Sources/TypeScript",
         "paths": {
-            "TYPO3/CMS/Adminpanel/*": [
-                "adminpanel/Resources/Public/TypeScript/*"
+            "@typo3/adminpanel/*": [
+                "adminpanel/*"
             ],
-            "TYPO3/CMS/Backend/*": [
-                "backend/Resources/Public/TypeScript/*"
+            "@typo3/backend/*": [
+                "backend/*"
             ],
-            "TYPO3/CMS/Belog/*": [
-                "belog/Resources/Public/TypeScript/*"
+            "@typo3/belog/*": [
+                "belog/*"
             ],
-            "TYPO3/CMS/Beuser/*": [
-                "beuser/Resources/Public/TypeScript/*"
+            "@typo3/beuser/*": [
+                "beuser/*"
             ],
-            "TYPO3/CMS/Core/*": [
-                "core/Resources/Public/TypeScript/*"
+            "@typo3/core/*": [
+                "core/*"
             ],
-            "TYPO3/CMS/Dashboard/*": [
-                "dashboard/Resources/Public/TypeScript/*"
+            "@typo3/dashboard/*": [
+                "dashboard/*"
             ],
-            "TYPO3/CMS/Extensionmanager/*": [
-                "extensionmanager/Resources/Public/TypeScript/*"
+            "@typo3/extensionmanager/*": [
+                "extensionmanager/*"
             ],
-            "TYPO3/CMS/Filelist/*": [
-                "filelist/Resources/Public/TypeScript/*"
+            "@typo3/filelist/*": [
+                "filelist/*"
             ],
-            "TYPO3/CMS/Form/*": [
-                "form/Resources/Public/TypeScript/*"
+            "@typo3/form/*": [
+                "form/*"
             ],
-            "TYPO3/CMS/Impexp/*": [
-                "impexp/Resources/Public/TypeScript/*"
+            "@typo3/impexp/*": [
+                "impexp/*"
             ],
-            "TYPO3/CMS/Info/*": [
-                "info/Resources/Public/TypeScript/*"
+            "@typo3/info/*": [
+                "info/*"
             ],
-            "TYPO3/CMS/Install/*": [
-                "install/Resources/Public/TypeScript/*"
+            "@typo3/install/*": [
+                "install/*"
             ],
-            "TYPO3/CMS/Linkvalidator/*": [
-                "linkvalidator/Resources/Public/TypeScript/*"
+            "@typo3/linkvalidator/*": [
+                "linkvalidator/*"
             ],
-            "TYPO3/CMS/Lowlevel/*": [
-                "lowlevel/Resources/Public/TypeScript/*"
+            "@typo3/lowlevel/*": [
+                "lowlevel/*"
             ],
-            "TYPO3/CMS/Opendocs/*": [
-                "opendocs/Resources/Public/TypeScript/*"
+            "@typo3/opendocs/*": [
+                "opendocs/*"
             ],
-            "TYPO3/CMS/Recordlist/*": [
-                "recordlist/Resources/Public/TypeScript/*"
+            "@typo3/recordlist/*": [
+                "recordlist/*"
             ],
-            "TYPO3/CMS/Recycler/*": [
-                "recycler/Resources/Public/TypeScript/*"
+            "@typo3/recycler/*": [
+                "recycler/*"
             ],
-            "TYPO3/CMS/Redirects/*": [
-                "redirects/Resources/Public/TypeScript/*"
+            "@typo3/redirects/*": [
+                "redirects/*"
             ],
-            "TYPO3/CMS/RteCkeditor/*": [
-                "rte_ckeditor/Resources/Public/TypeScript/*"
+            "@typo3/rte-ckeditor/*": [
+                "rte_ckeditor/*"
             ],
-            "TYPO3/CMS/Scheduler/*": [
-                "scheduler/Resources/Public/TypeScript/*"
+            "@typo3/scheduler/*": [
+                "scheduler/*"
             ],
-            "TYPO3/CMS/Setup/*": [
-                "setup/Resources/Public/TypeScript/*"
+            "@typo3/setup/*": [
+                "setup/*"
             ],
-            "TYPO3/CMS/T3editor/*": [
-                "t3editor/Resources/Public/TypeScript/*"
+            "@typo3/t3editor/*": [
+                "t3editor/*"
             ],
-            "TYPO3/CMS/Tstemplate/*": [
-                "tstemplate/Resources/Public/TypeScript/*"
+            "@typo3/tstemplate/*": [
+                "tstemplate/*"
             ],
-            "TYPO3/CMS/Viewpage/*": [
-                "viewpage/Resources/Public/TypeScript/*"
+            "@typo3/viewpage/*": [
+                "viewpage/*"
             ],
-            "TYPO3/CMS/Workspaces/*": [
-                "workspaces/Resources/Public/TypeScript/*"
+            "@typo3/workspaces/*": [
+                "workspaces/*"
             ]
         },
         "outDir": "./JavaScript/",

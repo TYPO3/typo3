@@ -178,12 +178,12 @@ class FormResultCompiler
         // @todo: this is messy here - "additional hidden fields" should be handled elsewhere
         $html = implode(LF, $this->hiddenFieldAccum);
         // load the main module for FormEngine with all important JS functions
-        $this->requireJsModules[] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine.js')
+        $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine.js')
                 ->invoke(
                     'initialize',
                     (string)$uriBuilder->buildUriFromRoute('wizard_element_browser')
                 );
-        $this->requireJsModules[] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngineReview.js');
+        $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine-review.js');
 
         foreach ($this->requireJsModules as $module) {
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
@@ -200,7 +200,7 @@ class FormResultCompiler
             }
         }
 
-        $pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/FormEngine/RequestUpdate.js');
+        $pageRenderer->loadJavaScriptModule('@typo3/backend/form-engine/request-update.js');
 
         // todo: change these things in JS
         $pageRenderer->addInlineLanguageLabelArray([

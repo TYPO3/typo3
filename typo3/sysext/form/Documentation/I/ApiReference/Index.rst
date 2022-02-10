@@ -3960,7 +3960,7 @@ A simple example that registers a custom ``inspector editor`` called 'Inspector-
    :emphasize-lines: 107-116
 
    /**
-    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    * Module: @typo3/my-site-package/backend/form-editor/view-model
     */
    define(['jquery',
            'TYPO3/CMS/Form/Backend/FormEditor/Helper'
@@ -4624,7 +4624,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
              formEditor:
                dynamicJavaScriptModules:
                  additionalViewModelModules:
-                   10: 'TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel.js'
+                   10: '@typo3/my-site-package/backend/form-editor/view-model.js'
                formEditorPartials:
                  FormElement-GenderSelect: 'Stage/SelectTemplate'
              formElementsDefinition:
@@ -4657,7 +4657,7 @@ In this example, 'GenderSelect' is basically a radio button form element with so
    :emphasize-lines: 105-109
 
    /**
-    * Module: TYPO3/CMS/MySitePackage/Backend/FormEditor/ViewModel
+    * Module: @typo3/my-site-package/backend/form-editor/view-model
     */
    define(['jquery',
            'TYPO3/CMS/Form/Backend/FormEditor/Helper'

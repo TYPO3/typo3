@@ -17,7 +17,7 @@
             </f:then>
             <f:else>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/CoreUpdate.js">Update Core</button>
+                    <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/core-update.js">Update Core</button>
                 </div>
             </f:else>
         </f:if>
@@ -28,7 +28,7 @@
             <p class="card-text">Finalises the upgrade process when moving to a major release.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/UpgradeWizards.js">Run Upgrade Wizard</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/upgrade-wizards.js">Run Upgrade Wizard</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -37,7 +37,7 @@
             <p class="card-text">View and search for important changes that have been made for every major and minor release of TYPO3.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/UpgradeDocs.js">View Upgrade Documentation</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/upgrade-docs.js">View Upgrade Documentation</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -47,7 +47,7 @@
             </p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/TcaExtTablesCheck.js">Check TCA</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/tca-ext-tables-check.js">Check TCA</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -56,7 +56,7 @@
             <p class="card-text">Checks the compatibility of all active extensions against the current (installed) version of TYPO3.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-modal-size="small" data-import="TYPO3/CMS/Install/Module/Upgrade/ExtensionCompatTester.js">Check Extension Compatibility</button>
+            <button type="button" class="btn btn-default" data-modal-size="small" data-import="@typo3/install/module/upgrade/extension-compat-tester.js">Check Extension Compatibility</button>
         </div>
     </div>
     <div class="card card-size-fixed-small">
@@ -65,7 +65,7 @@
             <p class="card-text">Identifies any third-party extensions that contain an outdated TCA configuration which should be adapted for the current (installed) version of TYPO3.</p>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/TcaMigrationsCheck.js">Check TCA Migrations</button>
+            <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/tca-migrations-check.js">Check TCA Migrations</button>
         </div>
     </div>
     <div class="card card-size-fixed-small {f:if(condition:'!{extensionFoldersInTypo3conf}', then: 'card-disabled')}">
@@ -76,7 +76,7 @@
         <f:if condition="{extensionFoldersInTypo3conf}">
             <f:then>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-default" data-import="TYPO3/CMS/Install/Module/Upgrade/ExtensionScanner.js">Scan Extension Files</button>
+                    <button type="button" class="btn btn-default" data-import="@typo3/install/module/upgrade/extension-scanner.js">Scan Extension Files</button>
                 </div>
             </f:then>
             <f:else>

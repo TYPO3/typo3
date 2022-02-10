@@ -225,8 +225,8 @@ class TypoScriptTemplateModuleController
         $isPageZero = false;
         if ($this->id && $this->access) {
             // Setting up the context sensitive menu
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
-            $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
             // Build the module content
             $this->moduleTemplate->assign('pageId', $this->id);
             $this->moduleTemplate->assign('typoscriptTemplateModuleContent', $this->getExtObjContent());

@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Scheduler/' => 'EXT:scheduler/Resources/Public/JavaScript/',
+        '@typo3/scheduler/' => 'EXT:scheduler/Resources/Public/JavaScript/',
     ],
 ];

@@ -259,7 +259,7 @@ class SelectSingleElement extends AbstractFormElement
 
         $onFieldChangeItems = $this->getOnFieldChangeItems($parameterArray['fieldChangeFunc'] ?? []);
         $resultArray['requireJsModules']['selectSingleElement'] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement.js'
+            '@typo3/backend/form-engine/element/select-single-element.js'
         )->invoke('initializeOnReady', '#' . $selectId, ['onChange' => $onFieldChangeItems]);
 
         $resultArray['html'] = implode(LF, $html);

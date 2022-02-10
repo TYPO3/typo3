@@ -191,14 +191,14 @@ class InputTextElement extends AbstractFormElement
             $valuePickerHtml[] = '</select>';
             $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
 
-            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldWizard/ValuePicker.js');
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-picker.js');
         }
 
         $valueSliderHtml = [];
         if (isset($config['slider']) && is_array($config['slider'])) {
             $id = 'slider-' . $fieldId;
             $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-                'TYPO3/CMS/Backend/FormEngine/FieldWizard/ValueSlider.js'
+                '@typo3/backend/form-engine/field-wizard/value-slider.js'
             )->instance($id);
             $min = $config['range']['lower'] ?? 0;
             $max = $config['range']['upper'] ?? 10000;

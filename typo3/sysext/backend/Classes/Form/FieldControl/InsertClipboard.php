@@ -75,7 +75,7 @@ class InsertClipboard extends AbstractNode
                 'data-clipboard-items' => json_encode($dataAttributes['clipboardItems']),
             ],
             'requireJsModules' => [
-                JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldControl/InsertClipboard.js')->instance('#' . $id),
+                JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/insert-clipboard.js')->instance('#' . $id),
             ],
         ];
     }

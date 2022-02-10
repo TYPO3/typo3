@@ -115,7 +115,7 @@ class ItemProvider extends AbstractProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => 'TYPO3/CMS/Impexp/ContextMenuActions',
+            'data-callback-module' => '@typo3/impexp/context-menu-actions',
         ];
 
         // Add action url for items

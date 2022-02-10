@@ -67,9 +67,9 @@ module.exports = function(config) {
               }
             }
 
-            if (source.startsWith('TYPO3/CMS')) {
-              const parts = source.substr(10).split('/');
-              const extension = parts.shift().split(/(?=[A-Z])/).join('_').toLowerCase();
+            if (source.startsWith('@typo3')) {
+              const parts = source.substr(7).split('/');
+              const extension = parts.shift().replace(/-/g, '_');
               const path = parts.join('/');
               const fullPath = `typo3/sysext/${extension}/Resources/Public/JavaScript/${path}`;
 

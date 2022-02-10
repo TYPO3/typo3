@@ -72,8 +72,8 @@ class RecyclerModuleController
             'tableSelection' => ($sessionData['tableSelection'] ?? false) ?: '',
         ]);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recycler/Recycler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/MultiRecordSelection.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recycler/recycler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
 
         if ($backendUser->workspace !== 0
             && (($id && $pageRecord !== []) || (!$id && $backendUser->isAdmin()))

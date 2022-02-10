@@ -103,7 +103,7 @@ class RecordListController
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
         $this->pagePermissions = new Permission($backendUser->calcPerms($pageinfo));
         $userCanEditPage = $this->pagePermissions->editPagePermissionIsGranted() && !empty($this->id) && ($backendUser->isAdmin() || (int)$pageinfo['editlock'] === 0);
-        $pageActionsInstruction = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/PageActions.js');
+        $pageActionsInstruction = JavaScriptModuleInstruction::create('@typo3/backend/page-actions.js');
         if ($userCanEditPage) {
             $pageActionsInstruction->invoke('setPageId', $this->id);
         }

@@ -96,7 +96,7 @@ class EditPopup extends AbstractNode
                 'data-window-parameters' => $windowOpenParameters,
             ],
             'requireJsModules' => [
-                JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/FormEngine/FieldControl/EditPopup.js')->instance('#' . $id),
+                JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-control/edit-popup.js')->instance('#' . $id),
             ],
         ];
     }

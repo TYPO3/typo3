@@ -380,7 +380,7 @@ class InlineControlContainer extends AbstractContainer
         }
         $resultArray['requireJsModules'] = array_merge($resultArray['requireJsModules'], $this->requireJsModules);
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Container/InlineControlContainer.js'
+            '@typo3/backend/form-engine/container/inline-control-container.js'
         )->instance($nameObject);
 
         // Publish the uids of the child records in the given order to the browser
@@ -563,14 +563,14 @@ class InlineControlContainer extends AbstractContainer
                     $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
                     $item .= '</button>';
 
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/DragUploader.js');
+                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/drag-uploader.js');
                 }
                 if (!empty($onlineMediaAllowed) && $showByUrl) {
                     $buttonStyle = '';
                     if (isset($inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'])) {
                         $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'] . '"';
                     }
-                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/OnlineMedia.js');
+                    $this->requireJsModules[] = JavaScriptModuleInstruction::create('@typo3/backend/online-media.js');
                     $buttonText = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.button'));
                     $placeholder = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.placeholder'));
                     $buttonSubmit = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:online_media.new_media.submit'));

@@ -114,9 +114,9 @@ class SetupModuleController
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
         $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-setup');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Modal.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/FormEngine.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Setup/SetupModule.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/form-engine.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/setup/setup-module.js');
         $this->processAdditionalJavaScriptModules();
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
         $this->pageRenderer->addInlineLanguageLabelArray([

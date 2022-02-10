@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import{ScaffoldIdentifierEnum}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import{AbstractContainer}from"@typo3/backend/viewport/abstract-container.js";import TriggerRequest from"@typo3/backend/event/trigger-request.js";class NavigationContainer extends AbstractContainer{constructor(t){super(t),this.activeComponentId=""}get parent(){return document.querySelector(ScaffoldIdentifierEnum.scaffold)}get container(){return document.querySelector(ScaffoldIdentifierEnum.contentNavigation)}get switcher(){return document.querySelector(ScaffoldIdentifierEnum.contentNavigationSwitcher)}showComponent(t){const e=this.container;if(this.show(t),t===this.activeComponentId)return;if(""!==this.activeComponentId){let t=e.querySelector("#navigationComponent-"+this.activeComponentId.replace(/[/@]/g,"_"));t&&(t.style.display="none")}const n="navigationComponent-"+t.replace(/[/@]/g,"_");if(1===e.querySelectorAll('[data-component="'+t+'"]').length)return this.show(t),void(this.activeComponentId=t);import(t+".js").then(o=>{if("string"==typeof o.navigationComponentName){const i=o.navigationComponentName,a=document.createElement(i);a.setAttribute("id",n),a.classList.add("scaffold-content-navigation-component"),a.dataset.component=t,e.append(a)}else{e.insertAdjacentHTML("beforeend",'<div class="scaffold-content-navigation-component" data-component="'+t+'" id="'+n+'"></div>');Object.values(o)[0].initialize("#"+n)}this.show(t),this.activeComponentId=t})}hide(t){const e=this.parent,n=this.switcher;e.classList.remove("scaffold-content-navigation-expanded"),e.classList.remove("scaffold-content-navigation-available"),t&&n&&(n.style.display="none")}show(t){const e=this.parent,n=this.container,o=this.switcher;if(n.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach(t=>t.style.display="none"),void 0!==typeof t){e.classList.add("scaffold-content-navigation-expanded"),e.classList.add("scaffold-content-navigation-available");const o=n.querySelector('[data-component="'+t+'"]');o&&(o.style.display=null)}o&&(o.style.display=null)}setUrl(t,e){const n=this.consumerScope.invoke(new TriggerRequest("typo3.setUrl",e));return n.then(()=>{this.parent.classList.add("scaffold-content-navigation-expanded")}),n}}export default NavigationContainer;

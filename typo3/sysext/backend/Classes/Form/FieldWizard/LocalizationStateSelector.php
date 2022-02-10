@@ -128,7 +128,7 @@ class LocalizationStateSelector extends AbstractNode
         $html[] = '</div>';
 
         $result['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/FieldWizard/LocalizationStateSelector.js'
+            '@typo3/backend/form-engine/field-wizard/localization-state-selector.js'
         )->instance($fieldElementName);
         $result['html'] = implode(LF, $html);
         return $result;

@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/T3editor/Addon/Hint/TsCodeCompletion
+ * Module: @typo3/t3editor/addon/hint/ts-code-completion
  * Contains the TsCodeCompletion class
  */
 define([
@@ -24,7 +24,7 @@ define([
   /**
    *
    * @type {{tsRef: *, proposals: null, compResult: null, currentCursorPosition: null, extTsObjTree: {}, codemirror: null, parser: null, plugins: string[]}}
-   * @exports TYPO3/CMS/T3editor/CodeCompletion/TsCodeCompletion
+   * @exports @typo3/t3editor/code-completion/ts-code-completion
    */
   var TsCodeCompletion = {
     tsRef: TsRef,

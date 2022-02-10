@@ -126,11 +126,11 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
      */
     public function render(ServerRequestInterface $request): string
     {
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/RecordLinkHandler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/RecordSearch.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ColumnSelectorButton.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tree/PageBrowser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/record-link-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/record-search.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
         $this->getBackendUser()->initializeWebmountsForElementBrowser();
 
         // Define the current page

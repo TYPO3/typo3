@@ -12,14 +12,14 @@
  */
 
 /**
- * Module: TYPO3/CMS/T3editor/Addon/Hint/CompletionResult
+ * Module: @typo3/t3editor/addon/hint/completion-result
  * Contains the CompletionResult class
  */
 define(['jquery'], function($) {
   /**
    *
    * @type {{tsRef: null, tsTreeNode: null}}
-   * @exports TYPO3/CMS/T3editor/Addon/Hint/CompletionResult
+   * @exports @typo3/t3editor/addon/hint/completion-result
    */
   var CompletionResult = {
     tsRef: null,

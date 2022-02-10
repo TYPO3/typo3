@@ -230,10 +230,10 @@ class TextTableElement extends AbstractFormElement
         $html[] = '</div>';
 
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Element/TextTableElement.js'
+            '@typo3/backend/form-engine/element/text-table-element.js'
         )->instance($fieldId);
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/Element/TableWizardElement.js');
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/element/table-wizard-element.js');
         $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_wizards.xlf';
 
         $resultArray['html'] = implode(LF, $html);

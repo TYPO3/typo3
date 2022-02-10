@@ -66,7 +66,7 @@ class PreviewController
         $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
         $view->getDocHeaderComponent()->disable();
 
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Workspaces/Preview.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/preview.js');
         $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));

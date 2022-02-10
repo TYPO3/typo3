@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+var Selectors,__decorate=function(t,e,o,r){var l,n=arguments.length,a=n<3?e:null===r?r=Object.getOwnPropertyDescriptor(e,o):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,o,r);else for(var d=t.length-1;d>=0;d--)(l=t[d])&&(a=(n<3?l(a):n>3?l(e,o,a):l(e,o))||a);return n>3&&a&&Object.defineProperty(e,o,a),a};import{html,LitElement}from"lit";import{customElement,property}from"lit/decorators.js";import{SeverityEnum}from"@typo3/backend/enum/severity.js";import Severity from"@typo3/backend/severity.js";import Modal from"@typo3/backend/modal.js";import{lll}from"@typo3/core/lit-helper.js";!function(t){t.formatSelector=".t3js-record-download-format-selector",t.formatOptions=".t3js-record-download-format-option"}(Selectors||(Selectors={}));let RecordDownloadButton=class extends LitElement{constructor(){super(),this.addEventListener("click",t=>{t.preventDefault(),this.showDownloadConfigurationModal()})}render(){return html`<slot></slot>`}showDownloadConfigurationModal(){this.url&&Modal.advanced({content:this.url,title:this.title||"Download records",severity:SeverityEnum.notice,size:Modal.sizes.small,type:Modal.types.ajax,buttons:[{text:this.close||lll("button.close")||"Close",active:!0,btnClass:"btn-default",name:"cancel",trigger:()=>Modal.dismiss()},{text:this.ok||lll("button.ok")||"Download",btnClass:"btn-"+Severity.getCssClass(SeverityEnum.info),name:"download",trigger:()=>{const t=Modal.currentModal[0].querySelector("form");t&&t.submit(),Modal.dismiss()}}],ajaxCallback:()=>{const t=Modal.currentModal[0].querySelector(Selectors.formatSelector),e=Modal.currentModal[0].querySelectorAll(Selectors.formatOptions);null!==t&&e.length&&t.addEventListener("change",t=>{const o=t.target.value;e.forEach(t=>{t.dataset.formatname!==o?t.classList.add("hide"):t.classList.remove("hide")})})}})}};__decorate([property({type:String})],RecordDownloadButton.prototype,"url",void 0),__decorate([property({type:String})],RecordDownloadButton.prototype,"title",void 0),__decorate([property({type:String})],RecordDownloadButton.prototype,"ok",void 0),__decorate([property({type:String})],RecordDownloadButton.prototype,"close",void 0),RecordDownloadButton=__decorate([customElement("typo3-recordlist-record-download-button")],RecordDownloadButton);

@@ -85,7 +85,7 @@ class BackendController
 
         $javaScriptRenderer = $pageRenderer->getJavaScriptRenderer();
         $javaScriptRenderer->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/LoginRefresh.js')
+            JavaScriptModuleInstruction::create('@typo3/backend/login-refresh.js')
                 ->invoke('initialize', [
                     'intervalTime' => MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60),
                     'loginFramesetUrl' => (string)$this->uriBuilder->buildUriFromRoute('login_frameset'),
@@ -93,11 +93,11 @@ class BackendController
                 ])
         );
         $javaScriptRenderer->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/BroadcastService.js')->invoke('listen')
+            JavaScriptModuleInstruction::create('@typo3/backend/broadcast-service.js')->invoke('listen')
         );
         // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
         $javaScriptRenderer->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/Storage/Persistent.js')
+            JavaScriptModuleInstruction::create('@typo3/backend/storage/persistent.js')
                 ->invoke('load', $backendUser->uc)
         );
         $javaScriptRenderer->addGlobalAssignment([

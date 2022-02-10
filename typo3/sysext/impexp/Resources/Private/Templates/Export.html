@@ -10,9 +10,9 @@
 
     <f:be.pageRenderer
         includeJavaScriptModules="{
-            0: 'TYPO3/CMS/Backend/ContextMenu.js',
-            1: 'TYPO3/CMS/Impexp/ImportExport.js',
-            2: 'TYPO3/CMS/Backend/Element/ImmediateActionElement.js'
+            0: '@typo3/backend/context-menu.js',
+            1: '@typo3/impexp/import-export.js',
+            2: '@typo3/backend/element/immediate-action-element.js'
         }"
     />
     <form action="{f:be.uri(route:'tx_impexp_export')}" method="post" id="ImportExportController">

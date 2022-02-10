@@ -38,7 +38,7 @@ final class DispatchNotificationHook
         $javaScriptRenderer->addJavaScriptModuleInstruction(
             // @todo refactor to directly invoke the redirects slugChanged() method
             // instead of dispatching an event that is only catched by the event dispatcher itself
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Redirects/EventHandler.js')
+            JavaScriptModuleInstruction::create('@typo3/redirects/event-handler.js')
                 ->addFlags(JavaScriptModuleInstruction::FLAG_USE_TOP_WINDOW)
                 ->invoke('dispatchCustomEvent', 'typo3:redirects:slugChanged', $params['parameter'])
         );

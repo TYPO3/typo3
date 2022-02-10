@@ -129,8 +129,8 @@ class CreateFolderController
         }
 
         $this->view->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Filelist/CreateFolder.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/create-folder.js');
     }
 
     /**

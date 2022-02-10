@@ -149,7 +149,7 @@ class FlexFormSectionContainer extends AbstractContainer
 
         $resultArray['html'] = implode(LF, $html);
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Container/FlexFormSectionContainer.js'
+            '@typo3/backend/form-engine/container/flex-form-section-container.js'
         )->instance($containerId);
 
         return $resultArray;

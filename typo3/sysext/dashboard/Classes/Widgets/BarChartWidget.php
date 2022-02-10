@@ -104,8 +104,8 @@ class BarChartWidget implements WidgetInterface, RequestAwareWidgetInterface, Ev
     public function getJavaScriptModuleInstructions(): array
     {
         return [
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Dashboard/Contrib/chartjs.js'),
-            JavaScriptModuleInstruction::create('TYPO3/CMS/Dashboard/ChartInitializer.js'),
+            JavaScriptModuleInstruction::create('@typo3/dashboard/contrib/chartjs.js'),
+            JavaScriptModuleInstruction::create('@typo3/dashboard/chart-initializer.js'),
         ];
     }
 

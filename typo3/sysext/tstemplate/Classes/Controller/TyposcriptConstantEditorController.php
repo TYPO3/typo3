@@ -265,7 +265,7 @@ class TyposcriptConstantEditorController extends TypoScriptTemplateModuleControl
                                 <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
                                 '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
 
-                            $this->javaScriptInstructions['color'] ??= JavaScriptModuleInstruction::create('TYPO3/CMS/Backend/ColorPicker.js')
+                            $this->javaScriptInstructions['color'] ??= JavaScriptModuleInstruction::create('@typo3/backend/color-picker.js')
                                 ->invoke('initialize');
                             break;
                         case 'wrap':

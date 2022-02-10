@@ -12,11 +12,11 @@
  */
 
 /**
- * Module: TYPO3/CMS/Form/Backend/FormEditor
+ * Module: @typo3/form/backend/form-editor
  */
 import $ from 'jquery';
-import * as Core from 'TYPO3/CMS/Form/Backend/FormEditor/Core.js';
-import Notification from 'TYPO3/CMS/Backend/Notification.js';
+import * as Core from '@typo3/form/backend/form-editor/core.js';
+import Notification from '@typo3/backend/notification.js';
 
 const {
   getInstance

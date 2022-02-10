@@ -395,7 +395,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         $html[] = '</div>';
 
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            'TYPO3/CMS/Backend/FormEngine/Element/SelectMultipleSideBySideElement.js'
+            '@typo3/backend/form-engine/element/select-multiple-side-by-side-element.js'
         )->instance($selectedOptionsFieldId, $availableOptionsFieldId);
 
         $resultArray['html'] = implode(LF, $html);

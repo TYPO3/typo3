@@ -38,7 +38,7 @@ abstract class BaseModule
     protected ?ModuleInterface $parentModule = null;
     protected array $subModules = [];
     protected bool $standalone = false;
-    protected string $component = 'TYPO3/CMS/Backend/Module/Iframe';
+    protected string $component = '@typo3/backend/module/iframe';
     protected string $navigationComponent = '';
     protected array $defaultModuleData = [];
     protected bool $inheritNavigationComponent = true;

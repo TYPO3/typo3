@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Linkvalidator/' => 'EXT:linkvalidator/Resources/Public/JavaScript/',
+        '@typo3/linkvalidator/' => 'EXT:linkvalidator/Resources/Public/JavaScript/',
     ],
 ];

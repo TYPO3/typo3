@@ -82,7 +82,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function initDocumentTemplate(): void
     {
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction(
-            JavaScriptModuleInstruction::create('TYPO3/CMS/RteCkeditor/RteLinkBrowser.js')
+            JavaScriptModuleInstruction::create('@typo3/rte-ckeditor/rte-link-browser.js')
                 ->invoke('initialize', $this->editorId)
         );
     }

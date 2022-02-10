@@ -40,7 +40,7 @@ class SourceHost
      */
     public function returnFieldJS(): JavaScriptModuleInstruction
     {
-        return JavaScriptModuleInstruction::create('TYPO3/CMS/Redirects/FormEngineEvaluation.js', 'FormEngineEvaluation');
+        return JavaScriptModuleInstruction::create('@typo3/redirects/form-engine-evaluation.js', 'FormEngineEvaluation');
     }
 
     /**

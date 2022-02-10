@@ -102,9 +102,9 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
      */
     public function render(ServerRequestInterface $request)
     {
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/PageLinkHandler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Viewport/ResizableNavigation.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tree/PageBrowser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/page-link-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tree/page-browser.js');
         $this->getBackendUser()->initializeWebmountsForElementBrowser();
 
         $this->expandPage = isset($request->getQueryParams()['expandPage']) ? (int)$request->getQueryParams()['expandPage'] : 0;

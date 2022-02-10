@@ -75,8 +75,8 @@ class ReviewController
         $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute(
             trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? 'web_layout')
         ));
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Workspaces/Backend.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/MultiRecordSelection.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/backend.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
 
         $backendUser = $this->getBackendUser();

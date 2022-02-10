@@ -30,7 +30,7 @@ class JavaScriptRenderer
     public static function create(string $uri = null): self
     {
         $uri ??= PathUtility::getAbsoluteWebPath(
-            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/JavaScriptItemHandler.js')
+            GeneralUtility::getFileAbsFileName('EXT:core/Resources/Public/JavaScript/java-script-item-handler.js')
         );
         return GeneralUtility::makeInstance(static::class, $uri);
     }
@@ -121,7 +121,7 @@ class JavaScriptRenderer
     public function renderImportMap(string $sitePath, string $nonce): string
     {
         if (!$this->isEmpty()) {
-            $this->importMap->includeImportsFor('TYPO3/CMS/Core/JavaScriptItemHandler.js');
+            $this->importMap->includeImportsFor('@typo3/core/java-script-item-handler.js');
         }
         return $this->importMap->render($sitePath, $nonce);
     }

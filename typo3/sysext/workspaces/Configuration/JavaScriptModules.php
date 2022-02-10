@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Workspaces/' => 'EXT:workspaces/Resources/Public/JavaScript/',
+        '@typo3/workspaces/' => 'EXT:workspaces/Resources/Public/JavaScript/',
     ],
 ];

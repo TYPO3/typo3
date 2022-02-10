@@ -12,7 +12,7 @@
  */
 
 /**
- * Module: TYPO3/CMS/Form/Backend/FormEditor/Helper
+ * Module: @typo3/form/backend/form-editor/helper
  */
 import $ from 'jquery';
 

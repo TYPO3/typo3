@@ -184,13 +184,13 @@ class DashboardController
     {
         $this->pageRenderer->loadJavaScriptModule('muuri');
         $this->pageRenderer->loadJavaScriptModule('web-animate');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/Grid.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetContentCollector.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetSelector.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetRefresh.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/WidgetRemover.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardModal.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Dashboard/DashboardDelete.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/grid.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-content-collector.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-selector.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-refresh.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-remover.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard-modal.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard-delete.js');
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
     }
 

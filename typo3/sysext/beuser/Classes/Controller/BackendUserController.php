@@ -113,9 +113,9 @@ class BackendUserController extends ActionController
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
         // Load requireJS modules
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextMenu.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Modal.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Beuser/BackendUserListing.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/beuser/backend-user-listing.js');
     }
 
     /**
@@ -175,7 +175,7 @@ class BackendUserController extends ActionController
             ->setDisplayName(LocalizationUtility::translate('backendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/SwitchUser.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/switch-user.js');
 
         return $this->moduleTemplate->renderResponse('BackendUser/Index');
     }

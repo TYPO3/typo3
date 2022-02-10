@@ -13,7 +13,7 @@ return [
         'access' => 'admin',
         'path' => '/module/system/permissions',
         'iconIdentifier' => 'module-permission',
-        'navigationComponent' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
+        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
         'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
         'routes' => [
             '_default' => [

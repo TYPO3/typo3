@@ -137,7 +137,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
         self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['requireJsModules'][0]);
-        self::assertSame('TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement.js', $result['requireJsModules'][0]->getName());
+        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['requireJsModules'][0]->getName());
     }
 
     /**
@@ -170,7 +170,7 @@ class MfaInfoElementTest extends FunctionalTestCase
         self::assertMatchesRegularExpression('/<button.*class="t3js-deactivate-mfa-button btn btn-danger "/s', $result['html']);
         // JavaScript is added
         self::assertInstanceOf(JavaScriptModuleInstruction::class, $result['requireJsModules'][0]);
-        self::assertSame('TYPO3/CMS/Backend/FormEngine/Element/MfaInfoElement.js', $result['requireJsModules'][0]->getName());
+        self::assertSame('@typo3/backend/form-engine/element/mfa-info-element.js', $result['requireJsModules'][0]->getName());
     }
 
     /**

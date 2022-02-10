@@ -6,6 +6,6 @@ return [
         'core',
     ],
     'imports' => [
-        'TYPO3/CMS/Recordlist/' => 'EXT:recordlist/Resources/Public/JavaScript/',
+        '@typo3/recordlist/' => 'EXT:recordlist/Resources/Public/JavaScript/',
     ],
 ];

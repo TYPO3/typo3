@@ -86,11 +86,11 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
         $this->setUpBasicPageRendererForBackend($pageRenderer, $extensionConfiguration, $request, $this->getLanguageService());
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ContextHelp.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/DocumentHeader.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/GlobalEventHandler.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ActionDispatcher.js');
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Element/ImmediateActionElement.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/document-header.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
     }
 
     /**
@@ -350,7 +350,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      */
     public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string
     {
-        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tabs.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tabs.js');
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
         $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
