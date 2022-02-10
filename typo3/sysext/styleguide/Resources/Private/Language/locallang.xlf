@@ -31,7 +31,7 @@
 				<source>TCA / Records / Frontend</source>
 			</trans-unit>
 			<trans-unit id="tab" xml:space="preserve">
-				<source>Tab</source>
+				<source>Tabs</source>
 			</trans-unit>
 			<trans-unit id="modal" xml:space="preserve">
 				<source>Modal</source>

@@ -8,6 +8,12 @@
 
 <f:section name="Content">
 
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0: 'TYPO3/CMS/Backend/Tabs'
+        }"
+    />
+
     <div id="container-navigation">
         <f:render partial="Navigation" arguments="{currentAction: currentAction, actions: actions}" />
     </div>
@@ -15,45 +21,43 @@
 
         <h1><f:translate key="tab" /></h1>
 
-        <h2>Tab based on Module Template "dynamic tab"</h2>
+        <h2>Multiple tabs. Last selected tab is stored in local browser storage.</h2>
 
-        <f:format.raw>{tabs}</f:format.raw>
-
-        <sg:code language="html" codeonly="true">
+        <sg:code language="html">
             <div role="tabpanel">
-                <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-tab" data-store-last-tab="1">
+                <ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-DTM-67217d8b401cf5e72bbf5103d60f3e98" data-store-last-tab="1">
                     <li role="presentation" class="t3js-tabmenu-item">
-                        <a href="#tab-1" title="" aria-controls="tab-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
+                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-1" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-1" role="tab" data-bs-toggle="tab" aria-selected="true" class="active">
                             First label
                         </a>
                     </li>
                     <li role="presentation" class="t3js-tabmenu-item ">
-                        <a href="#tab-2" title="" aria-controls="tab-2" role="tab" data-bs-toggle="tab" aria-selected="false">
+                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-2" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-2" role="tab" data-bs-toggle="tab" aria-selected="false">
                             Second label
                         </a>
                     </li>
                     <li role="presentation" class="t3js-tabmenu-item ">
-                        <a href="#tab-3" title="" aria-controls="tab-3" role="tab" data-bs-toggle="tab" aria-selected="false">
+                        <a href="#DTM-67217d8b401cf5e72bbf5103d60f3e98-3" title="" aria-controls="DTM-67217d8b401cf5e72bbf5103d60f3e98-3" role="tab" data-bs-toggle="tab" aria-selected="false">
                             Third label
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tab-1">
+                    <div role="tabpanel" class="tab-pane active" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-1">
                         <div class="panel panel-tab">
                             <div class="panel-body">
                                 First content
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab-2">
+                    <div role="tabpanel" class="tab-pane" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-2">
                         <div class="panel panel-tab">
                             <div class="panel-body">
                                 Second content
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab-3">
+                    <div role="tabpanel" class="tab-pane" id="DTM-67217d8b401cf5e72bbf5103d60f3e98-3">
                         <div class="panel panel-tab">
                             <div class="panel-body">
                                 Third content

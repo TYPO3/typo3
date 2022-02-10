@@ -217,22 +217,6 @@ class BackendController extends ActionController
 
     protected function tabAction(): ResponseInterface
     {
-        $menuItems = [
-            0 => [
-                'label' => 'First label',
-                'content' => 'First content',
-            ],
-            1 => [
-                'label' => 'Second label',
-                'content' => 'Second content',
-            ],
-            2 => [
-                'label' => 'Third label',
-                'content' => 'Third content',
-            ],
-        ];
-        $tabs = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'ident');
-        $this->moduleTemplate->assign('tabs', $tabs);
         return $this->moduleTemplate->renderResponse('Backend/Tab');
     }
 
