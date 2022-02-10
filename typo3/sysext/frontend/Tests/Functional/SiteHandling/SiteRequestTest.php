@@ -1067,6 +1067,22 @@ class SiteRequestTest extends AbstractTestCase
                     'location' => ['https://blog.local/authors'],
                 ],
             ],
+            'shortcut is redirected #5' => [
+                'https://website.local/?id=2030&type=1',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors?type=1'],
+                ],
+            ],
+            'shortcut is redirected #6' => [
+                'https://website.local/?id=2030&type=1&additional=value',
+                307,
+                [
+                    'X-Redirect-By' => ['TYPO3 Shortcut/Mountpoint'],
+                    'location' => ['https://blog.local/authors?additional=value&type=1&cHash=9a534a0ab3d092ac113a3d8b5ea577ba'],
+                ],
+            ],
         ];
     }
 
