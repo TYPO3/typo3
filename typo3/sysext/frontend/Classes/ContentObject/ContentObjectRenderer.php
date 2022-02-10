@@ -6423,7 +6423,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $field) . ' AS ' . $connection->quoteIdentifier($field);
                 }
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ?? false) {
                 foreach ($wsFields as $field) {
                     $match = $matchStart . $field . $matchEnd;
                     if (!preg_match($match, $selectPart)) {
