@@ -835,7 +835,7 @@ class AbstractPlugin
 		' . $str . '
 	</div>
 	';
-        if (!$this->frontendController->config['config']['disablePrefixComment']) {
+        if (!($this->frontendController->config['config']['disablePrefixComment'] ?? false)) {
             $content = '
 
 
