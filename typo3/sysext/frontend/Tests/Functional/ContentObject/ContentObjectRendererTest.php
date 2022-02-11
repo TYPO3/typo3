@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -378,124 +377,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
     }
 
     /**
-     * @return array
-     */
-    public function typolinkReturnsCorrectLinksForPagesDataProvider(): array
-    {
-        return [
-            'Link to page' => [
-                'My page',
-                [
-                    'parameter' => 42,
-                ],
-                [
-                    'uid' => 42,
-                    'title' => 'Page title',
-                ],
-                '<a href="index.php?id=42">My page</a>',
-            ],
-            'Link to page without link text' => [
-                '',
-                [
-                    'parameter' => 42,
-                ],
-                [
-                    'uid' => 42,
-                    'title' => 'Page title',
-                ],
-                '<a href="index.php?id=42">Page title</a>',
-            ],
-            'Link to page with attributes' => [
-                'My page',
-                [
-                    'parameter' => '42',
-                    'ATagParams' => 'class="page-class"',
-                    'target' => '_self',
-                    'title' => 'Link to internal page',
-                ],
-                [
-                    'uid' => 42,
-                    'title' => 'Page title',
-                ],
-                '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ],
-            'Link to page with attributes in parameter' => [
-                'My page',
-                [
-                    'parameter' => '42 _self page-class "Link to internal page"',
-                ],
-                [
-                    'uid' => 42,
-                    'title' => 'Page title',
-                ],
-                '<a href="index.php?id=42" title="Link to internal page" target="_self" class="page-class">My page</a>',
-            ],
-            'Link to page with bold tag in title' => [
-                '',
-                [
-                    'parameter' => 42,
-                ],
-                [
-                    'uid' => 42,
-                    'title' => 'Page <b>title</b>',
-                ],
-                '<a href="index.php?id=42">Page <b>title</b></a>',
-            ],
-            'Link to page with script tag in title' => [
-                '',
-                [
-                    'parameter' => 42,
-                ],
-                [
-                    'uid' => 42,
-                    'title' => '<script>alert(123)</script>Page title',
-                ],
-                '<a href="index.php?id=42">&lt;script&gt;alert(123)&lt;/script&gt;Page title</a>',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @param string $linkText
-     * @param array $configuration
-     * @param array $pageArray
-     * @param string $expectedResult
-     * @dataProvider typolinkReturnsCorrectLinksForPagesDataProvider
-     */
-    public function typolinkReturnsCorrectLinksForPages(string $linkText, array $configuration, array $pageArray, string $expectedResult): void
-    {
-        // @todo Merge with existing link generation test
-        // reason for failing is, that PageLinkBuilder is using a context-specific
-        // instance of PageRepository instead of reusing a shared global instance
-        self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
-
-        $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
-            ->onlyMethods(['getPage'])
-            ->getMock();
-        $pageRepositoryMockObject->method('getPage')->willReturn($pageArray);
-
-        $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setConstructorArgs([null, 1, 0])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $typoScriptFrontendController->config = [
-            'config' => [],
-        ];
-        $typoScriptFrontendController->sys_page = $pageRepositoryMockObject;
-        $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $typoScriptFrontendController->tmpl->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
-
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
-    }
-
-    /**
      * @test
      */
     public function typolinkReturnsCorrectLinkForEmails(): void
@@ -520,68 +401,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $tsfe->spamProtectEmailAddresses = 1;
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
         self::assertEquals('<a href="#" data-mailto-token="nbjmup+uftuAfybnqmf/dpn" data-mailto-vector="1">Send me an email</a>', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function typolinkReturnsCorrectLinkForSectionToHomePageWithUrlRewriting(): void
-    {
-        // @todo Merge with existing link generation test
-        // reason for failing is, that PageLinkBuilder is using a context-specific
-        // instance of PageRepository instead of reusing a shared global instance
-        self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
-
-        $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
-            ->onlyMethods(['getPage'])
-            ->getMock();
-        $pageRepositoryMockObject->method('getPage')->willReturn([
-            'uid' => 1,
-            'title' => 'Page title',
-        ]);
-
-        $templateServiceMockObject = $this->getMockBuilder(TemplateService::class)
-            ->getMock();
-        $templateServiceMockObject->setup = [
-            'lib.' => [
-                'parseFunc.' => $this->getLibParseFunc(),
-            ],
-        ];
-
-        $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $pageLinkBuilder = $this->getMockBuilder(PageLinkBuilder::class)
-            ->onlyMethods(['createTotalUrlAndLinkData'])
-            ->setConstructorArgs([$subject])
-            ->getMock();
-        $pageLinkBuilder->expects(self::once())->method('createTotalUrlAndLinkData')->willReturn([
-            'url' => '/index.php?id=1',
-            'target' => '',
-            'type' => '',
-            'orig_type' => '',
-            'no_cache' => '',
-            'linkVars' => '',
-            'sectionIndex' => '',
-            'totalURL' => '/',
-        ]);
-        GeneralUtility::addInstance(PageLinkBuilder::class, $pageLinkBuilder);
-
-        $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->setConstructorArgs([null, 1, 0])
-            ->addMethods(['dummy'])
-            ->getMock();
-        $typoScriptFrontendController->config = [
-            'config' => [],
-        ];
-        $typoScriptFrontendController->sys_page = $pageRepositoryMockObject;
-        $typoScriptFrontendController->tmpl = $templateServiceMockObject;
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
-
-        $configuration = [
-            'parameter' => 1,
-            'section' => 'content',
-        ];
-
-        self::assertEquals('<a href="#content">Page title</a>', $subject->typoLink('', $configuration));
     }
 
     /**
