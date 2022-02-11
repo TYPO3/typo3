@@ -312,7 +312,7 @@ abstract class AbstractTask implements LoggerAwareInterface
         $execution->setInterval(0);
         $execution->setEnd($timestamp);
         $execution->setCronCmd('');
-        $execution->setMultiple(0);
+        $execution->setMultiple(false);
         $execution->setIsNewSingleExecution(true);
         // Replace existing execution object
         $this->execution = $execution;
@@ -322,7 +322,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      * Registers a recurring execution of the task
      *
      * @param int $start The first date/time where this execution should occur (timestamp)
-     * @param string $interval Execution interval in seconds
+     * @param int $interval Execution interval in seconds
      * @param int $end The last date/time where this execution should occur (timestamp)
      * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
      * @param string $cron_cmd Used like in crontab (minute hour day month weekday)

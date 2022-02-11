@@ -5491,16 +5491,6 @@ parameters:
 			path: ../../typo3/sysext/rte_ckeditor/Classes/Form/Resolver/RichTextNodeResolver.php
 
 		-
-			message: "#^Parameter \\#2 \\$interval of method TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask\\:\\:registerRecurringExecution\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
-			message: "#^Parameter \\#2 \\$task of method TYPO3\\\\CMS\\\\Scheduler\\\\AdditionalFieldProviderInterface\\:\\:getAdditionalFields\\(\\) expects TYPO3\\\\CMS\\\\Scheduler\\\\Task\\\\AbstractTask, null given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
 			message: "#^Comparison operation \"\\<\" between int\\<1, max\\> and 1 is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
@@ -5519,16 +5509,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/Scheduler.php
-
-		-
-			message: "#^Parameter \\#1 \\$interval of method TYPO3\\\\CMS\\\\Scheduler\\\\Execution\\:\\:setInterval\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Task/AbstractTask.php
-
-		-
-			message: "#^Parameter \\#1 \\$multiple of method TYPO3\\\\CMS\\\\Scheduler\\\\Execution\\:\\:setMultiple\\(\\) expects bool, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/scheduler/Classes/Task/AbstractTask.php
 
 		-
 			message: "#^If condition is always true\\.$#"
