@@ -111,7 +111,9 @@ class HtmlViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         $parseFuncTSPath = $arguments['parseFuncTSPath'];
-        $isBackendRequest = ApplicationType::fromRequest($renderingContext->getRequest())->isBackend();
+        $request = $renderingContext->getRequest();
+        $isBackendRequest = $request->getAttribute('applicationType')
+            && ApplicationType::fromRequest($request)->isBackend();
         if ($isBackendRequest) {
             self::simulateFrontendEnvironment();
         }
