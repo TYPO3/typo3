@@ -107,7 +107,7 @@ class ActionHandler
      */
     public function viewSingleRecord($table, $uid)
     {
-        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $uid);
+        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$uid);
     }
 
     /**

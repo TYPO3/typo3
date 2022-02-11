@@ -391,11 +391,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
@@ -1009,11 +1004,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$workspace \\(int\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Error/ErrorHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Error/PageErrorHandler/PageContentErrorHandler.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\AbstractFormProtection\\:\\:\\$sessionToken \\(string\\) on left side of \\?\\? is not nullable\\.$#"
@@ -4556,11 +4546,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Middleware/PreviewSimulator.php
 
 		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Middleware/StaticRouteResolver.php
-
-		-
 			message: "#^Variable \\$configuration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Page/CacheHashCalculator.php
@@ -4626,16 +4611,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
-
-		-
-			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
-
-		-
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:parseFunc\\(\\) expects non\\-empty\\-array\\<string, mixed\\>\\|null, array given\\.$#"
 			count: 5
 			path: ../../typo3/sysext/frontend/Tests/Functional/ContentObject/ContentObjectRendererTest.php
@@ -4654,11 +4629,6 @@ parameters:
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/AbstractEnhancerSiteRequestTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/EnhancerSiteRequest/PageTypeDecoratorTest.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -5526,17 +5496,7 @@ parameters:
 			path: ../../typo3/sysext/tstemplate/Classes/Controller/TypoScriptTemplateConstantEditorModuleFunctionController.php
 
 		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Controller/PreviewController.php
-
-		-
 			message: "#^Argument of an invalid type stdClass supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$uid of method TYPO3\\\\CMS\\\\Workspaces\\\\Preview\\\\PreviewUriBuilder\\:\\:buildUriForElement\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/ActionHandler.php
 
@@ -5659,16 +5619,6 @@ parameters:
 			message: "#^Parameter \\#4 \\$originalRecordDestinationPid of method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler\\:\\:moveL10nOverlayRecords\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
-			message: "#^Variable \\$currentWorkspaceId on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Middleware/WorkspacePreview.php
-
-		-
-			message: "#^Parameter \\#1 \\$route of method TYPO3\\\\CMS\\\\Core\\\\Routing\\\\RouterInterface\\:\\:generateUri\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Preview/PreviewUriBuilder.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Workspaces\\\\Service\\\\Dependency\\\\CollectionService\\:\\:\\$dependencyResolver \\(TYPO3\\\\CMS\\\\Workspaces\\\\Dependency\\\\DependencyResolver\\) in isset\\(\\) is not nullable\\.$#"

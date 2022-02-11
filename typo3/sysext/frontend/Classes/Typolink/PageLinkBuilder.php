@@ -53,7 +53,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         $linkResultType = LinkService::TYPE_PAGE;
         $tsfe = $this->getTypoScriptFrontendController();
-        $conf['additionalParams'] ??= '';
+        $conf['additionalParams'] = $conf['additionalParams'] ?? '';
         if (empty($linkDetails['pageuid']) || $linkDetails['pageuid'] === 'current') {
             // If no id is given
             $linkDetails['pageuid'] = $tsfe->id;
@@ -221,7 +221,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         $queryParameters = [];
         $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
-        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
+        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
         }

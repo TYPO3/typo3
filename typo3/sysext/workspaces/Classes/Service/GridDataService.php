@@ -176,7 +176,7 @@ class GridDataService implements LoggerAwareInterface
                         // The page ID for a translated page is considered here
                         $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
                     }
-                    $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, $record['uid'], $origRecord, $versionRecord);
+                    $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
                     $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                     $liveRecordLabel = BackendUtility::getRecordTitle($table, $origRecord);
                     [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
