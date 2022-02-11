@@ -16,14 +16,6 @@ cgl:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s cgl -n -p 8.1
 
-composer validate:
-  stage: integrity
-  needs: []
-  only:
-    - schedules
-  script:
-    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
-
 grunt clean:
   stage: integrity
   needs: []
@@ -46,6 +38,7 @@ integration various:
     paths:
       - .cache
   script:
+    - Build/Scripts/runTests.sh -s composerValidate -p 8.1
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s checkExceptionCodes -p 8.1
