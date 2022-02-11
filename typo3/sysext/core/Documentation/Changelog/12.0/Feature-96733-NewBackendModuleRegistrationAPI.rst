@@ -125,23 +125,23 @@ Module configuration options
 | standalone (:php:`bool`)                                 | Whether the module is a standalone module (parent without        |
 |                                                          | sub modules).                                                    |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| access (:php:`string`)                                   | Can be "user" (editor permissions), "admin", or                  |
-| access (:php:`string`)                                   | "systemMaintainer".                                              |
+| access (:php:`string`)                                   | Can be `user` (editor permissions), `admin`, or                  |
+|                                                          | `systemMaintainer`.                                              |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| workspaces (:php:`string`)                               | Can be "*" (= always), "live" or "offline"                       |
+| workspaces (:php:`string`)                               | Can be `*` (= always), `live` or `offline`                       |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | position (:php:`array`)                                  | The module position. Allowed values are `top` and `bottom` as    |
-|                                                          | well as the key value pairs `before => <identifieer>` and        |
-|                                                          | `after => <identifieer>`.                                        |
+|                                                          | well as the key value pairs `before => <identifier>` and         |
+|                                                          | `after => <identifier>`.                                         |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | appearance (:php:`array`)                                | Allows to define additional appearance options:                  |
-|                                                          | - `renderInModuleMenu` (:php:`bool`)                             |
+|                                                          |   - `renderInModuleMenu` (:php:`bool`)                           |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | iconIdentifier (:php:`string`)                           | The module icon identifier                                       |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | icon (:php:`string`)                                     | Path to a module icon (Deprecated: Use `iconIdentifier` instead) |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| labels (:php:`array` or :php:`string`)                   | An :php:`array` with following keys:                             |
+| labels (:php:`array` or :php:`string`)                   | An :php:`array` with the following keys:                         |
 |                                                          |                                                                  |
 |                                                          | - `title`                                                        |
 |                                                          | - `description`                                                  |
@@ -171,8 +171,8 @@ Module configuration options
 |                                                          | stop the inheritance for sub modules.                            |
 +----------------------------------------------------------+------------------------------------------------------------------+
 
-Module dependent configuration options
----------------------------------------
+Module-dependent configuration options
+--------------------------------------
 
 Default:
 
@@ -181,13 +181,13 @@ Default:
 +============================+=====================================================================+
 | routes (:php:`array`)      | Define the routes to this module. Each route requires a `path` and  |
 |                            | the `target`, except the mandatory `_default` route, which uses     |
-|                            | the `path` from the top-level configuration:                        |
+|                            | the `path` from the top-level configuration::                       |
 |                            |                                                                     |
-|                            | routes' => [                                                        |
-|                            |     '_default' => [                                                 |
-|                            |         'target' => Controller::class . '::handleRequest',          |
+|                            |     routes' => [                                                    |
+|                            |         '_default' => [                                             |
+|                            |             'target' => Controller::class . '::handleRequest',      |
+|                            |         ],                                                          |
 |                            |     ],                                                              |
-|                            | ],                                                                  |
 |                            |                                                                     |
 |                            | Please note, using additional routes - next to `_default` is not    |
 |                            | yet implemented.                                                    |
@@ -202,14 +202,14 @@ Extbase:
 +----------------------------------+---------------------------------------------------------------+
 | controllerActions (:php:`array`) | Define the controller action pair. The array keys are the     |
 |                                  | controller class names and the values are the actions, which  |
-|                                  | can either be defined as array or comma-separated list:       |
+|                                  | can either be defined as array or comma-separated list::      |
 |                                  |                                                               |
-|                                  | 'controllerActions' => [                                      |
-|                                  |     Controller::class => [                                    |
-|                                  |         'aAction', 'anotherAction',                           |
+|                                  |     'controllerActions' => [                                  |
+|                                  |         Controller::class => [                                |
+|                                  |             'aAction', 'anotherAction',                       |
+|                                  |         ],                                                    |
 |                                  |     ],                                                        |
-|                                  | ],                                                            |
-+----------------------------+---------------------------------------------------------------------+
++----------------------------------+---------------------------------------------------------------+
 
 The BeforeModuleCreationEvent
 =============================
@@ -255,7 +255,7 @@ BeforeModuleCreationEvent methods
 | getConfiguration()      |                       | Get the module configuration, as defined in the    |
 |                         |                       | :php:`Configuration/Backend/Modules.php` file.     |
 +-------------------------+-----------------------+----------------------------------------------------+
-| setConfiguration()      | :php:`$configuration` | Overwrittes the module configuration.              |
+| setConfiguration()      | :php:`$configuration` | Overrides the module configuration.                |
 +-------------------------+-----------------------+----------------------------------------------------+
 | hasConfigurationValue() | :php:`$key`           | Checks whether the given key is set.               |
 +-------------------------+-----------------------+----------------------------------------------------+
@@ -322,7 +322,7 @@ ModuleProvider API methods
 ModuleInterface
 ===============
 
-Instead of a global array structure, the registered modals are stored as
+Instead of a global array structure, the registered modules are stored as
 objects in a registry. The module objects do all implement the :php:`ModuleInterface`.
 This allows a well-defined OOP-based approach to work with registered models.
 
@@ -333,7 +333,7 @@ relation handling (main modules and sub modules).
 +---------------------------+--------------------------+-----------------------------------------------+
 | Method                    | Return type              | Description                                   |
 +===========================+==========================+===============================================+
-| getIdentifier()           | :php:`string`            | Returns the The internal name of the module,  |
+| getIdentifier()           | :php:`string`            | Returns the internal name of the module,      |
 |                           |                          | used for referencing in permissions etc.      |
 +---------------------------+--------------------------+-----------------------------------------------+
 | getPath()                 | :php:`string`            | Returns the module main path                  |
@@ -360,17 +360,17 @@ relation handling (main modules and sub modules).
 |                           |                          | navigation area.                              |
 +---------------------------+--------------------------+-----------------------------------------------+
 | getPosition()             | :php:`array`             | Returns the position of the module, such as   |
-|                           |                          | [top] or [bottom] or [after => anotherModule] |
-|                           |                          | or [before => anotherModule].                 |
+|                           |                          | `top` or `bottom` or `after => anotherModule` |
+|                           |                          | or `before => anotherModule`.                 |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getAppearance()           | :php:`array`             | Returns a modules appearance options, e.g.    |
+| getAppearance()           | :php:`array`             | Returns a modules' appearance options, e.g.   |
 |                           |                          | used for module menu.                         |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getAccess()               | :php:`string`            | Returns defined access level, can be "user",  |
-|                           |                          | "admin" or "systemMaintainer".                |
+| getAccess()               | :php:`string`            | Returns defined access level, can be `user`,  |
+|                           |                          | `admin` or `systemMaintainer`.                |
 +---------------------------+--------------------------+-----------------------------------------------+
-| getWorkspaceAccess()      | :php:`string`            | Returns defined workspace access, can be "*"  |
-|                           |                          | (all), "live" or "offline".                   |
+| getWorkspaceAccess()      | :php:`string`            | Returns defined workspace access, can be `*`  |
+|                           |                          | (all), `live` or `offline`.                   |
 +---------------------------+--------------------------+-----------------------------------------------+
 | getParentIdentifier()     | :php:`string`            | In case this is a sub module, returns the     |
 |                           |                          | parent module identifier.                     |
@@ -392,8 +392,8 @@ relation handling (main modules and sub modules).
 | getSubModules()           | :php:`ModuleInterface[]` | Returns all assigned sub modules.             |
 +---------------------------+--------------------------+-----------------------------------------------+
 | getDefaultRouteOptions()  | :php:`array`             | Returns options, to be added to the main      |
-|                           |                          | module route. Usually "module", "moduleName"  |
-|                           |                          | and "access".                                 |
+|                           |                          | module route. Usually `module`, `moduleName`  |
+|                           |                          | and `access`.                                 |
 +---------------------------+--------------------------+-----------------------------------------------+
 
 Impact

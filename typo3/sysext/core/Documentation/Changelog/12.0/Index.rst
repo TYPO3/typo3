@@ -32,7 +32,7 @@ Features
    Feature-*
 
 Deprecation
-^^^^^^^^^^^
+===========
 
 .. toctree::
    :maxdepth: 1
@@ -43,7 +43,7 @@ Deprecation
 
 
 Important
-^^^^^^^^^
+=========
 
 .. toctree::
    :maxdepth: 1

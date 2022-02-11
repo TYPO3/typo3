@@ -41,7 +41,7 @@ is used throughout all places in TYPO3 Backend now in a unified way.
 As for TYPO3 Backend Modules, based on Extbase, their additional information
 (allowed controllers and actions) was previously stored in a different
 global array
-:php: `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']`
+:php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['modules'][$pluginName]['controllers']`
 which has been merged with the Module Registry API and has been removed as well.
 
 Because the registration of modules is now done in extensions'
@@ -65,7 +65,7 @@ Impact
 ======
 
 Accessing or manipulating the now non-existent :php:`$GLOBALS[TBE_MODULES]`
-array will result in a PHP Warning.
+array will result in a PHP warning.
 
 Referencing any of the removed PHP classes will result in a PHP fatal error.
 
@@ -101,7 +101,7 @@ components.
 
     With the new module registration, the module identifier is also used
     as the route identifier. Therefore, the `moduleName` option is removed
-    form the TYPO3 backend route object.
+    from the TYPO3 backend route object.
 
 The registration has to be moved from :file:`ext_tables.php` to the
 :file:`Configuration/Backend/Modules.php` file. See the
