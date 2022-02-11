@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -146,8 +147,11 @@ final class HtmlViewHelper extends AbstractViewHelper
         $current = $arguments['current'];
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
-        $isBackendRequest = ApplicationType::fromRequest($renderingContext->getRequest())->isBackend();
 
+        $request = $renderingContext->getRequest();
+        $isBackendRequest = $request instanceof ServerRequestInterface
+            && $request->getAttribute('applicationType')
+            && ApplicationType::fromRequest($request)->isBackend();
         if ($isBackendRequest) {
             $tsfeBackup = self::simulateFrontendEnvironment();
         }
