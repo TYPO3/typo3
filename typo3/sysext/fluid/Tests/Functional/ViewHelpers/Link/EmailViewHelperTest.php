@@ -60,22 +60,31 @@ class EmailViewHelperTest extends FunctionalTestCase
         return [
             'Plain email' => [
                 '<f:link.email email="some@email.tld" />',
-                0,
+                ['config.spamProtectEmailAddresses = 0'],
                 '<a href="mailto:some@email.tld">some@email.tld</a>',
             ],
             'Plain email with spam protection' => [
                 '<f:link.email email="some@email.tld" />',
-                1,
+                ['config.spamProtectEmailAddresses = 1'],
                 '<a href="#" data-mailto-token="nbjmup+tpnfAfnbjm/ume" data-mailto-vector="1">some(at)email.tld</a>',
             ],
             'Plain email with ascii spam protection' => [
                 '<f:link.email email="some@email.tld" />',
-                'ascii',
+                ['config.spamProtectEmailAddresses = ascii'],
                 '<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#111;&#109;&#101;&#64;&#101;&#109;&#97;&#105;&#108;&#46;&#116;&#108;&#100;">some(at)email.tld</a>',
+            ],
+            'Plain email with spam protection and markup substitution' => [
+                '<f:link.email email="some@email.tld" />',
+                [
+                    'config.spamProtectEmailAddresses = 1',
+                    'config.spamProtectEmailAddresses_atSubst = <span class="at"></span>',
+                    'config.spamProtectEmailAddresses_lastDotSubst = <span class="dot"></span>',
+                ],
+                '<a href="#" data-mailto-token="nbjmup+tpnfAfnbjm/ume" data-mailto-vector="1">some<span class="at"></span>email<span class="dot"></span>tld</a>',
             ],
             'Susceptible email' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
-                0,
+                ['config.spamProtectEmailAddresses = 0'],
                 // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
                 // @todo remove conditional values when php 8.1 is min requirement
                 (PHP_VERSION_ID < 80100
@@ -86,7 +95,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             ],
             'Susceptible email with spam protection' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
-                1,
+                ['config.spamProtectEmailAddresses = 1'],
                 // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
                 // @todo remove conditional values when php 8.1 is min requirement
                 (PHP_VERSION_ID < 80100
@@ -97,7 +106,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             ],
             'Susceptible email with ascii spam protection' => [
                 '<f:link.email email="\"><script>alert(\'email\')</script>" />',
-                'ascii',
+                ['config.spamProtectEmailAddresses = ascii'],
                 // check against correct value regarding php 8.1 change of default argument values of flags for ex. htmlspecialchars()
                 // @todo remove conditional values when php 8.1 is min requirement
                 (PHP_VERSION_ID < 80100
@@ -113,7 +122,7 @@ class EmailViewHelperTest extends FunctionalTestCase
      * @test
      * @dataProvider renderEncodesEmailInFrontendDataProvider
      */
-    public function renderEncodesEmailInFrontend(string $template, $spamProtectEmailAddresses, string $expected): void
+    public function renderEncodesEmailInFrontend(string $template, array $typoScript, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -125,8 +134,7 @@ class EmailViewHelperTest extends FunctionalTestCase
             'pid' => 1,
             'root' => 1,
             'clear' => 1,
-            'config' => <<<EOT
-config.spamProtectEmailAddresses = $spamProtectEmailAddresses
+            'config' => implode("\n", $typoScript) . "\n" . <<<EOT
 page = PAGE
 page.10 = FLUIDTEMPLATE
 page.10 {

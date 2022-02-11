@@ -88,7 +88,8 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
         if (ApplicationType::fromRequest($this->renderingContext->getRequest())->isFrontend()) {
             /** @var TypoScriptFrontendController $frontend */
             $frontend = $GLOBALS['TSFE'];
-            $frontend->cObj->typoLink($email, ['parameter' => $linkHref]);
+            // passing HTML encoded link text
+            $frontend->cObj->typoLink($linkText, ['parameter' => $linkHref]);
             $linkResult = $frontend->cObj->lastTypoLinkResult;
             if ($linkResult) {
                 $escapeSpecialCharacters = false;
@@ -96,13 +97,6 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
                 $linkText = (string)$linkResult->getLinkText();
                 $attributes = $linkResult->getAttributes();
                 unset($attributes['href']);
-                if ($frontend->spamProtectEmailAddresses !== 'ascii') {
-                    if (PHP_VERSION_ID < 80100) {
-                        $linkText = htmlspecialchars($linkText, ENT_COMPAT | ENT_SUBSTITUTE, 'utf-8', false);
-                    } else {
-                        $linkText = htmlspecialchars($linkText, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'utf-8', false);
-                    }
-                }
             }
         }
         $tagContent = $this->renderChildren();
