@@ -8,6 +8,16 @@ annotations php 7.4 pre-merge:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s checkAnnotations -p 7.4
 
+cgl pre-merge:
+  stage: main
+  except:
+    refs:
+      - schedules
+      - "11.5"
+  script:
+    - Build/Scripts/runTests.sh -s composerInstall -p 7.4
+    - Build/Scripts/runTests.sh -s cglGit -n -p 7.4
+
 grunt clean pre-merge:
   stage: main
   except:
@@ -32,6 +42,7 @@ integration various pre-merge:
     paths:
       - .cache
   script:
+    - Build/Scripts/runTests.sh -s composerValidate -p 7.4
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 7.4
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.0
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.1
