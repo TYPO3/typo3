@@ -631,11 +631,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
 
 		-
-			message: "#^PHPDoc type array\\|string of property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$uc is not covariant with PHPDoc type array of overridden property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$uc\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\BackendUserAuthentication\\:\\:\\$filePermissions \\(array\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Authentication/BackendUserAuthentication.php

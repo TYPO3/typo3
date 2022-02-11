@@ -23,7 +23,7 @@ class BackendUserSettingsProvider extends AbstractProvider
 {
     public function getConfiguration(): array
     {
-        return is_array($this->getBackendUser()->uc) ? $this->getBackendUser()->uc : [];
+        return $this->getBackendUser()->uc;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

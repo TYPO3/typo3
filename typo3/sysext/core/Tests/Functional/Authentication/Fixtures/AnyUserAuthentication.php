@@ -23,11 +23,6 @@ use TYPO3\CMS\Core\Session\UserSession;
 class AnyUserAuthentication extends AbstractUserAuthentication
 {
     /**
-     * @var array
-     */
-    public $uc = [];
-
-    /**
      * @var string
      */
     public $loginType = 'ANY';

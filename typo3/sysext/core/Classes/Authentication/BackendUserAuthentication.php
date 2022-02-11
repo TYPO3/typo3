@@ -221,12 +221,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public $firstMainGroup = 0;
 
     /**
-     * User Config
-     * @var array|string
-     */
-    public $uc;
-
-    /**
      * User Config Default values:
      * The array may contain other fields for configuration.
      * For this, see "setup" extension and "TSconfig" document (User TSconfig, "setup.[xxx]....")
@@ -2175,7 +2169,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $this->unpack_uc();
         // Setting defaults if uc is empty
         $updated = false;
-        if (!is_array($this->uc)) {
+        if (empty($this->uc)) {
             $this->uc = array_merge(
                 $this->uc_default,
                 (array)$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUC'],
@@ -2208,7 +2202,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      */
     public function overrideUC()
     {
-        $this->uc = array_merge((array)$this->uc, (array)($this->getTSConfig()['setup.']['override.'] ?? []));
+        $this->uc = array_merge($this->uc, (array)($this->getTSConfig()['setup.']['override.'] ?? []));
     }
 
     /**
@@ -2219,7 +2213,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     public function resetUC()
     {
         $this->user['uc'] = '';
-        $this->uc = '';
+        $this->uc = [];
         $this->backendSetUC();
     }
 

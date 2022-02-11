@@ -199,9 +199,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $loginType = '';
 
     /**
-     * @var array
+     * User Settings (= preferences)
      */
-    public $uc;
+    public array $uc = [];
 
     protected ?UserSession $userSession = null;
 
@@ -988,9 +988,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      *
      * @param string $module Is the identifier of the module, e.g. "web_info"
      * @param mixed $data Is the data you want to store for that module (array, string, ...)
-     * @param bool|int $noSave If $noSave is set, then the ->uc array (which carries all kinds of user data) is NOT written immediately, but must be written by some subsequent call.
+     * @param bool $dontPersistImmediately If set, then the ->uc array (which carries all kinds of user data) is NOT written immediately, but must be written by some subsequent call.
      */
-    public function pushModuleData($module, $data, $noSave = 0)
+    public function pushModuleData(string $module, mixed $data, bool $dontPersistImmediately = false): void
     {
         $sessionHash = GeneralUtility::hmac(
             $this->userSession->getIdentifier(),
@@ -998,7 +998,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         );
         $this->uc['moduleData'][$module] = $data;
         $this->uc['moduleSessionID'][$module] = $sessionHash;
-        if (!$noSave) {
+        if ($dontPersistImmediately === false) {
             $this->writeUC();
         }
     }
@@ -1010,7 +1010,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param string $type If $type = 'ses' then module data is returned only if it was stored in the current session, otherwise data from a previous session will be returned (if available).
      * @return mixed The module data if available: $this->uc['moduleData'][$module];
      */
-    public function getModuleData($module, $type = '')
+    public function getModuleData(string $module, string $type = ''): mixed
     {
         $sessionHash = GeneralUtility::hmac(
             $this->userSession->getIdentifier(),
@@ -1018,11 +1018,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         );
         $sessionData = $this->uc['moduleData'][$module] ?? null;
         $moduleSessionIdHash = $this->uc['moduleSessionID'][$module] ?? null;
-        if ($type !== 'ses'
-            || $sessionData !== null && $moduleSessionIdHash === $sessionHash
-            // @todo Fallback for non-hashed values in `moduleSessionID`, remove for TYPO3 v11.5 LTS
-            || $sessionData !== null && $moduleSessionIdHash === $this->userSession->getIdentifier()
-        ) {
+        if ($type !== 'ses' || ($sessionData !== null && $moduleSessionIdHash === $sessionHash)) {
             return $sessionData;
         }
         return null;
