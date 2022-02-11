@@ -203,6 +203,22 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
         self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
+    /**
+     * @test
+     */
+    public function deletedDefaultLanguageItemIsHandledAsIfNoRecordsExistAndReturnsAllOriginLanguages(): void
+    {
+        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language-deleted-element.csv');
+        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language-deleted-source.csv');
+
+        $request = (new ServerRequest())->withQueryParams([
+            'pageId'         => 2, // page uid, the records are stored on
+            'languageId'     => 1,  // current language id
+        ]);
+
+        $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
+        self::assertThat($usedLanguages, self::stringContains('"uid":0'));
+    }
 
     /**
      * @test

@@ -99,17 +99,21 @@ class LocalizationController
 
         // First check whether column has localized records
         $elementsInColumnCount = $this->localizationRepository->getLocalizedRecordCount($pageId, $languageId);
-
-        if ($elementsInColumnCount === 0) {
+        $result = [];
+        if ($elementsInColumnCount !== 0) {
+            // check elements in column - empty if source records do not exist anymore
+            $result = $this->localizationRepository->fetchOriginLanguage($pageId, $languageId);
+            if ($result !== []) {
+                $availableLanguages[] = $systemLanguages[$result['sys_language_uid']];
+            }
+        }
+        if ($elementsInColumnCount === 0 || $result === []) {
             $fetchedAvailableLanguages = $this->localizationRepository->fetchAvailableLanguages($pageId, $languageId);
             foreach ($fetchedAvailableLanguages as $language) {
                 if (isset($systemLanguages[$language['sys_language_uid']])) {
                     $availableLanguages[] = $systemLanguages[$language['sys_language_uid']];
                 }
             }
-        } else {
-            $result = $this->localizationRepository->fetchOriginLanguage($pageId, $languageId);
-            $availableLanguages[] = $systemLanguages[$result['sys_language_uid']];
         }
         // Language "All" should not appear as a source of translations (see bug 92757) and keys should be sequential
         $availableLanguages = array_values(
