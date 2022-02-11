@@ -664,24 +664,6 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     }
 
     /**
-     * Generates an error message that transferred as JSON for AJAX calls
-     *
-     * @param string $message The error message to be shown
-     * @return array The error message in a JSON array
-     * @todo remove with TYPO3 v12.0
-     * @internal
-     */
-    protected function getErrorMessageForAJAX($message)
-    {
-        return [
-            'data' => $message,
-            'scriptCall' => [
-                'alert("' . $message . '");',
-            ],
-        ];
-    }
-
-    /**
      * Get inlineFirstPid from a given objectId string
      *
      * @param string $domObjectId The id attribute of an element
