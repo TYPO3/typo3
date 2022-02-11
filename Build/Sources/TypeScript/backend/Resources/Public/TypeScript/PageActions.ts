@@ -92,7 +92,7 @@ class PageActions {
    */
   private initializeElements(): void {
     this.$pageTitle = $(IdentifierEnum.pageTitle + ':first');
-    this.$showHiddenElementsCheckbox = $('#checkTt_content_showHidden');
+    this.$showHiddenElementsCheckbox = $('#checkShowHidden');
   }
 
   /**
@@ -119,7 +119,7 @@ class PageActions {
       $hiddenElements.slideUp();
     }
 
-    PersistentStorage.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? '1' : '0').done((): void => {
+    PersistentStorage.set('moduleData.web_layout.showHidden', $me.prop('checked') ? '1' : '0').done((): void => {
       $spinner.remove();
       $me.show();
     });

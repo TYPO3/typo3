@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -76,6 +77,7 @@ class RecordListController
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        $moduleData = $request->getAttribute('moduleData');
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();
         $parsedBody = $request->getParsedBody();
@@ -97,7 +99,6 @@ class RecordListController
 
         // Loading module configuration, clean up settings, current page and page access
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        $MOD_SETTINGS = BackendUtility::getModuleData(['clipBoard' => false], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $access = is_array($pageinfo);
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
@@ -109,17 +110,19 @@ class RecordListController
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
 
+        $clipboardEnabled = (bool)($moduleData?->get('clipBoard') ?? false);
         if (isset($this->modTSconfig['enableClipBoard'])) {
             if ($this->modTSconfig['enableClipBoard'] === 'activated') {
-                $MOD_SETTINGS['clipBoard'] = true;
+                $clipboardEnabled = true;
             } elseif ($this->modTSconfig['enableClipBoard'] === 'deactivated') {
-                $MOD_SETTINGS['clipBoard'] = false;
+                $clipboardEnabled = false;
             }
         }
-        $MOD_SETTINGS['clipBoard'] = (bool)($MOD_SETTINGS['clipBoard'] ?? true);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dbList->setModuleData($MOD_SETTINGS ?? []);
+        if ($moduleData instanceof ModuleData) {
+            $dbList->setModuleData($moduleData);
+        }
         $dbList->calcPerms = $this->pagePermissions;
         $dbList->returnUrl = $this->returnUrl;
         $dbList->showClipboardActions = true;
@@ -139,7 +142,7 @@ class RecordListController
             $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
             $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
         }
-        $clipboard = $this->initializeClipboard($request, (bool)$MOD_SETTINGS['clipBoard']);
+        $clipboard = $this->initializeClipboard($request, $clipboardEnabled);
         $dbList->clipObj = $clipboard;
         /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
@@ -178,10 +181,10 @@ class RecordListController
         }
         $toggleClipboardHtml = '';
         if ($tableListHtml && ($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
-            $toggleClipboardHtml = $this->renderToggleClipboardHtml($this->id, $singleTable, $MOD_SETTINGS['clipBoard'] ?? false);
+            $toggleClipboardHtml = $this->renderToggleClipboardHtml($this->id, $singleTable, $clipboardEnabled);
         }
         $clipboardHtml = '';
-        if ($MOD_SETTINGS['clipBoard'] && ($tableListHtml || $clipboard->hasElements())) {
+        if ($clipboardEnabled && ($tableListHtml || $clipboard->hasElements())) {
             $clipboardHtml = '<typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
@@ -192,7 +195,7 @@ class RecordListController
         if ($pageinfo) {
             $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $queryParams, $singleTable, $dbList->listURL(), $MOD_SETTINGS);
+        $this->getDocHeaderButtons($view, $clipboard, $queryParams, $singleTable, $dbList->listURL(), []);
         $view->assignMultiple([
             'pageId' => $this->id,
             'pageTitle' => $title,
@@ -592,7 +595,7 @@ class RecordListController
         $html = [];
         $html[] = '<div class="mb-3">';
         $html[] =   '<div class="form-check form-switch">';
-        $html[] =       BackendUtility::getFuncCheck($pageId, 'SET[clipBoard]', $checked, '', $singleTable ? '&table=' . $singleTable : '', 'id="checkShowClipBoard"');
+        $html[] =       BackendUtility::getFuncCheck($pageId, 'clipBoard', $checked, '', $singleTable ? '&table=' . $singleTable : '', 'id="checkShowClipBoard"');
         $html[] =       '<label class="form-check-label" for="checkShowClipBoard">';
         $html[] =           BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard')));
         $html[] =       '</label>';

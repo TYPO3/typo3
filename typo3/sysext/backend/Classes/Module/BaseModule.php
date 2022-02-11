@@ -40,6 +40,7 @@ abstract class BaseModule
     protected bool $standalone = false;
     protected string $component = 'TYPO3/CMS/Backend/Module/Iframe';
     protected string $navigationComponent = '';
+    protected array $defaultModuleData = [];
     protected bool $inheritNavigationComponent = true;
 
     final protected function __construct(string $identifier)
@@ -190,6 +191,11 @@ abstract class BaseModule
 
     abstract public function getDefaultRouteOptions(): array;
 
+    public function getDefaultModuleData(): array
+    {
+        return $this->defaultModuleData;
+    }
+
     public static function createFromConfiguration(string $identifier, array $configuration): static
     {
         $obj = new static($identifier);
@@ -222,11 +228,15 @@ abstract class BaseModule
             $obj->description = $labelsFile . ':mlang_labels_tabdescr';
             $obj->shortDescription = $labelsFile . ':mlang_labels_tablabel';
         }
+
         if (is_array($configuration['position'] ?? false)) {
             $obj->position = $configuration['position'];
         }
         if (is_array($configuration['appearance'] ?? false)) {
             $obj->appearance = $configuration['appearance'];
+        }
+        if (is_array($configuration['moduleData'] ?? false)) {
+            $obj->defaultModuleData = $configuration['moduleData'];
         }
 
         if (isset($configuration['inheritNavigationComponentFromMainModule'])) {

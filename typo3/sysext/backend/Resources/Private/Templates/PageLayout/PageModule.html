@@ -44,16 +44,16 @@
     </form>
 
     <f:if condition="{hiddenElementsShowToggle}">
-        <div class="form-check">
+        <div class="form-check form-switch">
             <input
                 type="checkbox"
-                id="checkTt_content_showHidden"
+                id="checkShowHidden"
                 class="form-check-input"
-                name="SET[tt_content_showHidden]"
+                name="SET[showHidden]"
                 value="1"
                 {f:if(condition:'{hiddenElementsState} == 1', then:'checked="checked"')}
             />
-            <label class="form-check-label" for="checkTt_content_showHidden">
+            <label class="form-check-label" for="checkShowHidden">
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:hiddenCE" /> (<span class="t3js-hidden-counter">{hiddenElementsCount}</span>)
             </label>
         </div>

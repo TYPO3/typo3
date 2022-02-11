@@ -622,7 +622,6 @@ class FileList
             'id' => $this->folderObject->getCombinedIdentifier(),
             'searchTerm' => $this->searchDemand ? $this->searchDemand->getSearchTerm() : '',
         ], $params);
-        $params = array_filter($params);
         return (string)$this->uriBuilder->buildUriFromRoute('file_FilelistList', $params);
     }
 
@@ -798,14 +797,14 @@ class FileList
             }
         }
 
-        $params = ['SET' => ['sort' => $fieldName], 'pointer' => 0];
+        $params = ['sort' => $fieldName, 'pointer' => 0];
 
         if ($this->sort === $fieldName) {
             // Check reverse sorting
-            $params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
+            $params['reverse'] = ($this->sortRev ? '0' : '1');
             $sortArrow = $this->iconFactory->getIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL)->render();
         } else {
-            $params['SET']['reverse'] = 0;
+            $params['reverse'] = 0;
             $sortArrow = '';
         }
         $href = $this->listURL($params);

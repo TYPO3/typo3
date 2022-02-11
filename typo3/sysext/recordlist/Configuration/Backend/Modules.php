@@ -18,5 +18,9 @@ return [
                 'target' => RecordListController::class . '::mainAction',
             ],
         ],
+        'moduleData' => [
+            'clipBoard' => true,
+            'collapsedTables' => [],
+        ],
     ],
 ];

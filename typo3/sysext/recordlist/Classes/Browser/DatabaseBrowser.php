@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -48,6 +49,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/BrowseDatabase.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/Tree/PageBrowser.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/ColumnSelectorButton.js');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/Recordlist.js');
         $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Recordlist/RecordSearch.js');
     }
 
@@ -169,8 +171,11 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($this->expandPage, $permsClause);
+        $existingModuleData = $backendUser->getModuleData('web_list', 'ses');
+        $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
+        $dbList->setModuleData($moduleData);
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]));
         $dbList->setIsEditable(false);
         $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));

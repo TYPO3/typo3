@@ -17,5 +17,11 @@ return [
                 'target' => FileListController::class . '::handleRequest',
             ],
         ],
+        'moduleData' => [
+            'displayThumbs' => true,
+            'clipBoard' => true,
+            'sort' => 'file',
+            'reverse' => false,
+        ],
     ],
 ];

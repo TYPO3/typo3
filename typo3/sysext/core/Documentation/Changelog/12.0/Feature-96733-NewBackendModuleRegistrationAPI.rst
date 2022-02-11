@@ -171,6 +171,13 @@ Module configuration options
 |                                                          | This option defaults to :php:`true` and can therefore be used to |
 |                                                          | stop the inheritance for sub modules.                            |
 +----------------------------------------------------------+------------------------------------------------------------------+
+| moduleData (:php:`array`)                                | The allowed module data properties and their default value.      |
+|                                                          | Module data are the module specific settings of a backend user.  |
+|                                                          | The properties, defined in the registration, can be overwritten  |
+|                                                          | in a request via :php:`GET` or :php:`POST`. For more information |
+|                                                          | about the usage of this option, see the corresponding            |
+|                                                          | :doc:`changelog <Feature-96895-IntroduceModuleDataObject>`.      |
++----------------------------------------------------------+------------------------------------------------------------------+
 
 Module-dependent configuration options
 --------------------------------------

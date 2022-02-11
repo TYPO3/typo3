@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FileList;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
-use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 
 /**
  * Cases concerning sys_file_metadata records
@@ -27,15 +26,6 @@ class FileClipboardCest extends AbstractFileCest
 {
     protected string $copyModeCopy = '#clipboard-copymode-copy';
     protected string $copyModeMove = '#clipboard-copymode-move';
-
-    /**
-     * @param ApplicationTester $I
-     */
-    public function _before(ApplicationTester $I, FileTree $tree): void
-    {
-        parent::_before($I, $tree);
-        $I->click('#checkClipBoard');
-    }
 
     /**
      * @param ApplicationTester $I

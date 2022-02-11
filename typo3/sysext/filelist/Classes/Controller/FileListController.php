@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -58,17 +59,16 @@ class FileListController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    protected array $MOD_MENU = [];
-    protected array $MOD_SETTINGS = [];
     protected string $id = '';
     protected string $cmd = '';
     protected string $searchTerm = '';
     protected int $pointer = 0;
+
     protected ?Folder $folderObject = null;
     protected ?DuplicationBehavior $overwriteExistingFiles = null;
-
-    protected ModuleTemplate $view;
+    protected ?ModuleTemplate $view = null;
     protected ?FileList $filelist = null;
+    protected ?ModuleData $moduleData = null;
 
     public function __construct(
         protected readonly UriBuilder $uriBuilder,
@@ -84,6 +84,8 @@ class FileListController implements LoggerAwareInterface
     {
         $lang = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
+
+        $this->moduleData = $request->getAttribute('moduleData');
 
         $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
         $this->view->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'));
@@ -209,7 +211,7 @@ class FileListController implements LoggerAwareInterface
         $this->generateFileList();
 
         // Generate the clipboard, if enabled
-        $this->view->assign('showClipboardPanel', (bool)($this->MOD_SETTINGS['clipBoard'] ?? false));
+        $this->view->assign('showClipboardPanel', (bool)($this->moduleData?->get('clipBoard') ?? false));
 
         // Register drag-uploader
         $this->registerDragUploader();
@@ -244,33 +246,19 @@ class FileListController implements LoggerAwareInterface
 
     protected function initializeModule(ServerRequestInterface $request): void
     {
-        // Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
-        // Values NOT in this array will not be saved in the settings-array for the module.
-        $this->MOD_MENU = ['sort' => '', 'reverse' => '', 'displayThumbs' => '', 'clipBoard' => ''];
-        $this->MOD_SETTINGS = BackendUtility::getModuleData(
-            $this->MOD_MENU,
-            $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? null,
-            'file_list'
-        );
-
         $userTsConfig = $this->getBackendUser()->getTSConfig();
 
         // Set predefined value for DisplayThumbnails:
         if (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'activated') {
-            $this->MOD_SETTINGS['displayThumbs'] = true;
+            $this->moduleData?->set('displayThumbs', true);
         } elseif (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'deactivated') {
-            $this->MOD_SETTINGS['displayThumbs'] = false;
+            $this->moduleData?->set('displayThumbs', false);
         }
         // Set predefined value for Clipboard:
         if (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'activated') {
-            $this->MOD_SETTINGS['clipBoard'] = true;
+            $this->moduleData?->set('clipBoard', true);
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
-            $this->MOD_SETTINGS['clipBoard'] = false;
-        }
-        if (!isset($this->MOD_SETTINGS['sort'])) {
-            // Set default sorting
-            $this->MOD_SETTINGS['sort'] = 'file';
-            $this->MOD_SETTINGS['reverse'] = 0;
+            $this->moduleData?->set('clipBoard', false);
         }
 
         // Finally add the help button doc header button to the module
@@ -285,7 +273,7 @@ class FileListController implements LoggerAwareInterface
     {
         // Create the file list
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
-        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->MOD_SETTINGS['displayThumbs'] ?? false);
+        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->moduleData?->get('displayThumbs') ?? false);
 
         // Create clipboard object and initialize it
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
@@ -296,7 +284,7 @@ class FileListController implements LoggerAwareInterface
             // Cleanup CBC
             $CB['el'] = $this->filelist->clipObj->cleanUpCBC($CBC, '_FILE');
         }
-        if (!($this->MOD_SETTINGS['clipBoard'] ?? false)) {
+        if (!($this->moduleData?->get('clipBoard') ?? false)) {
             $CB['setP'] = 'normal';
         }
         $this->filelist->clipObj->setCmd($CB);
@@ -334,8 +322,8 @@ class FileListController implements LoggerAwareInterface
         $this->filelist->start(
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
-            (string)($this->MOD_SETTINGS['sort'] ?? ''),
-            (bool)($this->MOD_SETTINGS['reverse'] ?? false)
+            (string)($this->moduleData?->get('sort') ?? ''),
+            (bool)($this->moduleData?->get('reverse') ?? false)
         );
         $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
     }
@@ -445,8 +433,8 @@ class FileListController implements LoggerAwareInterface
             'label' => htmlspecialchars($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:displayThumbs')),
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
-                'SET[displayThumbs]',
-                $this->MOD_SETTINGS['displayThumbs'] ?? '',
+                'displayThumbs',
+                (bool)($this->moduleData?->get('displayThumbs') ?? false),
                 '',
                 $addParams,
                 'id="checkDisplayThumbs"'
@@ -458,8 +446,8 @@ class FileListController implements LoggerAwareInterface
             'mode' => $this->filelist->clipObj->current,
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
-                'SET[clipBoard]',
-                $this->MOD_SETTINGS['clipBoard'] ?? '',
+                'clipBoard',
+                (bool)($this->moduleData?->get('clipBoard') ?? false),
                 '',
                 $addParams,
                 'id="checkClipBoard"'

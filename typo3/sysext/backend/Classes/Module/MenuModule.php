@@ -156,6 +156,11 @@ class MenuModule implements ModuleInterface
         return $this->module->getDefaultRouteOptions();
     }
 
+    public function getDefaultModuleData(): array
+    {
+        return $this->module->getDefaultModuleData();
+    }
+
     public function isCollapsed(): bool
     {
         return $this->isCollapsed;

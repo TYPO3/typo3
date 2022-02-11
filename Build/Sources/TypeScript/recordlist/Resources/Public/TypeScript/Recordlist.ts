@@ -131,15 +131,15 @@ class Recordlist {
     // Store collapse state in UC
     let storedModuleDataList = {};
 
-    if (PersistentStorage.isset('moduleData.list')) {
-      storedModuleDataList = PersistentStorage.get('moduleData.list');
+    if (PersistentStorage.isset('moduleData.web_list.collapsedTables')) {
+      storedModuleDataList = PersistentStorage.get('moduleData.web_list.collapsedTables');
     }
 
     const collapseConfig: any = {};
     collapseConfig[table] = isExpanded ? 1 : 0;
 
     $.extend(storedModuleDataList, collapseConfig);
-    PersistentStorage.set('moduleData.list', storedModuleDataList).done((): void => {
+    PersistentStorage.set('moduleData.web_list.collapsedTables', storedModuleDataList).done((): void => {
       $target.data('state', isExpanded ? 'collapsed' : 'expanded');
     });
   }

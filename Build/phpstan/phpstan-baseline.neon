@@ -5256,11 +5256,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/Controller/ClearPageCacheController.php
 
 		-
-			message: "#^Variable \\$MOD_SETTINGS on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/Controller/RecordListController.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FileLinkHandler.php

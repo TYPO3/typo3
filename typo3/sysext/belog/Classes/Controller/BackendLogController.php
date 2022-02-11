@@ -145,7 +145,7 @@ class BackendLogController extends ActionController
      */
     protected function getConstraintFromBeUserData()
     {
-        $serializedConstraint = $GLOBALS['BE_USER']->getModuleData(static::class);
+        $serializedConstraint = $this->request->getAttribute('moduleData')?->get('constraint');
         $constraint = null;
         if (is_string($serializedConstraint) && !empty($serializedConstraint)) {
             $constraint = @unserialize($serializedConstraint, ['allowed_classes' => [Constraint::class, \DateTime::class]]);
@@ -158,9 +158,9 @@ class BackendLogController extends ActionController
      *
      * @param Constraint $constraint
      */
-    protected function persistConstraintInBeUserData(Constraint $constraint)
+    protected function persistConstraintInBeUserData(Constraint $constraint): void
     {
-        $GLOBALS['BE_USER']->pushModuleData(static::class, serialize($constraint));
+        $GLOBALS['BE_USER']->pushModuleData('system_BelogLog', ['constraint' => serialize($constraint)]);
     }
 
     /**

@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -127,7 +129,11 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
         $pageInfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $existingModuleData = $this->getBackendUser()->getModuleData('web_list', 'ses');
+        $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
+
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->setModuleData($moduleData);
         $dbList->pageRow = $pageInfo;
         if ($readOnly) {
             $dbList->setIsEditable(false);
@@ -149,6 +155,11 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $dbList->sortField = $sortField;
         $dbList->sortRev = $sortDescending;
         return $dbList->generateList();
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 
     protected function getLanguageService(): LanguageService

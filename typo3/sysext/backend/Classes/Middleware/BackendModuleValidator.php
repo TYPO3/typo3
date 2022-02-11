@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -57,31 +58,67 @@ class BackendModuleValidator implements MiddlewareInterface
     {
         /** @var Route $route */
         $route = $request->getAttribute('route');
-
-        if ($route->hasOption('module')
-            && ($module = $route->getOption('module')) instanceof ModuleInterface
+        $ensureToPersistUserSettings = false;
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if (!$backendUser
+            || !$route->hasOption('module')
+            || !(($module = $route->getOption('module')) instanceof ModuleInterface)
         ) {
-            $this->validateModuleAccess($request, $module);
-
-            // This module request (which is usually opened inside the list_frame)
-            // has been issued from a toplevel browser window (e.g. a link was opened in a new tab).
-            // Redirect to open the module as frame inside the TYPO3 backend layout.
-            // HEADS UP: This header will only be available in secure connections (https:// or .localhost TLD)
-            if ($request->getHeaderLine('Sec-Fetch-Dest') === 'document') {
-                return new RedirectResponse(
-                    $this->uriBuilder->buildUriWithRedirect(
-                        'main',
-                        [],
-                        RouteRedirect::createFromRoute($route, $request->getQueryParams())
-                    )
-                );
-            }
-
-            // Add the validated module to the current request
-            $request = $request->withAttribute('module', $module);
+            return $handler->handle($request);
         }
 
-        return $handler->handle($request);
+        $this->validateModuleAccess($request, $module);
+
+        // This module request (which is usually opened inside the list_frame)
+        // has been issued from a toplevel browser window (e.g. a link was opened in a new tab).
+        // Redirect to open the module as frame inside the TYPO3 backend layout.
+        // HEADS UP: This header will only be available in secure connections (https:// or .localhost TLD)
+        if ($request->getHeaderLine('Sec-Fetch-Dest') === 'document') {
+            return new RedirectResponse(
+                $this->uriBuilder->buildUriWithRedirect(
+                    'main',
+                    [],
+                    RouteRedirect::createFromRoute($route, $request->getQueryParams())
+                )
+            );
+        }
+
+        // Check for module data, send via GET/POST parameters.
+        // Only consider the configured keys from the module configuration.
+        $requestModuleData = [];
+        foreach ($module->getDefaultModuleData() as $name => $value) {
+            $newValue = $request->getParsedBody()[$name] ?? $request->getQueryParams()[$name] ?? null;
+            if ($newValue !== null) {
+                $requestModuleData[$name] = $newValue;
+            }
+        }
+
+        // Get stored module data
+        if (!is_array(($persistedModuleData = $backendUser->getModuleData($module->getIdentifier(), 'ses')))) {
+            $persistedModuleData = [];
+        }
+
+        // Settings were changed from the request, so they need to get persisted
+        if ($requestModuleData !== []) {
+            $moduleData = ModuleData::createFromModule($module, array_replace_recursive($persistedModuleData, $requestModuleData));
+            $backendUser->pushModuleData($module->getIdentifier(), $moduleData->toArray(), true);
+            $ensureToPersistUserSettings = true;
+        } else {
+            $moduleData = ModuleData::createFromModule($module, $persistedModuleData);
+        }
+
+        // Add validated module and its data to the current request
+        $request = $request
+            ->withAttribute('module', $module)
+            ->withAttribute('moduleData', $moduleData);
+
+        $response = $handler->handle($request);
+
+        if ($ensureToPersistUserSettings) {
+            $backendUser->writeUC();
+        }
+
+        return $response;
     }
 
     /**

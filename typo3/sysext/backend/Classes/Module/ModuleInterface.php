@@ -148,4 +148,9 @@ interface ModuleInterface
      * Returns module related route options - used for the router
      */
     public function getDefaultRouteOptions(): array;
+
+    /**
+     * Get allowed and available module data properties and their default values.
+     */
+    public function getDefaultModuleData(): array;
 }

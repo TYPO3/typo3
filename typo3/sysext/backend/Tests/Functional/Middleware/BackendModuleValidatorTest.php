@@ -51,9 +51,13 @@ class BackendModuleValidatorTest extends FunctionalTestCase
         $this->requestHandler = new class() implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                // In case the module is valid, it is added to the request.
-                // To test this, we add the possible module identifier as header to the response.
-                return (new Response())->withHeader('moduleIdentifier', $request->getAttribute('module')?->getIdentifier() ?? '');
+                // In case the module is valid, it is added to the request, together with the
+                // module data. To test this, we add some properties as header to the response.
+                return (new Response())
+                    ->withHeader('X-Module-identifier', (string)($request->getAttribute('module')?->getIdentifier() ?? ''))
+                    ->withHeader('X-ModuleData-sort', (string)($request->getAttribute('moduleData')?->get('sort') ?? ''))
+                    ->withHeader('X-ModuleData-pointer', (string)($request->getAttribute('moduleData')?->get('pointer') ?? '12'))
+                    ->withHeader('X-ModuleData-reverse', (string)($request->getAttribute('moduleData')?->get('reverse') ?? '0'));
             }
         };
     }
@@ -73,7 +77,36 @@ class BackendModuleValidatorTest extends FunctionalTestCase
             $this->requestHandler
         );
 
-        self::assertEquals('web_layout', $response->getHeaderLine('moduleIdentifier'));
+        self::assertEquals('web_layout', $response->getHeaderLine('X-Module-identifier'));
+    }
+
+    /**
+     * @test
+     */
+    public function moduleDataIsAddedToRequest(): void
+    {
+        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+            'web_layout',
+            [
+                'path' => '/module/web/layout',
+                'moduleData' => [
+                    'sort' => 'name',
+                    'pointer' => 12,
+                    'reverse' => false,
+                ],
+            ]
+        );
+
+        $response = $this->subject->process(
+            $this->request
+                ->withQueryParams(['pointer' => 0, 'reverse' => true])
+                ->withAttribute('route', new Route('/some/route', ['module' => $module])),
+            $this->requestHandler
+        );
+
+        self::assertEquals('name', $response->getHeaderLine('X-ModuleData-sort'));
+        self::assertEquals('0', $response->getHeader('X-ModuleData-pointer')[0]);
+        self::assertEquals('1', $response->getHeader('X-ModuleData-reverse')[0]);
     }
 
     /**

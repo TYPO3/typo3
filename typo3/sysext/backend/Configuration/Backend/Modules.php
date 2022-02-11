@@ -21,6 +21,11 @@ return [
                 'target' => PageLayoutController::class . '::mainAction',
             ],
         ],
+        'moduleData' => [
+            'function' => 1,
+            'language' => 0,
+            'showHidden' => true,
+        ],
     ],
     'site_configuration' => [
         'parent' => 'site',

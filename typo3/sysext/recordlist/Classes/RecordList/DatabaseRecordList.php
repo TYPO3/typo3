@@ -19,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -144,12 +145,9 @@ class DatabaseRecordList
     public $sortField;
 
     /**
-     * Module data
-     *
-     * @internal
-     * @var array
+     * Data of the module from the user's session
      */
-    protected array $moduleData = [];
+    protected ?ModuleData $moduleData = null;
 
     /**
      * Page id
@@ -653,8 +651,7 @@ class DatabaseRecordList
         }
 
         $backendUser = $this->getBackendUserAuthentication();
-        $tablesCollapsed = $backendUser->getModuleData('list') ?? [];
-        $tableCollapsed = (bool)($tablesCollapsed[$table] ?? false);
+        $tableCollapsed = (bool)($this->moduleData?->get('collapsedTables')[$table] ?? false);
 
         // Header line is drawn
         $theData = [];
@@ -2217,14 +2214,7 @@ class DatabaseRecordList
         return $editPermission;
     }
 
-    /**
-     * Set the module data
-     *
-     * See BackendUtility::getModuleData
-     *
-     * @param array $moduleData
-     */
-    public function setModuleData(array $moduleData = []): void
+    public function setModuleData(ModuleData $moduleData): void
     {
         $this->moduleData = $moduleData;
     }
