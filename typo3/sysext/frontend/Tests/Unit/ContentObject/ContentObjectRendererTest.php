@@ -78,6 +78,7 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserContentObject;
 use TYPO3\CMS\Frontend\ContentObject\UserInternalContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures\TestSanitizerBuilder;
 use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -1943,6 +1944,335 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * @return array
      */
+    public function _parseFuncReturnsCorrectHtmlDataProvider(): array
+    {
+        return [
+            'Text without tag is wrapped with <p> tag' => [
+                'Text without tag',
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">Text without tag</p>',
+            ],
+            'Text wrapped with <p> tag remains the same' => [
+                '<p class="myclass">Text with &lt;p&gt; tag</p>',
+                $this->getLibParseFunc_RTE(),
+                '<p class="myclass">Text with &lt;p&gt; tag</p>',
+            ],
+            'Text with absolute external link' => [
+                'Text with <link http://example.com/foo/>external link</link>',
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">Text with <a href="http://example.com/foo/">external link</a></p>',
+            ],
+            'Empty lines are not duplicated' => [
+                LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Multiple empty lines with no text' => [
+                LF . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not duplicated at the end of content' => [
+                'test' . LF . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+            'Empty lines are not trimmed' => [
+                LF . 'test' . LF,
+                $this->getLibParseFunc_RTE(),
+                '<p class="bodytext">&nbsp;</p>' . LF . '<p class="bodytext">test</p>' . LF . '<p class="bodytext">&nbsp;</p>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider _parseFuncReturnsCorrectHtmlDataProvider
+     * @param string $value
+     * @param array $configuration
+     * @param string $expectedResult
+     */
+    public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+    }
+
+    /**
+     * Data provider for the parseFuncParsesNestedTagsProperly test
+     *
+     * @return array multi-dimensional array with test data
+     * @see parseFuncParsesNestedTagsProperly
+     */
+    public function _parseFuncParsesNestedTagsProperlyDataProvider(): array
+    {
+        $defaultListItemParseFunc = [
+            'parseFunc'  => '',
+            'parseFunc.' => [
+                'tags.' => [
+                    'li'  => 'TEXT',
+                    'li.' => [
+                        'wrap'    => '<li>LI:|</li>',
+                        'current' => '1',
+                    ],
+                ],
+            ],
+        ];
+
+        return [
+            'parent & child tags with same beginning are processed' => [
+                '<div><any data-skip><anyother data-skip>content</anyother></any></div>',
+                [
+                    'parseFunc'  => '',
+                    'parseFunc.' => [
+                        'tags.' => [
+                            'any' => 'TEXT',
+                            'any.' => [
+                                'wrap' => '<any data-processed>|</any>',
+                                'current' => 1,
+                            ],
+                            'anyother' => 'TEXT',
+                            'anyother.' => [
+                                'wrap' => '<anyother data-processed>|</anyother>',
+                                'current' => 1,
+                            ],
+                        ],
+                        'htmlSanitize' => true,
+                        'htmlSanitize.' => [
+                            'build' => TestSanitizerBuilder::class,
+                        ],
+                    ],
+                ],
+                '<div><any data-processed><anyother data-processed>content</anyother></any></div>',
+            ],
+            'list with empty and filled li' => [
+                '<ul>
+    <li></li>
+    <li>second</li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:</li>
+    <li>LI:second</li>
+</ul>',
+            ],
+            'list with filled li wrapped by a div containing text' => [
+                '<div>text<ul><li></li><li>second</li></ul></div>',
+                $defaultListItemParseFunc,
+                '<div>text<ul><li>LI:</li><li>LI:second</li></ul></div>',
+            ],
+            'link list with empty li modification' => [
+                '<ul>
+    <li>
+        <ul>
+            <li></li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:
+        <ul>
+            <li>LI:</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+
+            'link list with li modifications' => [
+                '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+            'link list with li modifications and no text' => [
+                '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+            'link list with li modifications on third level' => [
+                '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub
+                <ul>
+                    <li>first sub sub</li>
+                    <li>second sub sub</li>
+                </ul>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul>
+            <li>LI:first sub
+                <ul>
+                    <li>LI:first sub sub</li>
+                    <li>LI:second sub sub</li>
+                </ul>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+            'link list with li modifications on third level no text' => [
+                '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>
+                <ul>
+                    <li>first sub sub</li>
+                    <li>first sub sub</li>
+                </ul>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:
+                <ul>
+                    <li>LI:first sub sub</li>
+                    <li>LI:first sub sub</li>
+                </ul>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+            'link list with ul and li modifications' => [
+                '<ul>
+    <li>first</li>
+    <li>second
+        <ul>
+            <li>first sub</li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                [
+                    'parseFunc'  => '',
+                    'parseFunc.' => [
+                        'tags.' => [
+                            'ul'  => 'TEXT',
+                            'ul.' => [
+                                'wrap'    => '<ul><li>intro</li>|<li>outro</li></ul>',
+                                'current' => '1',
+                            ],
+                            'li'  => 'TEXT',
+                            'li.' => [
+                                'wrap'    => '<li>LI:|</li>',
+                                'current' => '1',
+                            ],
+                        ],
+                    ],
+                ],
+                '<ul><li>intro</li>
+    <li>LI:first</li>
+    <li>LI:second
+        <ul><li>intro</li>
+            <li>LI:first sub</li>
+            <li>LI:second sub</li>
+        <li>outro</li></ul>
+    </li>
+<li>outro</li></ul>',
+            ],
+
+            'link list with li containing p tag and sub list' => [
+                '<ul>
+    <li>first</li>
+    <li>
+        <ul>
+            <li>
+                <span>
+                    <ul>
+                        <li>first sub sub</li>
+                        <li>first sub sub</li>
+                    </ul>
+                </span>
+            </li>
+            <li>second sub</li>
+        </ul>
+    </li>
+</ul>',
+                $defaultListItemParseFunc,
+                '<ul>
+    <li>LI:first</li>
+    <li>LI:
+        <ul>
+            <li>LI:
+                <span>
+                    <ul>
+                        <li>LI:first sub sub</li>
+                        <li>LI:first sub sub</li>
+                    </ul>
+                </span>
+            </li>
+            <li>LI:second sub</li>
+        </ul>
+    </li>
+</ul>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider _parseFuncParsesNestedTagsProperlyDataProvider
+     * @param string $value
+     * @param array $configuration
+     * @param string $expectedResult
+     */
+    public function parseFuncParsesNestedTagsProperly(string $value, array $configuration, string $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+    }
+
+    /**
+     * @return array
+     */
     public function typolinkReturnsCorrectLinksForEmailsAndUrlsDataProvider(): array
     {
         return [
@@ -3179,8 +3509,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
         GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
 
-        // `parseFunc` issues deprecation in case `htmlSanitize` is not given
-        $expectExceptions = ['numRows', 'parseFunc', 'bytes'];
+        $expectExceptions = ['numRows', 'bytes'];
         $count = 0;
         $processors = [];
         $exceptions = [];

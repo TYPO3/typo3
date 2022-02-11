@@ -199,9 +199,6 @@ SYS:
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'
-              security.frontend.htmlSanitizeParseFuncDefault:
-                type: bool
-                description: 'If on, HTML sanitizer is enabled in parseFunc during frontend rendering as fall-back, in case it has not define more specifically'
               security.backend.htmlSanitizeRte:
                 type: bool
                 description: 'If on, rich-text content persisted in backend is processed with HTML Sanitizer to purge cross-site scripting from markup'

@@ -73,7 +73,6 @@ return [
         'features' => [
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
-            'security.frontend.htmlSanitizeParseFuncDefault' => true,
             'security.backend.htmlSanitizeRte' => false,
             'security.backend.enforceReferrer' => true,
             'yamlImportsFollowDeclarationOrder' => false,

@@ -58,17 +58,14 @@ class Features
      * A list of features that are always activated (mainly happens if a previous feature switch is now always
      * "turned on" to enforce a behaviour, but still valid for extension authors to ensure the feature switch
      * returns "enabled" for future versions.
-     *
-     * Usually, this list is kept for 1-2 major versions.
-     *
-     * @var array
      */
-    protected $alwaysActiveFeatures = [
-        // Enabled in v12.0 at any time, feature switch will be completely ignored in TYPO3 v13.
+    protected array $alwaysActiveFeatures = [
+        // Enabled since v12.0 at any time.
+        'security.frontend.htmlSanitizeParseFuncDefault',
         'runtimeDbQuotingOfTcaConfiguration',
-        // Enabled in v11.0 at any time, feature switch will be completely ignored in TYPO3 v12.
+        // Enabled since v11.0 at any time.
         'fluidBasedPageModule',
-        // Enabled in v10.0 at any time, feature switch will be completely ignored in TYPO3 v11.
+        // Enabled since v10.0 at any time.
         'simplifiedControllerActionDispatching',
         'unifiedPageTranslationHandling',
         'felogin.extbase',

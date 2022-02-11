@@ -3269,14 +3269,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             throw new \LogicException('Invoked ContentObjectRenderer::parseFunc without any configuration', 1641989097);
         }
         // Handle HTML sanitizer invocation
-        if (!isset($conf['htmlSanitize'])) {
-            // @deprecated Property htmlSanitize was not defined, but will be mandatory in TYPO3 v12.0
-            trigger_error('Property htmlSanitize was not defined, but will be mandatory in TYPO3 v12.0', E_USER_DEPRECATED);
-            $features = GeneralUtility::makeInstance(Features::class);
-            $conf['htmlSanitize'] = $features->isFeatureEnabled('security.frontend.htmlSanitizeParseFuncDefault');
-        }
-        $conf['htmlSanitize'] = (bool)$conf['htmlSanitize'];
-
+        $conf['htmlSanitize'] = (bool)($conf['htmlSanitize'] ?? true);
         // Process:
         if ((string)($conf['externalBlocks'] ?? '') === '') {
             $result = $this->_parseFunc($theValue, $conf);
