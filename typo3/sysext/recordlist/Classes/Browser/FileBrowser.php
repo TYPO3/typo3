@@ -117,6 +117,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     public function render()
     {
+        $request = $this->getRequest();
         $backendUser = $this->getBackendUser();
 
         // The key number 3 of the bparams contains the "allowed" string. Disallowed is not passed to
@@ -179,7 +180,8 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         if (!$noThumbs) {
             // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
             $_MOD_MENU = ['displayThumbs' => ''];
-            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list');
+            $changedSettings = (array)($request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? []);
+            $_MOD_SETTINGS = BackendUtility::getModuleData($_MOD_MENU, $changedSettings, 'file_list');
         }
         $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? true;
         $noThumbs = $noThumbs ?: !$displayThumbs;
@@ -188,7 +190,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         } else {
             $files = '';
         }
-        $contentOnly = (bool)($this->getRequest()->getQueryParams()['contentOnly'] ?? false);
+        $contentOnly = (bool)($request->getQueryParams()['contentOnly'] ?? false);
 
         $this->pageRenderer->setTitle($this->getLanguageService()->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:fileSelector'));
         $view = $this->view;
@@ -396,11 +398,13 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             return '';
         }
 
+        $request = $this->getRequest();
         $lang = $this->getLanguageService();
 
         // MENU-ITEMS, fetching the setting for thumbnails from File>List module:
         $_MOD_MENU = ['displayThumbs' => ''];
-        $currentValue = BackendUtility::getModuleData($_MOD_MENU, GeneralUtility::_GP('SET'), 'file_list')['displayThumbs'] ?? true;
+        $changedSettings = (array)($request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? []);
+        $currentValue = BackendUtility::getModuleData($_MOD_MENU, $changedSettings, 'file_list')['displayThumbs'] ?? true;
         $addParams = HttpUtility::buildQueryString($this->getUrlParameters(['identifier' => $this->selectedFolder->getCombinedIdentifier()]), '&');
 
         return '
