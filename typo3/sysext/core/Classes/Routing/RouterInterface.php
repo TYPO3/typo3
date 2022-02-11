@@ -47,7 +47,7 @@ interface RouterInterface
     /**
      * Builds a URI based on the $route and the given parameters.
      *
-     * @param string|array $route either the route name, or for pages it is usually the array of a page record, or the page ID
+     * @param string|array|int $route either the route name, or for pages it is usually the array of a page record, or the page ID
      * @param array $parameters query parameters, specially reserved parameters are usually prefixed with "_"
      * @param string $fragment the section/fragment www.example.com/page/#fragment, WITHOUT the hash
      * @param string $type see the constants above.

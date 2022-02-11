@@ -328,12 +328,12 @@ class WorkspacePreview implements MiddlewareInterface
                 $content = sprintf(
                     $tsfe->config['config']['message_preview_workspace'],
                     $currentWorkspaceTitle,
-                    $currentWorkspaceId ?? -99
+                    $currentWorkspaceId
                 );
             } else {
                 $text = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:previewText');
                 $text = htmlspecialchars($text);
-                $text = sprintf($text, $currentWorkspaceTitle, $currentWorkspaceId ?? -99);
+                $text = sprintf($text, $currentWorkspaceTitle, $currentWorkspaceId);
                 $stopPreviewText = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xlf:stopPreview');
                 $stopPreviewText = htmlspecialchars($stopPreviewText);
                 if ($GLOBALS['BE_USER'] instanceof PreviewUserAuthentication) {

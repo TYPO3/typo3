@@ -219,7 +219,7 @@ class PageRouter implements RouterInterface
     /**
      * API for generating a page where the $route parameter is typically an array (page record) or the page ID
      *
-     * @param array|string $route
+     * @param array|string|int $route
      * @param array $parameters an array of query parameters which can be built into the URI path, also consider the special handling of "_language"
      * @param string $fragment additional #my-fragment part
      * @param string $type see the RouterInterface for possible types

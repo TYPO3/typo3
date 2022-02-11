@@ -226,7 +226,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         $queryParameters = [];
         $addQueryParams = ($conf['addQueryString'] ?? false) ? $this->contentObjectRenderer->getQueryArguments($conf['addQueryString.'] ?? []) : '';
-        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf ?? []));
+        $addQueryParams .= trim((string)$this->contentObjectRenderer->stdWrapValue('additionalParams', $conf));
         if ($addQueryParams === '&' || ($addQueryParams[0] ?? '') !== '&') {
             $addQueryParams = '';
         }
