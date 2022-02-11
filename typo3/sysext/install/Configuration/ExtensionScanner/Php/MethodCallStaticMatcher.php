@@ -1364,4 +1364,11 @@ return [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getFuncInput' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Breaking-96829-RemovedBackendUtility-getFuncInput.rst',
+        ],
+    ],
 ];

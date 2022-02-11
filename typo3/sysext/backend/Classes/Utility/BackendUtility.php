@@ -2318,33 +2318,6 @@ class BackendUtility
     }
 
     /**
-     * Input field function menu
-     * Works like ->getFuncMenu() / ->getFuncCheck() but displays an input field instead which updates the script "onchange"
-     *
-     * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
-     * @param string $elementName The form elements name, probably something like "SET[...]
-     * @param string $currentValue The value to be selected currently.
-     * @param int $size Relative size of input field, max is 48
-     * @param string $script The script to send the &id to, if empty it's automatically found
-     * @param string $addParams Additional parameters to pass to the script.
-     * @return string HTML code for input text field.
-     * @see getFuncMenu()
-     * @todo not used at least since TYPO3 v9, drop in TYPO3 v12.0
-     */
-    public static function getFuncInput(
-        $mainParams,
-        $elementName,
-        $currentValue,
-        $size = 10,
-        $script = '',
-        $addParams = ''
-    ) {
-        $scriptUrl = self::buildScriptUrl($mainParams, $addParams, $script);
-        $onChange = 'window.location.href = ' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+escape(this.value);';
-        return '<input type="text" class="form-control" name="' . $elementName . '" value="' . htmlspecialchars($currentValue) . '" onchange="' . htmlspecialchars($onChange) . '" />';
-    }
-
-    /**
      * Builds the URL to the current script with given arguments
      *
      * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
