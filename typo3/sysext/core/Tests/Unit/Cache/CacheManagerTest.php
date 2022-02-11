@@ -505,47 +505,6 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCacheConfigurationsMergesLegacyConfigCorrectly(): void
-    {
-        $rawConfiguration = [
-            'pages' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                'options' => [
-                    'compression' => true,
-                ],
-                'groups' => ['pages'],
-            ],
-            'cache_pages' => [
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
-                'options' => [
-                    'hostname' => 'redis',
-                ],
-                'groups' => ['pages'],
-            ],
-        ];
-        $expectedConfiguration = [
-            'pages' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\RedisBackend::class,
-                'options' => [
-                    'compression' => true,
-                    'hostname' => 'redis',
-                ],
-                'groups' => ['pages'],
-            ],
-        ];
-        $this->expectDeprecation();
-
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
-        $manager->setCacheConfigurations($rawConfiguration);
-        self::assertEquals($expectedConfiguration, $manager->_get('cacheConfigurations'));
-    }
-
-    /**
-     * @test
-     */
     public function setCacheConfigurationsThrowsExceptionIfConfiguredCacheDoesNotHaveAnIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -555,28 +514,6 @@ class CacheManagerTest extends UnitTestCase
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
         $manager->setCacheConfigurations([
             '' => [
-                'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
-                'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
-                'options' => [
-                    'compression' => true,
-                ],
-                'groups' => ['pages'],
-            ],
-        ]);
-    }
-
-    /**
-     * @test
-     */
-    public function setCacheConfigurationsThrowsExceptionIfMigratedConfiguredCacheDoesNotHaveAnIdentifier(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1596980033);
-
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
-        $manager = $this->getAccessibleMock(CacheManager::class, ['dummy']);
-        $manager->setCacheConfigurations([
-            'cache_' => [
                 'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                 'backend' => \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend::class,
                 'options' => [

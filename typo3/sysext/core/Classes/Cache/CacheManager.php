@@ -95,7 +95,6 @@ class CacheManager implements SingletonInterface
     public function setCacheConfigurations(array $cacheConfigurations)
     {
         $newConfiguration = [];
-        $migratedConfiguration = [];
         foreach ($cacheConfigurations as $identifier => $configuration) {
             if (empty($identifier)) {
                 throw new \InvalidArgumentException('A cache identifier was not set.', 1596980032);
@@ -103,19 +102,9 @@ class CacheManager implements SingletonInterface
             if (!is_array($configuration)) {
                 throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
             }
-            // Fallback layer, will be removed in TYPO3 v12.0.
-            if (strpos($identifier, 'cache_') === 0) {
-                $identifier = substr($identifier, 6);
-                if (empty($identifier)) {
-                    throw new \InvalidArgumentException('A cache identifier was not set.', 1596980033);
-                }
-                trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
-                $migratedConfiguration[$identifier] = $configuration;
-            } else {
-                $newConfiguration[$identifier] = $configuration;
-            }
+            $newConfiguration[$identifier] = $configuration;
         }
-        $this->cacheConfigurations = array_replace_recursive($newConfiguration, $migratedConfiguration);
+        $this->cacheConfigurations = $newConfiguration;
     }
 
     /**
@@ -146,11 +135,6 @@ class CacheManager implements SingletonInterface
      */
     public function getCache($identifier)
     {
-        // Fallback layer, will be removed in TYPO3 v12.0.
-        if (strpos($identifier, 'cache_') === 0) {
-            trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
-            $identifier = substr($identifier, 6);
-        }
         if ($this->hasCache($identifier) === false) {
             throw new NoSuchCacheException('A cache with identifier "' . $identifier . '" does not exist.', 1203699034);
         }
@@ -168,11 +152,6 @@ class CacheManager implements SingletonInterface
      */
     public function hasCache($identifier)
     {
-        // Fallback layer, will be removed in TYPO3 v12.0.
-        if (strpos($identifier, 'cache_') === 0) {
-            trigger_error('Accessing a cache with the "cache_" prefix as in "' . $identifier . '" is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
-            $identifier = substr($identifier, 6);
-        }
         return isset($this->caches[$identifier]) || isset($this->cacheConfigurations[$identifier]);
     }
 

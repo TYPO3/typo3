@@ -48,10 +48,6 @@ abstract class AbstractFrontend implements FrontendInterface
         if (preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) !== 1) {
             throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
         }
-        if (strpos($identifier, 'cache_') === 0) {
-            trigger_error('Setting up a cache as in "' . $identifier . '" with the "cache_" prefix is not necessary anymore, and should be called without the cache prefix.', E_USER_DEPRECATED);
-            $identifier = substr($identifier, 6);
-        }
         $this->identifier = $identifier;
         $this->backend = $backend;
         $this->backend->setCache($this);

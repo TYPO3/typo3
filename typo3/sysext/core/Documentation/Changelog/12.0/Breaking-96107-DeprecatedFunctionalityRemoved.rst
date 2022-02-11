@@ -387,6 +387,7 @@ The following fallbacks have been removed:
   with their fully qualified name.
 - Extbase no longer determines types from doc block annotations for dependency injection methods and actions with validators,
   defined types in method signatures must be used.
+- Accessing core related caches with :php:`cache_` prefix has been removed.
 
 The following database tables have been removed:
 
