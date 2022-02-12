@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -390,7 +392,7 @@ class SearchController extends ActionController
         // performing some mapping of sub-results etc.
         $newResultRows = [];
         foreach ($resultRows as $row) {
-            $id = md5($row['phash_grouping']);
+            $id = md5((string)$row['phash_grouping']);
             if (is_array($newResultRows[$id] ?? null)) {
                 // swapping:
                 if (!$newResultRows[$id]['show_resume'] && $row['show_resume']) {
