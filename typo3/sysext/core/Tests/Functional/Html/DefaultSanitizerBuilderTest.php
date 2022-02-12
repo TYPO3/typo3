@@ -17,7 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Html;
 
+use TYPO3\CMS\Core\Html\DefaultSanitizerBuilder;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
+use TYPO3\CMS\Core\Tests\Functional\Html\Fixtures\ExtendedSanitizerBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\HtmlSanitizer\Behavior;
+use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class DefaultSanitizerBuilderTest extends FunctionalTestCase
@@ -148,5 +153,48 @@ class DefaultSanitizerBuilderTest extends FunctionalTestCase
         $builder = $factory->build('default');
         $sanitizer = $builder->build();
         self::assertSame($expectation, $sanitizer->sanitize($payload));
+    }
+
+    /**
+     * @test
+     */
+    public function behaviorIsCachedInMemory(): void
+    {
+        $default = GeneralUtility::makeInstance(DefaultSanitizerBuilder::class);
+        $defaultSanitizer = $default->build();
+        $defaultBehavior = $this->resolveBehaviorFromSanitizer($defaultSanitizer);
+
+        self::assertSame(
+            $defaultBehavior,
+            $this->resolveBehaviorFromSanitizer($default->build()),
+            'in-memory caching failed for same scope DefaultSanitizerBuilder'
+        );
+
+        $extended = GeneralUtility::makeInstance(ExtendedSanitizerBuilder::class);
+        $extendedSanitizer = $extended->build();
+        $extendedBehavior = $this->resolveBehaviorFromSanitizer($extendedSanitizer);
+
+        self::assertSame(
+            $extendedBehavior,
+            $this->resolveBehaviorFromSanitizer($extended->build()),
+            'in-memory caching failed for same scope ExtendedSanitizerBuilder'
+        );
+
+        self::assertNotSame(
+            $defaultBehavior,
+            $extendedBehavior,
+            'in-memory cache violation for different scopes'
+        );
+    }
+
+    private function resolveBehaviorFromSanitizer(Sanitizer $sanitizer): Behavior
+    {
+        $visitorsProp = (new \ReflectionObject($sanitizer))->getProperty('visitors');
+        $visitorsProp->setAccessible(true);
+        $visitor = $visitorsProp->getValue($sanitizer)[0];
+
+        $behaviorProp = (new \ReflectionObject($visitor))->getProperty('behavior');
+        $behaviorProp->setAccessible(true);
+        return $behaviorProp->getValue($visitor);
     }
 }
