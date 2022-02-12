@@ -25,21 +25,10 @@ use TYPO3\CMS\Core\Tree\TableConfiguration\AbstractTableConfigurationTreeDataPro
  */
 final class ModifyTreeDataEvent
 {
-
-    /**
-     * @var TreeNode
-     */
-    private $treeData;
-
-    /**
-     * @var AbstractTableConfigurationTreeDataProvider
-     */
-    private $provider;
-
-    public function __construct(TreeNode $treeData, AbstractTableConfigurationTreeDataProvider $provider)
-    {
-        $this->treeData = $treeData;
-        $this->provider = $provider;
+    public function __construct(
+        private TreeNode $treeData,
+        private readonly AbstractTableConfigurationTreeDataProvider $provider
+    ) {
     }
 
     public function getTreeData(): TreeNode

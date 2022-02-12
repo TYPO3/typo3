@@ -25,36 +25,17 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 final class FilterMenuItemsEvent
 {
-    private array $allMenuItems;
-    private array $filteredMenuItems;
-    private array $menuConfiguration;
-    private array $itemConfiguration;
-    private array $bannedMenuItems;
-    private array $excludedDoktypes;
-    private Site $site;
-    private Context $context;
-    private array $currentPage;
-
     public function __construct(
-        array $allMenuItems,
-        array $filteredMenuItems,
-        array $menuConfiguration,
-        array $itemConfiguration,
-        array $bannedMenuItems,
-        array $excludedDoktypes,
-        Site $site,
-        Context $context,
-        array $currentPage
+        private readonly array $allMenuItems,
+        private array $filteredMenuItems,
+        private readonly array $menuConfiguration,
+        private readonly array $itemConfiguration,
+        private readonly array $bannedMenuItems,
+        private readonly array $excludedDoktypes,
+        private readonly Site $site,
+        private readonly Context $context,
+        private readonly array $currentPage
     ) {
-        $this->allMenuItems = $allMenuItems;
-        $this->filteredMenuItems = $filteredMenuItems;
-        $this->menuConfiguration = $menuConfiguration;
-        $this->itemConfiguration = $itemConfiguration;
-        $this->bannedMenuItems = $bannedMenuItems;
-        $this->excludedDoktypes = $excludedDoktypes;
-        $this->site = $site;
-        $this->context = $context;
-        $this->currentPage = $currentPage;
     }
 
     public function getAllMenuItems(): array

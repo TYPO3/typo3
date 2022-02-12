@@ -25,15 +25,13 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
  */
 final class ModifyPageLayoutContentEvent
 {
-    private ServerRequestInterface $request;
-    private ModuleTemplate $moduleTemplate;
     private string $headerContent = '';
     private string $footerContent = '';
 
-    public function __construct(ServerRequestInterface $request, ModuleTemplate $moduleTemplate)
-    {
-        $this->request = $request;
-        $this->moduleTemplate = $moduleTemplate;
+    public function __construct(
+        private readonly ServerRequestInterface $request,
+        private readonly ModuleTemplate $moduleTemplate
+    ) {
     }
 
     public function getRequest(): ServerRequestInterface

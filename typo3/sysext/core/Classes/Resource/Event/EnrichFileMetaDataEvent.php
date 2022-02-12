@@ -24,26 +24,8 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class EnrichFileMetaDataEvent
 {
-    /**
-     * @var int
-     */
-    private $fileUid;
-
-    /**
-     * @var int
-     */
-    private $metaDataUid;
-
-    /**
-     * @var array
-     */
-    private $record;
-
-    public function __construct(int $fileUid, int $metaDataUid, array $record)
+    public function __construct(private readonly int $fileUid, private readonly int $metaDataUid, private array $record)
     {
-        $this->fileUid = $fileUid;
-        $this->metaDataUid = $metaDataUid;
-        $this->record = $record;
     }
 
     public function getFileUid(): int

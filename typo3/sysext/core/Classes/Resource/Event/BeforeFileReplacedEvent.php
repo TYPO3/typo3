@@ -25,20 +25,8 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class BeforeFileReplacedEvent
 {
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var string
-     */
-    private $localFilePath;
-
-    public function __construct(FileInterface $file, string $localFilePath)
+    public function __construct(private readonly FileInterface $file, private readonly string $localFilePath)
     {
-        $this->file = $file;
-        $this->localFilePath = $localFilePath;
     }
 
     public function getFile(): FileInterface

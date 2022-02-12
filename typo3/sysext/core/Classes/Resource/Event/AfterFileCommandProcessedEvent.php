@@ -24,15 +24,11 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class AfterFileCommandProcessedEvent
 {
-    private array $command;
-    private $result;
-    private string $conflictMode;
-
-    public function __construct(array $command, $result, string $conflictMode)
-    {
-        $this->command = $command;
-        $this->result = $result;
-        $this->conflictMode = $conflictMode;
+    public function __construct(
+        private readonly array $command,
+        private readonly mixed $result,
+        private readonly string $conflictMode
+    ) {
     }
 
     /**
@@ -54,7 +50,7 @@ final class AfterFileCommandProcessedEvent
      * @return mixed The result - Depending on the performed action,
      *               this could e.g. be a File or just a boolean.
      */
-    public function getResult()
+    public function getResult(): mixed
     {
         return $this->result;
     }

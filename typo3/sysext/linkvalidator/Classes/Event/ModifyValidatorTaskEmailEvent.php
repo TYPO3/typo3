@@ -25,26 +25,11 @@ use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
  */
 final class ModifyValidatorTaskEmailEvent
 {
-    /**
-     * @var LinkAnalyzerResult
-     */
-    private $linkAnalyzerResult;
-
-    /**
-     * @var FluidEmail
-     */
-    private $fluidEmail;
-
-    /**
-     * @var array
-     */
-    private $modTSconfig;
-
-    public function __construct(LinkAnalyzerResult $linkAnalyzerResult, FluidEmail $fluidEmail, array $modTSconfig)
-    {
-        $this->linkAnalyzerResult = $linkAnalyzerResult;
-        $this->fluidEmail = $fluidEmail;
-        $this->modTSconfig = $modTSconfig;
+    public function __construct(
+        private readonly LinkAnalyzerResult $linkAnalyzerResult,
+        private readonly FluidEmail $fluidEmail,
+        private readonly array $modTSconfig
+    ) {
     }
 
     public function getLinkAnalyzerResult(): LinkAnalyzerResult

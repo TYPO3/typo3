@@ -26,38 +26,13 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
  */
 final class GetVersionedDataEvent
 {
-    /**
-     * @var GridDataService
-     */
-    private $gridService;
-
-    /**
-     * @var array
-     */
-    private $data;
-
-    /**
-     * @var array
-     */
-    private $dataArrayPart;
-
-    /**
-     * @var int
-     */
-    private $start;
-
-    /**
-     * @var int
-     */
-    private $limit;
-
-    public function __construct(GridDataService $gridService, array $data, int $start, int $limit, array $dataArrayPart)
-    {
-        $this->gridService = $gridService;
-        $this->data = $data;
-        $this->start = $start;
-        $this->limit = $limit;
-        $this->dataArrayPart = $dataArrayPart;
+    public function __construct(
+        private readonly GridDataService $gridService,
+        private array $data,
+        private readonly int $start,
+        private readonly int $limit,
+        private array $dataArrayPart
+    ) {
     }
 
     public function getGridService(): GridDataService

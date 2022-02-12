@@ -29,32 +29,13 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  */
 final class GeneratePublicUrlForResourceEvent
 {
-    /**
-     * @var ResourceInterface
-     */
-    private $resource;
+    private ?string $publicUrl = null;
 
-    /**
-     * @var ResourceStorage
-     */
-    private $storage;
-
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    /**
-     * @var string|null
-     */
-    private $publicUrl;
-
-    public function __construct(ResourceInterface $resource, ResourceStorage $storage, DriverInterface $driver)
-    {
-        $this->resource = $resource;
-        $this->storage = $storage;
-        $this->driver = $driver;
-        $this->publicUrl = null;
+    public function __construct(
+        private readonly ResourceInterface $resource,
+        private readonly ResourceStorage $storage,
+        private readonly DriverInterface $driver
+    ) {
     }
 
     public function getResource(): ResourceInterface

@@ -22,43 +22,15 @@ namespace TYPO3\CMS\Core\DataHandling\Event;
  */
 final class AppendLinkHandlerElementsEvent
 {
-    /**
-     * @var array
-     */
-    private $linkParts;
+    private bool $isResolved = false;
 
-    /**
-     * @var string
-     */
-    private $content;
-
-    /**
-     * @var array
-     */
-    private $elements;
-
-    /**
-     * @var int
-     */
-    private $idx;
-
-    /**
-     * @var string
-     */
-    private $tokenId;
-
-    /**
-     * @var bool
-     */
-    private $isResolved = false;
-
-    public function __construct(array $linkParts, string $content, array $elements, int $idx, string $tokenID)
-    {
-        $this->linkParts = $linkParts;
-        $this->content = $content;
-        $this->elements = $elements;
-        $this->idx = $idx;
-        $this->tokenId = $tokenID;
+    public function __construct(
+        private array $linkParts,
+        private string $content,
+        private array $elements,
+        private readonly int $idx,
+        private readonly string $tokenId
+    ) {
     }
 
     public function getLinkParts(): array

@@ -28,32 +28,12 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class AfterFileCopiedEvent
 {
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    /**
-     * @var string
-     */
-    private $newFileIdentifier;
-
-    /**
-     * @var FileInterface|null
-     */
-    private $newFile;
-
-    public function __construct(FileInterface $file, Folder $folder, string $newFileIdentifier, ?FileInterface $newFile)
-    {
-        $this->file = $file;
-        $this->folder = $folder;
-        $this->newFileIdentifier = $newFileIdentifier;
-        $this->newFile = $newFile;
+    public function __construct(
+        private readonly FileInterface $file,
+        private readonly Folder $folder,
+        private readonly string $newFileIdentifier,
+        private readonly ?FileInterface $newFile
+    ) {
     }
 
     public function getFile(): FileInterface

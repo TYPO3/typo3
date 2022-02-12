@@ -28,38 +28,13 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
  */
 final class AfterFileProcessingEvent
 {
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    /**
-     * @var ProcessedFile
-     */
-    private $processedFile;
-
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var string
-     */
-    private $taskType;
-
-    /**
-     * @var array
-     */
-    private $configuration;
-
-    public function __construct(DriverInterface $driver, ProcessedFile $processedFile, FileInterface $file, string $taskType, array $configuration)
-    {
-        $this->driver = $driver;
-        $this->processedFile = $processedFile;
-        $this->file = $file;
-        $this->taskType = $taskType;
-        $this->configuration = $configuration;
+    public function __construct(
+        private readonly DriverInterface $driver,
+        private ProcessedFile $processedFile,
+        private readonly FileInterface $file,
+        private readonly string $taskType,
+        private readonly array $configuration
+    ) {
     }
 
     public function getProcessedFile(): ProcessedFile

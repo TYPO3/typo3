@@ -26,36 +26,14 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 final class PasswordChangeEvent implements StoppableEventInterface
 {
-    /**
-     * @var bool
-     */
-    private $invalid = false;
+    private bool $invalid = false;
+    private ?string $errorMessage = null;
 
-    /**
-     * @var string
-     */
-    private $errorMessage;
-
-    /**
-     * @var array
-     */
-    private $user;
-
-    /**
-     * @var string
-     */
-    private $passwordHash;
-
-    /**
-     * @var string
-     */
-    private $rawPassword;
-
-    public function __construct(array $user, string $newPasswordHash, string $rawNewPassword)
-    {
-        $this->user = $user;
-        $this->passwordHash = $newPasswordHash;
-        $this->rawPassword = $rawNewPassword;
+    public function __construct(
+        private readonly array $user,
+        private string $passwordHash,
+        private readonly string $rawPassword
+    ) {
     }
 
     public function getUser(): array

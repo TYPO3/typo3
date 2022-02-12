@@ -23,24 +23,15 @@ namespace TYPO3\CMS\Extensionmanager\Event;
 final class AvailableActionsForExtensionEvent
 {
     /**
-     * @var string
-     */
-    private $packageKey;
-
-    /**
-     * @var array
-     */
-    private $packageData;
-
-    /**
      * @var string[]
      */
-    private $actions;
+    private array $actions;
 
-    public function __construct(string $packageKey, array $packageData, array $actions)
-    {
-        $this->packageKey = $packageKey;
-        $this->packageData = $packageData;
+    public function __construct(
+        private readonly string $packageKey,
+        private readonly array $packageData,
+        array $actions
+    ) {
         $this->actions = $actions;
     }
 

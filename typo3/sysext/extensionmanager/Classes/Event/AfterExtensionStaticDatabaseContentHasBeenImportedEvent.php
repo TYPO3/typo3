@@ -24,26 +24,11 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 final class AfterExtensionStaticDatabaseContentHasBeenImportedEvent
 {
-    /**
-     * @var string
-     */
-    private $packageKey;
-
-    /**
-     * @var string
-     */
-    private $sqlFileName;
-
-    /**
-     * @var InstallUtility
-     */
-    private $emitter;
-
-    public function __construct(string $packageKey, string $sqlFileName, InstallUtility $emitter)
-    {
-        $this->packageKey = $packageKey;
-        $this->sqlFileName = $sqlFileName;
-        $this->emitter = $emitter;
+    public function __construct(
+        private readonly string $packageKey,
+        private readonly string $sqlFileName,
+        private readonly InstallUtility $emitter
+    ) {
     }
 
     public function getPackageKey(): string

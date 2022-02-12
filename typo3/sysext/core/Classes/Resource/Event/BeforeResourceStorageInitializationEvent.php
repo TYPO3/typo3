@@ -25,26 +25,8 @@ namespace TYPO3\CMS\Core\Resource\Event;
  */
 final class BeforeResourceStorageInitializationEvent
 {
-    /**
-     * @var int
-     */
-    private $storageUid;
-
-    /**
-     * @var array
-     */
-    private $record;
-
-    /**
-     * @var string|null
-     */
-    private $fileIdentifier;
-
-    public function __construct(int $storageUid, array $record, ?string $fileIdentifier)
+    public function __construct(private $storageUid, private $record, private ?string $fileIdentifier)
     {
-        $this->storageUid = $storageUid;
-        $this->record = $record;
-        $this->fileIdentifier = $fileIdentifier;
     }
 
     public function getStorageUid(): int

@@ -21,20 +21,9 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 
 abstract class AbstractBeforeAssetRenderingEvent
 {
-    /**
-     * @var AssetCollector
-     */
-    protected $assetCollector;
-
-    /**
-     * @var bool
-     */
-    protected $inline;
-
-    /**
-     * @var bool
-     */
-    protected $priority;
+    protected AssetCollector $assetCollector;
+    protected bool $inline;
+    protected bool $priority;
 
     public function getAssetCollector(): AssetCollector
     {

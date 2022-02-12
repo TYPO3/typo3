@@ -22,12 +22,10 @@ namespace TYPO3\CMS\Core\Cache\Event;
  */
 final class CacheFlushEvent
 {
-    private array $groups = [];
     private array $errors = [];
 
-    public function __construct(array $groups)
+    public function __construct(private readonly array $groups)
     {
-        $this->groups = $groups;
     }
 
     public function getGroups(): array

@@ -26,14 +26,8 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class AfterFolderAddedEvent
 {
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    public function __construct(Folder $folder)
+    public function __construct(private readonly Folder $folder)
     {
-        $this->folder = $folder;
     }
 
     public function getFolder(): Folder

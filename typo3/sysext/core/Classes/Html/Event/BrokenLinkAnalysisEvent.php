@@ -24,38 +24,16 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 final class BrokenLinkAnalysisEvent implements StoppableEventInterface
 {
-    /**
-     * see LinkService types
-     * @var string
-     */
-    private $linkType;
-
-    /**
-     * Resolved LinkService data, depending on the type
-     * @var array
-     */
-    private $linkData;
-
-    /**
-     * @var bool
-     */
-    private $isBroken = false;
-
-    /**
-     * @var bool
-     */
-    private $linkWasChecked = false;
+    private bool $isBroken = false;
+    private bool $linkWasChecked = false;
 
     /**
      * Message why a link was broken (used in e.g. RteHtmlParser as info)
-     * @var string
      */
-    private $reason = '';
+    private string $reason = '';
 
-    public function __construct(string $linkType, array $linkData)
+    public function __construct(private readonly string $linkType, private readonly array $linkData)
     {
-        $this->linkType = $linkType;
-        $this->linkData = $linkData;
     }
 
     public function isPropagationStopped(): bool
@@ -64,11 +42,18 @@ final class BrokenLinkAnalysisEvent implements StoppableEventInterface
         return $this->linkWasChecked;
     }
 
+    /**
+     * Returns the link type as string
+     * @see LinkService types
+     */
     public function getLinkType(): string
     {
         return $this->linkType;
     }
 
+    /**
+     * Returns resolved LinkService data, depending on the type
+     */
     public function getLinkData(): array
     {
         return $this->linkData;

@@ -25,26 +25,11 @@ use TYPO3\CMS\Core\Resource\File;
  */
 final class AfterFileUpdatedInIndexEvent
 {
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
-     * @var array
-     */
-    private $properties;
-
-    /**
-     * @var array
-     */
-    private $updatedFields;
-
-    public function __construct(File $file, array $properties, array $updatedFields)
-    {
-        $this->file = $file;
-        $this->properties = $properties;
-        $this->updatedFields = $updatedFields;
+    public function __construct(
+        private readonly File $file,
+        private readonly array $properties,
+        private readonly array $updatedFields
+    ) {
     }
 
     public function getFile(): File

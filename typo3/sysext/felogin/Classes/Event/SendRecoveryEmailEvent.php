@@ -27,20 +27,8 @@ use Symfony\Component\Mime\Email;
  */
 final class SendRecoveryEmailEvent
 {
-    /**
-     * @var Email
-     */
-    private $email;
-
-    /**
-     * @var array
-     */
-    private $user;
-
-    public function __construct(Email $email, array $user)
+    public function __construct(private readonly Email $email, private readonly array $user)
     {
-        $this->email = $email;
-        $this->user = $user;
     }
 
     public function getUserInformation(): array

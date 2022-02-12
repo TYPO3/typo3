@@ -24,11 +24,8 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
  */
 final class ModifyLoginFormViewEvent
 {
-    private ViewInterface $view;
-
-    public function __construct(ViewInterface $view)
+    public function __construct(private readonly ViewInterface $view)
     {
-        $this->view = $view;
     }
 
     public function getView(): ViewInterface

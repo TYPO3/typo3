@@ -25,15 +25,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class ModifyResolvedFrontendGroupsEvent
 {
-    private FrontendUserAuthentication $user;
-    private array $groups;
-    private ServerRequestInterface $request;
-
-    public function __construct(FrontendUserAuthentication $user, array $groups, ServerRequestInterface $request)
-    {
-        $this->user = $user;
-        $this->groups = $groups;
-        $this->request = $request;
+    public function __construct(
+        private readonly FrontendUserAuthentication $user,
+        private array $groups,
+        private readonly ServerRequestInterface $request
+    ) {
     }
 
     public function getRequest(): ServerRequestInterface

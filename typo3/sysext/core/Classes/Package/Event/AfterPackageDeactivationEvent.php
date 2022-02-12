@@ -22,26 +22,11 @@ namespace TYPO3\CMS\Core\Package\Event;
  */
 final class AfterPackageDeactivationEvent
 {
-    /**
-     * @var string
-     */
-    private $packageKey;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var object|null
-     */
-    private $emitter;
-
-    public function __construct(string $packageKey, string $type, object $emitter = null)
-    {
-        $this->packageKey = $packageKey;
-        $this->type = $type;
-        $this->emitter = $emitter;
+    public function __construct(
+        private readonly string $packageKey,
+        private readonly string $type,
+        private readonly ?object $emitter = null
+    ) {
     }
 
     public function getPackageKey(): string

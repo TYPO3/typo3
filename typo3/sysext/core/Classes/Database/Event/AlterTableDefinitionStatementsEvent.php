@@ -19,18 +19,12 @@ namespace TYPO3\CMS\Core\Database\Event;
 
 /**
  * Event to intercept the "CREATE TABLE" statement from all loaded extensions.
+ * The $sqlData variable holds a RAW Array of definitions from each file found.
  */
 final class AlterTableDefinitionStatementsEvent
 {
-    /**
-     * RAW Array of definitions from each file found.
-     * @var array
-     */
-    private $sqlData;
-
-    public function __construct(array $sqlData)
+    public function __construct(private array $sqlData)
     {
-        $this->sqlData = $sqlData;
     }
 
     public function addSqlData($data): void

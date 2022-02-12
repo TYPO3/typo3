@@ -25,38 +25,13 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 final class ModifyIconForResourcePropertiesEvent
 {
-    /**
-     * @var ResourceInterface
-     */
-    private $resource;
-
-    /**
-     * @var string
-     */
-    private $size;
-
-    /**
-     * @var array
-     */
-    private $options;
-
-    /**
-     * @var string|null
-     */
-    private $iconIdentifier;
-
-    /**
-     * @var string|null
-     */
-    private $overlayIdentifier;
-
-    public function __construct(ResourceInterface $resource, string $size, array $options, ?string $iconIdentifier, ?string $overlayIdentifier)
-    {
-        $this->resource = $resource;
-        $this->size = $size;
-        $this->options = $options;
-        $this->iconIdentifier = $iconIdentifier;
-        $this->overlayIdentifier = $overlayIdentifier;
+    public function __construct(
+        private readonly ResourceInterface $resource,
+        private readonly string $size,
+        private readonly array $options,
+        private ?string $iconIdentifier,
+        private ?string $overlayIdentifier
+    ) {
     }
 
     public function getResource(): ResourceInterface

@@ -22,20 +22,10 @@ namespace TYPO3\CMS\FrontendLogin\Event;
  */
 final class BeforeRedirectEvent
 {
-    /**
-     * @var string
-     */
-    private $loginType;
-
-    /**
-     * @var string
-     */
-    private $redirectUrl;
-
-    public function __construct(string $loginType, string $redirectUrl)
-    {
-        $this->loginType = $loginType;
-        $this->redirectUrl = $redirectUrl;
+    public function __construct(
+        private readonly string $loginType,
+        private readonly string $redirectUrl
+    ) {
     }
 
     public function getLoginType(): string

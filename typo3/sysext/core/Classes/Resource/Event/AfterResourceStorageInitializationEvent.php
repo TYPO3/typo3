@@ -26,14 +26,8 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  */
 final class AfterResourceStorageInitializationEvent
 {
-    /**
-     * @var ResourceStorage
-     */
-    private $storage;
-
-    public function __construct(ResourceStorage $storage)
+    public function __construct(private ResourceStorage $storage)
     {
-        $this->storage = $storage;
     }
 
     public function getStorage(): ResourceStorage

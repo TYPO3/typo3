@@ -22,26 +22,11 @@ namespace TYPO3\CMS\Backend\Authentication\Event;
  */
 final class SwitchUserEvent
 {
-    /**
-     * @var string
-     */
-    private $sessionId;
-
-    /**
-     * @var array
-     */
-    private $targetUser;
-
-    /**
-     * @var array
-     */
-    private $currentUser;
-
-    public function __construct(string $sessionId, array $targetUser, array $currentUser)
-    {
-        $this->sessionId = $sessionId;
-        $this->targetUser = $targetUser;
-        $this->currentUser = $currentUser;
+    public function __construct(
+        private readonly string $sessionId,
+        private readonly array $targetUser,
+        private readonly array $currentUser
+    ) {
     }
 
     public function getSessionId(): string

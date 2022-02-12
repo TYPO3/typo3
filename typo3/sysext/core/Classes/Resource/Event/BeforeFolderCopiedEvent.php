@@ -25,26 +25,11 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFolderCopiedEvent
 {
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    /**
-     * @var Folder
-     */
-    private $targetParentFolder;
-
-    /**
-     * @var string
-     */
-    private $targetFolderName;
-
-    public function __construct(Folder $folder, Folder $targetParentFolder, string $targetFolderName)
-    {
-        $this->folder = $folder;
-        $this->targetParentFolder = $targetParentFolder;
-        $this->targetFolderName = $targetFolderName;
+    public function __construct(
+        private readonly Folder $folder,
+        private readonly Folder $targetParentFolder,
+        private readonly string $targetFolderName
+    ) {
     }
 
     public function getFolder(): Folder

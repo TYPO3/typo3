@@ -25,52 +25,18 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  */
 final class AfterHistoryRollbackFinishedEvent
 {
-    /**
-     * @var string
-     */
-    private $rollbackFields;
-
-    /**
-     * @var array
-     */
-    private $diff;
-
-    /**
-     * @var array
-     */
-    private $dataHandlerInput;
-
-    /**
-     * @var BackendUserAuthentication|null
-     */
-    private $backendUserAuthentication;
-
-    /**
-     * @var RecordHistoryRollback
-     */
-    private $recordHistory;
-
-    /**
-     * HistoryRollbackEvent constructor.
-     *
-     * @param string $rollbackFields
-     * @param array $diff
-     * @param array $dataHandlerInput
-     * @param RecordHistoryRollback $recordHistoryRollback
-     * @param BackendUserAuthentication|null $backendUserAuthentication
-     */
-    public function __construct(string $rollbackFields, array $diff, array $dataHandlerInput, RecordHistoryRollback $recordHistoryRollback, ?BackendUserAuthentication $backendUserAuthentication = null)
-    {
-        $this->rollbackFields = $rollbackFields;
-        $this->diff = $diff;
-        $this->dataHandlerInput = $dataHandlerInput;
-        $this->recordHistory = $recordHistoryRollback;
-        $this->backendUserAuthentication = $backendUserAuthentication;
+    public function __construct(
+        private readonly string $rollbackFields,
+        private readonly array $diff,
+        private readonly array $dataHandlerInput,
+        private readonly RecordHistoryRollback $recordHistoryRollback,
+        private readonly ?BackendUserAuthentication $backendUserAuthentication = null
+    ) {
     }
 
     public function getRecordHistoryRollback(): RecordHistoryRollback
     {
-        return $this->recordHistory;
+        return $this->recordHistoryRollback;
     }
 
     public function getRollbackFields(): string

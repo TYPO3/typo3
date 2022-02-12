@@ -25,20 +25,8 @@ use TYPO3\CMS\Core\Resource\FileInterface;
  */
 final class BeforeFileRenamedEvent
 {
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var string|null
-     */
-    private $targetFileName;
-
-    public function __construct(FileInterface $file, ?string $targetFileName)
+    public function __construct(private readonly FileInterface $file, private readonly ?string $targetFileName)
     {
-        $this->file = $file;
-        $this->targetFileName = $targetFileName;
     }
 
     public function getFile(): FileInterface

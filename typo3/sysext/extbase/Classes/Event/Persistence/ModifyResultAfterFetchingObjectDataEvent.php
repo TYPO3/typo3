@@ -24,20 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 final class ModifyResultAfterFetchingObjectDataEvent
 {
-    /**
-     * @var QueryInterface
-     */
-    private $query;
-
-    /**
-     * @var array
-     */
-    private $result;
-
-    public function __construct(QueryInterface $query, array $result)
+    public function __construct(private readonly QueryInterface $query, private array $result)
     {
-        $this->query = $query;
-        $this->result = $result;
     }
 
     public function getQuery(): QueryInterface

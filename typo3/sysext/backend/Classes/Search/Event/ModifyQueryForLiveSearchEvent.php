@@ -24,13 +24,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
  */
 final class ModifyQueryForLiveSearchEvent
 {
-    private QueryBuilder $queryBuilder;
-    private string $table;
-
-    public function __construct(QueryBuilder $queryBuilder, string $table)
+    public function __construct(private readonly QueryBuilder $queryBuilder, private readonly string $table)
     {
-        $this->queryBuilder = $queryBuilder;
-        $this->table = $table;
     }
 
     public function getQueryBuilder(): QueryBuilder

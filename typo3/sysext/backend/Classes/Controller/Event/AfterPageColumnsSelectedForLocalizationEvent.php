@@ -28,49 +28,18 @@ use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
  */
 final class AfterPageColumnsSelectedForLocalizationEvent
 {
-    /**
-     * List of columns, indexed by column position number, value is label (either LLL: or hardcoded).
-     *
-     * @var array
-     */
-    private $columns;
-
-    /**
-     * Array of records which were used when building the original column
-     * manifest and column position numbers list.
-     *
-     * @var array
-     */
-    private $records;
-
-    /**
-     * Request parameters passed to LocalizationController.
-     *
-     * @var array
-     */
-    private $parameters;
-
-    /**
-     * @var BackendLayout
-     */
-    private $backendLayout;
-
-    /**
-     * List of integer column position numbers used in the BackendLayout.
-     *
-     * @var array
-     */
-    private $columnList;
-
-    public function __construct(array $columns, array $columnList, BackendLayout $backendLayout, array $records, array $parameters)
-    {
-        $this->columns = $columns;
-        $this->columnList = $columnList;
-        $this->backendLayout = $backendLayout;
-        $this->records = $records;
-        $this->parameters = $parameters;
+    public function __construct(
+        private array $columns,
+        private array $columnList,
+        private readonly BackendLayout $backendLayout,
+        private readonly array $records,
+        private readonly array $parameters
+    ) {
     }
 
+    /**
+     * Returns list of columns, indexed by column position number, value is label (either LLL: or hardcoded).
+     */
     public function getColumns(): array
     {
         return $this->columns;
@@ -81,6 +50,9 @@ final class AfterPageColumnsSelectedForLocalizationEvent
         $this->columns = $columns;
     }
 
+    /**
+     * Returns a list of integer column position numbers used in the BackendLayout.
+     */
     public function getColumnList(): array
     {
         return $this->columnList;
@@ -96,11 +68,18 @@ final class AfterPageColumnsSelectedForLocalizationEvent
         return $this->backendLayout;
     }
 
+    /**
+     * Returns an array of records which were used when building the original column
+     * manifest and column position numbers list.
+     */
     public function getRecords(): array
     {
         return $this->records;
     }
 
+    /**
+     * Returns request parameters passed to LocalizationController.
+     */
     public function getParameters(): array
     {
         return $this->parameters;

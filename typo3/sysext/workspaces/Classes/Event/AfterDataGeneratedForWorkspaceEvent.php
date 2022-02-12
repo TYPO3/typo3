@@ -24,26 +24,11 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
  */
 final class AfterDataGeneratedForWorkspaceEvent
 {
-    /**
-     * @var GridDataService
-     */
-    private $gridService;
-
-    /**
-     * @var array
-     */
-    private $data;
-
-    /**
-     * @var array
-     */
-    private $versions;
-
-    public function __construct(GridDataService $gridService, array $data, array $versions)
-    {
-        $this->gridService = $gridService;
-        $this->data = $data;
-        $this->versions = $versions;
+    public function __construct(
+        private readonly GridDataService $gridService,
+        private array $data,
+        private array $versions
+    ) {
     }
 
     public function getGridService(): GridDataService

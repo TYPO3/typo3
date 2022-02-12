@@ -25,14 +25,8 @@ namespace TYPO3\CMS\Core\Configuration\Event;
  */
 final class AfterTcaCompilationEvent
 {
-    /**
-     * @var array
-     */
-    private $tca;
-
-    public function __construct(array $tca)
+    public function __construct(private array $tca)
     {
-        $this->tca = $tca;
     }
 
     public function getTca(): array
@@ -40,7 +34,7 @@ final class AfterTcaCompilationEvent
         return $this->tca;
     }
 
-    public function setTca(array $tca)
+    public function setTca(array $tca): void
     {
         $this->tca = $tca;
     }

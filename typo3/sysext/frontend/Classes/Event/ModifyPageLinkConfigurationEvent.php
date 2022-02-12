@@ -25,24 +25,13 @@ namespace TYPO3\CMS\Frontend\Event;
  */
 final class ModifyPageLinkConfigurationEvent
 {
-    private array $configuration;
-    private array $linkDetails;
-    private array $page;
-    private array $queryParameters;
-    private string $fragment;
-
     public function __construct(
-        array $configuration,
-        array $linkDetails,
-        array $page,
-        array $queryParameters,
-        string $fragment
+        private array $configuration,
+        private readonly array $linkDetails,
+        private array $page,
+        private array $queryParameters,
+        private string $fragment
     ) {
-        $this->configuration = $configuration;
-        $this->linkDetails = $linkDetails;
-        $this->page = $page;
-        $this->queryParameters = $queryParameters;
-        $this->fragment = $fragment;
     }
 
     public function getConfiguration(): array

@@ -26,19 +26,10 @@ use Psr\EventDispatcher\StoppableEventInterface;
  */
 final class IsTableExcludedFromReferenceIndexEvent implements StoppableEventInterface
 {
-    /**
-     * @var string
-     */
-    private $table;
+    private bool $isExcluded = false;
 
-    /**
-     * @var bool
-     */
-    private $isExcluded = false;
-
-    public function __construct(string $table)
+    public function __construct(private readonly string $table)
     {
-        $this->table = $table;
     }
 
     public function getTable(): string

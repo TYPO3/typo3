@@ -28,38 +28,13 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  */
 final class BeforeFileAddedEvent
 {
-    /**
-     * @var string
-     */
-    private $fileName;
-
-    /**
-     * @var string
-     */
-    private $sourceFilePath;
-
-    /**
-     * @var Folder
-     */
-    private $targetFolder;
-
-    /**
-     * @var ResourceStorage
-     */
-    private $storage;
-
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    public function __construct(string $fileName, string $sourceFilePath, Folder $targetFolder, ResourceStorage $storage, DriverInterface $driver)
-    {
-        $this->fileName = $fileName;
-        $this->sourceFilePath = $sourceFilePath;
-        $this->targetFolder = $targetFolder;
-        $this->storage = $storage;
-        $this->driver = $driver;
+    public function __construct(
+        private string $fileName,
+        private readonly string $sourceFilePath,
+        private readonly Folder $targetFolder,
+        private readonly ResourceStorage $storage,
+        private readonly DriverInterface $driver
+    ) {
     }
 
     public function getFileName(): string

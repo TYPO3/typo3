@@ -24,32 +24,12 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
  */
 final class SortVersionedDataEvent
 {
-    /**
-     * @var GridDataService
-     */
-    private $gridService;
-
-    /**
-     * @var array
-     */
-    private $data;
-
-    /**
-     * @var string
-     */
-    private $sortColumn;
-
-    /**
-     * @var string
-     */
-    private $sortDirection;
-
-    public function __construct(GridDataService $gridService, array $data, string $sortColumn, string $sortDirection)
-    {
-        $this->gridService = $gridService;
-        $this->data = $data;
-        $this->sortColumn = $sortColumn;
-        $this->sortDirection = $sortDirection;
+    public function __construct(
+        private readonly GridDataService $gridService,
+        private array $data,
+        private string $sortColumn,
+        private string $sortDirection
+    ) {
     }
 
     public function getGridService(): GridDataService

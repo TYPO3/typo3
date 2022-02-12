@@ -25,17 +25,12 @@ use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
  */
 final class ModifyRecordListRecordActionsEvent
 {
-    private array $actions;
-    private string $table;
-    private array $record;
-    private DatabaseRecordList $recordList;
-
-    public function __construct(array $actions, string $table, array $record, DatabaseRecordList $recordList)
-    {
-        $this->actions = $actions;
-        $this->table = $table;
-        $this->record = $record;
-        $this->recordList = $recordList;
+    public function __construct(
+        private array $actions,
+        private readonly string $table,
+        private readonly array $record,
+        private readonly DatabaseRecordList $recordList
+    ) {
     }
 
     /**

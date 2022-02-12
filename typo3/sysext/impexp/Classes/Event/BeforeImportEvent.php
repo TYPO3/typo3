@@ -24,14 +24,8 @@ use TYPO3\CMS\Impexp\Import;
  */
 final class BeforeImportEvent
 {
-    /**
-     * @var Import
-     */
-    private $import;
-
-    public function __construct(Import $import)
+    public function __construct(private readonly Import $import)
     {
-        $this->import = $import;
     }
 
     public function getImport(): Import

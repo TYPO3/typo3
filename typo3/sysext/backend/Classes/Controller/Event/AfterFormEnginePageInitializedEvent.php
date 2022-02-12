@@ -25,20 +25,10 @@ use TYPO3\CMS\Backend\Controller\EditDocumentController;
  */
 final class AfterFormEnginePageInitializedEvent
 {
-    /**
-     * @var EditDocumentController
-     */
-    private $controller;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    private $request;
-
-    public function __construct(EditDocumentController $controller, ServerRequestInterface $request)
-    {
-        $this->controller = $controller;
-        $this->request = $request;
+    public function __construct(
+        private readonly EditDocumentController $controller,
+        private readonly ServerRequestInterface $request
+    ) {
     }
 
     public function getController(): EditDocumentController

@@ -27,26 +27,11 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
  */
 final class AfterFolderMovedEvent
 {
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    /**
-     * @var Folder
-     */
-    private $targetParentFolder;
-
-    /**
-     * @var FolderInterface|null
-     */
-    private $targetFolder;
-
-    public function __construct(Folder $folder, Folder $targetParentFolder, ?FolderInterface $targetFolder)
-    {
-        $this->folder = $folder;
-        $this->targetParentFolder = $targetParentFolder;
-        $this->targetFolder = $targetFolder;
+    public function __construct(
+        private readonly Folder $folder,
+        private readonly Folder $targetParentFolder,
+        private readonly ?FolderInterface $targetFolder
+    ) {
     }
 
     public function getFolder(): Folder

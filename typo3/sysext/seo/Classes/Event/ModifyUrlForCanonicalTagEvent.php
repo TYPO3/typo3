@@ -22,14 +22,8 @@ namespace TYPO3\CMS\Seo\Event;
  */
 final class ModifyUrlForCanonicalTagEvent
 {
-    /**
-     * @var string
-     */
-    private $url;
-
-    public function __construct(string $url)
+    public function __construct(private string $url)
     {
-        $this->url = $url;
     }
 
     public function getUrl(): string

@@ -25,38 +25,13 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
  */
 final class BeforeRecordIsAnalyzedEvent
 {
-    /**
-     * @var string
-     */
-    private $tableName;
-
-    /**
-     * @var array
-     */
-    private $record;
-
-    /**
-     * @var array
-     */
-    private $fields;
-
-    /**
-     * @var array
-     */
-    private $results;
-
-    /**
-     * @var LinkAnalyzer
-     */
-    private $linkAnalyzer;
-
-    public function __construct(string $tableName, array $record, array $fields, LinkAnalyzer $linkAnalyzer, array $results)
-    {
-        $this->tableName = $tableName;
-        $this->record = $record;
-        $this->fields = $fields;
-        $this->linkAnalyzer = $linkAnalyzer;
-        $this->results = $results;
+    public function __construct(
+        private readonly string $tableName,
+        private array $record,
+        private readonly array $fields,
+        private readonly LinkAnalyzer $linkAnalyzer,
+        private array $results
+    ) {
     }
 
     public function getTableName(): string

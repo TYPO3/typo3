@@ -24,32 +24,12 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 final class AfterExtensionDatabaseContentHasBeenImportedEvent
 {
-    /**
-     * @var string
-     */
-    private $packageKey;
-
-    /**
-     * @var string
-     */
-    private $importFileName;
-
-    /**
-     * @var int
-     */
-    private $importResult;
-
-    /**
-     * @var InstallUtility
-     */
-    private $emitter;
-
-    public function __construct(string $packageKey, string $importFileName, int $importResult, InstallUtility $emitter)
-    {
-        $this->packageKey = $packageKey;
-        $this->importFileName = $importFileName;
-        $this->importResult = $importResult;
-        $this->emitter = $emitter;
+    public function __construct(
+        private readonly string $packageKey,
+        private readonly string $importFileName,
+        private readonly int $importResult,
+        private readonly InstallUtility $emitter
+    ) {
     }
 
     public function getPackageKey(): string

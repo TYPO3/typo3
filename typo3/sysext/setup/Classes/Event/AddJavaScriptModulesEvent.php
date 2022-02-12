@@ -25,7 +25,7 @@ final class AddJavaScriptModulesEvent
     /**
      * @var string[]
      */
-    private $modules = [];
+    private array $modules = [];
 
     public function addModule(string $moduleName): void
     {

@@ -24,14 +24,8 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
  */
 final class EntityRemovedFromPersistenceEvent
 {
-    /**
-     * @var DomainObjectInterface
-     */
-    private $persistedObject;
-
-    public function __construct(DomainObjectInterface $persistedObject)
+    public function __construct(private readonly DomainObjectInterface $persistedObject)
     {
-        $this->persistedObject = $persistedObject;
     }
 
     public function getObject(): DomainObjectInterface

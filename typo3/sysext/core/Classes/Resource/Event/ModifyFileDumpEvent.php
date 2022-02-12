@@ -33,14 +33,10 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 final class ModifyFileDumpEvent implements StoppableEventInterface
 {
-    private ResourceInterface $file;
-    private ServerRequestInterface $request;
     private ?ResponseInterface $response = null;
 
-    public function __construct(ResourceInterface $file, ServerRequestInterface $request)
+    public function __construct(private ResourceInterface $file, private ServerRequestInterface $request)
     {
-        $this->file = $file;
-        $this->request = $request;
     }
 
     public function getFile(): ResourceInterface

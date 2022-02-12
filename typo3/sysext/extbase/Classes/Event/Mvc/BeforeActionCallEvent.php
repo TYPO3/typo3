@@ -23,26 +23,11 @@ namespace TYPO3\CMS\Extbase\Event\Mvc;
  */
 final class BeforeActionCallEvent
 {
-    /**
-     * @var string
-     */
-    private $controllerClassName;
-
-    /**
-     * @var string
-     */
-    private $actionMethodName;
-
-    /**
-     * @var array
-     */
-    private $preparedArguments;
-
-    public function __construct(string $controllerClassName, string $actionMethodName, array $preparedArguments)
-    {
-        $this->controllerClassName = $controllerClassName;
-        $this->actionMethodName = $actionMethodName;
-        $this->preparedArguments = $preparedArguments;
+    public function __construct(
+        private readonly string $controllerClassName,
+        private readonly string $actionMethodName,
+        private readonly array $preparedArguments
+    ) {
     }
 
     public function getControllerClassName(): string

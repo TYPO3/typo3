@@ -24,26 +24,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 final class ModifyPageLayoutOnLoginProviderSelectionEvent
 {
-    /**
-     * @var LoginController
-     */
-    private $controller;
-
-    /**
-     * @var StandaloneView
-     */
-    private $view;
-
-    /**
-     * @var PageRenderer
-     */
-    private $pageRenderer;
-
-    public function __construct(LoginController $controller, StandaloneView $view, PageRenderer $pageRenderer)
-    {
-        $this->controller = $controller;
-        $this->view = $view;
-        $this->pageRenderer = $pageRenderer;
+    public function __construct(
+        private readonly LoginController $controller,
+        private readonly StandaloneView $view,
+        private readonly PageRenderer $pageRenderer
+    ) {
     }
 
     public function getController(): LoginController

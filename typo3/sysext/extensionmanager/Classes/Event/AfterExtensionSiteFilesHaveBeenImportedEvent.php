@@ -22,38 +22,26 @@ namespace TYPO3\CMS\Extensionmanager\Event;
  */
 final class AfterExtensionSiteFilesHaveBeenImportedEvent
 {
-
-    /**
-     * @var string
-     *
-     * extension that imported the site configuration
-     */
-    private string $packageKey;
-
-    /**
-     * @var array list of site identifiers that were imported
-     *
-     * use as
-     * foreach ($siteIdentifierList as $siteIdentifier) {
-     *   $configuration = $siteConfiguration->load($siteIdentifier);
-     *   // do things
-     * }
-     */
-    private array $siteIdentifierList;
-
-    public function __construct(string $packageKey, array $newSiteIdentifierList)
+    public function __construct(private readonly string $packageKey, private readonly array $siteIdentifierList)
     {
-        $this->packageKey = $packageKey;
-        $this->siteIdentifierList = $newSiteIdentifierList;
     }
 
+    /**
+     * Returns the extension that imported the site configuration
+     */
     public function getPackageKey(): string
     {
         return $this->packageKey;
     }
 
     /**
-     * @return array
+     * List of site identifiers that were imported
+     *
+     * use as
+     * foreach ($siteIdentifierList as $siteIdentifier) {
+     *   $configuration = $siteConfiguration->load($siteIdentifier);
+     *   // do things
+     * }
      */
     public function getSiteIdentifierList(): array
     {

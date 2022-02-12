@@ -26,15 +26,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class RenderAdditionalContentToRecordListEvent
 {
-    private $contentAbove = '';
+    private string $contentAbove = '';
+    private string $contentBelow = '';
 
-    private $contentBelow = '';
-
-    private $request;
-
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(private readonly ServerRequestInterface $request)
     {
-        $this->request = $request;
     }
 
     public function getRequest(): ServerRequestInterface

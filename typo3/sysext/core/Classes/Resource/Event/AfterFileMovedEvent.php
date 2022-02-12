@@ -29,26 +29,11 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
  */
 final class AfterFileMovedEvent
 {
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    /**
-     * @var FolderInterface
-     */
-    private $originalFolder;
-
-    public function __construct(FileInterface $file, Folder $folder, FolderInterface $originalFolder)
-    {
-        $this->file = $file;
-        $this->folder = $folder;
-        $this->originalFolder = $originalFolder;
+    public function __construct(
+        private readonly FileInterface $file,
+        private readonly Folder $folder,
+        private readonly FolderInterface $originalFolder
+    ) {
     }
 
     public function getFile(): FileInterface

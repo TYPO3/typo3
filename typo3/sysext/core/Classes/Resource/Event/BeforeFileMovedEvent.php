@@ -26,26 +26,11 @@ use TYPO3\CMS\Core\Resource\Folder;
  */
 final class BeforeFileMovedEvent
 {
-    /**
-     * @var FileInterface
-     */
-    private $file;
-
-    /**
-     * @var Folder
-     */
-    private $folder;
-
-    /**
-     * @var string
-     */
-    private $targetFileName;
-
-    public function __construct(FileInterface $file, Folder $folder, string $targetFileName)
-    {
-        $this->file = $file;
-        $this->folder = $folder;
-        $this->targetFileName = $targetFileName;
+    public function __construct(
+        private readonly FileInterface $file,
+        private readonly Folder $folder,
+        private readonly string $targetFileName
+    ) {
     }
 
     public function getFile(): FileInterface

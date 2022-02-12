@@ -30,14 +30,8 @@ use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
  */
 final class CheckBrokenRteLinkEventListener
 {
-    /**
-     * @var BrokenLinkRepository
-     */
-    private $brokenLinkRepository;
-
-    public function __construct(BrokenLinkRepository $brokenLinkRepository)
+    public function __construct(private readonly BrokenLinkRepository $brokenLinkRepository)
     {
-        $this->brokenLinkRepository = $brokenLinkRepository;
     }
 
     public function checkExternalLink(BrokenLinkAnalysisEvent $event): void

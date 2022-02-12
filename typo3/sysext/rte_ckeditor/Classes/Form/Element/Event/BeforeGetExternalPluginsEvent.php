@@ -22,20 +22,8 @@ namespace TYPO3\CMS\RteCKEditor\Form\Element\Event;
  */
 final class BeforeGetExternalPluginsEvent
 {
-    /**
-     * @var array
-     */
-    private $configuration;
-
-    /**
-     * @var array
-     */
-    private $data;
-
-    public function __construct(array $configuration, array $data)
+    public function __construct(private array $configuration, private readonly array $data)
     {
-        $this->configuration = $configuration;
-        $this->data = $data;
     }
 
     public function getData(): array

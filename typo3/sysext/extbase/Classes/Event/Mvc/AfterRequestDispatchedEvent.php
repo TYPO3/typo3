@@ -25,33 +25,17 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
  */
 final class AfterRequestDispatchedEvent
 {
-    /**
-     * @var RequestInterface
-     */
-    private $request;
-
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
-
-    public function __construct(RequestInterface $request, ResponseInterface $response)
-    {
-        $this->request = $request;
-        $this->response = $response;
+    public function __construct(
+        private readonly RequestInterface $request,
+        private readonly ResponseInterface $response
+    ) {
     }
 
-    /**
-     * @return RequestInterface
-     */
     public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * @return ResponseInterface
-     */
     public function getResponse(): ResponseInterface
     {
         return $this->response;

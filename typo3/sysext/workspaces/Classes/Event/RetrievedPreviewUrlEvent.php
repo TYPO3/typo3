@@ -25,37 +25,14 @@ use Psr\Http\Message\UriInterface;
  */
 final class RetrievedPreviewUrlEvent implements StoppableEventInterface
 {
-    /**
-     * @var string
-     */
-    private $tableName;
+    private bool $stopped = false;
 
-    /**
-     * @var int
-     */
-    private $uid;
-
-    /**
-     * @var UriInterface|null
-     */
-    private $previewUri;
-
-    /**
-     * @var array
-     */
-    private $contextData;
-
-    /**
-     * @var bool
-     */
-    private $stopped = false;
-
-    public function __construct(string $tableName, int $uid, ?UriInterface $previewUri, array $contextData)
-    {
-        $this->tableName = $tableName;
-        $this->uid = $uid;
-        $this->previewUri = $previewUri;
-        $this->contextData = $contextData;
+    public function __construct(
+        private readonly string $tableName,
+        private readonly int $uid,
+        private ?UriInterface $previewUri,
+        private readonly array $contextData
+    ) {
     }
 
     public function stop(): void
@@ -68,41 +45,26 @@ final class RetrievedPreviewUrlEvent implements StoppableEventInterface
         return $this->stopped;
     }
 
-    /**
-     * @return UriInterface|null
-     */
     public function getPreviewUri(): ?UriInterface
     {
         return $this->previewUri;
     }
 
-    /**
-     * @param UriInterface $previewUri
-     */
     public function setPreviewUri(UriInterface $previewUri): void
     {
         $this->previewUri = $previewUri;
     }
 
-    /**
-     * @return string
-     */
     public function getTableName(): string
     {
         return $this->tableName;
     }
 
-    /**
-     * @return int
-     */
     public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * @return array
-     */
     public function getContextData(): array
     {
         return $this->contextData;

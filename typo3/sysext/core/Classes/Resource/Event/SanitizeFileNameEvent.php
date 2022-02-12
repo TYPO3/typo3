@@ -27,32 +27,12 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
  */
 final class SanitizeFileNameEvent
 {
-    /**
-     * @var string
-     */
-    private $fileName;
-
-    /**
-     * @var Folder
-     */
-    private $targetFolder;
-
-    /**
-     * @var ResourceStorage
-     */
-    private $storage;
-
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    public function __construct(string $fileName, Folder $targetFolder, ResourceStorage $storage, DriverInterface $driver)
-    {
-        $this->fileName = $fileName;
-        $this->targetFolder = $targetFolder;
-        $this->storage = $storage;
-        $this->driver = $driver;
+    public function __construct(
+        private string $fileName,
+        private readonly Folder $targetFolder,
+        private readonly ResourceStorage $storage,
+        private readonly DriverInterface $driver
+    ) {
     }
 
     public function getFileName(): string

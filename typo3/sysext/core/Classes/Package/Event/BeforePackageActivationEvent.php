@@ -22,14 +22,8 @@ namespace TYPO3\CMS\Core\Package\Event;
  */
 final class BeforePackageActivationEvent
 {
-    /**
-     * @var array
-     */
-    private $packageKeys;
-
-    public function __construct(array $packageKeys)
+    public function __construct(private readonly array $packageKeys)
     {
-        $this->packageKeys = $packageKeys;
     }
 
     public function getPackageKeys(): array

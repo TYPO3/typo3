@@ -22,20 +22,8 @@ namespace TYPO3\CMS\Core\Configuration\Event;
  */
 final class ModifyLoadedPageTsConfigEvent
 {
-    /**
-     * @var array
-     */
-    private $tsConfig;
-
-    /**
-     * @var array
-     */
-    private $rootLine;
-
-    public function __construct(array $tsConfig, array $rootLine)
+    public function __construct(private array $tsConfig, private readonly array $rootLine)
     {
-        $this->tsConfig = $tsConfig;
-        $this->rootLine = $rootLine;
     }
 
     public function getTsConfig(): array

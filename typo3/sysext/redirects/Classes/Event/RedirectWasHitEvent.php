@@ -31,21 +31,12 @@ use Psr\Http\Message\UriInterface;
  */
 final class RedirectWasHitEvent
 {
-    private ServerRequestInterface $request;
-    private ResponseInterface $response;
-    private array $matchedRedirect;
-    private UriInterface $targetUrl;
-
     public function __construct(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        array $matchedRedirect,
-        UriInterface $targetUrl
+        private readonly ServerRequestInterface $request,
+        private ResponseInterface $response,
+        private array $matchedRedirect,
+        private readonly UriInterface $targetUrl
     ) {
-        $this->request = $request;
-        $this->response = $response;
-        $this->matchedRedirect = $matchedRedirect;
-        $this->targetUrl = $targetUrl;
     }
 
     public function getRequest(): ServerRequestInterface

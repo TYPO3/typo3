@@ -25,19 +25,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class ModifyHrefLangTagsEvent
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    private $request;
+    private array $hrefLangs = [];
 
-    /**
-     * @var array
-     */
-    private $hrefLangs = [];
-
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(private readonly ServerRequestInterface $request)
     {
-        $this->request = $request;
     }
 
     public function getHrefLangs(): array

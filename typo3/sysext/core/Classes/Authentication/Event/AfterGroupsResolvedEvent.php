@@ -22,17 +22,12 @@ namespace TYPO3\CMS\Core\Authentication\Event;
  */
 final class AfterGroupsResolvedEvent
 {
-    private string $sourceDatabaseTable;
-    private array $groups;
-    private array $originalGroupIds;
-    private array $userData;
-
-    public function __construct(string $sourceDatabaseTable, array $groups, array $originalGroupIds, array $userData)
-    {
-        $this->sourceDatabaseTable = $sourceDatabaseTable;
-        $this->groups = $groups;
-        $this->originalGroupIds = $originalGroupIds;
-        $this->userData = $userData;
+    public function __construct(
+        private readonly string $sourceDatabaseTable,
+        private array $groups,
+        private readonly array $originalGroupIds,
+        private readonly array $userData
+    ) {
     }
 
     /**

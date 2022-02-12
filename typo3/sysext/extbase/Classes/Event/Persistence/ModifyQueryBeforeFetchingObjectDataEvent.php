@@ -24,14 +24,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 final class ModifyQueryBeforeFetchingObjectDataEvent
 {
-    /**
-     * @var QueryInterface
-     */
-    private $query;
-
-    public function __construct(QueryInterface $query)
+    public function __construct(private QueryInterface $query)
     {
-        $this->query = $query;
     }
 
     public function getQuery(): QueryInterface
