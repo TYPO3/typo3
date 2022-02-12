@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -122,7 +124,7 @@ class InfoPageTyposcriptConfigController
                         $line['editIcon'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                         $line['editTitle'] = 'editTSconfig';
                         $title = BackendUtility::getRecordTitle('pages', $row);
-                        $line['title'] = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
+                        $line['title'] = BackendUtility::wrapClickMenuOnIcon((string)$icon, 'pages', $row['uid']) . ' ' . htmlspecialchars($title);
                     }
 
                     if (ExtensionManagementUtility::isLoaded('t3editor')) {
