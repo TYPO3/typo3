@@ -97,7 +97,7 @@ class RecordListController
 
         // Loading module configuration, clean up settings, current page and page access
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        $MOD_SETTINGS = BackendUtility::getModuleData(['clipBoard' => ''], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
+        $MOD_SETTINGS = BackendUtility::getModuleData(['clipBoard' => false], (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
         $pageinfo = BackendUtility::readPageAccess($this->id, $perms_clause);
         $access = is_array($pageinfo);
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
@@ -109,7 +109,6 @@ class RecordListController
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
 
-        $MOD_SETTINGS['clipBoard'] = true;
         if (isset($this->modTSconfig['enableClipBoard'])) {
             if ($this->modTSconfig['enableClipBoard'] === 'activated') {
                 $MOD_SETTINGS['clipBoard'] = true;
@@ -117,6 +116,7 @@ class RecordListController
                 $MOD_SETTINGS['clipBoard'] = false;
             }
         }
+        $MOD_SETTINGS['clipBoard'] = (bool)($MOD_SETTINGS['clipBoard'] ?? true);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dbList->setModuleData($MOD_SETTINGS ?? []);
