@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\HtmlSanitizer\Behavior;
@@ -27,8 +28,10 @@ use TYPO3\HtmlSanitizer\Visitor\CommonVisitor;
  *
  * @internal
  */
-class DefaultSanitizerBuilder extends CommonBuilder
+class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterface
 {
+    private Behavior $behavior;
+
     public function __construct()
     {
         parent::__construct();
@@ -60,7 +63,9 @@ class DefaultSanitizerBuilder extends CommonBuilder
 
     protected function createBehavior(): Behavior
     {
-        return parent::createBehavior()
-            ->withName('default');
+        if (!isset($this->behavior)) {
+            $this->behavior = parent::createBehavior()->withName('default');
+        }
+        return $this->behavior;
     }
 }
