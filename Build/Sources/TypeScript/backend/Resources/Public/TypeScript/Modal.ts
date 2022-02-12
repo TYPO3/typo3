@@ -13,6 +13,7 @@
 
 import 'bootstrap';
 import $ from 'jquery';
+import {html, render} from 'lit';
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {AbstractAction} from './ActionButton/AbstractAction';
 import {ModalResponseEvent} from 'TYPO3/CMS/Backend/ModalInterface';
@@ -469,20 +470,32 @@ class Modal {
       const $loaderTarget = currentModal.find(contentTarget);
       Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
         $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
-        new AjaxRequest(configuration.content as string).get().then(async (response: AjaxResponse): Promise<void> => {
-          const html = await response.raw().text();
+        new AjaxRequest(configuration.content as string).get().finally(async (): Promise<void> => {
           if (!this.currentModal.parent().length) {
             // attach modal to DOM, otherwise embedded scripts are not executed by jquery append()
             this.currentModal.appendTo('body');
           }
+        }).then(async (response: AjaxResponse): Promise<void> => {
+          const htmlResponse = await response.raw().text();
           this.currentModal.find(contentTarget)
             .empty()
-            .append(html);
+            .append(htmlResponse);
 
           if (configuration.ajaxCallback) {
             configuration.ajaxCallback();
           }
           this.currentModal.trigger('modal-loaded');
+        }).catch(async (response: AjaxResponse): Promise<void> => {
+          const htmlResponse = await response.raw().text();
+          const $contentTarget = this.currentModal.find(contentTarget).empty();
+          if (htmlResponse) {
+            $contentTarget.append(htmlResponse);
+          } else {
+            render(
+              html`<p><strong>Oops, received a ${response.response.status} response from </strong> <span class="text-break">${configuration.content as string}</span>.</p>`,
+              $contentTarget[0]
+            );
+          }
         });
       });
     } else if (configuration.type === 'iframe') {
