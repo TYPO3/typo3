@@ -39,7 +39,7 @@ class PageRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../../Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
     }
 
     /**

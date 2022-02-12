@@ -65,7 +65,7 @@ class RedirectServiceTest extends FunctionalTestCase
      */
     public function linkForRedirectToAccessRestrictedPageIsBuild(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/RedirectToAccessRestrictedPages.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectToAccessRestrictedPages.csv');
 
         $this->writeSiteConfiguration(
             'acme-com',
@@ -146,7 +146,7 @@ class RedirectServiceTest extends FunctionalTestCase
      */
     public function checkReponseCodeOnRedirect($url, $statusCode, $targetUrl, $redirectUid): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/RedirectToPages.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectToPages.csv');
 
         $this->writeSiteConfiguration(
             'acme-com',
@@ -297,7 +297,7 @@ class RedirectServiceTest extends FunctionalTestCase
      */
     public function checkRegExpRedirects(string $url, int $expectedStatusCode, string $expectedRedirectUri, int $expectedRedirectUid)
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectService_regexp.csv');
         $this->writeSiteConfiguration(
             'acme-com',
             $this->buildSiteConfiguration(1, 'https://acme.com/')

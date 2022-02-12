@@ -1,0 +1,5 @@
+"tt_content",,,,,,,,,,
+,"uid","pid","CType","header","header_link","deleted","t3ver_oid","t3ver_wsid","sorting","hidden"
+,1,1,"text","Test content","file:2",0,0,0,128,0
+,2,1,"text","Test content 2","file:4",0,0,0,256,0
+,3,1,"text","Test content 3","file:3",0,0,0,512,1

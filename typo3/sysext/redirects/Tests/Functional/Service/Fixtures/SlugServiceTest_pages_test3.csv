@@ -1,0 +1,14 @@
+pages,,,,,,,
+,uid,pid,title,slug,l10n_parent,l10n_source,sys_language_uid
+,1,0,"Root 1","/",0,0,0
+,2,1,"Dummy 1-2","/dummy-1-2",0,0,0
+,3,1,"Dummy 1-3","/test-new",0,0,0
+,31,1,"Dummy 1-3 german","/dummy-1-3",3,3,1
+,4,1,"Dummy 1-4","/dummy-1-4",0,0,0
+,5,2,"Dummy 1-2-5","/dummy-1-2/dummy-1-2-5",0,0,0
+,6,2,"Dummy 1-2-6","/dummy-1-2/dummy-1-2-6",0,0,0
+,7,2,"Dummy 1-2-7","/dummy-1-2/dummy-1-2-7",0,0,0
+,8,3,"Dummy 1-3-8","/dummy-1-3/dummy-1-3-8",0,0,0
+,32,3,"Dummy 1-3-8 german","/dummy-1-3/dummy-1-3-8",8,8,1
+,9,3,"Dummy 1-3-9","/dummy-1-3/dummy-1-3-9",0,0,0
+,10,4,"Dummy 1-4-10","/dummy-1-4/dummy-1-4-10",0,0,0

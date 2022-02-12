@@ -51,6 +51,7 @@ class ExportPageTreeViewTest extends AbstractImportExportTestCase
         //        it fails with sqlite / mssql with data set 0 due to missing '</li></ul>' at the end. ExportPagetTree class issue?
         self::markTestSkipped();
 
+        // @todo irre_tutorial.xml contains duplicate sorting values that need careful consideration before converting to csv
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/irre_tutorial.xml');
 
         $exportPageTreeView = $this->getAccessibleMock(ExportPageTreeView::class, ['dummy']);

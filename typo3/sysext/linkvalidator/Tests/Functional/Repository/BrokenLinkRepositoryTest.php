@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\Tests\Functional\Repository;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
@@ -36,38 +37,38 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
     protected $beusers = [
         'admin' => [
-            'fixture' => 'PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 1,
             'groupFixture' => '',
         ],
         'no group' => [
-            'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 2,
             'groupFixture' => '',
         ],
         // write access to pages, tt_content
         'group 1' => [
-            'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 3,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
+            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
         ],
         // write access to pages, tt_content, exclude field pages.header_link
         'group 2' => [
-            'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 4,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
+            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
         ],
         // write access to pages, tt_content (restricted to default language)
         'group 3' => [
-            'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 5,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
+            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
         ],
         // group 6: access to all, but restricted via explicit allow to CType=texmedia and text
         'group 6' => [
-            'fixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_users.xml',
+            'fixture' => __DIR__ . '/Fixtures/be_users.csv',
             'uid' => 6,
-            'groupFixture' => 'EXT:linkvalidator/Tests/Functional/Repository/Fixtures/be_groups.xml',
+            'groupFixture' => __DIR__ . '/Fixtures/be_groups.csv',
         ],
 
     ];
@@ -87,7 +88,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backendUser: 1=admin
             $this->beusers['admin'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // expected result:
@@ -103,7 +104,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // expected result:
@@ -116,7 +117,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_2.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
             //pids
             [1],
             // expected result:
@@ -129,7 +130,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 1'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_3.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
             //pids
             [1],
             // expected result:
@@ -145,7 +146,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 2'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_4.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
             //pids
             [1],
             // expected result:
@@ -161,7 +162,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 6'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
             //pids
             [1],
             // expected result:
@@ -176,7 +177,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 3'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_5.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
             //pids
             [1],
             // expected result:
@@ -214,7 +215,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
-        $this->importDataSet($inputFile);
+        $this->importCSVDataSet($inputFile);
 
         $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
@@ -234,7 +235,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backendUser: 1=admin
             $this->beusers['admin'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // count
@@ -246,7 +247,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // count
@@ -257,7 +258,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_2.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
             //pids
             [1],
             // count
@@ -268,7 +269,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 1'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_3.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
             //pids
             [1],
             // count
@@ -279,7 +280,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 2'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_4.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
             //pids
             [1],
             // count
@@ -290,7 +291,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 6'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
             //pids
             [1],
             // count
@@ -302,7 +303,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 3'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_5.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
             //pids
             [1],
             // count
@@ -337,7 +338,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
-        $this->importDataSet($inputFile);
+        $this->importCSVDataSet($inputFile);
 
         $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
@@ -359,7 +360,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backendUser: 1=admin
             $this->beusers['admin'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // expected result:
@@ -424,7 +425,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input.xml',
+            __DIR__ . '/Fixtures/input.csv',
             //pids
             [1],
             // expected result:
@@ -435,7 +436,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['no group'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_2.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_2.csv',
             //pids
             [1],
             // expected result:
@@ -446,7 +447,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 1'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_3.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_3.csv',
             //pids
             [1],
             // expected result:
@@ -497,7 +498,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 2'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_4.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_4.csv',
             //pids
             [1],
             // expected result:
@@ -561,7 +562,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 6'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_6_explicit_allow.csv',
             //pids
             [1],
             // expected result:
@@ -587,7 +588,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backend user
             $this->beusers['group 3'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_permissions_user_5.xml',
+            __DIR__ . '/Fixtures/input_permissions_user_5.csv',
             //pids
             [1],
             // expected result:
@@ -636,7 +637,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
 
-        $this->importDataSet($inputFile);
+        $this->importCSVDataSet($inputFile);
 
         $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
@@ -663,7 +664,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backendUser: 1=admin
             $this->beusers['admin'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_languages.xml',
+            __DIR__ . '/Fixtures/input_languages.csv',
             //pids
             [1, 2, 3],
             //languages
@@ -714,7 +715,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
             // backendUser: 1=admin
             $this->beusers['admin'],
             // input file for DB
-            __DIR__ . '/Fixtures/input_languages.xml',
+            __DIR__ . '/Fixtures/input_languages.csv',
             //pids
             [1, 2, 3],
             //languages
@@ -775,7 +776,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         }
 
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
-        $this->importDataSet($inputFile);
+        $this->importCSVDataSet($inputFile);
 
         $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
@@ -798,10 +799,16 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
     protected function setupBackendUserAndGroup(int $uid, string $fixtureFile, string $groupFixtureFile): void
     {
         if ($groupFixtureFile) {
-            $this->importDataSet($groupFixtureFile);
+            $this->importCSVDataSet($groupFixtureFile);
         }
         $this->backendUserFixture = $fixtureFile;
         $this->setUpBackendUserFromFixture($uid);
         Bootstrap::initializeLanguageObject();
+    }
+
+    protected function setUpBackendUserFromFixture($userUid): BackendUserAuthentication
+    {
+        $this->importCSVDataSet($this->backendUserFixture);
+        return $this->setUpBackendUser($userUid);
     }
 }

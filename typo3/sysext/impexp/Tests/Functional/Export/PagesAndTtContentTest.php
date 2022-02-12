@@ -70,10 +70,10 @@ class PagesAndTtContentTest extends AbstractImportExportTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
     }
 
     /**

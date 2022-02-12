@@ -100,7 +100,7 @@ class ShortcutRepositoryTest extends FunctionalTestCase
             );
         }
 
-        $this->assertCSVDataSet('typo3/sysext/backend/Tests/Functional/Backend/Fixtures/ShortcutsAddedResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/ShortcutsAddedResult.csv');
     }
 
     public function getShortcutsToAdd(): array

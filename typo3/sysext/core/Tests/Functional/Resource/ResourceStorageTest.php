@@ -398,7 +398,7 @@ class ResourceStorageTest extends FunctionalTestCase
     {
         try {
             $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
-            $this->importDataSet(__DIR__ . '/Fixtures/FileSearch.xml');
+            $this->importCSVDataSet(__DIR__ . '/Fixtures/FileSearch.csv');
             $this->setUpBackendUserFromFixture(1);
             $subject = GeneralUtility::makeInstance(StorageRepository::class)->findByUid(1);
             $subject->setFileAndFolderNameFilters($filters);

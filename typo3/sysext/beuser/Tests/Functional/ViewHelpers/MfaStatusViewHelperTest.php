@@ -38,7 +38,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users_mfa.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_mfa.csv');
 
         // Default LANG prophecy just returns incoming value as label if calling ->sL()
         $languageServiceProphecy = $this->prophesize(LanguageService::class);

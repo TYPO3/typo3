@@ -72,7 +72,7 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
             []
         );
         $dataHandler->process_datamap();
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueResult.csv');
     }
 
     /**
@@ -98,7 +98,7 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
         );
         $dataHandler->process_datamap();
 
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueResult.csv');
     }
 
     /**
@@ -126,6 +126,6 @@ class SlugUniqueTest extends AbstractDataHandlerActionTestCase
         );
         $dataHandler->process_datamap();
 
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/DataHandling/DataHandler/DataSet/TestSlugUniqueNewRecordResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/TestSlugUniqueNewRecordResult.csv');
     }
 }

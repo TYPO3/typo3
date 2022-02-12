@@ -34,7 +34,7 @@ class TcaGroupTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/TcaGroup.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaGroup.csv');
     }
 
     /**

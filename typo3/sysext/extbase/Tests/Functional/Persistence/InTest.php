@@ -45,10 +45,10 @@ class InTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
 
         $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
         $this->postRepository = $this->getContainer()->get(PostRepository::class);

@@ -1,0 +1,6 @@
+"be_users",,,,,,,
+,"uid","pid","username","usergroup","deleted","admin","options"
+,1,0,"admin",,0,1,0
+,2,0,"test1",,1,0,0
+,3,0,"test1",,0,0,0
+,9,0,"editor",9,0,0,3

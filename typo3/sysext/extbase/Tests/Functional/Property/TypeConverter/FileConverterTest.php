@@ -32,8 +32,8 @@ class FileConverterTest extends FunctionalTestCase
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->user = ['admin' => true];
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.csv');
 
         $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
 

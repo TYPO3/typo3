@@ -96,7 +96,7 @@ class PageLayoutViewTest extends FunctionalTestCase
      */
     public function languageSelectorShowsAllAvailableLanguagesForTranslation(): void
     {
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/View/Fixtures/LanguageSelectorScenarioDefault.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/LanguageSelectorScenarioDefault.csv');
 
         $result = $this->subject->languageSelector(17);
 
@@ -116,7 +116,7 @@ class PageLayoutViewTest extends FunctionalTestCase
      */
     public function languageSelectorDoesNotOfferLanguageIfTranslationHasBeenDoneAlready(): void
     {
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/View/Fixtures/LanguageSelectorScenarioTranslationDone.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/LanguageSelectorScenarioTranslationDone.csv');
         $result = $this->subject->languageSelector(17);
 
         $matches = [];

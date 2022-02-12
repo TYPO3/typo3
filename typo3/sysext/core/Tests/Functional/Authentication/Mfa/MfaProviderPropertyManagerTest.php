@@ -34,7 +34,7 @@ class MfaProviderPropertyManagerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
 
         $this->user = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $this->user->enablecolumns = ['deleted' => true];

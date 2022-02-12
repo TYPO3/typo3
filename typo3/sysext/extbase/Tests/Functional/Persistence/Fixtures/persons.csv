@@ -1,0 +1,6 @@
+tx_blogexample_domain_model_person,,,,,,,
+,uid,pid,firstname,lastname,email,tags,tags_special
+,1,0,Author,"With tag and special tag",author-1@test.typo3.org,2,2
+,2,0,Author,"With tag",author-2@test.typo3.org,1,0
+,3,0,Author,"With special tag",author-3@test.typo3.org,0,1
+,4,0,"Another Author","With special tag",author-4@test.typo3.org,0,1

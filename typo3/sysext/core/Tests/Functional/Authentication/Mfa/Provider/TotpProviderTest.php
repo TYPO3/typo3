@@ -37,7 +37,7 @@ class TotpProviderTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
         $this->subject = $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('totp');

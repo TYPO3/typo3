@@ -1,0 +1,5 @@
+be_users,,,,
+,uid,pid,username,mfa
+,1,0,mfa_enabled,"{""totp"":{""secret"":""KRMVATZTJFZUC53FONXW2ZJB"",""active"":true,""attempts"":0}}"
+,2,0,mfa_locked,"{""totp"":{""secret"":""KRMVATZTJFZUC53FONXW2ZJB"",""active"":true,""attempts"":3}}"
+,3,0,mfa_mixed,"{""totp"":{""secret"":""KRMVATZTJFZUC53FONXW2ZJB"",""active"":true,""attempts"":0},""recovery-codes"":{""codes"":[],""active"":true}}"

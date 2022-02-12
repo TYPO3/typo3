@@ -70,8 +70,8 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
      */
     public function exportPagesAndRelatedTtContentWithFlexFormRelation(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-flexform-relation.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-flexform-relation.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '
 <T3DataStructure>
@@ -117,9 +117,9 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
      */
     public function exportPagesAndRelatedTtContentWithSoftrefs(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-softrefs.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-softrefs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '
 <T3DataStructure>
@@ -172,9 +172,9 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
      */
     public function exportPagesAndRelatedTtContentWithFlexFormSoftrefs(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-flexform-softrefs.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/form_sys_file.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-flexform-softrefs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/form_sys_file.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '
 <T3DataStructure>

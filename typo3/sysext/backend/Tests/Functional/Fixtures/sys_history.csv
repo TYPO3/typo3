@@ -1,0 +1,5 @@
+sys_history,,,,,,,,,,
+,uid,actiontype,usertype,userid,originaluserid,tablename,recuid,history_data,workspace,correlation_id
+,1,1,BE,1,1,pages,1,"not relevant for this test",0,da625644-8e50-47ee-8c11-bb19552a79e4
+,2,1,BE,1,1,pages,1,"not relevant for this test",0,da625644-8e50-47ee-8c11-bb19552a79e4
+,3,1,BE,1,1,pages,1,"not relevant for this test",0,3479dc73-7bc8-4d3b-a8bc-0370a68cedd2

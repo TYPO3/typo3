@@ -1,0 +1,14 @@
+"fe_users",,,,,,,,
+,"uid","pid","username","deleted","usergroup","disable","tx_extbase_type",
+,1,0,"usera",0,1,0,,
+,2,0,"userb",0,2,0,,
+,3,0,"administratora",0,"1,2",0,"ExtbaseTeam\BlogExample\Domain\Model\Administrator",
+,4,0,"administratorb",0,"1,2",0,"ExtbaseTeam\BlogExample\Domain\Model\Administrator",
+"sys_refindex",,,,,,,,
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"001cd2e4390e0152274a1a31cabbf067","fe_users",1,"usergroup",0,0,"fe_groups",1
+,"df54ed0e6e6fa030108438926d5c264f","fe_users",2,"usergroup",0,0,"fe_groups",2
+,"121e4c7af1a67d742beae6f5495860d9","fe_users",3,"usergroup",0,0,"fe_groups",1
+,"1ea5a92bdcf97a86381068c38080e25b","fe_users",3,"usergroup",1,0,"fe_groups",2
+,"cca234ba287dceaefadd4e6eed797393","fe_users",4,"usergroup",0,0,"fe_groups",1
+,"ff1fd3eb4edf533f313b5fba99f361f5","fe_users",4,"usergroup",1,0,"fe_groups",2

@@ -31,9 +31,9 @@ class ReferenceIndexTest extends FunctionalTestCase
      */
     public function updateIndexRemovesRecordsOfNotExistingWorkspaces(): void
     {
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceImport.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceImport.csv');
         $result = (new ReferenceIndex())->updateIndex(false);
         self::assertSame('Index table hosted 1 indexes for non-existing or deleted workspaces, now removed.', $result['errors'][0]);
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemoveNonExistingWorkspaceResult.csv');
     }
 }

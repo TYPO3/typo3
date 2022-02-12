@@ -37,7 +37,7 @@ class AuthenticationServiceTest extends FunctionalTestCase
         $this->subject = new AuthenticationService();
         $this->subject->setLogger(new NullLogger());
         parent::setUp();
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/be_users.csv');
     }
 
     /**

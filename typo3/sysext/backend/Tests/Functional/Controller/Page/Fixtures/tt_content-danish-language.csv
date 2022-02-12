@@ -1,0 +1,10 @@
+"tt_content",,,,,,,,,,,
+,"uid","pid","sys_language_uid","l18n_parent","l10n_source","deleted","t3ver_oid","t3ver_wsid","header","sorting","colPos"
+,4,1,1,1,1,0,0,0,"Test indhold 1",1,0
+,5,1,1,2,2,0,0,0,"Test indhold 2",2,1
+,6,1,1,3,3,0,0,0,"Test indhold 3",3,1
+"sys_refindex",,,,,,,,,,,
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid",,,
+,"9039d2edd769c4f4007cdddf25059d9d","tt_content",4,"l18n_parent",0,0,"tt_content",1,,,
+,"65555a45353c129720929d952fb9be88","tt_content",5,"l18n_parent",0,0,"tt_content",2,,,
+,"89323cfcf5521069f7344a6ef72353f2","tt_content",6,"l18n_parent",0,0,"tt_content",3,,,

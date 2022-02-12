@@ -32,7 +32,7 @@ class ShortcutControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/sys_be_shortcuts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_be_shortcuts.csv');
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

@@ -1,0 +1,9 @@
+pages,,,,,,
+,uid,pid,title,doktype,deleted,perms_everybody
+,1,0,Root,1,0,15
+,2,1,"Dummy 1-2",1,0,15
+,3,1,"Dummy 1-3 (deleted)",1,1,15
+,4,1,"Dummy 1-4 (deleted)",1,1,15
+,5,4,"Dummy 1-4-5 (deleted)",1,1,15
+,6,0,"Dummy 6 (deleted)",1,1,15
+,7,1,"Dummy 1-7 (deleted)",1,1,0

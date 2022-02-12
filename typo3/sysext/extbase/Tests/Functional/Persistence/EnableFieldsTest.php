@@ -39,9 +39,9 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs-with-fe_groups.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs-with-fe_groups.csv');
 
         $this->setUpFrontendSite(1);
         $this->setUpFrontendRootPage(1, ['typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/JsonRenderer.typoscript']);

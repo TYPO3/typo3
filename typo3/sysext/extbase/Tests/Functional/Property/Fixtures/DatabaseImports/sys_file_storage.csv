@@ -1,0 +1,3 @@
+sys_file_storage,,,,,,,,,
+,uid,pid,name,driver,configuration,is_browsable,is_public,is_writable,is_online
+,1,0,fileadmin,Local,,1,1,1,1

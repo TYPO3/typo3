@@ -1,0 +1,5 @@
+"tx_testirrecsv_hotel",,,,,
+,"uid","pid","title","offers","l18n_diffsource"
+,1,1,"1:n CSV: Hotel",,
+,2,1,"1:n CSV: Hotel [Dansk]",1,1
+,3,1,"1:n CSV: Hotel [Deutsch]",2,1

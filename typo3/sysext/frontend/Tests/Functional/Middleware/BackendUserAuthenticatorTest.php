@@ -33,7 +33,7 @@ class BackendUserAuthenticatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:core/Tests/Functional/Fixtures/pages.xml');
+        $this->importCsvDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/pages.csv');
         $this->setUpBackendUserFromFixture(1);
         $this->writeSiteConfiguration(
             'acme-com',

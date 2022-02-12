@@ -41,7 +41,7 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../DataSet/ImportDefault.csv');
-        $this->importDataSet(dirname($this->backendUserFixture) . '/be_groups.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../../Fixtures/be_groups.csv');
         $this->addSiteConfiguration(1);
         // define page create permissions for backend user group 9 on page 1
         GeneralUtility::makeInstance(ConnectionPool::class)

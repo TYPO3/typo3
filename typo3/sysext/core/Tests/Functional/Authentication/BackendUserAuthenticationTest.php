@@ -55,8 +55,8 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
 
         $this->subject = new BackendUserAuthentication();
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/Fixtures/be_groups.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
         $this->setUpBackendUserFromFixture(2);
         /** @var BackendUserAuthentication $backendUser */
         $backendUser = $GLOBALS['BE_USER'];

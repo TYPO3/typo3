@@ -55,7 +55,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/translatedBlogExampleData.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/translatedBlogExampleData.csv');
         $this->setUpBasicFrontendEnvironment();
 
         $configuration = [

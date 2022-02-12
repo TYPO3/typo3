@@ -54,11 +54,11 @@ class SynchronizeFolderRelationsTest extends FunctionalTestCase
 
         // Nothing should change if the renamed identifier is the same as the current one
         $this->subject->synchronizeFilemountsAfterRename($this->getAfterFolderRenamedEvent('/foo/bar/'));
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Resource/Fixtures/FilemountsBase.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/FilemountsBase.csv');
 
         // Relations should be changed if the renamed identifier differs from the current one
         $this->subject->synchronizeFilemountsAfterRename($this->getAfterFolderRenamedEvent('/foo/renamed/'));
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Resource/Fixtures/FilemountsResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/FilemountsResult.csv');
 
         // Check for generated flash messages
         $flashMessages = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
@@ -78,11 +78,11 @@ class SynchronizeFolderRelationsTest extends FunctionalTestCase
 
         // Nothing should change if the renamed identifier is the same as the current one
         $this->subject->synchronizeFileCollectionsAfterRename($this->getAfterFolderRenamedEvent('/foo/bar/'));
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Resource/Fixtures/FileCollectionBase.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/FileCollectionBase.csv');
 
         // Relations should be changed if the renamed identifier differs from the current one
         $this->subject->synchronizeFileCollectionsAfterRename($this->getAfterFolderRenamedEvent('/foo/renamed/'));
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Resource/Fixtures/FileCollectionResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/FileCollectionResult.csv');
 
         // Check for generated flash messages
         $flashMessages = GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();

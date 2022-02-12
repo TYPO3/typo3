@@ -1,0 +1,7 @@
+pages,,,,,,,,,,
+,uid,pid,title,hidden,deleted,endtime,t3_origuid,t3ver_oid,t3ver_wsid,t3ver_state
+,1,0,visible,0,0,0,0,0,0,0
+,2,1,deleted,0,1,0,0,0,0,0
+,3,1,hidden,1,0,0,0,0,0,0
+,4,1,expired,0,0,1262300400,0,0,0,0
+,5,0,deletedInWorkspace,0,0,0,1,1,1,2

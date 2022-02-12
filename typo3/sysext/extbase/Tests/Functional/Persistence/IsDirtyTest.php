@@ -45,15 +45,15 @@ class IsDirtyTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-post-mm.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/tags-mm.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/post-tag-mm.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/persons.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_users.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/fe_groups.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-post-mm.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags-mm.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
 
         $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
         $this->adminRepository = $this->getContainer()->get(AdministratorRepository::class);

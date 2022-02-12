@@ -65,7 +65,7 @@ class IntegrityServiceTest extends FunctionalTestCase
      */
     public function sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/IntegrityServiceTest_sourcePathWithMatchingSlugInLocalizedPageIsNotReportedAsConflict.csv');
 
         $result = $this->subject->findConflictingRedirects('localized-page');
         $this->assertExpectedPathsFromGenerator([], $result);

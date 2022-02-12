@@ -1,0 +1,4 @@
+fe_groups,,,,,,,
+,uid,pid,title,subgroup,TSconfig,description,deleted
+,1,0,"Group A",,,,0
+,2,0,"Group B",,,,0

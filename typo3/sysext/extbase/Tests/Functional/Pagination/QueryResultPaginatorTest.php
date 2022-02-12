@@ -33,7 +33,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
         $this->postRepository = $this->getContainer()->get(PostRepository::class);
     }
 

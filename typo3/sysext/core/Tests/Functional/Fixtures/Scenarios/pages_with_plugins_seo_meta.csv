@@ -1,0 +1,8 @@
+pages,,,,
+,uid,pid,title,deleted
+,1,0,"Rootpage for Tests",0
+,2,1,"Page with USER Plugins",0
+,3,1,"Page with USER_INT Plugins",0
+,4,1,"Page with USER_INT and USER Plugins",0
+,5,1,"Page with USER and USER_INT Plugins",0
+,6,1,"Page with USER and USER_INT Plugins",0

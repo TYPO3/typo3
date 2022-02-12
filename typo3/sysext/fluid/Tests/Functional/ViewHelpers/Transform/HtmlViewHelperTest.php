@@ -37,7 +37,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:core/Tests/Functional/Fixtures/pages.xml');
+        $this->importCsvDataSet(__DIR__ . '/../../../../../core/Tests/Functional/Fixtures/pages.csv');
         $this->writeSiteConfiguration(
             'typo3-localhost',
             $this->buildSiteConfiguration(1, 'https://typo3.localhost/'),

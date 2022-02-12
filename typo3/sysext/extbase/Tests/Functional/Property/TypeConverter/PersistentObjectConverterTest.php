@@ -33,7 +33,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/be_users.csv');
     }
 
     /**

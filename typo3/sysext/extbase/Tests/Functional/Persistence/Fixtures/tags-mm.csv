@@ -1,0 +1,9 @@
+tx_blogexample_domain_model_tag_mm,,,,,,
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,11,tx_blogexample_domain_model_person,tags,1,1
+,1,13,tx_blogexample_domain_model_person,tags_special,1,1
+,2,11,tx_blogexample_domain_model_person,tags,1,1
+,3,13,tx_blogexample_domain_model_person,tags_special,1,1
+,4,13,tx_blogexample_domain_model_person,tags_special,1,1
+,1,14,tx_blogexample_domain_model_person,tags,1,1
+,1,14,tx_blogexample_domain_model_person,tags_special,1,1

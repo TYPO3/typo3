@@ -40,12 +40,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentWithDifferentImageToExistingData(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -58,7 +58,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithDifferentImageToExistingData.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithDifferentImageToExistingData.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
@@ -69,12 +69,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function updatePagesAndRelatedTtContentWithDifferentImageToExistingData(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -96,7 +96,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentWithDifferentImageToExistingData.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentWithDifferentImageToExistingData.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
@@ -107,12 +107,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function updatePagesAndRelatedTtContentWithDifferentImageToExistingDataAndPagesAsNew(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -138,7 +138,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentWithDifferentImageToExistingDataAndPagesAsNew.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentWithDifferentImageToExistingDataAndPagesAsNew.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
         self::assertFileEquals(__DIR__ . '/../Fixtures/FileAssertions/typo3_image2_01.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg');
@@ -149,12 +149,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function updatePagesAndRelatedTtContentKeepsRelationsBetweenImportedPagesAndRecords(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -176,7 +176,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2_01.jpg';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentKeepsRelationsBetweenImportedPagesAndRecords.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/updatePagesAndRelatedTtContentKeepsRelationsBetweenImportedPagesAndRecords.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
@@ -186,12 +186,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentWithSameImageToExistingData(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_language.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -202,7 +202,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         );
         $subject->importData();
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithSameImageToExistingData.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithSameImageToExistingData.csv');
 
         self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', Environment::getPublicPath() . '/fileadmin/user_upload/typo3_image2.jpg');
     }
@@ -234,7 +234,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
     public function importPagesAndTtContentWithRemappingNewSysFileEntries(): void
     {
         // Have a single sys_file entry with uid 1
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
 
         $subject = GeneralUtility::makeInstance(Import::class);
@@ -252,7 +252,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         // Expect mapping is updated: one content element should still reference new sys_file:2,
         // two others should reference new sys_file:3
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndTtContentWithRemappingNewSysFileEntries.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndTtContentWithRemappingNewSysFileEntries.csv');
     }
 
     /**
@@ -260,8 +260,8 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importImageIntoSystemAndMatchingThePathOfTheSecondStorage(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.csv');
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);
@@ -278,7 +278,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentKeepsRelationBetweenImportedFlexFormsAndPages(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '
 <T3DataStructure>
@@ -328,7 +328,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentKeepsRelationBetweenImportedFlexFormSoftReferenceAndRelatedRecord(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
@@ -342,7 +342,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithFlexFormSoftReference.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithFlexFormSoftReference.csv');
 
         self::assertFileEquals(
             __DIR__ . '/../Fixtures/Folders/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml',
@@ -355,7 +355,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentCanKeepOriginalFlexFormSoftReference(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
@@ -370,7 +370,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithExcludedFlexFormSoftReference.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithExcludedFlexFormSoftReference.csv');
 
         self::assertFileEquals(
             __DIR__ . '/../Fixtures/Folders/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml',
@@ -383,7 +383,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
      */
     public function importPagesAndRelatedTtContentCanEditFlexFormSoftReference(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
 
         $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = $this->getFlexFormSoftReferenceDataStructure();
 
@@ -399,7 +399,7 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
 
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml';
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithEditedFlexFormSoftReference.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importPagesAndRelatedTtContentWithEditedFlexFormSoftReference.csv');
 
         self::assertFileEquals(
             __DIR__ . '/../Fixtures/Folders/fileadmin/form_definitions/flexFormWithSoftReference.form.yaml',

@@ -1,0 +1,12 @@
+tx_blogexample_domain_model_blog,,,,,,,,,,,,,,
+,uid,pid,title,description,logo,l18n_diffsource,deleted,posts,administrator,categories,t3ver_oid,t3ver_state,t3ver_wsid,hidden
+,1,0,Blog1,"Blog1 Description",,,0,10,0,0,0,0,0,0
+,2,0,Blog2,"Blog2 Description",,,0,1,4,0,0,0,0,0
+,3,0,Blog3,"Blog3 Description",,,0,1,3,0,0,0,0,0
+,4,0,Blog4Hidden,"Blog4 Description",,,0,1,0,0,0,0,0,1
+,5,0,Blog5Deleted,"Blog5 Description",,,1,1,3,0,0,0,0,0
+,6,0,Blog6Hidden,"Blog6 Description",,,0,1,0,0,0,0,0,1
+,101,0,"WorkspaceOverlay Blog1","WorkspaceOverlay Blog1 Description",,,0,10,0,2,1,0,1,0
+,102,0,"WorkspaceOverlay Blog6Enabled","WorkspaceOverlay Blog6 Description",,,0,1,0,1,6,0,1,0
+,103,0,"WorkspaceOverlay Blog2HiddenInWorkspace","WorkspaceOverlay Blog2HiddenInWorkspace Description",,,0,1,0,0,2,0,1,1
+,104,0,"WorkspaceOverlay Blog4HiddenInLiveAndWorkspace","WorkspaceOverlay Blog4HiddenInLiveAndWorkspace Description",,,0,1,0,0,4,0,1,1

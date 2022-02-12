@@ -30,7 +30,7 @@ class PluginsTest extends AbstractTestCase
         $this->testExtensionsToLoad[] = 'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_meta';
 
         parent::setUp();
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/Scenarios/pages_with_plugins_seo_meta.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Scenarios/pages_with_plugins_seo_meta.csv');
 
         $this->writeSiteConfiguration(
             'website-local',

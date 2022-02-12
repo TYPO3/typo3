@@ -83,7 +83,7 @@ class PasswordResetTest extends FunctionalTestCase
      */
     public function isEnabledExcludesAdministrators(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users_only_admins.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users_only_admins.csv');
         $subject = new PasswordReset();
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = false;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = false;
@@ -107,7 +107,7 @@ class PasswordResetTest extends FunctionalTestCase
         // False since no users exist
         self::assertFalse($subject->isEnabledForUser(3));
 
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
 
         // False since reset for admins is not enabled
         self::assertFalse($subject->isEnabledForUser(1));
@@ -131,7 +131,7 @@ class PasswordResetTest extends FunctionalTestCase
      */
     public function noEmailIsFound(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
@@ -150,7 +150,7 @@ class PasswordResetTest extends FunctionalTestCase
      */
     public function ambiguousEmailIsTriggeredForMultipleValidUsers(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
@@ -169,7 +169,7 @@ class PasswordResetTest extends FunctionalTestCase
      */
     public function passwordResetEmailIsTriggeredForValidUser(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';
@@ -190,7 +190,7 @@ class PasswordResetTest extends FunctionalTestCase
      */
     public function invalidTokenCannotResetPassword(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordReset'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['BE']['passwordResetForAdmins'] = true;
         $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport'] = 'null';

@@ -1,0 +1,9 @@
+"tx_blogexample_domain_model_blog",,,,,,,,,
+,"uid","pid","title","description","logo","l18n_diffsource","fe_group","deleted","posts"
+,1,1,"Blog1","Blog1 Description",,,,0,0
+,2,1,"Blog2","Blog2 Description",,,1,0,0
+,3,1,"Blog3","Blog3 Description",,,2,0,0
+"sys_refindex",,,,,,,,,
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid",
+,"cb722646d5c745f583dc5e0f3de5f8ba","tx_blogexample_domain_model_blog",2,"fe_group",0,0,"fe_groups",1,
+,"584906a3be1faa5c4d1bfd6dd0328502","tx_blogexample_domain_model_blog",3,"fe_group",0,0,"fe_groups",2,

@@ -1,0 +1,12 @@
+tx_blogexample_domain_model_post,,,,,,,,,,
+,uid,pid,blog,content,title,deleted,l18n_diffsource,l18n_parent,sys_language_uid,hidden
+,1,1,1,"Lorem ipsum",Post1,0,,0,0,0
+,2,1,1,"Lorem ipsum","B EN:Post1",0,,1,1,0
+,3,1,1,"Lorem ipsum",GR:Post1,0,,1,2,0
+,4,1,1,"Lorem ipsum",Post2,0,,0,0,0
+,5,1,1,"Lorem ipsum","A EN:Post2",0,,4,1,0
+,6,1,1,"Lorem ipsum",Post3,0,,0,0,0
+,10,1,1,"Lorem ipsum",Post10,0,,0,0,1
+,11,1,1,"Lorem ipsum",GR:Post10,0,,10,2,1
+,12,1,1,"Lorem ipsum",Post11,0,,0,0,0
+,13,1,1,"Lorem ipsum",GR:Post11,0,,12,2,0
