@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -395,7 +397,7 @@ class SetupModuleController
                         type="' . htmlspecialchars($type) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
                         $noAutocomplete .
-                        'value="' . htmlspecialchars($value) . '" ' .
+                        'value="' . htmlspecialchars((string)$value) . '" ' .
                         $more .
                         ' />';
                     break;
