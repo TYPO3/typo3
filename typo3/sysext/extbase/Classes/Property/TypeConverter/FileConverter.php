@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Domain\Model\File;
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\File.
  *
- * @internal experimental! This class is experimental and subject to change!
+ * @internal
  */
 class FileConverter extends AbstractFileFolderConverter
 {

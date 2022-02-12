@@ -27,7 +27,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 /**
  * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\File.
  *
- * @internal experimental! This class is experimental and subject to change!
+ * @internal
  */
 abstract class AbstractFileFolderConverter extends AbstractTypeConverter
 {

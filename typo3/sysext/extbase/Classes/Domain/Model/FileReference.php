@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A file reference object (File Abstraction Layer)
  *
- * @internal experimental! This class is experimental and subject to change!
+ * @internal
  */
 class FileReference extends AbstractFileFolder
 {

@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * A file object (File Abstraction Layer)
  *
- * @internal experimental! This class is experimental and subject to change!
+ * @internal
  */
 abstract class AbstractFileFolder extends AbstractEntity
 {
