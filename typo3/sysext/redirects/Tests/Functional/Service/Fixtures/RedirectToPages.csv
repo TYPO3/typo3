@@ -1,0 +1,9 @@
+"pages",,,,,,,,
+,"uid","pid","title","slug","hidden","deleted","fe_group",
+,1,0,"Root","/",0,0,0,
+,2,1,"Page2","/page2",0,0,0,
+"sys_redirect",,,,,,,,
+,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target"
+,1,0,301,0,0,"acme.com","/redirect-301","t3://page?uid=1"
+,2,0,308,0,0,"acme.com","/redirect-308","t3://page?uid=2"
+,3,0,302,0,0,"acme.com","/redirect-302","https://www.typo3.org"

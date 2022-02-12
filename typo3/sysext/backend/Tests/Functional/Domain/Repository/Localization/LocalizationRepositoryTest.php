@@ -41,7 +41,7 @@ class LocalizationRepositoryTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->importCSVDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Domain/Repository/Localization/Fixtures/DefaultPagesAndContent.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DefaultPagesAndContent.csv');
 
         $this->subject = new LocalizationRepository();
     }

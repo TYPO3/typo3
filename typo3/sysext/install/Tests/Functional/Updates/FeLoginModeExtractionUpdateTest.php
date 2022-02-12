@@ -27,8 +27,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
 {
-    private const CSV_FIXTURE_PATH = 'typo3/sysext/install/Tests/Functional/Updates/Fixtures/';
-
     /**
      * @test
      */
@@ -59,7 +57,7 @@ class FeLoginModeExtractionUpdateTest extends FunctionalTestCase
             );
         }
 
-        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName(self::CSV_FIXTURE_PATH . $csvDataSet . '.csv'));
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/' . $csvDataSet . '.csv');
         self::assertEquals($updateNecessary, (new FeLoginModeExtractionUpdate())->updateNecessary());
     }
 

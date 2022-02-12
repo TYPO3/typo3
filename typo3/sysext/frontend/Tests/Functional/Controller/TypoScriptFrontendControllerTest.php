@@ -36,7 +36,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/fixtures.xml');
+        $this->importCSVDataSet(__DIR__ . '/fixtures.csv');
 
         $this->tsFrontendController = $this->getAccessibleMock(
             TypoScriptFrontendController::class,

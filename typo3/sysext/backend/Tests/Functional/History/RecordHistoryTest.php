@@ -30,7 +30,7 @@ class RecordHistoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../Fixtures/sys_history.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_history.csv');
         $this->subject = new RecordHistory();
     }
 

@@ -36,7 +36,7 @@ class CleanerTaskTest extends FunctionalTestCase
         $subject = new CleanerTask();
         $subject->setTcaTables(['pages']);
         $result = $subject->execute();
-        $this->assertCSVDataSet('typo3/sysext/recycler/Tests/Functional/Task/Pages/DataSet/Assertion/pages_deleted.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/Assertion/pages_deleted.csv');
         self::assertTrue($result);
     }
 
@@ -58,7 +58,7 @@ class CleanerTaskTest extends FunctionalTestCase
         $period = (int)$difference->format('%a') + 1;
         $subject->setPeriod($period);
         $result = $subject->execute();
-        $this->assertCSVDataSet('typo3/sysext/recycler/Tests/Functional/Task/Pages/DataSet/Assertion/pages_deleted_with_period.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/Assertion/pages_deleted_with_period.csv');
         self::assertTrue($result);
     }
 

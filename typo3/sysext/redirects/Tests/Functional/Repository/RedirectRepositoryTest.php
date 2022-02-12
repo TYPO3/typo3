@@ -89,7 +89,7 @@ class RedirectRepositoryTest extends FunctionalTestCase
         int $redirectAfterCleanup
     ): void {
         self::assertSame(0, $this->getRedirectCount());
-        $this->importDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');
 
         self::assertSame($redirectBeforeCleanup, $this->getRedirectCount());
         $repository = new RedirectRepository();

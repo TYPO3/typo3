@@ -32,10 +32,10 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/tt_content-with-image.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_metadata.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_reference.csv');
         $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storage.xml');
     }
 
@@ -44,7 +44,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContentWithImages(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
 
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -65,7 +65,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContentWithImagesFromCorruptSysFileRecord(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_corrupt.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_corrupt.csv');
 
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -91,7 +91,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContentWithImagesButNotIncluded(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file.csv');
 
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
@@ -114,7 +114,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
      */
     public function exportPagesAndRelatedTtContentWithImagesButNotIncludedAndInvalidHash(): void
     {
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_invalid_hash.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_invalid_hash.csv');
 
         /** @var Export|MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);

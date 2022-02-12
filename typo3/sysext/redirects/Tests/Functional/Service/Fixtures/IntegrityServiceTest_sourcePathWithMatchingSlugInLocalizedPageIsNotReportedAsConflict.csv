@@ -1,0 +1,8 @@
+"pages",,,,,,,
+,"uid","pid","sys_language_uid","title","slug","l10n_parent",
+,100,0,0,"Start: https://another.example.com","/",0,
+,101,100,0,"Default language: https://another.example.com/features","/features",0,
+,102,100,1,"Translated page: https://another.example.com/de/merkmale","/merkmale",101,
+"sys_redirect",,,,,,,
+,"uid","pid","deleted","disabled","source_host","source_path","target"
+,1,0,0,0,"*","/merkmale","t3://page?uid=101"

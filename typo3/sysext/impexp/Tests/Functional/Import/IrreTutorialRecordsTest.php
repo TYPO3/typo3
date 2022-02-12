@@ -46,6 +46,6 @@ class IrreTutorialRecordsTest extends AbstractImportExportTestCase
         );
         $subject->importData();
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importIrreRecords.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importIrreRecords.csv');
     }
 }

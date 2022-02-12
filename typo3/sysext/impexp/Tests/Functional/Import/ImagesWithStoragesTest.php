@@ -40,7 +40,7 @@ class ImagesWithStoragesTest extends AbstractImportExportTestCase
         );
         $subject->importData();
 
-        $this->assertCSVDataSet('EXT:impexp/Tests/Functional/Fixtures/DatabaseAssertions/importImagesWithStorages.csv');
+        $this->assertCSVDataSet(__DIR__ . '/../Fixtures/DatabaseAssertions/importImagesWithStorages.csv');
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin-1/user_upload/typo3_image3.jpg');
         self::assertFileExists(Environment::getPublicPath() . '/fileadmin-3/user_upload/typo3_image2.jpg');
     }
@@ -52,7 +52,7 @@ class ImagesWithStoragesTest extends AbstractImportExportTestCase
     {
         GeneralUtility::mkdir(Environment::getPublicPath() . '/fileadmin_invalid_path');
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_storages.csv');
 
         $subject = GeneralUtility::makeInstance(Import::class);
         $subject->setPid(0);

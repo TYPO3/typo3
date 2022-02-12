@@ -1,0 +1,9 @@
+"pages",,,,,
+,"uid","pid","perms_userid","perms_user",
+,1,0,3,18,
+"tt_content",,,,,
+,"uid","pid","bodytext","CType","header_link"
+,1,1,"<p><a href=""http://localhost/iAmInvalid"">link</a></p>","textmedia",
+,2,1,,"textmedia","http://localhost/iAmInvalid"
+,3,1,"<p><a href=""t3://page?uid=85"">broken link</a></p>","textmedia",
+,5,1,"<p><a href=""t3://file?uid=88"">broken link</a></p>","textmedia",

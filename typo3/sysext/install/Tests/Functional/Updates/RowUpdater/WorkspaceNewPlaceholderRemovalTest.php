@@ -57,7 +57,7 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         // Data set inspired by workspaces IRRE/CSV/Modify/DataSet/copyPage.csv
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvImport.csv');
         $this->subject->executeUpdate();
-        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreCsvResult.csv');
     }
 
     /**
@@ -68,7 +68,7 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         // Data set inspired by workspaces IRRE/ForeignField/Modify/DataSet/copyPage.csv
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldImport.csv');
         $this->subject->executeUpdate();
-        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalIrreForeignFieldResult.csv');
     }
 
     /**
@@ -79,6 +79,6 @@ class WorkspaceNewPlaceholderRemovalTest extends FunctionalTestCase
         // Data set inspired by workspaces ManyToMany/Modify/DataSet/copyPage.csv
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalManyToManyImport.csv');
         $this->subject->executeUpdate();
-        $this->assertCSVDataSet('typo3/sysext/install/Tests/Functional/Updates/RowUpdater/Fixtures/WorkspaceNewPlaceholderRemovalManyToManyResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/WorkspaceNewPlaceholderRemovalManyToManyResult.csv');
     }
 }

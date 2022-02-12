@@ -70,8 +70,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $request = new Request();
@@ -121,8 +121,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $request = new Request();
@@ -187,8 +187,8 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/blogs.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Persistence/Fixtures/posts.csv');
 
         $response = new Response();
         $request = new Request();

@@ -1,0 +1,3 @@
+sys_be_shortcuts,,,,
+,uid,userid,route,arguments
+,1,1,web_layout,"{""id"":""123""}"

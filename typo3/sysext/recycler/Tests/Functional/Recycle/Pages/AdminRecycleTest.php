@@ -31,7 +31,7 @@ class AdminRecycleTest extends AbstractRecycleTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/pages.csv');
         // Set up "admin" user
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

@@ -42,7 +42,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:frontend/Tests/Functional/Fixtures/pages-title-tag.xml');
+        $this->importCsvDataSet(__DIR__ . '/../Fixtures/pages-title-tag.csv');
         $this->setUpFrontendRootPage(
             1,
             ['EXT:frontend/Tests/Functional/Rendering/Fixtures/TitleTagRenderingTest.typoscript']

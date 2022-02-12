@@ -1,0 +1,11 @@
+"sys_file",,,,,,,,,,
+,"uid","pid","storage","identifier","folder_hash","name","identifier_hash","extension","mime_type","sha1"
+,1,0,1,"/bar/bla/foo.txt","d839c094d3294deb5b61cf7e0fe4f1cddaa96579","foo","84e70e8b11db88cea944e4d7be107092ab148b72","txt","text/plain","6e237d7c3e98387f924b81aada9b8d1f43f5eb5b"
+,2,0,1,"/bar/blupp.txt","04a7e2dfdf6e35eae326a441224010622d589ee9","blupp","bdbeddb9d7697ff7508674ed4b5e35e0a397286c","txt","text/plain","6e237d7c3e98387f924b81aada9b8d1f43f5eb5b"
+,3,0,1,"/baz/bla/baz.txt","a0296fe46605d9faec617d7d138bd6d4e87d46f1","baz","f11e0f830ba618ce3a65f8fbb19f09137c755e24","txt","text/plain","6e237d7c3e98387f924b81aada9b8d1f43f5eb5b"
+"sys_file_metadata",,,,,,,,,,
+,"uid","pid","crdate","file","sys_language_uid","title","description","l10n_parent",,
+,1,0,1556435417,1,0,"Title for foo","FoDescription",0,,
+,2,0,1556435427,1,1,"Title for foo","FoTranslatedDescription",1,,
+,3,0,1556435499,2,0,"Title for blupp","BlubDescription",0,,
+,4,0,1556435503,3,0,"Title for baz","BaDescription",0,,

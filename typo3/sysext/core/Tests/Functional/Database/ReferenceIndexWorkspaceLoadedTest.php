@@ -35,10 +35,10 @@ class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
      */
     public function updateIndexRemovesRecordsOfNotExistingWorkspaces(): void
     {
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceImport.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceImport.csv');
         $result = (new ReferenceIndex())->updateIndex(false);
         self::assertSame('Index table hosted 2 indexes for non-existing or deleted workspaces, now removed.', $result['errors'][0]);
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexRemoveNonExistingWorkspaceResult.csv');
     }
 
     /**
@@ -46,8 +46,8 @@ class ReferenceIndexWorkspaceLoadedTest extends FunctionalTestCase
      */
     public function updateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecord(): void
     {
-        $this->importCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordImport.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordImport.csv');
         $result = (new ReferenceIndex())->updateIndex(false);
-        $this->assertCSVDataSet('typo3/sysext/core/Tests/Functional/Database/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordResult.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/WorkspaceLoadedUpdateIndexAddsRowsForLocalSideMmHavingForeignWorkspaceRecordResult.csv');
     }
 }

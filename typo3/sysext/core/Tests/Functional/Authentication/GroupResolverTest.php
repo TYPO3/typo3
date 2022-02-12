@@ -26,8 +26,8 @@ class GroupResolverTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/Fixtures/be_users.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/be_groups.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_groups.csv');
     }
 
     public function findAllUsersOfGroupsHandlesRecursiveCallsDataProvider(): array

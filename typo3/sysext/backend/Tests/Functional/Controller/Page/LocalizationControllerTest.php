@@ -43,8 +43,8 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-default-language.csv');
         $this->setUpFrontendRootPage(1);
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
 
@@ -73,7 +73,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function recordsGetTranslatedFromDifferentTranslation(): void
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
 
         $params = [
             'pageId' => 1,
@@ -107,7 +107,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function recordsGetCopiedFromAnotherLanguage(): void
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
 
         $params = [
             'pageId' => 1,
@@ -177,7 +177,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
      */
     public function defaultLanguageIsFoundAsOriginLanguage(): void
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-danish-language.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/tt_content-danish-language.csv');
 
         // Create another content element in default language
         $data = [

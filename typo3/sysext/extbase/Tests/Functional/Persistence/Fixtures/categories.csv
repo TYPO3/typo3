@@ -1,0 +1,7 @@
+sys_category,,,,,,,
+,uid,pid,title,l10n_diffsource,description,deleted,hidden
+,1,0,"Category 1",,,0,0
+,2,0,"Category 2",,,0,0
+,3,0,"Category 3",,,0,0
+,4,0,"Category 4",,,0,0
+,5,0,"Category 5",,,0,1

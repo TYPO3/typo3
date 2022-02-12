@@ -50,10 +50,10 @@ class WorkspaceTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/blogs.xml');
-        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/posts.xml');
-        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/categories.xml');
-        $this->importDataSet('EXT:extbase/Tests/Functional/Persistence/Fixtures/category-mm.xml');
+        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/blogs.csv');
+        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
+        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/categories.csv');
+        $this->importCsvDataSet(__DIR__ . '/../Persistence/Fixtures/category-mm.csv');
     }
 
     public function contextDataProvider(): array

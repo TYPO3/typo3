@@ -54,7 +54,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Fixtures/tx_testirrecsv_hotel.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/tx_testirrecsv_hotel.csv');
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();

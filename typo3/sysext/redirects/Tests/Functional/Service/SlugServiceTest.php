@@ -115,7 +115,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSite();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
         $this->subject->rebuildSlugsForSlugChange(2, '/dummy-1-2', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -154,7 +154,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSite();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test2.csv');
         $this->subject->rebuildSlugsForSlugChange(1, '/', '/new-home', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -199,7 +199,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSiteInSubfolder();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test1.csv');
         $this->subject->rebuildSlugsForSlugChange(2, '/dummy-1-2', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -238,7 +238,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
         $this->subject->rebuildSlugsForSlugChange(31, '/dummy-1-3', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -277,7 +277,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
         $this->subject->rebuildSlugsForSlugChange(31, '/dummy-1-3', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -316,7 +316,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSiteWithLanguagesInSubFolder();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.csv');
         $this->subject->rebuildSlugsForSlugChange(3, '/dummy-1-3', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run
@@ -356,7 +356,7 @@ class SlugServiceTest extends FunctionalTestCase
     {
         $this->buildBaseSiteWithLanguages();
         $this->createSubject();
-        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test4.csv');
         $this->subject->rebuildSlugsForSlugChange(5, '/', '/test-new', $this->correlationId);
 
         // These are the slugs after rebuildSlugsForSlugChange() has run

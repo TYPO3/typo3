@@ -1,0 +1,4 @@
+sys_file_metadata,,,,,,,,,,,
+,uid,pid,file,title,width,height,description,alternative,sys_language_uid,l10n_parent,l10n_diffsource
+,1,0,1,"Dummy image",400,300,"This is a dummy image.","Photo of program code",0,0,
+,2,0,1,"Beispiel Bild",400,300,"Nur ein Beispielbild.","Foto von Programmcode",1,1,

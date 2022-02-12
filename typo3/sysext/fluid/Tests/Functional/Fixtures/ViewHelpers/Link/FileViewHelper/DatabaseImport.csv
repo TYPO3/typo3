@@ -1,0 +1,12 @@
+sys_file_storage,,,,,,,,,,,,,,
+,uid,pid,name,driver,configuration,is_browsable,is_public,is_writable,is_online,,,,,
+,1,0,fileadmin,Local,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?><T3FlexForms><data><sheet index=""sDEF""><language index=""lDEF""><field index=""basePath""><value index=""vDEF"">fileadmin/</value></field><field index=""pathType""><value index=""vDEF"">relative</value></field><field index=""caseSensitive""><value index=""vDEF"">1</value></field></language></sheet></data></T3FlexForms>",1,1,1,1,,,,,
+sys_file,,,,,,,,,,,,,,
+,uid,pid,storage,type,identifier,identifier_hash,folder_hash,extension,mime_type,name,sha1,size,creation_date,modification_date
+,1,0,1,2,/user_upload/typo3_image2.jpg,f90bb9a35622f35b5279195e324eddbaec8164b2,19669f1e02c2f16705ec7587044c66443be70725,jpg,image/jpeg,typo3_image2.jpg,da9acdf1e105784a57bbffec9520969578287797,7958,1389878273,1389878273
+sys_file_reference,,,,,,,,,,,,,,
+,uid,uid_local,uid_foreign,tablenames,fieldname,table_local,,,,,,,,
+,2,1,1,tt_content,image,sys_file,,,,,,,,
+sys_file_processedfile,,,,,,,,,,,,,,
+,uid,storage,original,identifier,name,configuration,width,height,task_type,,,,,
+,3,1,1,/_processed_/csm_typo3_image2_5c2670fd59.jpg,csm_typo3_image2_5c2670fd59.jpg,a:0:{},300,225,Image.Preview,,,,,

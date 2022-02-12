@@ -1,0 +1,9 @@
+be_users,,,,,,,,,,
+,uid,pid,tstamp,username,password,admin,disable,starttime,endtime,email
+,1,0,1366642540,admin,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,1,0,0,0,admin@example.com
+,2,0,1366642540,editor,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,0,0,0,
+,3,0,1366642540,editor-with-email,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,0,0,0,editor-with-email@example.com
+,4,0,1366642540,editor-with-email-but-no-password,,0,0,0,0,editor-with-email-but-no-password@example.com
+,5,0,1366642540,editor-one-with-duplicate-email,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,0,0,0,duplicate@example.com
+,6,0,1366642540,editor-two-with-duplicate-email,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,0,0,0,duplicate@example.com
+,7,0,1366642540,disabled-editor-with-email,$1$tCrlLajZ$C0sikFQQ3SWaFAZ1Me0Z/1,0,1,0,0,editor-with-email@example.com

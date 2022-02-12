@@ -31,7 +31,7 @@ class UserRecycleTest extends AbstractRecycleTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/Database/pages.csv');
         // Set up "editor" user
         $this->setUpBackendUserFromFixture(2);
         Bootstrap::initializeLanguageObject();

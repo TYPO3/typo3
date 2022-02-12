@@ -32,7 +32,7 @@ class IncrementHitCountTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/Fixtures/Redirects.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/Redirects.csv');
     }
 
     /**

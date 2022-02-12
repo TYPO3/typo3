@@ -131,10 +131,10 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function renderPreviewForExportOfPageAndRecords(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecords.php';
 
@@ -159,9 +159,9 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function renderPreviewForExportOfPageAndRecordsWithSoftRefs(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-softrefs.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content-with-softrefs.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportPageAndRecordsWithSoftRefs.php';
 
@@ -186,10 +186,10 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function renderPreviewForExportOfTable(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportTable.php';
 
@@ -212,10 +212,10 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function renderPreviewForExportOfRecords(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
         $renderPreviewExport = include __DIR__ . '/Fixtures/ArrayAssertions/RenderPreviewExportRecords.php';
 
@@ -363,10 +363,10 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function saveToFileCleansUpTemporaryFolder(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
         $fileDirectory = Environment::getVarPath() . '/transient';
         $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
@@ -392,10 +392,10 @@ class ExportTest extends AbstractImportExportTestCase
      */
     public function saveToFileCleansUpFormerExportsOfSameName(): void
     {
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.xml');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/pages.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/tt_content.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
         $this->exportMock->setPid(1);
         $this->exportMock->setLevels(1);

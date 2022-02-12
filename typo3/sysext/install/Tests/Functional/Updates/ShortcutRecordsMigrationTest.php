@@ -35,8 +35,8 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
      */
     protected array $coreExtensionsToLoad = ['beuser', 'filelist', 'form', 'info', 'lowlevel'];
 
-    protected string $baseDataSet = 'typo3/sysext/install/Tests/Functional/Updates/Fixtures/ShortcutsBase.csv';
-    protected string $resultDataSet = 'typo3/sysext/install/Tests/Functional/Updates/Fixtures/ShortcutsMigratedToRoutes.csv';
+    protected string $baseDataSet = __DIR__ . '/Fixtures/ShortcutsBase.csv';
+    protected string $resultDataSet = __DIR__ . '/Fixtures/ShortcutsMigratedToRoutes.csv';
 
     /**
      * @test
@@ -59,14 +59,14 @@ class ShortcutRecordsMigrationTest extends FunctionalTestCase
             )
         );
 
-        $this->importCSVDataSet(GeneralUtility::getFileAbsFileName($this->baseDataSet));
+        $this->importCSVDataSet($this->baseDataSet);
         self::assertTrue($subject->updateNecessary());
         $subject->executeUpdate();
         self::assertFalse($subject->updateNecessary());
-        $this->assertCSVDataSet(GeneralUtility::getFileAbsFileName($this->resultDataSet));
+        $this->assertCSVDataSet($this->resultDataSet);
 
         // Just ensure that running the upgrade again does not change anything
         $subject->executeUpdate();
-        $this->assertCSVDataSet(GeneralUtility::getFileAbsFileName($this->resultDataSet));
+        $this->assertCSVDataSet($this->resultDataSet);
     }
 }

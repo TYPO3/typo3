@@ -72,7 +72,7 @@ class ExtensionServiceTest extends FunctionalTestCase
      */
     public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto(): void
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_single_plugin.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_single_plugin.csv');
 
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
@@ -103,7 +103,7 @@ class ExtensionServiceTest extends FunctionalTestCase
      */
     public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound(): void
     {
-        $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/extbase/Tests/Functional/Service/Fixtures/tt_content_with_two_plugins.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Service/Fixtures/tt_content_with_two_plugins.csv');
         $this->frontendConfigurationManager->getConfiguration(Argument::cetera())->willReturn(['view' => ['defaultPid' => 'auto']]);
         $this->containerProphecy->get(Argument::any())->willReturn($this->frontendConfigurationManager->reveal());
         $configurationManager = new ConfigurationManager($this->containerProphecy->reveal());

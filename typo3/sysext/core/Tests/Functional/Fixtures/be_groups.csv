@@ -1,0 +1,3 @@
+be_groups,,,,,,,,
+,uid,pid,title,deleted,db_mountpoints,tables_select,tables_modify,non_exclude_fields
+,9,0,editors,0,1,"pages,tt_content","pages,tt_content","pages:title,pages:TSconfig,tt_content:header,tt_content:CType,tt_content:bodytext"

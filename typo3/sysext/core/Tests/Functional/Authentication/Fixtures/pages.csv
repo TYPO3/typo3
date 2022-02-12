@@ -1,0 +1,7 @@
+"pages",,,,,,,,,,,,
+,"uid","pid","deleted","sys_language_uid","l10n_parent","title","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody","is_siteroot"
+,1,0,0,0,0,"Root page in default language",1,1,31,27,0,1
+,2,0,0,1,1,"Root page translated",1,1,31,27,0,1
+,3,0,1,0,0,"Deleted page",1,1,31,27,0,1
+,4,0,0,0,0,"Another page",1,2,31,27,0,1
+,40,4,0,0,0,"aaaAnother page subpage",1,1,31,27,0,0

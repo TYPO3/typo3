@@ -34,7 +34,7 @@ class MfaInfoElementTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:core/Tests/Functional/Authentication/Fixtures/be_users.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../../../core/Tests/Functional/Authentication/Fixtures/be_users.csv');
 
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->enablecolumns = ['deleted' => true];
