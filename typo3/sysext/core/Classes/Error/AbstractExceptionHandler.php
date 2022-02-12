@@ -206,7 +206,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
      */
     protected function anonymizeToken(string $requestedUrl): string
     {
-        $pattern = '/(?<=[tT]oken=)[0-9a-fA-F]{40}/';
+        $pattern = '/(?:(?<=[tT]oken=)|(?<=[tT]oken%3D))[0-9a-fA-F]{40}/';
         return preg_replace($pattern, '--AnonymizedToken--', $requestedUrl);
     }
 }

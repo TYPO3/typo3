@@ -72,6 +72,10 @@ class DebugExceptionHandlerTest extends UnitTestCase
                 'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8ea206693b0d530ccd6b2b36',
                 'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--',
             ],
+            'url with valid token and encoded token' => [
+                'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8ea206693b0d530ccd6b2b36&returnUrl=%2Ftypo3%2Findex%2Ephp%3FM%3Dfoo%26moduleToken%3D5f1f7d447f22886e8ea206693b0d530ccd6b2b36',
+                'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--&returnUrl=%2Ftypo3%2Findex%2Ephp%3FM%3Dfoo%26moduleToken%3D--AnonymizedToken--',
+            ],
             'url with valid token in the middle' => [
                 'http://localhost/typo3/index.php?M=foo&moduleToken=5f1f7d447f22886e8ea206693b0d530ccd6b2b36&param=asdf',
                 'http://localhost/typo3/index.php?M=foo&moduleToken=--AnonymizedToken--&param=asdf',
