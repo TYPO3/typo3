@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -33,6 +34,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
+    private Context $context;
+
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
 
     /**
      * Validates a given slug against the site and give a suggestion when it's already in use
@@ -108,7 +115,8 @@ class FormSlugAjaxController extends AbstractFormEngineAjaxController
             $recordData['is_siteroot'] = $row['is_siteroot'] ?? false;
         }
 
-        $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig);
+        $workspaceId = $this->context->getPropertyFromAspect('workspace', 'id');
+        $slug = GeneralUtility::makeInstance(SlugHelper::class, $tableName, $fieldName, $fieldConfig, $workspaceId);
         if ($mode === 'auto') {
             // New page - Feed incoming values to generator
             $proposal = $slug->generate($recordData, $pid);
