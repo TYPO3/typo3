@@ -11,56 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'bootstrap';
-import $ from 'jquery';
+import {Tab} from 'bootstrap';
 import BrowserSession from './Storage/BrowserSession';
 import Client from './Storage/Client';
+import DocumentService from 'TYPO3/CMS/Core/DocumentService';
 
 /**
  * Module: TYPO3/CMS/Backend/Tabs
  * @exports TYPO3/CMS/Backend/Tabs
  */
 class Tabs {
-  protected storeLastActiveTab: boolean = true;
-
-  /**
-   * Resolve timestamp
-   */
-  public static getTimestamp(): number {
-    return Math.round((new Date()).getTime() / 1000);
-  }
-
-  constructor() {
-    const that = this;
-    $((): void => {
-      $('.t3js-tabs').each(function(this: Element): void {
-        const $tabContainer: JQuery = $(this);
-        that.storeLastActiveTab = $tabContainer.data('storeLastTab') === 1;
-        const currentActiveTab = that.receiveActiveTab($tabContainer.attr('id'));
-        if (currentActiveTab) {
-          $tabContainer.find('a[href="' + currentActiveTab + '"]').tab('show');
-        }
-        $tabContainer.on('show.bs.tab', (e: any) => {
-          if (that.storeLastActiveTab) {
-            const id = e.currentTarget.id;
-            const target = e.target.hash;
-            that.storeActiveTab(id, target);
-          }
-        });
-      });
-    });
-
-    // Remove legacy values from localStorage
-    Client.unsetByPrefix('tabs-');
-  }
-
   /**
    * Receive active tab from storage
    *
    * @param {string} id
    * @returns {string}
    */
-  public receiveActiveTab(id: string): string {
+  private static receiveActiveTab(id: string): string {
     return BrowserSession.get(id) || '';
   }
 
@@ -70,8 +37,32 @@ class Tabs {
    * @param {string} id
    * @param {string} target
    */
-  public storeActiveTab(id: string, target: string): void {
+  private static storeActiveTab(id: string, target: string): void {
     BrowserSession.set(id, target);
+  }
+
+  constructor() {
+    DocumentService.ready().then((): void => {
+      const tabContainers = document.querySelectorAll('.t3js-tabs');
+      tabContainers.forEach((tabContainer: HTMLElement): void => {
+        const currentActiveTab = Tabs.receiveActiveTab(tabContainer.id);
+        if (currentActiveTab) {
+          new Tab(document.querySelector('a[href="' + currentActiveTab + '"]')).show();
+        }
+
+        const storeLastActiveTab = tabContainer.dataset.storeLastTab === '1';
+        if (storeLastActiveTab) {
+          tabContainer.addEventListener('show.bs.tab', (e: Event): void => {
+            const id = (e.currentTarget as HTMLElement).id;
+            const tabTarget = (e.target as HTMLAnchorElement).hash;
+            Tabs.storeActiveTab(id, tabTarget);
+          });
+        }
+      });
+    });
+
+    // Remove legacy values from localStorage
+    Client.unsetByPrefix('tabs-');
   }
 }
 
