@@ -92,6 +92,9 @@ services:
   TYPO3\CMS\Backend\Controller\EditDocumentController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\FormSlugAjaxController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Controller\LoginController:
     tags: ['backend.controller']
 
