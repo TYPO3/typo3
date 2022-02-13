@@ -40,7 +40,7 @@ Previous configuration in :file:`ext_tables.php`:
             'routeTarget' => MyExampleModuleController::class . '::handleRequest',
             'name' => 'web_example',
             'access' => 'admin',
-            'workspaces' => 'online'
+            'workspaces' => 'online',
             'iconIdentifier' => 'module-example',
             'labels' => 'LLL:EXT:example/Resources/Private/Language/locallang_mod.xlf',
             'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
@@ -57,7 +57,7 @@ Previous configuration in :file:`ext_tables.php`:
         ],
         [
             'access' => 'admin',
-            'workspaces' => 'online'
+            'workspaces' => 'online',
             'iconIdentifier' => 'module-example',
             'labels' => 'LLL:EXT:extkey/Resources/Private/Language/locallang_mod.xlf',
             'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
@@ -73,7 +73,7 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
             'parent' => 'web',
             'position' => ['top'],
             'access' => 'admin',
-            'workspaces' => 'live'
+            'workspaces' => 'live',
             'path' => '/module/web/example',
             'iconIdentifier' => 'module-example',
             'navigationComponent' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
@@ -88,14 +88,15 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
             'parent' => 'web',
             'position' => ['after' => 'web_info'],
             'access' => 'admin',
-            'workspaces' => 'live'
+            'workspaces' => 'live',
             'iconIdentifier' => 'module-example',
             'path' => '/module/web/ExtkeyExample',
             'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf',
             'extensionName' => 'Extkey',
             'controllerActions' => [
                 MyExtbaseExampleModuleController::class => [
-                    'list', 'detail'
+                    'list',
+                    'detail'
                 ],
             ],
         ],
