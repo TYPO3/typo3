@@ -713,7 +713,7 @@ Do you want to continue WITHOUT saving?</source>
 				<source>Could not prepare files for download</source>
 			</trans-unit>
 			<trans-unit id="file_download.noFiles" resname="file_download.noFiles">
-				<source>Cound not find any allowed file</source>
+				<source>Could not find any allowed file</source>
 			</trans-unit>
 			<trans-unit id="file_download.noFiles.message" resname="file_download.noFiles">
 				<source>Please check your selection, since there might be file extension limitations, defined by your administrator.</source>
