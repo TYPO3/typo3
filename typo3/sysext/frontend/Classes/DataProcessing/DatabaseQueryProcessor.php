@@ -76,7 +76,7 @@ class DatabaseQueryProcessor implements DataProcessorInterface
         }
 
         // the table to query, if none given, exit
-        $tableName = $cObj->stdWrapValue('table', $processorConfiguration ?? []);
+        $tableName = $cObj->stdWrapValue('table', $processorConfiguration);
         if (empty($tableName)) {
             return $processedData;
         }
@@ -95,7 +95,6 @@ class DatabaseQueryProcessor implements DataProcessorInterface
         $request = $cObj->getRequest();
         $processedRecordVariables = [];
         foreach ($records as $key => $record) {
-            /** @var ContentObjectRenderer $recordContentObjectRenderer */
             $recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $recordContentObjectRenderer->start($record, $tableName, $request);
             $processedRecordVariables[$key] = ['data' => $record];

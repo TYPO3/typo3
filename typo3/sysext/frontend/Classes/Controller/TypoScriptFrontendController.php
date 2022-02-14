@@ -1509,7 +1509,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     case 'content_fallback':
                         // Setting content uid (but leaving the sys_language_uid) when a content_fallback
                         // value was found.
-                        foreach ($languageAspect->getFallbackChain() ?? [] as $orderValue) {
+                        foreach ($languageAspect->getFallbackChain() as $orderValue) {
                             if ($orderValue === '0' || $orderValue === 0 || $orderValue === '') {
                                 $languageContentId = 0;
                                 break;

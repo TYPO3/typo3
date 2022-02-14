@@ -59,7 +59,7 @@ class PageResolver implements MiddlewareInterface
             );
         }
 
-        /** @var SiteRouteResult $previousResult */
+        /** @var SiteRouteResult|null $previousResult */
         $previousResult = $request->getAttribute('routing', null);
         if (!$previousResult) {
             return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(

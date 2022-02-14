@@ -23,7 +23,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\DispatcherInterface;
-use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
 
 /**
@@ -35,17 +34,9 @@ use TYPO3\CMS\Core\Http\Response;
  */
 class EidHandler implements MiddlewareInterface
 {
-    /**
-     * @var DispatcherInterface
-     */
-    protected $dispatcher;
-
-    /**
-     * @param DispatcherInterface $dispatcher
-     */
-    public function __construct(DispatcherInterface $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
+    public function __construct(
+        protected readonly DispatcherInterface $dispatcher
+    ) {
     }
 
     /**
@@ -77,6 +68,6 @@ class EidHandler implements MiddlewareInterface
         }
 
         $request = $request->withAttribute('target', $target);
-        return $this->dispatcher->dispatch($request) ?? new NullResponse();
+        return $this->dispatcher->dispatch($request);
     }
 }

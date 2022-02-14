@@ -72,7 +72,7 @@ class CommaSeparatedValueProcessor implements DataProcessorInterface
         }
 
         // The field name to process
-        $fieldName = $cObj->stdWrapValue('fieldName', $processorConfiguration ?? []);
+        $fieldName = $cObj->stdWrapValue('fieldName', $processorConfiguration);
         if (empty($fieldName)) {
             return $processedData;
         }

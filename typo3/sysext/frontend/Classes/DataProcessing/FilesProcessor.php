@@ -55,7 +55,6 @@ class FilesProcessor implements DataProcessorInterface
         }
 
         // gather data
-        /** @var FileCollector $fileCollector */
         $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
 
         // references / relations
@@ -63,7 +62,7 @@ class FilesProcessor implements DataProcessorInterface
             (isset($processorConfiguration['references']) && $processorConfiguration['references'])
             || (isset($processorConfiguration['references.']) && $processorConfiguration['references.'])
         ) {
-            $referencesUidList = (string)$cObj->stdWrapValue('references', $processorConfiguration ?? []);
+            $referencesUidList = (string)$cObj->stdWrapValue('references', $processorConfiguration);
             $referencesUids = GeneralUtility::intExplode(',', $referencesUidList, true);
             $fileCollector->addFileReferences($referencesUids);
 
@@ -83,28 +82,28 @@ class FilesProcessor implements DataProcessorInterface
         }
 
         // files
-        $files = $cObj->stdWrapValue('files', $processorConfiguration ?? []);
+        $files = $cObj->stdWrapValue('files', $processorConfiguration);
         if ($files) {
             $files = GeneralUtility::intExplode(',', (string)$files, true);
             $fileCollector->addFiles($files);
         }
 
         // collections
-        $collections = $cObj->stdWrapValue('collections', $processorConfiguration ?? []);
+        $collections = $cObj->stdWrapValue('collections', $processorConfiguration);
         if (!empty($collections)) {
             $collections = GeneralUtility::intExplode(',', (string)$collections, true);
             $fileCollector->addFilesFromFileCollections($collections);
         }
 
         // folders
-        $folders = $cObj->stdWrapValue('folders', $processorConfiguration ?? []);
+        $folders = $cObj->stdWrapValue('folders', $processorConfiguration);
         if (!empty($folders)) {
             $folders = GeneralUtility::trimExplode(',', (string)$folders, true);
             $fileCollector->addFilesFromFolders($folders, !empty($processorConfiguration['folders.']['recursive']));
         }
 
         // make sure to sort the files
-        $sortingProperty = $cObj->stdWrapValue('sorting', $processorConfiguration ?? []);
+        $sortingProperty = $cObj->stdWrapValue('sorting', $processorConfiguration);
         if ($sortingProperty) {
             $sortingDirection = $cObj->stdWrapValue(
                 'direction',

@@ -235,10 +235,7 @@ class CacheHashCalculator implements SingletonInterface
      */
     public function setConfiguration(array $configuration)
     {
-        $newConfiguration = GeneralUtility::makeInstance(
-            CacheHashConfiguration::class,
-            $configuration ?? $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] ?? []
-        );
+        $newConfiguration = GeneralUtility::makeInstance(CacheHashConfiguration::class, $configuration);
         $this->configuration = $this->configuration->with($newConfiguration);
     }
 }

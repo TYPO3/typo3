@@ -128,10 +128,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     protected $TSdataArray = [];
 
-    /**
-     * @var array
-     */
-    protected $userTS = [];
+    protected array $userTS = [];
 
     /**
      * @var bool
@@ -367,7 +364,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $parseObj->parse($userTS);
             $this->userTS = $parseObj->setup;
         }
-        return $this->userTS ?? [];
+        return $this->userTS;
     }
 
     /*****************************************
