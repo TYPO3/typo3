@@ -302,7 +302,7 @@ class GridColumnItem extends AbstractGridObject
         $hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
         return $hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]
             && (
-                !$GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude']
+                !($GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude'] ?? false)
                 || $this->getBackendUser()->check('non_exclude_fields', 'tt_content:' . $hiddenField)
             )
         ;
