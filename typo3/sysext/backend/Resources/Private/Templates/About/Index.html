@@ -10,26 +10,11 @@
     <div class="container-small about-module">
         <f:render partial="About/Logo" arguments="{_all}" />
 
-        <f:if condition="{warnings}">
-            <f:be.infobox title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header')}" state="2">
-                <f:if condition="{f:count(subject: warnings)} > 1">
-                    <f:then>
-                        <ul>
-                            <f:for each="{warnings}" as="warning">
-                                <li>{warning -> f:format.raw()}</li>
-                            </f:for>
-                        </ul>
-                    </f:then>
-                    <f:else>
-                        <p>
-                            <f:for each="{warnings}" as="warning">
-                                {warning -> f:format.raw()}
-                            </f:for>
-                        </p>
-                    </f:else>
-                </f:if>
+        <f:for each="{messages}" as="message">
+            <f:be.infobox title="{f:if(condition: message.title, then: message.title, else: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.header\')}')}" state="2">
+                <p>{message.message -> f:sanitize.html()}</p>
             </f:be.infobox>
-        </f:if>
+        </f:for>
 
         <f:render partial="About/About" arguments="{_all}" />
         <f:render partial="About/Modules" arguments="{_all}" />
@@ -44,7 +29,7 @@
                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:endText" />
             </em>
         </p>
-        <p>{copyRightNotice -> f:format.raw()}</p>
+        <p>{typo3Info.copyrightNotice -> f:format.raw()}</p>
     </div>
 
 </f:section>

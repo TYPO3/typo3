@@ -8,7 +8,6 @@ use TYPO3\CMS\Reports\Report\Status\SecurityStatus;
 use TYPO3\CMS\Reports\Report\Status\Status;
 use TYPO3\CMS\Reports\Report\Status\SystemStatus;
 use TYPO3\CMS\Reports\Report\Status\Typo3Status;
-use TYPO3\CMS\Reports\Report\Status\WarningMessagePostProcessor;
 use TYPO3\CMS\Reports\Task\SystemStatusUpdateTask;
 use TYPO3\CMS\Reports\Task\SystemStatusUpdateTaskNotificationEmailField;
 
@@ -20,8 +19,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][SystemStatusUpda
     'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskDescription',
     'additionalFields' => SystemStatusUpdateTaskNotificationEmailField::class,
 ];
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']['tx_reports_WarningMessagePostProcessor'] = WarningMessagePostProcessor::class;
 
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'])) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'] = [];

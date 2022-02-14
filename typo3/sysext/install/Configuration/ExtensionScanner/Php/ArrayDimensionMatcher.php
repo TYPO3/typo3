@@ -609,4 +609,9 @@ return [
             'Breaking-96879-RemovedHookGetCacheTimeout.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_befunc.php\'][\'displayWarningMessages\']' => [
+        'restFiles' => [
+            'Breaking-96899-DisplayWarningMessagesHookRemoved.rst',
+        ],
+    ],
 ];

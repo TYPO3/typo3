@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Module 'about' shows some standard information for TYPO3 CMS:
@@ -39,6 +39,7 @@ class AboutController
         protected readonly Typo3Version $version,
         protected readonly Typo3Information $typo3Information,
         protected readonly ModuleProvider $moduleProvider,
+        protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly PackageManager $packageManager,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {
@@ -49,22 +50,15 @@ class AboutController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $warnings = [];
-        // Hook for additional warnings
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
-                $hookObj->displayWarningMessages_postProcess($warnings);
-            }
-        }
+        $event = new Event\ModifyGenericBackendMessagesEvent();
+        $event = $this->eventDispatcher->dispatch($event);
         $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
         $view->assignMultiple([
-            'copyrightYear' => $this->typo3Information->getCopyrightYear(),
+            'typo3Info' => $this->typo3Information,
+            'typo3Version' => $this->version,
             'donationUrl' => $this->typo3Information::URL_DONATE,
-            'currentVersion' => $this->version->getVersion(),
             'loadedExtensions' => $this->getLoadedExtensions(),
-            'copyRightNotice' => $this->typo3Information->getCopyrightNotice(),
-            'warnings' => $warnings,
+            'messages' => $event->getMessages(),
             'modules' => $this->moduleProvider->getModules($this->getBackendUser()),
         ]);
         return $view->renderResponse('About/Index');

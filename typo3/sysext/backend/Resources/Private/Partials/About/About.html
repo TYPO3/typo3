@@ -1,8 +1,8 @@
 <p>
     {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/Modules/about.xlf:cms_description',
         arguments: '{
-            0: currentVersion,
-            1: "&copy; {copyrightYear}",
+            0: typo3Version.version,
+            1: "&copy; {typo3Info.copyrightYear}",
             2: "Kasper Sk&aring;rh&oslash;j"
     }') -> f:format.raw()}
 </p>
