@@ -478,7 +478,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($fragment
             && $useAbsoluteUrl === false
             && $currentSiteLanguage === $siteLanguageOfTargetPage
-            && $targetPageId === (int)$tsfe->id
+            && $targetPageId === $tsfe->id
             && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
             && !($tsfe->config['config']['baseURL'] ?? false)
             && count($queryParameters) === 1 // _language is always set
@@ -521,7 +521,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return '';
         }
         // Same page as current.
-        if ((int)$tsfe->id === (int)$pageId) {
+        if ($tsfe->id === $pageId) {
             return $tsfe->MP;
         }
 
@@ -725,17 +725,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($this->typoScriptFrontendController instanceof TypoScriptFrontendController) {
             return $this->typoScriptFrontendController->getSite();
         }
+        if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            return $GLOBALS['TSFE']->getSite();
+        }
         if (isset($GLOBALS['TYPO3_REQUEST']) && $GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface) {
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
-        }
-        if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TSFE']->id) && $GLOBALS['TSFE']->id > 0) {
-            $finder = GeneralUtility::makeInstance(SiteFinder::class);
-            try {
-                $site = $finder->getSiteByPageId((int)$GLOBALS['TSFE']->id);
-            } catch (SiteNotFoundException $e) {
-                $site = null;
-            }
-            return $site;
         }
         return null;
     }

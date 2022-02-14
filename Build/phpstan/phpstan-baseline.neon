@@ -4171,11 +4171,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectArrayContentObject.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface\\:\\:getConfiguration\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
@@ -4366,11 +4361,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\Menu\\\\AbstractMenuContentObject\\:\\:getCurrentSite\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site but returns TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
@@ -4436,17 +4426,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ScalableVectorGraphicsContentObject.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface\\:\\:getConfiguration\\(\\)\\.$#"
-			count: 2
-			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-
-		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-
-		-
-			message: "#^Parameter \\#2 \\$site of method TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\PageTsConfig\\:\\:getForRootLine\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site\\|null, TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
 
@@ -4479,11 +4459,6 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\DataProcessing\\\\GalleryProcessor\\:\\:getCroppedDimensionalProperty\\(\\) should return int but returns string\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/GalleryProcessor.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\DataProcessing\\\\LanguageMenuProcessor\\:\\:getCurrentSite\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\Site but returns TYPO3\\\\CMS\\\\Core\\\\Site\\\\Entity\\\\SiteInterface\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/DataProcessing/LanguageMenuProcessor.php
 
 		-
 			message: "#^Variable \\$conf on left side of \\?\\? always exists and is not nullable\\.$#"

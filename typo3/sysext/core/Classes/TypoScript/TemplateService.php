@@ -482,8 +482,8 @@ class TemplateService
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
                 /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $pageSectionCache */
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection');
-                $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
-                    'pageId_' . (int)$this->getTypoScriptFrontendController()->id,
+                $pageSectionCache->set($this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
+                    'pageId_' . $this->getTypoScriptFrontendController()->id,
                     'mpvarHash_' . $mpvarHash,
                 ]);
             }

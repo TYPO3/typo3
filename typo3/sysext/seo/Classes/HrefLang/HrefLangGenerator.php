@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -65,7 +65,7 @@ class HrefLangGenerator
         $languages = $this->languageMenuProcessor->process($this->cObj, [], [], []);
         $site = $this->getTypoScriptFrontendController()->getSite();
         $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
-        $pageId = (int)$this->getTypoScriptFrontendController()->id;
+        $pageId = $this->getTypoScriptFrontendController()->id;
 
         foreach ($languages['languagemenu'] as $language) {
             if (!empty($language['link']) && $language['hreflang']) {
@@ -120,7 +120,7 @@ class HrefLangGenerator
         return $GLOBALS['TSFE'];
     }
 
-    protected function getTranslatedPageRecord(int $pageId, int $languageId, SiteInterface $site): array
+    protected function getTranslatedPageRecord(int $pageId, int $languageId, Site $site): array
     {
         $targetSiteLanguage = $site->getLanguageById($languageId);
         $languageAspect = LanguageAspectFactory::createFromSiteLanguage($targetSiteLanguage);

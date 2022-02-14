@@ -800,7 +800,7 @@ class IndexSearchRepository
             switch ((string)$this->sections) {
                 case '-1':
                     $whereClause->add(
-                        $expressionBuilder->eq('ISEC.page_id', (int)$this->getTypoScriptFrontendController()->id)
+                        $expressionBuilder->eq('ISEC.page_id', $this->getTypoScriptFrontendController()->id)
                     );
                     break;
                 case '-2':

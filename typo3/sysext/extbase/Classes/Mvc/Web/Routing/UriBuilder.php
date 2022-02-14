@@ -694,7 +694,7 @@ class UriBuilder
     protected function buildTypolinkConfiguration(): array
     {
         $typolinkConfiguration = [];
-        $typolinkConfiguration['parameter'] = $this->targetPageUid ?? $GLOBALS['TSFE']->id ?? '';
+        $typolinkConfiguration['parameter'] = $this->targetPageUid ?? $GLOBALS['TSFE']?->id ?? '';
         if ($this->targetPageType !== 0) {
             $typolinkConfiguration['parameter'] .= ',' . $this->targetPageType;
         } elseif ($this->format !== '') {

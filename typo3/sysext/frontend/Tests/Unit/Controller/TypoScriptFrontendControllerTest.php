@@ -77,8 +77,14 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
         $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr',
+        ]);
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $this->subject->_set('context', new Context());
+        $this->subject->_set('site', $site);
+        $this->subject->_set('language', $site->getLanguageById(0));
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
@@ -125,15 +131,17 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     protected function setupTsfeMockForHeaderFooterReplacementCheck()
     {
-        /** @var MockObject|TypoScriptFrontendController $tsfe */
-        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->onlyMethods([
+        $tsfe = $this->getAccessibleMock(
+            TypoScriptFrontendController::class,
+            [
                 'processNonCacheableContentPartsAndSubstituteContentMarkers',
                 'INTincScript_loadJSCode',
                 'setAbsRefPrefix',
-            ])
-            ->addMethods(['regeneratePageTitle'])->disableOriginalConstructor()
-            ->getMock();
+            ],
+            [],
+            '',
+            false
+        );
         $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'processNonCacheableContentPartsAndSubstituteContentMarkers']);
 
         /**
@@ -157,6 +165,13 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
             ],
         ];
         $tsfe->config = $config;
+        $site = $this->createSiteWithDefaultLanguage([
+            'locale' => 'fr',
+            'typo3Language' => 'fr',
+        ]);
+        $tsfe->_set('context', new Context());
+        $tsfe->_set('site', $site);
+        $tsfe->_set('language', $site->getLanguageById(0));
 
         return $tsfe;
     }

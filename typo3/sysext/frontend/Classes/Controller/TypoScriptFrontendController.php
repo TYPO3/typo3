@@ -56,7 +56,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -97,9 +97,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * The page id (int)
-     * @var string|int
      */
-    public $id = '';
+    public int $id;
 
     /**
      * The type (read-only)
@@ -107,21 +106,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public $type = '';
 
-    /**
-     * @var SiteInterface
-     */
-    protected $site;
+    protected Site $site;
+    protected SiteLanguage $language;
 
     /**
-     * @var SiteLanguage
-     */
-    protected $language;
-
-    /**
-     * @var PageArguments
      * @internal
      */
-    protected $pageArguments;
+    protected PageArguments $pageArguments;
 
     /**
      * Page will not be cached. Write only TRUE. Never clear value (some other
@@ -145,9 +136,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * This will normally point to the same value as id, but can be changed to
      * point to another page from which content will then be displayed instead.
-     * @var int
      */
-    public $contentPid = 0;
+    public int $contentPid = 0;
 
     /**
      * Gets set when we are processing a page of type mountpoint with enabled overlay in getPageAndRootline()
@@ -488,10 +478,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Originally requested id from the initial $_GET variable
-     *
-     * @var int
      */
-    protected $requestedId;
+    protected int $requestedId = 0;
 
     /**
      * The context for keeping the current state, mostly related to current page information,
@@ -517,12 +505,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Also sets a unique string (->uniqueString) for this script instance; A md5 hash of the microtime()
      *
      * @param Context $context the Context object to work with
-     * @param SiteInterface $site The resolved site to work with
+     * @param Site $site The resolved site to work with
      * @param SiteLanguage $siteLanguage The resolved language to work with
      * @param PageArguments $pageArguments The PageArguments object containing Page ID, type and GET parameters
      * @param FrontendUserAuthentication $frontendUser a FrontendUserAuthentication object
      */
-    public function __construct(Context $context, SiteInterface $site, SiteLanguage $siteLanguage, PageArguments $pageArguments, FrontendUserAuthentication $frontendUser)
+    public function __construct(Context $context, Site $site, SiteLanguage $siteLanguage, PageArguments $pageArguments, FrontendUserAuthentication $frontendUser)
     {
         $this->initializeContext($context);
         $this->site = $site;
@@ -556,9 +544,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
         // As initPageRenderer could be called in constructor and for USER_INTs, this information is only set
         // once - in order to not override any previous settings of PageRenderer.
-        if ($this->language instanceof SiteLanguage) {
-            $this->pageRenderer->setLanguage($this->language->getTypo3Language());
-        }
+        $this->pageRenderer->setLanguage($this->language->getTypo3Language());
     }
 
     /**
@@ -665,8 +651,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->fetch_the_id($request);
         }
         // Final cleaning.
-        // Make sure it's an integer
-        $this->id = ($this->contentPid = (int)$this->id);
+        $this->contentPid = $this->id;
         // Make sure it's an integer
         $this->type = (int)$this->type;
         // Setting language and fetch translated page
@@ -859,8 +844,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
         // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // The id and type is set to the integer-value - just to be sure...
-        $this->id = (int)$this->id;
+        // The type is set to the integer-value - just to be sure
         $this->type = (int)$this->type;
         $timeTracker->pull();
         // We find the first page belonging to the current domain
@@ -994,7 +978,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                         $this->pageAccessFailureHistory['direct_access'][] = $this->rootLine[$c];
                         // Decrease to next page in rootline and check the access to that, if OK, set as page record and ID value.
                         $c--;
-                        $this->id = $this->rootLine[$c]['uid'];
+                        $this->id = (int)$this->rootLine[$c]['uid'];
                         $this->page = $this->sys_page->getPage($this->id);
                         if (!empty($this->page)) {
                             break;
@@ -1058,7 +1042,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // target and we need to follow the new target
             $this->originalShortcutPage = $this->page;
             $this->page = $this->sys_page->resolveShortcutPage($this->page, true);
-            $this->id = $this->page['uid'];
+            $this->id = (int)$this->page['uid'];
         }
         // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
         // it must never be accessible directly, but only in the mountpoint context. Therefore we change
@@ -1077,7 +1061,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             } else {
                 $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
             }
-            $this->id = $this->page['uid'];
+            $this->id = (int)$this->page['uid'];
         }
         // Gets the rootLine
         try {
@@ -1120,7 +1104,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 }
             } else {
                 $el = reset($this->rootLine);
-                $this->id = $el['uid'];
+                $this->id = (int)$el['uid'];
                 $this->page = $this->sys_page->getPage($this->id);
                 try {
                     $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
@@ -1147,7 +1131,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $languageId = (int)$this->page[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
         $this->page = $this->sys_page->getPage($this->page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']]);
         $this->context->setAspect('language', GeneralUtility::makeInstance(LanguageAspect::class, $languageId));
-        $this->id = $this->page['uid'];
+        $this->id = (int)$this->page['uid'];
     }
 
     /**
@@ -1342,10 +1326,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $rootPageId Page uid of the page where the found site is located
      * @internal
      */
-    protected function getPageAndRootlineWithDomain($rootPageId, ServerRequestInterface $request)
+    protected function getPageAndRootlineWithDomain(int $rootPageId, ServerRequestInterface $request)
     {
         $this->getPageAndRootline($request);
-        $rootPageId = (int)$rootPageId;
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
         if (is_array($this->rootLine) && $this->rootLine !== []) {
             $idFound = false;
@@ -1431,7 +1414,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
-        $pageSectionCacheContent = $this->tmpl->getCurrentPageData((int)$this->id, (string)$this->MP);
+        $pageSectionCacheContent = $this->tmpl->getCurrentPageData($this->id, (string)$this->MP);
         if (!is_array($pageSectionCacheContent)) {
             // Nothing in the cache, we acquire an "exclusive lock" for the key now.
             // We use the Registry to store this lock centrally,
@@ -1443,7 +1426,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             //
 
             // query the cache again to see if the page data are there meanwhile
-            $pageSectionCacheContent = $this->tmpl->getCurrentPageData((int)$this->id, (string)$this->MP);
+            $pageSectionCacheContent = $this->tmpl->getCurrentPageData($this->id, (string)$this->MP);
             if (is_array($pageSectionCacheContent)) {
                 // we have the content, nice that some other process did the work for us already
                 $this->releaseLock('pagesection');
@@ -1596,7 +1579,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see getFromCache()
      * @see getLockHash()
      */
-    protected function getHash()
+    protected function getHash(): string
     {
         return $this->id . '_' . md5($this->createHashBase(false));
     }
@@ -1609,7 +1592,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @see getFromCache()
      * @see getHash()
      */
-    protected function getLockHash()
+    protected function getLockHash(): string
     {
         $lockHash = $this->createHashBase(true);
         return $this->id . '_' . md5($lockHash);
@@ -1631,7 +1614,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
         $hashParameters = [
-            'id' => (int)$this->id,
+            'id' => $this->id,
             'type' => (int)$this->type,
             'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
             'MP' => (string)$this->MP,
@@ -2131,10 +2114,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Returns TRUE if the page should be generated.
      * That is if no URL handler is active and the cacheContentFlag is not set.
-     *
-     * @return bool
      */
-    public function isGeneratePage()
+    public function isGeneratePage(): bool
     {
         return !$this->cacheContentFlag;
     }
@@ -2310,20 +2291,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function resolveContentPid(ServerRequestInterface $request): int
     {
         if (!isset($this->page['content_from_pid']) || empty($this->page['content_from_pid'])) {
-            return (int)$this->id;
+            return $this->id;
         }
         // make REAL copy of TSFE object - not reference!
         $temp_copy_TSFE = clone $this;
         // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
-        $temp_copy_TSFE->id = $this->page['content_from_pid'];
+        $temp_copy_TSFE->id = (int)$this->page['content_from_pid'];
         $temp_copy_TSFE->MP = '';
         $temp_copy_TSFE->getPageAndRootline($request);
-        return (int)$temp_copy_TSFE->id;
+        return $temp_copy_TSFE->id;
     }
     /**
      * Sets up TypoScript "config." options and set properties in $TSFE.
-     *
-     * @param ServerRequestInterface $request
      */
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
@@ -2500,14 +2479,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function getWebsiteTitle(): string
     {
-        if ($this->language instanceof SiteLanguage
-            && trim($this->language->getWebsiteTitle()) !== ''
-        ) {
+        if (trim($this->language->getWebsiteTitle()) !== '') {
             return trim($this->language->getWebsiteTitle());
         }
-        if ($this->site instanceof SiteInterface
-            && trim($this->site->getConfiguration()['websiteTitle'] ?? '') !== ''
-        ) {
+        if (trim($this->site->getConfiguration()['websiteTitle'] ?? '') !== '') {
             return trim($this->site->getConfiguration()['websiteTitle']);
         }
 
@@ -2516,8 +2491,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Processes the INTinclude-scripts
-     *
-     * @param ServerRequestInterface $request
      */
     public function INTincScript(ServerRequestInterface $request): void
     {
@@ -3209,7 +3182,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @return int the originally requested page uid
      * @see fetch_the_id()
      */
-    public function getRequestedId()
+    public function getRequestedId(): int
     {
         return $this->requestedId ?: $this->id;
     }
@@ -3385,7 +3358,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         return $this->language;
     }
 
-    public function getSite(): SiteInterface
+    public function getSite(): Site
     {
         return $this->site;
     }

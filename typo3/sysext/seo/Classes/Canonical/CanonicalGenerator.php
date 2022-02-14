@@ -132,7 +132,7 @@ class CanonicalGenerator
     protected function checkDefaultCanonical(): string
     {
         // We should only create a canonical link to the target, if the target is within a valid site root
-        $inSiteRoot = $this->isPageWithinSiteRoot((int)$this->typoScriptFrontendController->id);
+        $inSiteRoot = $this->isPageWithinSiteRoot($this->typoScriptFrontendController->id);
         if (!$inSiteRoot) {
             return '';
         }
@@ -151,7 +151,7 @@ class CanonicalGenerator
                 'exclude' => implode(
                     ',',
                     CanonicalizationUtility::getParamsToExcludeForCanonicalizedUrl(
-                        (int)$this->typoScriptFrontendController->id,
+                        $this->typoScriptFrontendController->id,
                         (array)$GLOBALS['TYPO3_CONF_VARS']['FE']['additionalCanonicalizedUrlParameters']
                     )
                 ),
