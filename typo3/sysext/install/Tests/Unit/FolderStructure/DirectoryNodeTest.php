@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
+#[BackupGlobals(true)]
 final class DirectoryNodeTest extends AbstractFolderStructureTestCase
 {
     #[Test]
@@ -367,6 +369,26 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createDirectory');
         self::assertDirectoryExists($path);
+    }
+
+    #[Test]
+    public function createDirectoryAppliesConfiguredFolderCreateMask(): void
+    {
+        if (Environment::isWindows()) {
+            self::markTestSkipped('Directory permissions are not changed on Windows');
+        }
+        $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
+        $path = $this->getTestFilePath('dir_');
+        $node->expects($this->once())->method('exists')->willReturn(false);
+        $node->method('getAbsolutePath')->willReturn($path);
+        $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
+        // A umask the folder create mask must win over
+        $oldUmask = umask(19);
+        $node->_call('createDirectory');
+        umask($oldUmask);
+        clearstatcache();
+        self::assertSame('0772', substr(decoct(fileperms($path)), -4));
     }
 
     #[Test]

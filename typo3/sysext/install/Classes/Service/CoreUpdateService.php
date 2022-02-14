@@ -158,7 +158,7 @@ class CoreUpdateService
         if ($success) {
             // Explicit write check to document root
             $file = Environment::getPublicPath() . '/' . StringUtility::getUniqueId('install-core-update-test-');
-            $result = @touch($file);
+            $result = GeneralUtility::writeFile($file, '', true);
             if (!$result) {
                 $success = false;
                 $this->messages->enqueue(new FlashMessage(
@@ -189,7 +189,7 @@ class CoreUpdateService
                 // Explicit write check to upper directory of current core location
                 $coreLocation = @realpath($this->symlinkToCoreFiles . '/../');
                 $file = $coreLocation . '/' . StringUtility::getUniqueId('install-core-update-test-');
-                $result = @touch($file);
+                $result = GeneralUtility::writeFile($file, '', true);
                 if (!$result) {
                     $success = false;
                     $this->messages->enqueue(new FlashMessage(
