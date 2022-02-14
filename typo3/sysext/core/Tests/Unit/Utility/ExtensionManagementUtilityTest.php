@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\MetaData;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1256,6 +1257,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'value' => $extKey,
                 'icon' => 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.png',
                 'group' => 'default',
+                'description' => null,
             ],
         ];
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
@@ -1275,12 +1277,37 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
                 'value' => 'felogin',
                 'icon' => 'content-form-login',
                 'group' => 'default',
+                'description' => null,
             ],
         ];
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];
         $GLOBALS['TCA']['tt_content']['types']['header'] = ['showitem' => 'header,header_link'];
         $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
         ExtensionManagementUtility::addPlugin(['label', $extKey, 'content-form-login'], 'CType', $extKey);
+        self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
+        self::assertEquals([$extKey => 'content-form-login'], $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']);
+        self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);
+    }
+
+    /**
+     * @test
+     */
+    public function addPluginAsContentTypeAddsIconAndDefaultItemWithSelectItem(): void
+    {
+        $extKey = 'felogin';
+        $expectedTCA = [
+            [
+                'label' => 'label',
+                'value' => 'felogin',
+                'icon' => 'content-form-login',
+                'group' => 'default',
+                'description' => null,
+            ],
+        ];
+        $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];
+        $GLOBALS['TCA']['tt_content']['types']['header'] = ['showitem' => 'header,header_link'];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
+        ExtensionManagementUtility::addPlugin(new SelectItem('select', 'label', $extKey, 'content-form-login'), 'CType', $extKey);
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
         self::assertEquals([$extKey => 'content-form-login'], $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']);
         self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);

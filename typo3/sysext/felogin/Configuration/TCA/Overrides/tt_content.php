@@ -8,7 +8,8 @@ call_user_func(static function () {
         'Login',
         'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.CType.felogin_login.title',
         'mimetypes-x-content-login',
-        'forms'
+        'forms',
+        'LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.CType.felogin_login.description',
     );
 
     // Add the FlexForm
