@@ -224,6 +224,57 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
         self::assertSame($expectation, trim((string)$response->getBody(), "\n"));
     }
 
+    public function customParseFuncAvoidsCrossSiteScriptingDataProvider(): array
+    {
+        return [
+            '#01' => [
+                '01: <script>alert(1)</script>',
+                '<p>01: &lt;script&gt;alert(1)&lt;/script&gt;</p>',
+            ],
+            '#02' => [
+                '02: <unknown a="a" b="b">value</unknown>',
+                '<p>02: &lt;unknown a="a" b="b"&gt;value&lt;/unknown&gt;</p>',
+            ],
+            '#03' => [
+                '03: <img img="img" alt="alt" onerror="alert(1)">',
+                '<p>03: <img alt="alt"></p>',
+            ],
+            '#04' => [
+                '04: <img src="img" alt="alt" onerror="alert(1)">',
+                '<p>04: <img src="img" alt="alt"></p>',
+            ],
+            '#05' => [
+                '05: <img/src="img"/onerror="alert(1)">',
+                '<p>05: <img src="img"></p>',
+            ],
+            '#06' => [
+                '06: <strong>Given that x < y and y > z...</strong>',
+                '<p>06: <strong>Given that x  y and y &gt; z...</strong></p>',
+            ],
+            '#07' => [
+                '07: <a href="t3://page?uid=1000" target="_blank" rel="noreferrer" class="button" role="button" onmouseover="alert(1)">TYPO3</a>',
+                '<p>07: <a href="/" target="_blank" rel="noreferrer" class="button" role="button">TYPO3</a></p>',
+            ],
+        ];
+    }
+
+    /**
+     * Uses a custom parseFunc that does not have `parseFunc.htmlSanitize` defined (which is deprecated).
+     *
+     * @param string $payload
+     * @param string$expectation
+     * @test
+     * @dataProvider customParseFuncAvoidsCrossSiteScriptingDataProvider
+     */
+    public function customParseFuncAvoidCrossSiteScripting(string $payload, string $expectation): void
+    {
+        $instructions = [
+            $this->createTextContentObjectWithCustomParseFuncInstruction($payload),
+        ];
+        $response = $this->invokeFrontendRendering(...$instructions);
+        self::assertSame($expectation, (string)$response->getBody());
+    }
+
     /**
      * @param AbstractInstruction ...$instructions
      */
@@ -274,6 +325,47 @@ class SecureHtmlRenderingTest extends FunctionalTestCase
                     '10.' => [
                         'value' => $value,
                         'parseFunc' => '< lib.parseFunc_RTE',
+                    ],
+                ],
+            ]);
+    }
+
+    private function createTextContentObjectWithCustomParseFuncInstruction(string $value): TypoScriptInstruction
+    {
+        // basically considered "insecure setup"
+        // + no explicit htmlSanitize
+        // + no HTMLparser + HTMLparser.htmlSpecialChars
+        return (new TypoScriptInstruction(TemplateService::class))
+            ->withTypoScript([
+                'page.' => [
+                    '10' => 'TEXT',
+                    '10.' => [
+                        'value' => $value,
+                        'parseFunc.' => [
+                            'allowTags' => 'a,img,sdfield',
+                            'tags.' => [
+                                'a' => 'TEXT',
+                                'a.' => [
+                                    'current' => 1,
+                                    'typolink' => [
+                                        'parameter.' => [
+                                            'data' => 'parameters:href',
+                                        ],
+                                        'title.' => [
+                                            'data' => 'parameters:title',
+                                        ],
+                                        'ATagParams.' => [
+                                            'data' => 'parameters:allParams',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'nonTypoTagStdWrap.' => [
+                                'encapsLines.' => [
+                                    'nonWrappedTag' => 'p',
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ]);
