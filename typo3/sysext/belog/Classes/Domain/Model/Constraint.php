@@ -42,7 +42,7 @@ class Constraint
      *
      * @var int
      */
-    protected $workspaceUid = Workspace::UID_ANY_WORKSPACE;
+    protected $workspaceUid = -99;
 
     /**
      * Selected channel

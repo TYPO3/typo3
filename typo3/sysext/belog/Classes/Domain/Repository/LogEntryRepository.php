@@ -90,7 +90,7 @@ class LogEntryRepository extends Repository
         // User / group handling
         $this->addUsersAndGroupsToQueryConstraints($constraint, $query, $queryConstraints);
         // Workspace
-        if ((int)$constraint->getWorkspaceUid() !== Workspace::UID_ANY_WORKSPACE) {
+        if ((int)$constraint->getWorkspaceUid() !== -99) {
             $queryConstraints[] = $query->equals('workspace', $constraint->getWorkspaceUid());
         }
         // Channel

@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
-use TYPO3\CMS\Belog\Domain\Repository\WorkspaceRepository;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -40,18 +40,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendLogController extends ActionController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected LogEntryRepository $logEntryRepository;
-    protected WorkspaceRepository $workspaceRepository;
-
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        LogEntryRepository $logEntryRepository,
-        WorkspaceRepository $workspaceRepository
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly LogEntryRepository $logEntryRepository,
+        protected readonly ConnectionPool $connectionPool,
     ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->logEntryRepository = $logEntryRepository;
-        $this->workspaceRepository = $workspaceRepository;
     }
 
     /**
@@ -277,10 +270,12 @@ class BackendLogController extends ActionController
         // Two meta entries: 'all' and 'live'
         $workspaceArray[-99] = LocalizationUtility::translate('any', 'Belog');
         $workspaceArray[0] = LocalizationUtility::translate('live', 'Belog');
-        $workspaces = $this->workspaceRepository->findAll();
-        /** @var \TYPO3\CMS\Belog\Domain\Model\Workspace $workspace */
-        foreach ($workspaces as $workspace) {
-            $workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
+        $resultSet = $this->connectionPool->getQueryBuilderForTable('sys_workspace')
+            ->select('uid', 'title')
+            ->from('sys_workspace')
+            ->executeQuery();
+        while ($row = $resultSet->fetchAssociative()) {
+            $workspaceArray[$row['uid']] = $row['uid'] . ': ' . $row['title'];
         }
         return $workspaceArray;
     }

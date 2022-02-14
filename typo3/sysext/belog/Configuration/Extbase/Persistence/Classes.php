@@ -38,7 +38,4 @@ return [
             ],
         ],
     ],
-    \TYPO3\CMS\Belog\Domain\Model\Workspace::class => [
-        'tableName' => 'sys_workspace',
-    ],
 ];
