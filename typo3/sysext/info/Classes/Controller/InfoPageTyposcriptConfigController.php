@@ -18,17 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,26 +34,12 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  * Page TSconfig viewer in Web -> Info
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class InfoPageTyposcriptConfigController
+class InfoPageTyposcriptConfigController extends InfoModuleController
 {
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-
     /**
      * @var InfoModuleController Contains a reference to the parent calling object
      */
     protected $pObj;
-
-    /**
-     * @var int Value of the GET/POST var 'id'
-     */
-    protected $id;
-
-    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
-    {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-    }
 
     /**
      * Init, called from parent object
@@ -67,9 +48,9 @@ class InfoPageTyposcriptConfigController
      */
     public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
+        $this->initialize($request);
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/InfoPageTsConfig.xlf');
         $this->pObj = $pObj;
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
@@ -133,10 +114,9 @@ class InfoPageTyposcriptConfigController
                             $title,
                             trim($v)
                         );
-                        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-                        $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
-                        $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
-                        $pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+                        $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+                        $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+                        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
                     } else {
                         $line['content'] = $this->getTextareaMarkup(trim($v));
                     }
@@ -410,15 +390,5 @@ class InfoPageTyposcriptConfigController
         return '<textarea class="form-control" rows="' . (string)count(explode(LF, $content)) . '" disabled>'
             . htmlspecialchars($content)
             . '</textarea>';
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

@@ -11,10 +11,10 @@ services:
     tags: ['backend.controller']
 
   TYPO3\CMS\Info\Controller\InfoPageTyposcriptConfigController:
-    public: true
+    tags: ['backend.controller']
 
   TYPO3\CMS\Info\Controller\PageInformationController:
-    public: true
+    tags: ['backend.controller']
 
   TYPO3\CMS\Info\Controller\TranslationStatusController:
-    public: true
+    tags: ['backend.controller']

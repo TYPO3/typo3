@@ -18,19 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
@@ -41,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class for displaying translation status of pages in the tree in Web -> Info
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class TranslationStatusController
+class TranslationStatusController extends InfoModuleController
 {
     /**
      * @var SiteLanguage[]
@@ -54,26 +48,13 @@ class TranslationStatusController
     protected $pObj;
 
     /**
-     * @var int Value of the GET/POST var 'id'
-     */
-    protected $id;
-
-    public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly ModuleProvider $moduleProvider
-    ) {
-    }
-
-    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
     public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->initialize($request);
         $this->initializeSiteLanguages($request);
         $this->pObj = $pObj;
 
@@ -490,15 +471,5 @@ class TranslationStatusController
         /** @var SiteInterface $currentSite */
         $currentSite = $request->getAttribute('site');
         $this->siteLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, (int)$this->id);
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

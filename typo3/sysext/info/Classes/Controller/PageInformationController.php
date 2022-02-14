@@ -19,17 +19,13 @@ namespace TYPO3\CMS\Info\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Class for displaying page information (records, page record properties) in Web -> Info
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class PageInformationController
+class PageInformationController extends InfoModuleController
 {
     /**
      * @var array
@@ -45,17 +41,10 @@ class PageInformationController
     protected $fieldConfiguration = [];
 
     /**
-     * @var int Value of the GET/POST var 'id'
-     */
-    protected $id;
-
-    /**
      * @var InfoModuleController Contains a reference to the parent calling object
      */
     protected $pObj;
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
     protected ?BackendLayoutView $backendLayoutView = null;
 
     /**
@@ -70,12 +59,6 @@ class PageInformationController
      */
     protected $addElement_tdCssClass = [];
 
-    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder)
-    {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-    }
-
     /**
      * Init, called from parent object
      *
@@ -84,8 +67,8 @@ class PageInformationController
      */
     public function init(InfoModuleController $pObj, ServerRequestInterface $request)
     {
+        $this->initialize($request);
         $this->pObj = $pObj;
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
     }
@@ -612,16 +595,6 @@ class PageInformationController
         }
         $out .= '</tr>';
         return $out;
-    }
-
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    protected function getLanguageService(): ?LanguageService
-    {
-        return $GLOBALS['LANG'] ?? null;
     }
 
     protected function getBackendLayouts(array $row, string $field): array

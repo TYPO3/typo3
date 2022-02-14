@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Info\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -99,30 +101,6 @@ class InfoModuleController
     protected $modTSconfig;
 
     /**
-     * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @var string
-     */
-    protected $modMenu_type = '';
-
-    /**
-     * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @var string
-     */
-    protected $modMenu_dontValidateList = '';
-
-    /**
-     * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
-     * Can be set from extension classes of this class before the init() function is called.
-     *
-     * @var string
-     */
-    protected $modMenu_setDefaultList = '';
-
-    /**
      * @var array Contains module configuration parts from TBE_MODULES_EXT if found
      */
     protected $extClassConf;
@@ -139,18 +117,24 @@ class InfoModuleController
     protected FlashMessageService $flashMessageService;
     protected ContainerInterface $container;
     protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected ModuleProvider $moduleProvider;
+    protected PageRenderer $pageRenderer;
 
     public function __construct(
         IconFactory $iconFactory,
         UriBuilder $uriBuilder,
         FlashMessageService $flashMessageService,
         ContainerInterface $container,
+        ModuleProvider $moduleProvider,
+        PageRenderer $pageRenderer,
         ModuleTemplateFactory $moduleTemplateFactory
     ) {
         $this->iconFactory = $iconFactory;
         $this->uriBuilder = $uriBuilder;
         $this->flashMessageService = $flashMessageService;
         $this->container = $container;
+        $this->moduleProvider = $moduleProvider;
+        $this->pageRenderer = $pageRenderer;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
 
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
@@ -159,10 +143,11 @@ class InfoModuleController
     /**
      * Initializes the backend module by setting internal variables, initializing the menu.
      */
-    protected function init(ServerRequestInterface $request)
+    protected function initialize(ServerRequestInterface $request)
     {
         $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         $this->menuConfig($request);
         $this->handleExternalFunctionValue();
     }
@@ -178,7 +163,6 @@ class InfoModuleController
 
         // The page will show only if there is a valid page and if this page
         // may be viewed by the user
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         if ($this->pageinfo !== []) {
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         }
@@ -214,8 +198,7 @@ class InfoModuleController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-info');
-
-        $this->init($request);
+        $this->initialize($request);
 
         // Checking for first level external objects
         $this->checkExtObj($request);
@@ -316,7 +299,7 @@ class InfoModuleController
             }
         }
         $moduleSet = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info');
     }
 
     /**
@@ -397,7 +380,7 @@ class InfoModuleController
             }
             // Re-write:
             $moduleSet = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info', $this->modMenu_type, $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $moduleSet, 'web_info');
         }
     }
 
