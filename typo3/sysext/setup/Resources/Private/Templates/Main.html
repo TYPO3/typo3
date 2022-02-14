@@ -7,6 +7,12 @@
 
 <f:section name="Content">
 
+    <f:be.pageRenderer
+        includeRequireJsModules="{
+            0: 'TYPO3/CMS/Backend/Tabs'
+        }"
+    />
+
     <f:if condition="{isLanguageUpdate}">
         <typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>
         <typo3-immediate-action action="TYPO3.Backend.Topbar.refresh"></typo3-immediate-action>
