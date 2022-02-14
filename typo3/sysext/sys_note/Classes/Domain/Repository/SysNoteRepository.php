@@ -26,14 +26,11 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  */
 class SysNoteRepository
 {
-    const SYS_NOTE_POSITION_BOTTOM = 0;
-    const SYS_NOTE_POSITION_TOP = 1;
+    public const SYS_NOTE_POSITION_BOTTOM = 0;
+    public const SYS_NOTE_POSITION_TOP = 1;
 
-    protected ConnectionPool $connectionPool;
-
-    public function __construct(ConnectionPool $connectionPool)
+    public function __construct(protected readonly ConnectionPool $connectionPool)
     {
-        $this->connectionPool = $connectionPool;
     }
 
     /**

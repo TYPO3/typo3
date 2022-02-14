@@ -26,9 +26,9 @@ class NoteVisibleFieldsTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['sys_note'];
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected static $noteFields = [
+    protected static array $noteFields = [
         'category',
         'personal',
         'subject',
