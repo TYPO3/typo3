@@ -50,6 +50,7 @@ The following PHP classes that have previously been marked as deprecated for v11
 - :php:`\TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject`
 
 The following PHP classes have been declared final:
+
 - All fluid ViewHelpers
 
 The following PHP interfaces that have previously been marked as deprecated for v11 and were now removed:
@@ -67,18 +68,14 @@ The following PHP interfaces that have previously been marked as deprecated for 
 
 The following PHP interfaces changed:
 
-- :php:`TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
-- :php:`TYPO3\CMS\Core\Resource\FolderInterface` (method :php:`getFile()` added)
+- :php:`\TYPO3\CMS\Core\Collection\CollectionInterface` (no longer extends \Serializable)
+- :php:`\TYPO3\CMS\Core\Resource\FolderInterface` (method :php:`getFile()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface` (method :php:`setType()` added)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalAnd` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryInterface->logicalOr` (all three arguments are now type hinted as `ConstraintInterface`)
 - :php:`\TYPO3\CMS\Extbase\Persistence\QueryResultInterface` (method :php:`setQuery()` added)
 - :php:`\TYPO3\CMS\Form\Domain\Finishers\FinisherInterface` (method :php:`setFinisherIdentifier()` added)
 - :php:`\TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface` (method :php:`setConfiguration()` added)
-
-The following PHP class aliases that have previously been marked as deprecated for v11 and were now removed:
-
-* :php:`Full\Class\Name`
 
 The following PHP class methods that have previously been marked as deprecated for v11 and were now removed:
 
@@ -218,7 +215,7 @@ The following PHP class methods changed signature according to previous deprecat
 
 The following PHP class methods changed signature according to previous deprecations:
 
-- :php:`TYPO3\CMS\Core\Controller\ErrorPageController->errorAction()` (the third argument :php:`$severity` is removed)
+- :php:`\TYPO3\CMS\Core\Controller\ErrorPageController->errorAction()` (the third argument :php:`$severity` is removed)
 
 The following class properties have been removed:
 
@@ -255,18 +252,10 @@ The following class methods visibility have been changed to protected:
 - :php:`\TYPO3\CMS\Core\DataHandling\SoftReference\TypolinkSoftReferenceParser->setTypoLinkPartsElement()`
 - :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::resolveControllerAliasFromControllerClassName()`
 
-The following class methods visibility have been changed to private:
-
-- :php:`\Full\Class\Name->methodName`
-
 The following class properties visibility have been changed to protected:
 
 - :php:`\TYPO3\CMS\Frontend\Imaging\GifBuilder->cObj`
 - :php:`\TYPO3\CMS\Frontend\Plugin\AbstractPlugin->cObj`
-
-The following class properties visibility have been changed to private:
-
-- :php:`\Full\Class\Name->propertyName`
 
 The following ViewHelpers have been changed or removed:
 
@@ -357,10 +346,6 @@ The following single field configurations have been removed from :php:`$GLOBALS[
 - :php:`onClick`
 - :php:`onClickLabels`
 
-The following signals have been removed:
-
-- :php:`\Full\Class\Name::signalName`
-
 The following features are now always enabled:
 
 - `runtimeDbQuotingOfTcaConfiguration`
@@ -392,10 +377,6 @@ The following fallbacks have been removed:
 The following database tables have been removed:
 
 - :sql:`sys_language`
-
-The following database table fields have been removed:
-
-- :sql:`table.field`
 
 The following Backend route identifiers have been removed:
 
@@ -454,9 +435,9 @@ The following command line options have been removed:
 
 The following dependency injection container entries have been removed:
 
-- `TYPO3\CMS\Core\Localization\LanguageService`
-- `TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
-- `TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
+- `\TYPO3\CMS\Core\Localization\LanguageService`
+- `\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext`
+- `\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController`
 
 Impact
 ======
