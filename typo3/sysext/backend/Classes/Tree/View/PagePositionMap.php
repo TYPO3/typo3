@@ -122,7 +122,7 @@ class PagePositionMap
         // Initialize variables:
         $this->R_URI = $R_URI;
         // Create page tree, in $this->depth levels.
-        $pageTree->getTree($pageinfo['pid'], $this->depth);
+        $pageTree->getTree($pageinfo['pid'] ?? 0, $this->depth);
         // Initialize variables:
         $saveLatestUid = [];
         $latestInvDepth = $this->depth;
