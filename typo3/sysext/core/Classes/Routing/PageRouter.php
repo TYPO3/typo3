@@ -309,7 +309,7 @@ class PageRouter implements RouterInterface
             rtrim($language->getBase()->getPath(), '/'),
             'GET',
             $language->getBase()->getHost(),
-            $scheme ?: 'http',
+            $scheme ?: 'https',
             $scheme === 'http' ? $language->getBase()->getPort() ?? 80 : 80,
             $scheme === 'https' ? $language->getBase()->getPort() ?? 443 : 443
         );
