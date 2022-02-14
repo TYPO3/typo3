@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Install\FolderStructure\NodeInterface;
 use TYPO3\CMS\Install\FolderStructure\RootNodeInterface;
 
 #[AllowMockObjectsWithoutExpectations]
+#[BackupGlobals(true)]
 final class FileNodeTest extends AbstractFolderStructureTestCase
 {
     #[Test]
@@ -502,6 +504,26 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createFile');
         self::assertTrue(is_file($path));
+    }
+
+    #[Test]
+    public function createFileAppliesConfiguredFileCreateMask(): void
+    {
+        if (Environment::isWindows()) {
+            self::markTestSkipped('File permissions are not changed on Windows');
+        }
+        $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
+        $path = $this->getTestFilePath('file_');
+        $node->expects($this->once())->method('exists')->willReturn(false);
+        $node->method('getAbsolutePath')->willReturn($path);
+        $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
+        // A umask the file create mask must win over
+        $oldUmask = umask(19);
+        $node->_call('createFile');
+        umask($oldUmask);
+        clearstatcache();
+        self::assertSame('0660', substr(decoct(fileperms($path)), -4));
     }
 
     #[Test]

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
 /**
@@ -184,7 +185,7 @@ class FileNode extends AbstractNode implements NodeInterface
                 1367048077
             );
         }
-        $result = @touch($this->getAbsolutePath());
+        $result = GeneralUtility::writeFile($this->getAbsolutePath(), '', true);
         if ($result === true) {
             return new FlashMessage(
                 '',

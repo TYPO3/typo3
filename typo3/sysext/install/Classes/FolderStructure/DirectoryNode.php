@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 
@@ -179,7 +180,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
                 1366740091
             );
         }
-        $result = @mkdir($this->getAbsolutePath());
+        $result = GeneralUtility::mkdir($this->getAbsolutePath());
         if ($result === true) {
             return new FlashMessage(
                 '',
@@ -255,7 +256,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
     protected function canFileBeCreated()
     {
         $testFileName = StringUtility::getUniqueId('installToolTest_');
-        $result = @touch($this->getAbsolutePath() . '/' . $testFileName);
+        $result = GeneralUtility::writeFile($this->getAbsolutePath() . '/' . $testFileName, '', true);
         if ($result === true) {
             unlink($this->getAbsolutePath() . '/' . $testFileName);
         }
