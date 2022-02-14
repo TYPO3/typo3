@@ -94,7 +94,7 @@ class BackendLogController extends ActionController
         $constraint->setPageId($pageId);
         $this->resetConstraintsOnMemoryExhaustionError();
         $this->setStartAndEndTimeFromTimeSelector($constraint);
-        $this->forceWorkspaceSelectionIfInWorkspace($constraint);
+        $showWorkspaceSelector = $this->forceWorkspaceSelectionIfInWorkspace($constraint);
         $logEntries = $this->logEntryRepository->findByConstraint($constraint);
         $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
         $assigns = [
@@ -111,6 +111,7 @@ class BackendLogController extends ActionController
             'channel' => $constraint->getChannel(),
             'levels' => $this->logEntryRepository->getUsedLevels(),
             'level' => $constraint->getLevel(),
+            'showWorkspaceSelector' => $showWorkspaceSelector,
         ];
         if ($layout === 'Module') {
             // Main module 'Log' module renders a ModuleTemplate view
@@ -288,19 +289,18 @@ class BackendLogController extends ActionController
      * If the user is in a workspace different than LIVE,
      * we force to show only log entries from the selected workspace,
      * and the workspace selector is not shown.
-     *
-     * @param Constraint $constraint
      */
-    protected function forceWorkspaceSelectionIfInWorkspace(Constraint $constraint)
+    protected function forceWorkspaceSelectionIfInWorkspace(Constraint $constraint): bool
     {
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
-            $this->view->assign('showWorkspaceSelector', false);
-        } elseif ($GLOBALS['BE_USER']->workspace !== 0) {
-            $constraint->setWorkspaceUid($GLOBALS['BE_USER']->workspace);
-            $this->view->assign('showWorkspaceSelector', false);
-        } else {
-            $this->view->assign('showWorkspaceSelector', true);
+            return false;
         }
+
+        if ($GLOBALS['BE_USER']->workspace !== 0) {
+            $constraint->setWorkspaceUid($GLOBALS['BE_USER']->workspace);
+            return false;
+        }
+        return true;
     }
 
     /**
