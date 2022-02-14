@@ -440,7 +440,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // The info array provide additional information for auth services
         $authInfo = $this->getAuthInfoArray();
         // Get Login/Logout data submitted by a form or params
-        $loginData = $this->getLoginFormData();
+        $loginData = $this->getLoginFormData($request);
         $this->logger->debug('Login data', $this->removeSensitiveLoginDataForLoggingInfo($loginData));
         // Active logout (eg. with "logout" button)
         if ($loginData['status'] === LoginType::LOGOUT) {
@@ -1073,12 +1073,12 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @return array
      * @internal
      */
-    public function getLoginFormData()
+    public function getLoginFormData(ServerRequestInterface $request)
     {
         $loginData = [
-            'status' => GeneralUtility::_GP($this->formfield_status),
-            'uname'  => GeneralUtility::_POST($this->formfield_uname),
-            'uident' => GeneralUtility::_POST($this->formfield_uident),
+            'status' => $request->getParsedBody()[$this->formfield_status] ?? $request->getQueryParams()[$this->formfield_status] ?? null,
+            'uname'  => $request->getParsedBody()[$this->formfield_uname] ?? null,
+            'uident' => $request->getParsedBody()[$this->formfield_uident] ?? null,
         ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {

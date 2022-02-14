@@ -66,7 +66,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // Prepare a request with session id cookie
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getCookieParams()->willReturn(['fe_typo_user' => $uniqueSessionId]);
-        $request->getQueryParams(Argument::cetera())->willReturn();
+        $request->getParsedBody()->willReturn([]);
+        $request->getQueryParams()->willReturn([]);
 
         // This setup fakes the "getAuthInfoArray() db call
         $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);

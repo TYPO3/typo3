@@ -207,11 +207,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @return array
      * @see AbstractUserAuthentication::getLoginFormData()
      */
-    public function getLoginFormData()
+    public function getLoginFormData(ServerRequestInterface $request)
     {
-        $loginData = parent::getLoginFormData();
+        $loginData = parent::getLoginFormData($request);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
-            $isPermanent = GeneralUtility::_POST($this->formfield_permanent);
+            $isPermanent = $request->getParsedBody()[$this->formfield_permanent] ?? '';
             if (strlen((string)$isPermanent) != 1) {
                 $isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
             } elseif (!$isPermanent) {

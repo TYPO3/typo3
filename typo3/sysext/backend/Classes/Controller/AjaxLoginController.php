@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -45,7 +46,7 @@ class AjaxLoginController
     {
         if ($this->isAuthorizedBackendSession()) {
             $result = ['success' => true];
-            if ($this->hasLoginBeenProcessed()) {
+            if ($this->hasLoginBeenProcessed($request)) {
                 /** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $formProtection */
                 $formProtection = FormProtectionFactory::get();
                 $formProtection->setSessionTokenFromRegistry();
@@ -145,10 +146,10 @@ class AjaxLoginController
      *
      * @return bool
      */
-    protected function hasLoginBeenProcessed()
+    protected function hasLoginBeenProcessed(ServerRequestInterface $request): bool
     {
-        $loginFormData = $this->getBackendUser()->getLoginFormData();
-        return $loginFormData['status'] === 'login' && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
+        $loginFormData = $this->getBackendUser()->getLoginFormData($request);
+        return $loginFormData['status'] === LoginType::LOGIN && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
     }
 
     protected function getBackendUser(): ?BackendUserAuthentication
