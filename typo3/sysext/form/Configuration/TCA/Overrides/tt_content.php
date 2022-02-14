@@ -9,7 +9,8 @@ call_user_func(static function () {
         'Formframework',
         'LLL:EXT:form/Resources/Private/Language/locallang.xlf:form_new_wizard_title',
         'content-form',
-        'forms'
+        'forms',
+        'LLL:EXT:form/Resources/Private/Language/locallang.xlf:form_new_wizard_description',
     );
 
     // Add the FlexForm

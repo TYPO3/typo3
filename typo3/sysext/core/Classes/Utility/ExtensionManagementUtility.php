@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Preparations\TcaPreparation;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 
 /**
  * Extension Management functions
@@ -958,12 +959,11 @@ class ExtensionManagementUtility
      *
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
-     * @param array $itemArray Numerical array: [0] => Plugin label, [1] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2] => Icon identifier or path to plugin icon, [3] => an optional "group" ID, falls back to "default"
-     * @param string $type Type (eg. "list_type") - basically a field from "tt_content" table
+     * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "default"
      * @param string|null $extensionKey The extension key
      * @throws \RuntimeException
      */
-    public static function addPlugin(array $itemArray, string $type = 'list_type', ?string $extensionKey = null): void
+    public static function addPlugin(array|SelectItem $itemArray, string $type = 'list_type', ?string $extensionKey = null): void
     {
         // $extensionKey is required, but presumably for BC reasons it still lives after $type in the
         // parameter list, and $type is nominally optional.
@@ -977,38 +977,41 @@ class ExtensionManagementUtility
                 1404068038
             );
         }
-        if (!isset($itemArray[2]) || !$itemArray[2]) {
-            // @todo do we really set $itemArray[2], even if we cannot find an icon? (as that means it's set to 'EXT:foobar/')
-            $itemArray[2] = 'EXT:' . $extensionKey . '/' . static::getExtensionIcon(static::$packageManager->getPackage($extensionKey)->getPackagePath());
-        } elseif ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$itemArray[1]])) {
-            // Set the type icon as well
-            $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$itemArray[1]] = $itemArray[2];
-        }
-        if (!isset($itemArray[3])) {
-            $itemArray[3] = 'default';
-        }
-        if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
-            foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
-                if ((string)($v['value'] ?? '') === (string)$itemArray[1]) {
-                    $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$k] = [
-                        'label' => $itemArray[0] ?? '',
-                        'value' => $itemArray[1] ?? '',
-                        'icon' => $itemArray[2],
-                        'group' => $itemArray[3],
-                    ];
-                    return;
-                }
+        $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
+        if (!$selectItem->hasIcon()) {
+            $iconPath = static::getExtensionIcon(static::$packageManager->getPackage($extensionKey)->getPackagePath());
+            if ($iconPath) {
+                $selectItem = $selectItem->withIcon('EXT:' . $extensionKey . '/' . $iconPath);
             }
-            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = [
-                'label' => $itemArray[0] ?? '',
-                'value' => $itemArray[1] ?? '',
-                'icon' => $itemArray[2],
-                'group' => $itemArray[3],
-            ];
+        } elseif ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
+            // Set the type icon as well
+            $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();
         }
+        if (!$selectItem->hasGroup()) {
+            $selectItem = $selectItem->withGroup('default');
+        }
+        // Override possible existing entries.
+        foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] ?? [] as $index => $item) {
+            if ((string)($item['value'] ?? '') === (string)$selectItem->getValue()) {
+                $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$index] = $selectItem->toArray();
+                return;
+            }
+        }
+        $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $selectItem->toArray();
+
+        // Populate plugin subtype groups with CType group if missing.
+        if ($type === 'list_type' && !isset($GLOBALS['TCA']['tt_content']['columns'][$type]['itemGroups'][$selectItem->getGroup()])) {
+            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$selectItem->getGroup()] =
+                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$selectItem->getGroup()] ?? [];
+        }
+
         // Ensure to have at least some basic information available when editing the new type in FormEngine
-        if ($type === 'CType' && !isset($GLOBALS['TCA']['tt_content']['types'][$itemArray[1]]) && isset($GLOBALS['TCA']['tt_content']['types']['header'])) {
-            $GLOBALS['TCA']['tt_content']['types'][$itemArray[1]] = $GLOBALS['TCA']['tt_content']['types']['header'];
+        if (
+            $type === 'CType'
+            && !isset($GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()])
+            && isset($GLOBALS['TCA']['tt_content']['types']['header'])
+        ) {
+            $GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()] = $GLOBALS['TCA']['tt_content']['types']['header'];
         }
     }
 

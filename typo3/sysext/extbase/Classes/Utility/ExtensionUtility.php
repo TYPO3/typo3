@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Extbase\Utility;
 
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -122,9 +123,10 @@ tt_content.' . $pluginSignature . ' {
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
      * @param string $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
      * @param string $group add this plugin to a plugin group, should be something like "news" or the like, "default" as regular
+     * @param string $pluginDescription additional description
      * @throws \InvalidArgumentException
      */
-    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'default'): string
+    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'default', string $pluginDescription = ''): string
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
@@ -139,17 +141,17 @@ tt_content.' . $pluginSignature . ' {
         // pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
         $pluginType = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] ?? 'list_type';
 
-        // set pluginName as default pluginTitle
-        if ($pluginTitle === '') {
-            $pluginTitle = $pluginName;
-        }
-
-        $itemArray = [$pluginTitle, $pluginSignature, $pluginIcon];
-        if ($group) {
-            $itemArray[3] = $group;
-        }
+        $selectItem = new SelectItem(
+            'select',
+            // set pluginName as default pluginTitle
+            $pluginTitle ?: $pluginName,
+            $pluginSignature,
+            $pluginIcon,
+            $group,
+            $pluginDescription,
+        );
         ExtensionManagementUtility::addPlugin(
-            $itemArray,
+            $selectItem,
             $pluginType,
             $extensionKey
         );
