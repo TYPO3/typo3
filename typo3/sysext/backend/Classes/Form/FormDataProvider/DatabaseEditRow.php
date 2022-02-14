@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
+use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -32,6 +33,7 @@ class DatabaseEditRow extends AbstractDatabaseRecordProvider implements FormData
      * @return array
      * @throws \UnexpectedValueException
      * @throws DatabaseRecordWorkspaceDeletePlaceholderException
+     * @throws DatabaseRecordException
      */
     public function addData(array $result)
     {
