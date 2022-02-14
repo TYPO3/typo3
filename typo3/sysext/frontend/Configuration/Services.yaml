@@ -47,6 +47,11 @@ services:
   TYPO3\CMS\Frontend\Typolink\LinkResultFactory:
     public: true
 
+  TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator:
+    public: true
+    arguments:
+      $runtimeCache: '@cache.runtime'
+
   # Register all available content objects
   TYPO3\CMS\Frontend\ContentObject\TextContentObject:
     tags:

@@ -34,8 +34,6 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -69,6 +67,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -214,7 +213,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var int
      * @internal
      */
-    protected $cacheTimeOutDefault = 86400;
+    protected int $cacheTimeOutDefault = 0;
 
     /**
      * Set internally if cached content is fetched from the database.
@@ -1657,11 +1656,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
                         $this->metaCharset = $this->config['config']['metaCharset'];
                     }
-                    // Setting default cache_timeout
-                    if (isset($this->config['config']['cache_period'])) {
-                        $this->set_cache_timeout_default((int)$this->config['config']['cache_period']);
-                    }
-
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                 }
@@ -2900,45 +2894,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Get the cache timeout for the current page.
-     *
-     * @return int The cache timeout for the current page.
      */
-    public function get_cache_timeout()
+    public function get_cache_timeout(): int
     {
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend $runtimeCache */
-        $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-        $cachedCacheLifetimeIdentifier = 'core-tslib_fe-get_cache_timeout';
-        $cachedCacheLifetime = $runtimeCache->get($cachedCacheLifetimeIdentifier);
-        if ($cachedCacheLifetime === false) {
-            if ($this->page['cache_timeout']) {
-                // Cache period was set for the page:
-                $cacheTimeout = $this->page['cache_timeout'];
-            } else {
-                // Cache period was set via TypoScript "config.cache_period",
-                // otherwise it's the default of 24 hours
-                $cacheTimeout = $this->cacheTimeOutDefault;
-            }
-            if (!empty($this->config['config']['cache_clearAtMidnight'])) {
-                $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
-                $midnightTime = mktime(0, 0, 0, (int)date('m', $timeOutTime), (int)date('d', $timeOutTime), (int)date('Y', $timeOutTime));
-                // If the midnight time of the expire-day is greater than the current time,
-                // we may set the timeOutTime to the new midnighttime.
-                if ($midnightTime > $GLOBALS['EXEC_TIME']) {
-                    $cacheTimeout = $midnightTime - $GLOBALS['EXEC_TIME'];
-                }
-            }
-
-            // Calculate the timeout time for records on the page and adjust cache timeout if necessary
-            $cacheTimeout = min($this->calculatePageCacheTimeout(), $cacheTimeout);
-
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['get_cache_timeout'] ?? [] as $_funcRef) {
-                $params = ['cacheTimeout' => $cacheTimeout];
-                $cacheTimeout = GeneralUtility::callUserFunction($_funcRef, $params, $this);
-            }
-            $runtimeCache->set($cachedCacheLifetimeIdentifier, $cacheTimeout);
-            $cachedCacheLifetime = $cacheTimeout;
-        }
-        return $cachedCacheLifetime;
+        return GeneralUtility::makeInstance(CacheLifetimeCalculator::class)
+            ->calculateLifetimeForPage(
+                (int)$this->id,
+                $this->page,
+                $this->config['config'] ?? [],
+                $this->cacheTimeOutDefault,
+                $this->context
+            );
     }
 
     /*********************************************
@@ -2987,137 +2953,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         return $content;
-    }
-
-    /**
-     * Calculates page cache timeout according to the records with starttime/endtime on the page.
-     *
-     * @return int Page cache timeout or PHP_INT_MAX if cannot be determined
-     */
-    protected function calculatePageCacheTimeout()
-    {
-        $result = PHP_INT_MAX;
-        // Get the configuration
-        $tablesToConsider = $this->getCurrentPageCacheConfiguration();
-        // Get the time, rounded to the minute (do not pollute MySQL cache!)
-        // It is ok that we do not take seconds into account here because this
-        // value will be subtracted later. So we never get the time "before"
-        // the cache change.
-        $now = $GLOBALS['ACCESS_TIME'];
-        // Find timeout by checking every table
-        foreach ($tablesToConsider as $tableDef) {
-            $result = min($result, $this->getFirstTimeValueForRecord($tableDef, $now));
-        }
-        // We return + 1 second just to ensure that cache is definitely regenerated
-        return $result === PHP_INT_MAX ? PHP_INT_MAX : $result - $now + 1;
-    }
-
-    /**
-     * Obtains a list of table/pid pairs to consider for page caching.
-     *
-     * TS configuration looks like this:
-     *
-     * The cache lifetime of all pages takes starttime and endtime of news records of page 14 into account:
-     * config.cache.all = tt_news:14
-     *
-     * The cache.lifetime of the current page allows to take records (e.g. fe_users) into account:
-     * config.cache.all = fe_users:current
-     *
-     * The cache lifetime of page 42 takes starttime and endtime of news records of page 15 and addresses of page 16 into account:
-     * config.cache.42 = tt_news:15,tt_address:16
-     *
-     * @return array Array of 'tablename:pid' pairs. There is at least a current page id in the array
-     * @see TypoScriptFrontendController::calculatePageCacheTimeout()
-     */
-    protected function getCurrentPageCacheConfiguration()
-    {
-        $result = ['tt_content:' . $this->id];
-        if (isset($this->config['config']['cache.'][$this->id])) {
-            $result = array_merge($result, GeneralUtility::trimExplode(',', str_replace(':current', ':' . $this->id, $this->config['config']['cache.'][$this->id])));
-        }
-        if (isset($this->config['config']['cache.']['all'])) {
-            $result = array_merge($result, GeneralUtility::trimExplode(',', str_replace(':current', ':' . $this->id, $this->config['config']['cache.']['all'])));
-        }
-        return array_unique($result);
-    }
-
-    /**
-     * Find the minimum starttime or endtime value in the table and pid that is greater than the current time.
-     *
-     * @param string $tableDef Table definition (format tablename:pid)
-     * @param int $now "Now" time value
-     * @throws \InvalidArgumentException
-     * @return int Value of the next start/stop time or PHP_INT_MAX if not found
-     * @see TypoScriptFrontendController::calculatePageCacheTimeout()
-     */
-    protected function getFirstTimeValueForRecord($tableDef, $now)
-    {
-        $now = (int)$now;
-        $result = PHP_INT_MAX;
-        [$tableName, $pid] = GeneralUtility::trimExplode(':', $tableDef);
-        if (empty($tableName) || empty($pid)) {
-            throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($tableName);
-        $queryBuilder->getRestrictions()
-            ->removeByType(StartTimeRestriction::class)
-            ->removeByType(EndTimeRestriction::class);
-        $timeFields = [];
-        $timeConditions = $queryBuilder->expr()->orX();
-        foreach (['starttime', 'endtime'] as $field) {
-            if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
-                $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
-                $queryBuilder->addSelectLiteral(
-                    'MIN('
-                        . 'CASE WHEN '
-                        . $queryBuilder->expr()->lte(
-                            $timeFields[$field],
-                            $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
-                        )
-                        . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
-                        . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
-                );
-                $timeConditions->add(
-                    $queryBuilder->expr()->gt(
-                        $timeFields[$field],
-                        $queryBuilder->createNamedParameter($now, \PDO::PARAM_INT)
-                    )
-                );
-            }
-        }
-
-        // if starttime or endtime are defined, evaluate them
-        if (!empty($timeFields)) {
-            // find the timestamp, when the current page's content changes the next time
-            $row = $queryBuilder
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
-                    ),
-                    $timeConditions
-                )
-                ->executeQuery()
-                ->fetchAssociative();
-
-            if ($row) {
-                foreach ($timeFields as $timeField => $_) {
-                    // if a MIN value is found, take it into account for the
-                    // cache lifetime we have to filter out start/endtimes < $now,
-                    // as the SQL query also returns rows with starttime < $now
-                    // and endtime > $now (and using a starttime from the past
-                    // would be wrong)
-                    if ($row[$timeField] !== null && (int)$row[$timeField] > $now) {
-                        $result = min($result, (int)$row[$timeField]);
-                    }
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**

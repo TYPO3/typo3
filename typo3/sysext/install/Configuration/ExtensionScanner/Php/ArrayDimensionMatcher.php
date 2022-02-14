@@ -604,4 +604,9 @@ return [
             'Breaking-96806-RemovedHookForForModifyingButtonBar.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'get_cache_timeout\']' => [
+        'restFiles' => [
+            'Breaking-96879-RemovedHookGetCacheTimeout.rst',
+        ],
+    ],
 ];

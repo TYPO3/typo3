@@ -15,38 +15,19 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Functional\Controller;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Cache;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class TypoScriptFrontendControllerTest extends FunctionalTestCase
+class CacheLifetimeCalculatorTest extends FunctionalTestCase
 {
-    /**
-     * @var TypoScriptFrontendController|MockObject|AccessibleObjectInterface
-     */
-    protected $tsFrontendController;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/fixtures.csv');
-
-        $this->tsFrontendController = $this->getAccessibleMock(
-            TypoScriptFrontendController::class,
-            ['dummy'],
-            [],
-            '',
-            false
-        );
-
-        $this->tsFrontendController->_set('sys_page', new PageRepository());
     }
 
     /**
@@ -54,45 +35,42 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function getFirstTimeValueForRecordReturnCorrectData(): void
     {
+        $subject = new class($this->getContainer()->get('cache.core'), $this->getContainer()->get(EventDispatcherInterface::class), $this->getContainer()->get(ConnectionPool::class)) extends CacheLifetimeCalculator {
+            public function getFirstTimeValueForRecord(string $tableDef, int $currentTimestamp): int
+            {
+                return parent::getFirstTimeValueForRecord($tableDef, $currentTimestamp);
+            }
+        };
+
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('tt_content:2', 1),
+            $subject->getFirstTimeValueForRecord('tt_content:2', 1),
             2,
             'The next start/endtime should be 2'
         );
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('tt_content:2', 2),
+            $subject->getFirstTimeValueForRecord('tt_content:2', 2),
             3,
             'The next start/endtime should be 3'
         );
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('tt_content:2', 4),
+            $subject->getFirstTimeValueForRecord('tt_content:2', 4),
             5,
             'The next start/endtime should be 5'
         );
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('tt_content:2', 5),
+            $subject->getFirstTimeValueForRecord('tt_content:2', 5),
             PHP_INT_MAX,
             'The next start/endtime should be PHP_INT_MAX as there are no more'
         );
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('tt_content:3', 1),
+            $subject->getFirstTimeValueForRecord('tt_content:3', 1),
             PHP_INT_MAX,
             'Should be PHP_INT_MAX as table has not this PID'
         );
         self::assertSame(
-            $this->getFirstTimeValueForRecordCall('fe_groups:2', 1),
+            $subject->getFirstTimeValueForRecord('fe_groups:2', 1),
             PHP_INT_MAX,
             'Should be PHP_INT_MAX as table fe_groups has no start/endtime in TCA'
         );
-    }
-
-    /**
-     * @param string $tablePid
-     * @param int $now
-     * @return int
-     */
-    public function getFirstTimeValueForRecordCall(string $tablePid, int $now): int
-    {
-        return $this->tsFrontendController->_call('getFirstTimeValueForRecord', $tablePid, $now);
     }
 }
