@@ -20,7 +20,6 @@
 	},
 	"require": {
 		"ext-libxml": "*",
-		"symfony/polyfill-mbstring": "^1.23.1",
 		"typo3/cms-core": "12.0.*@dev"
 	},
 	"conflict": {
