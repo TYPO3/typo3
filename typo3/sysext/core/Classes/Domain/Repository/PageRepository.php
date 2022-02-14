@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -1653,6 +1655,7 @@ class PageRepository implements LoggerAwareInterface
      * @param bool $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
      * @return mixed If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
      * @see BackendUtility::getWorkspaceVersionOfRecord()
+     * @internal this is a rather low-level method, it is recommended to use versionOL instead()
      */
     public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = false)
     {
@@ -1750,6 +1753,80 @@ class PageRepository implements LoggerAwareInterface
         // No look up in database because versioning not enabled / or workspace not
         // offline
         return false;
+    }
+
+    /**
+     * Checks if the page is hidden in the active workspace (and the current language), then the "preview"
+     * mode for frontend pages is active.
+     *
+     * @internal this is not part of the TYPO3 Core API.
+     */
+    public function checkIfPageIsHidden(int $pageId, LanguageAspect $languageAspect): bool
+    {
+        if ($pageId === 0) {
+            return false;
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $queryBuilder
+            ->select('uid', 'hidden', 'starttime', 'endtime')
+            ->from('pages')
+            ->setMaxResults(1);
+
+        // $pageId always points to the ID of the default language page, so we check
+        // the current site language to determine if we need to fetch a translation but consider fallbacks
+        if ($languageAspect->getId() > 0) {
+            $languagesToCheck = [$languageAspect->getId()];
+            // Remove fallback information like "pageNotFound"
+            foreach ($languageAspect->getFallbackChain() as $languageToCheck) {
+                if (is_numeric($languageToCheck)) {
+                    $languagesToCheck[] = $languageToCheck;
+                }
+            }
+            // Check for the language and all its fallbacks (except for default language)
+            $constraint = $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
+            );
+            // If the fallback language Ids also contains the default language, this needs to be considered
+            if (in_array(0, $languagesToCheck, true)) {
+                $constraint = $queryBuilder->expr()->orX(
+                    $constraint,
+                    // Ensure to also fetch the default record
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->eq('sys_language_uid', 0)
+                    )
+                );
+            }
+            $queryBuilder->where($constraint);
+            // Ensure that the translated records are shown first (maxResults is set to 1)
+            $queryBuilder->orderBy('sys_language_uid', 'DESC');
+        } else {
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+            );
+        }
+        $page = $queryBuilder->executeQuery()->fetchAssociative();
+        $workspaceId = $this->versioningWorkspaceId;
+        if ($this->versioningWorkspaceId > 0) {
+            // Fetch overlay of page if in workspace and check if it is hidden
+            $backupContext = clone $this->context;
+            $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $this->versioningWorkspaceId));
+            $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+            $targetPage = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', (int)$page['uid']);
+            // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
+            $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
+            $this->context = $backupContext;
+        } else {
+            $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
+        }
+        return $result;
     }
 
     /**

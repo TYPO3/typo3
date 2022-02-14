@@ -4431,11 +4431,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
 
 		-
-			message: "#^Parameter \\#2 \\$value of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:in\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Controller/TypoScriptFrontendController.php
-
-		-
 			message: "#^Variable \\$processorConfiguration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/DataProcessing/CommaSeparatedValueProcessor.php

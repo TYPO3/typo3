@@ -33,9 +33,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -695,7 +693,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // The preview flag is set if the current page turns out to be hidden
-        if ($this->id && $this->determineIdIsHiddenPage()) {
+        if ($this->checkIfPageIsHidden($this->id)) {
             $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
             /** @var VisibilityAspect $aspect */
             $aspect = $this->context->getAspect('visibility');
@@ -710,70 +708,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Checks if the page is hidden in the active workspace.
+     * Checks if the page is hidden in the active workspace + language setup.
      * If it is hidden, preview flags will be set.
-     *
-     * @return bool
      */
-    protected function determineIdIsHiddenPage()
+    protected function checkIfPageIsHidden(int $pageId): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-        $queryBuilder
-            ->select('uid', 'hidden', 'starttime', 'endtime')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->gte('pid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-            )
-            ->setMaxResults(1);
-
-        // $this->id always points to the ID of the default language page, so we check
-        // the current site language to determine if we need to fetch a translation but consider fallbacks
-        if ($this->language->getLanguageId() > 0) {
-            $languagesToCheck = array_merge([$this->language->getLanguageId()], $this->language->getFallbackLanguageIds());
-            // Check for the language and all its fallbacks
-            $constraint = $queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
-            );
-            // If the fallback language Ids also contains the default language, this needs to be considered
-            if (in_array(0, $languagesToCheck, true)) {
-                $constraint = $queryBuilder->expr()->orX(
-                    $constraint,
-                    // Ensure to also fetch the default record
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
-                        $queryBuilder->expr()->in('sys_language_uid', 0)
-                    )
-                );
-            }
-            // Ensure that the translated records are shown first (maxResults is set to 1)
-            $queryBuilder->orderBy('sys_language_uid', 'DESC');
-        } else {
-            $constraint = $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT));
-        }
-        $queryBuilder->andWhere($constraint);
-
-        $page = $queryBuilder->executeQuery()->fetchAssociative();
-
-        if ($this->whichWorkspace() > 0) {
-            // Fetch overlay of page if in workspace and check if it is hidden
-            $customContext = clone $this->context;
-            $customContext->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $this->whichWorkspace()));
-            $customContext->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
-            $pageSelectObject = GeneralUtility::makeInstance(PageRepository::class, $customContext);
-            $targetPage = $pageSelectObject->getWorkspaceVersionOfRecord($this->whichWorkspace(), 'pages', $page['uid']);
-            // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
-            $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);
-        } else {
-            $result = is_array($page) && ($page['hidden'] || $page['starttime'] > $GLOBALS['SIM_EXEC_TIME'] || $page['endtime'] != 0 && $page['endtime'] <= $GLOBALS['SIM_EXEC_TIME']);
-        }
-        return $result;
+        $pageRepository = $this->sys_page ?: GeneralUtility::makeInstance(PageRepository::class, $this->context);
+        return $pageRepository->checkIfPageIsHidden(
+            $pageId,
+            LanguageAspectFactory::createFromSiteLanguage($this->language)
+        );
     }
 
     /**
