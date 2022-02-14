@@ -15,3 +15,15 @@ services:
 
   TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController:
     tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Tstemplate\Controller\TyposcriptConstantEditorController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Tstemplate\Controller\TypoScriptObjectBrowserController:
+    tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Tstemplate\Controller\TemplateAnalyzerController:
+    tags: [ 'backend.controller' ]

@@ -17,12 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,37 +29,13 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  * TypoScript template analyzer
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TemplateAnalyzerModuleFunctionController
+class TemplateAnalyzerController extends TypoScriptTemplateModuleController
 {
-    protected TypoScriptTemplateModuleController $pObj;
-
     /**
      * The currently selected sys_template record
-     * @var array|null
+     * @var array|false|null
      */
     protected $templateRow;
-
-    /**
-     * @var ExtendedTemplateService
-     */
-    protected $templateService;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
-     * Init, called from parent object
-     *
-     * @param TypoScriptTemplateModuleController $pObj
-     * @param ServerRequestInterface $request
-     */
-    public function init($pObj, ServerRequestInterface $request)
-    {
-        $this->pObj = $pObj;
-        $this->request = $request;
-    }
 
     /**
      * Main, called from parent object
@@ -72,8 +44,6 @@ class TemplateAnalyzerModuleFunctionController
      */
     public function main()
     {
-        // The page id TypoScript tree should be show for
-        $pageUid = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         // Set if user clicked on one template to show content of this specific one
         $selectedTemplate = ($this->request->getQueryParams()['template'] ?? '');
         // The template object browser shows info boxes with parser errors and links to template analyzer to highlight
@@ -83,19 +53,19 @@ class TemplateAnalyzerModuleFunctionController
         $highlightType = (string)($this->request->getQueryParams()['highlightType'] ?? '');
 
         $assigns = [
-            'pageUid' => $pageUid,
+            'pageUid' => $this->id,
         ];
 
         $templateUid = 0;
-        $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu($this->request);
+        $assigns['manyTemplatesMenu'] = $this->templateMenu($this->request);
         if ($assigns['manyTemplatesMenu']) {
-            $templateUid = (int)$this->pObj->MOD_SETTINGS['templatesOnPage'];
+            $templateUid = (int)$this->MOD_SETTINGS['templatesOnPage'];
         }
 
-        $assigns['existTemplate'] = $this->initializeTemplates($pageUid, $templateUid);
+        $assigns['existTemplate'] = $this->initializeTemplates($this->id, $templateUid);
         if ($assigns['existTemplate']) {
             $assigns['templateRecord'] = $this->templateRow;
-            $assigns['linkWrappedTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title']);
+            $assigns['linkWrappedTemplateTitle'] = $this->linkWrapTemplateTitle($this->templateRow['title']);
         }
 
         $this->templateService->clearList_const_temp = array_flip($this->templateService->clearList_const);
@@ -114,10 +84,9 @@ class TemplateAnalyzerModuleFunctionController
 
         if (ExtensionManagementUtility::isLoaded('t3editor')) {
             // @todo: Let EXT:t3editor add the deps via events in the render-loops above
-            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-            $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
-            $pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
-            $pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
+            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/JavaScript/Contrib/codemirror/lib/codemirror.css');
+            $this->pageRenderer->addCssFile('EXT:t3editor/Resources/Public/Css/t3editor.css');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
@@ -139,7 +108,7 @@ class TemplateAnalyzerModuleFunctionController
         $this->templateService->runThroughTemplates($rootLine, $templateUid);
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage($pageId, $templateUid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage($pageId, $templateUid);
         return is_array($this->templateRow);
     }
 
@@ -269,8 +238,6 @@ class TemplateAnalyzerModuleFunctionController
         }
         $a = 0;
         $c = count($keyArr);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         foreach ($keyArr as $key => $value) {
             $HTML = '';
             $a++;
@@ -282,14 +249,14 @@ class TemplateAnalyzerModuleFunctionController
             $alttext = '[' . $row['templateID'] . ']';
             $alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], '1=1', 20) : '';
             $icon = strpos($row['templateID'], 'sys') === 0
-                ? '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
-                : '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
+                ? '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIconForRecord('sys_template', $row, Icon::SIZE_SMALL)->render() . '</span>'
+                : '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
             if (in_array($row['templateID'], $this->templateService->clearList_const) || in_array($row['templateID'], $this->templateService->clearList_setup)) {
                 $urlParameters = [
                     'id' => $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null,
                     'template' => $row['templateID'],
                 ];
-                $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+                $aHref = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
                 $A_B = '<a href="' . htmlspecialchars($aHref) . '">';
                 $A_E = '</a>';
                 if (($this->request->getParsedBody()['template'] ?? $this->request->getQueryParams()['template'] ?? null) == $row['templateID']) {
@@ -304,7 +271,7 @@ class TemplateAnalyzerModuleFunctionController
                 . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
                 . $A_E . '&nbsp;&nbsp;';
             $RL = $this->getRootlineNumber((int)$row['pid']);
-            $statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
+            $statusCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
             $keyArray[] = '<tr>
 							<td class="nowrap">' . $HTML . '</td>
 							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '</td>
@@ -324,7 +291,7 @@ class TemplateAnalyzerModuleFunctionController
     {
         if ($pid) {
             foreach ($this->templateService->getRootLine() as $key => $val) {
-                if ((int)$val['uid'] === (int)$pid) {
+                if ((int)$val['uid'] === $pid) {
                     return (int)$key;
                 }
             }

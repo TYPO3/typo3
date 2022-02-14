@@ -21,10 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,10 +32,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  * TypoScript Constant editor
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TypoScriptTemplateConstantEditorModuleFunctionController
+class TyposcriptConstantEditorController extends TypoScriptTemplateModuleController
 {
-    protected TypoScriptTemplateModuleController $pObj;
-
     protected array $categories = [
         'basic' => [],
         // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
@@ -55,36 +50,21 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
 
     /**
      * The currently selected sys_template record
-     * @var array|null
+     * @var array|false|null
      */
     protected $templateRow;
-
-    /**
-     * @var ExtendedTemplateService
-     */
-    protected $templateService;
 
     /**
      * @var array
      */
     protected $constants;
 
-    /**
-     * @var int GET/POST var 'id'
-     */
-    protected $id;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
     protected ConstantConfigurationParser $constantParser;
 
     /**
      * @var array<string, JavaScriptModuleInstruction>
      */
-    protected $javaScriptInstructions = [];
+    protected array $javaScriptInstructions = [];
 
     /**
      * Init, called from parent object
@@ -95,9 +75,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
     public function init($pObj, ServerRequestInterface $request)
     {
         $this->constantParser = GeneralUtility::makeInstance(ConstantConfigurationParser::class);
-        $this->pObj = $pObj;
-        $this->request = $request;
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        parent::init($pObj, $request);
     }
 
     /**
@@ -115,7 +93,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
         // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
         // IF there was a template...
         if (is_array($this->templateRow)) {
             // Gets the rootLine
@@ -143,12 +121,12 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
     {
         $assigns = [];
         // Create extension template
-        $this->pObj->createTemplate($this->id);
+        $this->createTemplate($this->id);
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
+        $manyTemplatesMenu = $this->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
-            $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
+            $template_uid = $this->MOD_SETTINGS['templatesOnPage'];
         }
 
         // initialize
@@ -176,19 +154,19 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
                 }
             }
             // Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
-            $this->pObj->MOD_MENU['constant_editor_cat'] = $this->getCategoryLabels();
-            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, $this->request->getParsedBody()['SET'] ?? $this->request->getQueryParams()['SET'] ?? [], 'web_ts');
+            $this->MOD_MENU['constant_editor_cat'] = $this->getCategoryLabels();
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $this->request->getParsedBody()['SET'] ?? $this->request->getQueryParams()['SET'] ?? [], 'web_ts');
             // Resetting the menu (stop)
-            $assigns['title'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], 'constants');
-            if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {
-                $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
+            $assigns['title'] = $this->linkWrapTemplateTitle($this->templateRow['title'], 'constants');
+            if (!empty($this->MOD_MENU['constant_editor_cat'])) {
+                $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[constant_editor_cat]', $this->MOD_SETTINGS['constant_editor_cat'], $this->MOD_MENU['constant_editor_cat']);
             }
             // Category and constant editor config:
-            $category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
+            $category = $this->MOD_SETTINGS['constant_editor_cat'];
 
             $assigns['editorFields'] = $this->printFields($this->constants, $category);
             foreach ($this->javaScriptInstructions as $instruction) {
-                $this->getPageRenderer()->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
+                $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
             }
 
             // Rendering of the output via fluid
@@ -197,7 +175,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             $view->assignMultiple($assigns);
             $theOutput = $view->render('ConstantEditor');
         } else {
-            $theOutput = $this->pObj->noTemplate(1);
+            $theOutput = $this->noTemplate(1);
         }
         return $theOutput;
     }
@@ -229,8 +207,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         $subcat = '';
         if (!empty($this->categories[$category]) && is_array($this->categories[$category])) {
             asort($this->categories[$category]);
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $categoryLoop = 0;
             foreach ($this->categories[$category] as $name => $type) {
                 $params = $theConstants[$name];
@@ -388,13 +364,13 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
                     $deleteIconHTML =
                         '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="undo" rel="' . $idName . '">'
                         . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deleteTitle')) . '">'
-                        . $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render()
                         . '</span>'
                         . '</button>';
                     $editIconHTML =
                         '<button type="button" class="btn btn-default t3js-toggle" data-bs-toggle="edit"  rel="' . $idName . '">'
                         . '<span title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.editTitle')) . '">'
-                        . $iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render()
                         . '</span>'
                         . '</button>';
                     $constantCheckbox = '<input type="hidden" name="check[' . $params['name'] . ']" id="check-' . $idName . '" value="' . $checkboxValue . '"/>';
@@ -461,18 +437,5 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             }
         }
         return $retArr;
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

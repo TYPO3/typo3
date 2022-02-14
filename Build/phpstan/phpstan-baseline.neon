@@ -5488,7 +5488,7 @@ parameters:
 		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
-			path: ../../typo3/sysext/tstemplate/Classes/Controller/TypoScriptTemplateConstantEditorModuleFunctionController.php
+			path: ../../typo3/sysext/tstemplate/Classes/Controller/TyposcriptConstantEditorController.php
 
 		-
 			message: "#^Argument of an invalid type stdClass supplied for foreach, only iterables are supported\\.$#"

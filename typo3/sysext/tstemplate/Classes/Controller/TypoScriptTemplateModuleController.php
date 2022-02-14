@@ -154,6 +154,26 @@ class TypoScriptTemplateModuleController
     }
 
     /**
+     * @internal will be removed once https://review.typo3.org/c/Packages/TYPO3.CMS/+/73339 is merged.
+     */
+    public function init($unused, ServerRequestInterface $request)
+    {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-tstemplate');
+        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
+        $this->request = $request;
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
+        $changedMenuSettings = is_array($changedMenuSettings) ? $changedMenuSettings : [];
+        $this->menuConfig($changedMenuSettings);
+
+        // Access check...
+        // The page will show only if there is a valid page and if this page may be viewed by the user
+        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
+        $this->access = $this->pageinfo !== [];
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+    }
+
+    /**
      * Generates the menu based on $this->MOD_MENU
      *
      * @throws \InvalidArgumentException
@@ -194,24 +214,14 @@ class TypoScriptTemplateModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-tstemplate');
-        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
-        $this->request = $request;
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->init($this, $request);
         $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
         $changedMenuSettings = is_array($changedMenuSettings) ? $changedMenuSettings : [];
-        $this->menuConfig($changedMenuSettings);
         // Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
         $this->extClassConf = $this->getExternalItemConfig('web_ts', 'function', $this->MOD_SETTINGS['function']);
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         // Checking for first level external objects
         $this->checkExtObj($changedMenuSettings, $request);
-
-        // Access check...
-        // The page will show only if there is a valid page and if this page may be viewed by the user
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
-        $this->access = $this->pageinfo !== [];
         $isPageZero = false;
         if ($this->id && $this->access) {
             // Setting up the context sensitive menu
@@ -301,7 +311,7 @@ class TypoScriptTemplateModuleController
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
 
             $sObj = $this->request->getParsedBody()['sObj'] ?? $this->request->getQueryParams()['sObj'] ?? null;
-            if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
+            if ($this->extClassConf['name'] === TypoScriptTemplateInformationController::class) {
                 // NEW button
                 $urlParameters = [
                     'id' => $this->id,
@@ -313,7 +323,7 @@ class TypoScriptTemplateModuleController
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.pagetitle'))
                     ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newButton);
-            } elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class
+            } elseif ($this->extClassConf['name'] === TyposcriptConstantEditorController::class
                 && !empty($this->MOD_MENU['constant_editor_cat'])) {
                 // SAVE button
                 $saveButton = $buttonBar->makeInputButton()
@@ -324,7 +334,7 @@ class TypoScriptTemplateModuleController
                     ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
-            } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class
+            } elseif ($this->extClassConf['name'] === TypoScriptObjectBrowserController::class
                 && !empty($sObj)
             ) {
                 // back button in edit mode of object browser. "sObj" is set by ExtendedTemplateService
@@ -363,7 +373,7 @@ class TypoScriptTemplateModuleController
         } else {
             $urlParameters['e'] = ['constants' => 1];
         }
-        $urlParameters['SET'] = ['function' => TypoScriptTemplateInformationModuleFunctionController::class];
+        $urlParameters['SET'] = ['function' => TypoScriptTemplateInformationController::class];
         $url = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($title) . '</a>';
     }

@@ -17,11 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\BackendTemplateView;
@@ -30,49 +27,13 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  * This class displays the Info/Modify screen of the Web > Template module
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TypoScriptTemplateInformationModuleFunctionController
+class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleController
 {
-    protected TypoScriptTemplateModuleController $pObj;
-
     /**
      * The currently selected sys_template record
-     * @var array|null
+     * @var array|false|null
      */
     protected $templateRow;
-
-    /**
-     * @var ExtendedTemplateService
-     */
-    protected $templateService;
-
-    /**
-     * @var int GET/POST var 'id'
-     */
-    protected $id;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    protected UriBuilder $uriBuilder;
-
-    public function __construct(UriBuilder $uriBuilder)
-    {
-        $this->uriBuilder = $uriBuilder;
-    }
-    /**
-     * Init, called from parent object
-     *
-     * @param TypoScriptTemplateModuleController $pObj A reference to the parent (calling) object
-     * @param ServerRequestInterface $request
-     */
-    public function init($pObj, ServerRequestInterface $request)
-    {
-        $this->pObj = $pObj;
-        $this->request = $request;
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
-    }
 
     /**
      * Gets the data for a row of a HTML table in the fluid template
@@ -121,7 +82,7 @@ class TypoScriptTemplateInformationModuleFunctionController
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
         // Get the row of the first VISIBLE template of the page. where clause like the frontend.
-        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
         if (is_array($this->templateRow)) {
             return true;
         }
@@ -136,10 +97,10 @@ class TypoScriptTemplateInformationModuleFunctionController
     public function main()
     {
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
+        $manyTemplatesMenu = $this->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
-            $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
+            $template_uid = $this->MOD_SETTINGS['templatesOnPage'];
         }
         // Initialize
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
@@ -148,7 +109,7 @@ class TypoScriptTemplateInformationModuleFunctionController
             $saveId = empty($this->templateRow['_ORIG_uid']) ? $this->templateRow['uid'] : $this->templateRow['_ORIG_uid'];
         }
         // Create extension template
-        $newId = $this->pObj->createTemplate($this->id, (int)$saveId);
+        $newId = $this->createTemplate($this->id, (int)$saveId);
         if ($newId) {
             // Switch to new template
             $urlParameters = [
@@ -191,13 +152,8 @@ class TypoScriptTemplateInformationModuleFunctionController
             $view->assignMultiple($assigns);
             $theOutput = $view->render('InformationModule');
         } else {
-            $theOutput = $this->pObj->noTemplate(1);
+            $theOutput = $this->noTemplate(1);
         }
         return $theOutput;
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
     }
 }

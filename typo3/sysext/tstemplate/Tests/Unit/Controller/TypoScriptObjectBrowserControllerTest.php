@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Tstemplate\Tests\Unit\Controller;
 
-use TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateObjectBrowserModuleFunctionController;
+use TYPO3\CMS\Tstemplate\Controller\TypoScriptObjectBrowserController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TypoScriptTemplateObjectBrowserModuleFunctionControllerTest extends UnitTestCase
+class TypoScriptObjectBrowserControllerTest extends UnitTestCase
 {
     /**
      * @dataProvider getSetupDataProvider
@@ -29,7 +29,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionControllerTest extends UnitTe
     public function getSetupTest($setup, $key, $expected): void
     {
         $subject = $this->getAccessibleMock(
-            TypoScriptTemplateObjectBrowserModuleFunctionController::class,
+            TypoScriptObjectBrowserController::class,
             null,
             [],
             '',

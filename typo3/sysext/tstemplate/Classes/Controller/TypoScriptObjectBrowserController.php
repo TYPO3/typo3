@@ -20,15 +20,12 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -38,30 +35,13 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
-class TypoScriptTemplateObjectBrowserModuleFunctionController
+class TypoScriptObjectBrowserController extends TypoScriptTemplateModuleController
 {
-    protected TypoScriptTemplateModuleController $pObj;
-
     /**
      * The currently selected sys_template record
-     * @var array|null
+     * @var array|false|null
      */
     protected $templateRow;
-
-    /**
-     * @var ExtendedTemplateService
-     */
-    protected $templateService;
-
-    /**
-     * @var int GET/POST var 'id'
-     */
-    protected $id;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
 
     /**
      * Init, called from parent object
@@ -71,14 +51,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
      */
     public function init($pObj, ServerRequestInterface $request)
     {
-        $this->pObj = $pObj;
-        $this->request = $request;
-
+        parent::init($pObj, $request);
         // Setting MOD_MENU items as we need them for logging:
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
-        $this->pObj->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
-        $this->pObj->modMenu_setDefaultList .= ',ts_browser_showComments';
-        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $this->MOD_MENU = array_merge($this->MOD_MENU, $this->modMenu());
+        $this->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
+        $this->modMenu_setDefaultList .= ',ts_browser_showComments';
     }
 
     /**
@@ -116,15 +93,15 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (is_array($addKey)) {
                 reset($addKey);
                 if (current($addKey)) {
-                    $this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)] = key($addKey);
+                    $this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)] = key($addKey);
                 } else {
-                    unset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)]);
+                    unset($this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)]);
                 }
-                $this->getBackendUserAuthentication()->pushModuleData('web_ts', $this->pObj->MOD_SETTINGS);
+                $this->getBackendUser()->pushModuleData('web_ts', $this->MOD_SETTINGS);
             }
-            if (!empty($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
+            if (!empty($this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
                 $modMenu['ts_browser_toplevel_' . $bType]['-'] = '---';
-                $modMenu['ts_browser_toplevel_' . $bType] = $modMenu['ts_browser_toplevel_' . $bType] + $this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType];
+                $modMenu['ts_browser_toplevel_' . $bType] = $modMenu['ts_browser_toplevel_' . $bType] + $this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType];
             }
         }
         return $modMenu;
@@ -144,7 +121,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // Defined global here!
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
-        $this->templateRow = $this->pObj->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
+        $this->templateRow = $this->getFirstTemplateRecordOnPage((int)$pageId, $template_uid);
         $hasFirstTemplate = is_array($this->templateRow);
         // No explicitly selected template on this page was found, so we behave like the Frontend (e.g. when a template is hidden but on the page above)
         if (!$hasFirstTemplate) {
@@ -171,20 +148,20 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $lang = $this->getLanguageService();
         $POST = $this->request->getParsedBody();
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
+        $manyTemplatesMenu = $this->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
-            $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
+            $template_uid = $this->MOD_SETTINGS['templatesOnPage'];
         }
-        $bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
+        $bType = $this->MOD_SETTINGS['ts_browser_type'];
         $existTemplate = $this->initialize_editor($this->id, $template_uid);
         // initialize
         $assigns = [];
         $assigns['existTemplate'] = $existTemplate;
-        $assigns['tsBrowserType'] = $this->pObj->MOD_SETTINGS['ts_browser_type'];
+        $assigns['tsBrowserType'] = $this->MOD_SETTINGS['ts_browser_type'];
         if ($existTemplate) {
             $assigns['templateRecord'] = $this->templateRow;
-            $assigns['linkWrapTemplateTitle'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], ($bType === 'setup' ? 'config' : 'constants'));
+            $assigns['linkWrapTemplateTitle'] = $this->linkWrapTemplateTitle($this->templateRow['title'], ($bType === 'setup' ? 'config' : 'constants'));
             $assigns['manyTemplatesMenu'] = $manyTemplatesMenu;
 
             if (($POST['add_property'] ?? false) || ($POST['update_value'] ?? false) || ($POST['clear_object'] ?? false)) {
@@ -243,30 +220,30 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $update = 0;
         if (is_array($tsbr)) {
             // If any plus-signs were clicked, it's registered.
-            $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? []);
+            $this->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->depthKeys($tsbr, $this->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? []);
             $update = 1;
         }
         if ($POST['Submit'] ?? false) {
             // If any POST-vars are send, update the condition array
-            $this->pObj->MOD_SETTINGS['tsbrowser_conditions'] = $POST['conditions'];
+            $this->MOD_SETTINGS['tsbrowser_conditions'] = $POST['conditions'];
             $update = 1;
         }
         if ($update) {
-            $this->getBackendUserAuthentication()->pushModuleData('web_ts', $this->pObj->MOD_SETTINGS);
+            $this->getBackendUser()->pushModuleData('web_ts', $this->MOD_SETTINGS);
         }
-        $this->templateService->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'] ?? [];
+        $this->templateService->matchAlternative = $this->MOD_SETTINGS['tsbrowser_conditions'] ?? [];
         $this->templateService->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';
         // This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
-        $this->templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
+        $this->templateService->constantMode = $this->MOD_SETTINGS['ts_browser_const'];
         // "sObj" is set by ExtendedTemplateService to edit single keys
         $sObj = $this->request->getParsedBody()['sObj'] ?? $this->request->getQueryParams()['sObj'] ?? null;
         if (!empty($sObj) && $this->templateService->constantMode) {
             $this->templateService->constantMode = 'untouched';
         }
-        $this->templateService->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'] ?? '';
+        $this->templateService->regexMode = $this->MOD_SETTINGS['ts_browser_regexsearch'] ?? '';
         $this->templateService->linkObjects = true;
         $this->templateService->ext_regLinenumbers = true;
-        $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
+        $this->templateService->ext_regComments = $this->MOD_SETTINGS['ts_browser_showComments'];
         $this->templateService->bType = $bType;
         $this->templateService->generateConfig();
         if ($bType === 'setup') {
@@ -287,12 +264,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $urlParameters = [
                 'id' => $this->id,
             ];
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-            $assigns['moduleUrl'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
-            $assigns['isNotInTopLevelKeyList'] = !isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj]);
+            $aHref = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $assigns['moduleUrl'] = (string)$this->uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+            $assigns['isNotInTopLevelKeyList'] = !isset($this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj]);
             $assigns['hasProperties'] = !empty($theSetup);
-            if ($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj] ?? false) {
+            if ($this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$sObj] ?? false) {
                 $assigns['moduleUrlObjectListAction'] = $aHref . '&addKey[' . rawurlencode($sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0';
             } else {
                 if (!empty($theSetup)) {
@@ -300,7 +276,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 }
             }
         } else {
-            $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? null;
+            $this->templateService->tsbrowser_depthKeys = $this->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] ?? null;
             if ($this->request->getParsedBody()['search_field'] ?? false) {
                 // If any POST-vars are send, update the condition array
                 $searchString = $this->request->getParsedBody()['search_field'];
@@ -318,23 +294,23 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                     );
                 }
             }
-            $assigns['hasTsBrowserTypes'] = is_array($this->pObj->MOD_MENU['ts_browser_type'] ?? false) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1;
-            if (is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1) {
-                $assigns['browserTypeDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
+            $assigns['hasTsBrowserTypes'] = is_array($this->MOD_MENU['ts_browser_type'] ?? false) && count($this->MOD_MENU['ts_browser_type']) > 1;
+            if (is_array($this->MOD_MENU['ts_browser_type']) && count($this->MOD_MENU['ts_browser_type']) > 1) {
+                $assigns['browserTypeDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_type]', $bType, $this->MOD_MENU['ts_browser_type']);
             }
-            $assigns['hasTopLevelInObjectList'] = is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType] ?? false) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1;
-            if (is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1) {
-                $assigns['objectListDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
+            $assigns['hasTopLevelInObjectList'] = is_array($this->MOD_MENU['ts_browser_toplevel_' . $bType] ?? false) && count($this->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1;
+            if (is_array($this->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1) {
+                $assigns['objectListDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->MOD_MENU['ts_browser_toplevel_' . $bType]);
             }
 
-            $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_regexsearch]', $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'] ?? false, '', '', 'id="checkTs_browser_regexsearch"');
+            $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_regexsearch]', $this->MOD_SETTINGS['ts_browser_regexsearch'] ?? false, '', '', 'id="checkTs_browser_regexsearch"');
             $assigns['postSearchField'] = $POST['search_field'] ?? null;
-            $theKey = $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '';
+            $theKey = $this->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '';
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            [$theSetup] = $this->getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
-            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', (bool)($this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? false));
+            [$theSetup] = $this->getSetup($theSetup, $this->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?? '');
+            $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', (bool)($this->MOD_SETTINGS['ts_browser_alphaSort'] ?? false));
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [
                 'id' => $this->id,
@@ -350,7 +326,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 $assigns['parseErrors'] = $this->templateService->parserErrors[$pEkey];
             }
 
-            if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
+            if (isset($this->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
                 $assigns['moduleUrlRemoveFromObjectList'] = $aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0';
             }
 
@@ -365,10 +341,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
 
             // second row options
             $assigns['isSetupAndCropLinesDisabled'] = $bType === 'setup';
-            $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'] ?? '', '', '', 'id="checkTs_browser_showComments"');
-            $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'] ?? '', '', '', 'id="checkTs_browser_alphaSort"');
+            $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_showComments]', $this->MOD_SETTINGS['ts_browser_showComments'] ?? '', '', '', 'id="checkTs_browser_showComments"');
+            $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'SET[ts_browser_alphaSort]', $this->MOD_SETTINGS['ts_browser_alphaSort'] ?? '', '', '', 'id="checkTs_browser_alphaSort"');
             if ($bType === 'setup') {
-                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'] ?? '', $this->pObj->MOD_MENU['ts_browser_const']);
+                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'SET[ts_browser_const]', $this->MOD_SETTINGS['ts_browser_const'] ?? '', $this->MOD_MENU['ts_browser_const']);
             }
 
             // Conditions:
@@ -377,7 +353,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (is_array($this->templateService->sections) && !empty($this->templateService->sections)) {
                 $tsConditions = [];
                 foreach ($this->templateService->sections as $key => $val) {
-                    $isSet = (bool)($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ?? false);
+                    $isSet = (bool)($this->MOD_SETTINGS['tsbrowser_conditions'][$key] ?? false);
                     if ($isSet) {
                         $activeConditions++;
                     }
@@ -394,7 +370,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             $assigns['activeConditions'] = $activeConditions;
             // Ending section displayoptions
         }
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
         $view->assignMultiple($assigns);
@@ -465,23 +441,5 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             }
         }
         return $settings;
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }
