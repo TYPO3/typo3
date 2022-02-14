@@ -143,7 +143,7 @@ class NodeFactory
      * Create a node depending on type
      *
      * @param array $data All information to decide which class should be instantiated and given down to sub nodes
-     * @return AbstractNode
+     * @return NodeInterface
      * @throws Exception
      */
     public function create(array $data)

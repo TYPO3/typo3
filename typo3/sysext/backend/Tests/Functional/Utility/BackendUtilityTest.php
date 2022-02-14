@@ -91,7 +91,7 @@ class BackendUtilityTest extends FunctionalTestCase
             BackendUtility::getProcessedValue(
                 'pages',
                 'sys_language_uid',
-                1,
+                '1',
                 0,
                 false,
                 false,
@@ -104,7 +104,7 @@ class BackendUtilityTest extends FunctionalTestCase
             BackendUtility::getProcessedValue(
                 'tt_content',
                 'sys_language_uid',
-                2,
+                '2',
                 0,
                 false,
                 false,

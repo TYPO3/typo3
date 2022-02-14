@@ -87,7 +87,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $request = $request->withParsedBody($parsedBody);
         $response = new Response();
 
-        $response = $this->subject->createAction($request, $response);
+        $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
@@ -111,7 +111,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
 
         $response = new Response();
 
-        $response = $this->subject->createAction($request, $response);
+        $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
@@ -134,7 +134,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $request = $request->withParsedBody($parsedBody);
         $response = new Response();
 
-        $response = $this->subject->createAction($request, $response);
+        $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
@@ -161,7 +161,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
         $request = $request->withParsedBody($parsedBody);
         $response = new Response();
 
-        $response = $this->subject->createAction($request, $response);
+        $response = $this->subject->createAction($request);
         $body = (string)$response->getBody();
         $jsonArray = json_decode($body, true);
 
