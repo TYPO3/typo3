@@ -50,13 +50,13 @@ trait DefaultJavaScriptAssetTrait
     {
         /** @var ?TypoScriptFrontendController $frontendController */
         $frontendController = $GLOBALS['TSFE'] ?? null;
-        return ($frontendController->config['config']['removeDefaultJS'] ?? '') === '1';
+        return $frontendController && ($frontendController->config['config']['removeDefaultJS'] ?? 'external') === '1';
     }
 
     protected function shallExportDefaultFrontendJavaScript(): bool
     {
         /** @var ?TypoScriptFrontendController $frontendController */
         $frontendController = $GLOBALS['TSFE'] ?? null;
-        return ($frontendController->config['config']['removeDefaultJS'] ?? '') === 'external';
+        return $frontendController && ($frontendController->config['config']['removeDefaultJS'] ?? 'external') === 'external';
     }
 }

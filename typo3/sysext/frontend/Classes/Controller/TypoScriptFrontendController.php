@@ -59,7 +59,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -1602,22 +1601,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     }
                     // Filling the config-array, first with the main "config." part
                     if (is_array($this->tmpl->setup['config.'] ?? null)) {
-                        ArrayUtility::mergeRecursiveWithOverrule($this->tmpl->setup['config.'], $this->config['config']);
+                        $this->tmpl->setup['config.'] = array_replace_recursive($this->tmpl->setup['config.'], $this->config['config']);
                         $this->config['config'] = $this->tmpl->setup['config.'];
                     }
                     // override it with the page/type-specific "config."
                     if (is_array($this->pSetup['config.'] ?? null)) {
-                        ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
-                    }
-                    // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
-                    if (!isset($this->config['config']['removeDefaultJS'])) {
-                        $this->config['config']['removeDefaultJS'] = 'external';
-                    }
-                    if (!isset($this->config['config']['inlineStyle2TempFile'])) {
-                        $this->config['config']['inlineStyle2TempFile'] = 1;
-                    }
-                    if (!isset($this->config['config']['compressJs'])) {
-                        $this->config['config']['compressJs'] = 0;
+                        $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
                     }
                     // Rendering charset of HTML page.
                     if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
@@ -2120,9 +2109,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // linkVars
         $this->calculateLinkVars($request->getQueryParams());
         // Setting XHTML-doctype from doctype
-        if (!isset($this->config['config']['xhtmlDoctype']) || !$this->config['config']['xhtmlDoctype']) {
-            $this->config['config']['xhtmlDoctype'] = $this->config['config']['doctype'] ?? '';
-        }
+        $this->config['config']['xhtmlDoctype'] = $this->config['config']['xhtmlDoctype'] ?? $this->config['config']['doctype'] ?? '';
         if ($this->config['config']['xhtmlDoctype']) {
             $this->xhtmlDoctype = $this->config['config']['xhtmlDoctype'];
             // Checking XHTML-docytpe

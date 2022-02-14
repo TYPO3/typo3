@@ -694,11 +694,12 @@ class RequestHandler implements RequestHandlerInterface
         $controller->INTincScript_loadJSCode();
 
         // Javascript inline code
-        $inlineJS = $controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
+        $inlineJS = (string)$controller->cObj->cObjGet($controller->pSetup['jsInline.'] ?? null, 'jsInline.');
         // Javascript inline code for Footer
-        $inlineFooterJs = $controller->cObj->cObjGet($controller->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
+        $inlineFooterJs = (string)$controller->cObj->cObjGet($controller->pSetup['jsFooterInline.'] ?? null, 'jsFooterInline.');
         $compressJs = (bool)($controller->config['config']['compressJs'] ?? false);
-        if (($controller->config['config']['removeDefaultJS'] ?? '') === 'external') {
+        // this option is set to "external" as default
+        if (($controller->config['config']['removeDefaultJS'] ?? 'external') === 'external') {
             /*
              * This keeps inlineJS from *_INT Objects from being moved to external files.
              * At this point in frontend rendering *_INT Objects only have placeholders instead
@@ -876,7 +877,8 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function addCssToPageRenderer(TypoScriptFrontendController $controller, string $cssStyles, bool $excludeFromConcatenation, string $inlineBlockName)
     {
-        if (empty($controller->config['config']['inlineStyle2TempFile'] ?? false)) {
+        // This option is enabled by default on purpose
+        if (empty($controller->config['config']['inlineStyle2TempFile'] ?? true)) {
             $this->getPageRenderer()->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($controller->config['config']['compressCss'] ?? false));
         } else {
             $this->getPageRenderer()->addCssFile(
