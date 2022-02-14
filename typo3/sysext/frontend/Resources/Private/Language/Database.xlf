@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 	<file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/Database.xlf" date="2014-02-07T20:22:32Z" product-name="frontend">
-		<header/>
+		<header>
+			<note>@deprecated will be removed in TYPO3 v14.0</note>
+		</header>
 		<body>
 			<trans-unit id="tt_content.asset_references" resname="tt_content.asset_references">
 				<source>Media elements</source>

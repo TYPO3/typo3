@@ -24,6 +24,27 @@
 			<trans-unit id="extended" resname="extended">
 				<source>Extended</source>
 			</trans-unit>
+			<trans-unit id="appearance" resname="appearance">
+				<source>Appearance</source>
+			</trans-unit>
+			<trans-unit id="behaviour" resname="behaviour">
+				<source>Behaviour</source>
+			</trans-unit>
+			<trans-unit id="images" resname="images">
+				<source>Images</source>
+			</trans-unit>
+			<trans-unit id="accessibility" resname="accessibility">
+				<source>Accessibility</source>
+			</trans-unit>
+			<trans-unit id="text" resname="text">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="media" resname="media">
+				<source>Media</source>
+			</trans-unit>
+			<trans-unit id="plugin" resname="plugin">
+				<source>Plugin</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
