@@ -55,7 +55,6 @@ use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -1352,25 +1351,21 @@ class EditDocumentController
                 || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
             ) {
                 $previewPageId = $this->getPreviewPageId();
-                try {
-                    $previewUrl = (string)PreviewUriBuilder::create($previewPageId)
-                        ->withSection($this->getPreviewUrlAnchorSection())
-                        ->withAdditionalQueryParameters($this->getPreviewUrlParameters($previewPageId))
-                        ->buildUri();
+                $previewUrl = (string)PreviewUriBuilder::create($previewPageId)
+                    ->withSection($this->getPreviewUrlAnchorSection())
+                    ->withAdditionalQueryParameters($this->getPreviewUrlParameters($previewPageId))
+                    ->buildUri();
+                if ($previewUrl !== '') {
                     $viewButton = $buttonBar->makeLinkButton()
                         ->setHref($previewUrl)
                         ->setIcon($this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))
                         ->setClasses('t3js-editform-view');
-                    if (!$this->isSavedRecord) {
-                        if ($this->firstEl['table'] === 'pages') {
-                            $viewButton->setDataAttributes(['is-new' => '']);
-                        }
+                    if (!$this->isSavedRecord && $this->firstEl['table'] === 'pages') {
+                        $viewButton->setDataAttributes(['is-new' => '']);
                     }
                     $buttonBar->addButton($viewButton, $position, $group);
-                } catch (UnableToLinkToPageException $e) {
-                    // Do not add any button
                 }
             }
         }

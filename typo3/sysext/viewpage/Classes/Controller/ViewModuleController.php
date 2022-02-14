@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -81,12 +80,11 @@ class ViewModuleController
             return $view->renderResponse('Empty');
         }
 
-        try {
-            $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
-            $targetUrl = (string)PreviewUriBuilder::create($pageId)
-                ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId) . '&L=' . $languageId)
-                ->buildUri();
-        } catch (UnableToLinkToPageException $e) {
+        $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
+        $targetUrl = (string)PreviewUriBuilder::create($pageId)
+            ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId) . '&L=' . $languageId)
+            ->buildUri();
+        if ($targetUrl === '') {
             $view->addFlashMessage(
                 $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:noSiteConfiguration'),
                 '',
