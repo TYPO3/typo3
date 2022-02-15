@@ -55,7 +55,7 @@ be added to an extensions :file:`Configuration/page.tsconfig` file
     templates.typo3/cms-linkvalidator.1643293191 = my-vendor/my-extension:Resources/Private/TemplateOverrides
 
 When the target extension identified by its composer name "my-vendor/my-extension" provides the file
-:file:`Resources/Private/LinkvalidatorOverrides/Templates/Backend/Report.html`, **this** file will
+:file:`Resources/Private/TemplateOverrides/Templates/Backend/Report.html`, **this** file will
 be used instead of the default template file from the linkvalidator extension.
 
 All core extensions stick to the general templates, layouts and partial file and directory position structure.

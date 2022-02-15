@@ -5169,4 +5169,39 @@ return [
             'Deprecation-96733-DeprecatedTBE_MODULESRelatedFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->renderContent' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->getBodyTag' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->registerModuleMenu' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->getDynamicTabMenu' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Template\ModuleTemplate->isUiBlock' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
+        ],
+    ],
 ];

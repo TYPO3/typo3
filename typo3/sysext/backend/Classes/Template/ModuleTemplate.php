@@ -59,7 +59,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     protected DocHeaderComponent $docHeaderComponent;
 
     /**
-     * @todo: mark deprecated together with other legacy handling.
+     * @deprecated: Remove together with legacy view handling below in v13.
      */
     protected ?StandaloneView $legacyView = null;
 
@@ -189,19 +189,32 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         return $this;
     }
 
+    /**
+     * Optional 'data-module-id="{moduleId}"' on first <div> in body.
+     * Can be helpful in JavaScript.
+     */
     public function setModuleId(string $moduleId): self
     {
         $this->moduleId = $moduleId;
+        // @deprecated: Remove together with registerModuleMenu() in v13.
         $this->registerModuleMenu($moduleId);
         return $this;
     }
 
+    /**
+     * Optional 'data-module-name="{moduleName}"' on first <div> in body.
+     * Can be helpful in JavaScript.
+     */
     public function setModuleName(string $moduleName): self
     {
         $this->moduleName = $moduleName;
         return $this;
     }
 
+    /**
+     * Optional 'class="module {moduleClass}"' on first <div> in body.
+     * Can be helpful styling modules.
+     */
     public function setModuleClass(string $moduleClass): self
     {
         $this->moduleClass = $moduleClass;
@@ -220,7 +233,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * @todo: Document scenarios where this is useful.
+     * ModuleTemplate by default uses queue 'core.template.flashMessages'. Modules
+     * may want to maintain an own queue. Use this method to render flash messages
+     * of a non-default queue at the default position in module HTML output. Call
+     * this method *before* adding single messages with addFlashMessage().
      */
     public function setFlashMessageQueue(FlashMessageQueue $flashMessageQueue): self
     {
@@ -240,17 +256,17 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * @internal Candidate to deprecate when View refactoring finished.
-     * @todo: deprecate. legacy.
+     * @deprecated since v12, will be removed in v13.
      */
     public function getView(): StandaloneView
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         $this->initLegacyView();
         return $this->legacyView;
     }
 
     /**
-     * @todo: deprecate. legacy.
+     * @deprecated since v12, will be removed in v13.
      */
     public function setContent(string $content): self
     {
@@ -260,10 +276,16 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * @todo deprecate. legacy.
+     * @deprecated since v12, will be removed in v13. Remove together with $legacyView property and Templates/Module.html.
      */
     public function renderContent(): string
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
+            . ' Use assign(), assignMultiple(), render() or renderResponse() instead and use Module'
+            . ' as *layout* in templates.',
+            E_USER_DEPRECATED
+        );
         $this->initLegacyView();
         $this->legacyView->assignMultiple([
             'docHeader' => $this->docHeaderComponent->docHeaderContent(),
@@ -288,7 +310,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
     }
 
     /**
-     * @todo: remove along with legacy view handling.
+     * @deprecated since v12, will be removed in v13.
      */
     protected function initLegacyView(): void
     {
@@ -302,19 +324,21 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 
     /**
      * Returns the current body tag.
-     * @todo: deprecate. ModuleTemplate should be a data sink only, here.
+     * @deprecated since v12, will be removed in v13.
      */
     public function getBodyTag(): string
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         return $this->bodyTag;
     }
 
     /**
      * Generates the Menu for things like Web->Info
-     * @todo: deprecate. unused.
+     * @deprecated since v12, will be removed in v13.
      */
     public function registerModuleMenu(string $moduleMenuIdentifier): self
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         if (isset($GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier])) {
             $menuEntries =
                 $GLOBALS['TBE_MODULES_EXT'][$moduleMenuIdentifier]['MOD_MENU']['function'];
@@ -346,10 +370,15 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      *                                 If you don't need this feature, e.g. for wizards like import/export you can
      *                                 disable this behaviour.
      * @return string
-     * @todo: render unused and deprecate.
+     * @deprecated since v12, will be removed in v13.
      */
     public function getDynamicTabMenu(array $menuItems, string $domId, int $defaultTabIndex = 1, bool $collapsible = false, bool $wrapContent = true, bool $storeLastActiveTab = true): string
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
+            . ' Inline the HTML into your template.',
+            E_USER_DEPRECATED
+        );
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tabs.js');
         $view = GeneralUtility::makeInstance(BackendTemplateView::class);
         $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
@@ -371,19 +400,24 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      * @param string $text The text string for the header
      * @param bool $inlineEdit Whether the header should be editable (e.g. page title)
      * @return string HTML content
-     * @internal
-     * @todo: render unused and remove.
+     * @deprecated since v12, will be removed in v13.
      */
     public function header(string $text, bool $inlineEdit = true): string
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
+            . ' Inline the HTML into your template.',
+            E_USER_DEPRECATED
+        );
         return '<h1 ' . ($inlineEdit ? 'class="t3js-title-inlineedit"' : '') . '>' . htmlspecialchars($text) . '</h1>';
     }
 
     /**
-     * @todo: deprecate. ModuleTemplate should be a data sink only, here.
+     * @deprecated since v12, will be removed in v13.
      */
     public function isUiBlock(): bool
     {
+        trigger_error('Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.', E_USER_DEPRECATED);
         return $this->uiBlock;
     }
 
