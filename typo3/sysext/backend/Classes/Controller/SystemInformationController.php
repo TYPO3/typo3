@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 
@@ -39,8 +40,9 @@ class SystemInformationController
     /**
      * Renders the menu for AJAX calls
      */
-    public function renderMenuAction(): ResponseInterface
+    public function renderMenuAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->systemInformationToolbarItem->setRequest($request);
         return new HtmlResponse($this->systemInformationToolbarItem->getDropDown());
     }
 }

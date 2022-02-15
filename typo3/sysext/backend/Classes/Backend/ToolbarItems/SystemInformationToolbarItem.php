@@ -18,10 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -30,33 +33,32 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Render system information toolbar item and drop-down.
  * Provides some events for other extensions to add information.
  */
-class SystemInformationToolbarItem implements ToolbarItemInterface
+class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
+    private ServerRequestInterface $request;
     protected array $systemInformation = [];
     protected InformationStatus $highestSeverity;
     protected string $severityBadgeClass = '';
     protected array $systemMessages = [];
     protected int $systemMessageTotalCount = 0;
 
-    protected EventDispatcherInterface $eventDispatcher;
-    protected Typo3Version $typo3Version;
-    protected UriBuilder $uriBuilder;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        Typo3Version $typo3Version,
-        UriBuilder $uriBuilder
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Typo3Version $typo3Version,
+        private readonly UriBuilder $uriBuilder,
+        private readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->typo3Version = $typo3Version;
-        $this->uriBuilder = $uriBuilder;
         $this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -119,7 +121,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        return $this->getFluidTemplateObject()->render('ToolbarItems/SystemInformationToolbarItem');
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        return $view->render('ToolbarItems/SystemInformationToolbarItem');
     }
 
     /**
@@ -136,7 +139,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         } catch (RouteNotFoundException $e) {
             $environmentToolUrl = '';
         }
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         $view->assignMultiple([
             'environmentToolUrl' => $environmentToolUrl,
             'messages' => $this->systemMessages,
@@ -340,15 +343,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
             return in_array($functionName, $disabledFunctions, true);
         }
         return false;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

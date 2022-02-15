@@ -17,25 +17,31 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Class to render the shortcut menu toolbar.
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class ShortcutToolbarItem implements ToolbarItemInterface
+class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
-    protected ShortcutRepository $shortcutRepository;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        ShortcutRepository $shortcutRepository
+        private readonly ShortcutRepository $shortcutRepository,
+        private readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->shortcutRepository = $shortcutRepository;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -51,7 +57,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        return $this->getFluidTemplateObject()->render('ToolbarItems/ShortcutToolbarItemItem');
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        return $view->render('ToolbarItems/ShortcutToolbarItemItem');
     }
 
     /**
@@ -77,9 +84,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
                 'shortcuts' => $this->shortcutRepository->getShortcutsByGroup($groupId),
             ];
         }
-        $dropDownView = $this->getFluidTemplateObject();
-        $dropDownView->assign('shortcutMenu', $shortcutMenu);
-        return $dropDownView->render('ToolbarItems/ShortcutToolbarItemDropDown');
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view->assign('shortcutMenu', $shortcutMenu);
+        return $view->render('ToolbarItems/ShortcutToolbarItemDropDown');
     }
 
     /**
@@ -96,13 +103,6 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 20;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

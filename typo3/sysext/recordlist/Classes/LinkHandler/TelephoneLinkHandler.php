@@ -84,17 +84,12 @@ class TelephoneLinkHandler extends AbstractLinkHandler implements LinkHandlerInt
 
     /**
      * Render the link handler
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
     public function render(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/telephone-link-handler.js');
         $this->view->assign('telephone', !empty($this->linkParts) ? $this->linkParts['url']['telephone'] : '');
-        $this->view->setTemplate('LinkBrowser/Telephone');
-        return '';
+        return $this->view->render('LinkBrowser/Telephone');
     }
 
     /**

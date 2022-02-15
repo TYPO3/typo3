@@ -16,10 +16,10 @@
 namespace TYPO3\CMS\Reports\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
@@ -34,12 +34,12 @@ class Status implements RequestAwareReportInterface
     /**
      * @var StatusProviderInterface[][]
      */
-    protected $statusProviders = [];
+    protected array $statusProviders = [];
 
     /**
      * Constructor for class tx_reports_report_Status
      */
-    public function __construct()
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
     {
         $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
         $this->getStatusProviders();
@@ -51,18 +51,18 @@ class Status implements RequestAwareReportInterface
      * @param ServerRequestInterface|null $request the currently handled request
      * @return string The status report as HTML
      */
-    public function getReport(ServerRequestInterface $request = null)
+    public function getReport(ServerRequestInterface $request = null): string
     {
         $status = $this->getSystemStatus($request);
         $registry = GeneralUtility::makeInstance(Registry::class);
         $registry->set('tx_reports', 'status.highestSeverity', $this->getHighestSeverity($status));
-        return $this->renderStatus($status);
+        return $this->renderStatus($request, $status);
     }
 
     /**
      * Gets all registered status providers and creates instances of them.
      */
-    protected function getStatusProviders()
+    protected function getStatusProviders(): void
     {
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
             $this->statusProviders[$key] = [];
@@ -78,10 +78,10 @@ class Status implements RequestAwareReportInterface
     /**
      * Runs through all status providers and returns all statuses collected.
      *
-     * @param ServerRequestInterface $request
-     * @return \TYPO3\CMS\Reports\Status[][]
+     * @param ServerRequestInterface|null $request
+     * @return ReportStatus[][]
      */
-    public function getSystemStatus(ServerRequestInterface $request = null)
+    public function getSystemStatus(ServerRequestInterface $request = null): array
     {
         $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
@@ -101,9 +101,9 @@ class Status implements RequestAwareReportInterface
     /**
      * Runs through all status providers and returns all statuses collected, which are detailed.
      *
-     * @return \TYPO3\CMS\Reports\Status[][]
+     * @return ReportStatus[][]
      */
-    public function getDetailedSystemStatus()
+    public function getDetailedSystemStatus(): array
     {
         $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
@@ -124,10 +124,10 @@ class Status implements RequestAwareReportInterface
      * @param array $statusCollection An array of \TYPO3\CMS\Reports\Status objects.
      * @return int The highest severity found from the statuses.
      */
-    public function getHighestSeverity(array $statusCollection)
+    public function getHighestSeverity(array $statusCollection): int
     {
         $highestSeverity = ReportStatus::NOTICE;
-        foreach ($statusCollection as $statusProvider => $providerStatuses) {
+        foreach ($statusCollection as $providerStatuses) {
             /** @var ReportStatus $status */
             foreach ($providerStatuses as $status) {
                 if ($status->getSeverity() > $highestSeverity) {
@@ -145,10 +145,11 @@ class Status implements RequestAwareReportInterface
     /**
      * Renders the system's status
      *
+     * @param ServerRequestInterface $request Incoming request
      * @param array $statusCollection An array of statuses as returned by the available status providers
      * @return string The system status as an HTML table
      */
-    protected function renderStatus(array $statusCollection)
+    protected function renderStatus(ServerRequestInterface $request, array $statusCollection): string
     {
         // Apply sorting to collection and the providers
         $statusCollection = $this->sortStatusProviders($statusCollection);
@@ -157,8 +158,7 @@ class Status implements RequestAwareReportInterface
         }
         unset($statuses);
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:reports/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-reports');
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,
             'severityClassMapping' => [
@@ -177,7 +177,7 @@ class Status implements RequestAwareReportInterface
      * @param array $statusCollection A collection of statuses (with providers)
      * @return array The collection of statuses sorted by provider (beginning with provider "_install")
      */
-    protected function sortStatusProviders(array $statusCollection)
+    protected function sortStatusProviders(array $statusCollection): array
     {
         // Extract the primary status collections, i.e. the status groups
         // that must appear on top of the status report
@@ -191,7 +191,6 @@ class Status implements RequestAwareReportInterface
         unset($statusCollection['typo3'], $statusCollection['system'], $statusCollection['security'], $statusCollection['configuration']);
         // Assemble list of secondary status collections with left-over collections
         // Change their keys using localized labels if available
-        // @todo extract into getLabel() method
         $secondaryStatuses = [];
         foreach ($statusCollection as $statusProviderId => $collection) {
             if (str_starts_with($statusProviderId, 'LLL:')) {
@@ -206,8 +205,7 @@ class Status implements RequestAwareReportInterface
         }
         // Sort the secondary status collections alphabetically
         ksort($secondaryStatuses);
-        $orderedStatusCollection = array_merge($primaryStatuses, $secondaryStatuses);
-        return $orderedStatusCollection;
+        return array_merge($primaryStatuses, $secondaryStatuses);
     }
 
     /**
@@ -216,7 +214,7 @@ class Status implements RequestAwareReportInterface
      * @param array $statusCollection A collection of statuses per provider
      * @return array The collection of statuses sorted by severity
      */
-    protected function sortStatuses(array $statusCollection)
+    protected function sortStatuses(array $statusCollection): array
     {
         $statuses = [];
         $sortTitle = [];

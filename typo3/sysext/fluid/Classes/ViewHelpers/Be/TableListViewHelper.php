@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
@@ -118,6 +120,18 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $clickTitleMode = $this->arguments['clickTitleMode'];
         $enableControlPanels = $this->arguments['enableControlPanels'];
 
+        $languageService = $this->getLanguageService();
+        $backendUser = $this->getBackendUser();
+        /** @var RenderingContext $renderingContext */
+        $renderingContext = $this->renderingContext;
+        $request = $renderingContext->getRequest();
+        if (!$request instanceof ServerRequestInterface) {
+            // All views in backend have at least ServerRequestInterface, no matter if created by
+            // old StandaloneView via BackendViewFactory. Should be fine to assume having a request
+            // here, the early return is just sanitation.
+            return '';
+        }
+
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/recordlist/recordlist.js');
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/recordlist/record-download-button.js');
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
@@ -126,19 +140,22 @@ final class TableListViewHelper extends AbstractBackendViewHelper
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/context-menu.js');
         }
         // We need to include the language file, since DatabaseRecordList is heavily using ->getLL
-        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
+        $languageService->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
 
-        $pageInfo = BackendUtility::readPageAccess(GeneralUtility::_GP('id'), $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $existingModuleData = $this->getBackendUser()->getModuleData('web_list', 'ses');
+        $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
+        $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
+        $pageInfo = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
+        $existingModuleData = $backendUser->getModuleData('web_list', 'ses');
         $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->setRequest($request);
         $dbList->setModuleData($moduleData);
         $dbList->pageRow = $pageInfo;
         if ($readOnly) {
             $dbList->setIsEditable(false);
         } else {
-            $dbList->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageInfo));
+            $dbList->calcPerms = new Permission($backendUser->calcPerms($pageInfo));
         }
         $dbList->disableSingleTableView = true;
         $dbList->clickTitleMode = $clickTitleMode;
@@ -147,7 +164,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
             $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
             $storagePid = $frameworkConfiguration['persistence']['storagePid'];
         }
-        $dbList->start($storagePid, $tableName, (int)GeneralUtility::_GP('pointer'), $filter, $levels, $recordsPerPage);
+        $dbList->start($storagePid, $tableName, $pointer, $filter, $levels, $recordsPerPage);
         // Column selector is disabled since fields are defined by the "fieldList" argument
         $dbList->displayColumnSelector = false;
         $dbList->setFields = [$tableName => $fieldList];

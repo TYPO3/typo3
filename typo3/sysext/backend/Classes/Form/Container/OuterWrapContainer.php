@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Render header and footer row.
@@ -115,8 +115,12 @@ class OuterWrapContainer extends AbstractContainer
             }
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
+        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
+        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
+        $view = GeneralUtility::makeInstance(TemplateView::class);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
 
         $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
             ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;

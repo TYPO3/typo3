@@ -129,9 +129,7 @@ class ReportController
         $languageService = $this->getLanguageService();
         $registeredReports = $this->getRegisteredReportsArray();
         $reportClass = $registeredReports[$extension][$report]['report'];
-        // @todo: $this hand-over for b/w compat, but it's useless in general and could be removed as breaking change.
-        //        Note this prevents DI for reports, so we may actually want to drop this here!
-        $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
+        $reportInstance = GeneralUtility::makeInstance($reportClass);
         if ($reportInstance instanceof RequestAwareReportInterface) {
             $content = $reportInstance->getReport($request);
         } else {

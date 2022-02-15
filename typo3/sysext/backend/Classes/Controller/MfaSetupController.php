@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
@@ -35,7 +36,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Controller to provide the standalone setup endpoint for multi-factor authentication.
@@ -59,6 +60,7 @@ class MfaSetupController extends AbstractMfaController
         protected readonly PageRenderer $pageRenderer,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly LoggerInterface $logger,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
@@ -202,12 +204,9 @@ class MfaSetupController extends AbstractMfaController
     /**
      * Initialize the standalone view by setting the paths and assigning view variables
      */
-    protected function initializeView(ServerRequestInterface $request): BackendTemplateView
+    protected function initializeView(ServerRequestInterface $request): ViewInterface
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
         $view->assignMultiple([
             'redirect' => $request->getQueryParams()['redirect'] ?? '',
             'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',

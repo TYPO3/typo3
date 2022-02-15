@@ -82,17 +82,12 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * Render the link handler
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
-    public function render(ServerRequestInterface $request)
+    public function render(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/mail-link-handler.js');
         $this->view->assign('email', !empty($this->linkParts) ? $this->linkParts['url']['email'] : '');
-        $this->view->setTemplate('LinkBrowser/Mail');
-        return '';
+        return $this->view->render('LinkBrowser/Mail');
     }
 
     /**

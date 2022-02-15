@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -30,7 +31,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 
 /**
@@ -100,6 +101,7 @@ abstract class AbstractLinkBrowserController
     protected PageRenderer $pageRenderer;
     protected UriBuilder $uriBuilder;
     protected ExtensionConfiguration $extensionConfiguration;
+    protected BackendViewFactory $backendViewFactory;
 
     public function injectDependencyOrderingService(DependencyOrderingService $dependencyOrderingService): void
     {
@@ -119,6 +121,11 @@ abstract class AbstractLinkBrowserController
     public function injectExtensionConfiguration(ExtensionConfiguration $extensionConfiguration): void
     {
         $this->extensionConfiguration = $extensionConfiguration;
+    }
+
+    public function injectBackendViewFactory(BackendViewFactory $backendViewFactory): void
+    {
+        $this->backendViewFactory = $backendViewFactory;
     }
 
     abstract public function getConfiguration(): array;
@@ -143,9 +150,6 @@ abstract class AbstractLinkBrowserController
         $this->getLanguageService()->includeLLFile('EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf');
 
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
-        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
 
@@ -154,31 +158,35 @@ abstract class AbstractLinkBrowserController
         $this->loadLinkHandlers();
         $this->initCurrentUrl();
 
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
         $menuData = $this->buildMenuArray();
         $renderLinkAttributeFields = $this->renderLinkAttributeFields($view);
         if (method_exists($this->displayedLinkHandler, 'setView')) {
             $this->displayedLinkHandler->setView($view);
         }
-        $browserContent = $this->displayedLinkHandler->render($request);
-
-        $this->initDocumentTemplate();
-        $this->pageRenderer->setTitle('Link Browser');
-
         if (!empty($this->currentLinkParts)) {
             $this->renderCurrentUrl($view);
         }
-
-        $view->assign('menuItems', $menuData);
-        $view->assign('linkAttributes', $renderLinkAttributeFields);
-        $view->assign('contentOnly', $request->getQueryParams()['contentOnly'] ?? false);
-
+        $view->assignMultiple([
+            'menuItems' => $menuData,
+            'linkAttributes' => $renderLinkAttributeFields,
+            'contentOnly' => $request->getQueryParams()['contentOnly'] ?? false,
+        ]);
+        $content = $this->displayedLinkHandler->render($request);
+        if (empty($content)) {
+            // @todo: b/w compat layer for link handler that don't render full view but return empty
+            //        string instead. This case is unfortunate and should be removed if it gives
+            //        headaches at some point. If so, above  method_exists($this->displayedLinkHandler, 'setView')
+            //        should be removed and setView() method should be made mandatory, or the entire
+            //        construct should be refactored a bit.
+            $content = $view->render();
+        }
+        $this->initDocumentTemplate();
+        $this->pageRenderer->setTitle('Link Browser');
         if ($request->getQueryParams()['contentOnly'] ?? false) {
-            return new HtmlResponse($view->render());
+            return new HtmlResponse($content);
         }
-        if ($browserContent) {
-            $view->assign('content', $browserContent);
-        }
-        $this->pageRenderer->setBodyContent('<body ' . GeneralUtility::implodeAttributes($this->getBodyTagAttributes(), true, true) . '>' . $view->render());
+        $this->pageRenderer->setBodyContent('<body ' . GeneralUtility::implodeAttributes($this->getBodyTagAttributes(), true, true) . '>' . $content);
         return new HtmlResponse($this->pageRenderer->render());
     }
 
@@ -318,7 +326,7 @@ abstract class AbstractLinkBrowserController
     /**
      * Add the currently set URL to the view
      */
-    protected function renderCurrentUrl(BackendTemplateView $view): void
+    protected function renderCurrentUrl(ViewInterface $view): void
     {
         $view->assign('currentUrl', $this->currentLinkHandler->formatCurrentUrl());
     }
@@ -419,7 +427,7 @@ abstract class AbstractLinkBrowserController
     /**
      * Renders the link attributes for the selected link handler
      */
-    protected function renderLinkAttributeFields(BackendTemplateView $view): string
+    protected function renderLinkAttributeFields(ViewInterface $view): string
     {
         $fieldRenderingDefinitions = $this->getLinkAttributeFieldDefinitions();
         $fieldRenderingDefinitions = $this->displayedLinkHandler->modifyLinkAttributes($fieldRenderingDefinitions);

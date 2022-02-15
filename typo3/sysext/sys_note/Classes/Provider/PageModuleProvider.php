@@ -43,7 +43,7 @@ final class PageModuleProvider
         $request = $event->getRequest();
         $id = (int)($request->getQueryParams()['id'] ?? 0);
         $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
-        $event->addHeaderContent($this->noteRenderer->renderList($id, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
-        $event->addFooterContent($this->noteRenderer->renderList($id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
+        $event->addHeaderContent($this->noteRenderer->renderList($request, $id, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
+        $event->addFooterContent($this->noteRenderer->renderList($request, $id, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
     }
 }

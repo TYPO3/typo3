@@ -17,26 +17,35 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Help toolbar item - The question mark icon in toolbar
  */
-class HelpToolbarItem implements ToolbarItemInterface
+class HelpToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     protected ?MenuModule $helpModule = null;
+    private ServerRequestInterface $request;
 
-    public function __construct(ModuleProvider $moduleProvider)
-    {
+    public function __construct(
+        ModuleProvider $moduleProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+    ) {
         $helpModule = $moduleProvider->getModuleForMenu('help', $this->getBackendUser());
         if ($helpModule && $helpModule->hasSubModules()) {
             $this->helpModule = $helpModule;
         }
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -52,7 +61,8 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        return $this->getFluidTemplateObject()->render('ToolbarItems/HelpToolbarItem');
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        return $view->render('ToolbarItems/HelpToolbarItem');
     }
 
     /**
@@ -64,7 +74,7 @@ class HelpToolbarItem implements ToolbarItemInterface
             // checkAccess() is called before and prevents call to getDropDown() if there is no help.
             throw new \RuntimeException('No HelpModuleMenu found.', 1641993564);
         }
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         $view->assign('modules', $this->helpModule->getSubModules());
         return $view->render('ToolbarItems/HelpToolbarItemDropDown');
     }
@@ -91,14 +101,6 @@ class HelpToolbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 70;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

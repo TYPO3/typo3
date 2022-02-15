@@ -119,6 +119,7 @@ class RecordListController
         }
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->setRequest($request);
         $dbList->setModuleData($moduleData);
         $dbList->calcPerms = $this->pagePermissions;
         $dbList->returnUrl = $this->returnUrl;
@@ -174,7 +175,7 @@ class RecordListController
         }
         $searchBoxHtml = '';
         if (!($this->modTSconfig['disableSearchBox'] ?? false) && ($tableListHtml || !empty($search_field))) {
-            $searchBoxHtml = $this->renderSearchBox($view, $dbList, $search_field, $search_levels);
+            $searchBoxHtml = $this->renderSearchBox($request, $view, $dbList, $search_field, $search_levels);
         }
         $toggleClipboardHtml = '';
         if ($tableListHtml && ($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
@@ -264,14 +265,14 @@ class RecordListController
         }
     }
 
-    protected function renderSearchBox(ModuleTemplate $view, DatabaseRecordList $dbList, string $searchWord, int $searchLevels): string
+    protected function renderSearchBox(ServerRequestInterface $request, ModuleTemplate $view, DatabaseRecordList $dbList, string $searchWord, int $searchLevels): string
     {
         $searchBoxVisible = !empty($dbList->searchString);
         $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($dbList->listURL('', '-1', 'pointer,search_field'));
+            ->render($request, $dbList->listURL('', '-1', 'pointer,search_field'));
 
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $searchButton = $buttonBar->makeLinkButton();

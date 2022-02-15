@@ -21,7 +21,7 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Site languages entry container
@@ -164,8 +164,12 @@ class SiteLanguageContainer extends AbstractContainer
             }
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
+        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
+        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
+        $view = GeneralUtility::makeInstance(TemplateView::class);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
         $view->assignMultiple([
             'nameObject' => $nameObject,
             'nameForm' => $nameForm,

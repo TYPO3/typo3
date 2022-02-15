@@ -79,18 +79,12 @@ class UrlLinkHandler extends AbstractLinkHandler implements LinkHandlerInterface
 
     /**
      * Render the link handler
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
     public function render(ServerRequestInterface $request)
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/url-link-handler.js');
-
         $this->view->assign('url', !empty($this->linkParts) ? $this->linkParts['url'] : '');
-        $this->view->setTemplate('LinkBrowser/Url');
-        return '';
+        return $this->view->render('LinkBrowser/Url');
     }
 
     /**

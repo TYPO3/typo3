@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Recordlist\RecordList;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
@@ -46,7 +48,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListHeaderColumnsEvent;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListRecordActionsEvent;
 use TYPO3\CMS\Recordlist\Event\ModifyRecordListTableActionsEvent;
@@ -169,8 +170,6 @@ class DatabaseRecordList
      * @var bool
      */
     public $listOnlyInSingleTableMode = false;
-
-    protected TranslationConfigurationProvider $translateTools;
 
     /**
      * @var array[] Module configuration
@@ -346,8 +345,6 @@ class DatabaseRecordList
      * @var bool
      */
     protected bool $editable = true;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
 
     /**
      * Array with before/after setting for tables
@@ -423,20 +420,22 @@ class DatabaseRecordList
 
     protected array $showLocalizeColumn = [];
 
-    protected EventDispatcherInterface $eventDispatcher;
+    protected ServerRequestInterface $request;
 
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        TranslationConfigurationProvider $translateTools,
-        EventDispatcherInterface $eventDispatcher
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly TranslationConfigurationProvider $translateTools,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->translateTools = $translateTools;
-        $this->eventDispatcher = $eventDispatcher;
         $this->calcPerms = new Permission();
         $this->spaceIcon = '<span class="btn btn-default disabled" aria-hidden="true">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+    }
+
+    public function setRequest(ServerRequestInterface $request)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -1346,10 +1345,7 @@ class DatabaseRecordList
         } else {
             $lastElementNumber = $totalItems;
         }
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:recordlist/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-recordlist');
         return $view->assignMultiple([
                 'currentUrl' => $this->listURL('', $table, 'pointer'),
                 'currentPage' => $currentPage,
@@ -2792,7 +2788,7 @@ class DatabaseRecordList
         }
 
         return (string)$this->uriBuilder->buildUriFromRoute(
-            $GLOBALS['TYPO3_REQUEST']->getAttribute('route')->getOption('_identifier'),
+            $this->request->getAttribute('route')->getOption('_identifier'),
             array_replace($urlParameters, $this->overrideUrlParameters)
         );
     }

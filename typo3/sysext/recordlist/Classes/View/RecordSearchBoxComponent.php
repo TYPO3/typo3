@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Recordlist\View;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 
 /**
  * Renders the search box for the record listing and the element browser.
@@ -30,6 +30,10 @@ class RecordSearchBoxComponent
     protected array $allowedSearchLevels = [];
     protected string $searchWord = '';
     protected int $searchLevel = 0;
+
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
+    {
+    }
 
     public function setSearchWord(string $searchWord): self
     {
@@ -49,10 +53,9 @@ class RecordSearchBoxComponent
         return $this;
     }
 
-    public function render(string $formUrl = ''): string
+    public function render(ServerRequestInterface $request, string $formUrl = ''): string
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
         return $view
             ->assignMultiple([
                 'formUrl' => $formUrl,

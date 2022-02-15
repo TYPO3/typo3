@@ -88,29 +88,11 @@ class UpgradeController extends AbstractController
      */
     protected $coreVersionService;
 
-    /**
-     * @var UpgradeWizardsService
-     */
-    private $upgradeWizardsService;
-
-    /**
-     * @var PackageManager
-     */
-    protected $packageManager;
-
-    /**
-     * @var LateBootService
-     */
-    private $lateBootService;
-
     public function __construct(
-        PackageManager $packageManager,
-        LateBootService $lateBootService,
-        UpgradeWizardsService $upgradeWizardsService
+        protected readonly PackageManager $packageManager,
+        private readonly LateBootService $lateBootService,
+        private readonly UpgradeWizardsService $upgradeWizardsService
     ) {
-        $this->packageManager = $packageManager;
-        $this->lateBootService = $lateBootService;
-        $this->upgradeWizardsService = $upgradeWizardsService;
     }
 
     /**

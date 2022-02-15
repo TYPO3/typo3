@@ -54,7 +54,9 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\Database\PermissionsCheck;
 use TYPO3\CMS\Install\Exception;
@@ -70,6 +72,7 @@ use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
+use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
  * Install step controller, dispatcher class of step actions.
@@ -1134,11 +1137,14 @@ For each website you need a TypoScript template on the main page of your website
     /**
      * Helper method to initialize a standalone view instance.
      */
-    protected function initializeView(): BackendTemplateView
+    protected function initializeView(): ViewInterface
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
-        return $view;
+        $templatePaths = [
+            'templateRootPaths' => ['EXT:install/Resources/Private/Templates'],
+        ];
+        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths);
+        $fluidView = new FluidTemplateView($renderingContext);
+        return new FluidViewAdapter($fluidView);
     }
 
     /**

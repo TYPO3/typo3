@@ -13,6 +13,9 @@ services:
   TYPO3\CMS\Redirects\Controller\ManagementController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Redirects\Report\Status\RedirectStatus:
+    public: true
+
   TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
     public: true
 

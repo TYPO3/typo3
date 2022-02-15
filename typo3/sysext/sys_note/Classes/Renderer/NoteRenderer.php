@@ -17,11 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Renderer;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
 /**
@@ -31,23 +31,24 @@ use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
  */
 class NoteRenderer
 {
-    protected SysNoteRepository $notesRepository;
     protected array $pagePermissionCache = [];
 
-    public function __construct(SysNoteRepository $sysNoteRepository)
-    {
-        $this->notesRepository = $sysNoteRepository;
+    public function __construct(
+        protected readonly SysNoteRepository $sysNoteRepository,
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
     }
 
     /**
      * Render notes by single PID
      *
+     * @param ServerRequestInterface $request Incoming request
      * @param int $pid The page id notes should be rendered for
      * @param int|null $position null for no restriction, integer for defined position
      * @param string $returnUrl Url to return to when editing and closing a notes record again
      * @return string
      */
-    public function renderList(int $pid, int $position = null, string $returnUrl = ''): string
+    public function renderList(ServerRequestInterface $request, int $pid, int $position = null, string $returnUrl = ''): string
     {
         $backendUser = $this->getBackendUser();
         if ($pid <= 0
@@ -57,12 +58,11 @@ class NoteRenderer
             return '';
         }
 
-        $notes = $this->notesRepository->findByPidAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
+        $notes = $this->sysNoteRepository->findByPidAndAuthorId($pid, (int)$backendUser->user[$backendUser->userid_column], $position);
         if (!$notes) {
             return '';
         }
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:sys_note/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-sys-note');
         $view->assignMultiple([
             'notes' => $this->enrichWithEditPermissions($notes),
             'returnUrl' => $returnUrl,

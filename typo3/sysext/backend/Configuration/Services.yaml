@@ -155,6 +155,9 @@ services:
   TYPO3\CMS\Backend\Controller\File\FileController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Backend\Controller\Wizard\ImageManipulationController:
+    tags: ['backend.controller']
+
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 

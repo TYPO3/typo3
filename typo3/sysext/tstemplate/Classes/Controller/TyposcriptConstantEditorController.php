@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * TypoScript Constant editor
@@ -169,9 +168,7 @@ class TyposcriptConstantEditorController extends TypoScriptTemplateModuleControl
                 $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
             }
 
-            // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-            $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
+            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
             $view->assignMultiple($assigns);
             $theOutput = $view->render('ConstantEditor');
         } else {

@@ -20,8 +20,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Base class for link handlers
@@ -54,10 +54,7 @@ abstract class AbstractLinkHandler
      */
     protected $iconFactory;
 
-    /**
-     * @var ViewInterface
-     */
-    protected $view;
+    protected ViewInterface $view;
 
     /**
      * @var PageRenderer

@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
-use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -139,7 +139,7 @@ class BackendController
         $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
         $view = $this->viewFactory->create($request, 'typo3/cms-backend');
-        $this->assignTopbarDetailsToView($view);
+        $this->assignTopbarDetailsToView($request, $view);
         $view->assignMultiple([
             'modules' => $this->modules,
             'startupModule' => $this->getStartupModule($request),
@@ -173,7 +173,7 @@ class BackendController
     public function getTopbar(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->viewFactory->create($request, 'typo3/cms-backend');
-        $this->assignTopbarDetailsToView($view);
+        $this->assignTopbarDetailsToView($request, $view);
         return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
     }
 
@@ -190,7 +190,7 @@ class BackendController
     /**
      * Renders the topbar, containing the backend logo, sitename etc.
      */
-    protected function assignTopbarDetailsToView(ViewInterface $view): void
+    protected function assignTopbarDetailsToView(ServerRequestInterface $request, ViewInterface $view): void
     {
         // Extension Configuration to find the TYPO3 logo in the left corner
         $extConf = $this->extensionConfiguration->get('backend');
@@ -224,7 +224,7 @@ class BackendController
         $view->assign('logoHeight', $logoHeight);
         $view->assign('applicationVersion', $this->typo3Version->getVersion());
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $view->assign('toolbar', $this->renderToolbar());
+        $view->assign('toolbar', $this->renderToolbar($request));
     }
 
     /**
@@ -232,12 +232,14 @@ class BackendController
      *
      * @todo: Inline this to the topbar template
      */
-    protected function renderToolbar(): string
+    protected function renderToolbar(ServerRequestInterface $request): string
     {
         $toolbarItems = $this->toolbarItemsRegistry->getToolbarItems();
         $toolbar = [];
         foreach ($toolbarItems as $toolbarItem) {
-            /** @var ToolbarItemInterface $toolbarItem */
+            if ($toolbarItem instanceof RequestAwareToolbarItemInterface) {
+                $toolbarItem->setRequest($request);
+            }
             if ($toolbarItem->checkAccess()) {
                 $hasDropDown = (bool)$toolbarItem->hasDropDown();
                 $additionalAttributes = (array)$toolbarItem->getAdditionalAttributes();

@@ -21,6 +21,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\MfaSetupController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\Provider\Totp;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -30,8 +31,10 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaSetupControllerTest extends FunctionalTestCase
@@ -68,7 +71,8 @@ class MfaSetupControllerTest extends FunctionalTestCase
             $container->get(AuthenticationStyleInformation::class),
             $container->get(PageRenderer::class),
             new ExtensionConfiguration(),
-            $this->prophesize(Logger::class)->reveal()
+            $this->prophesize(Logger::class)->reveal(),
+            new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class))
         );
         $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
 

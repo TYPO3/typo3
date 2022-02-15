@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
@@ -371,10 +370,8 @@ class TypoScriptObjectBrowserController extends TypoScriptTemplateModuleControll
             // Ending section displayoptions
         }
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tooltip.js');
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
         $view->assignMultiple($assigns);
-
         return $view->render('TemplateObjectBrowserModuleFunction');
     }
 

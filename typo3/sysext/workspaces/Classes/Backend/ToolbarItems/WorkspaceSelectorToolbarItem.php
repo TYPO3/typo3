@@ -15,11 +15,12 @@
 
 namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -27,14 +28,22 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  *
  * @internal
  */
-class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
+class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
+    private ServerRequestInterface $request;
     protected array $availableWorkspaces;
 
     public function __construct(
-        WorkspaceService $workspaceService
+        WorkspaceService $workspaceService,
+        private readonly UriBuilder $uriBuilder,
+        private readonly BackendViewFactory $backendViewFactory,
     ) {
         $this->availableWorkspaces = $workspaceService->getAvailableWorkspaces();
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -54,9 +63,9 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
             return '';
         }
         $currentWorkspace = $this->getBackendUser()->workspace;
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-workspaces');
         $view->assign('workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
-        return $this->getFluidTemplateObject()->render('ToolbarItems/ToolbarItem');
+        return $view->render('ToolbarItems/ToolbarItem');
     }
 
     /**
@@ -67,15 +76,14 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         $topItem = null;
         $additionalItems = [];
         $backendUser = $this->getBackendUser();
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-workspaces');
         $activeWorkspace = (int)$backendUser->workspace;
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;
             $item = [
                 'isActive'    => $workspaceId === $activeWorkspace,
                 'label'       => $label,
-                'link'        => (string)$uriBuilder->buildUriFromRoute('main', ['changeWorkspace' => $workspaceId]),
+                'link'        => (string)$this->uriBuilder->buildUriFromRoute('main', ['changeWorkspace' => $workspaceId]),
                 'workspaceId' => $workspaceId,
             ];
             if ($topItem === null) {
@@ -115,14 +123,6 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 40;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

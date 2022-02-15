@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Recycler\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -33,7 +34,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 use TYPO3\CMS\Recycler\Domain\Model\Tables;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
@@ -61,8 +61,9 @@ class RecyclerAjaxController
      */
     protected $tce;
 
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
         $this->runtimeCache = $this->getMemoryCache();
         $this->tce = GeneralUtility::makeInstance(DataHandler::class);
     }
@@ -117,9 +118,7 @@ class RecyclerAjaxController
                 $allowDelete = $this->getBackendUser()->isAdmin()
                     ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
 
-                $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-                $view->setTemplateRootPaths(['EXT:recycler/Resources/Private/Templates']);
-                $view->setPartialRootPaths(['EXT:recycler/Resources/Private/Partials']);
+                $view = $this->backendViewFactory->create($request, 'typo3/cms-recycler');
                 $view->assign('showTableHeader', empty($this->conf['table']));
                 $view->assign('showTableName', $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin());
                 $view->assign('allowDelete', $allowDelete);

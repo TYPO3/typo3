@@ -11,3 +11,6 @@ services:
 
   TYPO3\CMS\Recycler\Controller\RecyclerModuleController:
     tags: [ 'backend.controller' ]
+
+  TYPO3\CMS\Recycler\Controller\RecyclerAjaxController:
+    tags: [ 'backend.controller' ]

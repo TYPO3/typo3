@@ -35,8 +35,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ResponsableViewInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
@@ -380,9 +380,10 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             E_USER_DEPRECATED
         );
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tabs.js');
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        $view = GeneralUtility::makeInstance(TemplateView::class);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $templatePaths->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->assignMultiple([
             'id' => 'DTM-' . md5($domId),
             'items' => $menuItems,

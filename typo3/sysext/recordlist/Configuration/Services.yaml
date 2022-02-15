@@ -35,3 +35,7 @@ services:
   TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList:
     shared: false
     public: true
+
+  TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent:
+    shared: false
+    public: true

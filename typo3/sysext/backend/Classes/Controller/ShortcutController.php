@@ -21,10 +21,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller for shortcut processing.
@@ -36,14 +35,16 @@ class ShortcutController
     public function __construct(
         protected readonly ShortcutToolbarItem $shortcutToolbarItem,
         protected readonly ShortcutRepository $shortcutRepository,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
     /**
      * Renders the menu so that it can be returned as response to an AJAX call.
      */
-    public function menuAction(): ResponseInterface
+    public function menuAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->shortcutToolbarItem->setRequest($request);
         return new HtmlResponse($this->shortcutToolbarItem->getDropDown());
     }
 
@@ -80,14 +81,14 @@ class ShortcutController
         $selectedShortcutGroupId = (int)($queryParams['shortcutGroup'] ?? '');
         $selectedShortcut = $this->shortcutRepository->getShortcutById($selectedShortcutId);
         $shortcutGroups = $this->shortcutRepository->getShortcutGroups();
-        $editFormView = $this->getFluidTemplateObject();
-        $editFormView->assignMultiple([
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view->assignMultiple([
             'selectedShortcutId' => $selectedShortcutId,
             'selectedShortcutGroupId' => $selectedShortcutGroupId,
             'selectedShortcut' => $selectedShortcut,
             'shortcutGroups' => $shortcutGroups,
         ]);
-        return new HtmlResponse($editFormView->render('ToolbarItems/ShortcutToolbarItemEditForm'));
+        return new HtmlResponse($view->render('ToolbarItems/ShortcutToolbarItemEditForm'));
     }
 
     /**
@@ -111,14 +112,5 @@ class ShortcutController
     {
         $success = $this->shortcutRepository->removeShortcut((int)($request->getParsedBody()['shortcutId'] ?? 0));
         return new JsonResponse(['success' => $success]);
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 }

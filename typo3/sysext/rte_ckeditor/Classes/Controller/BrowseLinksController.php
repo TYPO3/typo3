@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
@@ -132,7 +132,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         parent::initCurrentUrl();
     }
 
-    protected function renderLinkAttributeFields(BackendTemplateView $view): string
+    protected function renderLinkAttributeFields(ViewInterface $view): string
     {
         // Processing the classes configuration
         if (!empty($this->buttonConfig['properties']['class']['allowedClasses'])) {
@@ -251,7 +251,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }
 
-    protected function renderCurrentUrl(BackendTemplateView $view): void
+    protected function renderCurrentUrl(ViewInterface $view): void
     {
         $view->assign('removeCurrentLink', true);
         parent::renderCurrentUrl($view);

@@ -43,6 +43,6 @@ class InfoModuleHook
         $request = $params['request'];
         $id = (int)($request->getQueryParams()['id'] ?? 0);
         $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
-        return $this->noteRenderer->renderList($id, null, $returnUrl);
+        return $this->noteRenderer->renderList($request, $id, null, $returnUrl);
     }
 }

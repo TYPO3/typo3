@@ -17,23 +17,34 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * User toolbar item and drop-down.
  *
  * @internal This class is a specific Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class UserToolbarItem implements ToolbarItemInterface
+class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
-    public function __construct(protected readonly ModuleProvider $moduleProvider)
+    private ServerRequestInterface $request;
+
+    public function __construct(
+        private readonly ModuleProvider $moduleProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+    ) {
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
     {
+        $this->request = $request;
     }
 
     /**
@@ -50,7 +61,7 @@ class UserToolbarItem implements ToolbarItemInterface
     public function getItem(): string
     {
         $backendUser = $this->getBackendUser();
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         $view->assignMultiple([
             'currentUser' => $backendUser->user,
             'switchUserMode' => (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
@@ -102,7 +113,7 @@ class UserToolbarItem implements ToolbarItemInterface
         if ($userModule = $this->moduleProvider->getModuleForMenu('user', $backendUser)) {
             $modules = $userModule->getSubModules();
         }
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         $view->assignMultiple([
             'modules' => $modules,
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,
@@ -144,12 +155,5 @@ class UserToolbarItem implements ToolbarItemInterface
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 }

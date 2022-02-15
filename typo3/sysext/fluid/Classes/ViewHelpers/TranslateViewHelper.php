@@ -19,8 +19,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface as ExtbaseRequestInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -145,9 +146,12 @@ final class TranslateViewHelper extends AbstractViewHelper
             throw new Exception('An argument "key" or "id" has to be provided', 1351584844);
         }
 
-        $request = $renderingContext->getRequest();
+        $request = null;
+        if ($renderingContext instanceof RenderingContext) {
+            $request = $renderingContext->getRequest();
+        }
 
-        if (!$request instanceof RequestInterface) {
+        if (!$request instanceof ExtbaseRequestInterface) {
             // Straight resolving via core LanguageService in non-extbase context
             if (!str_starts_with($id, 'LLL:EXT:') && empty($default)) {
                 // Resolve "short key" without LLL:EXT: syntax given, if an extension name is given.
@@ -174,6 +178,7 @@ final class TranslateViewHelper extends AbstractViewHelper
             return $value;
         }
 
+        /** @var ExtbaseRequestInterface $request */
         $extensionName = $extensionName ?? $request->getControllerExtensionName();
         try {
             // Trigger full extbase magic: "<f:translate key="key1" />" will look up

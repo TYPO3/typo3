@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -136,9 +136,14 @@ class ImageManipulationElement extends AbstractFormElement
     {
         parent::__construct($nodeFactory, $data);
         // Would be great, if we could inject the view here, but since the constructor is in the interface, we can't
-        $this->templateView = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $this->templateView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $this->templateView->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
+        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
+        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
+        $view = GeneralUtility::makeInstance(TemplateView::class);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $templatePaths->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $this->templateView = $view;
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
     }
 

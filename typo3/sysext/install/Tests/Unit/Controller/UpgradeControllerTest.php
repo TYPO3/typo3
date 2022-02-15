@@ -18,9 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Install\Controller\UpgradeController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -86,9 +87,10 @@ class UpgradeControllerTest extends UnitTestCase
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
-        $subject
-            ->method('initializeView')
-            ->willReturn($this->prophesize(BackendTemplateView::class)->reveal());
+        $viewProphecy = $this->prophesize(ViewInterface::class);
+        $viewProphecy->assignMultiple(Argument::cetera())->willReturn($viewProphecy->reveal());
+        $viewProphecy->render(Argument::cetera())->willReturn('');
+        $subject->method('initializeView')->willReturn($viewProphecy->reveal());
         $subject->upgradeDocsGetChangelogForVersionAction($requestProphecy->reveal());
     }
 }

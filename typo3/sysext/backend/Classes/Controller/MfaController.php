@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
@@ -32,8 +33,6 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Controller to provide a multi-factor authentication endpoint.
@@ -51,6 +50,7 @@ class MfaController extends AbstractMfaController
         protected readonly PageRenderer $pageRenderer,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly LoggerInterface $logger,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
@@ -88,8 +88,7 @@ class MfaController extends AbstractMfaController
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
         $view->assignMultiple([

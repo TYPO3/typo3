@@ -21,7 +21,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\FluidViewAdapter;
+use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
+use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 
 /**
  * Controller abstract for shared parts of the install tool.
@@ -33,11 +36,15 @@ class AbstractController
     /**
      * Helper method to initialize a view instance.
      */
-    protected function initializeView(ServerRequestInterface $request): BackendTemplateView
+    protected function initializeView(ServerRequestInterface $request): ViewInterface
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:install/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:install/Resources/Private/Partials']);
+        $templatePaths = [
+            'templateRootPaths' => ['EXT:install/Resources/Private/Templates'],
+            'partialRootPaths' => ['EXT:install/Resources/Private/Partials'],
+        ];
+        $renderingContext = GeneralUtility::makeInstance(RenderingContextFactory::class)->create($templatePaths);
+        $fluidView = new FluidTemplateView($renderingContext);
+        $view = new FluidViewAdapter($fluidView);
         $view->assignMultiple([
             'controller' => $request->getQueryParams()['install']['controller'] ?? 'maintenance',
             'context' => $request->getQueryParams()['install']['context'] ?? '',

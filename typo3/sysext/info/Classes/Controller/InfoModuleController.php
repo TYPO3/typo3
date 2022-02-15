@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -112,31 +113,16 @@ class InfoModuleController
      */
     protected $extObj;
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected FlashMessageService $flashMessageService;
-    protected ContainerInterface $container;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected ModuleProvider $moduleProvider;
-    protected PageRenderer $pageRenderer;
-
     public function __construct(
-        IconFactory $iconFactory,
-        UriBuilder $uriBuilder,
-        FlashMessageService $flashMessageService,
-        ContainerInterface $container,
-        ModuleProvider $moduleProvider,
-        PageRenderer $pageRenderer,
-        ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly FlashMessageService $flashMessageService,
+        protected readonly ContainerInterface $container,
+        protected readonly ModuleProvider $moduleProvider,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->flashMessageService = $flashMessageService;
-        $this->container = $container;
-        $this->moduleProvider = $moduleProvider;
-        $this->pageRenderer = $pageRenderer;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-
         $this->getLanguageService()->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
     }
 

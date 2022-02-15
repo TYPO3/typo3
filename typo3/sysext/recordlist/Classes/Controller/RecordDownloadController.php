@@ -22,12 +22,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Recordlist\RecordList\DownloadRecordList;
 
@@ -77,17 +77,16 @@ class RecordDownloadController
     protected string $filename = '';
     protected array $modTSconfig = [];
 
-    public function __construct(protected ResponseFactoryInterface $responseFactory)
-    {
+    public function __construct(
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
     }
 
     /**
      * Handle record download request by evaluating the provided arguments,
      * checking access, initializing the record list, fetching records and
      * finally calling the requested download format action (e.g. csv).
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handleDownloadRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -120,6 +119,7 @@ class RecordDownloadController
 
         // Initialize database record list
         $recordList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $recordList->setRequest($request);
         $recordList->modTSconfig = $this->modTSconfig;
         $recordList->setFields[$this->table] = ($parsedBody['allColumns'] ?? false)
             ? BackendUtility::getAllowedFieldsForTable($this->table)
@@ -171,8 +171,7 @@ class RecordDownloadController
         $this->id = (int)($downloadArguments['id'] ?? 0);
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
         $view->assignMultiple([
             'table' => $this->table,
             'downloadArguments' => $downloadArguments,

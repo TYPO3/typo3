@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
@@ -35,7 +36,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Controller responsible for rendering and processing backend user password reset requests.
@@ -47,7 +48,7 @@ class ResetPasswordController
     use PageRendererBackendSetupTrait;
 
     protected string $loginProvider = '';
-    protected BackendTemplateView $view;
+    protected ViewInterface $view;
 
     public function __construct(
         protected readonly Context $context,
@@ -59,6 +60,7 @@ class ResetPasswordController
         protected readonly Typo3Information $typo3Information,
         protected readonly AuthenticationStyleInformation $authenticationStyleInformation,
         protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
@@ -211,11 +213,7 @@ class ResetPasswordController
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/login.js');
 
-        $this->view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $this->view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
-        $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-
+        $this->view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
         $this->view->assignMultiple([
             'enablePasswordReset' => $this->passwordReset->isEnabled(),
             'referrerCheckEnabled' => $this->features->isFeatureEnabled('security.backend.enforceReferrer'),

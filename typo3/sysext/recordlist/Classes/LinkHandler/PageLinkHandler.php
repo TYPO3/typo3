@@ -95,12 +95,8 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * Render the link handler
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
-    public function render(ServerRequestInterface $request)
+    public function render(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/page-link-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
@@ -112,8 +108,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->view->assign('initialNavigationWidth', $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250);
         $this->view->assign('treeActions', ['link']);
         $this->getRecordsOnExpandedPage($this->expandPage);
-        $this->view->setTemplate('LinkBrowser/Page');
-        return '';
+        return $this->view->render('LinkBrowser/Page');
     }
 
     /**

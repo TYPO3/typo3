@@ -19,12 +19,12 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Wizard for rendering image manipulation view
@@ -32,13 +32,8 @@ use TYPO3\CMS\Fluid\View\BackendTemplateView;
  */
 class ImageManipulationController
 {
-    private BackendTemplateView $templateView;
-
-    public function __construct()
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
     {
-        $templateView = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $templateView->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates/']);
-        $this->templateView = $templateView;
     }
 
     /**
@@ -56,11 +51,12 @@ class ImageManipulationController
                 } catch (FileDoesNotExistException $e) {
                 }
             }
-            $this->templateView->assignMultiple([
+            $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+            $view->assignMultiple([
                 'image' => $image,
                 'cropVariants' => $parsedBody['cropVariants'],
             ]);
-            return new HtmlResponse($this->templateView->render('Form/ImageManipulationWizard'));
+            return new HtmlResponse($view->render('Form/ImageManipulationWizard'));
         }
         return new HtmlResponse('', 403);
     }

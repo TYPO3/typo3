@@ -20,9 +20,12 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\ShortcutToolbarItem;
 use TYPO3\CMS\Backend\Controller\ShortcutController;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ShortcutControllerTest extends FunctionalTestCase
@@ -42,6 +45,7 @@ class ShortcutControllerTest extends FunctionalTestCase
         $this->subject = new ShortcutController(
             $this->getContainer()->get(ShortcutToolbarItem::class),
             $this->getContainer()->get(ShortcutRepository::class),
+            new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class))
         );
         $this->request = (new ServerRequest())->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }

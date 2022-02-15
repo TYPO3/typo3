@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * TypoScript template analyzer
@@ -89,8 +88,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
         $view->assignMultiple($assigns);
         return $view->render('TemplateAnalyzerModuleFunction');
     }

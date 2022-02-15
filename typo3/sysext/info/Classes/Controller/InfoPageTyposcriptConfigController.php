@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Page TSconfig viewer in Web -> Info
@@ -62,10 +61,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      */
     public function main(ServerRequestInterface $request)
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:info/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:info/Resources/Private/Templates']);
-
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-info');
         if ($this->id === 0) {
             $view->assign('pageZero', true);
             $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recordlist\Browser;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -175,6 +176,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
+        $dbList->setRequest($request);
         $dbList->setModuleData($moduleData);
         $dbList->setOverrideUrlParameters($this->getUrlParameters([]));
         $dbList->setIsEditable(false);
@@ -212,7 +214,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->setDispFields();
         $tableList = $dbList->generateList();
 
-        $out .= $this->renderSearchBox($dbList, $searchWord, $searchLevels);
+        $out .= $this->renderSearchBox($request, $dbList, $searchWord, $searchLevels);
 
         // Add the HTML for the record list to output variable:
         $out .= $tableList;
@@ -220,13 +222,13 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         return $out;
     }
 
-    protected function renderSearchBox(ElementBrowserRecordList $dblist, string $searchWord, int $searchLevels): string
+    protected function renderSearchBox(ServerRequestInterface $request, ElementBrowserRecordList $dblist, string $searchWord, int $searchLevels): string
     {
         $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
             ->setAllowedSearchLevels((array)($this->modTSconfig['searchLevel.']['items.'] ?? []))
             ->setSearchWord($searchWord)
             ->setSearchLevel($searchLevels)
-            ->render($dblist->listURL('', '-1', 'pointer,search_field'));
+            ->render($request, $dblist->listURL('', '-1', 'pointer,search_field'));
         return '<div class="pt-2">' . $searchBox . '</div>';
     }
 

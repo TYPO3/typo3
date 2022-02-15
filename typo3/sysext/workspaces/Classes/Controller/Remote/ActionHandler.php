@@ -18,12 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Workspaces\Domain\Record\StageRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -35,13 +36,11 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class ActionHandler
 {
-    protected StagesService $stageService;
-    protected WorkspaceService $workspaceService;
-
-    public function __construct()
-    {
-        $this->stageService = GeneralUtility::makeInstance(StagesService::class);
-        $this->workspaceService = GeneralUtility::makeInstance(WorkspaceService::class);
+    public function __construct(
+        protected readonly StagesService $stagesService,
+        protected readonly WorkspaceService $workspaceService,
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
     }
 
     /**
@@ -215,7 +214,7 @@ class ActionHandler
             $workspaceRecord = WorkspaceRecord::get($elementRecord['t3ver_wsid']);
             $nextStageRecord = $workspaceRecord->getNextStage($elementRecord['t3ver_stage']);
             if ($nextStageRecord !== null) {
-                $this->stageService->getRecordService()->add($table, $uid);
+                $this->stagesService->getRecordService()->add($table, $uid);
                 $result = $this->getSentToStageWindow($nextStageRecord);
                 $result['affects'] = [
                     'table' => $table,
@@ -248,7 +247,7 @@ class ActionHandler
 
             if ($stageRecord !== null) {
                 if (!$stageRecord->isEditStage()) {
-                    $this->stageService->getRecordService()->add($table, $uid);
+                    $this->stagesService->getRecordService()->add($table, $uid);
                     $previousStageRecord = $stageRecord->getPrevious();
                     if ($previousStageRecord === null) {
                         return $this->getErrorResponse('error.sendToPrevStage.noPreviousStage', 1287264747);
@@ -282,7 +281,7 @@ class ActionHandler
     public function sendToSpecificStageWindow($nextStageId, array $elements)
     {
         foreach ($elements as $element) {
-            $this->stageService->getRecordService()->add(
+            $this->stagesService->getRecordService()->add(
                 $element->table,
                 $element->uid
             );
@@ -333,8 +332,8 @@ class ActionHandler
         }
 
         if ($stageRecord->hasPreselection() && !$stageRecord->isPreselectionChangeable()) {
-            $preselectedBackendUsers = $this->stageService->getBackendUsers(
-                implode(',', $this->stageService->getPreselectedRecipients($stageRecord))
+            $preselectedBackendUsers = $this->stagesService->getBackendUsers(
+                implode(',', $this->stagesService->getPreselectedRecipients($stageRecord))
             );
 
             foreach ($preselectedBackendUsers as $preselectedBackendUser) {
@@ -383,7 +382,7 @@ class ActionHandler
     {
         $cmdMapArray = [];
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             -99,
             $pageId,
             0,
@@ -652,8 +651,8 @@ class ActionHandler
         }
 
         $result = [];
-        $allRecipients = $this->stageService->getResponsibleBeUser($stageRecord);
-        $preselectedRecipients = $this->stageService->getPreselectedRecipients($stageRecord);
+        $allRecipients = $this->stagesService->getResponsibleBeUser($stageRecord);
+        $preselectedRecipients = $this->stagesService->getPreselectedRecipients($stageRecord);
         $isPreselectionChangeable = $stageRecord->isPreselectionChangeable();
 
         foreach ($allRecipients as $backendUserId => $backendUser) {
@@ -685,7 +684,7 @@ class ActionHandler
      */
     protected function getDefaultCommentOfStage($stage)
     {
-        $result = $this->stageService->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
+        $result = $this->stagesService->getPropertyOfCurrentWorkspaceStage($stage, 'default_mailcomment');
         return $result;
     }
 
@@ -698,16 +697,16 @@ class ActionHandler
     public function sendPageToPreviousStage($id)
     {
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             -99,
             $id,
             0,
             'tables_modify'
         );
-        [$currentStage, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             $currentStage['uid'],
             $id,
             0,
@@ -730,16 +729,16 @@ class ActionHandler
     public function sendPageToNextStage($id)
     {
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             -99,
             $id,
             0,
             'tables_modify'
         );
-        [$currentStage, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             $currentStage['uid'],
             $id,
             0,
@@ -762,17 +761,16 @@ class ActionHandler
     {
         // Fetch next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
-            $this->stageService->getWorkspaceId(),
+            $this->stagesService->getWorkspaceId(),
             -99,
             $id,
             0,
             'tables_modify'
         );
-        [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
-        [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:workspaces/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:workspaces/Resources/Private/Partials']);
+        [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
+        [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
+        // @todo: It would of course be better if AjaxDispatcher could hand over $request to the method ...
+        $view = $this->backendViewFactory->create(new ServerRequest(), 'typo3/cms-workspaces');
         $view->assignMultiple([
             'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
             'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),

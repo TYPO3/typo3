@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
@@ -146,9 +145,7 @@ class TypoScriptTemplateInformationController extends TypoScriptTemplateModuleCo
             ];
             $assigns['editAllUrl'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
-            // Rendering of the output via fluid
-            $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-            $view->setTemplateRootPaths(['EXT:tstemplate/Resources/Private/Templates']);
+            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
             $view->assignMultiple($assigns);
             $theOutput = $view->render('InformationModule');
         } else {

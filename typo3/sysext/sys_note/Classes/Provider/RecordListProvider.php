@@ -40,7 +40,7 @@ class RecordListProvider
         $request = $event->getRequest();
         $pid = (int)($event->getRequest()->getParsedBody()['id'] ?? $event->getRequest()->getQueryParams()['id'] ?? 0);
         $returnUrl = $request->getAttribute('normalizedParams')->getRequestUri();
-        $event->addContentAbove($this->noteRenderer->renderList($pid, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
-        $event->addContentBelow($this->noteRenderer->renderList($pid, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
+        $event->addContentAbove($this->noteRenderer->renderList($request, $pid, SysNoteRepository::SYS_NOTE_POSITION_TOP, $returnUrl));
+        $event->addContentBelow($this->noteRenderer->renderList($request, $pid, SysNoteRepository::SYS_NOTE_POSITION_BOTTOM, $returnUrl));
     }
 }

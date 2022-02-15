@@ -338,7 +338,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $formUrl = $this->getScriptUrl() . HttpUtility::buildQueryString($this->getUrlParameters([]), '&');
         $searchBox = GeneralUtility::makeInstance(RecordSearchBoxComponent::class)
             ->setSearchWord($this->searchWord)
-            ->render($formUrl);
+            ->render($this->getRequest(), $formUrl);
 
         $markup = [];
         $markup[] = '<div class="mt-4 mb-4">' . $searchBox . '</div>';

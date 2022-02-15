@@ -89,12 +89,8 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 
     /**
      * Render the link handler
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
      */
-    public function render(ServerRequestInterface $request)
+    public function render(ServerRequestInterface $request): string
     {
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/file-link-handler.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');
@@ -149,9 +145,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 $this->expandFolder($selectedFolder, $allowedExtensions);
             }
         }
-
-        $this->view->setTemplate('LinkBrowser/' . ucfirst($this->mode));
-        return '';
+        return $this->view->render('LinkBrowser/' . ucfirst($this->mode));
     }
 
     /**

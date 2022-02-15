@@ -12,6 +12,9 @@ services:
   TYPO3\CMS\Reports\Controller\ReportController:
     tags: ['backend.controller']
 
+  TYPO3\CMS\Reports\Report\Status\Status:
+    public: true
+
   TYPO3\CMS\Reports\Report\WarningsForAboutModule:
     tags:
       - name: event.listener

@@ -45,8 +45,9 @@ class OpenDocumentController
     /**
      * Renders the menu so that it can be returned as response to an AJAX call.
      */
-    public function renderMenu(): ResponseInterface
+    public function renderMenu(ServerRequestInterface $request): ResponseInterface
     {
+        $this->toolbarItem->setRequest($request);
         return new HtmlResponse($this->toolbarItem->getDropDown());
     }
 
@@ -61,6 +62,6 @@ class OpenDocumentController
         } else {
             $this->documents->closeAllDocuments();
         }
-        return $this->renderMenu();
+        return $this->renderMenu($request);
     }
 }

@@ -36,11 +36,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/ColumnSelectorController.php
 
 		-
-			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ColumnSelectorController.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
@@ -3786,11 +3781,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Transform/HtmlViewHelper.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/TranslateViewHelper.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerExtensionName\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/TranslateViewHelper.php
@@ -5256,11 +5246,6 @@ parameters:
 			path: ../../typo3/sysext/recordlist/Classes/Controller/ClearPageCacheController.php
 
 		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FileLinkHandler.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Recordlist\\\\LinkHandler\\\\FileLinkHandler\\:\\:\\$expandFolder \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FileLinkHandler.php
@@ -5269,31 +5254,6 @@ parameters:
 			message: "#^Parameter \\#3 \\$overlayIdentifier of method TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconFactory\\:\\:getIcon\\(\\) expects string\\|null, array\\<string, array\\>\\|null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/FolderLinkHandler.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/MailLinkHandler.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/PageLinkHandler.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/RecordLinkHandler.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/TelephoneLinkHandler.php
-
-		-
-			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:setTemplate\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/LinkHandler/UrlLinkHandler.php
 
 		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"

@@ -21,11 +21,10 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Controller for handling the display column selection for records, typically executed from list modules.
@@ -48,8 +47,10 @@ class ColumnSelectorController
         't3ver_oid', // Not relevant in listing
     ];
 
-    public function __construct(protected ResponseFactoryInterface $responseFactory)
-    {
+    public function __construct(
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly BackendViewFactory $backendViewFactory,
+    ) {
     }
 
     /**
@@ -95,9 +96,7 @@ class ColumnSelectorController
         if ($table === '') {
             throw new \RuntimeException('No table was given for selecting columns', 1625169125);
         }
-
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
         $view->assignMultiple([
             'table' => $table,
             'columns' => $this->getColumns($table, (int)($queryParams['id'] ?? 0)),
@@ -222,7 +221,6 @@ class ColumnSelectorController
         $response = $this->responseFactory
             ->createResponse()
             ->withHeader('Content-Type', 'text/html; charset=utf-8');
-
         $response->getBody()->write($view->render('ColumnSelector'));
         return $response;
     }

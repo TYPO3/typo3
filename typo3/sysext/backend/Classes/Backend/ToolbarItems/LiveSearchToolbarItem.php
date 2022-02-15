@@ -17,19 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Adds backend live search to the toolbar by adding JavaScript and adding an input search field
  */
-class LiveSearchToolbarItem implements ToolbarItemInterface
+class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
-    public function __construct(protected readonly ModuleProvider $moduleProvider)
+    private ServerRequestInterface $request;
+
+    public function __construct(
+        private readonly ModuleProvider $moduleProvider,
+        private readonly BackendViewFactory $backendViewFactory,
+    ) {
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
     {
+        $this->request = $request;
     }
 
     /**
@@ -46,8 +56,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         return $view->render('ToolbarItems/LiveSearchToolbarItem');
     }
 

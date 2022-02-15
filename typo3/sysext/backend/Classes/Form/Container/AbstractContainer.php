@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Abstract container has various methods used by the container classes
@@ -110,9 +110,13 @@ abstract class AbstractContainer extends AbstractNode
      */
     protected function renderTabMenu(array $menuItems, $domId, $defaultTabIndex = 1)
     {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
+        // @todo: It's unfortunate we're using Typo3Fluid TemplateView directly here. We can't
+        //        inject BackendViewFactory here since __construct() is polluted by NodeInterface.
+        //        Remove __construct() from NodeInterface to have DI, then use BackendViewFactory here.
+        $view = GeneralUtility::makeInstance(TemplateView::class);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
+        $templatePaths->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
+        $templatePaths->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
         $view->assignMultiple([
             'id' => $domId,
             'items' => $menuItems,

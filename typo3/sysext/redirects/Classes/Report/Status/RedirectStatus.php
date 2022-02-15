@@ -17,31 +17,37 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Report\Status;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Performs checks regarding redirects
  */
-class RedirectStatus implements StatusProviderInterface
+class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProviderInterface
 {
+    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
+    {
+    }
+
     /**
      * Determines the status of the FAL index.
      *
      * @return array List of statuses
      */
-    public function getStatus(): array
+    public function getStatus(ServerRequestInterface $request = null): array
     {
         return [
-            'Conflicts' => $this->getConflictingRedirects(),
+            'Conflicts' => $this->getConflictingRedirects($request),
         ];
     }
 
-    protected function getConflictingRedirects(): Status
+    protected function getConflictingRedirects(ServerRequestInterface $request): Status
     {
         $value = $this->getLanguageService()->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.none');
         $severity = Status::OK;
@@ -54,8 +60,7 @@ class RedirectStatus implements StatusProviderInterface
             $severity = Status::WARNING;
         }
 
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:redirects/Resources/Private/Templates']);
+        $view = $this->backendViewFactory->create($request, 'typo3/cms-redirects');
         $view->assignMultiple([
             'count' => $count,
             'reportedConflicts' => $reportedConflicts,

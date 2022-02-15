@@ -18,26 +18,29 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 
 /**
  * Render cache clearing toolbar item.
  * Adds a dropdown if there are more than one item to clear (usually for admins to render the flush all caches).
  * The dropdown items can be manipulated using ModifyClearCacheActionsEvent.
  */
-class ClearCacheToolbarItem implements ToolbarItemInterface
+class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     protected array $cacheActions = [];
     protected array $optionValues = [];
+    private ServerRequestInterface $request;
 
     public function __construct(
         UriBuilder $uriBuilder,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        private readonly BackendViewFactory $backendViewFactory,
     ) {
         $isAdmin = $this->getBackendUser()->isAdmin();
         $userTsConfig = $this->getBackendUser()->getTSConfig();
@@ -76,6 +79,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         $this->optionValues = $event->getCacheActionIdentifiers();
     }
 
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
      * Checks whether the user has access to this toolbar item.
      */
@@ -98,10 +106,10 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         if ($this->hasDropDown()) {
-            return $this->getFluidTemplateObject()->render('ToolbarItems/ClearCacheToolbarItem');
+            return $view->render('ToolbarItems/ClearCacheToolbarItem');
         }
-        $view = $this->getFluidTemplateObject();
         $cacheAction = end($this->cacheActions);
         $view->assignMultiple([
                 'link'  => $cacheAction['href'],
@@ -116,7 +124,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown(): string
     {
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
         $view->assign('cacheActions', $this->cacheActions);
         return $view->render('ToolbarItems/ClearCacheToolbarItemDropDown');
     }
@@ -143,14 +151,6 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     public function getIndex(): int
     {
         return 25;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
-        $view->setTemplateRootPaths(['EXT:backend/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

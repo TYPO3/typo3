@@ -18,13 +18,14 @@ namespace TYPO3\CMS\Recordlist\Browser;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\PageRendererBackendSetupTrait;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Base class for element browsers
@@ -64,13 +65,14 @@ abstract class AbstractElementBrowser
     protected $bparams = '';
 
     protected ?ServerRequestInterface $request = null;
-    protected BackendTemplateView $view;
+    protected ViewInterface $view;
 
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ExtensionConfiguration $extensionConfiguration,
+        protected readonly BackendViewFactory $backendViewFactory,
     ) {
     }
 
@@ -80,9 +82,7 @@ abstract class AbstractElementBrowser
     protected function initialize()
     {
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $this->getRequest(), $this->getLanguageService());
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:recordlist/Resources/Private/Templates']);
-        $view->setLayoutRootPaths(['EXT:recordlist/Resources/Private/Layouts']);
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-recordlist');
         $this->view = $view;
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/element-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');

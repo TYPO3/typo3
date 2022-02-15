@@ -120,9 +120,6 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
 
     /**
      * Renders the link handler.
-     *
-     * @param ServerRequestInterface $request
-     * @return string
      */
     public function render(ServerRequestInterface $request): string
     {
@@ -156,9 +153,7 @@ class RecordLinkHandler extends AbstractLinkHandler implements LinkHandlerInterf
             'initialNavigationWidth' => $this->getBackendUser()->uc['selector']['navigation']['width'] ?? 250,
             'treeActions' => ['link'],
         ]);
-
-        $this->view->setTemplate('LinkBrowser/Record');
-        return '';
+        return $this->view->render('LinkBrowser/Record');
     }
 
     /**

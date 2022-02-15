@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\BackendTemplateView;
 use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
 
 /**
@@ -31,17 +32,20 @@ use TYPO3\CMS\Opendocs\Service\OpenDocumentService;
  *
  * @internal This class is a specific hook implementation and is not part of the TYPO3's Core API.
  */
-class OpendocsToolbarItem implements ToolbarItemInterface
+class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
-    protected OpenDocumentService $documentService;
-    protected UriBuilder $uriBuilder;
+    private ServerRequestInterface $request;
 
     public function __construct(
-        OpenDocumentService $documentService,
-        UriBuilder $uriBuilder
+        private readonly OpenDocumentService $documentService,
+        private readonly UriBuilder $uriBuilder,
+        private readonly BackendViewFactory $backendViewFactory,
     ) {
-        $this->documentService = $documentService;
-        $this->uriBuilder = $uriBuilder;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**
@@ -57,7 +61,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function getItem(): string
     {
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-opendocs');
         return $view->render('ToolbarItems/ToolbarItem');
     }
 
@@ -74,7 +78,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
      */
     public function getDropDown(): string
     {
-        $view = $this->getFluidTemplateObject();
+        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-opendocs');
         $view->assignMultiple([
             'openDocuments' => $this->getMenuEntries($this->documentService->getOpenDocuments()),
             // If there are "recent documents" in the list, add them
@@ -149,7 +153,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $result['table'] = $table;
         $result['record'] = $record;
         $result['label'] = strip_tags(htmlspecialchars_decode($document[0]));
-        $uri = (string)$this->uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
+        $uri = $this->uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
         $pid = (int)$document[3]['pid'];
 
         if ($document[3]['table'] === 'pages') {
@@ -161,13 +165,6 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $result['md5sum'] = $identifier;
 
         return $result;
-    }
-
-    protected function getFluidTemplateObject(): BackendTemplateView
-    {
-        $view = GeneralUtility::makeInstance(BackendTemplateView::class);
-        $view->setTemplateRootPaths(['EXT:opendocs/Resources/Private/Templates']);
-        return $view;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
