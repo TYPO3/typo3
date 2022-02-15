@@ -110,7 +110,7 @@ class PageActions {
     const $hiddenElements = $(IdentifierEnum.hiddenElements);
 
     // show a spinner to show activity
-    const $spinner = $('<span class="form-check-spinner"><typo3-backend-icon identifier="spinner-circle" size="auto"></typo3-backend-icon></span>');
+    const $spinner = $('<span class="form-check-spinner"><typo3-backend-icon identifier="spinner-circle" size="small"></typo3-backend-icon></span>');
     $me.hide().after($spinner);
 
     if ($me.prop('checked')) {
