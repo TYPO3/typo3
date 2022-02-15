@@ -24,22 +24,16 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class PageArguments implements RouteResultInterface
 {
-    /**
-     * @var int
-     */
-    protected $pageId;
-
-    /**
-     * @var string
-     */
-    protected $pageType;
+    protected int $pageId;
+    protected string $pageType;
+    protected bool $dirty = false;
 
     /**
      * All (merged) arguments of this URI (routeArguments + dynamicArguments)
      *
      * @var array<string, string|array>
      */
-    protected $arguments;
+    protected array $arguments;
 
     /**
      * Route arguments mapped by static mappers
@@ -48,7 +42,7 @@ class PageArguments implements RouteResultInterface
      *
      * @var array<string, string|array>
      */
-    protected $staticArguments;
+    protected array $staticArguments;
 
     /**
      * Route arguments, that have an infinite number of possible values
@@ -56,34 +50,22 @@ class PageArguments implements RouteResultInterface
      *
      * @var array<string, string|array>
      */
-    protected $dynamicArguments;
+    protected array $dynamicArguments;
 
     /**
      * Arguments defined in and mapped by a route enhancer
      *
      * @var array<string, string|array>
      */
-    protected $routeArguments;
+    protected array $routeArguments;
 
     /**
      * Query arguments in the generated URI
      *
      * @var array<string, string|array>
      */
-    protected $queryArguments = [];
+    protected array $queryArguments = [];
 
-    /**
-     * @var bool
-     */
-    protected $dirty = false;
-
-    /**
-     * @param int $pageId
-     * @param string $pageType
-     * @param array $routeArguments
-     * @param array $staticArguments
-     * @param array $remainingArguments
-     */
     public function __construct(int $pageId, string $pageType, array $routeArguments, array $staticArguments = [], array $remainingArguments = [])
     {
         $this->pageId = $pageId;
@@ -97,9 +79,6 @@ class PageArguments implements RouteResultInterface
         }
     }
 
-    /**
-     * @return bool
-     */
     public function areDirty(): bool
     {
         return $this->dirty;
@@ -113,17 +92,11 @@ class PageArguments implements RouteResultInterface
         return $this->routeArguments;
     }
 
-    /**
-     * @return int
-     */
     public function getPageId(): int
     {
         return $this->pageId;
     }
 
-    /**
-     * @return string
-     */
     public function getPageType(): string
     {
         return $this->pageType;
@@ -133,7 +106,7 @@ class PageArguments implements RouteResultInterface
      * @param string $name
      * @return string|array<string, string|array>|null
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         return $this->arguments[$name] ?? null;
     }
@@ -248,11 +221,7 @@ class PageArguments implements RouteResultInterface
         return ArrayUtility::arrayDiffKeyRecursive($first, $second);
     }
 
-    /**
-     * @param mixed $offset
-     * @return bool
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return $offset === 'pageId' || $offset === 'pageType' || isset($this->arguments[$offset]);
     }
@@ -260,11 +229,8 @@ class PageArguments implements RouteResultInterface
     /**
      * @param mixed $offset
      * @return string|array<string, string|array>|null
-     * @todo Set parameter type for $offset to mixed as breaking change in v12.
-     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         if ($offset === 'pageId') {
             return $this->getPageId();
@@ -275,25 +241,12 @@ class PageArguments implements RouteResultInterface
         return $this->arguments[$offset] ?? null;
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     * @todo Set parameter type for $offset and $value to mixed as breaking change in v12.
-     * @todo Set return type to mixed as breaking change in v12 and remove #[\ReturnTypeWillChange].
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new \InvalidArgumentException('PageArguments cannot be modified.', 1538152266);
     }
 
-    /**
-     * @param mixed $offset
-     * @todo Set parameter type for $offset to mixed as breaking change in v12.
-     * @todo Set return type to void as breaking change in v12 and remove #[\ReturnTypeWillChange].
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new \InvalidArgumentException('PageArguments cannot be modified.', 1538152269);
     }
