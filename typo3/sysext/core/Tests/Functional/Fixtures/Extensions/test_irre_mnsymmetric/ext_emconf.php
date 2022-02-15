@@ -8,7 +8,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'example',
     'version' => '12.0.0',
     'state' => 'beta',
-    'clearCacheOnLoad' => 0,
     'author' => 'Anja Leichsenring',
     'author_email' => 'aleichsenring@ab-softlab.de',
     'author_company' => '',

@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'The Install Tool is used for installation, upgrade, system administration and setup tasks.',
     'category' => 'module',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

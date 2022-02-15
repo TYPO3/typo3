@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'View logs from the sys_log table in the TYPO3 backend modules System>Log and Web>Info>Log.',
     'category' => 'module',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

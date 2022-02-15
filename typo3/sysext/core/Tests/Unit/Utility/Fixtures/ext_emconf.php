@@ -7,7 +7,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'This is a fixture extension configuration file used for unit tests.',
     'category' => '',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => '',
     'author_email' => '',
     'author_company' => '',
