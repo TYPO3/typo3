@@ -137,9 +137,8 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @link https://php.net/manual/en/arrayaccess.offsetexists.php
      * @param mixed $offset An offset to check for.
      * @return bool TRUE on success or FALSE on failure.
-     * @todo Set $offset to mixed type in v12.
      */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->objects[$offset]);
     }
@@ -150,11 +149,8 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @link https://php.net/manual/en/arrayaccess.offsetget.php
      * @param mixed $offset The offset to retrieve.
      * @return mixed Can return all value types.
-     * @todo Set $offset to mixed type in v12.
-     * @todo Set return type to ?mixed in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->objects[$offset];
     }
@@ -165,9 +161,8 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      * @link https://php.net/manual/en/arrayaccess.offsetset.php
      * @param mixed $offset The offset to assign the value to.
      * @param mixed $value The value to set.
-     * @todo Set $offset and $value to mixed type in v12.
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->objects[$offset] = $value;
     }
@@ -177,9 +172,8 @@ final class FinisherVariableProvider implements \ArrayAccess, \IteratorAggregate
      *
      * @link https://php.net/manual/en/arrayaccess.offsetunset.php
      * @param mixed $offset The offset to unset.
-     * @todo Set $offset to mixed type in v12.
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->objects[$offset]);
     }

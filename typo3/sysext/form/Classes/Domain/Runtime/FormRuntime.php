@@ -891,11 +891,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @return bool
      * @internal
-     * @todo Set $identifier to mixed type in v12.
      */
-    public function offsetExists($identifier): bool
+    public function offsetExists(mixed $identifier): bool
     {
-        if ($this->getElementValue($identifier) !== null) {
+        $identifier = (string)$identifier;
+        if ($this->getElementValue((string)$identifier) !== null) {
             return true;
         }
 
@@ -920,12 +920,10 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @return mixed
      * @internal
-     * @todo Set $identifier to mixed type in v12.
-     * @todo Set return type to ?mixed in v12.
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($identifier)
+    public function offsetGet(mixed $identifier): mixed
     {
+        $identifier = (string)$identifier;
         if ($this->getElementValue($identifier) !== null) {
             return $this->getElementValue($identifier);
         }
@@ -940,20 +938,20 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      * @param string $identifier
      * @param mixed $value
      * @internal
-     * @todo Set $identifier and $value to mixed type in v12.
      */
-    public function offsetSet($identifier, $value): void
+    public function offsetSet(mixed $identifier, mixed $value): void
     {
+        $identifier = (string)$identifier;
         $this->formState->setFormValue($identifier, $value);
     }
 
     /**
      * @param string $identifier
      * @internal
-     * @todo Set $identifier to mixed type in v12.
      */
-    public function offsetUnset($identifier): void
+    public function offsetUnset(mixed $identifier): void
     {
+        $identifier = (string)$identifier;
         $this->formState->setFormValue($identifier, null);
     }
 
