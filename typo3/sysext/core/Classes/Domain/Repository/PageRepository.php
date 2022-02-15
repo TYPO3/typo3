@@ -441,7 +441,7 @@ class PageRepository implements LoggerAwareInterface
             foreach ($pagesInput as $origPage) {
                 if (is_array($origPage)) {
                     // Was the whole record
-                    $pageIds[] = (int)$origPage['uid'];
+                    $pageIds[] = (int)($origPage['uid'] ?? 0);
                 } else {
                     // Was the id
                     $pageIds[] = (int)$origPage;
@@ -497,7 +497,7 @@ class PageRepository implements LoggerAwareInterface
             }
         } elseif ($languageUid > 0) {
             $languageUids = array_merge([$languageUid], $this->getLanguageFallbackChain($languageAspect));
-            return in_array((int)$page['sys_language_uid'], $languageUids, true);
+            return in_array((int)($page['sys_language_uid'] ?? 0), $languageUids, true);
         }
         return true;
     }
