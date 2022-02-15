@@ -109,7 +109,7 @@ class SystemStatusUpdateTask extends AbstractTask
             $sendEmailsTo[] = new Address($notificationEmail);
         }
         $subject = sprintf($this->getLanguageService()->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $message = $this->getNotificationAll() ? $this->getLanguageService()->getLL('status_allNotification') : $this->getLanguageService()->getLL('status_problemNotification');
+        $message = sprintf($this->getLanguageService()->getLL($this->getNotificationAll() ? 'status_allNotification' : 'status_problemNotification'), '', '');
         $message .= CRLF . CRLF;
         $message .= $this->getLanguageService()->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         $message .= CRLF . CRLF;

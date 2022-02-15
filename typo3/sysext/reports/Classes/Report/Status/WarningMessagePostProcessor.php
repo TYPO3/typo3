@@ -48,12 +48,11 @@ class WarningMessagePostProcessor
                 // Display a message that there's something wrong and that
                 // the admin should take a look at the detailed status report
                 $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
-                $reportModuleIdentifier = 'system_ReportsTxreportsm1';
+                $reportModuleIdentifier = 'system_reports';
                 $reportModuleParameters = [
-                    'tx_reports_system_reportstxreportsm1[extension]=tx_reports',
-                    'tx_reports_system_reportstxreportsm1[report]=status',
-                    'tx_reports_system_reportstxreportsm1[action]=detail',
-                    'tx_reports_system_reportstxreportsm1[controller]=Report',
+                    'extension=tx_reports',
+                    'report=status',
+                    'action=detail',
                 ];
                 $dispatchArgsList = $reportModuleIdentifier . ',' . '&' . implode('&', $reportModuleParameters);
                 $warningMessages['tx_reports_status_notification'] = sprintf(

@@ -55,10 +55,10 @@
 				<source>Update Incomplete</source>
 			</trans-unit>
 			<trans-unit id="status_problemNotification" resname="status_problemNotification">
-				<source>One or more problems were detected with your TYPO3 installation. Please check the status report for more information.</source>
+				<source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
 			</trans-unit>
 			<trans-unit id="status_allNotification" resname="status_allNotification">
-				<source>This report contains all System Status Notifications from your TYPO3 installation. Please check the status report for more information.</source>
+				<source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
 			</trans-unit>
 			<trans-unit id="status_typo3" resname="status_typo3">
 				<source>TYPO3 System</source>
