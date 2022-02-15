@@ -168,9 +168,9 @@ class TypoScriptTemplateModuleController
 
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
+        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         $this->access = $this->pageinfo !== [];
-        $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
 
     /**
