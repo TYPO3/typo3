@@ -164,4 +164,42 @@ class DatabaseParentPageRowTest extends UnitTestCase
 
         self::assertSame($parentPageRow, $result['parentPageRow']);
     }
+
+    /**
+     * @test
+     */
+    public function addDataSetsParentPageRowOnNullWithNew(): void
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'new',
+            'vanillaUid' => 'NEW123',
+            'databaseRow' => [],
+        ];
+
+        $this->subject->expects(self::never())->method('getDatabaseRow');
+
+        $result = $this->subject->addData($input);
+
+        self::assertNull($result['parentPageRow']);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataSetsParentPageRowOnNullWithZero(): void
+    {
+        $input = [
+            'tableName' => 'tt_content',
+            'command' => 'new',
+            'vanillaUid' => 0,
+            'databaseRow' => [],
+        ];
+
+        $this->subject->expects(self::never())->method('getDatabaseRow');
+
+        $result = $this->subject->addData($input);
+
+        self::assertNull($result['parentPageRow']);
+    }
 }
