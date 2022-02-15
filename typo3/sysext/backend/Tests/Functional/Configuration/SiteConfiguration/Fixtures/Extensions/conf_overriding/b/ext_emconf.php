@@ -10,7 +10,6 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'author_email' => '',
     'state' => 'stable',
-    'uploadfolder' => 0,
     'clearCacheOnLoad' => 1,
     'version' => '11.5.7',
     'constraints' => [

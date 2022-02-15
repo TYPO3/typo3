@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.',
     'category' => 'be',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

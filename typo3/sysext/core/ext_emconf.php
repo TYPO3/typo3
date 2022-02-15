@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'The core library of TYPO3.',
     'category' => 'be',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',

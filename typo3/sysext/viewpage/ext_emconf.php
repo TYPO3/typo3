@@ -5,7 +5,6 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Shows the frontend webpage inside the backend frameset.',
     'category' => 'module',
     'state' => 'stable',
-    'clearCacheOnLoad' => 0,
     'author' => 'TYPO3 Core Team',
     'author_email' => 'typo3cms@typo3.org',
     'author_company' => '',
