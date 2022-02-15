@@ -235,10 +235,10 @@ class NewContentElementController
                             ],
                             'returnUrl' => $this->R_URI,
                             'defVals' => [
-                                'tt_content' => array_merge(
-                                    ['colPos' => $this->colPos, 'sys_language_uid' => $this->sys_language],
-                                    $defVals
-                                ),
+                                'tt_content' => array_replace($defVals, [
+                                    'colPos' => $this->colPos,
+                                    'sys_language_uid' => $this->sys_language,
+                                ]),
                             ],
                         ]);
                     }

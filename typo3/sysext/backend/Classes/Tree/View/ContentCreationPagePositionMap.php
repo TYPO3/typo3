@@ -83,10 +83,10 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
                 ],
                 'returnUrl' => $this->R_URI,
                 'defVals' => [
-                    'tt_content' => array_merge(
-                        ['colPos' => $colPos, 'sys_language_uid' => $this->cur_sys_language],
-                        $this->defVals
-                    ),
+                    'tt_content' => array_replace($this->defVals, [
+                        'colPos' => $colPos,
+                        'sys_language_uid' => $this->cur_sys_language,
+                    ]),
                 ],
             ]);
         }
