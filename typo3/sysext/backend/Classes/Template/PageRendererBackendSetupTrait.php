@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * move existing calls to templates using f:be.pageRenderer ViewHelper. This
  * will simplify substituting PageRenderer with a slim dedicated backend solution.
  *
- * @interal helper. Do not use in extensions.
+ * @internal helper. Do not use in extensions.
  */
 trait PageRendererBackendSetupTrait
 {
