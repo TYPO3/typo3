@@ -72,6 +72,7 @@ use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatch
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
+use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
 
 /**
  * Class for the built TypoScript based frontend. Instantiated in
@@ -332,11 +333,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * A string prepared for insertion in all links on the page as url-parameters.
-     * Based on configuration in TypoScript where you defined which GET_VARS you
+     * Based on configuration in TypoScript where you defined which GET parameters you
      * would like to pass on.
-     * @var string
      */
-    public $linkVars = '';
+    public string $linkVars = '';
 
     /**
      * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
@@ -1843,139 +1843,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function calculateLinkVars(array $queryParams)
     {
-        $this->linkVars = '';
-        $adminCommand = $queryParams['ADMCMD_prev'] ?? '';
-        // This allows to keep the current logged-in workspace when navigating through the Frontend from a Backend link, and keep the logged-in state
-        if (($adminCommand === 'LIVE' || $adminCommand === 'IGNORE') && $this->isBackendUserLoggedIn()) {
-            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_prev', ',');
-        }
-        // This allows to keep the "ADMCMD_simUser" parameter when navigating through the Frontend from a Backend link, and keep the logged-in state
-        if (!empty($queryParams['ADMCMD_simUser']) && $this->isBackendUserLoggedIn()) {
-            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_simUser', ',');
-        }
-        // This allows to keep the "ADMCMD_simUser" parameter when navigating through the Frontend from a Backend link, and keep the logged-in state
-        if (!empty($queryParams['ADMCMD_simTime']) && $this->isBackendUserLoggedIn()) {
-            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_simTime', ',');
-        }
-        if (empty($this->config['config']['linkVars'])) {
-            return;
-        }
-
-        $linkVars = $this->splitLinkVarsString((string)$this->config['config']['linkVars']);
-
-        if (empty($linkVars)) {
-            return;
-        }
-        foreach ($linkVars as $linkVar) {
-            $test = '';
-            if (preg_match('/^(.*)\\((.+)\\)$/', $linkVar, $match)) {
-                $linkVar = trim($match[1]);
-                $test = trim($match[2]);
-            }
-
-            $keys = explode('|', $linkVar);
-            $numberOfLevels = count($keys);
-            $rootKey = trim($keys[0]);
-            if (!isset($queryParams[$rootKey])) {
-                continue;
-            }
-            $value = $queryParams[$rootKey];
-            for ($i = 1; $i < $numberOfLevels; $i++) {
-                $currentKey = trim($keys[$i]);
-                if (isset($value[$currentKey])) {
-                    $value = $value[$currentKey];
-                } else {
-                    $value = false;
-                    break;
-                }
-            }
-            if ($value !== false) {
-                $parameterName = $keys[0];
-                for ($i = 1; $i < $numberOfLevels; $i++) {
-                    $parameterName .= '[' . $keys[$i] . ']';
-                }
-                if (!is_array($value)) {
-                    $temp = rawurlencode($value);
-                    if ($test !== '' && !$this->isAllowedLinkVarValue($temp, $test)) {
-                        // Error: This value was not allowed for this key
-                        continue;
-                    }
-                    $value = '&' . $parameterName . '=' . $temp;
-                } else {
-                    if ($test !== '' && $test !== 'array') {
-                        // Error: This key must not be an array!
-                        continue;
-                    }
-                    $value = HttpUtility::buildQueryString([$parameterName => $value], '&');
-                }
-                $this->linkVars .= $value;
-            }
-        }
-    }
-
-    /**
-     * Split the link vars string by "," but not if the "," is inside of braces
-     *
-     * @param string $string
-     *
-     * @return array
-     */
-    protected function splitLinkVarsString(string $string): array
-    {
-        $tempCommaReplacementString = '###KASPER###';
-
-        // replace every "," wrapped in "()" by a "unique" string
-        $string = preg_replace_callback('/\((?>[^()]|(?R))*\)/', static function ($result) use ($tempCommaReplacementString) {
-            return str_replace(',', $tempCommaReplacementString, $result[0]);
-        }, $string) ?? '';
-
-        $string = GeneralUtility::trimExplode(',', $string);
-
-        // replace all "unique" strings back to ","
-        return str_replace($tempCommaReplacementString, ',', $string);
-    }
-
-    /**
-     * Checks if the value defined in "config.linkVars" contains an allowed value.
-     * Otherwise, return FALSE which means the value will not be added to any links.
-     *
-     * @param string $haystack The string in which to find $needle
-     * @param string $needle The string to find in $haystack
-     * @return bool Returns TRUE if $needle matches or is found in $haystack
-     */
-    protected function isAllowedLinkVarValue(string $haystack, string $needle): bool
-    {
-        $isAllowed = false;
-        // Integer
-        if ($needle === 'int' || $needle === 'integer') {
-            if (MathUtility::canBeInterpretedAsInteger($haystack)) {
-                $isAllowed = true;
-            }
-        } elseif (preg_match('/^\\/.+\\/[imsxeADSUXu]*$/', $needle)) {
-            // Regular expression, only "//" is allowed as delimiter
-            if (@preg_match($needle, $haystack)) {
-                $isAllowed = true;
-            }
-        } elseif (str_contains($needle, '-')) {
-            // Range
-            if (MathUtility::canBeInterpretedAsInteger($haystack)) {
-                $range = explode('-', $needle);
-                if ($range[0] <= $haystack && $range[1] >= $haystack) {
-                    $isAllowed = true;
-                }
-            }
-        } elseif (str_contains($needle, '|')) {
-            // List
-            // Trim the input
-            $haystack = str_replace(' ', '', $haystack);
-            if (str_contains('|' . $needle . '|', '|' . $haystack . '|')) {
-                $isAllowed = true;
-            }
-        } elseif ((string)$needle === (string)$haystack) {
-            // String comparison
-            $isAllowed = true;
-        }
-        return $isAllowed;
+        $this->linkVars = GeneralUtility::makeInstance(LinkVarsCalculator::class)
+            ->getAllowedLinkVarsFromRequest(
+                (string)($this->config['config']['linkVars'] ?? ''),
+                $queryParams,
+                $this->context
+            );
     }
 
     /**
