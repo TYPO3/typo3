@@ -2100,8 +2100,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->linkVars = '';
         $adminCommand = $queryParams['ADMCMD_prev'] ?? '';
+        // This allows to keep the current logged-in workspace when navigating through the Frontend from a Backend link, and keep the logged-in state
         if (($adminCommand === 'LIVE' || $adminCommand === 'IGNORE') && $this->isBackendUserLoggedIn()) {
             $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_prev', ',');
+        }
+        // This allows to keep the "ADMCMD_simUser" parameter when navigating through the Frontend from a Backend link, and keep the logged-in state
+        if (!empty($queryParams['ADMCMD_simUser']) && $this->isBackendUserLoggedIn()) {
+            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_simUser', ',');
+        }
+        // This allows to keep the "ADMCMD_simUser" parameter when navigating through the Frontend from a Backend link, and keep the logged-in state
+        if (!empty($queryParams['ADMCMD_simTime']) && $this->isBackendUserLoggedIn()) {
+            $this->config['config']['linkVars'] = ltrim(($this->config['config']['linkVars'] ?? '') . ',ADMCMD_simTime', ',');
         }
         if (empty($this->config['config']['linkVars'])) {
             return;
