@@ -145,7 +145,7 @@ class BackendLogController extends ActionController
      */
     protected function getConstraintFromBeUserData()
     {
-        $serializedConstraint = $this->request->getAttribute('moduleData')?->get('constraint');
+        $serializedConstraint = $this->request->getAttribute('moduleData')->get('constraint');
         $constraint = null;
         if (is_string($serializedConstraint) && !empty($serializedConstraint)) {
             $constraint = @unserialize($serializedConstraint, ['allowed_classes' => [Constraint::class, \DateTime::class]]);

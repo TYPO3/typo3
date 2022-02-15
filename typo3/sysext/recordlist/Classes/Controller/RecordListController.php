@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
-use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -110,7 +109,7 @@ class RecordListController
         }
         $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($pageActionsInstruction);
 
-        $clipboardEnabled = (bool)($moduleData?->get('clipBoard') ?? false);
+        $clipboardEnabled = (bool)$moduleData->get('clipBoard');
         if (isset($this->modTSconfig['enableClipBoard'])) {
             if ($this->modTSconfig['enableClipBoard'] === 'activated') {
                 $clipboardEnabled = true;
@@ -120,9 +119,7 @@ class RecordListController
         }
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        if ($moduleData instanceof ModuleData) {
-            $dbList->setModuleData($moduleData);
-        }
+        $dbList->setModuleData($moduleData);
         $dbList->calcPerms = $this->pagePermissions;
         $dbList->returnUrl = $this->returnUrl;
         $dbList->showClipboardActions = true;

@@ -211,7 +211,7 @@ class FileListController implements LoggerAwareInterface
         $this->generateFileList();
 
         // Generate the clipboard, if enabled
-        $this->view->assign('showClipboardPanel', (bool)($this->moduleData?->get('clipBoard') ?? false));
+        $this->view->assign('showClipboardPanel', (bool)$this->moduleData->get('clipBoard'));
 
         // Register drag-uploader
         $this->registerDragUploader();
@@ -250,15 +250,15 @@ class FileListController implements LoggerAwareInterface
 
         // Set predefined value for DisplayThumbnails:
         if (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'activated') {
-            $this->moduleData?->set('displayThumbs', true);
+            $this->moduleData->set('displayThumbs', true);
         } elseif (($userTsConfig['options.']['file_list.']['enableDisplayThumbnails'] ?? '') === 'deactivated') {
-            $this->moduleData?->set('displayThumbs', false);
+            $this->moduleData->set('displayThumbs', false);
         }
         // Set predefined value for Clipboard:
         if (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'activated') {
-            $this->moduleData?->set('clipBoard', true);
+            $this->moduleData->set('clipBoard', true);
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
-            $this->moduleData?->set('clipBoard', false);
+            $this->moduleData->set('clipBoard', false);
         }
 
         // Finally add the help button doc header button to the module
@@ -273,7 +273,7 @@ class FileListController implements LoggerAwareInterface
     {
         // Create the file list
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
-        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && ($this->moduleData?->get('displayThumbs') ?? false);
+        $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->moduleData->get('displayThumbs');
 
         // Create clipboard object and initialize it
         $CB = array_replace_recursive($request->getQueryParams()['CB'] ?? [], $request->getParsedBody()['CB'] ?? []);
@@ -284,7 +284,7 @@ class FileListController implements LoggerAwareInterface
             // Cleanup CBC
             $CB['el'] = $this->filelist->clipObj->cleanUpCBC($CBC, '_FILE');
         }
-        if (!($this->moduleData?->get('clipBoard') ?? false)) {
+        if (!$this->moduleData->get('clipBoard')) {
             $CB['setP'] = 'normal';
         }
         $this->filelist->clipObj->setCmd($CB);
@@ -322,8 +322,8 @@ class FileListController implements LoggerAwareInterface
         $this->filelist->start(
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
-            (string)($this->moduleData?->get('sort') ?? ''),
-            (bool)($this->moduleData?->get('reverse') ?? false)
+            (string)$this->moduleData->get('sort'),
+            (bool)$this->moduleData->get('reverse')
         );
         $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
     }
@@ -434,7 +434,7 @@ class FileListController implements LoggerAwareInterface
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
                 'displayThumbs',
-                (bool)($this->moduleData?->get('displayThumbs') ?? false),
+                (bool)$this->moduleData->get('displayThumbs'),
                 '',
                 $addParams,
                 'id="checkDisplayThumbs"'
@@ -447,7 +447,7 @@ class FileListController implements LoggerAwareInterface
             'html' => BackendUtility::getFuncCheck(
                 $this->id,
                 'clipBoard',
-                (bool)($this->moduleData?->get('clipBoard') ?? false),
+                (bool)$this->moduleData->get('clipBoard'),
                 '',
                 $addParams,
                 'id="checkClipBoard"'

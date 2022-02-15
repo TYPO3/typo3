@@ -120,7 +120,7 @@ class PageLayoutController
         $this->availableLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
         $tsConfig = BackendUtility::getPagesTSconfig($this->id);
         $this->menuConfig($request);
-        $this->currentSelectedLanguage = (int)($this->moduleData?->get('language') ?? 0);
+        $this->currentSelectedLanguage = (int)$this->moduleData->get('language');
         $this->addJavaScriptModuleInstructions($this->id, $pageLayoutContext, $this->currentSelectedLanguage);
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $this->makeLanguageMenu($view);
@@ -132,11 +132,11 @@ class PageLayoutController
         $configuration = $pageLayoutContext->getDrawingConfiguration();
         $configuration->setDefaultLanguageBinding(!empty($tsConfig['mod.']['web_layout.']['defLangBinding']));
         $configuration->setActiveColumns($this->getActiveColumnsArray($pageLayoutContext, $tsConfig));
-        $configuration->setShowHidden((bool)($this->moduleData?->get('showHidden') ?? true));
+        $configuration->setShowHidden((bool)$this->moduleData->get('showHidden'));
         $configuration->setLanguageColumns($this->MOD_MENU['language']);
         $configuration->setShowNewContentWizard(empty($tsConfig['mod.']['web_layout.']['disableNewContentElementWizard']));
         $configuration->setSelectedLanguageId($this->currentSelectedLanguage);
-        if ((int)($this->moduleData?->get('function') ?? 0) === 2) {
+        if ((int)$this->moduleData->get('function') === 2) {
             $configuration->setLanguageMode(true);
         }
         $mainLayoutHtml = $this->backendLayoutRenderer->drawContent($request, $pageLayoutContext);
@@ -152,7 +152,7 @@ class PageLayoutController
             'eventContentHtmlTop' => $event->getHeaderContent(),
             'mainContentHtml' => $mainLayoutHtml,
             'hiddenElementsShowToggle' => ($backendUser->check('tables_select', 'tt_content') && ($numberOfHiddenElements > 0)),
-            'hiddenElementsState' => (bool)($this->moduleData?->get('showHidden') ?? true),
+            'hiddenElementsState' => (bool)$this->moduleData->get('showHidden'),
             'hiddenElementsCount' => $numberOfHiddenElements,
             'eventContentHtmlBottom' => $event->getFooterContent(),
         ]);
@@ -218,20 +218,20 @@ class PageLayoutController
             }
         }
         // Clean up settings
-        if ($this->moduleData?->cleanUp($this->MOD_MENU)) {
+        if ($this->moduleData->cleanUp($this->MOD_MENU)) {
             $backendUser->pushModuleData('web_layout', $this->moduleData->toArray());
         }
         if ($backendUser->workspace !== 0) {
             // Show all elements in draft workspaces
-            $this->moduleData?->set('showHidden', true);
+            $this->moduleData->set('showHidden', true);
         }
-        if ((int)($this->moduleData?->get('function') ?? 1) !== 2) {
+        if ((int)$this->moduleData->get('function') !== 2) {
             // Remove -1 (all) from the module menu if not "languages" mode
             unset($this->MOD_MENU['language'][-1]);
             // In case -1 (all) is still set as language, but we are no longer in
             // "languages" mode, we fall back to the default, preventing an empty grid.
-            if ((int)($this->moduleData?->get('language') ?? 0) === -1) {
-                $this->moduleData?->set('language', 0);
+            if ((int)$this->moduleData->get('language') === -1) {
+                $this->moduleData->set('language', 0);
             }
         }
     }
@@ -273,14 +273,14 @@ class PageLayoutController
                 $defaultKey = $key;
                 $foundDefaultKey = true;
             }
-            if ((int)($this->moduleData?->get('function') ?? 1) === $key) {
+            if ((int)$this->moduleData->get('function') === $key) {
                 $menuItem->setActive(true);
                 $defaultKey = null;
             }
             $actionMenu->addMenuItem($menuItem);
         }
         if (isset($defaultKey)) {
-            $this->moduleData?->set('function', $defaultKey);
+            $this->moduleData->set('function', $defaultKey);
         }
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
@@ -530,7 +530,7 @@ class PageLayoutController
         // Add CSH
         $contextSensitiveHelpButton = $buttonBar->makeHelpButton()
             ->setModuleName('_MOD_web_layout')
-            ->setFieldName('columns_' . $this->moduleData?->get('function'));
+            ->setFieldName('columns_' . $this->moduleData->get('function'));
         $buttonBar->addButton($contextSensitiveHelpButton);
 
         // View page
@@ -568,8 +568,8 @@ class PageLayoutController
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments([
                 'id' => $this->id,
-                'showHidden' => (bool)($this->moduleData?->get('showHidden') ?? true),
-                'function' => (int)($this->moduleData?->get('function') ?? 1),
+                'showHidden' => (bool)$this->moduleData->get('showHidden'),
+                'function' => (int)$this->moduleData->get('function'),
                 'language' => $this->currentSelectedLanguage,
             ]);
         $buttonBar->addButton($shortcutButton);
@@ -604,7 +604,7 @@ class PageLayoutController
         }
 
         // Edit page properties of page language overlay (Only when one specific language is selected)
-        if ((int)($this->moduleData?->get('function') ?? 1) === 1
+        if ((int)$this->moduleData->get('function') === 1
             && $this->currentSelectedLanguage > 0
             && $this->isPageEditable($this->currentSelectedLanguage)
         ) {
