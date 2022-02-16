@@ -1084,16 +1084,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * record field 'extendToSubpages' to 1 in case of hidden, starttime,
      * endtime or fe_group restrictions.
      *
-     * Additionally this method checks for backend user sections in root line
-     * and if found evaluates if a backend user is logged in and has access.
+     * Additionally, this method checks for backend user sections in root line
+     * and if found, evaluates if a backend user is logged in and has access.
      *
      * Recyclers are also checked and trigger page not found if found in root
      * line.
      *
      * @todo Find a better name, i.e. checkVisibilityByRootLine
      * @todo Invert boolean return value. Return true if visible.
-     *
-     * @return bool
      */
     protected function checkRootlineForIncludeSection(): bool
     {
@@ -1110,29 +1108,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION) {
                 // If there is a backend user logged in, check if they have read access to the page:
                 if ($this->isBackendUserLoggedIn()) {
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('pages');
-
-                    $queryBuilder
-                        ->getRestrictions()
-                        ->removeAll();
-
-                    $row = $queryBuilder
-                        ->select('uid')
-                        ->from('pages')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                            ),
-                            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
-                        )
-                        ->executeQuery()
-                        ->fetchAssociative();
-
-                    // versionOL()?
-                    if (!$row) {
-                        // If there was no page selected, the user apparently did not have read access to the current PAGE (not position in rootline) and we set the remove-flag...
+                    // If there was no page selected, the user apparently did not have read access to the
+                    // current page (not position in rootline) and we set the remove-flag...
+                    if (!$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
                         $removeTheRestFlag = true;
                     }
                 } else {
