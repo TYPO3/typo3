@@ -113,11 +113,7 @@
    * @param {String} url The url to load ino the iframe
    */
   function openElementBrowser(editor, title, url) {
-    require([
-      'jquery',
-      'TYPO3/CMS/Backend/Modal'
-    ], function($, Modal) {
-
+    window.importShim('@typo3/backend/modal.js').then(({default: Modal}) => {
       Modal.advanced({
         type: Modal.types.iframe,
         title: title,
