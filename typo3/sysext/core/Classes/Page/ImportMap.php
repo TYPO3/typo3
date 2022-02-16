@@ -163,7 +163,8 @@ class ImportMap
         if (!$this->cache->has($this->cacheIdentifier)) {
             return null;
         }
-        return $this->cache->get($this->cacheIdentifier);
+        $this->importMaps = $this->cache->get($this->cacheIdentifier);
+        return $this->importMaps;
     }
 
     protected function computeImportMaps(): array
@@ -286,7 +287,7 @@ class ImportMap
         }
 
         $this->extensionsToLoad[$packageName] = true;
-        $dependencies = $this->importMaps[$packageName]['dependencies'] ?? [];
+        $dependencies = $this->getImportMaps()[$packageName]['dependencies'] ?? [];
         foreach ($dependencies as $dependency) {
             $this->loadDependency($dependency);
         }
