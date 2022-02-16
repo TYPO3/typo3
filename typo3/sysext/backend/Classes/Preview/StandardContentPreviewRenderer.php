@@ -293,8 +293,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $fieldArr = explode(',', $fieldList);
         foreach ($fieldArr as $field) {
             if ($record[$field]) {
-                $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> '
-                    . htmlspecialchars(BackendUtility::getProcessedValue('tt_content', $field, $record[$field]) ?? '');
+                $fieldValue = BackendUtility::getProcessedValue('tt_content', $field, $record[$field], 0, false, false, $record['uid'] ?? 0) ?? '';
+                $info[] = '<strong>' . htmlspecialchars((string)($itemLabels[$field] ?? '')) . '</strong> ' . htmlspecialchars($fieldValue);
             }
         }
     }
