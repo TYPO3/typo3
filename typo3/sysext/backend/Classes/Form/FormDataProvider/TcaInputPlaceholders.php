@@ -50,17 +50,15 @@ class TcaInputPlaceholders implements FormDataProviderInterface
             }
 
             // Resolve __row|field type placeholders
-            if (strpos($fieldConfig['config']['placeholder'], '__row|') === 0) {
+            if (str_starts_with((string)$fieldConfig['config']['placeholder'], '__row|')) {
                 // split field names into array and remove the __row indicator
                 $fieldNameArray = array_slice(
                     GeneralUtility::trimExplode('|', $fieldConfig['config']['placeholder'], true),
                     1
                 );
                 $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getPlaceholderValue($fieldNameArray, $result);
-            }
-
-            // Resolve placeholders from language files
-            if (strpos($fieldConfig['config']['placeholder'], 'LLL:') === 0) {
+            } elseif (!empty($fieldConfig['config']['placeholder'])) {
+                // Resolve placeholders from language files
                 $result['processedTca']['columns'][$fieldName]['config']['placeholder'] = $this->getLanguageService()->sL($fieldConfig['config']['placeholder']);
             }
 

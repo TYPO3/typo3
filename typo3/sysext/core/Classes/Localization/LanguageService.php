@@ -169,26 +169,27 @@ class LanguageService
         if ($input === '') {
             return $input;
         }
+        // Use a constant non-localizable label
+        if (!str_starts_with(trim($input), 'LLL:')) {
+            return $input;
+        }
+
         $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
             return $cacheEntry;
         }
-        if (strpos(trim($input), 'LLL:') === 0) {
-            $restStr = substr(trim($input), 4);
-            $extPrfx = '';
-            // ll-file referred to is found in an extension.
-            if (PathUtility::isExtensionPath(trim($restStr))) {
-                $restStr = substr(trim($restStr), 4);
-                $extPrfx = 'EXT:';
-            }
-            $parts = explode(':', trim($restStr));
-            $parts[0] = $extPrfx . $parts[0];
-            $output = $this->getLLL($parts[1] ?? '', $this->readLLfile($parts[0]));
-        } else {
-            // Use a constant non-localizable label
-            $output = $input;
+        // Remove the LLL: prefix
+        $restStr = substr(trim($input), 4);
+        $extensionPrefix = '';
+        // ll-file referred to is found in an extension
+        if (PathUtility::isExtensionPath(trim($restStr))) {
+            $restStr = substr(trim($restStr), 4);
+            $extensionPrefix = 'EXT:';
         }
+        $parts = explode(':', trim($restStr));
+        $parts[0] = $extensionPrefix . $parts[0];
+        $output = $this->getLLL($parts[1] ?? '', $this->readLLfile($parts[0]));
         $output .= $this->debugLL($input);
         $this->runtimeCache->set($cacheIdentifier, $output);
         return $output;

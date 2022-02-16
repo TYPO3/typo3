@@ -434,11 +434,7 @@ class RecordListController
     {
         $languageService = $this->getLanguageService();
         if ($singleTable && isset($GLOBALS['TCA'][$singleTable]['ctrl']['title'])) {
-            if (str_starts_with($GLOBALS['TCA'][$singleTable]['ctrl']['title'], 'LLL:')) {
-                $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($GLOBALS['TCA'][$singleTable]['ctrl']['title']));
-            } else {
-                $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $GLOBALS['TCA'][$singleTable]['ctrl']['title']);
-            }
+            $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($GLOBALS['TCA'][$singleTable]['ctrl']['title']));
         } else {
             $message = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOnThisPage');
         }

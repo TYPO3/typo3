@@ -505,11 +505,7 @@ class BackendLayoutView implements SingletonInterface
     protected function getColumnName($column)
     {
         $columnName = $column['name'];
-
-        if (str_starts_with($columnName, 'LLL:')) {
-            $columnName = $this->getLanguageService()->sL($columnName);
-        }
-
+        $columnName = $this->getLanguageService()->sL($columnName);
         return $columnName;
     }
 }

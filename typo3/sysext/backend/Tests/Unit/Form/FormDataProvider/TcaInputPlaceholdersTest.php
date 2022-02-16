@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders;
@@ -30,6 +31,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TcaInputPlaceholdersTest extends UnitTestCase
 {
     use ProphecyTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $languageService = $this->prophesize(LanguageService::class);
+        $languageService->sL(Argument::cetera())->willReturnArgument(0);
+        $GLOBALS['LANG'] = $languageService->reveal();
+    }
 
     /**
      * @test

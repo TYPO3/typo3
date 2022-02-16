@@ -654,11 +654,7 @@ class SetupModuleController
      */
     protected function getLabel($str, $key = '', $addLabelTag = true)
     {
-        if (strpos($str, 'LLL:') === 0) {
-            $out = htmlspecialchars($this->getLanguageService()->sL($str));
-        } else {
-            $out = htmlspecialchars($str);
-        }
+        $out = htmlspecialchars($this->getLanguageService()->sL($str));
         if (isset($this->overrideConf[$key ?: $str])) {
             $out = '<span style="color:#999999">' . $out . '</span>';
         }

@@ -296,7 +296,7 @@ class RichTextElement extends AbstractFormElement
         foreach ($configuration as $key => $value) {
             if (is_array($value)) {
                 $configuration[$key] = $this->replaceLanguageFileReferences($value);
-            } elseif (is_string($value) && stripos($value, 'LLL:') === 0) {
+            } elseif (is_string($value)) {
                 $configuration[$key] = $this->getLanguageService()->sL($value);
             }
         }

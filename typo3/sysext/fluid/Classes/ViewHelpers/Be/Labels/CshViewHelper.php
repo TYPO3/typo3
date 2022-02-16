@@ -91,9 +91,7 @@ final class CshViewHelper extends AbstractBackendViewHelper
             $moduleName = $request->getPluginName();
             $table = '_MOD_' . $moduleName;
         }
-        if (strpos($label, 'LLL:') === 0) {
-            $label = self::getLanguageService()->sL($label);
-        }
+        $label = self::getLanguageService()->sL($label);
         $label = '<label>' . htmlspecialchars($label, ENT_QUOTES, '', true) . '</label>';
         return BackendUtility::wrapInHelp($table, $field, $label);
     }

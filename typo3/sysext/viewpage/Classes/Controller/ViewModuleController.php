@@ -210,7 +210,7 @@ class ViewModuleController
             }
             if (!isset($data['label'])) {
                 $data['label'] = $data['key'];
-            } elseif (strpos($data['label'], 'LLL:') === 0) {
+            } else {
                 $data['label'] = $this->getLanguageService()->sL(trim($data['label']));
             }
 

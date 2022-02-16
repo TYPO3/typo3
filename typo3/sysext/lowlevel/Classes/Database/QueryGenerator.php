@@ -1146,12 +1146,8 @@ class QueryGenerator
         $fieldSetup = $conf;
         $out = '';
         if ($fieldSetup['type'] === 'multiple') {
-            foreach ($fieldSetup['items'] as $key => $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
-                    $value = $languageService->sL($val[0]);
-                } else {
-                    $value = $val[0];
-                }
+            foreach ($fieldSetup['items'] as $val) {
+                $value = $languageService->sL($val[0]);
                 if (GeneralUtility::inList($fieldValue, $val[1]) || $fieldValue == $val[1]) {
                     if ($out !== '') {
                         $out .= $splitString;
@@ -1161,12 +1157,8 @@ class QueryGenerator
             }
         }
         if ($fieldSetup['type'] === 'binary') {
-            foreach ($fieldSetup['items'] as $Key => $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
-                    $value = $languageService->sL($val[0]);
-                } else {
-                    $value = $val[0];
-                }
+            foreach ($fieldSetup['items'] as $val) {
+                $value = $languageService->sL($val[0]);
                 if ($out !== '') {
                     $out .= $splitString;
                 }
@@ -1237,11 +1229,7 @@ class QueryGenerator
                     if (is_array($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] ?? false)) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'];
                         foreach ($items as $labelArray) {
-                            if (str_starts_with($labelArray[0], 'LLL:')) {
-                                $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
-                            } else {
-                                $labelFieldSelect[$labelArray[1]] = $labelArray[0];
-                            }
+                            $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
                         }
                         $useSelectLabels = 1;
                     }
@@ -1249,11 +1237,7 @@ class QueryGenerator
                     if (is_array($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] ?? false)) {
                         $items = $GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'];
                         foreach ($items as $altLabelArray) {
-                            if (str_starts_with($altLabelArray[0], 'LLL:')) {
-                                $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
-                            } else {
-                                $altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];
-                            }
+                            $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
                         }
                         $useAltSelectLabels = 1;
                     }
@@ -1931,11 +1915,7 @@ class QueryGenerator
         if ($fieldSetup['type'] === 'multiple') {
             $optGroupOpen = false;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
-                    $value = $languageService->sL($val[0]);
-                } else {
-                    $value = $val[0];
-                }
+                $value = $languageService->sL($val[0]);
                 if ($val[1] === '--div--') {
                     if ($optGroupOpen) {
                         $out[] = '</optgroup>';
@@ -1954,11 +1934,7 @@ class QueryGenerator
         }
         if ($fieldSetup['type'] === 'binary') {
             foreach ($fieldSetup['items'] as $key => $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
-                    $value = $languageService->sL($val[0]);
-                } else {
-                    $value = $val[0];
-                }
+                $value = $languageService->sL($val[0]);
                 if (GeneralUtility::inList($conf['inputValue'], (string)(2 ** $key))) {
                     $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
@@ -1970,11 +1946,7 @@ class QueryGenerator
             $useTablePrefix = 0;
             $dontPrefixFirstTable = 0;
             foreach (($fieldSetup['items'] ?? []) as $val) {
-                if (strpos($val[0], 'LLL:') === 0) {
-                    $value = $languageService->sL($val[0]);
-                } else {
-                    $value = $val[0];
-                }
+                $value = $languageService->sL($val[0]);
                 if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
                     $out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
@@ -2032,22 +2004,14 @@ class QueryGenerator
                     $altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'] ?? '';
                     if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
-                            if (strpos($labelArray[0], 'LLL:') === 0) {
-                                $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
-                            } else {
-                                $labelFieldSelect[$labelArray[1]] = $labelArray[0];
-                            }
+                            $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
                         }
                         $useSelectLabels = true;
                     }
                     $altLabelFieldSelect = [];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
-                            if (strpos($altLabelArray[0], 'LLL:') === 0) {
-                                $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
-                            } else {
-                                $altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];
-                            }
+                            $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
                         }
                         $useAltSelectLabels = true;
                     }

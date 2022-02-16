@@ -246,11 +246,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
      */
     protected function getPageConfigLabel(string $string, bool $JScharCode = true): string
     {
-        if (!str_starts_with($string, 'LLL:')) {
-            $label = $string;
-        } else {
-            $label = $this->getLanguageService()->sL(trim($string));
-        }
+        $label = $this->getLanguageService()->sL(trim($string));
         $label = str_replace(['\\\'', '"'], ['\'', '\\"'], $label);
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }

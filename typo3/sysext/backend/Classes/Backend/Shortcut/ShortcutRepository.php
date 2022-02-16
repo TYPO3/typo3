@@ -288,7 +288,7 @@ class ShortcutRepository
             foreach ($bookmarkGroups as $groupId => $label) {
                 if (!empty($label)) {
                     $label = (string)$label;
-                    $shortcutGroups[$groupId] = strpos($label, 'LLL:') === 0 ? $languageService->sL($label) : $label;
+                    $shortcutGroups[$groupId] = $languageService->sL($label);
                 } elseif ($backendUser->isAdmin()) {
                     unset($shortcutGroups[$groupId]);
                 }
