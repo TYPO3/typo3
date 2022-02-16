@@ -9,6 +9,6 @@ return [
         'backend.contextmenu',
     ],
     'imports' => [
-        '@typo3/form/Backend/' => 'EXT:form/Resources/Public/JavaScript/Backend/',
+        '@typo3/form/backend/' => 'EXT:form/Resources/Public/JavaScript/backend/',
     ],
 ];
