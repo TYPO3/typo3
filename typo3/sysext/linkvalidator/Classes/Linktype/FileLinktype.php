@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FileLinktype extends AbstractLinktype
 {
+    protected string $identifier = 'file';
+
     /**
      * Type fetching method, based on the type that softRefParserObj returns
      *

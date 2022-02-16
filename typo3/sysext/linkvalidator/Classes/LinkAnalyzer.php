@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
-use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
+use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
 /**
@@ -62,31 +62,18 @@ class LinkAnalyzer
     protected array $brokenLinkCounts = [];
 
     /**
-     * Array for hooks for own checks
-     *
-     * @var LinktypeInterface[]
-     */
-    protected array $hookObjectsArr = [];
-
-    /**
      * The currently active TSconfig. Will be passed to the init function.
      *
      * @var array
      */
     protected $tsConfig = [];
 
-    protected EventDispatcherInterface $eventDispatcher;
-    protected BrokenLinkRepository $brokenLinkRepository;
-    protected SoftReferenceParserFactory $softReferenceParserFactory;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        BrokenLinkRepository $brokenLinkRepository,
-        SoftReferenceParserFactory $softReferenceParserFactory
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly BrokenLinkRepository $brokenLinkRepository,
+        protected readonly SoftReferenceParserFactory $softReferenceParserFactory,
+        protected readonly LinktypeRegistry $linktypeRegistry,
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->brokenLinkRepository = $brokenLinkRepository;
-        $this->softReferenceParserFactory = $softReferenceParserFactory;
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -103,16 +90,11 @@ class LinkAnalyzer
         $this->pids = $pidList;
         $this->tsConfig = $tsConfig;
 
-        // Hook to handle own checks
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $key => $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof LinktypeInterface) {
-                continue;
+        foreach ($this->linktypeRegistry->getLinktypes() as $identifier => $linktype) {
+            if (is_array($tsConfig['linktypesConfig.'][$identifier . '.'] ?? false)) {
+                // setAdditionalConfig might use global configuration, so still call it, even if options are empty
+                $linktype->setAdditionalConfig($tsConfig['linktypesConfig.'][$identifier . '.']);
             }
-            $this->hookObjectsArr[$key] = $hookObject;
-            $options = $tsConfig['linktypesConfig.'][$key . '.'] ?? [];
-            // setAdditionalConfig might use global configuration, so still call it, even if options are empty
-            $this->hookObjectsArr[$key]->setAdditionalConfig($options);
         }
     }
 
@@ -196,7 +178,7 @@ class LinkAnalyzer
      */
     protected function checkLinks(array $links, array $linkTypes)
     {
-        foreach ($this->hookObjectsArr as $key => $hookObj) {
+        foreach ($this->linktypeRegistry->getLinktypes() as $key => $hookObj) {
             if (!is_array($links[$key] ?? false) || (!in_array($key, $linkTypes, true))) {
                 continue;
             }
@@ -376,7 +358,7 @@ class LinkAnalyzer
                 continue;
             }
 
-            foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($reference, $type, $keyArr);
                 // Store the type that was found
                 // This prevents overriding by internal validator
@@ -439,7 +421,7 @@ class LinkAnalyzer
             if (empty($currentR)) {
                 continue;
             }
-            foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
+            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found
                 // This prevents overriding by internal validator

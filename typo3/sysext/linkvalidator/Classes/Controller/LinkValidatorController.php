@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
-use TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface;
+use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\CMS\Linkvalidator\Repository\PagesRepository;
 
@@ -78,11 +78,6 @@ class LinkValidatorController
         'timestamp' => 0,
     ];
 
-    /**
-     * @var LinktypeInterface[]
-     */
-    protected array $hookObjectsArr = [];
-
     protected int $id;
     protected array $searchFields = [];
 
@@ -96,6 +91,7 @@ class LinkValidatorController
         protected readonly BrokenLinkRepository $brokenLinkRepository,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LinkAnalyzer $linkAnalyzer,
+        protected readonly LinktypeRegistry $linktypeRegistry,
     ) {
     }
 
@@ -113,14 +109,6 @@ class LinkValidatorController
         $view = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-linkvalidator');
         if ($this->pageRecord !== []) {
             $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
-        }
-
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $linkType => $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof LinktypeInterface) {
-                continue;
-            }
-            $this->hookObjectsArr[$linkType] = $hookObject;
         }
 
         $this->validateSettings();
@@ -235,7 +223,7 @@ class LinkValidatorController
         $set = $this->request->getParsedBody()[$prefix . '_SET'] ?? [];
         $submittedValues = $this->request->getParsedBody()[$prefix . '_values'] ?? [];
 
-        foreach (array_keys($this->hookObjectsArr) as $linkType) {
+        foreach ($this->linktypeRegistry->getIdentifiers() as $linkType) {
             // Compile list of all available types. Used for checking with button "Check Links".
             unset($this->checkOpt[$prefix][$linkType]);
             $mainLinkType = $prefix . '_' . $linkType;
@@ -382,7 +370,7 @@ class LinkValidatorController
         $fieldLabel = $row['field'];
         $table = $row['table_name'];
         $languageService = $this->getLanguageService();
-        $hookObj = $this->hookObjectsArr[$row['link_type'] ?? ''];
+        $hookObj = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
 
         // Try to resolve the field label from TCA
         if ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label'] ?? false) {
@@ -400,9 +388,9 @@ class LinkValidatorController
             'label' => sprintf($languageService->getLL('list.field'), $fieldLabel),
             'path' => BackendUtility::getRecordPath($row['record_pid'], $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW), 0),
             'linkTitle' => $row['link_title'],
-            'linkTarget' => $hookObj->getBrokenUrl($row),
+            'linkTarget' => $hookObj?->getBrokenUrl($row),
             'linkStatus' => (bool)($row['url_response']['valid'] ?? false),
-            'linkMessage' => $hookObj->getErrorMessage($row['url_response']['errorParams']),
+            'linkMessage' => $hookObj?->getErrorMessage($row['url_response']['errorParams']),
             'lastCheck' => sprintf(
                 $languageService->getLL('list.msg.lastRun'),
                 date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $row['last_check']),
@@ -445,8 +433,7 @@ class LinkValidatorController
             'optionsByType' => [],
         ];
         $linkTypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'] ?? '', true);
-        $availableLinkTypes = array_keys($this->hookObjectsArr);
-        foreach ($availableLinkTypes as $type) {
+        foreach ($this->linktypeRegistry->getIdentifiers() as $type) {
             if (!in_array($type, $linkTypes, true)) {
                 continue;
             }

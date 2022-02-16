@@ -614,4 +614,9 @@ return [
             'Breaking-96899-DisplayWarningMessagesHookRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'linkvalidator\'][\'checkLinks\']' => [
+        'restFiles' => [
+            'Breaking-96935-RegisterLinkvalidatorLinktypesViaServiceConfiguration.rst',
+        ],
+    ],
 ];

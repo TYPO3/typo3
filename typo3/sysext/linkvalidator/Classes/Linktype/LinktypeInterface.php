@@ -21,6 +21,11 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 interface LinktypeInterface
 {
     /**
+     * Returns the unique identifier of the linktype
+     */
+    public function getIdentifier(): string;
+
+    /**
      * Checks a given link for validity
      *
      * @param string $url Url to check

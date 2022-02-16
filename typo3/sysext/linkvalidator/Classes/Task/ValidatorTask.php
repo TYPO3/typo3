@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Linkvalidator\Event\ModifyValidatorTaskEmailEvent;
+use TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry;
 use TYPO3\CMS\Linkvalidator\Result\LinkAnalyzerResult;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -392,9 +393,9 @@ class ValidatorTask extends AbstractTask
     {
         $linkTypes = [];
         $typesTmp = GeneralUtility::trimExplode(',', $this->modTSconfig['linktypes'], true);
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $type => $value) {
-            if (in_array($type, $typesTmp, true)) {
-                $linkTypes[] = (string)$type;
+        foreach (GeneralUtility::makeInstance(LinktypeRegistry::class)->getIdentifiers() as $identifier) {
+            if (in_array($identifier, $typesTmp, true)) {
+                $linkTypes[] = $identifier;
             }
         }
         return $linkTypes;

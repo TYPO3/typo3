@@ -29,6 +29,13 @@ abstract class AbstractLinktype implements LinktypeInterface
      */
     protected $errorParams = [];
 
+    protected string $identifier = '';
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
     /**
      * Function to override config of Linktype. Should be used only
      * if necessary. Add additional configuration to TSconfig.

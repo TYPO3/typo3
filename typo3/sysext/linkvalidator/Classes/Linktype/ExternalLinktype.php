@@ -93,6 +93,8 @@ class ExternalLinktype extends AbstractLinktype
      */
     protected $errorParams = [];
 
+    protected string $identifier = 'external';
+
     public function __construct(
         protected readonly RequestFactory $requestFactory,
     ) {

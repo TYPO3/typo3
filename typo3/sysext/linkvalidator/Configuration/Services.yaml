@@ -36,3 +36,9 @@ services:
       - name: event.listener
         identifier: 'rte-check-link-to-file'
         method: 'checkFileLink'
+
+  # Linktype registry
+  TYPO3\CMS\Linkvalidator\Linktype\LinktypeRegistry:
+    public: true
+    arguments:
+      - !tagged_iterator linkvalidator.linktype

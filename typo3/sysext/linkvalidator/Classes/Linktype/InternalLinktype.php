@@ -57,6 +57,8 @@ class InternalLinktype extends AbstractLinktype
      */
     protected $responseContent = true;
 
+    protected string $identifier = 'db';
+
     /**
      * Checks a given URL + /path/filename.ext for validity
      *
