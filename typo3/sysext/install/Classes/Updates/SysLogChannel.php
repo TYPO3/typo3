@@ -35,25 +35,16 @@ class SysLogChannel implements UpgradeWizardInterface
         $this->sysLogTable = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getIdentifier(): string
     {
         return 'sysLogChannel';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getTitle(): string
     {
         return 'Populates a new channel column of the sys_log table.';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getDescription(): string
     {
         return <<<END
@@ -61,9 +52,6 @@ The logging system is migrating toward string-based channels rather than int-bas
 END;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function executeUpdate(): bool
     {
         $statement = $this->sysLogTable->prepare('UPDATE sys_log SET channel = ? WHERE type = ?');
@@ -108,9 +96,6 @@ END;
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPrerequisites(): array
     {
         // we need to make sure the new DB column was already added.

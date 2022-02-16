@@ -33,17 +33,11 @@ class ServiceProvider extends AbstractServiceProvider
 {
     private const CACHE_IDENTIFIER_PREFIX = 'Dashboard_';
 
-    /**
-     * @inheritDoc
-     */
     protected static function getPackagePath(): string
     {
         return __DIR__ . '/../';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getFactories(): array
     {
         return [

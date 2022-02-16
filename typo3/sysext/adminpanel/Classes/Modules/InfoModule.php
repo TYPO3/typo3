@@ -27,25 +27,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class InfoModule extends AbstractModule implements ShortInfoProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getIconIdentifier(): string
     {
         return 'actions-document-info';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'info';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
@@ -53,9 +44,6 @@ class InfoModule extends AbstractModule implements ShortInfoProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getShortInfo(): string
     {
         $parseTime = $this->getTimeTracker()->getParseTime();

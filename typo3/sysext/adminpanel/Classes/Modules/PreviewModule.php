@@ -49,17 +49,11 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         return 'actions-preview';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'preview';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
@@ -67,9 +61,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         // Backend preview params (ADMCMD_) take precedence over configured admin panel values
@@ -98,9 +89,6 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         return $request;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getPageSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);

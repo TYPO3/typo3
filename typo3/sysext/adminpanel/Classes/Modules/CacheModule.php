@@ -75,26 +75,17 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
         return $view->render();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'cache';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         $locallangFileAndPath = 'LLL:EXT:adminpanel/Resources/Private/Language/locallang_cache.xlf:module.label';
         return $this->getLanguageService()->sL($locallangFileAndPath);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->configurationService->getConfigurationOption('cache', 'noCache')) {

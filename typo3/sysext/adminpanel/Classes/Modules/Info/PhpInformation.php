@@ -31,17 +31,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class PhpInformation extends AbstractSubModule implements DataProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'info_php';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
@@ -49,9 +43,6 @@ class PhpInformation extends AbstractSubModule implements DataProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         return new ModuleData(
@@ -68,9 +59,6 @@ class PhpInformation extends AbstractSubModule implements DataProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getContent(ModuleData $data): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);

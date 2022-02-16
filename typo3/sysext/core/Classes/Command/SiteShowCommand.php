@@ -55,8 +55,6 @@ class SiteShowCommand extends Command
 
     /**
      * Shows the configuration of a site
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

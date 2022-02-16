@@ -69,9 +69,6 @@ class Mailer implements MailerInterface
         $this->eventDispatcher?->dispatch(new AfterMailerInitializationEvent($this));
     }
 
-    /**
-     * @inheritdoc
-     */
     public function send(RawMessage $message, Envelope $envelope = null): void
     {
         if ($message instanceof Email) {

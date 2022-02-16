@@ -46,17 +46,11 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'typoscript-waterfall';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
@@ -64,9 +58,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->getConfigurationOption('forceTemplateParsing')) {
@@ -108,9 +99,6 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         return $view->render();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);

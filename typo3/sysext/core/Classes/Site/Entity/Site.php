@@ -249,17 +249,11 @@ class Site implements SiteInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDefaultLanguage(): SiteLanguage
     {
         return reset($this->languages);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
     {
         $availableLanguages = [];

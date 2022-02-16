@@ -69,9 +69,6 @@ class ListenerProvider implements ListenerProviderInterface
         return $this->listeners;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getListenersForEvent(object $event): iterable
     {
         $eventClasses = [get_class($event)];

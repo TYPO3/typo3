@@ -52,9 +52,6 @@ class SysLogErrorsDataProvider implements ChartDataProviderInterface
         $this->days = $days;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getChartData(): array
     {
         $this->calculateDataForLastDays();

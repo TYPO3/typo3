@@ -126,9 +126,6 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function flushQueue(TransportInterface $transport): int
     {
         $directoryIterator = new DirectoryIterator($this->path);

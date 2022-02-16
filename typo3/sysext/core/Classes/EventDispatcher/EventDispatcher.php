@@ -38,9 +38,6 @@ class EventDispatcher implements EventDispatcherInterface, SingletonInterface
         $this->listenerProvider = $listenerProvider;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function dispatch(object $event)
     {
         // If the event is already stopped, nothing to do here.

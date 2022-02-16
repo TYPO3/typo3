@@ -32,9 +32,6 @@ class EventDispatcher extends \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
         return $this->dispatchedEvents;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function dispatch(object $event)
     {
         $this->dispatchedEvents[] = $event;

@@ -53,7 +53,7 @@ class NodeVisitor extends NodeVisitorAbstract
                     // Widely used tags (but not existent in phpdoc)
                     'fix', 'fixme', 'override',
                     // PHPDocumentor 1 tags
-                    'abstract', 'code', 'deprec', 'endcode', 'exception', 'final', 'ingroup', 'inheritdoc', 'inheritDoc', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw',
+                    'abstract', 'code', 'deprec', 'endcode', 'exception', 'final', 'ingroup', 'magic', 'name', 'toc', 'tutorial', 'private', 'static', 'staticvar', 'staticVar', 'throw',
                     // PHPDocumentor 2 tags
                     'api', 'author', 'category', 'copyright', 'deprecated', 'example', 'filesource', 'global', 'ignore', 'internal', 'license', 'link', 'method', 'package', 'param', 'property', 'property-read', 'property-write', 'return', 'see', 'since', 'source', 'subpackage', 'throws', 'todo', 'TODO', 'usedby', 'uses', 'var', 'version',
                     // PHPUnit tags

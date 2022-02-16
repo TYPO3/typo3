@@ -42,8 +42,6 @@ class SiteListCommand extends Command
 
     /**
      * Shows a table with all configured sites
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

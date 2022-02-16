@@ -45,8 +45,6 @@ class DumpAutoloadCommand extends Command
 
     /**
      * This command is not needed in composer mode.
-     *
-     * @inheritdoc
      */
     public function isEnabled()
     {
@@ -55,8 +53,6 @@ class DumpAutoloadCommand extends Command
 
     /**
      * Dumps the class loading information
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

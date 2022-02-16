@@ -77,8 +77,6 @@ class SetupExtensionsCommand extends Command
 
     /**
      * Sets up one or all extensions
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

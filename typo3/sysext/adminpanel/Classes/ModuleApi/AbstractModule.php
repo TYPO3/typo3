@@ -71,25 +71,16 @@ abstract class AbstractModule implements ModuleInterface, ConfigurableInterface,
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setSubModules(array $subModules): void
     {
         $this->subModules = $subModules;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getSubModules(): array
     {
         return $this->subModules;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function hasSubmoduleSettings(): bool
     {
         $hasSettings = false;

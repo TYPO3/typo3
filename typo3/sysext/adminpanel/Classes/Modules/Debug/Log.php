@@ -72,9 +72,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         $maxLevel = LogLevel::normalizeLevel(LogLevel::DEBUG);
@@ -104,9 +101,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getSettings(): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -176,9 +170,6 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
         return $view->render();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         $this->logLevel = (int)$this->getConfigOption('startLevel');

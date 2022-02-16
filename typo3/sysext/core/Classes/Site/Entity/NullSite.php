@@ -127,19 +127,14 @@ class NullSite implements SiteInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getDefaultLanguage(): SiteLanguage
     {
         return reset($this->languages);
     }
 
     /**
-     * This takes pageTSconfig into account (unlike Site interface) to find
+     * This takes pageTsConfig into account (unlike Site interface) to find
      * mod.SHARED.disableLanguages and mod.SHARED.defaultLanguageLabel
-     *
-     * @inheritdoc
      */
     public function getAvailableLanguages(BackendUserAuthentication $user, bool $includeAllLanguagesFlag = false, int $pageId = null): array
     {

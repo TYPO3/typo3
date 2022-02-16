@@ -223,18 +223,12 @@ class JsonView extends AbstractView
         $this->configuration = $configuration;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
     {
         // No-op: renderSection does not make sense for this view
         return '';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
     {
         // No-op: renderPartial does not make sense for this view

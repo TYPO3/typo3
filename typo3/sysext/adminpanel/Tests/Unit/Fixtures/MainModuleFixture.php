@@ -152,9 +152,6 @@ class MainModuleFixture implements
         return [];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function hasSubmoduleSettings(): bool
     {
         return false;

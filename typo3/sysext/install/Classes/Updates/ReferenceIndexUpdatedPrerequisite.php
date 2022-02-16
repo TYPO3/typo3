@@ -50,9 +50,6 @@ class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, Chatty
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getTitle(): string
     {
         return 'Reference Index Up-to-Date';

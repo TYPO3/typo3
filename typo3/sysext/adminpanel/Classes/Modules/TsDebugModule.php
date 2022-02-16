@@ -27,25 +27,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'tsdebug';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIconIdentifier(): string
     {
         return 'mimetypes-x-content-template-static';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
@@ -53,9 +44,6 @@ class TsDebugModule extends AbstractModule implements ShortInfoProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getShortInfo(): string
     {
         $messageCount = 0;

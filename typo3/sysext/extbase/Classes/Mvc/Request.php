@@ -81,13 +81,6 @@ class Request implements ServerRequestInterface, RequestInterface
         return $this->request->getAttribute('extbase');
     }
 
-    /**
-     * Methods implementing extbase RequestInterface
-     */
-
-    /**
-     * @inheritdoc
-     */
     public function getControllerObjectName(): string
     {
         return $this->getExtbaseAttribute()->getControllerObjectName();
@@ -185,9 +178,6 @@ class Request implements ServerRequestInterface, RequestInterface
         return $this->withAttribute('extbase', $attribute);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getArguments(): array
     {
         return $this->getExtbaseAttribute()->getArguments();
@@ -204,17 +194,11 @@ class Request implements ServerRequestInterface, RequestInterface
         return $this->withAttribute('extbase', $attribute);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getArgument($argumentName)
     {
         return $this->getExtbaseAttribute()->getArgument($argumentName);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function hasArgument($argumentName): bool
     {
         return $this->getExtbaseAttribute()->hasArgument($argumentName);
@@ -399,111 +383,71 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Methods implementing ServerRequestInterface
      */
-
-    /**
-     * @inheritdoc
-     */
     public function getServerParams(): array
     {
         return $this->request->getServerParams();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getCookieParams(): array
     {
         return $this->request->getCookieParams();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCookieParams(array $cookies): self
     {
         $request = $this->request->withCookieParams($cookies);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getQueryParams(): array
     {
         return $this->request->getQueryParams();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withQueryParams(array $query): self
     {
         $request = $this->request->withQueryParams($query);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getUploadedFiles(): array
     {
         return $this->request->getUploadedFiles();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withUploadedFiles(array $uploadedFiles): self
     {
         $request = $this->request->withUploadedFiles($uploadedFiles);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getParsedBody()
     {
         return $this->request->getParsedBody();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withParsedBody($data): self
     {
         $request = $this->request->withParsedBody($data);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAttributes(): array
     {
         return $this->request->getAttributes();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAttribute($name, $default = null)
     {
         return $this->request->getAttribute($name, $default);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAttribute($name, $value): self
     {
         $request = $this->request->withAttribute($name, $value);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withoutAttribute($name): ServerRequestInterface
     {
         $request = $this->request->withoutAttribute($name);
@@ -516,52 +460,33 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Methods implementing RequestInterface
      */
-
-    /**
-     * @inheritdoc
-     */
     public function getRequestTarget(): string
     {
         return $this->request->getRequestTarget();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withRequestTarget($requestTarget): self
     {
         $request = $this->request->withRequestTarget($requestTarget);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getMethod(): string
     {
         return $this->request->getMethod();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withMethod($method): self
     {
         $request = $this->request->withMethod($method);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getUri(): UriInterface
     {
         return $this->request->getUri();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withUri(UriInterface $uri, $preserveHost = false): self
     {
         $request = $this->request->withUri($uri, $preserveHost);
@@ -571,94 +496,60 @@ class Request implements ServerRequestInterface, RequestInterface
     /**
      * Methods implementing MessageInterface
      */
-
-    /**
-     * @inheritdoc
-     */
     public function getProtocolVersion(): string
     {
         return $this->request->getProtocolVersion();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withProtocolVersion($version): self
     {
         $request = $this->request->withProtocolVersion($version);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getHeaders(): array
     {
         return $this->request->getHeaders();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function hasHeader($name): bool
     {
         return $this->request->hasHeader($name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getHeader($name): array
     {
         return $this->request->getHeader($name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getHeaderLine($name): string
     {
         return $this->request->getHeaderLine($name);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withHeader($name, $value): self
     {
         $request = $this->request->withHeader($name, $value);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAddedHeader($name, $value): self
     {
         $request = $this->request->withAddedHeader($name, $value);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withoutHeader($name): self
     {
         $request = $this->request->withoutHeader($name);
         return new static($request);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getBody(): StreamInterface
     {
         return $this->request->getBody();
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withBody(StreamInterface $body): self
     {
         $request = $this->request->withBody($body);

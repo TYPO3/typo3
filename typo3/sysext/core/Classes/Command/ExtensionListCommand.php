@@ -66,8 +66,6 @@ class ExtensionListCommand extends Command
 
     /**
      * Shows the list of all extensions
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

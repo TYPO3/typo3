@@ -78,9 +78,6 @@ class MemorySpool extends AbstractTransport implements SingletonInterface, Delay
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function flushQueue(TransportInterface $transport): int
     {
         if ($this->queuedMessages === []) {

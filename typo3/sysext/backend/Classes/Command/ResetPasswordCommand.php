@@ -72,8 +72,6 @@ class ResetPasswordCommand extends Command
     }
     /**
      * Executes the command for sending out an email to reset the password.
-     *
-     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

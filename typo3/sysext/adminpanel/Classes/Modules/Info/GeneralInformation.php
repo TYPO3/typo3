@@ -37,9 +37,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
         /** @var UserAspect $frontendUserAspect */
@@ -100,9 +97,6 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
         return 'info_general';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(

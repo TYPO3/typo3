@@ -28,26 +28,16 @@ use TYPO3\CMS\Core\Log\LogRecord;
  */
 class DebugModule extends AbstractModule implements ShortInfoProviderInterface
 {
-
-    /**
-     * @inheritdoc
-     */
     public function getIdentifier(): string
     {
         return 'debug';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getIconIdentifier(): string
     {
         return 'actions-debug';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(

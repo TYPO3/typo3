@@ -33,9 +33,6 @@ class TypeOfUsersChartDataProvider implements ChartDataProviderInterface
         $this->languageServiceFactory = $languageServiceFactory;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getChartData(): array
     {
         $languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);

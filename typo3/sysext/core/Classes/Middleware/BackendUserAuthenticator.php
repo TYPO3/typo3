@@ -57,9 +57,6 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
         $this->context = $context;
     }
 
-    /**
-     * @inheritDoc
-     */
     abstract public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface;
 
     /**

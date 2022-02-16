@@ -43,8 +43,6 @@ class DeactivateExtensionCommand extends Command
 
     /**
      * This command is not needed in composer mode.
-     *
-     * @inheritdoc
      */
     public function isEnabled()
     {
@@ -68,8 +66,6 @@ class DeactivateExtensionCommand extends Command
 
     /**
      * Installs an extension
-     *
-     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
