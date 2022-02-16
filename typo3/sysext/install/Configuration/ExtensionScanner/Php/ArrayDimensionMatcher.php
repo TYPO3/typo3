@@ -619,4 +619,9 @@ return [
             'Breaking-96935-RegisterLinkvalidatorLinktypesViaServiceConfiguration.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'headerNoCache\']' => [
+        'restFiles' => [
+            'Breaking-96968-HookHeaderNoCacheRemoved.rst',
+        ],
+    ],
 ];

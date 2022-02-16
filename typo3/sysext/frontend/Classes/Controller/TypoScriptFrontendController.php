@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Frontend\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -69,6 +70,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Event\ShouldUseCachedPageDataIfAvailableEvent;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Typolink\LinkVarsCalculator;
@@ -216,12 +218,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected int $cacheTimeOutDefault = 0;
 
     /**
-     * Set internally if cached content is fetched from the database.
-     *
-     * @var bool
-     * @internal
+     * Set if cached content was fetched from the cache.
      */
-    protected $cacheContentFlag = false;
+    protected bool $pageContentWasLoadedFromCache = false;
 
     /**
      * Set to the expire time of cached content
@@ -1299,19 +1298,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * See if page is in cache and get it if so
-     * Stores the page content in $this->content if something is found.
+     * See if page is in cache and get it if so, populates the page content to $this->content.
+     * Also fetches the raw cached pagesection information (TypoScript information) before.
      *
-     * @param ServerRequestInterface|null $request if given this is used to determine values in headerNoCache() instead of the superglobal $_SERVER
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @param ServerRequestInterface $request
      */
-    public function getFromCache(ServerRequestInterface $request = null)
+    public function getFromCache(ServerRequestInterface $request)
     {
         // clearing the content-variable, which will hold the pagecontent
         $this->content = '';
         // Unsetting the lowlevel config
         $this->config = [];
-        $this->cacheContentFlag = false;
+        $this->pageContentWasLoadedFromCache = false;
 
         if ($this->no_cache) {
             return;
@@ -1353,7 +1351,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Look for page in cache only if a shift-reload is not sent to the server.
         $lockHash = $this->getLockHash();
-        if (!$this->headerNoCache($request) && $this->all) {
+        if ($this->shouldAcquireCacheData($request) && $this->all) {
             // we got page section information (TypoScript), so lets see if there is also a cached version
             // of this page in the pages cache.
             $this->newHash = $this->getHash();
@@ -1421,7 +1419,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Getting the content
         $this->content = $cachedData['content'];
         // Setting flag, so we know, that some cached content has been loaded
-        $this->cacheContentFlag = true;
+        $this->pageContentWasLoadedFromCache = true;
         $this->cacheExpires = $cachedData['expires'];
         // Restore the current tags as they can be retrieved by getPageCacheTags()
         $this->pageCacheTags = $cachedData['cacheTags'] ?? [];
@@ -1449,32 +1447,25 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Detecting if shift-reload has been clicked
-     * Will not be called if re-generation of page happens by other reasons (for instance that the page is not in cache yet!)
+     * Detecting if shift-reload has been clicked.
+     * This option will have no effect if re-generation of page happens by other reasons (for instance that the page is not in cache yet).
      * Also, a backend user MUST be logged in for the shift-reload to be detected due to DoS-attack-security reasons.
      *
-     * @param ServerRequestInterface|null $request
-     * @return bool If shift-reload in client browser has been clicked, disable getting cached page (and regenerate it).
+     * @return bool If shift-reload in client browser has been clicked, disable getting cached page and regenerate the page content.
      */
-    public function headerNoCache(ServerRequestInterface $request = null)
+    protected function shouldAcquireCacheData(ServerRequestInterface $request): bool
     {
-        if ($request instanceof ServerRequestInterface) {
-            $serverParams = $request->getServerParams();
-        } else {
-            $serverParams = $_SERVER;
+        $shouldUseCachedPageData = true;
+        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+            && (strtolower($request->getServerParams()['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache'
+                || strtolower($request->getServerParams()['HTTP_PRAGMA'] ?? '') === 'no-cache')) {
+            $shouldUseCachedPageData = false;
         }
-        $disableAcquireCacheData = false;
-        if ($this->isBackendUserLoggedIn()) {
-            if (strtolower($serverParams['HTTP_CACHE_CONTROL'] ?? '') === 'no-cache' || strtolower($serverParams['HTTP_PRAGMA'] ?? '') === 'no-cache') {
-                $disableAcquireCacheData = true;
-            }
-        }
-        // Call hook for possible by-pass of requiring of page cache (for recaching purpose)
-        $_params = ['pObj' => &$this, 'disableAcquireCacheData' => &$disableAcquireCacheData];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-        return $disableAcquireCacheData;
+
+        // Trigger event for possible by-pass of requiring of page cache (for re-caching purposes)
+        $event = new ShouldUseCachedPageDataIfAvailableEvent($request, $this, $shouldUseCachedPageData);
+        GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch($event);
+        return $event->shouldUseCachedPageData();
     }
 
     /**
@@ -1883,12 +1874,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      *******************************************/
     /**
-     * Returns TRUE if the page should be generated.
-     * That is if no URL handler is active and the cacheContentFlag is not set.
+     * Returns TRUE if the page content should be generated.
      */
     public function isGeneratePage(): bool
     {
-        return !$this->cacheContentFlag;
+        return !$this->pageContentWasLoadedFromCache;
     }
 
     /**
