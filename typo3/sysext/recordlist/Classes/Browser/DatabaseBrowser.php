@@ -172,7 +172,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
 
         $permsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         $pageInfo = BackendUtility::readPageAccess($this->expandPage, $permsClause);
-        $existingModuleData = $backendUser->getModuleData('web_list', 'ses');
+        $existingModuleData = $backendUser->getModuleData('web_list');
         $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);

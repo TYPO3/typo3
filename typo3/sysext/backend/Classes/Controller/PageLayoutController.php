@@ -219,7 +219,7 @@ class PageLayoutController
         }
         // Clean up settings
         if ($this->moduleData->cleanUp($this->MOD_MENU)) {
-            $backendUser->pushModuleData('web_layout', $this->moduleData->toArray());
+            $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
         }
         if ($backendUser->workspace !== 0) {
             // Show all elements in draft workspaces

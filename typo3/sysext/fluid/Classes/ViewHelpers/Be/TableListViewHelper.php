@@ -145,7 +145,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $pageId = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $pointer = (int)($request->getParsedBody()['pointer'] ?? $request->getQueryParams()['pointer'] ?? 0);
         $pageInfo = BackendUtility::readPageAccess($pageId, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $existingModuleData = $backendUser->getModuleData('web_list', 'ses');
+        $existingModuleData = $backendUser->getModuleData('web_list');
         $moduleData = new ModuleData('web_list', is_array($existingModuleData) ? $existingModuleData : []);
 
         $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);

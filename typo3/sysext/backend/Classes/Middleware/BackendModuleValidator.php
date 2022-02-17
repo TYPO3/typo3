@@ -94,7 +94,7 @@ class BackendModuleValidator implements MiddlewareInterface
         }
 
         // Get stored module data
-        if (!is_array(($persistedModuleData = $backendUser->getModuleData($module->getIdentifier(), 'ses')))) {
+        if (!is_array(($persistedModuleData = $backendUser->getModuleData($module->getIdentifier())))) {
             $persistedModuleData = [];
         }
 
