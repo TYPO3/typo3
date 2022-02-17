@@ -51,9 +51,8 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
         $I->waitForElementNotVisible('#t3js-ui-block');
 
         $I->waitForText('Edit Form', 3, 'h1');
-        // scroll up all the way to get a clean shot to the tab panel
-        $I->executeJS('document.querySelector(".module h1").scrollIntoView({ block: "end" });');
 
+        // Make sure the test operates on the "text" tab
         $I->click('text');
     }
 
