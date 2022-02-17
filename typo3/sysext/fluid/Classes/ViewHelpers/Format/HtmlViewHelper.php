@@ -117,7 +117,7 @@ class HtmlViewHelper extends AbstractViewHelper
         if ($isBackendRequest) {
             self::simulateFrontendEnvironment();
         }
-        $value = $renderChildrenClosure();
+        $value = $renderChildrenClosure() ?? '';
         $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $contentObject->start([]);
         $content = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
