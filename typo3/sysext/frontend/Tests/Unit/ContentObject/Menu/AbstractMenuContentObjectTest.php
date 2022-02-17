@@ -40,8 +40,10 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -53,6 +55,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractMenuContentObjectTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use PageRendererFactoryTrait;
 
     /**
      * @var AbstractMenuContentObject|MockObject|AccessibleObjectInterface
@@ -95,6 +98,10 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
         $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $frontendUserProphecy = $this->prophesize(FrontendUserAuthentication::class);
         $GLOBALS['TSFE'] = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', []), $frontendUserProphecy->reveal()])

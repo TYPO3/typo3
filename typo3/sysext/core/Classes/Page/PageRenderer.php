@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Page;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -81,11 +80,6 @@ class PageRenderer implements SingletonInterface
     protected $moveJsFromHeaderToFooter = false;
 
     /**
-     * @var Locales
-     */
-    protected $locales;
-
-    /**
      * The language key
      * Two character string or 'default'
      *
@@ -100,11 +94,6 @@ class PageRenderer implements SingletonInterface
      * @var array
      */
     protected $languageDependencies = [];
-
-    /**
-     * @var ResourceCompressor
-     */
-    protected $compressor;
 
     // Arrays containing associative array for the included files
     /**
@@ -331,30 +320,21 @@ class PageRenderer implements SingletonInterface
      */
     protected $endingSlash = '';
 
-    /**
-     * @var MetaTagManagerRegistry
-     */
-    protected $metaTagRegistry;
-
     protected JavaScriptRenderer $javaScriptRenderer;
 
-    /**
-     * @var FrontendInterface
-     */
-    protected static $cache;
-
-    /**
-     * @param string $templateFile Declare the used template file. Omit this parameter will use default template
-     */
-    public function __construct($templateFile = '')
-    {
+    public function __construct(
+        protected readonly FrontendInterface $assetsCache,
+        protected readonly Locales $locales,
+        protected readonly MarkerBasedTemplateService $templateService,
+        protected readonly MetaTagManagerRegistry $metaTagRegistry,
+        protected readonly PackageManager $packageManager,
+        protected readonly AssetRenderer $assetRenderer,
+        protected readonly ResourceCompressor $resourceCompressor,
+        protected readonly RelativeCssPathFixer $relativeCssPathFixer,
+        protected readonly LocalizationFactory $localizationFactory,
+    ) {
         $this->reset();
-        $this->locales = GeneralUtility::makeInstance(Locales::class);
-        if ($templateFile !== '') {
-            $this->templateFile = $templateFile;
-        }
 
-        $this->metaTagRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
     }
 
@@ -366,7 +346,16 @@ class PageRenderer implements SingletonInterface
     {
         foreach ($state as $var => $value) {
             switch ($var) {
+            case 'assetsCache':
             case 'locales':
+            case 'packageManager':
+            case 'assetRenderer':
+            case 'templateService':
+            case 'resourceCompressor':
+            case 'relativeCssPathFixer':
+            case 'localizationFactory':
+            case 'responseFactory':
+            case 'streamFactory':
                 break;
             case 'metaTagRegistry':
                 $this->metaTagRegistry->updateState($value);
@@ -390,7 +379,16 @@ class PageRenderer implements SingletonInterface
         $state = [];
         foreach (get_object_vars($this) as $var => $value) {
             switch ($var) {
+            case 'assetsCache':
             case 'locales':
+            case 'packageManager':
+            case 'assetRenderer':
+            case 'templateService':
+            case 'resourceCompressor':
+            case 'relativeCssPathFixer':
+            case 'localizationFactory':
+            case 'responseFactory':
+            case 'streamFactory':
                 break;
             case 'metaTagRegistry':
                 $state[$var] = $this->metaTagRegistry->getState();
@@ -404,14 +402,6 @@ class PageRenderer implements SingletonInterface
             }
         }
         return $state;
-    }
-
-    /**
-     * @param FrontendInterface $cache
-     */
-    public static function setCache(FrontendInterface $cache)
-    {
-        static::$cache = $cache;
     }
 
     public function getJavaScriptRenderer(): JavaScriptRenderer
@@ -1356,21 +1346,18 @@ class PageRenderer implements SingletonInterface
             return;
         }
 
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-        $packages = $packageManager->getActivePackages();
+        $packages = $this->packageManager->getActivePackages();
         $isDevelopment = Environment::getContext()->isDevelopment();
-        $cacheIdentifier = (new PackageDependentCacheIdentifier($packageManager))
+        $cacheIdentifier = (new PackageDependentCacheIdentifier($this->packageManager))
               ->withPrefix('RequireJS')
               ->withAdditionalHashedIdentifier(($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'))
               ->toString();
-        /** @var FrontendInterface $cache */
-        $cache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
-        $requireJsConfig = $cache->get($cacheIdentifier);
+        $requireJsConfig = $this->assetsCache->get($cacheIdentifier);
 
         // if we did not get a configuration from the cache, compute and store it in the cache
         if (!isset($requireJsConfig['internal']) || !isset($requireJsConfig['public'])) {
             $requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $packages);
-            $cache->set($cacheIdentifier, $requireJsConfig);
+            $this->assetsCache->set($cacheIdentifier, $requireJsConfig);
         }
 
         $this->requireJsConfig = array_merge_recursive($this->additionalRequireJsConfig, $requireJsConfig['internal']);
@@ -1762,8 +1749,7 @@ class PageRenderer implements SingletonInterface
 
         // The page renderer needs a full reset when the page was rendered
         $this->reset();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
+        return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
 
     /**
@@ -1797,8 +1783,7 @@ class PageRenderer implements SingletonInterface
         $this->prepareRendering();
         $markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
         $template = $this->getTemplate();
-        $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
+        return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
     }
 
     /**
@@ -1888,16 +1873,15 @@ class PageRenderer implements SingletonInterface
             $jsInline = '';
         }
         // Use AssetRenderer to inject all JavaScripts and CSS files
-        $assetRenderer = GeneralUtility::makeInstance(AssetRenderer::class);
-        $jsInline .= $assetRenderer->renderInlineJavaScript(true);
-        $jsFooterInline .= $assetRenderer->renderInlineJavaScript();
-        $jsFiles .= $assetRenderer->renderJavaScript(true);
-        $jsFooterFiles .= $assetRenderer->renderJavaScript();
-        $cssInline .= $assetRenderer->renderInlineStyleSheets(true);
+        $jsInline .= $this->assetRenderer->renderInlineJavaScript(true);
+        $jsFooterInline .= $this->assetRenderer->renderInlineJavaScript();
+        $jsFiles .= $this->assetRenderer->renderJavaScript(true);
+        $jsFooterFiles .= $this->assetRenderer->renderJavaScript();
+        $cssInline .= $this->assetRenderer->renderInlineStyleSheets(true);
         // append inline CSS to footer (as there is no cssFooterInline)
-        $jsFooterFiles .= $assetRenderer->renderInlineStyleSheets();
-        $cssLibs .= $assetRenderer->renderStyleSheets(true, $this->endingSlash);
-        $cssFiles .= $assetRenderer->renderStyleSheets(false, $this->endingSlash);
+        $jsFooterFiles .= $this->assetRenderer->renderInlineStyleSheets();
+        $cssLibs .= $this->assetRenderer->renderStyleSheets(true, $this->endingSlash);
+        $cssFiles .= $this->assetRenderer->renderStyleSheets(false, $this->endingSlash);
 
         $this->executePostRenderHook($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs);
         return [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs];
@@ -2406,9 +2390,6 @@ class PageRenderer implements SingletonInterface
      */
     protected function readLLfile($fileRef)
     {
-        /** @var LocalizationFactory $languageFactory */
-        $languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
-
         if ($this->lang !== 'default') {
             $languages = array_reverse($this->languageDependencies);
             // At least we need to have English
@@ -2421,7 +2402,7 @@ class PageRenderer implements SingletonInterface
 
         $localLanguage = [];
         foreach ($languages as $language) {
-            $tempLL = $languageFactory->getParsedData($fileRef, $language);
+            $tempLL = $this->localizationFactory->getParsedData($fileRef, $language);
 
             $localLanguage['default'] = $tempLL['default'];
             if (!isset($localLanguage[$this->lang])) {
@@ -2469,9 +2450,9 @@ class PageRenderer implements SingletonInterface
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['jsConcatenateHandler'], $params, $this);
             } else {
-                $this->jsLibs = $this->getCompressor()->concatenateJsFiles($this->jsLibs);
-                $this->jsFiles = $this->getCompressor()->concatenateJsFiles($this->jsFiles);
-                $this->jsFooterFiles = $this->getCompressor()->concatenateJsFiles($this->jsFooterFiles);
+                $this->jsLibs = $this->resourceCompressor->concatenateJsFiles($this->jsLibs);
+                $this->jsFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFiles);
+                $this->jsFooterFiles = $this->resourceCompressor->concatenateJsFiles($this->jsFooterFiles);
             }
         }
     }
@@ -2492,8 +2473,8 @@ class PageRenderer implements SingletonInterface
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssConcatenateHandler'], $params, $this);
             } else {
-                $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs);
-                $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles);
+                $this->cssLibs = $this->resourceCompressor->concatenateCssFiles($this->cssLibs);
+                $this->cssFiles = $this->resourceCompressor->concatenateCssFiles($this->cssFiles);
             }
         }
     }
@@ -2524,8 +2505,8 @@ class PageRenderer implements SingletonInterface
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][$this->getApplicationType()]['cssCompressHandler'], $params, $this);
             } else {
-                $this->cssLibs = $this->getCompressor()->compressCssFiles($this->cssLibs);
-                $this->cssFiles = $this->getCompressor()->compressCssFiles($this->cssFiles);
+                $this->cssLibs = $this->resourceCompressor->compressCssFiles($this->cssLibs);
+                $this->cssFiles = $this->resourceCompressor->compressCssFiles($this->cssFiles);
             }
         }
     }
@@ -2552,27 +2533,14 @@ class PageRenderer implements SingletonInterface
                 // Traverse the arrays, compress files
                 foreach ($this->jsInline ?? [] as $name => $properties) {
                     if ($properties['compress'] ?? false) {
-                        $this->jsInline[$name]['code'] = $this->getCompressor()->compressJavaScriptSource($properties['code']);
+                        $this->jsInline[$name]['code'] = $this->resourceCompressor->compressJavaScriptSource($properties['code']);
                     }
                 }
-                $this->jsLibs = $this->getCompressor()->compressJsFiles($this->jsLibs);
-                $this->jsFiles = $this->getCompressor()->compressJsFiles($this->jsFiles);
-                $this->jsFooterFiles = $this->getCompressor()->compressJsFiles($this->jsFooterFiles);
+                $this->jsLibs = $this->resourceCompressor->compressJsFiles($this->jsLibs);
+                $this->jsFiles = $this->resourceCompressor->compressJsFiles($this->jsFiles);
+                $this->jsFooterFiles = $this->resourceCompressor->compressJsFiles($this->jsFooterFiles);
             }
         }
-    }
-
-    /**
-     * Returns instance of \TYPO3\CMS\Core\Resource\ResourceCompressor
-     *
-     * @return ResourceCompressor
-     */
-    protected function getCompressor()
-    {
-        if ($this->compressor === null) {
-            $this->compressor = GeneralUtility::makeInstance(ResourceCompressor::class);
-        }
-        return $this->compressor;
     }
 
     /**
@@ -2587,7 +2555,7 @@ class PageRenderer implements SingletonInterface
     {
         $filename = $this->getStreamlinedFileName($filename, false);
         if ($this->compressJavascript) {
-            $filename = $this->getCompressor()->compressJsFile($filename);
+            $filename = $this->resourceCompressor->compressJsFile($filename);
         } elseif ($this->getApplicationType() === 'FE') {
             $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
@@ -2764,7 +2732,7 @@ class PageRenderer implements SingletonInterface
         if ($cssInline === false) {
             return '';
         }
-        $cssInlineFix = $this->getPathFixer()->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
+        $cssInlineFix = $this->relativeCssPathFixer->fixRelativeUrlPaths($cssInline, '/' . PathUtility::dirname($file) . '/');
         return '<style'
             . ' media="' . htmlspecialchars($properties['media']) . '"'
             . ($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '')
@@ -2772,11 +2740,6 @@ class PageRenderer implements SingletonInterface
             . '/*<![CDATA[*/' . LF . '<!-- ' . LF
             . $cssInlineFix
             . '-->' . LF . '/*]]>*/' . LF . '</style>' . LF;
-    }
-
-    protected function getPathFixer(): RelativeCssPathFixer
-    {
-        return GeneralUtility::makeInstance(RelativeCssPathFixer::class);
     }
 
     /**

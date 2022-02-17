@@ -27,6 +27,11 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class ImageContentObject extends AbstractContentObject
 {
+    public function __construct(
+        protected readonly MarkerBasedTemplateService $markerTemplateService,
+    ) {
+    }
+
     /**
      * Rendering the cObject, IMAGE
      *
@@ -96,8 +101,7 @@ class ImageContentObject extends AbstractContentObject
             'selfClosingTagSlash' => !empty($tsfe->xhtmlDoctype) ? ' /' : '',
         ];
 
-        $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-        $theValue = $markerTemplateEngine->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
+        $theValue = $this->markerTemplateService->substituteMarkerArray($imageTagTemplate, $imageTagValues, '###|###', true, true);
 
         $linkWrap = (string)$this->cObj->stdWrapValue('linkWrap', $conf ?? []);
         if ($linkWrap !== '') {
@@ -243,8 +247,7 @@ class ImageContentObject extends AbstractContentObject
                     $sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
                     $sourceConfiguration['selfClosingTagSlash'] = !empty($tsfe->xhtmlDoctype) ? ' /' : '';
 
-                    $markerTemplateEngine = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-                    $oneSourceCollection = $markerTemplateEngine->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
+                    $oneSourceCollection = $this->markerTemplateService->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', true, true);
 
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'] ?? [] as $className) {
                         $hookObject = GeneralUtility::makeInstance($className);

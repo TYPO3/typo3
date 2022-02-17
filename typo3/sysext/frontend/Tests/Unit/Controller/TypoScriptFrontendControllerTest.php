@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -58,6 +59,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class TypoScriptFrontendControllerTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use PageRendererFactoryTrait;
 
     /**
      * @var bool Reset singletons created by subject
@@ -77,6 +79,10 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $importMapFactoryProphecy = $this->prophesize(ImportMapFactory::class);
         $importMapFactoryProphecy->create()->willReturn($importMapProphecy->reveal());
         GeneralUtility::setSingletonInstance(ImportMapFactory::class, $importMapFactoryProphecy->reveal());
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $site = $this->createSiteWithDefaultLanguage([
             'locale' => 'fr',
             'typo3Language' => 'fr',
@@ -90,7 +96,9 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
         $this->subject->sys_page = $pageRepository;
 
-        $pageRenderer = $this->getMockBuilder(PageRenderer::class)->getMock();
+        $pageRenderer = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->getMock();
         $this->subject->_set('pageRenderer', $pageRenderer);
     }
 

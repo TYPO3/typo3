@@ -19,7 +19,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface;
@@ -52,7 +54,12 @@ class ImageContentObjectTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $GLOBALS['TSFE'] = $tsfe->reveal();
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
-        $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $this->subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [
+            new MarkerBasedTemplateService(
+                new NullFrontend('hash'),
+                new NullFrontend('runtime'),
+            ),
+        ]);
         $this->subject->setContentObjectRenderer($contentObjectRenderer);
     }
 
@@ -80,8 +87,7 @@ class ImageContentObjectTest extends UnitTestCase
     public function getImageTagTemplateFallsBackToDefaultTemplateIfNoTemplateIsFound($key, $configuration): void
     {
         $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [], '', false);
-        $result = $subject->_call('getImageTagTemplate', $key, $configuration);
+        $result = $this->subject->_call('getImageTagTemplate', $key, $configuration);
         self::assertEquals($result, $defaultImgTagTemplate);
     }
 
@@ -195,9 +201,8 @@ class ImageContentObjectTest extends UnitTestCase
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar']);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
-        $subject->setContentObjectRenderer($cObj);
-        $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
+        $this->subject->setContentObjectRenderer($cObj);
+        $result = $this->subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
         self::assertEquals('---bar---', $result);
     }
@@ -266,9 +271,8 @@ class ImageContentObjectTest extends UnitTestCase
             ->method('stdWrap')
             ->willReturnArgument(0);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
-        $subject->setContentObjectRenderer($cObj);
-        $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
+        $this->subject->setContentObjectRenderer($cObj);
+        $result = $this->subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
         self::assertEmpty($result);
     }
@@ -399,7 +403,12 @@ class ImageContentObjectTest extends UnitTestCase
             ->with(self::equalTo('testImageName'))
             ->willReturn([100, 100, null, 'bar-file.jpg']);
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy'], [
+            new MarkerBasedTemplateService(
+                new NullFrontend('hash'),
+                new NullFrontend('runtime'),
+            ),
+        ]);
         $subject->setContentObjectRenderer($cObj);
         $result = $subject->_call('getImageSourceCollection', $layoutKey, $configuration, $file);
 
@@ -464,9 +473,8 @@ class ImageContentObjectTest extends UnitTestCase
             ],
         ];
 
-        $subject = $this->getAccessibleMock(ImageContentObject::class, ['dummy']);
-        $subject->setContentObjectRenderer($cObj);
-        $result = $subject->_call('getImageSourceCollection', 'data', $configuration, StringUtility::getUniqueId('testImage-'));
+        $this->subject->setContentObjectRenderer($cObj);
+        $result = $this->subject->_call('getImageSourceCollection', 'data', $configuration, StringUtility::getUniqueId('testImage-'));
 
         self::assertSame($result, 'isGetOneSourceCollectionCalledCallback');
     }

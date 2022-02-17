@@ -63,11 +63,13 @@ class ResourceCompressor
 	FileETag MTime Size
 </FilesMatch>';
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+    protected bool $initialized = false;
+
+    protected function initialize(): void
     {
+        if ($this->initialized) {
+            return;
+        }
         // we check for existence of our targetDirectory
         if (!is_dir(Environment::getPublicPath() . '/' . $this->targetDirectory)) {
             GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $this->targetDirectory);
@@ -96,6 +98,8 @@ class ResourceCompressor
             }
         }
         $this->setRootPath($applicationType === 'BE' ? Environment::getBackendPath() . '/' : Environment::getPublicPath() . '/');
+
+        $this->initialized = true;
     }
 
     /**
@@ -118,6 +122,7 @@ class ResourceCompressor
      */
     public function concatenateCssFiles(array $cssFiles)
     {
+        $this->initialize();
         $filesToIncludeByType = ['all' => []];
         foreach ($cssFiles as $key => $fileOptions) {
             // no concatenation allowed for this file, so continue
@@ -165,6 +170,7 @@ class ResourceCompressor
      */
     public function concatenateJsFiles(array $jsFiles)
     {
+        $this->initialize();
         $concatenatedJsFileIsAsync = false;
         $allFilesToConcatenateAreAsync = true;
         $filesToInclude = [];
@@ -317,6 +323,7 @@ class ResourceCompressor
      */
     public function compressCssFiles(array $cssFiles)
     {
+        $this->initialize();
         $filesAfterCompression = [];
         foreach ($cssFiles as $key => $fileOptions) {
             // if compression is enabled
@@ -346,6 +353,7 @@ class ResourceCompressor
      */
     public function compressCssFile($filename)
     {
+        $this->initialize();
         // generate the unique name of the file
         $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
         if (@file_exists($filenameAbsolute)) {
@@ -378,6 +386,7 @@ class ResourceCompressor
      */
     public function compressJsFiles(array $jsFiles)
     {
+        $this->initialize();
         $filesAfterCompression = [];
         foreach ($jsFiles as $fileName => $fileOptions) {
             // If compression is enabled
@@ -401,6 +410,7 @@ class ResourceCompressor
      */
     public function compressJsFile($filename)
     {
+        $this->initialize();
         // generate the unique name of the file
         $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
         if (@file_exists($filenameAbsolute)) {
@@ -619,6 +629,7 @@ class ResourceCompressor
 
     public function compressJavaScriptSource(string $javaScriptSourceCode): string
     {
+        $this->initialize();
         $fakeThis = null;
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript'] ?? [] as $hookMethod) {
             try {

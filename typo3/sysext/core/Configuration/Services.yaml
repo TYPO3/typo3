@@ -210,6 +210,10 @@ services:
         method: 'warmupCaches'
         event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
 
+  TYPO3\CMS\Core\Page\PageRenderer:
+    arguments:
+      $assetsCache: '@cache.assets'
+
   TYPO3\CMS\Core\Page\AssetRenderer:
     public: true
     arguments:
@@ -280,6 +284,12 @@ services:
 
   TYPO3\CMS\Core\Domain\Access\RecordAccessVoter:
     public: true
+
+  TYPO3\CMS\Core\Service\MarkerBasedTemplateService:
+    public: true
+    arguments:
+      $hashCache: '@cache.assets'
+      $runtimeCache: '@cache.runtime'
 
   # Core caches, cache.core and cache.assets are injected as early
   # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here

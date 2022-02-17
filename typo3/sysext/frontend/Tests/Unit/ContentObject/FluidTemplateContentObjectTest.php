@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Page\ImportMap;
 use TYPO3\CMS\Core\Page\ImportMapFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Tests\Unit\Page\PageRendererFactoryTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,6 +50,7 @@ use TYPO3Fluid\Fluid\View\AbstractTemplateView;
 class FluidTemplateContentObjectTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use PageRendererFactoryTrait;
 
     /**
      * @var bool Reset singletons created by subject
@@ -135,6 +137,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsInitializeStandaloneViewInstance(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $this->addMockViewToSubject();
         $this->subject->expects(self::once())->method('initializeStandaloneViewInstance');
         $this->subject->render([]);
@@ -158,6 +164,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 ],
             ],
         ];
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $standAloneView = $this->prophesize(StandaloneView::class);
@@ -183,6 +193,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = ['file' => 'EXT:core/bar.html'];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('file', $configuration)->willReturn('EXT:core/bar.html');
@@ -212,6 +226,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(7);
         $contentObjectRenderer->cObjGetSingle('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'], 'template')->willReturn('baz');
@@ -241,6 +259,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 1 => 'dummyPath2/',
             ],
         ];
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('foo');
@@ -275,6 +297,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('templateName', $configuration)->willReturn('bar');
@@ -301,6 +327,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = ['layoutRootPath' => 'foo/bar.html'];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/bar.html');
@@ -331,6 +361,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
 
@@ -363,6 +397,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrap('FILE', ['file' => 'foo/bar.html'])->shouldBeCalled();
@@ -387,6 +425,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function fallbacksForLayoutRootPathAreSet(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects(self::once())
@@ -408,6 +450,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'layoutRootPaths.' => [10 => 'foo/bar.html', 20 => 'foo/bar2.html'],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('layoutRootPath', $configuration)->willReturn('foo/main.html');
@@ -437,6 +483,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $configuration = ['partialRootPath' => 'foo/bar.html'];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->willReturn('foo/bar.html');
@@ -470,6 +520,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $standAloneView = $this->prophesize(StandaloneView::class);
@@ -497,6 +551,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'partialRootPath.' => ['bar' => 'baz'],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $subject = new FluidTemplateContentObject($this->contentDataProcessor);
         $subject->setContentObjectRenderer($contentObjectRenderer->reveal());
@@ -519,6 +577,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function fallbacksForPartialRootPathAreSet(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects(self::once())
@@ -537,6 +599,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'partialRootPaths.' => [10 => 'foo', 20 => 'bar'],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('partialRootPath', $configuration)->willReturn(Environment::getPublicPath() . '/main');
@@ -570,6 +636,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'format' => 'xml',
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('format', $configuration)->willReturn('xml');
@@ -598,6 +668,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'format.' => ['bar' => 'baz'],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $subject = new FluidTemplateContentObject($this->contentDataProcessor);
@@ -625,6 +699,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('pluginName', ['pluginName' => 'foo'])->willReturn('foo');
@@ -659,6 +737,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $subject = new FluidTemplateContentObject($this->contentDataProcessor);
@@ -686,6 +768,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerExtensionName', ['controllerExtensionName' => 'foo'])->willReturn('foo');
@@ -720,6 +806,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $subject = new FluidTemplateContentObject($this->contentDataProcessor);
@@ -747,6 +837,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerName', ['controllerName' => 'foo'])->willReturn('foo');
@@ -781,6 +875,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
         $subject = new FluidTemplateContentObject($this->contentDataProcessor);
@@ -808,6 +906,10 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
         $contentObjectRenderer->stdWrapValue(Argument::cetera())->shouldBeCalledTimes(8);
         $contentObjectRenderer->stdWrapValue('controllerActionName', ['controllerActionName' => 'foo'])->willReturn('foo');
@@ -840,6 +942,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 'bar' => 'baz',
             ],
         ];
+
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
@@ -877,6 +984,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 'baz' => 'value2',
             ],
         ];
+
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
 
         /** @var TypoScriptService|MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
@@ -944,6 +1056,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsCObjGetSingleForAllowedVariable(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
+
         $configuration = [
             'variables.' => [
                 'aVar' => 'TEXT',
@@ -974,6 +1091,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderAssignsRenderedContentObjectVariableToView(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
+
         $configuration = [
             'variables.' => [
                 'aVar' => 'TEXT',
@@ -1008,6 +1130,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderAssignsContentObjectRendererDataToView(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
+
         $this->addMockViewToSubject();
         $this->contentObjectRenderer->data = ['foo'];
         $this->standaloneView
@@ -1022,6 +1149,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderAssignsContentObjectRendererCurrentValueToView(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
+
         $this->addMockViewToSubject();
         $this->contentObjectRenderer->data = ['currentKey' => 'currentValue'];
         $this->contentObjectRenderer->currentValKey = 'currentKey';
@@ -1037,6 +1169,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function renderCallsRenderOnStandaloneView(): void
     {
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
+
         $this->addMockViewToSubject();
         $this->standaloneView
             ->expects(self::once())
@@ -1054,6 +1191,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
+
+        GeneralUtility::setSingletonInstance(
+            PageRenderer::class,
+            new PageRenderer(...$this->getPageRendererConstructorArgs()),
+        );
 
         $contentObjectRenderer = $this->prophesize(ContentObjectRenderer::class);
 
@@ -1084,10 +1226,13 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         ?string $expectedHeader,
         ?string $expectedFooter
     ): void {
-        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->onlyMethods([
-            'addHeaderData',
-            'addFooterData',
-        ])->getMock();
+        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->onlyMethods([
+                'addHeaderData',
+                'addFooterData',
+            ])
+            ->getMock();
         if ($expectedHeader !== null && !empty(trim($expectedHeader))) {
             $pageRendererMock->expects(self::once())->method('addHeaderData')->with($expectedHeader);
         } else {

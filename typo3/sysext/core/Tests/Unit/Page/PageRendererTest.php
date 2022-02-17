@@ -33,6 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PageRendererTest extends UnitTestCase
 {
     use ProphecyTrait;
+    use PageRendererFactoryTrait;
 
     /**
      * @var bool Reset singletons created by subject
@@ -56,6 +57,7 @@ class PageRendererTest extends UnitTestCase
     {
         /** @var PageRenderer|AccessibleObjectInterface $pageRenderer */
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
             ->onlyMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplate'])
             ->getMock();
 
@@ -265,8 +267,11 @@ class PageRendererTest extends UnitTestCase
      */
     public function getAddedMetaTag(): void
     {
-        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject */
+        $subject = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->setMethodsExcept(['setMetaTag', 'getMetaTag'])
+            ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
         $expectedResult = [
@@ -282,8 +287,11 @@ class PageRendererTest extends UnitTestCase
      */
     public function overrideMetaTag(): void
     {
-        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject */
+        $subject = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->setMethodsExcept(['setMetaTag', 'getMetaTag'])
+            ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
@@ -300,8 +308,11 @@ class PageRendererTest extends UnitTestCase
      */
     public function unsetAddedMetaTag(): void
     {
-        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject */
+        $subject = $this->getMockBuilder(PageRenderer::class)
+            ->setConstructorArgs($this->getPageRendererConstructorArgs())
+            ->setMethodsExcept(['setMetaTag', 'removeMetaTag', 'getMetaTag'])
+            ->getMock();
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $subject->removeMetaTag('naMe', 'AUTHOR');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');

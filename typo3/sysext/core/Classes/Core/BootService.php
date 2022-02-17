@@ -22,7 +22,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -126,8 +125,6 @@ class BootService
         $beUserBackup = $GLOBALS['BE_USER'] ?? null;
 
         $container->get('boot.state')->complete = false;
-        $assetsCache = $container->get('cache.assets');
-        PageRenderer::setCache($assetsCache);
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         Bootstrap::loadTypo3LoadedExtAndExtLocalconf($allowCaching, $container->get('cache.core'));

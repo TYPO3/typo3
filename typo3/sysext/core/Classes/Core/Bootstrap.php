@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\Package\Cache\PackageCacheInterface;
 use TYPO3\CMS\Core\Package\Cache\PackageStatesPackageCache;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -155,7 +154,6 @@ class Bootstrap
         }
 
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        PageRenderer::setCache($assetsCache);
         ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
         static::unsetReservedGlobalVariables();

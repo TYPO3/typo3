@@ -21,6 +21,8 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -62,6 +64,10 @@ class AbstractPluginTest extends UnitTestCase
             return $args[0] ?? '';
         });
 
+        GeneralUtility::addInstance(MarkerBasedTemplateService::class, new MarkerBasedTemplateService(
+            new NullFrontend('hash'),
+            new NullFrontend('runtime'),
+        ));
         $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
         $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());

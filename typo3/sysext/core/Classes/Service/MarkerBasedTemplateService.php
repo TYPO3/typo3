@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Core\Service;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -25,6 +25,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class MarkerBasedTemplateService
 {
+    public function __construct(
+        protected readonly FrontendInterface $hashCache,
+        protected readonly FrontendInterface $runtimeCache,
+    ) {
+    }
+
     /**
      * Returns the first subpart encapsulated in the marker, $marker
      * (possibly present in $content as a HTML comment)
@@ -355,7 +361,6 @@ class MarkerBasedTemplateService
      */
     public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
     {
-        $runtimeCache = $this->getRuntimeCache();
         // If not arrays then set them
         if ($markContentArray === null) {
             // Plain markers
@@ -378,16 +383,15 @@ class MarkerBasedTemplateService
         }
         asort($keysToReplace);
         $storeKey = md5('substituteMarkerArrayCached_storeKey:' . serialize([$content, $keysToReplace]));
-        $fromCache = $runtimeCache->get($storeKey);
+        $fromCache = $this->runtimeCache->get($storeKey);
         if ($fromCache) {
             $storeArr = $fromCache;
         } else {
-            $cache = $this->getCache();
-            $storeArrDat = $cache->get($storeKey);
+            $storeArrDat = $this->hashCache->get($storeKey);
             if (is_array($storeArrDat)) {
                 $storeArr = $storeArrDat;
                 // Setting the data in the first level cache
-                $runtimeCache->set($storeKey, $storeArr);
+                $this->runtimeCache->set($storeKey, $storeArr);
             } else {
                 // Finding subparts and substituting them with the subpart as a marker
                 foreach ($sPkeys as $sPK) {
@@ -419,9 +423,9 @@ class MarkerBasedTemplateService
                     $storeArr['c'] = preg_split($regex, $content); // contains all content parts around markers
                     $storeArr['k'] = $wrappedKeys; // contains all markers incl. ###
                     // Setting the data inside the second-level cache
-                    $runtimeCache->set($storeKey, $storeArr);
+                    $this->runtimeCache->set($storeKey, $storeArr);
                     // Storing the cached data permanently
-                    $cache->set($storeKey, $storeArr, ['substMarkArrayCached'], 0);
+                    $this->hashCache->set($storeKey, $storeArr, ['substMarkArrayCached'], 0);
                 }
             }
         }
@@ -506,25 +510,5 @@ class MarkerBasedTemplateService
             }
         }
         return $markContentArray;
-    }
-
-    /**
-     * Second-level cache
-     *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    protected function getCache()
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-    }
-
-    /**
-     * First-level cache (runtime cache)
-     *
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    protected function getRuntimeCache()
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 }

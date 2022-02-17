@@ -25,7 +25,15 @@ use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
+use TYPO3\CMS\Core\Resource\ResourceCompressor;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -40,6 +48,22 @@ class PageRendererTest extends FunctionalTestCase
      */
     protected bool $initializeDatabase = false;
 
+    protected function createPageRenderer(): PageRenderer
+    {
+        $container = $this->getContainer();
+        return new PageRenderer(
+            $container->get('cache.assets'),
+            $container->get(Locales::class),
+            $container->get(MarkerBasedTemplateService::class),
+            $container->get(MetaTagManagerRegistry::class),
+            $container->get(PackageManager::class),
+            $container->get(AssetRenderer::class),
+            new ResourceCompressor(),
+            new RelativeCssPathFixer(),
+            $container->get(LocalizationFactory::class),
+        );
+    }
+
     /**
      * @test
      */
@@ -47,7 +71,7 @@ class PageRendererTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $subject = new PageRenderer();
+        $subject = $this->createPageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
@@ -152,7 +176,7 @@ class PageRendererTest extends FunctionalTestCase
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
         self::assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
 
-        $stateBasedSubject = new PageRenderer();
+        $stateBasedSubject = $this->createPageRenderer();
         $stateBasedSubject->updateState(unserialize($state, ['allowed_classes' => false]));
         $stateBasedRenderedString = $stateBasedSubject->render();
         self::assertStringContainsString($expectedPrologueString, $stateBasedRenderedString);
@@ -199,7 +223,7 @@ class PageRendererTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', $requestType);
-        $subject = new PageRenderer();
+        $subject = $this->createPageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
@@ -286,7 +310,7 @@ class PageRendererTest extends FunctionalTestCase
     {
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        $subject = new PageRenderer();
+        $subject = $this->createPageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
@@ -386,7 +410,7 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
-        $subject = new PageRenderer();
+        $subject = $this->createPageRenderer();
         $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
