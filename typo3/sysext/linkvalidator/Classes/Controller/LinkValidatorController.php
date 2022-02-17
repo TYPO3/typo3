@@ -111,7 +111,7 @@ class LinkValidatorController
             $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }
 
-        $this->validateSettings();
+        $this->validateSettings($request);
         $this->initializeLinkAnalyzer();
 
         if ($this->request->getParsedBody()['updateLinkList'] ?? false) {
@@ -142,14 +142,14 @@ class LinkValidatorController
             return $view->renderResponse('Backend/Empty');
         }
 
-        $moduleData = $backendUser->getModuleData('web_linkvalidator') ?? [];
-        $action = $this->request->getQueryParams()['action'] ?? $moduleData['action'] ?? 'report';
-        if (!in_array($action, ['report', 'check'], true) || !($this->modTS['showCheckLinkTab'] ?? false)) {
-            $action = 'report';
+        $moduleData = $request->getAttribute('moduleData');
+        if (!($this->modTS['showCheckLinkTab'] ?? false)) {
+            $moduleData->set('action', 'report');
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        } elseif ($moduleData->clean('action', ['report', 'check'])) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
-        if ($action !== ($moduleData['action'] ?? '')) {
-            $backendUser->pushModuleData('web_linkvalidator', $moduleData);
-        }
+        $action = $moduleData->get('action');
 
         $this->addDocHeaderShortCutButton($view, $action);
         if ($this->modTS['showCheckLinkTab'] ?? false) {
@@ -185,7 +185,7 @@ class LinkValidatorController
     /**
      * Checks for incoming GET/POST parameters to update the module settings
      */
-    protected function validateSettings(): void
+    protected function validateSettings(ServerRequestInterface $request): void
     {
         $backendUser = $this->getBackendUser();
 
@@ -197,7 +197,7 @@ class LinkValidatorController
         }
 
         // get linkvalidator module data
-        $moduleData = $backendUser->getModuleData('web_linkvalidator');
+        $moduleData = $request->getAttribute('moduleData');
 
         // get information for last edited record
         $this->lastEditedRecord['uid'] = $this->request->getQueryParams()['last_edited_record_uid'] ?? 0;
@@ -211,12 +211,12 @@ class LinkValidatorController
         $mainSearchLevelKey = $prefix . '_searchlevel';
         $otherSearchLevelKey = $other . '_searchlevel';
         if ($this->searchLevel[$prefix] !== null) {
-            $moduleData[$mainSearchLevelKey] = $this->searchLevel[$prefix];
+            $moduleData->set($mainSearchLevelKey, $this->searchLevel[$prefix]);
         } else {
-            $this->searchLevel[$prefix] = $moduleData[$mainSearchLevelKey] ?? 0;
+            $this->searchLevel[$prefix] = $moduleData->get($mainSearchLevelKey, 0);
         }
-        if (isset($moduleData[$otherSearchLevelKey])) {
-            $this->searchLevel[$other] = $moduleData[$otherSearchLevelKey] ?? 0;
+        if ($moduleData->has($otherSearchLevelKey)) {
+            $this->searchLevel[$other] = $moduleData->get($otherSearchLevelKey);
         }
 
         // which linkTypes to check (internal, file, external, ...)
@@ -234,22 +234,22 @@ class LinkValidatorController
             // 3) if not set, use default
             if (!empty($submittedValues)) {
                 $this->checkOpt[$prefix][$linkType] = $set[$linkType] ?? '0';
-                $moduleData[$mainLinkType] = $this->checkOpt[$prefix][$linkType];
-            } elseif (isset($moduleData[$mainLinkType])) {
-                $this->checkOpt[$prefix][$linkType] = $moduleData[$mainLinkType];
+                $moduleData->set($mainLinkType, $this->checkOpt[$prefix][$linkType]);
+            } elseif ($moduleData->has($mainLinkType)) {
+                $this->checkOpt[$prefix][$linkType] = $moduleData->get($mainLinkType);
             } else {
                 // use default
                 $this->checkOpt[$prefix][$linkType] = '0';
-                $moduleData[$mainLinkType] = $this->checkOpt[$prefix][$linkType];
+                $moduleData->set($mainLinkType, $this->checkOpt[$prefix][$linkType]);
             }
 
-            if (isset($moduleData[$otherLinkType])) {
-                $this->checkOpt[$other][$linkType] = $moduleData[$otherLinkType];
+            if ($moduleData->has($otherLinkType)) {
+                $this->checkOpt[$other][$linkType] = $moduleData->get($otherLinkType);
             }
         }
 
         // save settings
-        $backendUser->pushModuleData('web_linkvalidator', $moduleData);
+        $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
     }
 
     /**

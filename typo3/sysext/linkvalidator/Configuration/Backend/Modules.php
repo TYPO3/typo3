@@ -21,5 +21,8 @@ return [
                 'target' => LinkValidatorController::class,
             ],
         ],
+        'moduleData' => [
+            'action' => 'report',
+        ],
     ],
 ];
