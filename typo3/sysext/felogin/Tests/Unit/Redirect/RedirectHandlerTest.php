@@ -168,4 +168,49 @@ class RedirectHandlerTest extends UnitTestCase
             ->getPropertyFromAspect('frontend.user', 'isLoggedIn')
             ->willReturn($userLoggedIn);
     }
+
+    public function getLoginFormRedirectUrlDataProvider(): array
+    {
+        return [
+            'redirect disabled' => [
+                'no url',
+                'getpost',
+                true,
+                '',
+            ],
+            'redirect enabled, GET/POST redirect mode not configured' => [
+                'https://redirect.url',
+                'login',
+                false,
+                '',
+            ],
+            'redirect enabled, GET/POST redirect mode configured' => [
+                'https://redirect.url',
+                'login,getpost',
+                false,
+                'https://redirect.url',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getLoginFormRedirectUrlDataProvider
+     */
+    public function getLoginFormRedirectUrlReturnsExpectedValue(
+        string $redirectUrl,
+        string $redirectMode,
+        bool $redirectDisabled,
+        string $expected
+    ) {
+        $this->subject = new RedirectHandler(
+            $this->serverRequestHandler->reveal(),
+            $this->redirectModeHandler->reveal(),
+            $this->context->reveal()
+        );
+
+        $this->serverRequestHandler->getRedirectUrlRequestParam()->willReturn($redirectUrl);
+        $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectMode]);
+        self::assertEquals($expected, $this->subject->getLoginFormRedirectUrl($configuration, $redirectDisabled));
+    }
 }
