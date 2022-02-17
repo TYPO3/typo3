@@ -109,6 +109,18 @@ class DateViewHelperTest extends FunctionalTestCase
     }
 
     /**
+     * No deprecation notice using PHP 8.1 should be thrown when format is null
+     * @test
+     */
+    public function viewHelperUsesSystemFormatWhenFormatWithNullValueIsGiven(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
+        $view = new StandaloneView();
+        $view->setTemplateSource('{f:format.date(date: "@1645115363", format:"{undefinedVariable}")}');
+        self::assertSame('Thursday, 17. Feb 22', ($view->render()));
+    }
+
+    /**
      * @test
      */
     public function viewHelperThrowsExceptionWithOriginalMessageIfDateStringCantBeParsed(): void
