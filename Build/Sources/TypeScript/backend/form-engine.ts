@@ -589,21 +589,22 @@ export default (function() {
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function(): void {
     $('.t3js-form-field-eval-null-placeholder-checkbox').each((index: number, el: HTMLElement) => {
-      FormEngine.toggleCheckboxField($(el).find('input[type="checkbox"]'));
+      FormEngine.toggleCheckboxField($(el).find('input[type="checkbox"]'), false);
     });
   };
 
   /**
    * Set initial state of both div's (one containing actual field, other containing placeholder field)
    * depending on whether checkbox is checked or not
-   * @param $checkbox
    */
-  FormEngine.toggleCheckboxField = function($checkbox: JQuery): void {
+  FormEngine.toggleCheckboxField = function($checkbox: JQuery, triggerFocusWhenChecked: boolean = true): void {
     const $item = $checkbox.closest('.t3js-formengine-field-item');
     if ($checkbox.prop('checked')) {
       $item.find('.t3js-formengine-placeholder-placeholder').hide();
       $item.find('.t3js-formengine-placeholder-formfield').show();
-      $item.find('.t3js-formengine-placeholder-formfield').find(':input').trigger('focus');
+      if (triggerFocusWhenChecked) {
+        $item.find('.t3js-formengine-placeholder-formfield').find(':input').trigger('focus');
+      }
     } else {
       $item.find('.t3js-formengine-placeholder-placeholder').show();
       $item.find('.t3js-formengine-placeholder-formfield').hide();
