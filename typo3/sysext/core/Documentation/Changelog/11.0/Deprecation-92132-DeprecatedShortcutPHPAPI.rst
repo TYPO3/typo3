@@ -48,7 +48,7 @@ introduced. This method expects the full set of arguments and values to create a
    $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
    $pageId = (int)($request->getQueryParams()['id'] ?? 0);
    $shortCutButton = $buttonBar->makeShortcutButton()
-       ->setRouteIdentifier('web_view')
+       ->setRouteIdentifier('web_ViewpageView')
        ->setDisplayName('View page ' . $pageId)
        ->setArguments([
           'id' => $pageId,

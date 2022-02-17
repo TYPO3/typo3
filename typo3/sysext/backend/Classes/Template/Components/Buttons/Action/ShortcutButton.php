@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
  * $pageId = (int)($request->getQueryParams()['id'] ?? 0);
  * $myButton = $buttonBar->makeShortcutButton()
- *       ->setRouteIdentifier('web_view')
+ *       ->setRouteIdentifier('web_ViewpageView')
  *       ->setDisplayName('View page ' . $pageId)
  *       ->setArguments([
  *          'id' => $pageId
