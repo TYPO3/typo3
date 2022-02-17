@@ -61,6 +61,7 @@ class ViewModuleController
     {
         $languageService = $this->getLanguageService();
         $pageId = (int)($request->getQueryParams()['id'] ?? 0);
+        $moduleData = $request->getAttribute('moduleData');
         $pageInfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
 
         $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-viewpage');
@@ -80,7 +81,10 @@ class ViewModuleController
             return $view->renderResponse('Empty');
         }
 
-        $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
+        if ($moduleData->clean('language', array_keys($this->getPreviewLanguages($pageId)))) {
+            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        }
+        $languageId = (int)$moduleData->get('language');
         $targetUrl = (string)PreviewUriBuilder::create($pageId)
             ->withAdditionalQueryParameters($this->getTypeParameterIfSet($pageId) . '&L=' . $languageId)
             ->buildUri();
@@ -94,13 +98,12 @@ class ViewModuleController
         }
 
         $this->registerDocHeader($view, $pageId, $languageId, $targetUrl);
-        $backendUser = $this->getBackendUser();
-        $current = $backendUser->uc['moduleData']['web_view']['States']['current'] ?? [];
+        $current = $moduleData->get('States')['current'] ?? [];
         $current['label'] = ($current['label'] ?? $languageService->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:custom'));
         $current['width'] = MathUtility::forceIntegerInRange($current['width'] ?? 320, 300);
         $current['height'] = MathUtility::forceIntegerInRange($current['height'] ?? 480, 300);
 
-        $custom = $backendUser->uc['moduleData']['web_view']['States']['custom'] ?? [];
+        $custom = $moduleData->get('States')['custom'] ?? [];
         $custom['width'] = MathUtility::forceIntegerInRange($custom['width'] ?? 320, 300);
         $custom['height'] = MathUtility::forceIntegerInRange($current['custom'] ?? 480, 300);
 
@@ -251,25 +254,6 @@ class ViewModuleController
             // do nothing
         }
         return $languages;
-    }
-
-    /**
-     * Returns the current language.
-     */
-    protected function getCurrentLanguage(int $pageId, string $languageParam = null): int
-    {
-        $languageId = (int)$languageParam;
-        if ($languageParam === null) {
-            $states = $this->getBackendUser()->uc['moduleData']['web_view']['States'] ?? [];
-            $languages = $this->getPreviewLanguages($pageId);
-            if (isset($states['languageSelectorValue']) && isset($languages[$states['languageSelectorValue']])) {
-                $languageId = (int)$states['languageSelectorValue'];
-            }
-        } else {
-            $this->getBackendUser()->uc['moduleData']['web_view']['States']['languageSelectorValue'] = $languageId;
-            $this->getBackendUser()->writeUC();
-        }
-        return $languageId;
     }
 
     /**

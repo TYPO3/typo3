@@ -41,7 +41,7 @@ class ViewPage {
   private readonly minimalHeight: number = 300;
   private readonly minimalWidth: number = 300;
 
-  private readonly storagePrefix: string = 'moduleData.web_view.States.';
+  private readonly storagePrefix: string = 'moduleData.web_ViewpageView.States.';
   private $iframe: JQuery;
   private $resizableContainer: JQuery;
   private $sizeSelector: JQuery;
