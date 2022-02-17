@@ -24,9 +24,9 @@ be overwritten via :php:`GET` / :php:`POST` and their default value.
 The whole determination is done before the requested route target - usually
 a backend controller - is called. This means, the route target can just
 read the final module data and does no longer have to fiddle around with
-overwritting and persisting the data manually.
+overwriting and persisting the data manually.
 
-Previously, reading, overwritting and persisting of module data (settings)
+Previously, reading, overwriting and persisting of module data (settings)
 was done in the controller:
 
 .. code-block:: php
@@ -65,25 +65,25 @@ The :php:`ModuleData` object provides the following methods:
 +-------------------------+-----------------------+----------------------------------------------------+
 | Method                  | Parameters            | Description                                        |
 +=========================+=======================+====================================================+
-| createFromModule()      | :php:`module`         | Create a new object for the given module, while    |
-|                         | :php:`$data`          | overwritting the default values with :php:`data`.  |
+| createFromModule()      | :php:`$module`        | Create a new object for the given module, while    |
+|                         | :php:`$data`          | overwriting the default values with :php:`$data`.  |
 +-------------------------+-----------------------+----------------------------------------------------+
 | getModuleIdentifier()   |                       | Returns the related module identifier              |
 +-------------------------+-----------------------+----------------------------------------------------+
-| get()                   | :php:`propertyName`   | Returns the value for :php:`propertyName`, or the  |
-|                         | :php:`default`        | :php:`$default`, if not set.                       |
+| get()                   | :php:`$propertyName`  | Returns the value for :php:`$propertyName`, or the |
+|                         | :php:`$default`       | :php:`$default`, if not set.                       |
 +-------------------------+-----------------------+----------------------------------------------------+
-| set()                   | :php:`propertyName`   | Updates :php:`$propertyName` with the given        |
-|                         | :php:`$value`         | :php:`value`.                                      |
+| set()                   | :php:`$propertyName`  | Updates :php:`$propertyName` with the given        |
+|                         | :php:`$value`         | :php:`$value`.                                     |
 +-------------------------+-----------------------+----------------------------------------------------+
-| has()                   | :php:`propertyName`   | Whether :php:`$propertyName` exists.               |
+| has()                   | :php:`$propertyName`  | Whether :php:`$propertyName` exists.               |
 +-------------------------+-----------------------+----------------------------------------------------+
-| clean()                 | :php:`propertyName`   | Cleans a single property by the given allowed      |
-|                         | :php:`allowedValues`  | list and falls back to either the default value    |
+| clean()                 | :php:`$propertyName`  | Cleans a single property by the given allowed      |
+|                         | :php:`$allowedValues` | list and falls back to either the default value    |
 |                         |                       | or the first allowed value.                        |
 +-------------------------+-----------------------+----------------------------------------------------+
-| cleanUp()               | :php:`allowedData`    | Cleans up all module data, which are defined in    |
-|                         | :php:`useKeys`        | the given allowed data list. Usually called with   |
+| cleanUp()               | :php:`$allowedData`   | Cleans up all module data, which are defined in    |
+|                         | :php:`$useKeys`       | the given allowed data list. Usually called with   |
 |                         |                       | :php:`$MOD_MENU` in a controller with module menu. |
 +-------------------------+-----------------------+----------------------------------------------------+
 | toArray()               |                       | Returns the module data as :php:`array`.           |
@@ -94,12 +94,12 @@ using :php:`$backendUser->pushModuleData('my_module', $this->moduleData->toArray
 
 .. note::
 
-    It's still possible to store and retreive arbitrary module data. The
-    definiton of :php:`moduleData` in the module registration only defines,
+    It's still possible to store and retrieve arbitrary module data. The
+    definition of :php:`moduleData` in the module registration only defines,
     which properties can be overwritten in a request (with :php:`GET` / :php:`POST`).
 
 To restrict the values of module data properties, the given :php:`ModuleData`
-object can be cleaned in e.g. a controller:
+object can be cleaned e.g. in a controller:
 
 .. code-block:: php
 
@@ -116,7 +116,7 @@ or if this value is also not allowed, to the first allowed value.
 Impact
 ======
 
-The new :php:`ModuleData` object is availabe as new attribute of the
+The new :php:`ModuleData` object is available as new attribute of the
 PSR-7 Request - in case a TYPO3 backend module is requested - and contains
 the stored module data, which might have been overwritten through the current
 request (with :php:`GET` / :php:`POST`).
