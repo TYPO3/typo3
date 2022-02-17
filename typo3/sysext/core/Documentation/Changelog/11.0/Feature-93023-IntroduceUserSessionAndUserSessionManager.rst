@@ -88,8 +88,8 @@ method :php:`create()`.
 As already mentioned you can then use the :php:`UserSessionManager` to work
 with user sessions. A couple of public methods are available.
 
-Public Methods within `UserSession`
------------------------------------
+Public Methods within `UserSessionManager`
+------------------------------------------
 
 +---------------------------------------------------------------+-----------------------------------------------------------------------+
 | Method                                                        | Description                                                           |
