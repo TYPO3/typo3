@@ -90,6 +90,7 @@ class CodeCompletionController
     {
         $cleanedTreeBranch = [];
         foreach ($treeBranch as $key => $value) {
+            $key = is_int($key) ? (string)$key : $key;
             //type definition or value-assignment
             if (substr($key, -1) !== '.') {
                 if ($value != '') {
