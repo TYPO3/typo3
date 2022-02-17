@@ -156,7 +156,7 @@ final class HtmlViewHelper extends AbstractViewHelper
             $tsfeBackup = self::simulateFrontendEnvironment();
         }
 
-        $value = $renderChildrenClosure();
+        $value = $renderChildrenClosure() ?? '';
 
         // Prepare data array
         if (is_object($data)) {

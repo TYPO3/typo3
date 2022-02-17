@@ -40,6 +40,10 @@ class HtmlViewHelperTest extends FunctionalTestCase
                 '<f:format.html>###PROJECT### is a cool CMS</f:format.html>',
                 'TYPO3 is a cool CMS',
             ],
+            'format.html: process inline notation with undefined variable returns empty string' => [
+                '{undefinedVariable -> f:format.html()}',
+                '',
+            ],
             'format.html: process specific TS path' => [
                 '<f:format.html parseFuncTSPath="lib.foo">###FOO### is BAR</f:format.html>',
                 'BAR is BAR',
