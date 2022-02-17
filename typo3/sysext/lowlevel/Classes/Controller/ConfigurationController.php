@@ -52,54 +52,39 @@ class ConfigurationController
         $backendUser = $this->getBackendUser();
         $queryParams = $request->getQueryParams();
         $postValues = $request->getParsedBody();
-        $moduleState = $backendUser->uc['moduleData']['system_config'] ?? [];
+        $moduleData = $request->getAttribute('moduleData');
 
-        $configurationProviderIdentifier = (string)($queryParams['tree'] ?? $moduleState['tree'] ?? '');
+        // Validate requested "tree"
+        $moduleData->clean('tree', array_keys($this->configurationProviderRegistry->getProviders()));
 
-        if ($configurationProviderIdentifier === ''
-            && $this->configurationProviderRegistry->getFirstProvider() !== null
-        ) {
-            $configurationProviderIdentifier = $this->configurationProviderRegistry->getFirstProvider()->getIdentifier();
-        }
-
-        if (!$this->configurationProviderRegistry->hasProvider($configurationProviderIdentifier)) {
-            throw new \InvalidArgumentException(
-                'No provider found for identifier: ' . $configurationProviderIdentifier,
-                1606306196
-            );
-        }
-
+        $configurationProviderIdentifier = $moduleData->get('tree');
         $configurationProvider = $this->configurationProviderRegistry->getProvider($configurationProviderIdentifier);
-        $moduleState['tree'] = $configurationProviderIdentifier;
-
         $configurationArray = $configurationProvider->getConfiguration();
 
         // Search string given or regex search enabled?
         $searchString = trim((string)($postValues['searchString'] ?? ''));
-        $moduleState['regexSearch'] = (bool)($postValues['regexSearch'] ?? $moduleState['regexSearch'] ?? false);
 
         // Prepare array renderer class, apply search and expand / collapse states
         $arrayBrowser = GeneralUtility::makeInstance(ArrayBrowser::class, $request->getAttribute('route'));
-        $arrayBrowser->regexMode = $moduleState['regexSearch'];
+        $arrayBrowser->regexMode = (bool)$moduleData->get('regexSearch');
         $node = $queryParams['node'] ?? null;
         if ($searchString) {
             $arrayBrowser->depthKeys = $arrayBrowser->getSearchKeys($configurationArray, '', $searchString, []);
         } elseif (is_array($node)) {
-            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleState['node_' . $configurationProviderIdentifier] ?? []);
+            $newExpandCollapse = $arrayBrowser->depthKeys($node, $moduleData->get('node_' . $configurationProviderIdentifier, []));
             $arrayBrowser->depthKeys = $newExpandCollapse;
-            $moduleState['node_' . $configurationProviderIdentifier] = $newExpandCollapse;
+            $moduleData->set('node_' . $configurationProviderIdentifier, $newExpandCollapse);
         } else {
-            $arrayBrowser->depthKeys = $moduleState['node_' . $configurationProviderIdentifier] ?? [];
+            $arrayBrowser->depthKeys = $moduleData->get('node_' . $configurationProviderIdentifier, []);
         }
 
-        // Store new state
-        $backendUser->uc['moduleData']['system_config'] = $moduleState;
-        $backendUser->writeUC();
+        // Store new moduleData state
+        $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
 
         $view->assignMultiple([
             'treeName' => $configurationProvider->getLabel(),
             'searchString' => $searchString,
-            'regexSearch' => $moduleState['regexSearch'],
+            'regexSearch' => (bool)$moduleData->get('regexSearch'),
             'tree' => $arrayBrowser->tree($configurationArray, ''),
         ]);
 

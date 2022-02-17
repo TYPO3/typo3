@@ -32,5 +32,9 @@ return [
                 'target' => ConfigurationController::class . '::handleRequest',
             ],
         ],
+        'moduleData' => [
+            'tree' => '',
+            'regexSearch' => false,
+        ],
     ],
 ];
