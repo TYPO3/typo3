@@ -65,9 +65,9 @@ values are available:
 
 .. code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS'][BE][loginRateLimit] = 5;
-   $GLOBALS['TYPO3_CONF_VARS'][BE][loginRateLimitInterval] = '15 minutes';
-   $GLOBALS['TYPO3_CONF_VARS'][BE][loginRateLimitIpExcludeList] = '';
+   $GLOBALS['TYPO3_CONF_VARS']['BE']['loginRateLimit'] = 5;
+   $GLOBALS['TYPO3_CONF_VARS']['BE']['loginRateLimitInterval'] = '15 minutes';
+   $GLOBALS['TYPO3_CONF_VARS']['BE']['loginRateLimitIpExcludeList'] = '';
 
 Setting `[BE][loginRateLimit] = 0` will disable rate limiting. The same
 applies, if `[BE][loginRateLimitIpExcludeList] = '*'` is configured.
@@ -100,8 +100,8 @@ The following new configuration values are available:
 
 .. code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS'][FE][loginRateLimit] = 10;
-   $GLOBALS['TYPO3_CONF_VARS'][FE][loginRateLimitInterval] = '15 minutes';
-   $GLOBALS['TYPO3_CONF_VARS'][FE][loginRateLimitIpExcludeList] = '';
+   $GLOBALS['TYPO3_CONF_VARS']['FE']['loginRateLimit'] = 10;
+   $GLOBALS['TYPO3_CONF_VARS']['FE']['loginRateLimitInterval'] = '15 minutes';
+   $GLOBALS['TYPO3_CONF_VARS']['FE']['loginRateLimitIpExcludeList'] = '';
 
 .. index:: Backend, Frontend, ext:core
