@@ -72,11 +72,15 @@ class ListController extends AbstractController
      */
     protected function indexAction(): ResponseInterface
     {
-        if ($this->request->hasArgument('filter') && is_string($this->request->getArgument('filter'))) {
+        $moduleData = $this->request->getAttribute('moduleData');
+        if ($this->request->hasArgument('filter')
+            && is_string($this->request->getArgument('filter'))
+        ) {
             $filter = $this->request->getArgument('filter');
-            $this->saveBackendUserFilter($filter);
+            $moduleData->set('filter', $filter);
+            $this->getBackendUserAuthentication()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         } else {
-            $filter = $this->getBackendUserFilter();
+            $filter = (string)$moduleData->get('filter');
         }
         $this->addComposerModeNotification();
         $isComposerMode = Environment::isComposerMode();
@@ -250,16 +254,6 @@ class ListController extends AbstractController
                 AbstractMessage::INFO
             );
         }
-    }
-
-    protected function getBackendUserFilter(): string
-    {
-        return (string)($this->getBackendUserAuthentication()->getModuleData('ExtensionManager')['filter'] ?? '');
-    }
-
-    protected function saveBackendUserFilter(string $filter): void
-    {
-        $this->getBackendUserAuthentication()->pushModuleData('ExtensionManager', ['filter' => $filter]);
     }
 
     protected function enrichExtensionsWithViewInformation(array $availableAndInstalledExtensions, bool $isComposerMode): array

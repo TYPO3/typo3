@@ -41,5 +41,8 @@ return [
                 'list', 'detail',
             ],
         ],
+        'moduleData' => [
+            'filter' => '',
+        ],
     ],
 ];
