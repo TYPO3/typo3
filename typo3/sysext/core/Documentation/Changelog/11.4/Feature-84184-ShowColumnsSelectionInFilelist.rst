@@ -21,12 +21,12 @@ The fields to be selected are a combination of special fields, such as
 record fields, as well as all available `sys_file_metadata` fields.
 
 Administrators can manage whether the column selection is available
-for their users with a new user TSconfig option:
+for their users with a new User TSconfig option:
 
 .. code-block:: typoscript
 
    # disable the column selector
-   file_list.displayColumnSelector = 0
+   options.file_list.displayColumnSelector = 0
 
 
 Impact
