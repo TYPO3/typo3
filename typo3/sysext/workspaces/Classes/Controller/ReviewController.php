@@ -58,6 +58,7 @@ class ReviewController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
+        $moduleData = $request->getAttribute('moduleData');
         $pageUid = (int)($queryParams['id'] ?? 0);
 
         $icons = [
@@ -106,6 +107,7 @@ class ReviewController
         }
         $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID && $pageUid > 0;
 
+        $selectedLanguage = (string)$moduleData->get('language');
         $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
         $view->assignMultiple([
             'isAdmin' => $backendUser->isAdmin(),
@@ -116,13 +118,13 @@ class ReviewController
             'pageTitle' => $pageTitle,
             'activeWorkspaceUid' => $activeWorkspace,
             'activeWorkspaceTitle' => $activeWorkspaceTitle,
-            'availableLanguages' => $this->getSystemLanguages($pageUid),
+            'availableLanguages' => $this->getSystemLanguages($pageUid, $selectedLanguage),
             'availableStages' => $this->stagesService->getStagesForWSUser(),
             'availableSelectStages' => $this->getAvailableSelectStages(),
             'stageActions' => $this->getStageActions(),
-            'selectedLanguage' => $this->getLanguageSelection(),
-            'selectedDepth' => $this->getDepthSelection($pageUid),
-            'selectedStage' => $this->getStageSelection(),
+            'selectedLanguage' => $selectedLanguage,
+            'selectedDepth' => (int)$moduleData->get('depth', ($pageUid === 0 ? 999 : 1)),
+            'selectedStage' => (int)$moduleData->get('stage'),
             'workspaceSwitched' => $workspaceSwitched,
         ]);
         $view->setTitle(
@@ -243,24 +245,6 @@ class ReviewController
         return (string)$this->uriBuilder->buildUriFromRoute('web_WorkspacesWorkspaces', $parameters);
     }
 
-    protected function getLanguageSelection(): string
-    {
-        $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
-        return (string)($moduleData['settings']['language'] ?? 'all');
-    }
-
-    protected function getDepthSelection(int $pageId): int
-    {
-        $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
-        return (int)($moduleData['settings']['depth'] ?? ($pageId === 0 ? 999 : 1));
-    }
-
-    protected function getStageSelection(): int
-    {
-        $moduleData = $this->getBackendUser()->getModuleData('workspaces') ?? [];
-        return (int)($moduleData['settings']['stage'] ?? -99);
-    }
-
     /**
      * Returns true if at least one custom workspace next to live workspace exists.
      */
@@ -277,16 +261,15 @@ class ReviewController
     /**
      * Gets all available system languages.
      */
-    protected function getSystemLanguages(int $pageId): array
+    protected function getSystemLanguages(int $pageId, string $selectedLanguage): array
     {
         $languages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
         if (isset($languages[-1])) {
             $languages[-1]['uid'] = 'all';
         }
-        $activeLanguage = $this->getLanguageSelection();
         foreach ($languages as &$language) {
             // needs to be strict type checking as this is not possible in fluid
-            if ((string)$language['uid'] === $activeLanguage) {
+            if ((string)$language['uid'] === $selectedLanguage) {
                 $language['active'] = true;
             }
         }

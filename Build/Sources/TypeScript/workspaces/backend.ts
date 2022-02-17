@@ -414,7 +414,7 @@ class Backend extends Workspaces {
     // Listen for depth changes
     this.elements.$depthSelector.on('change', (e: JQueryEventObject): void => {
       const depth = (<HTMLSelectElement>e.target).value;
-      Persistent.set('moduleData.workspaces.settings.depth', depth);
+      Persistent.set('moduleData.web_WorkspacesWorkspaces.depth', depth);
       this.settings.depth = depth;
       this.getWorkspaceInfos();
     });
@@ -425,7 +425,7 @@ class Backend extends Workspaces {
     // Listen for language changes
     this.elements.$languageSelector.on('change', (e: JQueryEventObject): void => {
       const $me = $(e.target);
-      Persistent.set('moduleData.workspaces.settings.language', $me.val());
+      Persistent.set('moduleData.web_WorkspacesWorkspaces.language', $me.val());
       this.settings.language = $me.val();
       this.sendRemoteRequest(
         this.generateRemotePayload('getWorkspaceInfos', this.settings),
@@ -438,7 +438,7 @@ class Backend extends Workspaces {
 
     this.elements.$stagesSelector.on('change', (e: JQueryEventObject): void => {
       const stage = (<HTMLSelectElement>e.target).value;
-      Persistent.set('moduleData.workspaces.settings.stage', stage);
+      Persistent.set('moduleData.web_WorkspacesWorkspaces.stage', stage);
       this.settings.stage = stage;
       this.getWorkspaceInfos();
     });

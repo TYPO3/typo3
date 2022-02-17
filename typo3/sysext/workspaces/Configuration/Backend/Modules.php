@@ -18,5 +18,10 @@ return [
                 'target' => ReviewController::class . '::handleRequest',
             ],
         ],
+        'moduleData' => [
+            'language' => 'all',
+            'depth' => 1,
+            'stage' => -99,
+        ],
     ],
 ];
