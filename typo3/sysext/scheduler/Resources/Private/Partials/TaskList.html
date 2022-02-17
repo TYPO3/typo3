@@ -240,7 +240,7 @@
                                                     <div class="btn-group" role="group">
                                                         <f:comment>@todo: Next one should be a button type="submit".</f:comment>
                                                         <f:be.link route="system_txschedulerM1"
-                                                            name="action[stop]"
+                                                            parameters="{action: {'stop': task.uid}}"
                                                             class="btn btn-default t3js-modal-trigger"
                                                             data="{bs-toggle: 'tooltip',
                                                                 severity: 'warning',
