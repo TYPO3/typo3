@@ -19,13 +19,13 @@ namespace TYPO3\CMS\Beuser\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
-use TYPO3\CMS\Beuser\Domain\Model\ModuleData;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
@@ -73,19 +73,22 @@ class BackendUserController extends ActionController
      */
     public function processRequest(RequestInterface $request): ResponseInterface
     {
+        /** @var Request $request */
         $arguments = $request->getArguments();
-        $backendUser = $this->getBackendUser();
-        if (is_array($arguments) && isset($arguments['action']) && in_array((string)$arguments['action'], ['index', 'groups', 'online'])
-            && (string)($backendUser->uc['beuser']['defaultAction'] ?? '') !== (string)$arguments['action']
+        $moduleData = $request->getAttribute('moduleData');
+        if (
+            isset($arguments['action'])
+            && in_array((string)$arguments['action'], ['index', 'groups', 'online'])
+            && (string)$moduleData->get('defaultAction') !== (string)$arguments['action']
         ) {
-            $backendUser->uc['beuser']['defaultAction'] = (string)$arguments['action'];
-            $backendUser->writeUC();
-        } elseif (!isset($arguments['action']) && isset($backendUser->uc['beuser']['defaultAction'])
-            && in_array((string)$backendUser->uc['beuser']['defaultAction'], ['index', 'groups', 'online'])
+            $moduleData->set('defaultAction', (string)$arguments['action']);
+            $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
+        } elseif (
+            !isset($arguments['action'])
+            && $moduleData->has('defaultAction')
+            && in_array((string)$moduleData->get('defaultAction'), ['index', 'groups', 'online'])
         ) {
-            if ($request instanceof Request) {
-                $request->setControllerActionName((string)$backendUser->uc['beuser']['defaultAction']);
-            }
+            $request->setControllerActionName((string)$moduleData->get('defaultAction'));
         }
         return parent::processRequest($request);
     }
@@ -98,7 +101,7 @@ class BackendUserController extends ActionController
      */
     public function initializeAction(): void
     {
-        $this->moduleData = ModuleData::fromUc((array)($this->getBackendUser()->getModuleData('tx_beuser')));
+        $this->moduleData = $this->request->getAttribute('moduleData');
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-beuser');
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
     }
@@ -132,17 +135,18 @@ class BackendUserController extends ActionController
 
         if ($operation === 'reset-filters') {
             // Reset the module data demand object
-            $this->moduleData->setDemand(new Demand());
+            $this->moduleData->set('demand', []);
             $demand = null;
         }
         if ($demand === null) {
-            $demand = $this->moduleData->getDemand();
+            $demand = Demand::fromUc((array)$this->moduleData->get('demand', []));
         } else {
-            $this->moduleData->setDemand($demand);
+            $this->moduleData->set('demand', $demand->forUc());
         }
-        $backendUser->pushModuleData('tx_beuser', $this->moduleData->forUc());
+        $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
 
-        $compareUserList = $this->moduleData->getCompareUserList();
+        $compareUserList = array_keys((array)$this->moduleData->get('compareUserList', []));
+
         $backendUsers = $this->backendUserRepository->findDemanded($demand);
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
@@ -254,7 +258,7 @@ class BackendUserController extends ActionController
      */
     public function compareAction(): ResponseInterface
     {
-        $compareUserList = $this->moduleData->getCompareUserList();
+        $compareUserList = array_keys((array)$this->moduleData->get('compareUserList', []));
         if (empty($compareUserList)) {
             return $this->redirect('index');
         }
@@ -321,26 +325,19 @@ class BackendUserController extends ActionController
 
     /**
      * Attaches one backend user to the compare list
-     *
-     * @param int $uid
      */
-    public function addToCompareListAction($uid): ResponseInterface
+    public function addToCompareListAction(int $uid): ResponseInterface
     {
-        $this->moduleData->attachUidCompareUser($uid);
-        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
+        $this->addToCompareList('compareUserList', $uid);
         return new ForwardResponse('index');
     }
 
     /**
      * Removes given backend user to the compare list
-     *
-     * @param int $uid
-     * @param int $redirectToCompare
      */
-    public function removeFromCompareListAction($uid, int $redirectToCompare = 0): ResponseInterface
+    public function removeFromCompareListAction(int $uid, int $redirectToCompare = 0): ResponseInterface
     {
-        $this->moduleData->detachUidCompareUser($uid);
-        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
+        $this->removeFromCompareList('compareUserList', $uid);
         if ($redirectToCompare) {
             return $this->redirect('compare');
         }
@@ -352,8 +349,7 @@ class BackendUserController extends ActionController
      */
     public function removeAllFromCompareListAction(): ResponseInterface
     {
-        $this->moduleData->resetCompareUserList();
-        $this->getBackendUser()->pushModuleData('tx_beuser', $this->moduleData->forUc());
+        $this->cleanCompareList('compareUserList');
         return $this->redirect('index');
     }
 
@@ -385,7 +381,7 @@ class BackendUserController extends ActionController
         $backendUsers = $this->backendUserGroupRepository->findAll();
         $paginator = new QueryResultPaginator($backendUsers, $currentPage, 50);
         $pagination = new SimplePagination($paginator);
-        $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
+        $compareGroupUidList = array_keys((array)$this->moduleData->get('compareGroupUidList', []));
         $this->moduleTemplate->assignMultiple(
             [
                 'paginator' => $paginator,
@@ -419,7 +415,7 @@ class BackendUserController extends ActionController
 
     public function compareGroupsAction(): ResponseInterface
     {
-        $compareGroupUidList = array_keys($this->getBackendUser()->uc['beuser']['compareGroupUidList'] ?? []);
+        $compareGroupUidList = array_keys((array)$this->moduleData->get('compareGroupUidList', []));
 
         $compareData = [];
         foreach ($compareGroupUidList as $uid) {
@@ -451,33 +447,19 @@ class BackendUserController extends ActionController
 
     /**
      * Attaches one backend user group to the compare list
-     *
-     * @param int $uid
      */
     public function addGroupToCompareListAction(int $uid): ResponseInterface
     {
-        $backendUser = $this->getBackendUser();
-        $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
-        $list[$uid] = true;
-        $backendUser->uc['beuser']['compareGroupUidList'] = $list;
-        $backendUser->writeUC();
+        $this->addToCompareList('compareGroupUidList', $uid);
         return $this->redirect('groups');
     }
 
     /**
      * Removes given backend user group to the compare list
-     *
-     * @param int $uid
-     * @param int $redirectToCompare
      */
     public function removeGroupFromCompareListAction(int $uid, int $redirectToCompare = 0): ResponseInterface
     {
-        $backendUser = $this->getBackendUser();
-        $list = $backendUser->uc['beuser']['compareGroupUidList'] ?? [];
-        unset($list[$uid]);
-        $backendUser->uc['beuser']['compareGroupUidList'] = $list;
-        $backendUser->writeUC();
-
+        $this->removeFromCompareList('compareGroupUidList', $uid);
         if ($redirectToCompare) {
             return $this->redirect('compareGroups');
         }
@@ -489,9 +471,7 @@ class BackendUserController extends ActionController
      */
     public function removeAllGroupsFromCompareListAction(): ResponseInterface
     {
-        $backendUser = $this->getBackendUser();
-        $backendUser->uc['beuser']['compareGroupUidList'] = [];
-        $backendUser->writeUC();
+        $this->cleanCompareList('compareGroupUidList');
         return $this->redirect('groups');
     }
 
@@ -566,6 +546,37 @@ class BackendUserController extends ActionController
             ->setActive($currentAction === 'online')
         );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    /**
+     * Attaches the given uid to the requested compare list
+     */
+    protected function addToCompareList(string $listIdentifier, int $uid): void
+    {
+        $compareList = (array)$this->moduleData->get($listIdentifier, []);
+        $compareList[$uid] = true;
+        $this->moduleData->set($listIdentifier, $compareList);
+        $this->getBackendUser()->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
+    }
+
+    /**
+     * Removes the given uid from the requested compare list
+     */
+    protected function removeFromCompareList(string $listIdentifier, int $uid): void
+    {
+        $compareList = (array)$this->moduleData->get($listIdentifier, []);
+        unset($compareList[$uid]);
+        $this->moduleData->set($listIdentifier, $compareList);
+        $this->getBackendUser()->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
+    }
+
+    /**
+     * Removes all items from the requested compare list
+     */
+    protected function cleanCompareList(string $listIdentifier): void
+    {
+        $this->moduleData->set($listIdentifier, []);
+        $this->getBackendUser()->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
     }
 
     protected function getBackendUser(): BackendUserAuthentication
