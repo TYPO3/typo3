@@ -102,21 +102,6 @@ class RedirectHandler
     }
 
     /**
-     * Get alternative login form redirect url
-     *
-     * @param array $redirectModes
-     * @param int $redirectPageLogin
-     * @return string
-     */
-    protected function getLoginRedirectUrl(array $redirectModes, int $redirectPageLogin): string
-    {
-        if ($this->isRedirectModeActive($redirectModes, RedirectMode::LOGIN)) {
-            return $this->redirectModeHandler->redirectModeLogin($redirectPageLogin);
-        }
-        return $this->getGetpostRedirectUrl($redirectModes);
-    }
-
-    /**
      * Is used for alternative redirect urls on redirect mode "getpost"
      *
      * @param array $redirectModes
@@ -230,7 +215,7 @@ class RedirectHandler
     }
 
     /**
-     * Returns the redirect Url that should be used in login form
+     * Returns the redirect Url that should be used in login form template for GET/POST redirect mode
      *
      * @param RedirectConfiguration $configuration
      * @param bool $redirectDisabled
@@ -239,9 +224,9 @@ class RedirectHandler
     public function getLoginFormRedirectUrl(RedirectConfiguration $configuration, bool $redirectDisabled): string
     {
         if (!$redirectDisabled) {
-            return $this->getLoginRedirectUrl($configuration->getModes(), $configuration->getPageOnLogin());
+            return $this->getGetpostRedirectUrl($configuration->getModes());
         }
-        return $this->requestHandler->getRedirectUrlRequestParam();
+        return '';
     }
 
     /**
