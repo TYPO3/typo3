@@ -124,7 +124,7 @@ final class DateViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $format = $arguments['format'];
+        $format = $arguments['format'] ?? '';
         $base = $arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         if (is_string($base)) {
             $base = trim($base);
