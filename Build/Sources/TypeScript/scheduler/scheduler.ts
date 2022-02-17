@@ -54,15 +54,15 @@ class Scheduler {
   private static storeCollapseState(table: string, isCollapsed: boolean): void {
     let storedModuleData = {};
 
-    if (PersistentStorage.isset('moduleData.scheduler')) {
-      storedModuleData = PersistentStorage.get('moduleData.scheduler');
+    if (PersistentStorage.isset('moduleData.system_txschedulerM1')) {
+      storedModuleData = PersistentStorage.get('moduleData.system_txschedulerM1');
     }
 
     const collapseConfig: any = {};
     collapseConfig[table] = isCollapsed ? 1 : 0;
 
     $.extend(storedModuleData, collapseConfig);
-    PersistentStorage.set('moduleData.scheduler', storedModuleData);
+    PersistentStorage.set('moduleData.system_txschedulerM1', storedModuleData);
   }
 
   constructor() {

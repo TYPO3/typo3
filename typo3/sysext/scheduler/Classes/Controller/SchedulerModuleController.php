@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -89,18 +90,11 @@ class SchedulerModuleController
 
         // See if action from main module drop down is given, else fetch from user data and update if needed.
         $backendUser = $this->getBackendUser();
-        $storedModuleData = $backendUser->getModuleData('scheduler');
-        $requestedSubModule = $queryParams['subModule'] ?? $storedModuleData['subModule'] ?? 'scheduler';
-        if (!empty($requestedSubModule) && !in_array($requestedSubModule, ['scheduler', 'info', 'check'], true)) {
-            // Reset to 'scheduler list view' if stored moduleData or GET was invalid.
-            $requestedSubModule = 'scheduler';
+        $moduleData = $request->getAttribute('moduleData');
+        if ($moduleData->clean('subModule', ['scheduler', 'info', 'check'])) {
+            $backendUser->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
         }
-        if (!isset($storedModuleData['subModule']) || $storedModuleData['subModule'] !== $requestedSubModule) {
-            $storedModuleData['subModule'] = $requestedSubModule;
-            $backendUser->pushModuleData('scheduler', $storedModuleData);
-        }
-        // Don't further fiddle with backend user module data from here on.
-        unset($storedModuleData);
+        $requestedSubModule = (string)$moduleData->get('subModule');
 
         // 'info' and 'check' submodules have no other action and can be rendered directly.
         if ($requestedSubModule === 'info') {
@@ -113,26 +107,26 @@ class SchedulerModuleController
         // Simple actions from list view.
         if (!empty($parsedBody['action']['toggleHidden'])) {
             $this->toggleDisabledFlag($view, (int)$parsedBody['action']['toggleHidden']);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($queryParams['action']['delete'])) {
             // @todo: This should be POST only, but modals on button type="submit" don't trigger and buttons in doc header can't do that, either.
             //        Compare with 'toggleHidden' solution above which has no modal.
             $this->deleteTask($view, (int)$queryParams['action']['delete']);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($queryParams['action']['stop'])) {
             // @todo: Same as above.
             $this->stopTask($view, (int)$queryParams['action']['stop']);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($parsedBody['execute'])) {
             $this->executeTasks($view, (string)$parsedBody['execute']);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
         if (!empty($parsedBody['scheduleCron'])) {
             $this->scheduleCrons($view, (string)$parsedBody['scheduleCron']);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
 
         if (($parsedBody['action'] ?? '') === Action::ADD
@@ -148,7 +142,7 @@ class SchedulerModuleController
                 return $this->renderAddTaskFormView($view, $request);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
-                return $this->renderListTasksView($view);
+                return $this->renderListTasksView($view, $moduleData);
             }
             if ($parsedBody['CMD'] === 'save') {
                 return $this->renderEditTaskFormView($view, $request, $newTaskUid);
@@ -168,7 +162,7 @@ class SchedulerModuleController
                 return $this->renderAddTaskFormView($view, $request);
             }
             if ($parsedBody['CMD'] === 'saveclose') {
-                return $this->renderListTasksView($view);
+                return $this->renderListTasksView($view, $moduleData);
             }
             if ($parsedBody['CMD'] === 'save') {
                 return $this->renderEditTaskFormView($view, $request);
@@ -184,7 +178,7 @@ class SchedulerModuleController
         }
 
         // Render list if no other action kicked in.
-        return $this->renderListTasksView($view);
+        return $this->renderListTasksView($view, $moduleData);
     }
 
     /**
@@ -468,6 +462,7 @@ class SchedulerModuleController
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->getRegisteredClasses();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
+        $moduleData = $request->getAttribute('moduleData');
         $taskUid = (int)($taskUid ?? $request->getQueryParams()['uid'] ?? $parsedBody['uid'] ?? 0);
         if (empty($taskUid)) {
             throw new \RuntimeException('No valid task uid given to edit task', 1641720929);
@@ -478,13 +473,13 @@ class SchedulerModuleController
         } catch (\OutOfBoundsException $e) {
             // Task not found - removed meanwhile?
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), AbstractMessage::ERROR);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
 
         if (!empty($taskRecord['serialized_executions'])) {
             // If there's a registered execution, the task should not be edited. May happen if a cron started the task meanwhile.
             $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.maynotEditRunningTask'), AbstractMessage::ERROR);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
 
         $task = null;
@@ -500,7 +495,7 @@ class SchedulerModuleController
         if ($isInvalidTask || !isset($registeredClasses[$class]) || !$this->scheduler->isValidTaskObject($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), AbstractMessage::ERROR);
-            return $this->renderListTasksView($view);
+            return $this->renderListTasksView($view, $moduleData);
         }
 
         $taskExecution = $task->getExecution();
@@ -631,11 +626,10 @@ class SchedulerModuleController
     /**
      * Assemble display of list of scheduled tasks
      */
-    protected function renderListTasksView(ModuleTemplate $view): ResponseInterface
+    protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $registeredClasses = $this->getRegisteredClasses();
-        $schedulerModuleData = $this->getBackendUser()->getModuleData('scheduler') ?? [];
 
         // Get all registered tasks
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
@@ -727,7 +721,7 @@ class SchedulerModuleController
                     'tasks' => [],
                     'groupName' => $row['taskGroupName'],
                     'groupDescription' => $row['taskGroupDescription'],
-                    'taskGroupCollapsed' => (bool)($schedulerModuleData['task-group-' . $row['taskGroupId']] ?? false),
+                    'taskGroupCollapsed' => (bool)($moduleData->get('task-group-' . ($row['taskGroupId'] ?? 0), false)),
                 ];
             }
             $taskGroupsWithTasks[(int)$row['task_group']]['tasks'][] = $taskData;
@@ -737,7 +731,7 @@ class SchedulerModuleController
             'tasks' => $taskGroupsWithTasks,
             'now' => $this->context->getAspect('date')->get('timestamp'),
             'errorClasses' => $errorClasses,
-            'errorClassesCollapsed' => (bool)($schedulerModuleData['task-group-missing'] ?? false),
+            'errorClassesCollapsed' => (bool)($moduleData->get('task-group-missing', false)),
         ]);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),

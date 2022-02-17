@@ -17,5 +17,8 @@ return [
                 'target' => SchedulerModuleController::class . '::handleRequest',
             ],
         ],
+        'moduleData' => [
+            'subModule' => 'scheduler',
+        ],
     ],
 ];
