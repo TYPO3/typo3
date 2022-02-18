@@ -106,7 +106,7 @@ class LinkValidatorController
         $this->modTS = BackendUtility::getPagesTSconfig($this->id)['mod.']['linkvalidator.'] ?? [];
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
-        $view = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-linkvalidator');
+        $view = $this->moduleTemplateFactory->create($this->request);
         if ($this->pageRecord !== []) {
             $view->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
         }

@@ -36,7 +36,7 @@ class DummyController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle('Blank');
         $view->getDocHeaderComponent()->disable();
         return $view->renderResponse('Dummy/Index');

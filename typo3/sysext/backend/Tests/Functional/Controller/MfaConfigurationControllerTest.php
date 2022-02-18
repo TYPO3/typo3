@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\MfaConfigurationController;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
@@ -61,7 +62,8 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
         $this->normalizedParams = new NormalizedParams([], [], '', '');
     }
 

@@ -88,7 +88,7 @@ class TemplateAnalyzerController extends TypoScriptTemplateModuleController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Element/CodeMirrorElement');
         }
 
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple($assigns);
         return $view->render('TemplateAnalyzerModuleFunction');
     }

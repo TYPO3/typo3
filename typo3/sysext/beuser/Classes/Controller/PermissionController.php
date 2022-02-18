@@ -102,7 +102,7 @@ class PermissionController
             return $this->updateAction($request);
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-beuser');
+        $view = $this->moduleTemplateFactory->create($request);
         if ($backendUser->workspace !== 0) {
             $this->addFlashMessage(
                 $lang->sL('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:WorkspaceWarningText'),
@@ -148,7 +148,7 @@ class PermissionController
         }
 
         // Initialize view and always assign current page id
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-beuser');
+        $view = $this->backendViewFactory->create($request);
         $view->assign('pageId', $conf['page']);
 
         // Initialize TCE for execution of updates

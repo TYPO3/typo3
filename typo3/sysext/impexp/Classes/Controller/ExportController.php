@@ -103,7 +103,7 @@ class ExportController
         }
         $inputData['preset']['public'] = (int)($inputData['preset']['public'] ?? 0);
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-impexp');
+        $view = $this->moduleTemplateFactory->create($request);
 
         $presetAction = $parsedBody['preset'] ?? [];
         $inputData = $this->processPresets($view, $presetAction, $inputData);

@@ -206,7 +206,7 @@ class MfaSetupController extends AbstractMfaController
      */
     protected function initializeView(ServerRequestInterface $request): ViewInterface
     {
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'redirect' => $request->getQueryParams()['redirect'] ?? '',
             'redirectParams' => $request->getQueryParams()['redirectParams'] ?? '',

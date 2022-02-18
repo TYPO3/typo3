@@ -370,7 +370,7 @@ class TypoScriptObjectBrowserController extends TypoScriptTemplateModuleControll
             // Ending section displayoptions
         }
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/tooltip.js');
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple($assigns);
         return $view->render('TemplateObjectBrowserModuleFunction');
     }

@@ -61,7 +61,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-opendocs');
+        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-opendocs']);
         return $view->render('ToolbarItems/ToolbarItem');
     }
 
@@ -78,7 +78,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      */
     public function getDropDown(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-opendocs');
+        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-opendocs']);
         $view->assignMultiple([
             'openDocuments' => $this->getMenuEntries($this->documentService->getOpenDocuments()),
             // If there are "recent documents" in the list, add them

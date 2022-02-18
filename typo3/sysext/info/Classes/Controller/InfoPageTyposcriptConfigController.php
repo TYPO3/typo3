@@ -61,7 +61,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
      */
     public function main(ServerRequestInterface $request)
     {
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-info');
+        $view = $this->backendViewFactory->create($request);
         if ($this->id === 0) {
             $view->assign('pageZero', true);
             $pagesUsingTSConfig = $this->getOverviewOfPagesUsingTSConfig();

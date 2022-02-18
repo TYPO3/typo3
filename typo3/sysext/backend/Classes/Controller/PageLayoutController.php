@@ -104,7 +104,7 @@ class PageLayoutController
         $this->moduleData = $request->getAttribute('moduleData');
         $pageInfo = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         if ($this->id === 0 || $pageInfo === false) {
             // Page uid 0 or no access.
             $view->setTitle($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));

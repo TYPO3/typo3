@@ -42,14 +42,14 @@ final class ModuleTemplateFactory
     ) {
     }
 
-    public function create(ServerRequestInterface $request, string $basePackageName = ''): ModuleTemplate
+    public function create(ServerRequestInterface $request): ModuleTemplate
     {
         return new ModuleTemplate(
             $this->pageRenderer,
             $this->iconFactory,
             $this->flashMessageService,
             $this->extensionConfiguration,
-            $this->viewFactory->create($request, $basePackageName),
+            $this->viewFactory->create($request),
             $this->responseFactory,
             $this->streamFactory,
             $request

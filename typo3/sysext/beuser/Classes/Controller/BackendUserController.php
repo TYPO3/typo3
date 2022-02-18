@@ -102,7 +102,7 @@ class BackendUserController extends ActionController
     public function initializeAction(): void
     {
         $this->moduleData = $this->request->getAttribute('moduleData');
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-beuser');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
     }
 

@@ -104,7 +104,7 @@ class ReportController
                 }
             }
         }
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-reports');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'reports' => $registeredReports,
         ]);
@@ -136,7 +136,7 @@ class ReportController
             $content = $reportInstance->getReport();
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-reports');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'content' => $content,
             'report' => $registeredReports[$extension][$report],

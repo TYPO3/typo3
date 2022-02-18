@@ -57,7 +57,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         return $view->render('ToolbarItems/ShortcutToolbarItemItem');
     }
 
@@ -84,7 +84,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface, RequestAwareToolbarIt
                 'shortcuts' => $this->shortcutRepository->getShortcutsByGroup($groupId),
             ];
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assign('shortcutMenu', $shortcutMenu);
         return $view->render('ToolbarItems/ShortcutToolbarItemDropDown');
     }

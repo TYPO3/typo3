@@ -121,7 +121,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         return $view->render('ToolbarItems/SystemInformationToolbarItem');
     }
 
@@ -139,7 +139,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
         } catch (RouteNotFoundException $e) {
             $environmentToolUrl = '';
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'environmentToolUrl' => $environmentToolUrl,
             'messages' => $this->systemMessages,

@@ -107,7 +107,7 @@ class EditFileController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $view = $this->moduleTemplateFactory->create($request);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 

@@ -22,6 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
 use TYPO3\CMS\Backend\Controller\ResetPasswordController;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -80,7 +81,8 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         );
 
         $this->request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
 
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         $GLOBALS['BE_USER']->initializeUserSessionManager();

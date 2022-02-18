@@ -171,7 +171,7 @@ class RecordDownloadController
         $this->id = (int)($downloadArguments['id'] ?? 0);
         $this->modTSconfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'table' => $this->table,
             'downloadArguments' => $downloadArguments,

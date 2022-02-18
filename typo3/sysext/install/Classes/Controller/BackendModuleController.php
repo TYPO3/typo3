@@ -85,7 +85,7 @@ class BackendModuleController
             $flagInvalidPassword = true;
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-install');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'flagInvalidPassword' => $flagInvalidPassword,
             'flagInstallToolPassword' => $flagInstallToolPassword,

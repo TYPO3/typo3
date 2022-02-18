@@ -75,7 +75,7 @@ class ReplaceFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         $this->renderContent();
         return $this->view->renderResponse('File/ReplaceFile');

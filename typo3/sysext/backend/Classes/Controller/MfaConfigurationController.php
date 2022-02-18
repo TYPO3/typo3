@@ -63,7 +63,7 @@ class MfaConfigurationController extends AbstractMfaController
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeMfaConfiguration();
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview');
 
         if (!$this->isActionAllowed($action)) {

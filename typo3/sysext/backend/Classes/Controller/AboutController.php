@@ -52,7 +52,7 @@ class AboutController
     {
         $event = new Event\ModifyGenericBackendMessagesEvent();
         $event = $this->eventDispatcher->dispatch($event);
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'typo3Info' => $this->typo3Information,
             'typo3Version' => $this->version,

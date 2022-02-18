@@ -55,7 +55,7 @@ class MoveElementController
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 

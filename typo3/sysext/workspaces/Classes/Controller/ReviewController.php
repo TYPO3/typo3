@@ -108,7 +108,7 @@ class ReviewController
         $workspaceIsAccessible = $backendUser->workspace !== WorkspaceService::LIVE_WORKSPACE_ID && $pageUid > 0;
 
         $selectedLanguage = (string)$moduleData->get('language');
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'isAdmin' => $backendUser->isAdmin(),
             'customWorkspaceExists' => $customWorkspaceExists,

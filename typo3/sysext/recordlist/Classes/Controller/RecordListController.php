@@ -145,7 +145,7 @@ class RecordListController
         /** @var RenderAdditionalContentToRecordListEvent $additionalRecordListEvent */
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-recordlist');
+        $view = $this->moduleTemplateFactory->create($request);
 
         $tableListHtml = '';
         if ($access || ($this->id === 0 && $search_levels !== 0 && $search_field !== '')) {

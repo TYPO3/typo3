@@ -56,7 +56,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         return $view->render('ToolbarItems/LiveSearchToolbarItem');
     }
 

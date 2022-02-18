@@ -213,7 +213,7 @@ class NewContentElementController
             }
         }
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'positionSelection' => $positionSelection,
             'tabsMenuItems' => $menuItems,
@@ -232,7 +232,7 @@ class NewContentElementController
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
         $posMap->R_URI =  $this->R_URI;
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assign('posMap', $posMap->printContentElementColumns($this->id));
         return new HtmlResponse($view->render('NewContentElement/PositionMap'));
     }

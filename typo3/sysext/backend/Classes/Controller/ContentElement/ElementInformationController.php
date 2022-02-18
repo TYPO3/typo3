@@ -75,7 +75,7 @@ class ElementInformationController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUser();
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->getDocHeaderComponent()->disable();
         $queryParams = $request->getQueryParams();
         $this->table = $queryParams['table'] ?? null;

@@ -183,7 +183,7 @@ class InfoModuleController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-info');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->initialize($request);
 
         // Checking for first level external objects

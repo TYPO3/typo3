@@ -75,7 +75,7 @@ class HelpController
         if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
             return new HtmlResponse('Action not allowed', 400);
         }
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle($this->getShortcutTitle($request));
         return $this->{$action . 'Action'}($view, $request);
     }

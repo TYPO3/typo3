@@ -82,7 +82,7 @@ class SchedulerModuleController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-scheduler');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assign('dateFormat', [
             'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
             'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',

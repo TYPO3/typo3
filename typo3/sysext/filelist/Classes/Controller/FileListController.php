@@ -87,7 +87,7 @@ class FileListController implements LoggerAwareInterface
 
         $this->moduleData = $request->getAttribute('moduleData');
 
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $this->view->setTitle($lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:mlang_tabs_tab'));
 
         $queryParams = $request->getQueryParams();

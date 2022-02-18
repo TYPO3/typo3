@@ -94,7 +94,7 @@ class CreateFolderController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         return $this->main();
     }

@@ -64,7 +64,7 @@ class ViewModuleController
         $moduleData = $request->getAttribute('moduleData');
         $pageInfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-viewpage');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setBodyTag('<body class="typo3-module-viewpage">');
         $view->setModuleId('typo3-module-viewpage');
         $view->setTitle(

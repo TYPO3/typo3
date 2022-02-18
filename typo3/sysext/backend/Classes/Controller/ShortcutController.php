@@ -81,7 +81,7 @@ class ShortcutController
         $selectedShortcutGroupId = (int)($queryParams['shortcutGroup'] ?? '');
         $selectedShortcut = $this->shortcutRepository->getShortcutById($selectedShortcutId);
         $shortcutGroups = $this->shortcutRepository->getShortcutGroups();
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'selectedShortcutId' => $selectedShortcutId,
             'selectedShortcutGroupId' => $selectedShortcutGroupId,

@@ -56,7 +56,7 @@ class CtaWidget implements WidgetInterface, RequestAwareWidgetInterface
 
     public function renderWidgetContent(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'text' => $this->options['text'],
             'options' => $this->options,

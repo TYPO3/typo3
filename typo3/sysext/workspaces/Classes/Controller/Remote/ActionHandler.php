@@ -770,7 +770,7 @@ class ActionHandler
         [, $nextStage] = $this->stagesService->getNextStageForElementCollection($workspaceItemsArray);
         [, $previousStage] = $this->stagesService->getPreviousStageForElementCollection($workspaceItemsArray);
         // @todo: It would of course be better if AjaxDispatcher could hand over $request to the method ...
-        $view = $this->backendViewFactory->create(new ServerRequest(), 'typo3/cms-workspaces');
+        $view = $this->backendViewFactory->create(new ServerRequest(), ['typo3/cms-workspaces']);
         $view->assignMultiple([
             'enablePreviousStageButton' => is_array($previousStage) && !empty($previousStage),
             'enableNextStageButton' => is_array($nextStage) && !empty($nextStage),

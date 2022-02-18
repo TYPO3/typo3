@@ -52,7 +52,7 @@ class T3GeneralInformationWidget implements WidgetInterface, RequestAwareWidgetI
     {
         $typo3Information = new Typo3Information();
         $typo3Version = new Typo3Version();
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'title' => 'TYPO3 CMS ' . $typo3Version->getVersion(),
             'copyrightYear' => $typo3Information->getCopyrightYear(),

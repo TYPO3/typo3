@@ -60,7 +60,7 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
             $severity = Status::WARNING;
         }
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-redirects');
+        $view = $this->backendViewFactory->create($request, ['typo3/cms-redirects']);
         $view->assignMultiple([
             'count' => $count,
             'reportedConflicts' => $reportedConflicts,

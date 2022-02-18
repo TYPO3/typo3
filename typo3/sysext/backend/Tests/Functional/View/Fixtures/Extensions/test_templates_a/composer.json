@@ -1,0 +1,12 @@
+{
+	"name": "typo3/cms-test-templates-a",
+	"type": "typo3-cms-extension",
+	"extra": {
+		"branch-alias": {
+			"dev-main": "12.0.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "test_templates_a"
+		}
+	}
+}

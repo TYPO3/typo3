@@ -60,7 +60,7 @@ class NumberWithIconWidget implements WidgetInterface, RequestAwareWidgetInterfa
 
     public function renderWidgetContent(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'icon' => $this->options['icon'] ?? '',
             'title' => $this->options['title'] ?? '',

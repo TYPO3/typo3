@@ -62,7 +62,7 @@ class NoteRenderer
         if (!$notes) {
             return '';
         }
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-sys-note');
+        $view = $this->backendViewFactory->create($request, ['typo3/cms-sys-note']);
         $view->assignMultiple([
             'notes' => $this->enrichWithEditPermissions($notes),
             'returnUrl' => $returnUrl,

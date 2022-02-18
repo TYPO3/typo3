@@ -138,7 +138,7 @@ class BackendController
         $pageRenderer->setTitle($title);
         $moduleMenuCollapsed = $this->getCollapseStateOfMenu();
 
-        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->viewFactory->create($request);
         $this->assignTopbarDetailsToView($request, $view);
         $view->assignMultiple([
             'modules' => $this->modules,
@@ -161,7 +161,7 @@ class BackendController
      */
     public function getModuleMenu(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->viewFactory->create($request);
         $view->assign('modules', $this->modules);
         return new JsonResponse(['menu' => $view->render('Backend/ModuleMenu')]);
     }
@@ -172,7 +172,7 @@ class BackendController
      */
     public function getTopbar(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->viewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->viewFactory->create($request);
         $this->assignTopbarDetailsToView($request, $view);
         return new JsonResponse(['topbar' => $view->render('Backend/Topbar')]);
     }

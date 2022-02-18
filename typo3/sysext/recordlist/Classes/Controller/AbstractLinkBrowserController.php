@@ -158,7 +158,7 @@ abstract class AbstractLinkBrowserController
         $this->loadLinkHandlers();
         $this->initCurrentUrl();
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
+        $view = $this->backendViewFactory->create($request);
         $menuData = $this->buildMenuArray();
         $renderLinkAttributeFields = $this->renderLinkAttributeFields($view);
         if (method_exists($this->displayedLinkHandler, 'setView')) {

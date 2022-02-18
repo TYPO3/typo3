@@ -83,7 +83,7 @@ class ImportController
             unset($inputData['import_mode']);
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-impexp');
+        $view = $this->moduleTemplateFactory->create($request);
 
         $uploadStatus = self::NO_UPLOAD;
         $uploadedFileName = '';

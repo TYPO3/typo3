@@ -63,7 +63,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
             return '';
         }
         $currentWorkspace = $this->getBackendUser()->workspace;
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-workspaces');
+        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-workspaces']);
         $view->assign('workspaceTitle', $currentWorkspace !== -99 ? WorkspaceService::getWorkspaceTitle($currentWorkspace) : '');
         return $view->render('ToolbarItems/ToolbarItem');
     }
@@ -76,7 +76,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface, RequestAware
         $topItem = null;
         $additionalItems = [];
         $backendUser = $this->getBackendUser();
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-workspaces');
+        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-workspaces']);
         $activeWorkspace = (int)$backendUser->workspace;
         foreach ($this->availableWorkspaces as $workspaceId => $label) {
             $workspaceId = (int)$workspaceId;

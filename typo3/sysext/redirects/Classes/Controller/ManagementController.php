@@ -62,7 +62,7 @@ class ManagementController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-redirects');
+        $view = $this->moduleTemplateFactory->create($request);
         $demand = Demand::fromRequest($request);
 
         $view->setTitle(

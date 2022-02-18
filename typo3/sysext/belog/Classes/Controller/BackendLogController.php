@@ -108,7 +108,7 @@ class BackendLogController extends ActionController
         ];
         if ($layout === 'Module') {
             // Main module 'Log' module renders a ModuleTemplate view
-            $view = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-belog');
+            $view = $this->moduleTemplateFactory->create($this->request);
             $view->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
             $view->assignMultiple($assigns);
             return $view->renderResponse('BackendLog/List');

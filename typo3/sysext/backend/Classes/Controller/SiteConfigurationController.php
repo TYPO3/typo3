@@ -107,7 +107,7 @@ class SiteConfigurationController
             }
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $this->configureOverViewDocHeader($view, $request->getAttribute('normalizedParams')->getRequestUri());
         $view->setTitle(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf:mlang_tabs_tab')
@@ -173,7 +173,7 @@ class SiteConfigurationController
         $formResultCompiler->mergeResult($formResult);
         $formResultCompiler->addCssFiles();
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             // Always add rootPageId as additional field to have a reference for new records
             'rootPageId' => $isNewConfig ? $pageUid : $allSites[$siteIdentifier]->getRootPageId(),

@@ -61,7 +61,7 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
     public function getItem(): string
     {
         $backendUser = $this->getBackendUser();
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'currentUser' => $backendUser->user,
             'switchUserMode' => (int)$backendUser->getOriginalUserIdWhenInSwitchUserMode(),
@@ -113,7 +113,7 @@ class UserToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
         if ($userModule = $this->moduleProvider->getModuleForMenu('user', $backendUser)) {
             $modules = $userModule->getSubModules();
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'modules' => $modules,
             'switchUserMode' => $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null,

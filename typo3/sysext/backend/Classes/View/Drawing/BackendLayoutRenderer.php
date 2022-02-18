@@ -88,7 +88,7 @@ class BackendLayoutRenderer
     {
         $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $pageLayoutContext);
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'context' => $pageLayoutContext,
             'hideRestrictedColumns' => (bool)(BackendUtility::getPagesTSconfig($pageLayoutContext->getPageId())['mod.']['web_layout.']['hideRestrictedCols'] ?? false),

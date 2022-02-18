@@ -354,7 +354,7 @@ class EditDocumentController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->setUiBlock(true);
         $view->setTitle($this->getShortcutTitle($request));
 

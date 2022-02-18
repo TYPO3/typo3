@@ -61,7 +61,7 @@ class HelpToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         return $view->render('ToolbarItems/HelpToolbarItem');
     }
 
@@ -74,7 +74,7 @@ class HelpToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemIn
             // checkAccess() is called before and prevents call to getDropDown() if there is no help.
             throw new \RuntimeException('No HelpModuleMenu found.', 1641993564);
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assign('modules', $this->helpModule->getSubModules());
         return $view->render('ToolbarItems/HelpToolbarItemDropDown');
     }

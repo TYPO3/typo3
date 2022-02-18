@@ -53,7 +53,7 @@ class FileUploadController
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $languageService = $this->getLanguageService();
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $view = $this->moduleTemplateFactory->create($request);
 
         $targetFolderCombinedIdentifier = $parsedBody['target'] ?? $queryParams['target'] ?? '';
         $folder = $this->resourceFactory->retrieveFileOrFolderObject($targetFolderCombinedIdentifier);

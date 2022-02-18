@@ -43,8 +43,7 @@ for details on this.
 
 .. code-block:: php
 
-    // @todo: The second argument will fall with one of the next patches, adapt this then.
-    $moduleTemplate = $this->moduleTemplateFactory->create($request, $myComposerPackageName);
+    $moduleTemplate = $this->moduleTemplateFactory->create($request);
     $moduleTemplate->assign('aVariable', 'aValue');
     return $moduleTemplate->renderResponse('MyTemplate');
 

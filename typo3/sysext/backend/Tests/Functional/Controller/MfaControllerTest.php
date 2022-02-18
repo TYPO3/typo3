@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Controller\MfaController;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\AuthenticationStyleInformation;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
@@ -75,7 +76,8 @@ class MfaControllerTest extends FunctionalTestCase
         $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']));
     }
 
     /**

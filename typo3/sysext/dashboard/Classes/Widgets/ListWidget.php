@@ -54,7 +54,7 @@ class ListWidget implements WidgetInterface, RequestAwareWidgetInterface
 
     public function renderWidgetContent(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'items' => $this->getItems(),
             'options' => $this->options,

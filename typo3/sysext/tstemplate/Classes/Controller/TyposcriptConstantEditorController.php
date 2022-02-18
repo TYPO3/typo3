@@ -168,7 +168,7 @@ class TyposcriptConstantEditorController extends TypoScriptTemplateModuleControl
                 $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
             }
 
-            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
+            $view = $this->backendViewFactory->create($this->request);
             $view->assignMultiple($assigns);
             $theOutput = $view->render('ConstantEditor');
         } else {

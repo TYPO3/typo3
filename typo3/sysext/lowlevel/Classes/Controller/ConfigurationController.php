@@ -48,7 +48,7 @@ class ConfigurationController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-lowlevel');
+        $view = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $queryParams = $request->getQueryParams();
         $postValues = $request->getParsedBody();

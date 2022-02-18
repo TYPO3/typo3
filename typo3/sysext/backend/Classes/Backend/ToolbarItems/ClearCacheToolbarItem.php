@@ -106,7 +106,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getItem(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         if ($this->hasDropDown()) {
             return $view->render('ToolbarItems/ClearCacheToolbarItem');
         }
@@ -124,7 +124,7 @@ class ClearCacheToolbarItem implements ToolbarItemInterface, RequestAwareToolbar
      */
     public function getDropDown(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assign('cacheActions', $this->cacheActions);
         return $view->render('ToolbarItems/ClearCacheToolbarItemDropDown');
     }

@@ -118,7 +118,7 @@ class RecyclerAjaxController
                 $allowDelete = $this->getBackendUser()->isAdmin()
                     ?: (bool)($this->getBackendUser()->getTSConfig()['mod.']['recycler.']['allowDelete'] ?? false);
 
-                $view = $this->backendViewFactory->create($request, 'typo3/cms-recycler');
+                $view = $this->backendViewFactory->create($request);
                 $view->assign('showTableHeader', empty($this->conf['table']));
                 $view->assign('showTableName', $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin());
                 $view->assign('allowDelete', $allowDelete);

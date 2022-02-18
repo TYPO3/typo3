@@ -88,7 +88,7 @@ class MfaController extends AbstractMfaController
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $propertyManager = MfaProviderPropertyManager::create($mfaProvider, $this->getBackendUser());
         $providerResponse = $mfaProvider->handleRequest($request, $propertyManager, MfaViewType::AUTH);
         $view->assignMultiple([

@@ -188,7 +188,7 @@ class NewRecordController
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $beUser = $this->getBackendUserAuthentication();
         // Page-selection permission clause (reading)

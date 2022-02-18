@@ -53,7 +53,7 @@ This class has to implement the :php:class:`WidgetInterface` and could look like
         public function renderWidgetContent(): string
         {
             // @todo: The second argument will fall with one of the next patches, adapt this then.
-            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+            $view = $this->backendViewFactory->create($this->request);
             $this->view->assignMultiple([
                 'items' => $this->getRssItems(),
                 'options' => $this->options,

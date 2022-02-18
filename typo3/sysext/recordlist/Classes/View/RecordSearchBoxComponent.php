@@ -55,7 +55,7 @@ class RecordSearchBoxComponent
 
     public function render(ServerRequestInterface $request, string $formUrl = ''): string
     {
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-recordlist');
+        $view = $this->backendViewFactory->create($request);
         return $view
             ->assignMultiple([
                 'formUrl' => $formUrl,

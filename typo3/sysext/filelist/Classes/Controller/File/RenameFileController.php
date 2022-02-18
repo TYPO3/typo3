@@ -86,7 +86,7 @@ class RenameFileController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-filelist');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->init($request);
         $this->renderContent();
         return $this->moduleTemplate->renderResponse('File/RenameFile');

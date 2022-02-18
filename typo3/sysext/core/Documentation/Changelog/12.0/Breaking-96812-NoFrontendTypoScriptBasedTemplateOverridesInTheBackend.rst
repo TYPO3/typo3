@@ -238,8 +238,10 @@ immediately after widget instantiation. The new code thus looks like this:
 
         public function renderWidgetContent(): string
         {
-            // @todo: The second argument will fall with one of the next patches, adapt this then.
-            $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+            // The second argument is the composer 'name' of the extension that adds the widget.
+            // It is needed to instruct BackendViewFactory to look up templates in this package
+            // next to the default location 'typo3/cms-dashboard', too.
+            $view = $this->backendViewFactory->create($this->request, ['myVendor/myPackage']);
             $this->view->assignMultiple([...]);
             return $this->view->render('Widget/ChartWidget');
         }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -73,6 +74,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $response = $this->subject->mainAction(
             $request
                 ->withAttribute('normalizedParams', $this->normalizedParams)
+                ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
                 ->withQueryParams($queryParams)
                 ->withParsedBody($parsedBody)
         );
@@ -104,6 +106,7 @@ class EditDocumentControllerTest extends FunctionalTestCase
         $response = $this->subject->mainAction(
             $request
                 ->withAttribute('normalizedParams', $this->normalizedParams)
+                ->withAttribute('route', new Route('path', ['packageName' => 'typo3/cms-backend']))
                 ->withQueryParams($queryParams)
                 ->withParsedBody($parsedBody)
         );

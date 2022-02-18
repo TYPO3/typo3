@@ -67,7 +67,7 @@ class DashboardController
      */
     protected function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-dashboard');
+        $view = $this->moduleTemplateFactory->create($request);
         $this->preparePageRenderer();
         $this->addFrontendResources();
         $view->setTitle(

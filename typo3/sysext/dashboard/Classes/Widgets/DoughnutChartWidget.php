@@ -55,7 +55,7 @@ class DoughnutChartWidget implements WidgetInterface, RequestAwareWidgetInterfac
 
     public function renderWidgetContent(): string
     {
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-dashboard');
+        $view = $this->backendViewFactory->create($this->request);
         $view->assignMultiple([
             'button' => $this->buttonProvider,
             'options' => $this->options,

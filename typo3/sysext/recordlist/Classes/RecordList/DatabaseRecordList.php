@@ -1345,7 +1345,7 @@ class DatabaseRecordList
         } else {
             $lastElementNumber = $totalItems;
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-recordlist');
+        $view = $this->backendViewFactory->create($this->request);
         return $view->assignMultiple([
                 'currentUrl' => $this->listURL('', $table, 'pointer'),
                 'currentPage' => $currentPage,

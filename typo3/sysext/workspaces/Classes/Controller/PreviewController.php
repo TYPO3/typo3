@@ -63,7 +63,7 @@ class PreviewController
         $backendUser = $this->getBackendUser();
 
         // Initialize module template here, so custom css / js is loaded afterwards (making overrides possible)
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-workspaces');
+        $view = $this->moduleTemplateFactory->create($request);
         $view->getDocHeaderComponent()->disable();
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/preview.js');

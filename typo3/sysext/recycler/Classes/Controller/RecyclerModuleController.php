@@ -57,7 +57,7 @@ class RecyclerModuleController
         $backendUser = $this->getBackendUser();
         $id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
         $pageRecord = BackendUtility::readPageAccess($id, $backendUser->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-recycler');
+        $view = $this->moduleTemplateFactory->create($request);
 
         // read configuration
         $recordsPageLimit = MathUtility::forceIntegerInRange((int)($backendUser->getTSConfig()['mod.']['recycler.']['recordsPageLimit'] ?? 25), 1);

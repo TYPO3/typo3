@@ -51,7 +51,7 @@ class ImageManipulationController
                 } catch (FileDoesNotExistException $e) {
                 }
             }
-            $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+            $view = $this->backendViewFactory->create($request);
             $view->assignMultiple([
                 'image' => $image,
                 'cropVariants' => $parsedBody['cropVariants'],

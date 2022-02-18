@@ -96,7 +96,7 @@ class ColumnSelectorController
         if ($table === '') {
             throw new \RuntimeException('No table was given for selecting columns', 1625169125);
         }
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'table' => $table,
             'columns' => $this->getColumns($table, (int)($queryParams['id'] ?? 0)),

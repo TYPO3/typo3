@@ -213,7 +213,7 @@ class ResetPasswordController
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/login.js');
 
-        $this->view = $this->backendViewFactory->create($request, 'typo3/cms-backend');
+        $this->view = $this->backendViewFactory->create($request);
         $this->view->assignMultiple([
             'enablePasswordReset' => $this->passwordReset->isEnabled(),
             'referrerCheckEnabled' => $this->features->isFeatureEnabled('security.backend.enforceReferrer'),

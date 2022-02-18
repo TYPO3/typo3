@@ -484,7 +484,7 @@ class FormManagerController extends AbstractBackendController
      */
     protected function initializeModuleTemplate(ServerRequestInterface $request): ModuleTemplate
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-form');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
 
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 

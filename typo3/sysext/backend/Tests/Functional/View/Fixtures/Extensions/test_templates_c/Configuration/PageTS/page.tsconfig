@@ -1,0 +1,5 @@
+# Not done as 'Configuration/page.tsconfig' explicitly to load this only for
+# needed testcases and not for all which includes this test extension.
+# @todo find a way to do this directly in Fixture 'BackendViewFactoryTestPagesWithFallback.csv'
+templates.typo3/cms-test-templates-a.1645195201 = typo3/cms-test-templates-b:Resources/Private
+templates.typo3/cms-test-templates-a.1645310150 = typo3/cms-test-templates-c:Resources/Private

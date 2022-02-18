@@ -82,7 +82,7 @@ class ElementHistoryController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->view = $this->moduleTemplateFactory->create($request, 'typo3/cms-backend');
+        $this->view = $this->moduleTemplateFactory->create($request);
         $backendUser = $this->getBackendUser();
         $this->view->getDocHeaderComponent()->setMetaInformation([]);
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();

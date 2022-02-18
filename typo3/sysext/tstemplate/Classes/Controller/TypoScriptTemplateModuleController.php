@@ -158,7 +158,7 @@ class TypoScriptTemplateModuleController
      */
     public function init($unused, ServerRequestInterface $request)
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-tstemplate');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
         $this->request = $request;
         $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
@@ -413,7 +413,7 @@ class TypoScriptTemplateModuleController
             $moduleContent['staticsText'] = $staticsText;
             $moduleContent['selector'] = $selector;
         }
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-tstemplate');
+        $view = $this->backendViewFactory->create($this->request);
         // Go to previous Page with a template
         $view->assign('previousPage', $this->getClosestAncestorPageWithTemplateRecord($this->id, $this->perms_clause));
         $view->assign('content', $moduleContent);

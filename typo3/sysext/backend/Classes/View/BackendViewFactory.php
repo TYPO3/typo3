@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\View;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,52 +39,69 @@ final class BackendViewFactory
     }
 
     /**
-     * This backend view is capable of overriding templates, partials and layouts via TSconfig.
+     * This backend view is capable of overriding templates, partials and layouts via TsConfig
+     * based on the composer package name of the route and optional additional package names.
      */
-    public function create(ServerRequestInterface $request, string $basePackageName = ''): CoreViewInterface
+    public function create(ServerRequestInterface $request, array $packageNames = []): CoreViewInterface
     {
-        $templatePaths = [
-            'templateRootPaths' => [],
-            'layoutRootPaths' => [],
-            'partialRootPaths' => [],
-        ];
-        if (empty($basePackageName)) {
-            $basePackageName = 'typo3/cms-backend';
+        if (empty($packageNames)) {
+            // Extensions *may* provide path lookup package names as second argument. In most cases, this is not
+            // needed, and the package name will be fetched from current route. However, there are scenarios
+            // where extensions 'hook' into existing functionality of a different extension that defined a
+            // route, and then deliver own templates from the own extension. In those cases, they need to
+            // supply an additional base package name.
+            // Examples are backend toolbar items: The toolbar items are rendered through a typo3/cms-backend
+            // route, so this is picked as base from the route. workspaces delivers an additional toolbar item,
+            // so 'typo3/cms-workspaces' needs to be added as additional path to look up. The dashboard extension
+            // and FormEngine have similar cases.
+            /** @var Route $route */
+            $route = $request->getAttribute('route');
+            $packageNameFromRoute = $route->getOption('packageName');
+            if (!empty($packageNameFromRoute)) {
+                $packageNames[] = $packageNameFromRoute;
+            }
         }
-        if ($basePackageName !== 'typo3/cms-backend') {
-            // Always add EXT:backend/Resources/Private/ as first default path to resolve
-            // default Layouts/Module.html and its partials
-            $backendPackagePath = $this->packageManager->getPackage('typo3/cms-backend')->getPackagePath();
-            $templatePaths['layoutRootPaths'][] = $backendPackagePath . 'Resources/Private/Layouts';
-            $templatePaths['partialRootPaths'][] = $backendPackagePath . 'Resources/Private/Partials';
+        // Always add EXT:backend/Resources/Private/ as first default path to resolve
+        // default Layouts/Module.html and its partials.
+        if (!in_array('typo3/cms-backend', $packageNames, true)) {
+            array_unshift($packageNames, 'typo3/cms-backend');
         }
-        // @todo: Argument $basePackageName could be dropped if the $request route attribute would carry the package object
-        $packagePath = $this->packageManager->getPackage($basePackageName)->getPackagePath();
-        $templatePaths['templateRootPaths'][] = $packagePath . 'Resources/Private/Templates';
-        $templatePaths['layoutRootPaths'][] = $packagePath . 'Resources/Private/Layouts';
-        $templatePaths['partialRootPaths'][] = $packagePath . 'Resources/Private/Partials';
 
         // @todo: This assumes the pageId is *always* given as 'id' in request.
         // @todo: It would be cool if a middleware adds final pageTS - already overlayed by userTS - as attribute to request, to use it here.
         $pageId = $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0;
         $pageTs = BackendUtility::getPagesTSconfig($pageId);
-        if (is_array($pageTs['templates.'][$basePackageName . '.'] ?? false)) {
-            $overrides =  $pageTs['templates.'][$basePackageName . '.'];
-            ksort($overrides);
-            foreach ($overrides as $override) {
-                $pathParts = GeneralUtility::trimExplode(':', $override, true);
-                if (count($pathParts) < 2) {
-                    throw new \RuntimeException(
-                        'When overriding template paths, the syntax is "composer-package-name:path", example: "typo3/cms-seo:Resources/Private/TemplateOverrides/typo3/cms-backend"',
-                        1643798660
-                    );
+
+        $templatePaths = [
+            'templateRootPaths' => [],
+            'layoutRootPaths' => [],
+            'partialRootPaths' => [],
+        ];
+        foreach ($packageNames as $packageName) {
+            // Add paths for package.
+            $packagePath = $this->packageManager->getPackage($packageName)->getPackagePath();
+            $templatePaths['templateRootPaths'][] = $packagePath . 'Resources/Private/Templates';
+            $templatePaths['layoutRootPaths'][] = $packagePath . 'Resources/Private/Layouts';
+            $templatePaths['partialRootPaths'][] = $packagePath . 'Resources/Private/Partials';
+            // Add possible overrides.
+            if (is_array($pageTs['templates.'][$packageName . '.'] ?? false)) {
+                $overrides = $pageTs['templates.'][$packageName . '.'];
+                ksort($overrides);
+                foreach ($overrides as $override) {
+                    $pathParts = GeneralUtility::trimExplode(':', $override, true);
+                    if (count($pathParts) < 2) {
+                        throw new \RuntimeException(
+                            'When overriding template paths, the syntax is "composer-package-name:path", example: "typo3/cms-seo:Resources/Private/TemplateOverrides/typo3/cms-backend"',
+                            1643798660
+                        );
+                    }
+                    $composerPackageName = $pathParts[0];
+                    $overridePackagePath = $this->packageManager->getPackage($composerPackageName)->getPackagePath();
+                    $overridePath = rtrim($pathParts[1], '/');
+                    $templatePaths['templateRootPaths'][] = $overridePackagePath . $overridePath . '/Templates';
+                    $templatePaths['layoutRootPaths'][] = $overridePackagePath . $overridePath . '/Layouts';
+                    $templatePaths['partialRootPaths'][] = $overridePackagePath . $overridePath . '/Partials';
                 }
-                $composerPackageName = $pathParts[0];
-                $overridePackagePath = $this->packageManager->getPackage($composerPackageName)->getPackagePath();
-                $overridePath = rtrim($pathParts[1], '/');
-                $templatePaths['templateRootPaths'][] = $overridePackagePath . $overridePath . '/Templates';
-                $templatePaths['layoutRootPaths'][] = $overridePackagePath . $overridePath . '/Layouts';
-                $templatePaths['partialRootPaths'][] = $overridePackagePath . $overridePath . '/Partials';
             }
         }
 

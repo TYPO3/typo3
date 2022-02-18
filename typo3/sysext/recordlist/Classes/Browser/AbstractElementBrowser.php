@@ -82,7 +82,7 @@ abstract class AbstractElementBrowser
     protected function initialize()
     {
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $this->getRequest(), $this->getLanguageService());
-        $view = $this->backendViewFactory->create($this->request, 'typo3/cms-recordlist');
+        $view = $this->backendViewFactory->create($this->request);
         $this->view = $view;
         $this->pageRenderer->loadJavaScriptModule('@typo3/recordlist/element-browser.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/viewport/resizable-navigation.js');

@@ -71,7 +71,7 @@ class DatabaseIntegrityController
         $languageService->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
 
         $this->menuConfig($request);
-        $moduleTemplate = $this->moduleTemplateFactory->create($request, 'typo3/cms-lowlevel');
+        $moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->setUpDocHeader($moduleTemplate);
 
         $title = $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab');

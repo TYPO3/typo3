@@ -113,7 +113,7 @@ class SetupModuleController
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUser();
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-setup');
+        $view = $this->moduleTemplateFactory->create($request);
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/modal.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/form-engine.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/setup/setup-module.js');

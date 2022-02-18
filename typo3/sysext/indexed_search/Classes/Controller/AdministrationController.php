@@ -83,7 +83,7 @@ class AdministrationController extends ActionController
             ],
         ];
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-indexed-search');
+        $view = $this->moduleTemplateFactory->create($request);
 
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('IndexedSearchModuleMenu');

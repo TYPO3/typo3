@@ -158,7 +158,7 @@ class Status implements RequestAwareReportInterface
         }
         unset($statuses);
 
-        $view = $this->backendViewFactory->create($request, 'typo3/cms-reports');
+        $view = $this->backendViewFactory->create($request);
         return $view->assignMultiple([
             'statusCollection' => $statusCollection,
             'severityClassMapping' => [

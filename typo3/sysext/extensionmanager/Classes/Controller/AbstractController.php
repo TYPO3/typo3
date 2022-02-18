@@ -113,7 +113,7 @@ class AbstractController extends ActionController
             }
         }
 
-        $view = $this->moduleTemplateFactory->create($request, 'typo3/cms-extensionmanager');
+        $view = $this->moduleTemplateFactory->create($request);
         // Assign some view vars we always need.
         $view->assignMultiple([
             'extensionName' => $request->getControllerExtensionName(),
