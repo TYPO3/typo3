@@ -101,7 +101,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The type (read-only)
      * @var int|string
      */
-    public $type = '';
+    public $type = 0;
 
     protected Site $site;
     protected SiteLanguage $language;
@@ -648,8 +648,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Final cleaning.
         $this->contentPid = $this->id;
-        // Make sure it's an integer
-        $this->type = (int)$this->type;
         // Setting language and fetch translated page
         $this->settingLanguage($request);
         // Call post processing function for id determination:
@@ -786,8 +784,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
         // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // The type is set to the integer-value - just to be sure
-        $this->type = (int)$this->type;
         $timeTracker->pull();
         // We store the originally requested id
         $this->requestedId = $this->id;
@@ -1274,7 +1270,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->pageArguments = $pageArguments;
         $this->id = $pageArguments->getPageId();
-        $this->type = $pageArguments->getPageType() ?: 0;
+        $this->type = (int)($pageArguments->getPageType() ?: 0);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
             // Ensure no additional arguments are given via the &MP=123-345,908-172 (e.g. "/")
@@ -1524,7 +1520,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $userAspect = $this->context->getAspect('frontend.user');
         $hashParameters = [
             'id' => $this->id,
-            'type' => (int)$this->type,
+            'type' => $this->type,
             'groupIds' => (string)implode(',', $userAspect->getGroupIds()),
             'MP' => (string)$this->MP,
             'site' => $this->site->getIdentifier(),
@@ -1871,7 +1867,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->calculateLinkVars($request->getQueryParams());
         $parameter = $this->page['uid'];
-        if ($this->type && MathUtility::canBeInterpretedAsInteger($this->type)) {
+        if ($this->type) {
             $parameter .= ',' . $this->type;
         }
         return GeneralUtility::makeInstance(ContentObjectRenderer::class, $this)->typoLink_URL([
