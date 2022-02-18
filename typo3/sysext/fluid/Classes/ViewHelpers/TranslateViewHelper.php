@@ -133,7 +133,7 @@ final class TranslateViewHelper extends AbstractViewHelper
     {
         $key = $arguments['key'];
         $id = $arguments['id'];
-        $default = $arguments['default'];
+        $default = (string)($arguments['default'] ?? $renderChildrenClosure() ?? '');
         $extensionName = $arguments['extensionName'];
         $translateArguments = $arguments['arguments'];
 
@@ -169,8 +169,10 @@ final class TranslateViewHelper extends AbstractViewHelper
                 $id = 'LLL:EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Private/Language/locallang.xlf:' . $id;
             }
             $value = self::getLanguageService()->sL($id);
-            if (empty($value)) {
-                $value = $default ?? $renderChildrenClosure() ?? '';
+            if (empty($value) || (!str_starts_with($id, 'LLL:EXT:') && $value === $id)) {
+                // In case $value is empty (LLL: could not be resolved) or $value
+                // is the same as $id and is no "LLL:", fall back to the default.
+                $value = $default;
             }
             if (!empty($translateArguments)) {
                 $value = vsprintf($value, $translateArguments);
@@ -192,12 +194,11 @@ final class TranslateViewHelper extends AbstractViewHelper
             $value = null;
         }
         if ($value === null) {
-            $value = $default ?? $renderChildrenClosure();
+            $value = $default;
             if (!empty($translateArguments)) {
                 $value = vsprintf($value, $translateArguments);
             }
         }
-        $value = $value ?? '';
         return $value;
     }
 

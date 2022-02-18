@@ -61,8 +61,16 @@ class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist" default="myDefault" />',
                 'myDefault',
             ],
+            'fallback to default attribute for static label' => [
+                '<f:translate key="static label" default="myDefault" />',
+                'myDefault',
+            ],
             'fallback to child for not existing label' => [
                 '<f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:iDoNotExist">myDefault</f:translate>',
+                'myDefault',
+            ],
+            'fallback to child for static label' => [
+                '<f:translate key="static label">myDefault</f:translate>',
                 'myDefault',
             ],
             'id and underscored extensionName given' => [
@@ -97,6 +105,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
     }
 
     /**
+     * @test
      * @dataProvider renderReturnsStringInNonExtbaseContextDataProvider
      */
     public function renderReturnsStringInNonExtbaseContext(string $template, string $expected): void
