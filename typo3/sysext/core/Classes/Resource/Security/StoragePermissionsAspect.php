@@ -16,7 +16,6 @@
 namespace TYPO3\CMS\Core\Resource\Security;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -34,19 +33,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 final class StoragePermissionsAspect
 {
     /**
-     * @var BackendUserAuthentication
-     */
-    protected $backendUserAuthentication;
-
-    /**
-     * @param BackendUserAuthentication|null $backendUserAuthentication
-     */
-    public function __construct($backendUserAuthentication = null)
-    {
-        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
-    }
-
-    /**
      * The event listener for the event where storage objects are created
      * @param AfterResourceStorageInitializationEvent $event
      */
@@ -55,11 +41,11 @@ final class StoragePermissionsAspect
         $storage = $event->getStorage();
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            && !$this->backendUserAuthentication->isAdmin()
+            && !$GLOBALS['BE_USER']->isAdmin()
         ) {
             $storage->setEvaluatePermissions(true);
             if ($storage->getUid() > 0) {
-                $storage->setUserPermissions($this->backendUserAuthentication->getFilePermissionsForStorage($storage));
+                $storage->setUserPermissions($GLOBALS['BE_USER']->getFilePermissionsForStorage($storage));
             } else {
                 $storage->setEvaluatePermissions(false);
             }
@@ -74,7 +60,7 @@ final class StoragePermissionsAspect
      */
     private function addFileMountsToStorage(ResourceStorage $storage)
     {
-        foreach ($this->backendUserAuthentication->getFileMountRecords() as $fileMountRow) {
+        foreach ($GLOBALS['BE_USER']->getFileMountRecords() as $fileMountRow) {
             if ((int)$fileMountRow['base'] === (int)$storage->getUid()) {
                 try {
                     $storage->addFileMount($fileMountRow['path'], $fileMountRow);

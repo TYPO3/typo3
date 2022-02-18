@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Security;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
@@ -40,19 +39,6 @@ final class CategoryPermissionsAspect
     private $categoryTableName = 'sys_category';
 
     /**
-     * @var BackendUserAuthentication
-     */
-    private $backendUserAuthentication;
-
-    /**
-     * @param BackendUserAuthentication|null $backendUserAuthentication
-     */
-    public function __construct($backendUserAuthentication = null)
-    {
-        $this->backendUserAuthentication = $backendUserAuthentication ?: $GLOBALS['BE_USER'];
-    }
-
-    /**
      * The listener for the event in DatabaseTreeDataProvider, which only affects the TYPO3 Backend
      *
      * @param ModifyTreeDataEvent $event
@@ -69,10 +55,10 @@ final class CategoryPermissionsAspect
         $dataProvider = $event->getProvider();
         $treeData = $event->getTreeData();
 
-        if (!$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
+        if (!$GLOBALS['BE_USER']->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
 
             // Get User permissions related to category
-            $categoryMountPoints = $this->backendUserAuthentication->getCategoryMountPoints();
+            $categoryMountPoints = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
             // Backup child nodes to be processed.
             $treeNodeCollection = $treeData->getChildNodes();
