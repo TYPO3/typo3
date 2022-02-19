@@ -103,7 +103,8 @@ class TextTableElement extends AbstractFormElement
         $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
 
         // Setting number of rows
-        $rows = MathUtility::forceIntegerInRange($config['rows'] ?: 5, 1, 20);
+        $rows = $config['rows'] ?? 0;
+        $rows = MathUtility::forceIntegerInRange($rows ?: 5, 1, 20);
         $originalRows = $rows;
         $itemFormElementValueLength = strlen($itemValue);
         if ($itemFormElementValueLength > $this->charactersPerRow * 2) {
