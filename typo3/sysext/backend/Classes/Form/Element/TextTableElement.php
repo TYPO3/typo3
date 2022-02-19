@@ -72,13 +72,6 @@ class TextTableElement extends AbstractFormElement
     ];
 
     /**
-     * This renderType adds the "table wizard icon" by default (on not new records)
-     *
-     * @var array
-     */
-    protected $defaultFieldControl = [];
-
-    /**
      * The number of chars expected per row when the height of a text area field is
      * automatically calculated based on the number of characters found in the field content.
      *
