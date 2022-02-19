@@ -82,9 +82,10 @@ class HelpController
      * Injects the request object for the current request, and renders correct action
      *
      * @param ServerRequestInterface $request the current request
+     * @param bool $addBackButton
      * @return ResponseInterface the response with the content
      */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function handleRequest(ServerRequestInterface $request, bool $addBackButton = true): ResponseInterface
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index';
@@ -109,7 +110,7 @@ class HelpController
             return $result;
         }
 
-        $this->registerDocHeaderButtons($request);
+        $this->registerDocHeaderButtons($request, $addBackButton);
 
         $this->moduleTemplate->setTitle($this->getShortcutTitle($request));
         $this->moduleTemplate->setContent($this->view->render());
@@ -128,6 +129,11 @@ class HelpController
         $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
         $this->view->getRequest()->setControllerExtensionName('Backend');
         $this->view->assign('copyright', $this->typo3Information->getCopyrightNotice());
+    }
+
+    public function handleDetailPopup(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handleRequest($request, false);
     }
 
     /**
@@ -166,10 +172,8 @@ class HelpController
 
     /**
      * Registers the Icons into the docheader
-     *
-     * @param ServerRequestInterface $request
      */
-    protected function registerDocHeaderButtons(ServerRequestInterface $request)
+    protected function registerDocHeaderButtons(ServerRequestInterface $request, bool $addBackButton = true)
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
@@ -184,7 +188,7 @@ class HelpController
             ]);
         $buttonBar->addButton($shortcutButton);
 
-        if ($action !== 'index') {
+        if ($action !== 'index' && $addBackButton) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back'))
                 ->setIcon($this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
