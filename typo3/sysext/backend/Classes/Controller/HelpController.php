@@ -81,6 +81,20 @@ class HelpController
     }
 
     /**
+     * Render CSH help in a popup. Reachable as 'detail' action on CSH popovers, called by JS 'popupUrl'.
+     */
+    public function handleDetailPopup(ServerRequestInterface $request): ResponseInterface
+    {
+        $table = $request->getQueryParams()['table'] ?? '';
+        if (!$table) {
+            return new HtmlResponse('Table argument missing', 400);
+        }
+        $view = $this->moduleTemplateFactory->create($request);
+        $view->setTitle($this->getShortcutTitle($request));
+        return $this->detailAction($view, $request, false);
+    }
+
+    /**
      * Show table of contents
      */
     protected function indexAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
@@ -110,7 +124,7 @@ class HelpController
     /**
      * Show a single manual
      */
-    protected function detailAction(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
+    protected function detailAction(ModuleTemplate $view, ServerRequestInterface $request, bool $addBackButton = true): ResponseInterface
     {
         $table = $request->getQueryParams()['table'] ?? $request->getParsedBody()['table'];
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
@@ -121,15 +135,17 @@ class HelpController
             'field' => $field,
             'manuals' => $this->getManuals($request),
         ]);
-        $this->addShortcutButton($view, $request);
-        $this->addBackButton($view);
+        $this->addShortcutButton($view, $request, 'detail');
+        if ($addBackButton) {
+            $this->addBackButton($view);
+        }
         return $view->renderResponse('ContextSensitiveHelp/Detail');
     }
 
-    protected function addShortcutButton(ModuleTemplate $view, ServerRequestInterface $request): void
+    protected function addShortcutButton(ModuleTemplate $view, ServerRequestInterface $request, string $action = null): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $action = $request->getQueryParams()['action'] ?? 'index';
+        $action ??= $request->getQueryParams()['action'] ?? 'index';
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('help_cshmanual')
             ->setDisplayName($this->getShortcutTitle($request))

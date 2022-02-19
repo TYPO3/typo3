@@ -30,7 +30,7 @@ interface HelpData {
  */
 class ContextHelp {
   private ajaxUrl: string = TYPO3.settings.ajaxUrls.context_help;
-  private helpModuleUrl: string;
+  private helpPopupUrl: string;
   private trigger: string = 'click';
   private placement: string = 'auto';
   private selector: string = '.help-link';
@@ -53,7 +53,7 @@ class ContextHelp {
   public initialize(): void {
     const backendWindow = ContextHelp.resolveBackend();
     if (typeof backendWindow.TYPO3.settings.ContextHelp !== 'undefined') {
-      this.helpModuleUrl = backendWindow.TYPO3.settings.ContextHelp.moduleUrl;
+      this.helpPopupUrl = backendWindow.TYPO3.settings.ContextHelp.popupUrl;
     }
 
     if (typeof TYPO3.ShortcutMenu === 'undefined' && typeof backendWindow.TYPO3.ShortcutMenu === 'undefined') {
@@ -122,10 +122,7 @@ class ContextHelp {
   private showHelpPopup($trigger: JQuery): any {
     try {
       const cshWindow = window.open(
-        this.helpModuleUrl +
-        '&table=' + $trigger.data('table') +
-        '&field=' + $trigger.data('field') +
-        '&action=detail',
+        `${this.helpPopupUrl}&table=${$trigger.data('table')}&field=${$trigger.data('field')}`,
         'ContextHelpWindow',
         'height=400,width=600,status=0,menubar=0,scrollbars=1',
       );
