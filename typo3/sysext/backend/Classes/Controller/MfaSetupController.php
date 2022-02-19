@@ -96,11 +96,11 @@ class MfaSetupController extends AbstractMfaController
     {
         $identifier = (string)($request->getQueryParams()['identifier'] ?? '');
         if ($identifier === '' || !$this->isValidIdentifier($identifier)) {
-            return new HtmlResponse($this->renderSelectionView($request));
+            return $this->renderSelectionView($request);
         }
         $mfaProvider = $this->mfaProviderRegistry->getProvider($identifier);
         $this->log('Required MFA setup initiated', $mfaProvider);
-        return new HtmlResponse($this->renderSetupView($request, $mfaProvider));
+        return $this->renderSetupView($request, $mfaProvider);
     }
 
     /**
@@ -157,7 +157,7 @@ class MfaSetupController extends AbstractMfaController
     /**
      * Allow the user - required to set up MFA - to select between all available providers
      */
-    protected function renderSelectionView(ServerRequestInterface $request): string
+    protected function renderSelectionView(ServerRequestInterface $request): ResponseInterface
     {
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
@@ -175,7 +175,7 @@ class MfaSetupController extends AbstractMfaController
             'providers' => $providers,
         ]);
         $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Standalone/Selection'));
-        return $this->pageRenderer->render();
+        return $this->pageRenderer->renderResponse();
     }
 
     /**
@@ -184,7 +184,7 @@ class MfaSetupController extends AbstractMfaController
     protected function renderSetupView(
         ServerRequestInterface $request,
         MfaProviderManifestInterface $mfaProvider
-    ): string {
+    ): ResponseInterface {
         $this->setUpBasicPageRendererForBackend($this->pageRenderer, $this->extensionConfiguration, $request, $this->getLanguageService());
         $this->pageRenderer->setTitle('TYPO3 CMS Login: ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ?? ''));
         $this->pageRenderer->loadJavaScriptModule('bootstrap');
@@ -198,7 +198,7 @@ class MfaSetupController extends AbstractMfaController
             'hasErrors' => (bool)($request->getQueryParams()['hasErrors'] ?? false),
         ]);
         $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Standalone/Setup'));
-        return $this->pageRenderer->render();
+        return $this->pageRenderer->renderResponse();
     }
 
     /**

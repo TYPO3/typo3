@@ -141,7 +141,7 @@ class MfaControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
-        $responseContent = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->__toString();
 
         // Auth view for provider is renderer
         self::assertStringContainsString('Time-based one-time password', $responseContent);
@@ -170,7 +170,7 @@ class MfaControllerTest extends FunctionalTestCase
         $response = $this->subject->handleRequest($request);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertStringContainsString('This provider is temporarily locked!', $response->getBody()->getContents());
+        self::assertStringContainsString('This provider is temporarily locked!', $response->getBody()->__toString());
     }
 
     /**
@@ -194,7 +194,7 @@ class MfaControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
-        $responseContent = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->__toString();
         self::assertStringContainsString('Alternative providers', $responseContent);
         self::assertMatchesRegularExpression('/<a.*title="Use Recovery codes"/s', $responseContent);
     }

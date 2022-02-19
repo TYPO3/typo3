@@ -30,7 +30,6 @@ use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -151,7 +150,7 @@ class BackendController
         $this->executeHook('renderPostProcess', ['content' => &$content]);
         $bodyTag = '<body class="scaffold t3js-scaffold' . (!$moduleMenuCollapsed && $this->modules ? ' scaffold-modulemenu-expanded' : '') . '">';
         $pageRenderer->addBodyContent($bodyTag . $content);
-        return new HtmlResponse($pageRenderer->render());
+        return $pageRenderer->renderResponse();
     }
 
     /**

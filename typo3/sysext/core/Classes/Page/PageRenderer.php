@@ -15,7 +15,10 @@
 
 namespace TYPO3\CMS\Core\Page;
 
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -332,6 +335,8 @@ class PageRenderer implements SingletonInterface
         protected readonly ResourceCompressor $resourceCompressor,
         protected readonly RelativeCssPathFixer $relativeCssPathFixer,
         protected readonly LocalizationFactory $localizationFactory,
+        protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly StreamFactoryInterface $streamFactory,
     ) {
         $this->reset();
 
@@ -1750,6 +1755,20 @@ class PageRenderer implements SingletonInterface
         // The page renderer needs a full reset when the page was rendered
         $this->reset();
         return trim($this->templateService->substituteMarkerArray($template, $markerArray, '###|###'));
+    }
+
+    public function renderResponse(
+        int $code = 200,
+        string $reasonPhrase = '',
+    ): ResponseInterface {
+        $stream = $this->streamFactory->createStream($this->render());
+        $contentType = 'text/html';
+        if ($this->charSet) {
+            $contentType .= '; charset=' . $this->charSet;
+        }
+        return $this->responseFactory->createResponse($code, $reasonPhrase)
+            ->withHeader('Content-Type', $contentType)
+            ->withBody($stream);
     }
 
     /**

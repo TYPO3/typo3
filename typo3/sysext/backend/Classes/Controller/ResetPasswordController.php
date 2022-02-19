@@ -28,7 +28,6 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Information\Typo3Information;
@@ -75,7 +74,7 @@ class ResetPasswordController
         $this->initialize($request);
         $this->initializeForgetPasswordView($request);
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render('Login/ForgetPasswordForm'));
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     /**
@@ -104,7 +103,7 @@ class ResetPasswordController
         // can be an indicator if the used email exists or not. Wait a random
         // time between 200 milliseconds and 3 seconds.
         usleep(random_int(200000, 3000000));
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     /**
@@ -121,7 +120,7 @@ class ResetPasswordController
             $this->view->assign('invalidToken', true);
         }
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render('Login/ResetPasswordForm'));
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     /**
@@ -146,7 +145,7 @@ class ResetPasswordController
             $this->view->assign('error', true);
         }
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render('Login/ResetPasswordForm'));
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     protected function initializeForgetPasswordView(ServerRequestInterface $request): void

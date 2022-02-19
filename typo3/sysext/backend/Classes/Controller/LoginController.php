@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -121,7 +120,7 @@ class LoginController
     {
         $this->request = $request;
         $this->init($request);
-        $response = new HtmlResponse($this->createLoginLogoutForm($request));
+        $response = $this->createLoginLogoutForm($request);
         return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
     }
 
@@ -133,7 +132,7 @@ class LoginController
         $this->request = $request;
         $this->init($request);
         $this->loginRefresh = true;
-        $response = new HtmlResponse($this->createLoginLogoutForm($request));
+        $response = $this->createLoginLogoutForm($request);
         return $this->appendLoginProviderCookie($request->getAttribute('normalizedParams'), $response);
     }
 
@@ -266,7 +265,7 @@ class LoginController
     /**
      * Main function - creating the login/logout form
      */
-    protected function createLoginLogoutForm(ServerRequestInterface $request): string
+    protected function createLoginLogoutForm(ServerRequestInterface $request): ResponseInterface
     {
         $backendUser = $this->getBackendUserAuthentication();
 
@@ -310,7 +309,7 @@ class LoginController
         $this->renderHtmlViaLoginProvider();
 
         $this->pageRenderer->setBodyContent('<body>' . $this->view->render());
-        return $this->pageRenderer->render();
+        return $this->pageRenderer->renderResponse();
     }
 
     protected function renderHtmlViaLoginProvider(): void

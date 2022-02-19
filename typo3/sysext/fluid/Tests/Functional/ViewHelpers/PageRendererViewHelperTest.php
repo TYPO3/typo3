@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
@@ -69,12 +68,12 @@ class PageRendererViewHelperTest extends FunctionalTestCase
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = new TemplateView($context);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $view->render();
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        self::assertStringContainsString($expected, $pageRenderer->render());
+        self::assertStringContainsString($expected, $pageRenderer->renderResponse()->getBody()->__toString());
     }
 
     /**
@@ -88,11 +87,11 @@ class PageRendererViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters->setControllerExtensionName('Backend');
         $context->setRequest((new Request())->withAttribute('extbase', $extbaseRequestParameters));
         $view = new TemplateView($context);
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $view->render();
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = $this->get(PageRenderer::class);
         // PageRenderer depends on request to determine FE vs. BE
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-        self::assertStringContainsString('"lang":{"login.header":"Login"}', $pageRenderer->render());
+        self::assertStringContainsString('"lang":{"login.header":"Login"}', $pageRenderer->renderResponse()->getBody()->__toString());
     }
 }

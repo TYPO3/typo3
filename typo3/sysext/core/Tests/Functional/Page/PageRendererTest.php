@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
@@ -61,6 +63,8 @@ class PageRendererTest extends FunctionalTestCase
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             $container->get(LocalizationFactory::class),
+            $container->get(ResponseFactoryInterface::class),
+            $container->get(StreamFactoryInterface::class),
         );
     }
 

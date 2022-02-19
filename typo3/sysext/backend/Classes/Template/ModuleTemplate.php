@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template;
 
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -72,8 +70,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly ViewInterface $view,
-        protected readonly ResponseFactoryInterface $responseFactory,
-        protected readonly StreamFactoryInterface $streamFactory,
         protected readonly ServerRequestInterface $request,
     ) {
         $module = $request->getAttribute('module');
@@ -85,12 +81,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         $this->flashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
         $this->setUpBasicPageRendererForBackend($pageRenderer, $extensionConfiguration, $request, $this->getLanguageService());
-        $this->pageRenderer->loadJavaScriptModule('bootstrap');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/document-header.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
     }
 
     /**
@@ -116,6 +106,22 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
      */
     public function render(string $templateFileName = ''): string
     {
+        $this->prepareRender($templateFileName);
+        return $this->pageRenderer->render();
+    }
+
+    /**
+     * Render the module and create an HTML 200 response from it. This is a
+     * lazy shortcut so controllers don't need to take care of this in the backend.
+     */
+    public function renderResponse(string $templateFileName = ''): ResponseInterface
+    {
+        $this->prepareRender($templateFileName);
+        return $this->pageRenderer->renderResponse();
+    }
+
+    protected function prepareRender(string $templateFileName): void
+    {
         $this->assignMultiple([
             'docHeader' => $this->docHeaderComponent->docHeaderContent(),
             'moduleId' => $this->moduleId,
@@ -125,6 +131,12 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
             'formTag' => $this->formTag,
         ]);
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/document-header.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
         $this->pageRenderer->addBodyContent($this->bodyTag . $this->view->render($templateFileName));
         $this->pageRenderer->setTitle($this->title);
         $updateSignalDetails = BackendUtility::getUpdateSignalDetails();
@@ -135,18 +147,6 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         if (!empty($updateSignalDetails['script'])) {
             $this->pageRenderer->addJsFooterInlineCode('updateSignals', implode("\n", $updateSignalDetails['script']));
         }
-        return $this->pageRenderer->render();
-    }
-
-    /**
-     * Render the module and create an HTML 200 response from it. This is a
-     * lazy shortcut so controllers don't need to take care of this in the backend.
-     */
-    public function renderResponse(string $templateFileName = ''): ResponseInterface
-    {
-        return $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'text/html; charset=utf-8')
-            ->withBody($this->streamFactory->createStream($this->render($templateFileName)));
     }
 
     /**
@@ -296,6 +296,12 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
             'uiBlock' => $this->uiBlock,
             'flashMessageQueueIdentifier' => $this->flashMessageQueue->getIdentifier(),
         ]);
+        $this->pageRenderer->loadJavaScriptModule('bootstrap');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-help.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/document-header.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/backend/element/immediate-action-element.js');
         $this->pageRenderer->addBodyContent($this->bodyTag . $this->legacyView->render('ModuleTemplate/Module.html'));
         $this->pageRenderer->setTitle($this->title);
         $updateSignalDetails = BackendUtility::getUpdateSignalDetails();

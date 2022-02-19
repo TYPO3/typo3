@@ -187,7 +187,7 @@ abstract class AbstractLinkBrowserController
             return new HtmlResponse($content);
         }
         $this->pageRenderer->setBodyContent('<body ' . GeneralUtility::implodeAttributes($this->getBodyTagAttributes(), true, true) . '>' . $content);
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     /**

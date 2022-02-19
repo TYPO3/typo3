@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -74,6 +76,8 @@ trait PageRendererFactoryTrait
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             new LocalizationFactory(new LanguageStore($packageManager), $cacheManager),
+            $this->prophesize(ResponseFactoryInterface::class)->reveal(),
+            $this->prophesize(StreamFactoryInterface::class)->reveal(),
         ];
     }
 }

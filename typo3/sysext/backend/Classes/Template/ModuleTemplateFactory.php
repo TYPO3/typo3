@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template;
 
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -37,8 +35,6 @@ final class ModuleTemplateFactory
         protected readonly FlashMessageService $flashMessageService,
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly BackendViewFactory $viewFactory,
-        protected readonly ResponseFactoryInterface $responseFactory,
-        protected readonly StreamFactoryInterface $streamFactory,
     ) {
     }
 
@@ -50,8 +46,6 @@ final class ModuleTemplateFactory
             $this->flashMessageService,
             $this->extensionConfiguration,
             $this->viewFactory->create($request),
-            $this->responseFactory,
-            $this->streamFactory,
             $request
         );
     }

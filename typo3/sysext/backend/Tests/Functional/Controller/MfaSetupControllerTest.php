@@ -174,7 +174,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
-        $responseContent = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->__toString();
 
         // Selection view is renderer
         self::assertStringContainsString('Set up MFA', $responseContent);
@@ -204,7 +204,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
-        $responseContent = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->__toString();
 
         // Redirect params are kept
         self::assertMatchesRegularExpression('/<form.*action="\/typo3\/setup\/mfa.*&amp;action=activate&amp;redirect=my_module&amp;redirectParams=some%3Dparam".*>/s', $responseContent);
@@ -227,7 +227,7 @@ class MfaSetupControllerTest extends FunctionalTestCase
 
         self::assertEquals(200, $response->getStatusCode());
 
-        $responseContent = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->__toString();
 
         // Auth view for provider is renderer
         self::assertStringContainsString('Set up Time-based one-time password', $responseContent);

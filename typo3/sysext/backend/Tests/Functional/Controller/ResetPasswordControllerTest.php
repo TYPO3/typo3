@@ -108,7 +108,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
     {
         $request = $this->request;
         $GLOBALS['TYPO3_REQUEST'] = $request;
-        $response = $this->subject->forgetPasswordFormAction($request)->getBody()->getContents();
+        $response = $this->subject->forgetPasswordFormAction($request)->getBody()->__toString();
         self::assertStringContainsString('/*loginHighlightColor*/', $response);
         self::assertMatchesRegularExpression('/\.btn-login { background-color: #abcdef; }.*\.card-login \.card-footer { border-color: #abcdef; }/s', $response);
     }
@@ -129,9 +129,9 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         // Both views supply "go back" links which should contain the defined queryParams
         $expected = htmlspecialchars(http_build_query($queryParams));
 
-        self::assertStringContainsString($expected, $this->subject->forgetPasswordFormAction($request)->getBody()->getContents());
-        self::assertStringContainsString($expected, $this->subject->initiatePasswordResetAction($request)->getBody()->getContents());
-        self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->getContents());
+        self::assertStringContainsString($expected, $this->subject->forgetPasswordFormAction($request)->getBody()->__toString());
+        self::assertStringContainsString($expected, $this->subject->initiatePasswordResetAction($request)->getBody()->__toString());
+        self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->__toString());
     }
 
     /**
@@ -155,7 +155,7 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
         self::assertStringContainsString(
             'The entered email address is invalid. Please try again.',
-            $this->subject->initiatePasswordResetAction($request)->getBody()->getContents()
+            $this->subject->initiatePasswordResetAction($request)->getBody()->__toString()
         );
     }
 
@@ -175,6 +175,6 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         // Expect the form action to contain the necessary reset query params
         $expected = '<form action="/typo3/login/password-reset/finish?' . htmlspecialchars(http_build_query($queryParams));
 
-        self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->getContents());
+        self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->__toString());
     }
 }

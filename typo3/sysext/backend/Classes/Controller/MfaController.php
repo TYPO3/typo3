@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderManifestInterface;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderPropertyManager;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaViewType;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
@@ -104,7 +103,7 @@ class MfaController extends AbstractMfaController
         ]);
         $this->addCustomAuthenticationFormStyles();
         $this->pageRenderer->setBodyContent('<body>' . $view->render('Mfa/Auth'));
-        return new HtmlResponse($this->pageRenderer->render());
+        return $this->pageRenderer->renderResponse();
     }
 
     /**
