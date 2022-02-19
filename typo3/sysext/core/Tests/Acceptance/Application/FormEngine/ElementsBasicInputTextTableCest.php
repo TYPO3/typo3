@@ -163,7 +163,8 @@ class ElementsBasicInputTextTableCest extends AbstractElementsBasicCest
 
         $fieldCount = count($formSection->findElements(WebDriverBy::cssSelector('typo3-backend-table-wizard input')));
 
-        // @todo: why the fuck are 2 expected when there is only one visible??!!
+        // Styleguide creates 3 rows and 2 columns for this field (3*2=6 input fields).
+        // Removing 1 row and 1 column means 2 rows and 1 column should be left (2*1=2 input fields).
         $I->assertEquals(2, $fieldCount);
     }
 
