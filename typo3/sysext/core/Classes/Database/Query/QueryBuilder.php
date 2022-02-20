@@ -265,10 +265,11 @@ class QueryBuilder
      * executeStatement() for 'INSERT', 'UPDATE' and 'DELETE' queries.
      *
      * @return Result|int
-     * @internal use executeQuery() and executeStatement() instead. Only here for backwards-compatibility
+     * @deprecated since v12, will be removed in v13. Use executeQuery() and executeStatement() instead.
      */
     public function execute()
     {
+        trigger_error('QueryBuilder::execute() will be removed in TYPO3 v13.0. Use executeQuery() or executeStatement() directly.', E_USER_DEPRECATED);
         if ($this->getType() !== \Doctrine\DBAL\Query\QueryBuilder::SELECT) {
             return $this->executeStatement();
         }
