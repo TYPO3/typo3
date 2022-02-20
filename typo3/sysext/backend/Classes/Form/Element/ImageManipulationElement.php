@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface;
 use TYPO3Fluid\Fluid\View\TemplateView;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
@@ -123,7 +124,7 @@ class ImageManipulationElement extends AbstractFormElement
         ],
     ];
 
-    protected ViewInterface $templateView;
+    protected ViewInterface&TemplateAwareViewInterface $templateView;
 
     /**
      * @var UriBuilder

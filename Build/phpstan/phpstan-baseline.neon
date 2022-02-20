@@ -51,11 +51,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateValueOnFieldChange.php
 
 		-
-			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
-
-		-
 			message: "#^Offset 'arguments' on array\\{arguments\\: string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
@@ -1309,11 +1304,6 @@ parameters:
 			message: "#^Binary operation \"&\" between string and string\\|false results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/IpAnonymizationUtility.php
-
-		-
-			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/View/FluidViewAdapter.php
 
 		-
 			message: "#^Parameter \\#2 \\$attributeValue of method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\TagBuilder\\:\\:addAttribute\\(\\) expects array\\|string\\|Traversable\\|null, int given\\.$#"

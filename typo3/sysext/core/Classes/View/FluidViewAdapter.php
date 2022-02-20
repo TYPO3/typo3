@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\View;
 
 use TYPO3\CMS\Core\View\ViewInterface as CoreViewInterface;
+use TYPO3Fluid\Fluid\View\TemplateAwareViewInterface as FluidTemplateAwareViewInterface;
 use TYPO3Fluid\Fluid\View\ViewInterface as FluidViewInterface;
 
 /**
@@ -26,7 +27,7 @@ use TYPO3Fluid\Fluid\View\ViewInterface as FluidViewInterface;
 class FluidViewAdapter implements CoreViewInterface
 {
     public function __construct(
-        protected readonly FluidViewInterface $view,
+        protected readonly FluidViewInterface&FluidTemplateAwareViewInterface $view,
     ) {
     }
 
