@@ -171,7 +171,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      */
     protected function validateAdditionalFieldPeriod($period)
     {
-        if (!empty($period) && filter_var($period, FILTER_VALIDATE_INT) !== false) {
+        if (filter_var($period, FILTER_VALIDATE_INT) !== false && $period > 0) {
             $validPeriod = true;
         } else {
             $this->addMessage(
