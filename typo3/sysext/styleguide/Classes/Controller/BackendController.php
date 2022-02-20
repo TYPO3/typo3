@@ -59,7 +59,7 @@ class BackendController extends ActionController
         $this->pageRenderer->addCssFile('EXT:styleguide/Resources/Public/Css/backend.css');
 
         // Hand over flash message queue to module template
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request, 'typo3/cms-styleguide');
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->moduleTemplate->assign('actions', ['index', 'typography', 'tca', 'trees', 'tab', 'tables', 'avatar', 'buttons',
             'infobox', 'flashMessages', 'icons', 'debug', 'modal', 'accordion', 'pagination', ]);
