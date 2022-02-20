@@ -163,6 +163,15 @@
 		"TYPO3_.+"
 	],
 	"replace": {
+		"symfony/polyfill-intl-grapheme": "*",
+		"symfony/polyfill-intl-idn": "*",
+		"symfony/polyfill-intl-normalizer": "*",
+		"symfony/polyfill-mbstring": "*",
+		"symfony/polyfill-php72": "*",
+		"symfony/polyfill-php73": "*",
+		"symfony/polyfill-php74": "*",
+		"symfony/polyfill-php80": "*",
+		"symfony/polyfill-php81": "*",
 		"typo3/cms-adminpanel": "self.version",
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
