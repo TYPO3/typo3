@@ -56,6 +56,6 @@ The HTML template should then reference the ModuleTemplate layout:
     <f:section name="Content">
         My body content
     </f:section>
-    </f:html>
+    </html>
 
 .. index:: Backend, Fluid, PHP-API, ext:backend
