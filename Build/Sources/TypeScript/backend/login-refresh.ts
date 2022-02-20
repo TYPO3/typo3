@@ -222,8 +222,12 @@ class LoginRefresh {
         class: 'btn btn-primary t3js-active',
         'data-action': 'refreshSession',
       }).text(TYPO3.lang['mess.refresh_login_refresh_button']).on('click', () => {
-        new AjaxRequest(TYPO3.settings.ajaxUrls.login_timedout).get().then((): void => {
+        new AjaxRequest(TYPO3.settings.ajaxUrls.login_refresh).get().then(async (response: AjaxResponse): Promise<void> => {
+          const data = await response.resolve();
           this.hideTimeoutModal();
+          if (!data.refresh.success) {
+            this.showLoginForm();
+          }
         });
       }),
     );

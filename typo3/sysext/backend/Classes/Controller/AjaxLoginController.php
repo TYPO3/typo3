@@ -35,7 +35,7 @@ class AjaxLoginController
     /**
      * Handles the actual login process, more specifically it defines the response.
      * The login details were sent in as part of the ajax request and automatically logged in
-     * the user inside the TYPO3 CMS bootstrap part of the ajax call. If that was successful, we have
+     * the user inside the BackendUserAuthenticator middleware. If that was successful, we have
      * a BE user and reset the timer and hide the login window.
      * If it was unsuccessful, we display that and show the login box again.
      *
@@ -88,17 +88,19 @@ class AjaxLoginController
     }
 
     /**
-     * Refreshes the login without needing login information. We just refresh the session.
+     * Handles the actual session refresh, more specifically it defines the response.
+     * The session refresh has been performed inside the BackendUserAuthenticator middleware.
+     * If that was successful, we have a BE user and report that information as response.
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function refreshAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->getBackendUser()->checkAuthentication($request);
+        $backendUser = $this->getBackendUser();
         return new JsonResponse([
             'refresh' => [
-                'success' => true,
+                'success' => isset($backendUser->user['uid']),
             ],
         ]);
     }
