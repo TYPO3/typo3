@@ -23,6 +23,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Container;
@@ -2399,7 +2400,11 @@ class ContentObjectRendererTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(
             SiteConfiguration::class,
-            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('dummy')
+            )
         );
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -2841,7 +2846,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->cacheManager->getCache('core')->willReturn(new NullFrontend('runtime'));
         GeneralUtility::setSingletonInstance(
             SiteConfiguration::class,
-            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('dummy')
+            )
         );
         $linkText = 'Nice Text';
         $configuration = [
@@ -2931,7 +2940,11 @@ class ContentObjectRendererTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(
             SiteConfiguration::class,
-            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('dummy')
+            )
         );
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
@@ -2990,7 +3003,11 @@ class ContentObjectRendererTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(
             SiteConfiguration::class,
-            new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('dummy'))
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('dummy')
+            )
         );
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);

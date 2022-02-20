@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationBeforeWriteEvent;
+use TYPO3\CMS\Core\Configuration\Event\SiteConfigurationLoadedEvent;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -69,18 +72,21 @@ class SiteConfiguration implements SingletonInterface
      * @var array|null
      */
     protected $firstLevelCache;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param string $configPath
-     * @param PhpFrontend $coreCache
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param PhpFrontend|null $coreCache
      */
-    public function __construct(string $configPath, PhpFrontend $coreCache = null)
+    public function __construct(string $configPath, EventDispatcherInterface $eventDispatcher, PhpFrontend $coreCache = null)
     {
         $this->configPath = $configPath;
         // The following fallback to GeneralUtility;:getContainer() is only used in acceptance tests
         // @todo: Fix testing-framework/typo3/sysext/core/Classes/Configuration/SiteConfiguration.php
         // to inject the cache instance
         $this->cache = $coreCache ?? GeneralUtility::getContainer()->get('cache.core');
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -177,7 +183,8 @@ class SiteConfiguration implements SingletonInterface
         foreach ($finder as $fileInfo) {
             $configuration = $loader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
             $identifier = basename($fileInfo->getPath());
-            $siteConfiguration[$identifier] = $configuration;
+            $event = $this->eventDispatcher->dispatch(new SiteConfigurationLoadedEvent($identifier, $configuration));
+            $siteConfiguration[$identifier] = $event->getConfiguration();
         }
         $this->cache->set($this->cacheIdentifier, 'return ' . var_export($siteConfiguration, true) . ';');
 
@@ -229,7 +236,8 @@ class SiteConfiguration implements SingletonInterface
             // change _only_ the modified keys, leave the original non-changed areas alone
             ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $newModified);
         }
-        $newConfiguration = $this->sortConfiguration($newConfiguration);
+        $event = $this->eventDispatcher->dispatch(new SiteConfigurationBeforeWriteEvent($siteIdentifier, $newConfiguration));
+        $newConfiguration = $this->sortConfiguration($event->getConfiguration());
         $yamlFileContents = Yaml::dump($newConfiguration, 99, 2);
         if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
             throw new SiteConfigurationWriteException('Unable to write site configuration in sites/' . $siteIdentifier . '/' . $this->configFileName, 1590487011);

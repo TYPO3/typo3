@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
@@ -55,9 +56,12 @@ class SiteConfigurationTest extends UnitTestCase
         $coreCacheProphecy->require(Argument::any())->willReturn(false);
         $coreCacheProphecy->set(Argument::any(), Argument::any())->willReturn(null);
         $coreCacheProphecy->remove(Argument::any(), Argument::any())->willReturn(null);
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
 
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
+            $eventDispatcher->reveal(),
             $coreCacheProphecy->reveal()
         );
     }

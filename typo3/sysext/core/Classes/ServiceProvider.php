@@ -160,6 +160,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Configuration\SiteConfiguration::class, [
             Environment::getConfigPath() . '/sites',
+            $container->get(EventDispatcherInterface::class),
             $container->get('cache.core'),
         ]);
     }

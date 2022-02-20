@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Routing\Aspect;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -317,8 +318,9 @@ class PersistedAliasMapperTest extends FunctionalTestCase
             // ensure no previous site configuration influences the test
             $path = $this->instancePath . '/typo3conf/sites';
             $cache = $this->get('cache.core');
+            $eventDispatcher = $this->get(EventDispatcherInterface::class);
             GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
-            GeneralUtility::makeInstance(SiteConfiguration::class, $path, $cache)->write($site->getIdentifier(), $site->getConfiguration());
+            GeneralUtility::makeInstance(SiteConfiguration::class, $path, $eventDispatcher, $cache)->write($site->getIdentifier(), $site->getConfiguration());
         } catch (\Exception $exception) {
             self::markTestSkipped($exception->getMessage());
         }

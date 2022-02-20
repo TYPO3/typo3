@@ -304,7 +304,14 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
         file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', $config);
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('core')
+            )
+        );
 
         $packageMock = $this->getMockBuilder(Package::class)
             ->disableOriginalConstructor()
@@ -377,7 +384,14 @@ class InstallUtilityTest extends UnitTestCase
         GeneralUtility::mkdir_deep($configDir . '/sites/' . $siteIdentifier);
         file_put_contents($configDir . '/' . $existingSiteConfig, $config);
 
-        GeneralUtility::setSingletonInstance(SiteConfiguration::class, new SiteConfiguration(Environment::getConfigPath() . '/sites', new NullFrontend('core')));
+        GeneralUtility::setSingletonInstance(
+            SiteConfiguration::class,
+            new SiteConfiguration(
+                Environment::getConfigPath() . '/sites',
+                $this->prophesize(EventDispatcherInterface::class)->reveal(),
+                new NullFrontend('core')
+            )
+        );
         $packageMock = $this->getMockBuilder(Package::class)
             ->disableOriginalConstructor()
             ->getMock();
