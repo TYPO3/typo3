@@ -126,6 +126,11 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\FolderElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int, array\\>\\|string\\>\\.$#"
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/Form/Element/FolderElement.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\GroupElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int, array\\>\\|string\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/GroupElement.php

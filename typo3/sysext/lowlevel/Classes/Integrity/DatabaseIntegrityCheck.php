@@ -365,7 +365,7 @@ class DatabaseIntegrityCheck
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 $fieldType = $config['config']['type'] ?? '';
-                if ($fieldType === 'group' && ($config['config']['internal_type'] ?? '') !== 'folder') {
+                if ($fieldType === 'group') {
                     $result[$table][] = $field;
                 }
                 if (($fieldType === 'select' || $fieldType === 'category')

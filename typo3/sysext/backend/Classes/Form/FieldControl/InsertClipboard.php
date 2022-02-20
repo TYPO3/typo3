@@ -40,7 +40,6 @@ class InsertClipboard extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
-        $internalType = (string)($config['internal_type'] ?? 'db');
         $clipboardElements = $config['clipboardElements'];
 
         if ((isset($config['readOnly']) && $config['readOnly'])
@@ -49,19 +48,16 @@ class InsertClipboard extends AbstractNode
             return [];
         }
 
-        $title = '';
         $dataAttributes = [
             'element' => $elementName,
             'clipboardItems' => [],
         ];
-        if ($internalType === 'db') {
-            $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_db'), count($clipboardElements));
-            foreach ($clipboardElements as $clipboardElement) {
-                $dataAttributes['clipboardItems'][] = [
-                    'title' => $clipboardElement['title'],
-                    'value' => $clipboardElement['value'],
-                ];
-            }
+        $title = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipInsert_db'), count($clipboardElements));
+        foreach ($clipboardElements as $clipboardElement) {
+            $dataAttributes['clipboardItems'][] = [
+                'title' => $clipboardElement['title'],
+                'value' => $clipboardElement['value'],
+            ];
         }
 
         $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');

@@ -19,9 +19,6 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Resource\Exception;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -35,15 +32,11 @@ class TcaGroup implements FormDataProviderInterface
      *
      * @param array $result
      * @return array
-     * @throws \UnexpectedValueException
-     * @throws \RuntimeException
      */
     public function addData(array $result)
     {
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            if (empty($fieldConfig['config']['type'])
-                || $fieldConfig['config']['type'] !== 'group'
-            ) {
+            if (empty($fieldConfig['config']['type']) || $fieldConfig['config']['type'] !== 'group') {
                 continue;
             }
 
@@ -64,94 +57,67 @@ class TcaGroup implements FormDataProviderInterface
 
             $items = [];
             $sanitizedClipboardElements = [];
-            $internalType = (string)($fieldConfig['config']['internal_type'] ?? 'db');
-            if ($internalType === 'db') {
-                if (empty($fieldConfig['config']['allowed'])) {
-                    throw new \RuntimeException(
-                        'Mandatory TCA config setting "allowed" missing in field "' . $fieldName . '" of table "' . $result['tableName'] . '"',
-                        1482250512
-                    );
-                }
-
-                // In case of vanilla uid, 0 is used to query relations by splitting $databaseRowFieldContent (possible defVals)
-                $MMuid = MathUtility::canBeInterpretedAsInteger($result['databaseRow']['uid']) ? $result['databaseRow']['uid'] : 0;
-
-                $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
-                $relationHandler->start(
-                    $databaseRowFieldContent,
-                    $fieldConfig['config']['allowed'] ?? '',
-                    $fieldConfig['config']['MM'] ?? '',
-                    $MMuid,
-                    $result['tableName'] ?? '',
-                    $fieldConfig['config'] ?? []
+            if (empty($fieldConfig['config']['allowed'])) {
+                throw new \RuntimeException(
+                    'Mandatory TCA config setting "allowed" missing in field "' . $fieldName . '" of table "' . $result['tableName'] . '"',
+                    1482250512
                 );
-                $relationHandler->getFromDB();
-                $relationHandler->processDeletePlaceholder();
-                $relations = $relationHandler->getResolvedItemArray();
-                foreach ($relations as $relation) {
-                    $tableName = $relation['table'];
-                    $record = $relation['record'];
-                    BackendUtility::workspaceOL($tableName, $record);
-                    $title = BackendUtility::getRecordTitle($tableName, $record, false, false);
-                    $items[] = [
-                        'table' => $tableName,
-                        'uid' => $record['uid'] ?? null,
-                        'title' => $title,
-                        'row' => $record,
-                    ];
-                }
+            }
 
-                // Register elements from clipboard
-                $allowed = GeneralUtility::trimExplode(',', $fieldConfig['config']['allowed'], true);
-                $clipboard = GeneralUtility::makeInstance(Clipboard::class);
-                $clipboard->initializeClipboard();
-                if ($allowed[0] !== '*') {
-                    // Only some tables, filter them:
-                    foreach ($allowed as $tablename) {
-                        foreach ($clipboard->elFromTable($tablename) as $recordUid) {
-                            $record = BackendUtility::getRecordWSOL($tablename, $recordUid);
-                            $sanitizedClipboardElements[] = [
-                                'title' => BackendUtility::getRecordTitle($tablename, $record),
-                                'value' => $tablename . '_' . $recordUid,
-                            ];
-                        }
-                    }
-                } else {
-                    // All tables allowed for relation:
-                    $clipboardElements = array_keys($clipboard->elFromTable(''));
-                    foreach ($clipboardElements as $elementValue) {
-                        [$elementTable, $elementUid] = explode('|', $elementValue);
-                        $record = BackendUtility::getRecordWSOL($elementTable, (int)$elementUid);
+            // In case of vanilla uid, 0 is used to query relations by splitting $databaseRowFieldContent (possible defVals)
+            $MMuid = MathUtility::canBeInterpretedAsInteger($result['databaseRow']['uid']) ? $result['databaseRow']['uid'] : 0;
+
+            $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+            $relationHandler->start(
+                $databaseRowFieldContent,
+                $fieldConfig['config']['allowed'] ?? '',
+                $fieldConfig['config']['MM'] ?? '',
+                $MMuid,
+                $result['tableName'] ?? '',
+                $fieldConfig['config'] ?? []
+            );
+            $relationHandler->getFromDB();
+            $relationHandler->processDeletePlaceholder();
+            $relations = $relationHandler->getResolvedItemArray();
+            foreach ($relations as $relation) {
+                $tableName = $relation['table'];
+                $record = $relation['record'];
+                BackendUtility::workspaceOL($tableName, $record);
+                $title = BackendUtility::getRecordTitle($tableName, $record, false, false);
+                $items[] = [
+                    'table' => $tableName,
+                    'uid' => $record['uid'] ?? null,
+                    'title' => $title,
+                    'row' => $record,
+                ];
+            }
+
+            // Register elements from clipboard
+            $allowed = GeneralUtility::trimExplode(',', $fieldConfig['config']['allowed'], true);
+            $clipboard = GeneralUtility::makeInstance(Clipboard::class);
+            $clipboard->initializeClipboard();
+            if ($allowed[0] !== '*') {
+                // Only some tables, filter them:
+                foreach ($allowed as $tablename) {
+                    foreach ($clipboard->elFromTable($tablename) as $recordUid) {
+                        $record = BackendUtility::getRecordWSOL($tablename, $recordUid);
                         $sanitizedClipboardElements[] = [
-                            'title' => BackendUtility::getRecordTitle($elementTable, $record),
-                            'value' => $elementTable . '_' . $elementUid,
+                            'title' => BackendUtility::getRecordTitle($tablename, $record),
+                            'value' => $tablename . '_' . $recordUid,
                         ];
                     }
                 }
-            } elseif ($internalType === 'folder') {
-                // Simple list of folders
-                $folderList = GeneralUtility::trimExplode(',', $databaseRowFieldContent, true);
-                foreach ($folderList as $folder) {
-                    if (empty($folder)) {
-                        continue;
-                    }
-                    try {
-                        $folderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($folder);
-                        if ($folderObject instanceof Folder) {
-                            $items[] = [
-                                'folder' => $folder,
-                            ];
-                        }
-                    } catch (Exception $exception) {
-                        continue;
-                    }
-                }
             } else {
-                throw new \UnexpectedValueException(
-                    'Invalid TCA internal_type of field "' . $fieldName . '" in table ' . $result['tableName']
-                    . ': Must not be set, or set to "folder".',
-                    1438780511
-                );
+                // All tables allowed for relation:
+                $clipboardElements = array_keys($clipboard->elFromTable(''));
+                foreach ($clipboardElements as $elementValue) {
+                    [$elementTable, $elementUid] = explode('|', $elementValue);
+                    $record = BackendUtility::getRecordWSOL($elementTable, (int)$elementUid);
+                    $sanitizedClipboardElements[] = [
+                        'title' => BackendUtility::getRecordTitle($elementTable, $record),
+                        'value' => $elementTable . '_' . $elementUid,
+                    ];
+                }
             }
 
             $result['databaseRow'][$fieldName] = $items;

@@ -22,14 +22,9 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class TcaGroupTest extends UnitTestCase
 {
     use ProphecyTrait;
@@ -59,69 +54,6 @@ class TcaGroupTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        self::assertSame($expected, (new TcaGroup())->addData($input));
-    }
-
-    /**
-     * @test
-     */
-    public function addDataThrowsExceptionWithTypeGroupAndNoValidInternalType(): void
-    {
-        $input = [
-            'tableName' => 'aTable',
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'group',
-                            'internal_type' => 'foo',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1438780511);
-        (new TcaGroup())->addData($input);
-    }
-
-    /**
-     * @test
-     */
-    public function addDataSetsFolderData(): void
-    {
-        $input = [
-            'databaseRow' => [
-                'aField' => '1:/aFolder/anotherFolder/',
-            ],
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'group',
-                            'internal_type' => 'folder',
-                            'maxitems' => 99999,
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $folderProphecy = $this->prophesize(Folder::class);
-
-        $resourceFactoryProphecy = $this->prophesize(ResourceFactory::class);
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryProphecy->reveal());
-        $resourceFactoryProphecy->retrieveFileOrFolderObject('1:/aFolder/anotherFolder/')
-            ->shouldBeCalled()
-            ->willReturn($folderProphecy->reveal());
-
-        $expected = $input;
-        $expected['databaseRow']['aField'] = [
-            [
-                'folder' => '1:/aFolder/anotherFolder/',
-            ],
-        ];
-        $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
         self::assertSame($expected, (new TcaGroup())->addData($input));
     }
 

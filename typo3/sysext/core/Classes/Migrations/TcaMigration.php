@@ -64,6 +64,7 @@ class TcaMigration
         $tca = $this->migrateLevelLinksPosition($tca);
         $tca = $this->migrateRootUidToStartingPoints($tca);
         $tca = $this->migrateSelectAuthModeIndividualItemsKeywordToNewPosition($tca);
+        $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
 
         return $tca;
     }
@@ -543,6 +544,37 @@ class TcaMigration
                         $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets ' . $item[4]
                             . ' at position 5 of the items array. This option has been shifted to position 6 and should be adjusted accordingly.';
                     }
+                }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][internal_type] = 'folder' to [config][type] = 'folder'.
+     * Also removes [config][internal_type] completely, if present.
+     */
+    protected function migrateInternalTypeFolderToTypeFolder(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'group' || !isset($fieldConfig['config']['internal_type'])) {
+                    continue;
+                }
+                unset($tca[$table]['columns'][$fieldName]['config']['internal_type']);
+
+                if ($fieldConfig['config']['internal_type'] === 'folder') {
+                    $tca[$table]['columns'][$fieldName]['config']['type'] = 'folder';
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' has been migrated to '
+                        . 'the TCA type \'folder\'. Please adjust your TCA accordingly.';
+                } else {
+                    $this->messages[] = 'The property \'internal_type\' of the TCA field \'' . $fieldName . '\' of table \''
+                        . $table . '\' is obsolete and has been removed. You can remove it from your TCA as it is not evaluated anymore.';
                 }
             }
         }

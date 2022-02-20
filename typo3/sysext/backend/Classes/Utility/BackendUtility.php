@@ -1577,17 +1577,16 @@ class BackendUtility
                 }
                 break;
             case 'group':
-                if (($theColConf['internal_type'] ?? '') === 'folder') {
-                    $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
+                // resolve titles of DB records
+                $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
+                if ($finalValues !== []) {
+                    $l = implode(', ', $finalValues);
                 } else {
-                    // resolve titles of DB records
-                    $finalValues = static::resolveRelationLabels($theColConf, $table, $uid, $value, $noRecordLookup);
-                    if ($finalValues !== []) {
-                        $l = implode(', ', $finalValues);
-                    } else {
-                        $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
-                    }
+                    $l = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation');
                 }
+                break;
+            case 'folder':
+                $l = implode(', ', GeneralUtility::trimExplode(',', $value, true));
                 break;
             case 'check':
                 if (!is_array($theColConf['items'] ?? null)) {

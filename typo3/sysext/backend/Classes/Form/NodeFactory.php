@@ -72,6 +72,7 @@ class NodeFactory
         'checkboxToggle' => Element\CheckboxToggleElement::class,
         'checkboxLabeledToggle' => Element\CheckboxLabeledToggleElement::class,
         'group' => Element\GroupElement::class,
+        'folder' => Element\FolderElement::class,
         'input' => Element\InputTextElement::class,
         'inputDateTime' => Element\InputDateTimeElement::class,
         'inputLink' => Element\InputLinkElement::class,

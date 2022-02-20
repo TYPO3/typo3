@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,7 +18,6 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,9 +25,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of elements of the type "group"
+ * Generation of elements of the type "folder"
  */
-class GroupElement extends AbstractFormElement
+class FolderElement extends AbstractFormElement
 {
     use OnFieldChangeTrait;
 
@@ -50,25 +51,6 @@ class GroupElement extends AbstractFormElement
         'elementBrowser' => [
             'renderType' => 'elementBrowser',
         ],
-        'insertClipboard' => [
-            'renderType' => 'insertClipboard',
-            'after' => [ 'elementBrowser' ],
-        ],
-        'editPopup' => [
-            'renderType' => 'editPopup',
-            'disabled' => true,
-            'after' => [ 'insertClipboard' ],
-        ],
-        'addRecord' => [
-            'renderType' => 'addRecord',
-            'disabled' => true,
-            'after' => [ 'editPopup' ],
-        ],
-        'listModule' => [
-            'renderType' => 'listModule',
-            'disabled' => true,
-            'after' => [ 'addRecord' ],
-        ],
     ];
 
     /**
@@ -77,13 +59,6 @@ class GroupElement extends AbstractFormElement
      * @var array
      */
     protected $defaultFieldWizard = [
-        'tableList' => [
-            'renderType' => 'tableList',
-        ],
-        'recordsOverview' => [
-            'renderType' => 'recordsOverview',
-            'after' => [ 'tableList' ],
-        ],
         'localizationStateSelector' => [
             'renderType' => 'localizationStateSelector',
             'after' => [ 'recordsOverview' ],
@@ -99,8 +74,8 @@ class GroupElement extends AbstractFormElement
     ];
 
     /**
-     * This will render a selector box into which elements from the database
-     * can be inserted. Relations.
+     * This will render a selector box into which folder relations can be
+     * inserted.
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      * @throws \RuntimeException
@@ -108,11 +83,8 @@ class GroupElement extends AbstractFormElement
     public function render()
     {
         $languageService = $this->getLanguageService();
-        $backendUser = $this->getBackendUserAuthentication();
         $resultArray = $this->initializeResultArray();
 
-        $table = $this->data['tableName'];
-        $fieldName = $this->data['fieldName'];
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $config = $parameterArray['fieldConf']['config'];
@@ -128,21 +100,14 @@ class GroupElement extends AbstractFormElement
             $size = MathUtility::forceIntegerInRange(count($selectedItems) + 1, $size, $autoSizeMax);
         }
 
-        $maxTitleLength = $backendUser->uc['titleLen'];
-
         $listOfSelectedValues = [];
         $selectorOptionsHtml = [];
         foreach ($selectedItems as $selectedItem) {
-            $tableWithUid = $selectedItem['table'] . '_' . $selectedItem['uid'];
-            $listOfSelectedValues[] = $tableWithUid;
-            $title = $selectedItem['title'];
-            if (empty($title)) {
-                $title = '[' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']';
-            }
-            $shortenedTitle = GeneralUtility::fixed_lgd_cs($title, $maxTitleLength);
+            $folder = $selectedItem['folder'];
+            $listOfSelectedValues[] = $folder;
             $selectorOptionsHtml[] =
-                '<option value="' . htmlspecialchars($tableWithUid) . '" title="' . htmlspecialchars($title) . '">'
-                    . htmlspecialchars($this->appendValueToLabelInDebugMode($shortenedTitle, $tableWithUid))
+                '<option value="' . htmlspecialchars($folder) . '" title="' . htmlspecialchars($folder) . '">'
+                    . htmlspecialchars($folder)
                 . '</option>';
         }
 
@@ -171,45 +136,6 @@ class GroupElement extends AbstractFormElement
             $resultArray['html'] = implode(LF, $html);
             return $resultArray;
         }
-
-        // Need some information if in flex form scope for the suggest element
-        $dataStructureIdentifier = '';
-        $flexFormSheetName = '';
-        $flexFormFieldName = '';
-        $flexFormContainerName = '';
-        $flexFormContainerFieldName = '';
-        if ($this->data['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
-            $flexFormConfig = $this->data['processedTca']['columns'][$fieldName];
-            $dataStructureIdentifier = $flexFormConfig['config']['dataStructureIdentifier'];
-            if (!isset($flexFormConfig['config']['dataStructureIdentifier'])) {
-                throw new \RuntimeException(
-                    'A data structure identifier must be set in [\'config\'] part of a flex form.'
-                    . ' This is usually added by TcaFlexPrepare data processor',
-                    1485206970
-                );
-            }
-            if (isset($this->data['flexFormSheetName'])) {
-                $flexFormSheetName = $this->data['flexFormSheetName'];
-            }
-            if (isset($this->data['flexFormFieldName'])) {
-                $flexFormFieldName = $this->data['flexFormFieldName'];
-            }
-            if (isset($this->data['flexFormContainerName'])) {
-                $flexFormContainerName = $this->data['flexFormContainerName'];
-            }
-            if (isset($this->data['flexFormContainerFieldName'])) {
-                $flexFormContainerFieldName = $this->data['flexFormContainerFieldName'];
-            }
-        }
-        // Get minimum characters for suggest from TCA and override by TsConfig
-        $suggestMinimumCharacters = 0;
-        if (isset($config['suggestOptions']['default']['minimumCharacters'])) {
-            $suggestMinimumCharacters = (int)$config['suggestOptions']['default']['minimumCharacters'];
-        }
-        if (isset($parameterArray['fieldTSConfig']['suggest.']['default.']['minimumCharacters'])) {
-            $suggestMinimumCharacters = (int)$parameterArray['fieldTSConfig']['suggest.']['default.']['minimumCharacters'];
-        }
-        $suggestMinimumCharacters = $suggestMinimumCharacters > 0 ? $suggestMinimumCharacters : 2;
 
         $itemCanBeSelectedMoreThanOnce = !empty($config['multiple']);
 
@@ -247,32 +173,6 @@ class GroupElement extends AbstractFormElement
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
         $html[] =   $fieldInformationHtml;
         $html[] =   '<div class="form-wizards-wrap">';
-        if ((!isset($config['hideSuggest']) || (bool)$config['hideSuggest'] !== true)) {
-            $html[] =   '<div class="form-wizards-items-top">';
-            $html[] =       '<div class="autocomplete t3-form-suggest-container">';
-            $html[] =           '<div class="input-group">';
-            $html[] =               '<span class="input-group-addon">';
-            $html[] =                   $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render();
-            $html[] =               '</span>';
-            $html[] =               '<input type="search" class="t3-form-suggest form-control"';
-            $html[] =                   ' placeholder="' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.findRecord') . '"';
-            $html[] =                   ' data-fieldname="' . htmlspecialchars($fieldName) . '"';
-            $html[] =                   ' data-tablename="' . htmlspecialchars($table) . '"';
-            $html[] =                   ' data-field="' . htmlspecialchars($elementName) . '"';
-            $html[] =                   ' data-uid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
-            $html[] =                   ' data-pid="' . htmlspecialchars($this->data['parentPageRow']['uid'] ?? 0) . '"';
-            $html[] =                   ' data-fieldtype="' . htmlspecialchars($config['type']) . '"';
-            $html[] =                   ' data-minchars="' . htmlspecialchars((string)$suggestMinimumCharacters) . '"';
-            $html[] =                   ' data-datastructureidentifier="' . htmlspecialchars($dataStructureIdentifier) . '"';
-            $html[] =                   ' data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
-            $html[] =                   ' data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
-            $html[] =                   ' data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
-            $html[] =                   ' data-flexformcontainerfieldname="' . htmlspecialchars($flexFormContainerFieldName) . '"';
-            $html[] =               '/>';
-            $html[] =           '</div>';
-            $html[] =       '</div>';
-            $html[] =   '</div>';
-        }
         $html[] =       '<div class="form-wizards-element">';
         $html[] =           '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($elementName) . '" value="' . $itemCanBeSelectedMoreThanOnce . '" />';
         $html[] =           '<select ' . GeneralUtility::implodeAttributes($selectorAttributes, true) . '>';
@@ -320,7 +220,7 @@ class GroupElement extends AbstractFormElement
                 $html[] =           '<a href="#"';
                 $html[] =               ' class="btn btn-default t3js-btn-option t3js-btn-removeoption t3js-revert-unique"';
                 $html[] =               ' data-fieldname="' . htmlspecialchars($elementName) . '"';
-                $html[] =               ' data-uid="' . htmlspecialchars($row['uid']) . '"';
+                $html[] =               ' data-uid="' . htmlspecialchars((string)$row['uid']) . '"';
                 $html[] =               ' title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remove_selected')) . '"';
                 $html[] =           '>';
                 $html[] =               $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL)->render();
@@ -355,16 +255,13 @@ class GroupElement extends AbstractFormElement
         $html[] =   '<input ' . GeneralUtility::implodeAttributes($hiddenElementAttrs, true) . '>';
         $html[] = '</div>';
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            '@typo3/backend/form-engine/element/group-element.js'
-        )->instance($fieldId);
+        $resultArray['html'] =
+            '<typo3-formengine-element-folder recordFieldId="' . htmlspecialchars($fieldId) . '">
+                ' . implode(LF, $html) . '
+            </typo3-formengine-element-category>';
 
-        $resultArray['html'] = implode(LF, $html);
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/folder-element.js');
+
         return $resultArray;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 }

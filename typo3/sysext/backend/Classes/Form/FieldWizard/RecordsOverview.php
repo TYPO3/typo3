@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Render details of selected records,
- * typically used with type='group' if internal_type is not 'folder'.
+ * typically used with type='group'.
  */
 class RecordsOverview extends AbstractNode
 {
@@ -43,14 +43,8 @@ class RecordsOverview extends AbstractNode
         $result = $this->initializeResultArray();
 
         $parameterArray = $this->data['parameterArray'];
-        $config = $parameterArray['fieldConf']['config'];
         $selectedItems = $parameterArray['itemFormElValue'];
         $maxTitleLength = $backendUser->uc['titleLen'];
-
-        if (($config['internal_type'] ?? '') === 'folder') {
-            // Table list makes sense on db only
-            return $result;
-        }
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $recordsOverviewHtml = [];

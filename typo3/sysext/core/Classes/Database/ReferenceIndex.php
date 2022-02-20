@@ -850,7 +850,7 @@ class ReferenceIndex implements LoggerAwareInterface
     protected function isDbReferenceField(array $configuration): bool
     {
         return
-            ($configuration['type'] === 'group' && ($configuration['internal_type'] ?? '') !== 'folder')
+            $configuration['type'] === 'group'
             || (
                 in_array($configuration['type'], ['select', 'category', 'inline'], true)
                 && !empty($configuration['foreign_table'])

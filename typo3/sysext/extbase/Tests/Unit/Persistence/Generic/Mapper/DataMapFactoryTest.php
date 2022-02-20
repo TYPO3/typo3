@@ -21,7 +21,6 @@ use ExtbaseTeam\BlogExample\Domain\Model\Administrator;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
@@ -103,6 +102,15 @@ class DataMapFactoryTest extends UnitTestCase
             'elementType' => null,
             'tca' => [
                 'type' => 'group',
+            ],
+            'expectedRelation' => ColumnMap::RELATION_HAS_MANY,
+        ];
+
+        yield 'columns configuration is initialized for type folder' => [
+            'type' => null,
+            'elementType' => null,
+            'tca' => [
+                'type' => 'folder',
             ],
             'expectedRelation' => ColumnMap::RELATION_HAS_MANY,
         ];
@@ -441,39 +449,32 @@ class DataMapFactoryTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function tcaConfigurationsContainingTypeAndInternalType(): array
+    public function tcaConfigurationsContainingType(): array
     {
         return [
-            [['type' => 'input'], TableColumnType::INPUT, null],
-            [['type' => 'text'], TableColumnType::TEXT, null],
-            [['type' => 'check'], TableColumnType::CHECK, null],
-            [['type' => 'radio'], TableColumnType::RADIO, null],
-            [['type' => 'select'], TableColumnType::SELECT, null],
-            [['type' => 'category'], TableColumnType::CATEGORY, null],
-            [['type' => 'group'], TableColumnType::GROUP, TableColumnSubType::DB],
-            [['type' => 'group', 'internal_type' => 'folder'], TableColumnType::GROUP, TableColumnSubType::FOLDER],
-            [['type' => 'none'], TableColumnType::NONE, null],
-            [['type' => 'language'], TableColumnType::LANGUAGE, null],
-            [['type' => 'passthrough'], TableColumnType::PASSTHROUGH, null],
-            [['type' => 'user'], TableColumnType::USER, null],
-            [['type' => 'flex'], TableColumnType::FLEX, null],
-            [['type' => 'inline'], TableColumnType::INLINE, null],
-            [['type' => 'slug'], TableColumnType::SLUG, null],
+            [['type' => 'input'], TableColumnType::INPUT],
+            [['type' => 'text'], TableColumnType::TEXT],
+            [['type' => 'check'], TableColumnType::CHECK],
+            [['type' => 'radio'], TableColumnType::RADIO],
+            [['type' => 'select'], TableColumnType::SELECT],
+            [['type' => 'category'], TableColumnType::CATEGORY],
+            [['type' => 'group'], TableColumnType::GROUP],
+            [['type' => 'folder'], TableColumnType::FOLDER],
+            [['type' => 'none'], TableColumnType::NONE],
+            [['type' => 'language'], TableColumnType::LANGUAGE],
+            [['type' => 'passthrough'], TableColumnType::PASSTHROUGH],
+            [['type' => 'user'], TableColumnType::USER],
+            [['type' => 'flex'], TableColumnType::FLEX],
+            [['type' => 'inline'], TableColumnType::INLINE],
+            [['type' => 'slug'], TableColumnType::SLUG],
         ];
     }
 
     /**
      * @test
-     * @dataProvider tcaConfigurationsContainingTypeAndInternalType
-     *
-     * @param array $columnConfiguration
-     * @param string $type
-     * @param string $internalType
+     * @dataProvider tcaConfigurationsContainingType
      */
-    public function setTypeDetectsTypeAndInternalTypeProperly(array $columnConfiguration, $type, $internalType): void
+    public function setTypeDetectsTypeProperly(array $columnConfiguration, string $type): void
     {
         /** @var DataMapFactory|AccessibleObjectInterface|MockObject $dataMapFactory */
         $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
@@ -484,6 +485,5 @@ class DataMapFactoryTest extends UnitTestCase
         $dataMapFactory->_call('setType', $columnMap, $columnConfiguration);
 
         self::assertEquals($type, (string)$columnMap->getType());
-        self::assertEquals($internalType, (string)$columnMap->getInternalType());
     }
 }

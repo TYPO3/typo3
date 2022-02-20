@@ -65,8 +65,7 @@ class TreeDataProviderFactory
                 );
             }
         }
-        $tcaConfiguration['internal_type'] = $tcaConfiguration['internal_type'] ?? 'db';
-        if ($tcaConfiguration['internal_type'] === 'db') {
+        if (($tcaConfiguration['type'] ?? '') !== 'folder') {
             if ($dataProvider === null) {
                 $dataProvider = GeneralUtility::makeInstance(DatabaseTreeDataProvider::class);
             }
@@ -114,7 +113,7 @@ class TreeDataProviderFactory
                 throw new \InvalidArgumentException('TCA Tree configuration is invalid: neither "childrenField" nor "parentField" is set', 1288215889);
             }
         } elseif ($dataProvider === null) {
-            throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type'] . '" not implemented yet', 1288215892);
+            throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "type=folder" not implemented yet', 1288215892);
         }
         return $dataProvider;
     }

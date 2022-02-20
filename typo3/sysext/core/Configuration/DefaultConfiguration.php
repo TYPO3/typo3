@@ -628,6 +628,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
@@ -636,7 +641,7 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsRemoveUnused::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
@@ -829,6 +834,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsProcessFieldDescriptions::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaText::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class,
@@ -930,9 +940,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectTreeItems::class => [
@@ -1144,9 +1159,14 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class => [
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+                        ],
+                    ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\SiteTcaSelectItems::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaFolder::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => [

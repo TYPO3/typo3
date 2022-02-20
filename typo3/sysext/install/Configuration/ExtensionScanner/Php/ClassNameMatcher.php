@@ -1924,4 +1924,9 @@ return [
             'Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Type\Enumeration\TableColumnSubType' => [
+        'restFiles' => [
+            'Breaking-96983-TableColumnSubType.rst',
+        ],
+    ],
 ];

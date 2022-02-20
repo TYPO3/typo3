@@ -349,8 +349,8 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.move" resname="labels.move">
 				<source>Move this item</source>
 			</trans-unit>
-			<trans-unit id="labels.browse_file" resname="labels.browse_file">
-				<source>Browse for files</source>
+			<trans-unit id="labels.browse_folder" resname="labels.browse_folder">
+				<source>Browse for folders</source>
 			</trans-unit>
 			<trans-unit id="labels.browse_db" resname="labels.browse_db">
 				<source>Browse for records</source>

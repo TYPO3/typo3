@@ -41,17 +41,18 @@ class ElementBrowser extends AbstractNode
         $parameterArray = $this->data['parameterArray'];
         $elementName = $parameterArray['itemFormElName'];
         $config = $parameterArray['fieldConf']['config'];
-        $internalType = (string)($config['internal_type'] ?? 'db');
+        $type = $config['type'];
         $allowed = $config['allowed'] ?? '';
 
         if (isset($config['readOnly']) && $config['readOnly']) {
             return [];
         }
 
-        if ($internalType === 'db') {
+        $title = '';
+        if ($type === 'group') {
             $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db';
-        } else {
-            $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_file';
+        } elseif ($type === 'folder') {
+            $title = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_folder';
         }
 
         // Check against inline uniqueness - Create some onclick js for delete control and element browser
@@ -66,7 +67,7 @@ class ElementBrowser extends AbstractNode
         ) {
             $objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
         }
-        $elementBrowserType = $internalType;
+        $elementBrowserType = $type === 'group' ? 'db' : 'folder';
         if (is_array($config['appearance'] ?? null)) {
             if (isset($config['appearance']['elementBrowserType'])) {
                 $elementBrowserType = $config['appearance']['elementBrowserType'];
@@ -111,8 +112,8 @@ class ElementBrowser extends AbstractNode
 
         // In case no default entry point is given, check if we deal with type=db and only one allowed table
         if ($entryPoint === '') {
-            if (($fieldConfig['internal_type'] ?? '') === 'folder') {
-                // Return for internal type folder as this requires the "_default" key to be set
+            if ($fieldConfig['type'] === 'folder') {
+                // Return for type folder as this requires the "_default" key to be set
                 return $linkAttributes;
             }
             // Check for the allowed tables, if only one table is allowed check if an entry point is defined for it

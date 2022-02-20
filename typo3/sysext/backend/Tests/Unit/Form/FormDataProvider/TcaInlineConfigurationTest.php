@@ -463,34 +463,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataThrowsExceptionForForeignSelectorGroupWithoutInvalidInternalType(): void
-    {
-        $input = [
-            'tableName' => 'aTable',
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'inline',
-                            'foreign_table' => 'aForeignTableName',
-                            'foreign_unique' => 'aField',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        $GLOBALS['TCA']['aForeignTableName']['columns']['aField']['config'] = [
-            'type' => 'group',
-            'internal_type' => 'foo',
-        ];
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionCode(1444999130);
-        (new TcaInlineConfiguration())->addData($input);
-    }
-
-    /**
-     * @test
-     */
     public function addDataThrowsExceptionIfForeignUniqueSelectDoesNotDefineForeignTable(): void
     {
         $input = [

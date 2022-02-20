@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -281,11 +280,6 @@ class DataMapFactory implements SingletonInterface
 
         $tableColumnType = $columnConfiguration['type'] ?? null;
         $columnMap->setType(TableColumnType::cast($tableColumnType));
-        $tableColumnSubType = null;
-        if ($tableColumnType === 'group') {
-            $tableColumnSubType = $columnConfiguration['internal_type'] ?? 'db';
-        }
-        $columnMap->setInternalType(TableColumnSubType::cast($tableColumnSubType));
 
         return $columnMap;
     }
@@ -320,7 +314,7 @@ class DataMapFactory implements SingletonInterface
             ) {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
             } elseif (
-                isset($columnConfiguration['type']) && $columnConfiguration['type'] === 'group'
+                isset($columnConfiguration['type']) && ($columnConfiguration['type'] === 'group' || $columnConfiguration['type'] === 'folder')
                 && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
             ) {
                 $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);

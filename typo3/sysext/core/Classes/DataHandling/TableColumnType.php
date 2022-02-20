@@ -33,6 +33,7 @@ final class TableColumnType extends Enumeration
     const RADIO = 'RADIO';
     const SELECT = 'SELECT';
     const GROUP = 'GROUP';
+    const FOLDER = 'FOLDER';
     const NONE = 'NONE';
     const LANGUAGE = 'LANGUAGE';
     const PASSTHROUGH = 'PASSTHROUGH';

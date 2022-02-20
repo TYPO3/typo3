@@ -46,7 +46,6 @@ class TcaGroupTest extends FunctionalTestCase
     {
         $aFieldConfig = [
             'type' => 'group',
-            'internal_type' => 'db',
             'allowed' => 'pages',
             'maxitems' => 99999,
         ];
@@ -81,7 +80,6 @@ class TcaGroupTest extends FunctionalTestCase
     {
         $aFieldConfig = [
             'type' => 'group',
-            'internal_type' => 'db',
             'allowed' => 'pages',
             'maxitems' => 99999,
         ];

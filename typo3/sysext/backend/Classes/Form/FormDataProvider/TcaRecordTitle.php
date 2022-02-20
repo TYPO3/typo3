@@ -168,6 +168,9 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'group':
                 $recordTitle = $this->getRecordTitleForGroupType($rawValue);
                 break;
+            case 'folder':
+                $recordTitle = $this->getRecordTitleForFolderType($rawValue);
+                break;
             case 'check':
                 $recordTitle = $this->getRecordTitleForCheckboxType($rawValue, $fieldConfig);
                 break;
@@ -262,11 +265,22 @@ class TcaRecordTitle implements FormDataProviderInterface
     {
         $labelParts = [];
         foreach ($value as $singleValue) {
-            if (isset($singleValue['folder'])) {
-                $labelParts[] = $singleValue['folder'];
-            } else {
-                $labelParts[] = $singleValue['title'];
-            }
+            $labelParts[] = $singleValue['title'];
+        }
+        return implode(', ', $labelParts);
+    }
+
+    /**
+     * Return the folder names
+     *
+     * @param array $value Current database value of this field
+     * @return string
+     */
+    protected function getRecordTitleForFolderType(array $value): string
+    {
+        $labelParts = [];
+        foreach ($value as $singleValue) {
+            $labelParts[] = $singleValue['folder'];
         }
         return implode(', ', $labelParts);
     }

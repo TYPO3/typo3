@@ -52,25 +52,28 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             'Empty Configuration' => [[], 1288215890],
             'Unknown Type' => [
                 [
-                    'internal_type' => 'foo',
+                    'type' => 'folder',
                     'treeConfig' => [],
                 ],
                 1288215892,
             ],
             'No foreign table' => [
                 [
+                    'type' => 'group',
                     'treeConfig' => [],
                 ],
                 1288215888,
             ],
             'No tree configuration' => [
                 [
+                    'type' => 'group',
                     'foreign_table' => 'foo',
                 ],
                 1288215890,
             ],
             'Tree configuration not array' => [
                 [
+                    'type' => 'group',
                     'foreign_table' => 'foo',
                     'treeConfig' => 'bar',
                 ],
@@ -78,6 +81,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             ],
             'Tree configuration missing children and parent field' => [
                 [
+                    'type' => 'group',
                     'foreign_table' => 'foo',
                     'treeConfig' => [],
                 ],
@@ -94,7 +98,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
-        if (($tcaConfiguration['internal_type'] ?? 'db') === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
+        if (isset($tcaConfiguration['type']) && $tcaConfiguration['type'] !== 'folder' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
             $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
             GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider->reveal());
         }
@@ -116,7 +120,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
 
         $tcaConfiguration = [
             'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
-            'internal_type' => 'foo',
+            'type' => 'folder',
         ];
         $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
 

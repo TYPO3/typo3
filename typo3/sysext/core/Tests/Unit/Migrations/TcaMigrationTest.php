@@ -1475,4 +1475,58 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    private function internalTypeFolderMigratedToTypeDataProvider(): iterable
+    {
+        yield 'internal_type=folder migrated to type=folder' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'group',
+                                'internal_type' => 'folder',
+                                'maxitems' => 2,
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'group',
+                                'internal_type' => 'db',
+                                'minitems' => 2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'folder',
+                                'maxitems' => 2,
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'group',
+                                'minitems' => 2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider internalTypeFolderMigratedToTypeDataProvider
+     * @test
+     */
+    public function internalTypeFolderMigratedToType(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

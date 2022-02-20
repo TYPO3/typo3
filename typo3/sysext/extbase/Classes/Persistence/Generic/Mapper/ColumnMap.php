@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
-use TYPO3\CMS\Core\DataHandling\TableColumnSubType;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 
 /**
@@ -181,12 +180,6 @@ class ColumnMap
      * @var TableColumnType|null
      */
     private $type;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * @var TableColumnSubType|null
-     */
-    private $internalType;
 
     /**
      * Constructs a Column Map
@@ -391,22 +384,6 @@ class ColumnMap
     public function getDateTimeStorageFormat(): ?string
     {
         return $this->dateTimeStorageFormat;
-    }
-
-    /**
-     * @param TableColumnSubType $internalType
-     */
-    public function setInternalType(TableColumnSubType $internalType): void
-    {
-        $this->internalType = $internalType;
-    }
-
-    /**
-     * @return TableColumnSubType|null
-     */
-    public function getInternalType(): ?TableColumnSubType
-    {
-        return $this->internalType;
     }
 
     /**

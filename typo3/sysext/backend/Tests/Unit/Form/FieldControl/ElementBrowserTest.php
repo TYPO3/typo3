@@ -42,6 +42,7 @@ class ElementBrowserTest extends UnitTestCase
                 'itemFormElName' => '',
                 'fieldConf' => [
                     'config' => [
+                        'type' => 'group',
                         'allowed' => 'be_users, be_groups',
                     ],
                 ],
@@ -67,6 +68,7 @@ class ElementBrowserTest extends UnitTestCase
                 'itemFormElName' => '',
                 'fieldConf' => [
                     'config' => [
+                        'type' => 'group',
                         'appearance' => [
                             'elementBrowserAllowed' => 'be_users, be_groups',
                         ],
@@ -107,6 +109,7 @@ class ElementBrowserTest extends UnitTestCase
     {
         yield 'Wildcard' => [
             [
+                'type' => 'group',
                 'allowed' => '*',
                 'elementBrowserEntryPoints' => [
                     '_default' => 123,
@@ -116,6 +119,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'One table' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages',
                 'elementBrowserEntryPoints' => [
                     'pages' => 123,
@@ -125,6 +129,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'One table with default' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages',
                 'elementBrowserEntryPoints' => [
                     '_default' => 123,
@@ -134,6 +139,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'One table with default and table definition' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages',
                 'elementBrowserEntryPoints' => [
                     '_default' => 123,
@@ -144,6 +150,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'One table with invalid configuration' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages',
                 'elementBrowserEntryPoints' => [
                     'some_table' => 123,
@@ -153,6 +160,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Two tables without _defualt' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages,some_table',
                 'elementBrowserEntryPoints' => [
                     'pages' => 123,
@@ -163,6 +171,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Two tables with _defualt' => [
             [
+                'type' => 'group',
                 'allowed' => 'pages,some_table',
                 'elementBrowserEntryPoints' => [
                     '_default' => 123,
@@ -174,7 +183,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Folder' => [
             [
-                'internal_type' => 'folder',
+                'type' => 'folder',
                 'elementBrowserEntryPoints' => [
                     '_default' => '1:/storage/',
                 ],
@@ -183,7 +192,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Folder without mandatory _default' => [
             [
-                'internal_type' => 'folder',
+                'type' => 'folder',
                 'elementBrowserEntryPoints' => [
                     'file' => 123,
                 ],
@@ -192,7 +201,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Entry point is escaped' => [
             [
-                'internal_type' => 'folder',
+                'type' => 'folder',
                 'elementBrowserEntryPoints' => [
                     '_default' => '1:/<script>alert(1)</script>/',
                 ],
@@ -201,6 +210,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Pid placeholder is resolved' => [
             [
+                'type' => 'group',
                 'allowed' => '*',
                 'elementBrowserEntryPoints' => [
                     '_default' => '###CURRENT_PID###',
@@ -210,6 +220,7 @@ class ElementBrowserTest extends UnitTestCase
         ];
         yield 'Site placeholder is resolved' => [
             [
+                'type' => 'group',
                 'allowed' => '*',
                 'elementBrowserEntryPoints' => [
                     '_default' => '###SITEROOT###',

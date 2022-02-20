@@ -1544,8 +1544,9 @@ class DataHandler implements LoggerAwareInterface
                 $res = $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
                 break;
             case 'group':
+            case 'folder':
             case 'select':
-                $res = $this->checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field);
+                $res = $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field);
                 break;
             case 'inline':
                 $res = $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [];
@@ -2004,7 +2005,7 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Evaluates 'group' or 'select' type values.
+     * Evaluates 'group', 'folder' or 'select' type values.
      *
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
      * @param string|array $value The value to set.
@@ -2015,7 +2016,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name
      * @return array Modified $res array
      */
-    protected function checkValueForGroupSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field)
+    protected function checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field)
     {
         // Detecting if value sent is an array and if so, implode it around a comma:
         if (is_array($value)) {
@@ -2058,9 +2059,7 @@ class DataHandler implements LoggerAwareInterface
         }
         // For select types which has a foreign table attached:
         $unsetResult = false;
-        if (($tcaFieldConf['type'] === 'group' && ($tcaFieldConf['internal_type'] ?? '') !== 'folder')
-            || ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] ?? false))
-        ) {
+        if ($tcaFieldConf['type'] === 'group' || ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['foreign_table'] ?? false))) {
             // check, if there is a NEW... id in the value, that should be substituted later
             if (str_contains($value, 'NEW')) {
                 $this->remapStackRecords[$table][$id] = ['remapStackIndex' => count($this->remapStack)];
@@ -8447,8 +8446,7 @@ class DataHandler implements LoggerAwareInterface
             return false;
         }
 
-        return ($conf['type'] === 'group' && ($conf['internal_type'] ?? '') !== 'folder')
-            || (($conf['type'] === 'select' || $conf['type'] === 'category') && !empty($conf['foreign_table']));
+        return ($conf['type'] === 'group') || (($conf['type'] === 'select' || $conf['type'] === 'category') && !empty($conf['foreign_table']));
     }
 
     /**

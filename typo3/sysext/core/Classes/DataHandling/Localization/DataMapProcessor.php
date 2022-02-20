@@ -1459,7 +1459,7 @@ class DataMapProcessor
      *
      * @param string $tableName
      * @param string $fieldName
-     * @return bool True if field is type=group with internalType === db or select with foreign_table
+     * @return bool True if field is type=group or select with foreign_table
      */
     protected function isRelationField(string $tableName, string $fieldName): bool
     {

@@ -1012,9 +1012,7 @@ class QueryGenerator
                         }
                         break;
                     case 'group':
-                        if (($fields['internal_type'] ?? '') !== 'folder') {
-                            $fields['type'] = 'relation';
-                        }
+                        $fields['type'] = 'relation';
                         break;
                     case 'user':
                     case 'flex':
@@ -1464,9 +1462,7 @@ class QueryGenerator
                             }
                             break;
                         case 'group':
-                            if (($this->fields[$fieldName]['internal_type'] ?? '') !== 'folder') {
-                                $this->fields[$fieldName]['type'] = 'relation';
-                            }
+                            $this->fields[$fieldName]['type'] = 'relation';
                             break;
                         case 'user':
                         case 'flex':

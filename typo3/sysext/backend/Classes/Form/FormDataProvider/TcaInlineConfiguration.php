@@ -237,19 +237,6 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             'config' => $GLOBALS['TCA'][$config['foreign_table']]['columns'][$fieldNameInChildConfiguration]['config'],
         ];
 
-        // Throw exception if field is of type "group", but "internal_type" is either not set nor "internal_type" is set to "db"
-        if ($selectorOrUniqueConfiguration['config']['type'] === 'group'
-            && isset($selectorOrUniqueConfiguration['config']['internal_type'])
-            && $selectorOrUniqueConfiguration['config']['internal_type'] !== 'db'
-        ) {
-            throw new \UnexpectedValueException(
-                'Table ' . $result['tableName'] . ' field ' . $fieldName . ' points in foreign_selector or foreign_unique'
-                . ' to field ' . $fieldNameInChildConfiguration . ' of table ' . $config['foreign_table'] . '. This field'
-                . ' is of type group and must have no internal_type set, or set to \'db\'',
-                1444999130
-            );
-        }
-
         // Merge overrideChildTca of foreign_selector if given
         if (isset($config['foreign_selector'], $config['overrideChildTca']['columns'][$config['foreign_selector']]['config'])
             && is_array($config['overrideChildTca']['columns'][$config['foreign_selector']]['config'])
