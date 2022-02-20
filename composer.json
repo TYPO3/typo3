@@ -109,7 +109,7 @@
 		"friendsofphp/php-cs-fixer": "^3.4",
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"jangregor/phpstan-prophecy": "^1.0",
-		"php-webdriver/webdriver": "^1.11.1",
+		"php-webdriver/webdriver": "^1.12.0",
 		"phpspec/prophecy": "^1.14.0",
 		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/phpstan": "^1.4.5",
