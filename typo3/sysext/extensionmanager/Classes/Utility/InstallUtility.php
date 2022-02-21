@@ -616,7 +616,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      */
     protected function isValidExtensionPath($path): bool
     {
-        $allowedPaths = Extension::returnAllowedInstallPaths();
+        $allowedPaths = Extension::returnInstallPaths();
         foreach ($allowedPaths as $allowedPath) {
             if (str_starts_with($path, $allowedPath)) {
                 return true;

@@ -55,10 +55,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     {
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
-        $installPaths = Extension::returnAllowedInstallPaths();
-        if (empty($installPaths)) {
-            return '';
-        }
+        $installPaths = Extension::returnInstallPaths();
         $pathSelector = '<ul class="extensionmanager-is-hidden">';
         foreach ($installPaths as $installPathType => $installPath) {
             /** @var string $installPathType */

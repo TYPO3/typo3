@@ -464,37 +464,21 @@ class Extension extends AbstractEntity
      */
     public static function returnInstallPaths()
     {
-        $installPaths = [
+        return [
             'System' => Environment::getFrameworkBasePath() . '/',
             'Local' => Environment::getExtensionsPath() . '/',
         ];
-        return $installPaths;
     }
 
     /**
-     * Allowed install paths
-     *
-     * @static
-     * @return array
-     */
-    public static function returnAllowedInstallPaths()
-    {
-        $installPaths = self::returnInstallPaths();
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall'])) {
-            unset($installPaths['Local']);
-        }
-        return $installPaths;
-    }
-
-    /**
-     * Allowed install names: System, Global, Local
+     * Allowed install names: System, Local
      *
      * @static
      * @return array
      */
     public static function returnAllowedInstallTypes()
     {
-        $installPaths = self::returnAllowedInstallPaths();
+        $installPaths = self::returnInstallPaths();
         return array_keys($installPaths);
     }
 

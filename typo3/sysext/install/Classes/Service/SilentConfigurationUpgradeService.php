@@ -171,6 +171,8 @@ class SilentConfigurationUpgradeService
         'SYS/USdateFormat',
         // #96982
         'EXT/allowGlobalInstall',
+        // #96988
+        'EXT/allowLocalInstall',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)
