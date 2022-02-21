@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource\Index;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -181,8 +182,9 @@ class MetaDataRepository implements SingletonInterface
             $updateRow['tstamp'] = time();
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->tableName);
             $types = [];
-            if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-                // mssql needs to set proper PARAM_LOB and others to update fields
+            $platform = $connection->getDatabasePlatform();
+            if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+                // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
                 $tableDetails = $connection->createSchemaManager()->listTableDetails($this->tableName);
                 foreach ($updateRow as $columnName => $columnValue) {
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();

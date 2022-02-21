@@ -499,6 +499,22 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
     }
 
+    public function localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], ['title' => 'Testing #1']);
+        $record = $this->getConnectionPool()->getConnectionForTable(self::TABLE_Page)
+            ->select(['*'], self::TABLE_Page, ['uid' => $this->recordIds['localizedPageId']])
+            ->fetchAssociative();
+        // cleanup some fields from record
+        unset($record['uid'], $record['pid'], $record['l10n_diffsource']);
+        $record['l10n_state'] = \json_decode($record['l10n_state']);
+        // modify record
+        $modifiedRecord = array_replace($record, ['title' => 'Testing #2']);
+        $this->actionService->modifyRecord(self::TABLE_Page, $this->recordIds['localizedPageId'], $modifiedRecord);
+    }
+
     public function localizePageWithLanguageSynchronization(): void
     {
         unset($GLOBALS['TCA'][self::TABLE_Page]['columns']['title']['l10n_mode']);
