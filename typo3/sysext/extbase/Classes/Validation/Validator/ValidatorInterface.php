@@ -26,13 +26,29 @@ interface ValidatorInterface
      *
      * @param mixed $value The value that should be validated
      * @return \TYPO3\CMS\Extbase\Error\Result
+     * @todo: Return type 'Result' will be added in v12. Extensions should add this for v11 & v12 compatible
+     *        extensions if they override validate(). AbstractValidator will add 'Result' return in v12.
+     * @todo: Argument signature will be 'mixed $value' in v12, but AbstractValidator adds this starting
+     *        with v13 only to simplify compat for extensions supporting v11 & v12 and thus PHP < 8.1.
      */
     public function validate($value);
+
+    /**
+     * Receive validator options from framework.
+     *
+     * @todo: Will be activated in v12 and implemented in AbstractValidator. Extensions *may* implement
+     *        this for v10 & v11 compatible extensions *if* they need dependency injection in v11. If extending AbstractValidator
+     *        in v11, a setOptions() implementation should call initializeDefaultOptions(), which will be done in AbstractValidator
+     *        v12 automatically.
+     */
+    // public function setOptions(array $options): void;
 
     /**
      * Returns the options of this validator which can be specified in the constructor
      *
      * @return array
+     * @todo: Return type 'array' will be added in v12. Extensions should add this for v11 & v12 compatible
+     *        extensions if they override getOptions(). AbstractValidator will add 'Result' return in v12.
      */
     public function getOptions();
 }

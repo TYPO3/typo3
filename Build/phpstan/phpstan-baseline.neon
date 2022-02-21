@@ -3086,6 +3086,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FrontendUser.php
 
 		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Arguments.php
@@ -3486,6 +3491,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/ConjunctionValidator.php
 
 		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:createValidator\\(\\) should return TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface but returns null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
@@ -3549,6 +3559,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalAnd\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Repository/PostRepository.php
+
+		-
+			message: "#^Constructor of class ExtbaseTeam\\\\TestValidators\\\\Validation\\\\Validator\\\\CustomValidator has an unused parameter \\$options\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/Validation/Validator/CustomValidator.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:isDispatched\\(\\)\\.$#"
@@ -3664,11 +3679,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/PersistentObjectConverterTest.php
-
-		-
-			message: "#^Method TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\:\\:_call\\(\\) invoked with 3 parameters, 1 required\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
 
 		-
 			message: "#^Constructor of class TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\FunctionalDeprecated\\\\Object\\\\Fixtures\\\\Test has an unused parameter \\$container\\.$#"
@@ -4749,6 +4759,11 @@ parameters:
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/Page.php
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceInterface\\:\\:getCombinedIdentifier\\(\\)\\.$#"

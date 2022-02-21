@@ -400,28 +400,31 @@ abstract class ActionController implements ControllerInterface
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
             $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
-            /*
-             * At this point validation is skipped if there is an IgnoreValidation annotation.
-             *
-             * todo: IgnoreValidation annotations could be evaluated in the ClassSchema and result in
-             * todo: no validators being applied to the method parameter.
-             */
+            // At this point validation is skipped if there is an IgnoreValidation annotation.
+            // @todo: IgnoreValidation annotations could be evaluated in the ClassSchema and result in
+            //        no validators being applied to the method parameter.
             if ($classSchemaMethodParameter->ignoreValidation()) {
                 continue;
             }
 
-            // todo: It's quite odd that an instance of ConjunctionValidator is created directly here.
-            // todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::getBaseValidatorConjunction could/should be used
-            // todo: here, to benefit of the built in 1st level cache of the ValidatorResolver.
+            // @todo: It's quite odd that an instance of ConjunctionValidator is created directly here.
+            //        \TYPO3\CMS\Extbase\Validation\ValidatorResolver::getBaseValidatorConjunction could/should be used
+            //        here, to benefit of the built in 1st level cache of the ValidatorResolver.
             $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
 
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
-                /** @var ValidatorInterface $validatorInstance */
-                $validatorInstance = GeneralUtility::makeInstance(
-                    $validatorDefinition['className'],
-                    $validatorDefinition['options']
-                );
-
+                if (method_exists($validatorDefinition['className'], 'setOptions')) {
+                    /** @var ValidatorInterface $validatorInstance */
+                    $validatorInstance = GeneralUtility::makeInstance($validatorDefinition['className']);
+                    $validatorInstance->setOptions($validatorDefinition['options']);
+                } else {
+                    // @deprecated since v11: v12 ValidatorInterface requires setOptions() to be implemented and skips the above test.
+                    /** @var ValidatorInterface $validatorInstance */
+                    $validatorInstance = GeneralUtility::makeInstance(
+                        $validatorDefinition['className'],
+                        $validatorDefinition['options']
+                    );
+                }
                 $validator->addValidator(
                     $validatorInstance
                 );

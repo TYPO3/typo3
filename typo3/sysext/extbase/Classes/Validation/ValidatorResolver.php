@@ -69,7 +69,15 @@ class ValidatorResolver implements SingletonInterface
              */
             $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
 
-            $validator = GeneralUtility::makeInstance($validatorObjectName, $validatorOptions);
+            if (method_exists($validatorObjectName, 'setOptions')) {
+                /** @var ValidatorInterface $validator */
+                $validator = GeneralUtility::makeInstance($validatorObjectName);
+                $validator->setOptions($validatorOptions);
+            } else {
+                // @deprecated since v11: v12 ValidatorInterface requires setOptions() to be implemented and skips the above test.
+                /** @var ValidatorInterface $validator */
+                $validator = GeneralUtility::makeInstance($validatorObjectName, $validatorOptions);
+            }
 
             // Move this check into ClassSchema
             if (!($validator instanceof ValidatorInterface)) {

@@ -15,15 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Validator;
+namespace ExtbaseTeam\TestValidators\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /**
- * Fixture model validator
+ * Fixture to verify ObjectManager injects dependency and options are set.
+ * @deprecated since v11, will be removed in v12.
  */
-class ModelValidator extends AbstractValidator
+class CustomNotInjectableValidator extends AbstractValidator
 {
+    protected $supportedOptions = [
+        'foo' => [0, 'foo length', 'integer'],
+    ];
+
     /**
      * @param mixed $value
      */

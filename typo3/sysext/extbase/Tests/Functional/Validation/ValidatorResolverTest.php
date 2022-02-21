@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
+use ExtbaseTeam\TestValidators\Domain\Model\AnotherModel;
+use ExtbaseTeam\TestValidators\Domain\Model\Model;
+use ExtbaseTeam\TestValidators\Validation\Validator\CustomNotInjectableValidator;
+use ExtbaseTeam\TestValidators\Validation\Validator\CustomValidator;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel;
-use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\Model;
-use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
@@ -36,20 +38,33 @@ class ValidatorResolverTest extends FunctionalTestCase
      */
     protected $initializeDatabase = false;
 
+    protected $testExtensionsToLoad = [
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators',
+    ];
+
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @test
      */
-    private $validatorResolver;
-
-    protected function setUp(): void
+    public function createValidatorSetsOptionsAndDependenciesAreInjected(): void
     {
-        parent::setUp();
+        $subject = $this->getContainer()->get(ValidatorResolver::class);
+        $options = ['foo' => 'bar'];
+        /** @var CustomValidator $validator */
+        $validator = $subject->createValidator(CustomValidator::class, $options);
+        self::assertSame($options, $validator->getOptions());
+        self::assertInstanceOf(IconFactory::class, $validator->iconFactory);
+    }
 
-        $this->validatorResolver = $this->getAccessibleMock(
-            ValidatorResolver::class,
-            ['dummy']
-        );
-        $this->validatorResolver->injectReflectionService($this->getContainer()->get(ReflectionService::class));
+    /**
+     * @test
+     * @deprecated: Obsolete in v12 and drop CustomNotInjectableValidator
+     */
+    public function createValidatorSetsOptions(): void
+    {
+        $subject = $this->getContainer()->get(ValidatorResolver::class);
+        $options = ['foo' => 'bar'];
+        $validator = $subject->createValidator(CustomNotInjectableValidator::class, $options);
+        self::assertSame($options, $validator->getOptions());
     }
 
     /**
@@ -57,14 +72,20 @@ class ValidatorResolverTest extends FunctionalTestCase
      */
     public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction(): void
     {
-        $this->validatorResolver->_call(
+        $subject = $this->getAccessibleMock(
+            ValidatorResolver::class,
+            ['dummy']
+        );
+        $subject->injectReflectionService($this->getContainer()->get(ReflectionService::class));
+
+        $subject->_call(
             'buildBaseValidatorConjunction',
             Model::class,
             Model::class
         );
 
         /** @var array $baseValidatorConjunctions */
-        $baseValidatorConjunctions = $this->validatorResolver->_get('baseValidatorConjunctions');
+        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
         self::assertIsArray($baseValidatorConjunctions);
         self::assertCount(2, $baseValidatorConjunctions);
         self::assertArrayHasKey(Model::class, $baseValidatorConjunctions);
