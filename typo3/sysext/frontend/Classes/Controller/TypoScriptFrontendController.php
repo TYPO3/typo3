@@ -650,6 +650,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->contentPid = $this->id;
         // Setting language and fetch translated page
         $this->settingLanguage($request);
+
+        // Update SYS_LASTCHANGED at the time, when $this->page might be changed by settingLanguage() and the $this->page was finally resolved
+        $this->setRegisterValueForSysLastChanged($this->page);
+
         // Call post processing function for id determination:
         $_params = ['pObj' => &$this];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
@@ -826,8 +830,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
             throw new PropagateResponseException($response, 1533931329);
         }
-
-        $this->setRegisterValueForSysLastChanged($this->page);
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] ?? [] as $functionReference) {
             $parameters = ['parentObject' => $this];
@@ -1742,9 +1744,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // We'll do this every time since the language aspect might have changed now
             // Doing this ensures that page properties like the page title are returned in the correct language
             $this->page = $this->sys_page->getPageOverlay($this->page, $languageAspect->getContentId());
-
-            // Update SYS_LASTCHANGED for localized page record
-            $this->setRegisterValueForSysLastChanged($this->page);
         }
 
         // Set the language aspect
@@ -1963,10 +1962,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Sets sys last changed
-     * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page. This includes all records with no regard to hidden records, userprotection and so on.
+     * Setting the SYS_LASTCHANGED value in the pagerecord: This value will thus be set to the highest tstamp of records rendered on the page.
+     * This includes all records with no regard to hidden records, userprotection and so on.
+     *
+     * The important part is that this actually updates a translated "pages" record (_PAGES_OVERLAY_UID) if
+     * the Frontend is called with a translation.
      *
      * @see ContentObjectRenderer::lastChanged()
+     * @see setRegisterValueForSysLastChanged()
      */
     protected function setSysLastChanged()
     {
@@ -1993,6 +1996,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @param array $page
      * @internal
+     * @see setSysLastChanged()
      */
     protected function setRegisterValueForSysLastChanged(array $page): void
     {
