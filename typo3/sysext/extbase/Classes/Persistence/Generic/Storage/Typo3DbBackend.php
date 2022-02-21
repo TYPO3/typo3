@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -79,8 +80,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $types = [];
             $platform = $connection->getDatabasePlatform();
-            if ($platform instanceof SQLServerPlatform) {
-                // mssql needs to set proper PARAM_LOB and others to update fields
+            if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+                // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
                 $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
                 foreach ($fieldValues as $columnName => $columnValue) {
                     $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();
@@ -124,8 +125,8 @@ class Typo3DbBackend implements BackendInterface, SingletonInterface
 
             $types = [];
             $platform = $connection->getDatabasePlatform();
-            if ($platform instanceof SQLServerPlatform) {
-                // mssql needs to set proper PARAM_LOB and others to update fields
+            if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+                // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
                 $tableDetails = $connection->createSchemaManager()->listTableDetails($tableName);
                 foreach ($fieldValues as $columnName => $columnValue) {
                     $columnName = (string)$columnName;

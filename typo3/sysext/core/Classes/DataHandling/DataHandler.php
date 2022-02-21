@@ -7266,8 +7266,8 @@ class DataHandler implements LoggerAwareInterface
 
                 $types = [];
                 $platform = $connection->getDatabasePlatform();
-                if ($platform instanceof SQLServerPlatform) {
-                    // mssql needs to set proper PARAM_LOB and others to update fields
+                if ($platform instanceof SQLServerPlatform || $platform instanceof PostgreSQLPlatform) {
+                    // mssql and postgres needs to set proper PARAM_LOB and others to update fields.
                     $tableDetails = $connection->createSchemaManager()->listTableDetails($table);
                     foreach ($fieldArray as $columnName => $columnValue) {
                         $types[$columnName] = $tableDetails->getColumn($columnName)->getType()->getBindingType();

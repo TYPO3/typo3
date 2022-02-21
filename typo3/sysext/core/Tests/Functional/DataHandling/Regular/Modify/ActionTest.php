@@ -710,6 +710,21 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     * See DataSet/localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord.csv
+     */
+    public function localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord(): void
+    {
+        parent::localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizePageAndUpdateRecordWithMinorChangesInFullRetrievedRecord.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #2'));
+    }
+
+    /**
+     * @test
      * See DataSet/localizeNCopyPage.csv
      */
     public function localizeAndCopyPage(): void

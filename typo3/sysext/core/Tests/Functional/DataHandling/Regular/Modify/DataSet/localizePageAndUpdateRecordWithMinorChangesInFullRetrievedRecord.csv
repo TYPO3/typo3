@@ -1,0 +1,25 @@
+"pages",,,,,,,,,,,,,,
+,"uid","pid","sorting","sys_language_uid","l10n_parent","deleted","hidden","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,1,0,256,0,0,0,0,0,0,0,0,0,"FunctionalTest","/"
+,50,0,512,0,0,0,0,0,0,0,0,0,"Second Root Page","/"
+,51,50,128,0,0,0,0,0,0,0,0,0,"DataHandlerTest in second tree","/data-handler"
+,52,51,128,0,0,0,0,0,0,0,0,0,"Relations in second tree","/data-handler/relations"
+,88,1,256,0,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler"
+,89,88,256,0,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
+,90,88,512,0,0,0,0,0,0,0,0,0,"Target","/data-handler/target"
+,91,88,256,1,89,0,0,0,0,0,0,0,"Testing #2","/data-handler/translate-to-dansk-relations"
+"tt_content",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header",
+,296,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0",
+,297,89,384,0,0,0,0,0,0,0,0,0,"Regular Element #1",
+,298,89,512,0,0,0,0,0,0,0,0,0,"Regular Element #2",
+,299,89,768,0,0,0,0,0,0,0,0,0,"Regular Element #3",
+,300,89,1024,0,1,299,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3",
+,301,89,384,0,1,297,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",
+,302,89,448,0,2,297,301,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",
+"sys_refindex",,,,,,,,,,,,,,
+,"hash","tablename","recuid","field","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_string",,
+,"1130084e4038e95f2d5806b731cd416a","tt_content",300,"l18n_parent",,,,0,0,"tt_content",299,,,
+,"4a1e04a83a4a17882682d86f6cd61f3d","tt_content",301,"l18n_parent",,,,0,0,"tt_content",297,,,
+,"25f3b71b67f29fa33fbfd4fa2d930b70","tt_content",302,"l18n_parent",,,,0,0,"tt_content",297,,,
+,"583b9974d1df1d9efb695cdabfe53a73","pages",91,"l10n_parent",,,,0,0,"pages",89,,,
