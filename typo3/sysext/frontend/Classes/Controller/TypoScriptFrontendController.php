@@ -473,7 +473,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $xhtmlVersion;
 
     /**
-     * Originally requested id from the initial $_GET variable
+     * Originally requested id from PageArguments
      */
     protected int $requestedId = 0;
 
@@ -789,8 +789,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $timeTracker->pull();
-        // We store the originally requested id
-        $this->requestedId = $this->id;
         $timeTracker->push('fetch_the_id rootLine/');
         try {
             $this->getPageAndRootlineWithDomain($request);
@@ -1272,6 +1270,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->pageArguments = $pageArguments;
         $this->id = $pageArguments->getPageId();
+        // We store the originally requested id
+        $this->requestedId = $this->id;
         $this->type = (int)($pageArguments->getPageType() ?: 0);
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids']) {
             $this->MP = (string)($pageArguments->getArguments()['MP'] ?? '');
@@ -2790,14 +2790,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Fetches the originally requested id, falls back to $this->id
-     *
-     * @return int the originally requested page uid
-     * @see fetch_the_id()
+     * Returns the originally requested page uid when TSFE was instantiated initially.
      */
     public function getRequestedId(): int
     {
-        return $this->requestedId ?: $this->id;
+        return $this->requestedId;
     }
 
     /**
