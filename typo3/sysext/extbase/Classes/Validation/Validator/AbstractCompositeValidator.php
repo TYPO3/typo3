@@ -50,36 +50,11 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      *
      * @param array $options Options for the validator
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
+     * @todo: __construct() will vanish in v12, this abstract will implement setOptions() to set and initialize default options.
      */
     public function __construct(array $options = [])
     {
-        // check for options given but not supported
-        if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== []) {
-            throw new InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
-        }
-
-        // check for required options being set
-        array_walk(
-            $this->supportedOptions,
-            static function ($supportedOptionData, $supportedOptionName, $options) {
-                if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
-                    throw new InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
-                }
-            },
-            $options
-        );
-
-        // merge with default values
-        $this->options = array_merge(
-            array_map(
-                static function ($value) {
-                    return $value[0];
-                },
-                $this->supportedOptions
-            ),
-            $options
-        );
-        $this->validators = new \SplObjectStorage();
+        $this->initializeDefaultOptions($options);
     }
 
     /**
@@ -150,5 +125,38 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer)
     {
         $this->validatedInstancesContainer = $validatedInstancesContainer;
+    }
+
+    /**
+     * Initialize default options.
+     * @throws InvalidValidationOptionsException
+     */
+    protected function initializeDefaultOptions(array $options): void
+    {
+        // check for options given but not supported
+        if (($unsupportedOptions = array_diff_key($options, $this->supportedOptions)) !== []) {
+            throw new InvalidValidationOptionsException('Unsupported validation option(s) found: ' . implode(', ', array_keys($unsupportedOptions)), 1339079804);
+        }
+        // check for required options being set
+        array_walk(
+            $this->supportedOptions,
+            static function ($supportedOptionData, $supportedOptionName, $options) {
+                if (isset($supportedOptionData[3]) && !array_key_exists($supportedOptionName, $options)) {
+                    throw new InvalidValidationOptionsException('Required validation option not set: ' . $supportedOptionName, 1339163922);
+                }
+            },
+            $options
+        );
+        // merge with default values
+        $this->options = array_merge(
+            array_map(
+                static function ($value) {
+                    return $value[0];
+                },
+                $this->supportedOptions
+            ),
+            $options
+        );
+        $this->validators = new \SplObjectStorage();
     }
 }

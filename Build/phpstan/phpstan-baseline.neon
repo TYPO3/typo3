@@ -2671,6 +2671,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
 
 		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
+
+		-
 			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Arguments.php
@@ -2981,6 +2986,11 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/ConjunctionValidator.php
 
 		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:createValidator\\(\\) should return TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface but returns null\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
@@ -3039,6 +3049,11 @@ parameters:
 			message: "#^PHPDoc type int\\|null of property ExtbaseTeam\\\\BlogExample\\\\Domain\\\\Model\\\\TtContent\\:\\:\\$uid is not covariant with PHPDoc type int of overridden property TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractDomainObject\\:\\:\\$uid\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php
+
+		-
+			message: "#^Constructor of class ExtbaseTeam\\\\TestValidators\\\\Validation\\\\Validator\\\\CustomValidator has an unused parameter \\$options\\.$#"
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/Validation/Validator/CustomValidator.php
 
 		-
 			message: "#^Parameter \\#1 \\$currentRequest of static method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:buildRequestFromCurrentRequestAndForwardResponse\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request, TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface given\\.$#"
@@ -3969,6 +3984,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\FormElements\\\\AbstractSection\\:\\:getElementsRecursively\\(\\) should return array\\<TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\FormElements\\\\FormElementInterface\\> but returns array\\<TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\Renderable\\\\RenderableInterface\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
+
+		-
+			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
+			count: 1
+			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
 
 		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:setRequest\\(\\)\\.$#"

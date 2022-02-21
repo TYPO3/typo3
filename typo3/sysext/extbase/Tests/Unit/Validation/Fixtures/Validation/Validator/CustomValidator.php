@@ -15,13 +15,10 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
-/**
- * Fixture custom validator
- */
 class CustomValidator extends AbstractValidator
 {
     /**

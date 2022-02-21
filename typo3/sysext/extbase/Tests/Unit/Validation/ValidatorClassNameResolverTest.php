@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
 
-use TYPO3\CMS\Extbase\Tests\Fixture\ValidatorThatDoesNotImplementValidatorInterfaceValidator;
-use TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Validation\Validator\CustomValidator;
+use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidator;
+use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidatorThatDoesNotImplementValidatorInterfaceValidator;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
@@ -75,24 +75,6 @@ class ValidatorClassNameResolverTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritance(): void
-    {
-        $this->expectExceptionCode(1365776838);
-        $this->expectExceptionMessage(sprintf(
-            'Validator class %s must implement %s',
-            ValidatorThatDoesNotImplementValidatorInterfaceValidator::class,
-            ValidatorInterface::class
-        ));
-
-        self::assertSame(
-            IntegerValidator::class,
-            ValidatorClassNameResolver::resolve(ValidatorThatDoesNotImplementValidatorInterfaceValidator::class)
-        );
-    }
-
-    /**
      * @return array
      */
     public function namespacedShorthandValidatorNamesDataProvider(): array
@@ -102,8 +84,8 @@ class ValidatorClassNameResolverTest extends UnitTestCase
                 'TYPO3.CMS.Extbase:NotEmpty',
                 NotEmptyValidator::class,
             ],
-            'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom' => [
-                'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:Custom',
+            'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:Custom' => [
+                'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:Custom',
                 CustomValidator::class,
             ],
         ];
@@ -132,8 +114,26 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         $this->expectException(NoSuchValidatorException::class);
         $this->expectExceptionCode(1365799920);
 
-        $validatorName = 'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:NonExistentValidator';
+        $validatorName = 'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:NonExistentValidator';
         ValidatorClassNameResolver::resolve($validatorName);
+    }
+
+    /**
+     * @test
+     */
+    public function resolveThrowsNoSuchValidatorExceptionDueToClassInheritance(): void
+    {
+        $this->expectExceptionCode(1365776838);
+        $this->expectExceptionMessage(sprintf(
+            'Validator class %s must implement %s',
+            CustomValidatorThatDoesNotImplementValidatorInterfaceValidator::class,
+            ValidatorInterface::class
+        ));
+
+        self::assertSame(
+            IntegerValidator::class,
+            ValidatorClassNameResolver::resolve(CustomValidatorThatDoesNotImplementValidatorInterfaceValidator::class)
+        );
     }
 
     /**
@@ -144,7 +144,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         $this->expectException(NoSuchValidatorException::class);
         $this->expectExceptionCode(1365776838);
 
-        $validatorName = 'TYPO3.CMS.Extbase.Tests.Functional.Validation.Fixture:CustomValidatorThatDoesNotImplementValidatorInterface';
+        $validatorName = 'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:CustomValidatorThatDoesNotImplementValidatorInterface';
         ValidatorClassNameResolver::resolve($validatorName);
     }
 

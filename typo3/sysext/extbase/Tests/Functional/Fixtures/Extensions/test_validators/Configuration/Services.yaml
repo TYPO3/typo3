@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ExtbaseTeam\TestValidators\:
+    resource: '../Classes/*'
+
+  ExtbaseTeam\TestValidators\Validation\Validator\CustomValidator:
+    public: true
+    shared: false
