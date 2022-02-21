@@ -1206,7 +1206,6 @@ return [
         ],
     ],
     'EXT' => [ // Options related to the Extension Management
-        'allowGlobalInstall' => false,
         'allowLocalInstall' => true,
         'excludeForPackaging' => '(?:\\.(?!htaccess$).*|.*~|.*\\.swp|.*\\.bak|node_modules|bower_components)',
     ],

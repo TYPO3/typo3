@@ -217,9 +217,6 @@ EXT:
     type: container
     description: 'Extension Installation'
     items:
-        allowGlobalInstall:
-            type: bool
-            description: 'If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.'
         allowLocalInstall:
             type: bool
             description: 'If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.'

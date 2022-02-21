@@ -466,7 +466,6 @@ class Extension extends AbstractEntity
     {
         $installPaths = [
             'System' => Environment::getFrameworkBasePath() . '/',
-            'Global' => Environment::getBackendPath() . '/ext/',
             'Local' => Environment::getExtensionsPath() . '/',
         ];
         return $installPaths;
@@ -481,9 +480,6 @@ class Extension extends AbstractEntity
     public static function returnAllowedInstallPaths()
     {
         $installPaths = self::returnInstallPaths();
-        if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall'])) {
-            unset($installPaths['Global']);
-        }
         if (empty($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowLocalInstall'])) {
             unset($installPaths['Local']);
         }

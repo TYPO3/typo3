@@ -2548,14 +2548,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             '"_assets/',
             '"typo3temp/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             '"' . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         $replace = [
             '"' . $this->absRefPrefix . '_assets/',
             '"' . $this->absRefPrefix . 'typo3temp/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
-            '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             '"' . $this->absRefPrefix . PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
         ];
         // Process additional directories

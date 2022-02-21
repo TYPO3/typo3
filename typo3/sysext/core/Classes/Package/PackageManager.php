@@ -1050,13 +1050,10 @@ class PackageManager implements SingletonInterface
      */
     protected function getPackageBasePaths()
     {
-        if (count($this->packagesBasePaths) < 3) {
+        if ($this->packagesBasePaths === []) {
             // Check if the directory even exists and if it is not empty
             if (is_dir(Environment::getExtensionsPath()) && $this->hasSubDirectories(Environment::getExtensionsPath())) {
                 $this->packagesBasePaths['local'] = Environment::getExtensionsPath() . '/*/';
-            }
-            if (is_dir(Environment::getBackendPath() . '/ext') && $this->hasSubDirectories(Environment::getBackendPath() . '/ext')) {
-                $this->packagesBasePaths['global'] = Environment::getBackendPath() . '/ext/*/';
             }
             $this->packagesBasePaths['system'] = Environment::getFrameworkBasePath() . '/*/';
         }

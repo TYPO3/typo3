@@ -99,9 +99,6 @@ class InstallStatusReport implements StatusProviderInterface
         // Check for writable extension folder files in non-composer mode only
         if (!Environment::isComposerMode()) {
             $checkWritable[Environment::getExtensionsPath()] = 0;
-            if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
-                $checkWritable[Environment::getBackendPath() . '/ext/'] = -1;
-            }
         }
 
         foreach ($checkWritable as $path => $requirementLevel) {

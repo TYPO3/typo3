@@ -56,7 +56,6 @@ class FilePathSanitizer
             $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
             'uploads/',
             'typo3temp/',
-            PathUtility::stripPathSitePrefix(Environment::getBackendPath()) . '/ext/',
             PathUtility::stripPathSitePrefix(Environment::getFrameworkBasePath()) . '/',
             PathUtility::stripPathSitePrefix(Environment::getExtensionsPath()) . '/',
         ];

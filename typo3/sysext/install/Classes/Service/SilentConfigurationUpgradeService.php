@@ -169,6 +169,8 @@ class SilentConfigurationUpgradeService
         'SYS/features/form.legacyUploadMimeTypes',
         // #96550
         'SYS/USdateFormat',
+        // #96982
+        'EXT/allowGlobalInstall',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)

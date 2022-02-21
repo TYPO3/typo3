@@ -99,7 +99,6 @@ final class RenderViewHelper extends AbstractViewHelper
             $path = $this->renderingContext->getTemplatePaths()->getPartialPathAndFilename($partial);
             $path = str_replace(
                 [
-                    Environment::getBackendPath() . '/ext/',
                     Environment::getExtensionsPath() . '/',
                     Environment::getFrameworkBasePath() . '/',
                 ],

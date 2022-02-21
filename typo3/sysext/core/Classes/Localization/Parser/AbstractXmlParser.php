@@ -144,9 +144,6 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         if (str_starts_with($fileRef, Environment::getFrameworkBasePath() . '/')) {
             // Is system
             $validatedPrefix = Environment::getFrameworkBasePath() . '/';
-        } elseif (str_starts_with($fileRef, Environment::getBackendPath() . '/ext/')) {
-            // Is global
-            $validatedPrefix = Environment::getBackendPath() . '/ext/';
         } elseif (str_starts_with($fileRef, Environment::getExtensionsPath() . '/')) {
             // Is local
             $validatedPrefix = Environment::getExtensionsPath() . '/';
