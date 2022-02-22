@@ -66,7 +66,7 @@ class PageRendererViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = new TemplateView($context);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
@@ -82,7 +82,7 @@ class PageRendererViewHelperTest extends FunctionalTestCase
      */
     public function renderResolvesLabelWithExtbaseRequest(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:be.pageRenderer addJsInlineLabels="{0: \'login.header\'}" />');
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Backend');

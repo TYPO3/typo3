@@ -52,7 +52,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperFormatsDateCorrectly(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="1980-12-13"></f:format.date>');
         self::assertSame('1980-12-13', (new TemplateView($context))->render());
     }
@@ -62,7 +62,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRespectsCustomFormat(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date format="d.m.Y">1980-02-01</f:format.date>');
         self::assertSame('01.02.1980', (new TemplateView($context))->render());
     }
@@ -72,7 +72,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperReturnsEmptyStringIfChildrenIsEmpty(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date></f:format.date>');
         self::assertSame('', (new TemplateView($context))->render());
     }
@@ -82,7 +82,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperReturnsCurrentDateIfEmptyStringIsGiven(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date=""></f:format.date>');
         self::assertSame(date('Y-m-d', $GLOBALS['EXEC_TIME']), (new TemplateView($context))->render());
     }
@@ -93,7 +93,7 @@ class DateViewHelperTest extends FunctionalTestCase
     public function viewHelperUsesDefaultIfNoSystemFormatIsAvailable(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = '';
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date>@1391876733</f:format.date>');
         self::assertSame('2014-02-08', (new TemplateView($context))->render());
     }
@@ -104,7 +104,7 @@ class DateViewHelperTest extends FunctionalTestCase
     public function viewHelperUsesSystemFormat(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'l, j. M y';
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date>@1391876733</f:format.date>');
         self::assertSame('Saturday, 8. Feb 14', (new TemplateView($context))->render());
     }
@@ -116,7 +116,7 @@ class DateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1241722579);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date>foo</f:format.date>');
         (new TemplateView($context))->render();
     }
@@ -126,7 +126,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperUsesChildNodesWithTimestamp(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date>1359891658</f:format.date>');
         self::assertEquals('2013-02-03', (new TemplateView($context))->render());
     }
@@ -136,7 +136,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function dateArgumentHasPriorityOverChildNodes(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="1980-12-12">1359891658</f:format.date>');
         self::assertEquals('1980-12-12', (new TemplateView($context))->render());
     }
@@ -146,7 +146,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function relativeDateCalculationWorksWithoutBase(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="now" format="Y"/>');
         self::assertEquals(date('Y'), (new TemplateView($context))->render());
     }
@@ -156,7 +156,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function baseArgumentIsConsideredForRelativeDate(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="-1 year" base="2017-01-01" format="Y"/>');
         self::assertEquals('2016', (new TemplateView($context))->render());
     }
@@ -166,7 +166,7 @@ class DateViewHelperTest extends FunctionalTestCase
      */
     public function baseArgumentDoesNotAffectAbsoluteTime(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="@1435784732" base="1485907200" format="Y"/>');
         self::assertEquals('2015', (new TemplateView($context))->render());
     }
@@ -193,7 +193,7 @@ class DateViewHelperTest extends FunctionalTestCase
     {
         date_default_timezone_set($timezone);
         $date = 1359891658; // 2013-02-03 11:40 UTC
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" format="Y-m-d H:i"/>');
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
@@ -231,7 +231,7 @@ class DateViewHelperTest extends FunctionalTestCase
     public function viewHelperRespectsDefaultTimezoneForStringTimestamp(string $timeZone, string $date, string $expected): void
     {
         date_default_timezone_set($timeZone);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.date date="' . $date . '" format="Y-m-d H:i"/>');
         self::assertEquals($expected, (new TemplateView($context))->render());
     }

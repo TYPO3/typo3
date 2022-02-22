@@ -31,7 +31,7 @@ class MfaProviderRegistryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->subject = $this->getContainer()->get(MfaProviderRegistry::class);
+        $this->subject = $this->get(MfaProviderRegistry::class);
 
         // Add two providers, which both are not active and unlocked
         $this->user = $this->setUpBackendUserFromFixture(1);

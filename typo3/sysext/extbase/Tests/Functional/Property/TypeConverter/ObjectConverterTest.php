@@ -39,7 +39,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function convertToObject(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         $model = new class() extends AbstractEntity {
             /**
@@ -65,7 +65,7 @@ class ObjectConverterTest extends FunctionalTestCase
      */
     public function convertToObjectViaTypeInArray(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
@@ -95,7 +95,7 @@ class ObjectConverterTest extends FunctionalTestCase
             public $name;
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
         $propertyMapperConfiguration
@@ -133,7 +133,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -174,7 +174,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
         $propertyMapperConfiguration->forProperty('collection.*')->allowAllProperties();
@@ -208,7 +208,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -236,7 +236,7 @@ class ObjectConverterTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as said class does not have a constructor defined.');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -265,7 +265,7 @@ class ObjectConverterTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor arguments as the constructor of said class does not have a parameter with property name "' . $propertyName . '".');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -294,7 +294,7 @@ class ObjectConverterTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Type of child property "' . $propertyName . '" of class "' . $className . '" could not be derived from constructor argument "' . $propertyName . '". This usually happens if the argument misses a type hint.');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -320,7 +320,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
 
@@ -344,7 +344,7 @@ class ObjectConverterTest extends FunctionalTestCase
             private $name;
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->allowAllProperties();
         $propertyMapperConfiguration
@@ -378,7 +378,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert(
+        $result = $this->get(PropertyMapper::class)->convert(
             ['name' => 'foo'],
             get_class($class)
         );
@@ -406,7 +406,7 @@ class ObjectConverterTest extends FunctionalTestCase
             }
         };
 
-        $this->getContainer()->get(PropertyMapper::class)->convert(
+        $this->get(PropertyMapper::class)->convert(
             ['name' => 'foo'],
             get_class($class)
         );
@@ -424,7 +424,7 @@ class ObjectConverterTest extends FunctionalTestCase
         $class = new class() {
         };
 
-        $this->getContainer()->get(PropertyMapper::class)->convert(
+        $this->get(PropertyMapper::class)->convert(
             ['__type' => Animal::class],
             get_class($class)
         );
@@ -450,7 +450,7 @@ class ObjectConverterTest extends FunctionalTestCase
             true
         );
 
-        $this->getContainer()->get(PropertyMapper::class)->convert(
+        $this->get(PropertyMapper::class)->convert(
             ['__type' => Animal::class],
             get_class($class),
             $propertyMapperConfiguration

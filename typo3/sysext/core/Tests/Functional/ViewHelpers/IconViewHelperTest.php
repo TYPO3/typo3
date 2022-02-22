@@ -47,7 +47,7 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="default" />');
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
@@ -63,7 +63,7 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_LARGE, null, IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" />');
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
@@ -79,7 +79,7 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Icon::SIZE_SMALL, null, IconState::cast(IconState::STATE_DISABLED))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="small" state="disabled" />');
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }
@@ -95,7 +95,7 @@ class IconViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIcon('myIdentifier', Argument::any(), 'overlayString', IconState::cast(IconState::STATE_DEFAULT))->shouldBeCalled()->willReturn($iconProphecy->reveal());
         $iconProphecy->render(null)->shouldBeCalled()->willReturn('htmlFoo');
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<core:icon identifier="myIdentifier" size="large" state="default" overlay="overlayString" />');
         self::assertSame('htmlFoo', (new TemplateView($context))->render());
     }

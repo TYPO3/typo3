@@ -217,7 +217,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
         $result = $this->brokenLinksRepository->getNumberOfBrokenLinksForRecordsOnPages(
@@ -340,7 +340,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -639,7 +639,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -778,7 +778,7 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
         $this->setupBackendUserAndGroup($beuser['uid'], $beuser['fixture'], $beuser['groupFixture']);
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 

@@ -46,7 +46,7 @@ class IconForRecordViewHelperTest extends FunctionalTestCase
         $iconFactoryProphecy->getIconForRecord(Argument::cetera())->willReturn($iconProphecy->reveal());
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<core:iconForRecord table="tt_content" row="{uid: 123}" size="large" alternativeMarkupIdentifier="inline" />'
         );

@@ -89,7 +89,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             'rows.' => [],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
     }
 
@@ -106,7 +106,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
@@ -127,7 +127,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(0, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
     }
@@ -149,7 +149,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -177,7 +177,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -209,7 +209,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -247,7 +247,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(2, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(4, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {
@@ -273,7 +273,7 @@ class BackendLayoutRendererTest extends FunctionalTestCase
             ],
         ];
         $pageLayoutContext = $this->getPageLayoutContext(1100, $configuration);
-        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class)));
+        $subject = new BackendLayoutRenderer(new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class)));
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getRows());
         self::assertCount(1, $subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns());
         foreach ($subject->getGridForPageLayoutContext($pageLayoutContext)->getColumns() as $column) {

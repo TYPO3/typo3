@@ -39,8 +39,8 @@ class TotpProviderTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->user = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
-        $this->subject = $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('totp');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
+        $this->subject = $this->get(MfaProviderRegistry::class)->getProvider('totp');
     }
 
     /**

@@ -37,7 +37,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1351584844);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:translate />');
         (new TemplateView($context))->render();
     }
@@ -49,7 +49,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639828178);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:translate key="key1" />');
         (new TemplateView($context))->render();
     }
@@ -112,7 +112,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
     {
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
@@ -173,7 +173,7 @@ class TranslateViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('backend');
         $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest($extbaseRequest);
         self::assertSame($expected, (new TemplateView($context))->render());

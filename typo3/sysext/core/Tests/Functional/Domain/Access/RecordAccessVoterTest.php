@@ -33,7 +33,7 @@ class RecordAccessVoterTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = new RecordAccessVoter(
-            $this->getContainer()->get(EventDispatcherInterface::class)
+            $this->get(EventDispatcherInterface::class)
         );
     }
 

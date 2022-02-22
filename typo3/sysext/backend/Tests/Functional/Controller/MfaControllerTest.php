@@ -31,10 +31,8 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class MfaControllerTest extends FunctionalTestCase
@@ -64,16 +62,15 @@ class MfaControllerTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $container = $this->getContainer();
         $this->subject = new MfaController(
-            $container->get(UriBuilder::class),
-            $container->get(AuthenticationStyleInformation::class),
-            $container->get(PageRenderer::class),
-            new ExtensionConfiguration(),
+            $this->get(UriBuilder::class),
+            $this->get(AuthenticationStyleInformation::class),
+            $this->get(PageRenderer::class),
+            $this->get(ExtensionConfiguration::class),
             new Logger('testing'),
-            new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class))
+            $this->get(BackendViewFactory::class)
         );
-        $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
+        $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)

@@ -35,7 +35,7 @@ class CacheLifetimeCalculatorTest extends FunctionalTestCase
      */
     public function getFirstTimeValueForRecordReturnCorrectData(): void
     {
-        $subject = new class($this->getContainer()->get('cache.core'), $this->getContainer()->get(EventDispatcherInterface::class), $this->getContainer()->get(ConnectionPool::class)) extends CacheLifetimeCalculator {
+        $subject = new class($this->get('cache.core'), $this->get(EventDispatcherInterface::class), $this->get(ConnectionPool::class)) extends CacheLifetimeCalculator {
             public function getFirstTimeValueForRecord(string $tableDef, int $currentTimestamp): int
             {
                 return parent::getFirstTimeValueForRecord($tableDef, $currentTimestamp);

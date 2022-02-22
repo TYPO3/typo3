@@ -56,12 +56,12 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -90,12 +90,12 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['format'] = 'json';
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -123,13 +123,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['format' => 'json']]);
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -146,7 +146,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $this->expectExceptionMessage('"extensionName" is not properly configured. Request can\'t be dispatched!');
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -159,11 +159,11 @@ class RequestBuilderTest extends FunctionalTestCase
         $this->expectExceptionCode(1289843277);
         $this->expectExceptionMessage('"pluginName" is not properly configured. Request can\'t be dispatched!');
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration(['extensionName' => 'blog_example']);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -196,12 +196,12 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -255,12 +255,12 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -309,13 +309,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -345,13 +345,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = true;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -371,11 +371,11 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -401,13 +401,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = true;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -436,13 +436,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'User']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -474,13 +474,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -510,13 +510,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = true;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -542,13 +542,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['pluginName'] = $pluginName;
         $configuration['mvc']['callDefaultActionIfActionCantBeResolved'] = true;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -576,13 +576,13 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -614,12 +614,12 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
 
@@ -650,10 +650,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -689,10 +689,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -726,10 +726,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
 
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);
@@ -765,10 +765,10 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $requestBuilder = $this->getContainer()->get(RequestBuilder::class);
+        $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
         self::assertInstanceOf(RequestInterface::class, $request);

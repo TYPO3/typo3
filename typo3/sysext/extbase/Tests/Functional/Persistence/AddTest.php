@@ -46,8 +46,8 @@ class AddTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->persistentManager = $this->getContainer()->get(PersistenceManager::class);
-        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
+        $this->persistentManager = $this->get(PersistenceManager::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 

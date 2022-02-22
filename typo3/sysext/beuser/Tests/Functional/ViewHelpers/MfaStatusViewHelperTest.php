@@ -46,7 +46,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('bu', 'TYPO3\\CMS\\Beuser\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<bu:mfaStatus userUid="{userUid}"/>');
         $this->view = new TemplateView($context);

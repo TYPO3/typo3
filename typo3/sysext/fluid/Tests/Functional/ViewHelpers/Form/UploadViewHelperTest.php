@@ -33,7 +33,7 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagName(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload />');
         $context->setRequest(new Request());
         self::assertSame('<input type="file" name="" />', (new TemplateView($context))->render());
@@ -44,7 +44,7 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTypeNameAttributes(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload name="someName" />');
         $context->setRequest(new Request());
         self::assertSame('<input type="file" name="someName" />', (new TemplateView($context))->render());
@@ -55,7 +55,7 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderSetsAttributeNameAsArrayIfMultipleIsGiven(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload multiple="multiple" name="someName" />');
         $context->setRequest(new Request());
         self::assertSame('<input multiple="multiple" type="file" name="someName[]" />', (new TemplateView($context))->render());
@@ -66,7 +66,7 @@ class UploadViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsAcceptAttribute(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.upload accept=".jpg,.png" />');
         $context->setRequest(new Request());
         self::assertSame('<input accept=".jpg,.png" type="file" name="" />', (new TemplateView($context))->render());
@@ -88,7 +88,7 @@ class UploadViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.upload property="someProperty" errorClass="myError" /></f:form>');
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);

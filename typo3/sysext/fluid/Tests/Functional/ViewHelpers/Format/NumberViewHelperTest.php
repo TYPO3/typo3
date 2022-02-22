@@ -60,7 +60,7 @@ class NumberViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }

@@ -67,7 +67,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $fluidTemplateContentObject = $this->getContainer()->get(ContentObjectFactory::class)->getContentObject(
+        $fluidTemplateContentObject = $this->get(ContentObjectFactory::class)->getContentObject(
             'COA',
             $this->prophesize(ServerRequestInterface::class)->reveal(),
             $contentObjectRenderer
@@ -113,7 +113,7 @@ class FluidTemplateContentObjectTest extends FunctionalTestCase
 
         $contentObjectRenderer = new ContentObjectRenderer($tsfe);
         $contentObjectRenderer->setRequest($this->prophesize(ServerRequestInterface::class)->reveal());
-        $fluidTemplateContentObject = $this->getContainer()->get(ContentObjectFactory::class)->getContentObject(
+        $fluidTemplateContentObject = $this->get(ContentObjectFactory::class)->getContentObject(
             'COA',
             $this->prophesize(ServerRequestInterface::class)->reveal(),
             $contentObjectRenderer

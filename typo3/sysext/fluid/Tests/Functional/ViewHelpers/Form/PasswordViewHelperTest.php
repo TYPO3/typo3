@@ -34,7 +34,7 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTagName(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password />');
         $context->setRequest(new Request());
         self::assertSame('<input type="password" name="" value="" />', (new TemplateView($context))->render());
@@ -45,7 +45,7 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsTypeNameAndValueAttributes(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password name="NameOfTextbox" value="Current value" />');
         $context->setRequest(new Request());
         self::assertSame('<input type="password" name="NameOfTextbox" value="Current value" />', (new TemplateView($context))->render());
@@ -56,7 +56,7 @@ class PasswordViewHelperTest extends FunctionalTestCase
      */
     public function renderCorrectlySetsAutocompleteTagAttribute(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.password name="myNewPassword" value="" autocomplete="new-password" />');
         $context->setRequest(new Request());
         self::assertSame('<input autocomplete="new-password" type="password" name="myNewPassword" value="" />', (new TemplateView($context))->render());

@@ -50,8 +50,8 @@ class InTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/tags.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
 
-        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
-        $this->postRepository = $this->getContainer()->get(PostRepository::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
+        $this->postRepository = $this->get(PostRepository::class);
     }
 
     /**

@@ -35,7 +35,7 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackend(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com">send mail</f:link.email>');
         self::assertEquals('<a href="mailto:foo@example.com">send mail</a>', (new TemplateView($context))->render());
     }
@@ -45,7 +45,7 @@ class EmailViewHelperTest extends FunctionalTestCase
      */
     public function renderCreatesProperMarkupInBackendWithEmptyChild(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:link.email email="foo@example.com" />');
         self::assertEquals('<a href="mailto:foo@example.com">foo@example.com</a>', (new TemplateView($context))->render());
     }

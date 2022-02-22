@@ -32,7 +32,7 @@ class BooleanConverterTest extends FunctionalTestCase
      */
     public function convertToBoolean(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertTrue($propertyMapper->convert(true, 'boolean'));
         self::assertFalse($propertyMapper->convert(false, 'boolean'));

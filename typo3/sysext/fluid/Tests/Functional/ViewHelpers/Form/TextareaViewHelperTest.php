@@ -64,7 +64,7 @@ class TextareaViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest(new Request());
         self::assertSame($expected, (new TemplateView($context))->render());
@@ -86,7 +86,7 @@ class TextareaViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.textarea property="someProperty" errorClass="myError" /></f:form>');
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);

@@ -34,7 +34,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/posts.csv');
-        $this->postRepository = $this->getContainer()->get(PostRepository::class);
+        $this->postRepository = $this->get(PostRepository::class);
     }
 
     /**

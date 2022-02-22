@@ -85,7 +85,7 @@ class CaseViewHelperTest extends FunctionalTestCase
      */
     public function renderConvertsAValue(string $src, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($src);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
@@ -97,7 +97,7 @@ class CaseViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1358349150);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.case value="foo" mode="invalid" />');
         (new TemplateView($context))->render();
     }

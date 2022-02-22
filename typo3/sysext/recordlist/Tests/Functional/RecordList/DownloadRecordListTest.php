@@ -32,7 +32,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->user = $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($this->user);
     }
 
     /**
@@ -40,7 +40,7 @@ class DownloadRecordListTest extends FunctionalTestCase
      */
     public function downloadReturnsAListOfAllBackendUsers(): void
     {
-        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
+        $recordList = $this->get(DatabaseRecordList::class);
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',
@@ -77,7 +77,7 @@ class DownloadRecordListTest extends FunctionalTestCase
     public function downloadReturnsAListOfSubpages(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
-        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
+        $recordList = $this->get(DatabaseRecordList::class);
         $recordList->start(1, 'pages', 0);
         $recordList->setFields['pages'] = [
             'uid',
@@ -166,7 +166,7 @@ class DownloadRecordListTest extends FunctionalTestCase
      */
     public function downloadReturnsRawValues(): void
     {
-        $recordList = $this->getContainer()->get(DatabaseRecordList::class);
+        $recordList = $this->get(DatabaseRecordList::class);
         $recordList->start(0, 'be_users', 0);
         $recordList->setFields['be_users'] = [
             'username',

@@ -41,7 +41,7 @@ class NoteVisibleFieldsTest extends FunctionalTestCase
     public function noteFormContainsExpectedFields(): void
     {
         $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
 
         $formEngineTestService = new FormTestService();
         $formResult = $formEngineTestService->createNewRecordForm('sys_note');

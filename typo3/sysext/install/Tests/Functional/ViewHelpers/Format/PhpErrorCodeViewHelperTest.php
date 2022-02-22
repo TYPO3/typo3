@@ -69,7 +69,7 @@ class PhpErrorCodeViewHelperTest extends FunctionalTestCase
         $viewHelperInstance = new PhpErrorCodeViewHelper();
         $this->getContainer()->set(PhpErrorCodeViewHelper::class, $viewHelperInstance);
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getViewHelperResolver()->addNamespace('install', 'TYPO3\\CMS\\Install\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<install:format.phpErrorCode phpErrorCode="' . $errorCode . '" />');
         self::assertSame($expected, (new TemplateView($context))->render());

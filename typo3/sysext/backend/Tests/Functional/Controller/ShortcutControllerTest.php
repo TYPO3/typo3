@@ -43,9 +43,9 @@ class ShortcutControllerTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new ShortcutController(
-            $this->getContainer()->get(ShortcutToolbarItem::class),
-            $this->getContainer()->get(ShortcutRepository::class),
-            new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class))
+            $this->get(ShortcutToolbarItem::class),
+            $this->get(ShortcutRepository::class),
+            new BackendViewFactory($this->get(RenderingContextFactory::class), $this->get(PackageManager::class))
         );
         $this->request = (new ServerRequest())->withAttribute('normalizedParams', new NormalizedParams([], [], '', ''));
     }

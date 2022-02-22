@@ -60,7 +60,7 @@ class LanguageServiceTest extends FunctionalTestCase
      */
     public function splitLabelTest(string $input, string $expected): void
     {
-        $subject = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $subject = $this->get(LanguageServiceFactory::class)->create('default');
         self::assertEquals($expected, $subject->sL($input));
     }
 
@@ -126,7 +126,7 @@ class LanguageServiceTest extends FunctionalTestCase
 
     private function ensureLocalizationScenarioWorks(string $locale, string $languageFile, array $expectedLabels): void
     {
-        $subject = $this->getContainer()->get(LanguageServiceFactory::class)->create($locale);
+        $subject = $this->get(LanguageServiceFactory::class)->create($locale);
 
         foreach ($expectedLabels as $label => $expectedLabel) {
             self::assertEquals($expectedLabel, $subject->sL(sprintf('LLL:%s:%s', $languageFile, $label)));

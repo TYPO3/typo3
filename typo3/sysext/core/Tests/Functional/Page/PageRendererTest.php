@@ -405,7 +405,7 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->user = ['uid' => 1];
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
 
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($GLOBALS['BE_USER']);
 
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);

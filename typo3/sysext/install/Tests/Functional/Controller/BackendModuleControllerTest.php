@@ -61,8 +61,8 @@ class BackendModuleControllerTest extends FunctionalTestCase
     public function environmentContextIsRespectedTest(string $module): void
     {
         $subject = new BackendModuleController(
-            $this->getContainer()->get(UriBuilder::class),
-            $this->getContainer()->get(ModuleTemplateFactory::class)
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class)
         );
         $action = $module . 'Action';
 

@@ -57,7 +57,7 @@ class ActionControllerTest extends FunctionalTestCase
         $this->request->setControllerName('Test');
         $this->request->setFormat('html');
 
-        $this->subject = $this->getContainer()->get(TestController::class);
+        $this->subject = $this->get(TestController::class);
     }
 
     /**

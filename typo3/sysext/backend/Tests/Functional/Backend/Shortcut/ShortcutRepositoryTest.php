@@ -37,9 +37,9 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new ShortcutRepository(
-            $this->getContainer()->get(ConnectionPool::class),
-            $this->getContainer()->get(IconFactory::class),
-            $this->getContainer()->get(ModuleProvider::class)
+            $this->get(ConnectionPool::class),
+            $this->get(IconFactory::class),
+            $this->get(ModuleProvider::class)
         );
     }
 

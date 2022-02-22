@@ -66,10 +66,10 @@ class QueryLocalizedDataTest extends FunctionalTestCase
             'extensionName' => 'blog_example',
             'pluginName' => 'test',
         ];
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $this->postRepository = $this->getContainer()->get(PostRepository::class);
-        $this->persistenceManager = $this->getContainer()->get(PersistenceManager::class);
+        $this->postRepository = $this->get(PostRepository::class);
+        $this->persistenceManager = $this->get(PersistenceManager::class);
     }
 
     /**
@@ -1144,7 +1144,7 @@ class QueryLocalizedDataTest extends FunctionalTestCase
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect($languageUid, $languageUid, $overlay));
 
-        $blogRepository = $this->getContainer()->get(BlogRepository::class);
+        $blogRepository = $this->get(BlogRepository::class);
         $query = $blogRepository->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectSysLanguage(false);

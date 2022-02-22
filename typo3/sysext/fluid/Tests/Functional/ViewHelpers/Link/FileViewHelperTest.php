@@ -76,7 +76,7 @@ class FileViewHelperTest extends FunctionalTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1621511632);
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         (new TemplateView($context))->render();
     }
@@ -86,7 +86,7 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicFileTest(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFile(1));
@@ -115,7 +115,7 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFile(1));
@@ -141,7 +141,7 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicFileReferenceTest(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFileReference(2));
@@ -170,7 +170,7 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getFileReference(2));
@@ -196,7 +196,7 @@ class FileViewHelperTest extends FunctionalTestCase
      */
     public function renderTagsForPublicProcessedFileTest(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getProcessedFile(3));
@@ -225,7 +225,7 @@ class FileViewHelperTest extends FunctionalTestCase
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_file_storage');
         $connection->update('sys_file_storage', ['is_public' => 0], ['uid' => 1]);
 
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplatePathAndFilename(self::TEMPLATE_PATH);
         $view = new TemplateView($context);
         $view->assign('file', $this->getProcessedFile(3));
@@ -248,7 +248,7 @@ class FileViewHelperTest extends FunctionalTestCase
 
     protected function getFile(int $fileUid): File
     {
-        return $this->getContainer()->get(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
+        return $this->get(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
     }
 
     protected function getFileReference(int $fileUid): FileReference
@@ -262,6 +262,6 @@ class FileViewHelperTest extends FunctionalTestCase
 
     protected function getProcessedFile(int $fileUid): ProcessedFile
     {
-        return $this->getContainer()->get(ProcessedFileRepository::class)->findByUid($fileUid);
+        return $this->get(ProcessedFileRepository::class)->findByUid($fileUid);
     }
 }

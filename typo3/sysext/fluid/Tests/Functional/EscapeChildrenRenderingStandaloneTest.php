@@ -124,7 +124,7 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
      */
     public function renderingTest(string $viewHelperTemplate, string $expectedOutput): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($viewHelperTemplate);
         $context->getViewHelperResolver()->addNamespace('ft', 'TYPO3Fluid\\FluidTest\\ViewHelpers');
         $view = new TemplateView($context);

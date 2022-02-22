@@ -65,11 +65,11 @@ class TranslationTest extends FunctionalTestCase
 
         $this->setUpBasicFrontendEnvironment();
 
-        $this->postRepository = $this->getContainer()->get(PostRepository::class);
+        $this->postRepository = $this->get(PostRepository::class);
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton
         // here, to not run into warnings due to incomplete test setup.
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration([
             'extensionName' => 'blog_example',
             'pluginName' => 'test',

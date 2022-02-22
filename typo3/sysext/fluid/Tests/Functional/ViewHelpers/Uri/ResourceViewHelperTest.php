@@ -38,7 +38,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1639672666);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
         $context->setRequest(new ServerRequest());
         (new TemplateView($context))->render();
@@ -49,7 +49,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
      */
     public function renderingFailsWhenExtensionNameNotSetInExtbaseRequest(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:uri.resource path="Icons/Extension.svg" />');
         $context->setRequest(new Request());
         $this->expectException(\RuntimeException::class);
@@ -79,7 +79,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
@@ -117,7 +117,7 @@ class ResourceViewHelperTest extends FunctionalTestCase
         $extbaseRequestParameters = new ExtbaseRequestParameters();
         $extbaseRequestParameters->setControllerExtensionName('Core');
         $extbaseRequest = (new Request())->withAttribute('extbase', $extbaseRequestParameters);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest($extbaseRequest);
         self::assertEquals($expected, (new TemplateView($context))->render());

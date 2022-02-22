@@ -21,8 +21,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class BackendViewFactoryTest extends FunctionalTestCase
@@ -41,8 +39,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesTemplatePathsWithPackageGivenAsRouteOption()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_a', $result);
@@ -56,8 +53,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesTemplatePathsWithPackageGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request, ['typo3/cms-test-templates-a']);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_a', $result);
@@ -71,8 +67,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesOverrideTemplatePathsWithBasePackageNameFromRoute()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request, ['typo3/cms-test-templates-b']);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_b', $result);
@@ -86,8 +81,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesOverrideTemplatePathsWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create(
             $request,
             [
@@ -107,8 +101,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesPrefersTemplateFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create(
             $request,
             [
@@ -128,8 +121,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
     public function createUsesFirstExistingFilesInChainBeginningFromLastOverrideWithMultiplePackagesGivenAsArgument()
     {
         $request = (new ServerRequest())->withAttribute('route', new Route('testing', []));
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create(
             $request,
             [
@@ -153,8 +145,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
         $request = (new ServerRequest())
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_b', $result);
@@ -171,8 +162,7 @@ class BackendViewFactoryTest extends FunctionalTestCase
         $request = (new ServerRequest())
             ->withAttribute('route', new Route('testing', ['packageName' => 'typo3/cms-test-templates-a']))
             ->withQueryParams(['id' => 1]);
-        $container = $this->getContainer();
-        $subject = new BackendViewFactory($container->get(RenderingContextFactory::class), $container->get(PackageManager::class));
+        $subject = $this->get(BackendViewFactory::class);
         $view = $subject->create($request);
         $result = $view->render('Foo');
         self::assertStringContainsString('Foo template from extension test_templates_b', $result);

@@ -39,7 +39,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration->allowAllProperties();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         $objectStorage = $propertyMapper->convert(
             [
@@ -65,7 +65,7 @@ class ObjectStorageConverterTest extends FunctionalTestCase
         $propertyMapperConfiguration = new PropertyMappingConfiguration();
         $propertyMapperConfiguration->forProperty('foo')->allowAllProperties();
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         $objectStorage = $propertyMapper->convert(
             'foo',

@@ -35,7 +35,7 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
     {
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->user = ['uid' => 1];
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
         );
@@ -49,7 +49,7 @@ class IfAuthenticatedViewHelperTest extends FunctionalTestCase
     {
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->user = ['uid' => 0];
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifAuthenticated><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifAuthenticated>'
         );

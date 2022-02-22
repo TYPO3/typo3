@@ -86,7 +86,7 @@ class CshViewHelperTest extends FunctionalTestCase
      */
     public function isRendered(string $source, array $variables, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($source);
         $view = new TemplateView($context);
         $view->getRenderingContext()->getCache()->flush();

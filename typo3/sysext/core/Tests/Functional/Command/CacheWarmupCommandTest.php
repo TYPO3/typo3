@@ -32,8 +32,8 @@ class CacheWarmupCommandTest extends AbstractCommandTest
      */
     public function cachesCanBeWarmed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
         GeneralUtility::rmdir(Environment::getVarPath() . '/cache/', true);
@@ -49,8 +49,8 @@ class CacheWarmupCommandTest extends AbstractCommandTest
      */
     public function systemCachesCanBeWarmed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
         GeneralUtility::rmdir(Environment::getVarPath() . '/cache/', true);
@@ -66,8 +66,8 @@ class CacheWarmupCommandTest extends AbstractCommandTest
      */
     public function diCachesDoesNotWarmSystemCaches(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
         GeneralUtility::rmdir(Environment::getVarPath() . '/cache/', true);
@@ -83,8 +83,8 @@ class CacheWarmupCommandTest extends AbstractCommandTest
      */
     public function systemCachesCanBeWarmedIfCacheIsBroken(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
         GeneralUtility::mkdir_deep(Environment::getVarPath() . '/cache/code/di');

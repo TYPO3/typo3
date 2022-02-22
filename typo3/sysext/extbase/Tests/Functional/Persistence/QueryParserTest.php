@@ -49,7 +49,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForOrQuery(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -72,7 +72,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasAndBelongsToManyReturnsExpectedResult(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->equals('tags.name', 'Tag12')
@@ -88,7 +88,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
-        $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
+        $administratorRepository = $this->get(AdministratorRepository::class);
         $query = $administratorRepository->createQuery();
         $query->matching(
             $query->equals('usergroup.title', 'Group A')
@@ -105,7 +105,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithRelationHasOneAndHasAndBelongsToManyWithoutParentKeyFieldNameReturnsExpectedResult(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->equals('author.firstname', 'Author')
@@ -120,7 +120,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function orReturnsExpectedResult(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalOr(
@@ -137,7 +137,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithMultipleRelationsToIdenticalTablesReturnsExpectedResultForAndQuery(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -155,7 +155,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryWithFindInSetReturnsExpectedResult(): void
     {
-        $administratorRepository = $this->getContainer()->get(AdministratorRepository::class);
+        $administratorRepository = $this->get(AdministratorRepository::class);
         $query = $administratorRepository->createQuery();
 
         $result = $query->matching($query->contains('usergroup', 1))
@@ -168,7 +168,7 @@ class QueryParserTest extends FunctionalTestCase
      */
     public function queryForPostWithCategoriesReturnsPostWithCategories(): void
     {
-        $postRepository = $this->getContainer()->get(PostRepository::class);
+        $postRepository = $this->get(PostRepository::class);
         $query = $postRepository->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
         self::assertCount(3, $post->getCategories());

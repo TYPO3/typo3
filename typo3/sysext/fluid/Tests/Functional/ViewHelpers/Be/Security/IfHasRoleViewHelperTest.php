@@ -49,7 +49,7 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersThenChildIfBeUserWithSpecifiedRoleIsLoggedIn(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="1"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );
@@ -61,7 +61,7 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIsNotLoggedIn(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="NonExistingRole"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );
@@ -73,7 +73,7 @@ class IfHasRoleViewHelperTest extends FunctionalTestCase
      */
     public function viewHelperRendersElseChildIfBeUserWithSpecifiedRoleIdIsNotLoggedIn(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(
             '<f:be.security.ifHasRole role="123"><f:then>then child</f:then><f:else>else child</f:else></f:be.security.ifHasRole>'
         );

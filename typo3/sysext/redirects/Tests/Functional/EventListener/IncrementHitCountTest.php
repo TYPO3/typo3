@@ -45,7 +45,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(3, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
+        $this->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),
@@ -66,7 +66,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(0, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
+        $this->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),
@@ -84,7 +84,7 @@ class IncrementHitCountTest extends FunctionalTestCase
         // Assert current hit count
         self::assertEquals(3, (int)$matchedRecord['hitcount']);
 
-        $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(
+        $this->get(EventDispatcherInterface::class)->dispatch(
             new RedirectWasHitEvent(
                 new ServerRequest('https://acme.com'),
                 new RedirectResponse($matchedRecord['target']),

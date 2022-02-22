@@ -44,8 +44,8 @@ class BackendModuleValidatorTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $this->subject = new BackendModuleValidator(
-            $this->getContainer()->get(UriBuilder::class),
-            $this->getContainer()->get(ModuleProvider::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleProvider::class),
         );
         $this->request = new ServerRequest('/some/uri');
         $this->requestHandler = new class() implements RequestHandlerInterface {
@@ -67,7 +67,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
      */
     public function moduleIsAddedToRequest(): void
     {
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'web_layout',
             [
                 'packageName' => 'typo3/cms-testing',
@@ -88,7 +88,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
      */
     public function moduleDataIsAddedToRequest(): void
     {
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'web_layout',
             [
                 'packageName' => 'typo3/cms-testing',
@@ -118,7 +118,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
      */
     public function invalidModuleThrowsException(): void
     {
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'some_module',
             [
                 'packageName' => 'typo3/cms-testing',
@@ -143,7 +143,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
         $GLOBALS['BE_USER']->user['admin'] = 0;
 
         // site_configuration requires admin access
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'site_configuration',
             [
                 'packageName' => 'typo3/cms-testing',
@@ -165,7 +165,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
      */
     public function noPageAccessThrowsException(): void
     {
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'web_layout',
             [
                 'packageName' => 'typo3/cms-testing',
@@ -189,7 +189,7 @@ class BackendModuleValidatorTest extends FunctionalTestCase
      */
     public function redirectsToMainForSecFetchDestHeader(): void
     {
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'web_layout',
             [
                 'packageName' => 'typo3/cms-testing',

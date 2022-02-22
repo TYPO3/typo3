@@ -34,7 +34,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function optionTagNameIsSet(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.option />');
         $context->setRequest(new Request());
         self::assertSame('<option selected="selected" value="" />', (new TemplateView($context))->render());
@@ -45,7 +45,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function childrenContentIsUsedAsValueAndLabelByDefault(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.option>Option Label</f:form.select.option>');
         $context->setRequest(new Request());
         self::assertSame('<option value="Option Label">Option Label</option>', (new TemplateView($context))->render());
@@ -56,7 +56,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function valueCanBeOverwrittenByArgument(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select.option value="value">Option Label</f:form.select.option>');
         $context->setRequest(new Request());
         self::assertSame('<option value="value">Option Label</option>', (new TemplateView($context))->render());
@@ -67,7 +67,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsAddedToSelectedOptionForNoSelectionOverride(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="Option Label"><f:form.select.option>Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         self::assertSame('<select name=""><option selected="selected" value="Option Label">Option Label</option></select>', (new TemplateView($context))->render());
@@ -106,7 +106,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsAddedToSelectedOptionForProvidedValue($value, $selected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="{selected}"><f:form.select.option value="{value}">Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -123,7 +123,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsNotAddedToUnselectedOptionForNoSelectionOverride(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value=""><f:form.select.option>Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         self::assertSame('<select name=""><option value="Option Label">Option Label</option></select>', (new TemplateView($context))->render());
@@ -157,7 +157,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsNotAddedToSelectedOptionForProvidedValue($value, $selected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="{selected}"><f:form.select.option value="{value}">Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -174,7 +174,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsNotAddedToOptionForExplicitOverride(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="Option Label"><f:form.select.option selected="false">Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         $expected = '<select name=""><option value="Option Label">Option Label</option></select>';
@@ -186,7 +186,7 @@ class OptionViewHelperTest extends FunctionalTestCase
      */
     public function selectedIsAddedToOptionForExplicitOverride(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="Option Label"><f:form.select.option selected="true">Option Label</f:form.select.option></f:form.select>');
         $context->setRequest(new Request());
         $expected = '<select name=""><option selected="selected" value="Option Label">Option Label</option></select>';

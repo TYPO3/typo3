@@ -37,10 +37,8 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locales;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ResetPasswordControllerTest extends FunctionalTestCase
@@ -68,16 +66,16 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         $passwordResetProphecy->resetPassword(Argument::any(), Argument::any())->willReturn(true);
 
         $this->subject = new ResetPasswordController(
-            $this->getService(Context::class),
-            $this->getService(Locales::class),
-            $this->getService(Features::class),
-            $this->getService(UriBuilder::class),
-            $this->getService(PageRenderer::class),
+            $this->get(Context::class),
+            $this->get(Locales::class),
+            $this->get(Features::class),
+            $this->get(UriBuilder::class),
+            $this->get(PageRenderer::class),
             $passwordResetProphecy->reveal(),
-            $this->getService(Typo3Information::class),
-            $this->getService(AuthenticationStyleInformation::class),
+            $this->get(Typo3Information::class),
+            $this->get(AuthenticationStyleInformation::class),
             new ExtensionConfiguration(),
-            new BackendViewFactory($this->getContainer()->get(RenderingContextFactory::class), $this->getContainer()->get(PackageManager::class))
+            $this->get(BackendViewFactory::class),
         );
 
         $this->request = (new ServerRequest())
@@ -178,17 +176,5 @@ class ResetPasswordControllerTest extends FunctionalTestCase
         $expected = '<form action="/typo3/login/password-reset/finish?' . htmlspecialchars(http_build_query($queryParams));
 
         self::assertStringContainsString($expected, $this->subject->passwordResetAction($request)->getBody()->getContents());
-    }
-
-    /**
-     * @return mixed|object|\Psr\Log\LoggerAwareInterface|\TYPO3\CMS\Core\SingletonInterface
-     */
-    protected function getService(string $service, array $constructorArguments = [])
-    {
-        $container = $this->getContainer();
-
-        return $container->has($service)
-            ? $container->get($service)
-            : GeneralUtility::makeInstance($service, ...$constructorArguments);
     }
 }

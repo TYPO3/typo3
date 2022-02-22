@@ -32,7 +32,7 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages />');
         $context->setRequest(new Request());
         self::assertEmpty((new TemplateView($context))->render());
@@ -43,7 +43,7 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
      */
     public function renderReturnsEmptyStringFromSpecificEmptyQueue(): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
         self::assertEmpty((new TemplateView($context))->render());
     }
@@ -56,7 +56,7 @@ class FlashMessagesViewHelperTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         $flashMessage = new FlashMessage('test message body', 'test message title', AbstractMessage::OK, true);
         (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:flashMessages queueIdentifier="myQueue" />');
         // CLI message renderer kicks in with this functional test setup, so no HTML output here.
         self::assertSame('[SUCCESS] test message title: test message body', (new TemplateView($context))->render());

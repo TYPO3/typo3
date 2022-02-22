@@ -55,8 +55,8 @@ class IsDirtyTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/fe_groups.csv');
 
-        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
-        $this->adminRepository = $this->getContainer()->get(AdministratorRepository::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
+        $this->adminRepository = $this->get(AdministratorRepository::class);
     }
 
     /**

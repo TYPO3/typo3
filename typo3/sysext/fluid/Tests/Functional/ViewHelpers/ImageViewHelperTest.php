@@ -75,7 +75,7 @@ class ImageViewHelperTest extends FunctionalTestCase
     public function renderReturnsExpectedMarkup(string $template, string $expected): void
     {
         $this->setUpBackendUserFromFixture(1);
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertMatchesRegularExpression($expected, (new TemplateView($context))->render());
     }

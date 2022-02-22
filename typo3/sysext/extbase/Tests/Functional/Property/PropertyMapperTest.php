@@ -48,7 +48,7 @@ class PropertyMapperTest extends FunctionalTestCase
     public function convertCreatesAPropertyMappingConfigurationIfNotGiven(): void
     {
         // This test just increases the test coverage
-        $this->getContainer()->get(PropertyMapper::class)
+        $this->get(PropertyMapper::class)
             ->convert('string', 'string');
     }
 
@@ -57,7 +57,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertReturnsNullIfDoMappingReturnsAnError(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertNull($propertyMapper->convert('string', 'integer'));
         self::assertNotEmpty($propertyMapper->getMessages());
@@ -71,7 +71,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectException(TargetNotFoundException::class);
         $this->expectExceptionCode(1297933823);
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(9999, Blog::class);
     }
 
@@ -84,7 +84,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "boolean"');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(9999, 'boolean');
     }
 
@@ -97,7 +97,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": The target type was no string, but of type "NULL"');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(9999, null);
     }
 
@@ -106,7 +106,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function convertInternallyConvertsANullSourceToAnEmptyString(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         self::assertSame('', $propertyMapper->convert(null, 'string'));
     }
 
@@ -119,7 +119,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": Could not find a suitable type converter for "NonExistingClass" because no such class or interface exists.');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(1, 'NonExistingClass');
     }
 
@@ -139,7 +139,7 @@ class PropertyMapperTest extends FunctionalTestCase
             }
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(1, get_class($counter));
     }
 
@@ -150,7 +150,7 @@ class PropertyMapperTest extends FunctionalTestCase
     {
         $objectStorage = new ObjectStorage();
 
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert(
+        $result = $this->get(PropertyMapper::class)->convert(
             $objectStorage,
             '\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>'
         );
@@ -173,7 +173,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration = new PropertyMappingConfiguration();
         $propertyMappingConfiguration->setTypeConverter($class);
 
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert(
+        $result = $this->get(PropertyMapper::class)->convert(
             1,
             'integer',
             $propertyMappingConfiguration
@@ -195,7 +195,7 @@ class PropertyMapperTest extends FunctionalTestCase
             return 'string';
         };
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert($generator, 'string');
     }
 
@@ -208,7 +208,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $this->expectExceptionCode(1297759968);
         $this->expectExceptionMessage('Exception while property mapping at property path "": No converter found which can be used to convert from "integer" to "ExtbaseTeam\TypeConverterTest\Domain\Model\Cat"');
 
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert(1, Cat::class);
+        $result = $this->get(PropertyMapper::class)->convert(1, Cat::class);
         self::assertNull($result);
     }
 
@@ -217,7 +217,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyFindsConverterFromStringToObject(): void
     {
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert('tigger', Cat::class);
+        $result = $this->get(PropertyMapper::class)->convert('tigger', Cat::class);
         self::assertInstanceOf(Cat::class, $result);
     }
 
@@ -226,7 +226,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForParentClass(): void
     {
-        $result = $this->getContainer()->get(PropertyMapper::class)->convert('fluffy', Dog::class);
+        $result = $this->get(PropertyMapper::class)->convert('fluffy', Dog::class);
         self::assertInstanceOf(Animal::class, $result);
     }
 
@@ -235,7 +235,7 @@ class PropertyMapperTest extends FunctionalTestCase
      */
     public function findFirstEligibleTypeConverterInObjectHierarchyReturnsConverterForInterfaces(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $result = $propertyMapper->convert(1, Countable::class);
 
         self::assertSame([], $result);
@@ -253,7 +253,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration = new PropertyMappingConfiguration();
         $propertyMappingConfiguration->allowAllProperties();
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,
@@ -277,7 +277,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration = new PropertyMappingConfiguration();
         $propertyMappingConfiguration->skipProperties('color');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,
@@ -305,7 +305,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration = new PropertyMappingConfiguration();
         $propertyMappingConfiguration->allowAllPropertiesExcept('color');
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         $propertyMapper->convert(
             $source,
             Cat::class,
@@ -326,7 +326,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $propertyMappingConfiguration->allowAllPropertiesExcept('color');
         $propertyMappingConfiguration->skipUnknownProperties();
 
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
         /** @var Cat $result */
         $result = $propertyMapper->convert(
             $source,

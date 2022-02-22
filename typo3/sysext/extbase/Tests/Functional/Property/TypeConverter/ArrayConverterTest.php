@@ -32,7 +32,7 @@ class ArrayConverterTest extends FunctionalTestCase
      */
     public function convertToArray(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertSame([], $propertyMapper->convert([], 'array'));
 

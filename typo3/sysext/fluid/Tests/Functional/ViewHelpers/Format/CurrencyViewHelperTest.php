@@ -100,7 +100,7 @@ class CurrencyViewHelperTest extends FunctionalTestCase
      */
     public function renderConvertsAValue(string $src, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($src);
         self::assertSame($expected, (new TemplateView($context))->render());
     }

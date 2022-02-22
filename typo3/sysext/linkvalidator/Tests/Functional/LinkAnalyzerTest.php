@@ -35,7 +35,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     public function findAllBrokenLinksDataProvider(): array
@@ -100,7 +100,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -152,7 +152,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -204,7 +204,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -255,7 +255,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 
@@ -295,7 +295,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importCSVDataSet($inputFile);
 
-        $linkAnalyzer = $this->getContainer()->get(LinkAnalyzer::class);
+        $linkAnalyzer = $this->get(LinkAnalyzer::class);
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($linkTypes);
 

@@ -66,7 +66,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function forwardedActionValidatesPreviouslyIgnoredArgument(array $blogPostArgument, array $trustedProperties, array $expectedErrorCodes): void
     {
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -90,7 +90,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $titleMappingResults = new Result();
         $isDispatched = false;
         while (!$isDispatched) {
-            $blogController = $this->getContainer()->get(BlogController::class);
+            $blogController = $this->get(BlogController::class);
             $response = $blogController->processRequest($request);
             if ($response instanceof ForwardResponse) {
                 $titleMappingResults = $response->getArgumentsValidationResult()->forProperty('blogPost.title');
@@ -117,7 +117,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function validationResultsAreProvidedForTheSameObjectInDifferentArguments(): void
     {
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -156,7 +156,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
 
         $isDispatched = false;
         while (!$isDispatched) {
-            $blogController = $this->getContainer()->get(BlogController::class);
+            $blogController = $this->get(BlogController::class);
             $response = $blogController->processRequest($request);
             if ($response instanceof ForwardResponse) {
 
@@ -183,7 +183,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     public function argumentsOfOriginalRequestRemainOnValidationErrors(): void
     {
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'testkey';
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
@@ -223,7 +223,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $originalArguments = $request->getArguments();
         $isDispatched = false;
         while (!$isDispatched) {
-            $blogController = $this->getContainer()->get(BlogController::class);
+            $blogController = $this->get(BlogController::class);
             $response = $blogController->processRequest($request);
             if ($response instanceof ForwardResponse) {
                 $request = Dispatcher::buildRequestFromCurrentRequestAndForwardResponse($request, $response);
@@ -243,7 +243,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     protected function generateTrustedPropertiesToken(array $formFieldNames): string
     {
-        $mvcPropertyMappingConfigurationService = $this->getContainer()->get(
+        $mvcPropertyMappingConfigurationService = $this->get(
             MvcPropertyMappingConfigurationService::class
         );
         return $mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, '');
@@ -254,6 +254,6 @@ class ActionControllerValidationTest extends FunctionalTestCase
      */
     protected function getHashService(): HashService
     {
-        return $this->getContainer()->get(HashService::class);
+        return $this->get(HashService::class);
     }
 }

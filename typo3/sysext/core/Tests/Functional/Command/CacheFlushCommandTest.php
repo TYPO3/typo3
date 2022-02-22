@@ -49,13 +49,13 @@ class CacheFlushCommandTest extends AbstractCommandTest
      */
     public function cachesCanBeFlushed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
         $diCacheFile = Environment::getVarPath() . '/cache/code/di/' . $diCacheIdentifier . '.php';
 
-        $siteConfiguration = $this->getContainer()->get(SiteConfiguration::class);
-        $pageCache = $this->getContainer()->get(CacheManager::class)->getCache('pages');
+        $siteConfiguration = $this->get(SiteConfiguration::class);
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
 
         // fill cache
         $siteConfiguration->getAllExistingSites();
@@ -82,8 +82,8 @@ class CacheFlushCommandTest extends AbstractCommandTest
      */
     public function diCachesCanBeFlushed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
         $diCacheFile = Environment::getVarPath() . '/cache/code/di/' . $diCacheIdentifier . '.php';
 
@@ -101,12 +101,12 @@ class CacheFlushCommandTest extends AbstractCommandTest
      */
     public function systemCachesCanBeFlushed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
-        $siteConfiguration = $this->getContainer()->get(SiteConfiguration::class);
-        $pageCache = $this->getContainer()->get(CacheManager::class)->getCache('pages');
+        $siteConfiguration = $this->get(SiteConfiguration::class);
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
         $diCacheFile = Environment::getVarPath() . '/cache/code/di/' . $diCacheIdentifier . '.php';
 
         // fill cache
@@ -136,12 +136,12 @@ class CacheFlushCommandTest extends AbstractCommandTest
      */
     public function pageCachesCanBeFlushed(): void
     {
-        $containerBuilder = $this->getContainer()->get(ContainerBuilder::class);
-        $packageManager = $this->getContainer()->get(PackageManager::class);
+        $containerBuilder = $this->get(ContainerBuilder::class);
+        $packageManager = $this->get(PackageManager::class);
         $diCacheIdentifier = $containerBuilder->getCacheIdentifier($packageManager);
 
-        $siteConfiguration = $this->getContainer()->get(SiteConfiguration::class);
-        $pageCache = $this->getContainer()->get(CacheManager::class)->getCache('pages');
+        $siteConfiguration = $this->get(SiteConfiguration::class);
+        $pageCache = $this->get(CacheManager::class)->getCache('pages');
         $diCacheFile = Environment::getVarPath() . '/cache/code/di/' . $diCacheIdentifier . '.php';
 
         // fill cache

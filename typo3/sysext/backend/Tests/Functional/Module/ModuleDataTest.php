@@ -63,7 +63,7 @@ class ModuleDataTest extends FunctionalTestCase
             'anoterProperty' => 'anotherDefaultValue',
         ];
 
-        $module = $this->getContainer()->get(ModuleFactory::class)->createModule(
+        $module = $this->get(ModuleFactory::class)->createModule(
             'my_module',
             [
                 'packageName' => 'typo3/cms-testing',

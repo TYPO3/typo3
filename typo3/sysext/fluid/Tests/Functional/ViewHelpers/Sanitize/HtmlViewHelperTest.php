@@ -43,7 +43,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isSanitizedUsingNodeInstruction(string $payload, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:sanitize.html>%s</f:sanitize.html>', $payload));
         self::assertSame($expectation, (new TemplateView($context))->render());
     }
@@ -56,7 +56,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isSanitizedUsingInlineInstruction(string $payload, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('{payload -> f:sanitize.html()}');
         $view = new TemplateView($context);
         $view->assign('payload', $payload);

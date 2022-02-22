@@ -45,7 +45,7 @@ class DataMapFactoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->dataMapFactory = $this->getContainer()->get(DataMapFactory::class);
+        $this->dataMapFactory = $this->get(DataMapFactory::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 

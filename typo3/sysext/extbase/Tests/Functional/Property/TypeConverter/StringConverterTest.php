@@ -32,7 +32,7 @@ class StringConverterTest extends FunctionalTestCase
      */
     public function convertToString(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertSame('string', $propertyMapper->convert('string', 'string'));
         self::assertSame('10', $propertyMapper->convert(10, 'string'));

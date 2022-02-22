@@ -32,7 +32,7 @@ class IntegerConverterTest extends FunctionalTestCase
      */
     public function convertToInteger(): void
     {
-        $propertyMapper = $this->getContainer()->get(PropertyMapper::class);
+        $propertyMapper = $this->get(PropertyMapper::class);
 
         self::assertSame(10, $propertyMapper->convert(10, 'integer'));
 

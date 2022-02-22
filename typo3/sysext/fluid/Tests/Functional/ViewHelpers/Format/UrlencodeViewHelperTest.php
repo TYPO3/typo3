@@ -56,7 +56,7 @@ class UrlencodeViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         self::assertSame($expected, (new TemplateView($context))->render());
     }
@@ -75,7 +75,7 @@ class UrlencodeViewHelperTest extends FunctionalTestCase
                 return '<script>alert(\'"xss"\')</script>';
             }
         };
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:format.urlencode>{value}</f:format.urlencode>');
         $view = new TemplateView($context);
         $view->assign('value', $toStringClass);

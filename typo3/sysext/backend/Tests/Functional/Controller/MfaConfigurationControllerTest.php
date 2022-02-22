@@ -53,13 +53,12 @@ class MfaConfigurationControllerTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $container = $this->getContainer();
         $this->subject = new MfaConfigurationController(
-            $container->get(IconFactory::class),
-            $container->get(UriBuilder::class),
-            $container->get(ModuleTemplateFactory::class),
+            $this->get(IconFactory::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class),
         );
-        $this->subject->injectMfaProviderRegistry($container->get(MfaProviderRegistry::class));
+        $this->subject->injectMfaProviderRegistry($this->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)

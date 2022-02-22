@@ -48,7 +48,7 @@ class RadioViewHelperTest extends FunctionalTestCase
      */
     public function render(string $template, string $expected): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->setRequest(new Request());
         self::assertSame($expected, (new TemplateView($context))->render());
@@ -61,7 +61,7 @@ class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = false;
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" checked="true" /></f:form>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -76,7 +76,7 @@ class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = true;
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -91,7 +91,7 @@ class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = [];
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -106,7 +106,7 @@ class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = '';
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -121,7 +121,7 @@ class RadioViewHelperTest extends FunctionalTestCase
     {
         $formObject = new \stdClass();
         $formObject->someProperty = null;
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $context->setRequest(new Request());
         $view = new TemplateView($context);
@@ -145,7 +145,7 @@ class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" errorClass="myError" /></f:form>');
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
@@ -169,7 +169,7 @@ class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" /></f:form>');
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);
@@ -192,7 +192,7 @@ class RadioViewHelperTest extends FunctionalTestCase
         $extbaseRequest = new Request($psr7Request);
 
         $formObject = new \stdClass();
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('<f:form object="{formObject}" fieldNamePrefix="myFieldPrefix" objectName="myObjectName"><f:form.radio value="foo" property="someProperty" class="myClass" /></f:form>');
         $context->setRequest($extbaseRequest);
         $view = new TemplateView($context);

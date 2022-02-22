@@ -35,7 +35,7 @@ class CollectionValidatorTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     /**
@@ -43,7 +43,7 @@ class CollectionValidatorTest extends FunctionalTestCase
      */
     public function collectionValidatorReturnsNoErrorsForANullValue(): void
     {
-        $subject = $this->getContainer()->get(CollectionValidator::class);
+        $subject = $this->get(CollectionValidator::class);
         $subject->setOptions([]);
         self::assertFalse($subject->validate(null)->hasErrors());
     }
@@ -53,7 +53,7 @@ class CollectionValidatorTest extends FunctionalTestCase
      */
     public function collectionValidatorFailsForAValueNotBeingACollection(): void
     {
-        $subject = $this->getContainer()->get(CollectionValidator::class);
+        $subject = $this->get(CollectionValidator::class);
         $subject->setOptions([]);
         self::assertTrue($subject->validate(new \stdClass())->hasErrors());
     }
@@ -66,13 +66,13 @@ class CollectionValidatorTest extends FunctionalTestCase
         $mockValidatorResolver = $this->getAccessibleMock(
             ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->getContainer()->get(ReflectionService::class)]
+            [$this->get(ReflectionService::class)]
         );
         /** @var ContainerBuilder $container */
         $container = $this->getContainer();
         $container->set(ValidatorResolver::class, $mockValidatorResolver);
         /** @var CollectionValidator $subject */
-        $subject = $this->getContainer()->get(CollectionValidator::class);
+        $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementValidator' => 'EmailAddress']);
         $emailAddressValidator = new EmailAddressValidator();
         $emailAddressValidator->setOptions([]);
@@ -116,14 +116,14 @@ class CollectionValidatorTest extends FunctionalTestCase
         $aValidator->setOptions([]);
 
         /** @var CollectionValidator $subject */
-        $subject = $this->getContainer()->get(CollectionValidator::class);
+        $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementValidator' => 'Integer']);
         $integerValidator = new IntegerValidator();
         $integerValidator->setOptions([]);
         $mockValidatorResolver = $this->getAccessibleMock(
             ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->getContainer()->get(ReflectionService::class)]
+            [$this->get(ReflectionService::class)]
         );
         $mockValidatorResolver
             ->method('createValidator')
@@ -151,11 +151,11 @@ class CollectionValidatorTest extends FunctionalTestCase
         $mockValidatorResolver = $this->getAccessibleMock(
             ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction'],
-            [$this->getContainer()->get(ReflectionService::class)]
+            [$this->get(ReflectionService::class)]
         );
         $mockValidatorResolver->expects(self::never())->method('createValidator');
         /** @var CollectionValidator $subject */
-        $subject = $this->getContainer()->get(CollectionValidator::class);
+        $subject = $this->get(CollectionValidator::class);
         $subject->setOptions(['elementType' => $elementType]);
         $subject->validate($objectStorage);
     }

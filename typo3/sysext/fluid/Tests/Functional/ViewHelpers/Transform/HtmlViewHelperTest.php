@@ -116,7 +116,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformed(string $payload, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html>%s</f:transform.html>', $payload));
         self::assertSame($expectation, (new TemplateView($context))->render());
     }
@@ -156,7 +156,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformedWithSelector(string $selector, string $payload, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:transform.html selector="%s">%s</f:transform.html>', $selector, $payload));
         self::assertSame($expectation, (new TemplateView($context))->render());
     }
@@ -206,7 +206,7 @@ class HtmlViewHelperTest extends FunctionalTestCase
      */
     public function isTransformedWithOnFailure(?string $onFailure, string $payload, string $expectation): void
     {
-        $context = $this->getContainer()->get(RenderingContextFactory::class)->create();
+        $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf(
             '<f:transform.html %s>%s</f:transform.html>',
             $onFailure !== null ? 'onFailure="' . $onFailure . '"' : '',
