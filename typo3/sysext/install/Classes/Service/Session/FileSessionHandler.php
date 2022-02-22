@@ -33,17 +33,13 @@ class FileSessionHandler implements \SessionHandlerInterface
      * The path to our var/session/ folder (where we can write our sessions). Set in the
      * constructor.
      * Path where to store our session files in var/session/.
-     *
-     * @var string
      */
-    private $sessionPath = 'session/';
+    private string $sessionPath;
 
     /**
      * time (minutes) to expire an unused session
-     *
-     * @var int
      */
-    private $expirationTimeInMinutes = 60;
+    private int $expirationTimeInMinutes;
 
     public function __construct(string $sessionPath, int $expirationTimeInMinutes)
     {
@@ -84,38 +80,26 @@ class FileSessionHandler implements \SessionHandlerInterface
         return $sessionSavePath . '/hash_' . $this->getSessionHash($id);
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Open function. See @session_set_save_handler
-     *
-     * @param string $savePath
-     * @param string $sessionName
-     * @return bool
      */
-    public function open($savePath, $sessionName)
+    public function open(string $path, string $name): bool
     {
         return true;
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Close function. See @session_set_save_handler
-     *
-     * @return bool
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Read session data. See @session_set_save_handler
-     *
-     * @param string $id The session id
-     * @return string
      */
-    public function read($id)
+    public function read(string $id): string|false
     {
         $sessionFile = $this->getSessionFile($id);
         $content = '';
@@ -139,16 +123,10 @@ class FileSessionHandler implements \SessionHandlerInterface
         return $content;
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Write session data. See @session_set_save_handler
-     *
-     * @param string $id The session id
-     * @param string $sessionData The data to be stored
-     * @throws Exception
-     * @return bool
      */
-    public function write($id, $sessionData)
+    public function write(string $id, string $data): bool
     {
         $sessionFile = $this->getSessionFile($id);
         $result = false;
@@ -156,7 +134,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         if ($fd = fopen($sessionFile, 'cb')) {
             if (flock($fd, LOCK_EX)) {
                 ftruncate($fd, 0);
-                $res = fwrite($fd, $sessionData);
+                $res = fwrite($fd, $data);
                 if ($res !== false) {
                     fflush($fd);
                     $result = true;
@@ -176,42 +154,39 @@ class FileSessionHandler implements \SessionHandlerInterface
                 1424355157
             );
         }
-        return $result;
+        return true;
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Destroys one session. See @session_set_save_handler
-     *
-     * @param string $id The session id
-     * @return bool
      */
-    public function destroy($id): bool
+    public function destroy(string $id): bool
     {
         $sessionFile = $this->getSessionFile($id);
         return @unlink($sessionFile);
     }
 
-    #[\ReturnTypeWillChange]
     /**
      * Garbage collect session info. See @session_set_save_handler
      *
      * @param int $maxLifeTime The setting of session.gc_maxlifetime
-     * @return bool
+     * @return int|false
      */
-    public function gc($maxLifeTime)
+    public function gc(int $maxLifeTime): int|false
     {
         $sessionSavePath = $this->getSessionSavePath();
         $files = glob($sessionSavePath . '/hash_*');
         if (!is_array($files)) {
-            return true;
+            return 0;
         }
+        $deleted = 0;
         foreach ($files as $filename) {
             if (filemtime($filename) + $this->expirationTimeInMinutes * 60 < time()) {
                 @unlink($filename);
+                $deleted++;
             }
         }
-        return true;
+        return $deleted;
     }
 
     /**
@@ -235,7 +210,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      *
      * @return string|false the session ID
      */
-    public function getSessionId()
+    public function getSessionId(): string|false
     {
         return session_id();
     }
@@ -248,7 +223,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      * @throws \TYPO3\CMS\Install\Exception
      * @return string the session hash
      */
-    private function getSessionHash(string $sessionId = '')
+    private function getSessionHash(string $sessionId = ''): string
     {
         if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
             throw new \TYPO3\CMS\Install\Exception(
@@ -257,7 +232,7 @@ class FileSessionHandler implements \SessionHandlerInterface
             );
         }
         if (!$sessionId) {
-            $sessionId = $this->getSessionId();
+            $sessionId = (string)($this->getSessionId() ?: '');
         }
         return md5($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . '|' . $sessionId);
     }
@@ -269,7 +244,7 @@ class FileSessionHandler implements \SessionHandlerInterface
      * @param string $sessionSavePath The absolute path to the session files
      * @throws \TYPO3\CMS\Install\Exception
      */
-    private function ensureSessionSavePathExists(string $sessionSavePath)
+    private function ensureSessionSavePathExists(string $sessionSavePath): void
     {
         if (!is_dir($sessionSavePath)) {
             try {

@@ -5056,11 +5056,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Install\\\\Service\\\\Session\\\\FileSessionHandler\\:\\:gc\\(\\) should return int\\|false but returns true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/install/Classes/Service/Session/FileSessionHandler.php
-
-		-
 			message: "#^Call to function is_subclass_of\\(\\) with non\\-empty\\-string and 'TYPO3\\\\\\\\CMS\\\\\\\\Install\\\\\\\\Updates\\\\\\\\RowUpdater\\\\\\\\RowUpdaterInterface' will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/UpgradeWizardsService.php
