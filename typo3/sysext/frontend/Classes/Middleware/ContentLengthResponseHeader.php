@@ -24,10 +24,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * Send content-length header.
- * Notice that all HTML content outside the length of the content-length header will be cut off!
- * Therefore content of unknown length from included PHP-scripts and if admin users are logged
- * in (admin panel might show...) or if debug mode is turned on, we disable it!
+ * Add content-length HTTP header to the response.
+ *
+ * Notice that all Content outside the length of the content-length header will be cut off!
+ * Therefore content of unknown length from later-on middlewares and if admin users are logged
+ * in (admin panel might show...), we disable it!
  *
  * @internal
  */
@@ -47,8 +48,7 @@ class ContentLengthResponseHeader implements MiddlewareInterface
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             if (
                     (!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader']) || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
-                    && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !($GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] ?? false)
-                    && !($GLOBALS['TSFE']->config['config']['debug'] ?? false) && !$GLOBALS['TSFE']->doWorkspacePreview()
+                    && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !$GLOBALS['TSFE']->doWorkspacePreview()
                 ) {
                 $response = $response->withHeader('Content-Length', (string)$response->getBody()->getSize());
             }
