@@ -22,9 +22,9 @@
 		"doctrine/dbal": "~2.10.0 || ~2.11.2 || ~2.13.1",
 		"nikic/php-parser": "^4.10.4",
 		"symfony/finder": "^4.4 || ^5.0",
-		"typo3/cms-core": "10.4.25",
-		"typo3/cms-extbase": "10.4.25",
-		"typo3/cms-fluid": "10.4.25"
+		"typo3/cms-core": "10.4.*@dev",
+		"typo3/cms-extbase": "10.4.*@dev",
+		"typo3/cms-fluid": "10.4.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
