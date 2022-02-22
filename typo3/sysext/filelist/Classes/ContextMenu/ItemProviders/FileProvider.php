@@ -413,7 +413,7 @@ class FileProvider extends AbstractProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => 'TYPO3/CMS/Filelist/ContextMenuActions',
+            'data-callback-module' => '@typo3/filelist/context-menu-actions',
         ];
         if ($itemName === 'delete' && $this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs($this->record->getName(), $this->backendUser->uc['titleLen']);
