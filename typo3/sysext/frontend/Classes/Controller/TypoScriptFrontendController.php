@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\AbstractServerErrorException;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
@@ -1091,8 +1092,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $c = count($this->rootLine);
         $removeTheRestFlag = false;
+        $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
         for ($a = 0; $a < $c; $a++) {
-            if (!$this->checkPagerecordForIncludeSection($this->rootLine[$a])) {
+            if (!$accessVoter->accessGrantedForPageInRootLine($this->rootLine[$a], $this->context)) {
                 // Add to page access failure history and mark the page as not found
                 // Keep the rootline however to trigger an access denied error instead of a service unavailable error
                 $this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
@@ -1132,67 +1134,21 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
      * @param bool $bypassGroupCheck Bypass group-check
      * @return bool TRUE, if record is viewable.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
-     * @see checkPagerecordForIncludeSection()
+     * @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Use RecordAccessVoter instead.
      */
     public function checkEnableFields($row, $bypassGroupCheck = false)
     {
-        $_params = ['pObj' => $this, 'row' => &$row, 'bypassGroupCheck' => &$bypassGroupCheck];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_checkEnableFields'] ?? [] as $_funcRef) {
-            // Call hooks: If one returns FALSE, method execution is aborted with result "This record is not available"
-            $return = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-            if ($return === false) {
-                return false;
-            }
-        }
-        if ((!$row['hidden'] || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false))
-            && $row['starttime'] <= $GLOBALS['SIM_ACCESS_TIME']
-            && ($row['endtime'] == 0 || $row['endtime'] > $GLOBALS['SIM_ACCESS_TIME'])
-            && ($bypassGroupCheck || $this->checkPageGroupAccess($row))) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check group access against a page record
-     *
-     * @param array $row The page record to evaluate (needs field: fe_group)
-     * @return bool TRUE, if group access is granted.
-     * @internal
-     */
-    public function checkPageGroupAccess($row)
-    {
-        /** @var UserAspect $userAspect */
-        $userAspect = $this->context->getAspect('frontend.user');
-        $pageGroupList = explode(',', $row['fe_group'] ?: 0);
-        return count(array_intersect($userAspect->getGroupIds(), $pageGroupList)) > 0;
-    }
-
-    /**
-     * Checks if the current page of the root line is visible.
-     *
-     * If the field extendToSubpages is 0, access is granted,
-     * else the fields hidden, starttime, endtime, fe_group are evaluated.
-     *
-     * @todo Find a better name, i.e. isVisibleRecord()
-     *
-     * @param array $row The page record
-     * @return bool true if visible
-     * @internal
-     * @see checkEnableFields()
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
-     * @see checkRootlineForIncludeSection()
-     */
-    public function checkPagerecordForIncludeSection(array $row): bool
-    {
-        return !$row['extendToSubpages'] || $this->checkEnableFields($row);
+        trigger_error(
+            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13. Use RecordAccessVoter instead.',
+            E_USER_DEPRECATED
+        );
+        return GeneralUtility::makeInstance(RecordAccessVoter::class)->accessGranted('pages', $row, $this->context);
     }
 
     /**
      * Analysing $this->pageAccessFailureHistory into a summary array telling which features disabled display and on which pages and conditions. That data can be used inside a page-not-found handler
      *
-     * @param string $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
+     * @param string|null $failureReasonCode the error code to be attached (optional), see PageAccessFailureReasons list for details
      * @return array Summary of why page access was not allowed.
      */
     public function getPageAccessFailureReasons(string $failureReasonCode = null)
@@ -1206,6 +1162,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             is_array($this->pageAccessFailureHistory['sub_section'] ?? false) ? $this->pageAccessFailureHistory['sub_section'] : []
         );
         if (!empty($combinedRecords)) {
+            $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
             foreach ($combinedRecords as $k => $pagerec) {
                 // If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
                 // If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
@@ -1219,7 +1176,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (isset($pagerec['endtime']) && $pagerec['endtime'] != 0 && $pagerec['endtime'] <= $GLOBALS['SIM_ACCESS_TIME']) {
                         $output['endtime'][$pagerec['uid']] = $pagerec['endtime'];
                     }
-                    if (!$this->checkPageGroupAccess($pagerec)) {
+                    if (!$accessVoter->groupAccessGranted('pages', $pagerec, $this->context)) {
                         $output['fe_group'][$pagerec['uid']] = $pagerec['fe_group'];
                     }
                 }

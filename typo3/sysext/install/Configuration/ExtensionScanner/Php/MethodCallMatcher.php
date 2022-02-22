@@ -5204,4 +5204,11 @@ return [
             'Deprecation-96903-DeprecateOldModuleTemplateAPI.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->checkEnableFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-96996-DeprecateTypoScriptFrontendController-checkEnableFields.rst',
+        ],
+    ],
 ];

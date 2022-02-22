@@ -624,4 +624,9 @@ return [
             'Breaking-96968-HookHeaderNoCacheRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'hook_checkEnableFields\']' => [
+        'restFiles' => [
+            'Breaking-96996-HookCheckEnableFieldsRemoved.rst',
+        ],
+    ],
 ];

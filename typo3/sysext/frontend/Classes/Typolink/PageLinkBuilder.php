@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -325,7 +326,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (empty($conf['linkAccessRestrictedPages'])
             && ($tsfe->config['config']['typolinkLinkAccessRestrictedPages'] ?? false)
             && $tsfe->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE'
-            && !$tsfe->checkPageGroupAccess($page)
+            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->groupAccessGranted('pages', $page, $tsfe->getContext())
         ) {
             $thePage = $tsfe->sys_page->getPage($tsfe->config['config']['typolinkLinkAccessRestrictedPages']);
             $addParams = str_replace(

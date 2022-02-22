@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -5208,8 +5209,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
      * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
      * @return string Returns the list of ids as a comma separated string
-     * @see TypoScriptFrontendController::checkEnableFields()
-     * @see TypoScriptFrontendController::checkPagerecordForIncludeSection()
      */
     public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = false, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = [], $recursionLevel = 0)
     {
@@ -5368,11 +5367,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         continue;
                     }
                 }
+                $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
                 // Add record:
-                if ($dontCheckEnableFields || $tsfe->checkPagerecordForIncludeSection($row)) {
+                if ($dontCheckEnableFields || $accessVoter->accessGrantedForPageInRootLine($row, $tsfe->getContext())) {
                     // Add ID to list:
                     if ($begin <= 0) {
-                        if ($dontCheckEnableFields || $tsfe->checkEnableFields($row)) {
+                        if ($dontCheckEnableFields || $accessVoter->accessGranted('pages', $row, $tsfe->getContext())) {
                             $theList[] = $next_id;
                         }
                     }
