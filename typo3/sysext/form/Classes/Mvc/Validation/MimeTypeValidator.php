@@ -29,7 +29,7 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
  *
  * Scope: frontend
  */
-class MimeTypeValidator extends AbstractValidator
+final class MimeTypeValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -46,7 +46,7 @@ class MimeTypeValidator extends AbstractValidator
      *
      * @param FileReference|File|PseudoFile $resource The resource that should be validated
      */
-    public function isValid($resource)
+    public function isValid(mixed $resource): void
     {
         $this->validateOptions();
 
@@ -106,9 +106,9 @@ class MimeTypeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions()
+    protected function validateOptions(): void
     {
-        if (!is_array($this->options['allowedMimeTypes']) || $this->options['allowedMimeTypes'] === []) {
+        if (!is_array($this->options['allowedMimeTypes'] ?? false) || $this->options['allowedMimeTypes'] === []) {
             throw new InvalidValidationOptionsException('The option "allowedMimeTypes" must be an array with at least one item.', 1471713296);
         }
     }

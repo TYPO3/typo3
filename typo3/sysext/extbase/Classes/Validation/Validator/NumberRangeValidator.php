@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for general numbers
  */
-class NumberRangeValidator extends AbstractValidator
+final class NumberRangeValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -30,10 +32,8 @@ class NumberRangeValidator extends AbstractValidator
 
     /**
      * The given value is valid if it is a number in the specified range.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (!is_numeric($value)) {
             $this->addError(

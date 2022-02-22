@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,14 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Validator for email addresses
  */
-class EmailAddressValidator extends AbstractValidator
+final class EmailAddressValidator extends AbstractValidator
 {
     /**
      * Checks if the given value is a valid email address.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (!is_string($value) || !$this->validEmail($value)) {
             $this->addError(
@@ -46,7 +46,7 @@ class EmailAddressValidator extends AbstractValidator
      * @param string $emailAddress Input string to evaluate
      * @return bool Returns TRUE if the $email address (input string) is valid
      */
-    protected function validEmail($emailAddress)
+    protected function validEmail(string $emailAddress): bool
     {
         return GeneralUtility::validEmail($emailAddress);
     }

@@ -15,25 +15,27 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class AlphanumericValidatorTest extends UnitTestCase
+class AlphanumericValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
-        $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $subject = new AlphanumericValidator();
+        $subject->setOptions([]);
         self::assertFalse($subject->validate('12ssDF34daweidf')->hasErrors());
     }
 
@@ -42,10 +44,8 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
-        $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $subject = new AlphanumericValidator();
+        $subject->setOptions([]);
         self::assertTrue($subject->validate('adsf%&/$jklsfdö')->hasErrors());
     }
 
@@ -54,10 +54,8 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
-        $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $subject = new AlphanumericValidator();
+        $subject->setOptions([]);
         self::assertCount(1, $subject->validate('adsf%&/$jklsfdö')->getErrors());
     }
 
@@ -66,10 +64,8 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
-        $subject = $this->getMockBuilder(AlphanumericValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $subject = new AlphanumericValidator();
+        $subject->setOptions([]);
         self::assertFalse($subject->validate('12ssDF34daweidfäøüößØœ你好')->hasErrors());
     }
 }

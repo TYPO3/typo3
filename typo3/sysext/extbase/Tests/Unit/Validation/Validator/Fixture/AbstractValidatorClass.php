@@ -33,13 +33,7 @@ class AbstractValidatorClass extends AbstractValidator
         'demoOption' => [PHP_INT_MAX, 'Some value', 'integer'],
     ];
 
-    /**
-     * Check if $value is valid. If it is not valid, needs to add an error
-     * to Result.
-     *
-     * @param mixed $value
-     */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
         // dummy
     }

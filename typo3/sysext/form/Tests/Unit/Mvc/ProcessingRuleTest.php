@@ -17,12 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
-use TYPO3\CMS\Form\Tests\Unit\Mvc\Validation\Fixtures\TestValidator;
+use TYPO3\CMS\Form\Tests\Unit\Mvc\Fixtures\TestValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,15 +31,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProcessingRuleTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
     public function addValidatorAddsValidator(): void
     {
-        GeneralUtility::addInstance(ConjunctionValidator::class, new ConjunctionValidator([]));
+        $conjunctionValidator = new ConjunctionValidator();
+        $conjunctionValidator->setOptions([]);
+        GeneralUtility::addInstance(ConjunctionValidator::class, $conjunctionValidator);
         $subject = new ProcessingRule($this->prophesize(PropertyMapper::class)->reveal());
-        $subject->addValidator(new TestValidator());
+        $testValidator = new TestValidator();
+        $testValidator->setOptions([]);
+        $subject->addValidator($testValidator);
         $validators = $subject->getValidators();
         $validators->rewind();
         self::assertInstanceOf(AbstractValidator::class, $validators->current());
@@ -49,7 +55,7 @@ class ProcessingRuleTest extends UnitTestCase
      */
     public function processNoPropertyMappingReturnsNotModifiedValue(): void
     {
-        GeneralUtility::addInstance(ConjunctionValidator::class, new ConjunctionValidator([]));
+        GeneralUtility::addInstance(ConjunctionValidator::class, new ConjunctionValidator());
         $processingRule = new ProcessingRule($this->prophesize(PropertyMapper::class)->reveal());
         $input = 'someValue';
         self::assertSame($input, $processingRule->process($input));
@@ -60,7 +66,7 @@ class ProcessingRuleTest extends UnitTestCase
      */
     public function processNoPropertyMappingAndHasErrorsIfValidatorContainsErrors(): void
     {
-        GeneralUtility::addInstance(ConjunctionValidator::class, new ConjunctionValidator([]));
+        GeneralUtility::addInstance(ConjunctionValidator::class, new ConjunctionValidator());
         $processingRule = new ProcessingRule($this->prophesize(PropertyMapper::class)->reveal());
         $processingRule->addValidator(new TestValidator());
         $input = 'addError';

@@ -296,7 +296,8 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     public function afterBuildingFinishedDoesNotCopyNotEmptyValidator(): void
     {
         // Not Empty Validator
-        $notEmptyValidator = $this->getMockForAbstractClass(NotEmptyValidator::class);
+        $notEmptyValidator = new NotEmptyValidator();
+        $notEmptyValidator->setOptions([]);
 
         // Don't add any validators for now
         $validators = new \SplObjectStorage();

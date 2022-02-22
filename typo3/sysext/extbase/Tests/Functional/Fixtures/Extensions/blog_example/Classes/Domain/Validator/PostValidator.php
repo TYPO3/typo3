@@ -26,15 +26,15 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  */
 class PostValidator extends AbstractValidator
 {
-
     /**
      * Check if $value is valid. If it is not valid, needs to add an error
      * to result.
      *
      * @param Post $value
      */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
+        /** @var Post $value */
         if ($value->getTitle() === '77') {
             $error = new Error('Title custom validation failed', 1480872650);
             $this->result->forProperty('title')->addError($error);

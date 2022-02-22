@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -27,59 +29,37 @@ use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
 /**
- * Validator resolver to automatically find an appropriate validator for a given subject
+ * Validator resolver to automatically find an appropriate validator for a given subject.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class ValidatorResolver implements SingletonInterface
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
+    protected array $baseValidatorConjunctions = [];
 
-    /**
-     * @var array
-     */
-    protected $baseValidatorConjunctions = [];
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     */
-    public function injectReflectionService(ReflectionService $reflectionService)
+    public function __construct(protected readonly ReflectionService $reflectionService)
     {
-        $this->reflectionService = $reflectionService;
     }
 
     /**
      * Get a validator for a given data type. Returns a validator implementing
-     * the \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface or NULL if no validator
-     * could be resolved.
+     * the ValidatorInterface or NULL if no validator could be resolved.
      *
      * @param string $validatorType Either one of the built-in data types or fully qualified validator class name
      * @param array $validatorOptions Options to be passed to the validator
-     * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface Validator or NULL if none found.
      */
-    public function createValidator($validatorType, array $validatorOptions = [])
+    public function createValidator(string $validatorType, array $validatorOptions = []): ?ValidatorInterface
     {
         // todo: ValidatorResolver should not take care of creating validator instances.
         // todo: Instead, a factory should be used.
         try {
-            /**
-             * @todo remove throwing Exceptions in resolveValidatorObjectName
-             */
             $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
 
-            if (method_exists($validatorObjectName, 'setOptions')) {
-                /** @var ValidatorInterface $validator */
-                $validator = GeneralUtility::makeInstance($validatorObjectName);
-                $validator->setOptions($validatorOptions);
-            } else {
-                // @deprecated since v11: v12 ValidatorInterface requires setOptions() to be implemented and skips the above test.
-                /** @var ValidatorInterface $validator */
-                $validator = GeneralUtility::makeInstance($validatorObjectName, $validatorOptions);
-            }
+            /** @var ValidatorInterface $validator */
+            $validator = GeneralUtility::makeInstance($validatorObjectName);
+            $validator->setOptions($validatorOptions);
 
-            // Move this check into ClassSchema
+            // @todo: Move this check into ClassSchema
             if (!($validator instanceof ValidatorInterface)) {
                 throw new NoSuchValidatorException('The validator "' . $validatorObjectName . '" does not implement TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface!', 1300694875);
             }
@@ -93,19 +73,15 @@ class ValidatorResolver implements SingletonInterface
 
     /**
      * Resolves and returns the base validator conjunction for the given data type.
-     *
-     * If no validator could be resolved (which usually means that no validation is necessary),
-     * NULL is returned.
+     * If no validator could be resolved (which usually means that no validation is necessary), NULL is returned.
      *
      * @param string $targetClassName The data type to search a validator for. Usually the fully qualified object name
-     * @return ConjunctionValidator The validator conjunction or NULL
      */
-    public function getBaseValidatorConjunction($targetClassName)
+    public function getBaseValidatorConjunction(string $targetClassName): ?ConjunctionValidator
     {
         if (!array_key_exists($targetClassName, $this->baseValidatorConjunctions)) {
             $this->buildBaseValidatorConjunction($targetClassName, $targetClassName);
         }
-
         return $this->baseValidatorConjunctions[$targetClassName];
     }
 
@@ -116,7 +92,7 @@ class ValidatorResolver implements SingletonInterface
      * a model) through some validate annotations on properties.
      *
      * If a property holds a class for which a base validator exists, that property will be
-     * checked as well, regardless of a validate annotation
+     * checked as well, regardless of a validation annotation.
      *
      * Additionally, if a custom validator was defined for the class in question, it will be added
      * to the end of the conjunction. A custom validator is found if it follows the naming convention
@@ -127,12 +103,13 @@ class ValidatorResolver implements SingletonInterface
      *
      * @param string $indexKey The key to use as index in $this->baseValidatorConjunctions, calculated from target class name.
      * @param string $targetClassName The data type to build the validation conjunction for. Needs to be the fully qualified class name.
-     * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
+     * @throws NoSuchValidatorException
      * @throws \InvalidArgumentException
      */
-    protected function buildBaseValidatorConjunction($indexKey, $targetClassName)
+    protected function buildBaseValidatorConjunction(string $indexKey, string $targetClassName): void
     {
         $conjunctionValidator = new ConjunctionValidator();
+        $conjunctionValidator->setOptions([]);
         $this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
 
         // note: the simpleType check reduces lookups to the class loader
@@ -140,11 +117,11 @@ class ValidatorResolver implements SingletonInterface
             $classSchema = $this->reflectionService->getClassSchema($targetClassName);
 
             // Model based validator
-            /** @var \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator $objectValidator */
-            $objectValidator = GeneralUtility::makeInstance(GenericObjectValidator::class, []);
+            $objectValidator = GeneralUtility::makeInstance(GenericObjectValidator::class);
+            $objectValidator->setOptions([]);
             foreach ($classSchema->getProperties() as $property) {
                 if ($property->getType() === null) {
-                    // todo: The type is only necessary here for further analyzations whether it's a simple type or
+                    // todo: The type is only necessary here for further analyzing whether it's a simple type or
                     // todo: a collection. If this is evaluated in the ClassSchema, this whole code part is not needed
                     // todo: any longer and can be removed.
                     throw new \InvalidArgumentException(sprintf('There is no @var annotation for property "%s" in class "%s".', $property->getName(), $targetClassName), 1363778104);
@@ -193,7 +170,7 @@ class ValidatorResolver implements SingletonInterface
 
                 foreach ($property->getValidators() as $validatorDefinition) {
                     // @todo: At this point we already have the class name of the validator, thus there is not need
-                    // @todo: calling \TYPO3\CMS\Extbase\Validation\ValidatorResolver::resolveValidatorObjectName inside
+                    // @todo: calling ValidatorClassNameResolver::resolve inside
                     // @todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to
                     // @todo: keep things simple for now, we still use the method createValidator here. In the future,
                     // @todo: createValidator must only accept FQCN's.

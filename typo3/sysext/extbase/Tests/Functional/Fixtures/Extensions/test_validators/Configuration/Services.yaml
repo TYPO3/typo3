@@ -6,7 +6,3 @@ services:
 
   ExtbaseTeam\TestValidators\:
     resource: '../Classes/*'
-
-  ExtbaseTeam\TestValidators\Validation\Validator\CustomValidator:
-    public: true
-    shared: false

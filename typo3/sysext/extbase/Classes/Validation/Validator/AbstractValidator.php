@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,7 +23,7 @@ use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 
 /**
- * Abstract validator
+ * Abstract validator. Mother af most validators.
  */
 abstract class AbstractValidator implements ValidatorInterface
 {
@@ -30,7 +32,7 @@ abstract class AbstractValidator implements ValidatorInterface
      *
      * If this is TRUE, the validators isValid() method is not called in case of an empty value
      * Note: A value is considered empty if it is NULL or an empty string!
-     * By default all validators except for NotEmpty and the Composite Validators accept empty values
+     * By default, all validators except for NotEmpty and the Composite Validators accept empty values.
      *
      * @var bool
      */
@@ -43,24 +45,10 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected $supportedOptions = [];
 
-    /**
-     * @var array
-     */
-    protected $options = [];
+    protected array $options = [];
+    protected Result $result;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Error\Result
-     */
-    protected $result;
-
-    /**
-     * Constructs the validator and sets validation options
-     *
-     * @param array $options Options for the validator
-     * @throws InvalidValidationOptionsException
-     * @todo: __construct() will vanish in v12, this abstract will implement setOptions() to set and initialize default options.
-     */
-    public function __construct(array $options = [])
+    public function setOptions(array $options): void
     {
         $this->initializeDefaultOptions($options);
     }
@@ -70,9 +58,8 @@ abstract class AbstractValidator implements ValidatorInterface
      * the error messages object which occurred.
      *
      * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
      */
-    public function validate($value)
+    public function validate(mixed $value): Result
     {
         $this->result = new Result();
         if ($this->acceptsEmptyValues === false || $this->isEmpty($value) === false) {
@@ -82,12 +69,9 @@ abstract class AbstractValidator implements ValidatorInterface
     }
 
     /**
-     * Check if $value is valid. If it is not valid, needs to add an error
-     * to result.
-     *
-     * @param mixed $value
+     * Check if $value is valid. If it is not valid, needs to add an error to result.
      */
-    abstract protected function isValid($value);
+    abstract protected function isValid(mixed $value): void;
 
     /**
      * Creates a new validation error object and adds it to $this->result
@@ -97,21 +81,21 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param array $arguments Arguments to be replaced in message
      * @param string $title title of the error
      */
-    protected function addError($message, $code, array $arguments = [], $title = '')
+    protected function addError(string $message, int $code, array $arguments = [], string $title = ''): void
     {
-        $this->result->addError(new Error((string)$message, (int)$code, $arguments, (string)$title));
+        $this->result->addError(new Error($message, $code, $arguments, $title));
     }
 
     /**
      * Creates a new validation error object for a property and adds it to the proper sub result of $this->result
      *
-     * @param string|array $message The property path (string or array)
+     * @param string|array $propertyPath The property path (string or array)
      * @param string $message The error message
      * @param int $code The error code (a unix timestamp)
      * @param array $arguments Arguments to be replaced in message
-     * @param string $title title of the error
+     * @param string $title Title of the error
      */
-    protected function addErrorForProperty($propertyPath, $message, $code, array $arguments = [], $title = '')
+    protected function addErrorForProperty(string|array $propertyPath, string $message, int $code, array $arguments = [], string $title = ''): void
     {
         $propertyPath = is_array($propertyPath) ? implode('.', $propertyPath) : (string)$propertyPath;
         $error = new Error((string)$message, (int)$code, $arguments, (string)$title);
@@ -120,33 +104,24 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Returns the options of this validator
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
-     * @param mixed $value
-     * @return bool TRUE if the given $value is NULL or an empty string ('')
+     * TRUE if the given $value is NULL or an empty string ('')
      */
-    final protected function isEmpty($value)
+    final protected function isEmpty(mixed $value): bool
     {
         return $value === null || $value === '';
     }
 
     /**
-     * Wrap static call to LocalizationUtility to simplify unit testing
-     *
-     * @param string $translateKey
-     * @param string $extensionName
-     * @param array $arguments
-     *
-     * @return string
+     * Wrap static call to LocalizationUtility to simplify unit testing.
      */
-    protected function translateErrorMessage($translateKey, $extensionName, $arguments = []): string
+    protected function translateErrorMessage(string $translateKey, string $extensionName, array $arguments = []): string
     {
         return LocalizationUtility::translate(
             $translateKey,

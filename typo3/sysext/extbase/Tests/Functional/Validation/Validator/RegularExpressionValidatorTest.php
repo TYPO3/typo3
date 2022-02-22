@@ -6,7 +6,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Error;
-use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -16,6 +15,48 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
     {
         parent::setUp();
         $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
+    /**
+     * @test
+     */
+    public function regularExpressionValidatorMatchesABasicExpressionCorrectly(): void
+    {
+        $options = ['regularExpression' => '/^simple[0-9]expression$/'];
+        $validator = new RegularExpressionValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate('simple1expression')->hasErrors());
+        self::assertTrue($validator->validate('simple1expressions')->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch(): void
+    {
+        $options = ['regularExpression' => '/^simple[0-9]expression$/'];
+        $validator = new RegularExpressionValidator();
+        $validator->setOptions($options);
+        $errors = $validator->validate('some subject that will not match')->getErrors();
+        // we only test for the error code, after the translation Method for message is mocked anyway
+        self::assertEquals([new Error('The given subject did not match the pattern.', 1221565130)], $errors);
+    }
+
+    /**
+     * @test
+     */
+    public function customErrorMessageIsRespected(): void
+    {
+        $options = [
+            'regularExpression' => '/^simple[0-9]expression$/',
+            'errorMessage' => 'custom message',
+        ];
+        $validator = new RegularExpressionValidator();
+        $validator->setOptions($options);
+        $result = $validator->validate('some subject that will not match');
+        self::assertTrue($result->hasErrors());
+        $errors = $result->getErrors();
+        self::assertEquals([new Error('custom message', 1221565130)], $errors);
     }
 
     public function customErrorMessagesDataProvider(): array
@@ -37,9 +78,6 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     * @throws InvalidValidationOptionsException
      * @test
      * @dataProvider customErrorMessagesDataProvider
      */
@@ -51,7 +89,8 @@ class RegularExpressionValidatorTest extends FunctionalTestCase
         if ($input) {
             $options['errorMessage'] = $input;
         }
-        $subject = new RegularExpressionValidator($options);
+        $subject = new RegularExpressionValidator();
+        $subject->setOptions($options);
         $result = $subject->validate('some subject that will not match');
         self::assertTrue($result->hasErrors());
         $errors = $result->getErrors();

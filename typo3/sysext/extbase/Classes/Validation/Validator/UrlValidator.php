@@ -22,14 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Validator for url.
  */
-class UrlValidator extends AbstractValidator
+final class UrlValidator extends AbstractValidator
 {
     /**
      * Checks if the given value is a valid url.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (!is_string($value) || !GeneralUtility::isValidUrl($value)) {
             $this->addError(

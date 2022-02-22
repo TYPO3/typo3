@@ -24,10 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  */
 class FailingValidator extends AbstractValidator
 {
-    /**
-     * @param mixed $value
-     */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
         $this->addError('This will always fail', 157882910);
     }

@@ -15,19 +15,24 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
+namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class FileSizeValidatorTest extends UnitTestCase
+class FileSizeValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
@@ -35,13 +40,9 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304205);
-
         $options = ['minimum' => '0', 'maximum' => '1B'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
         $validator->validate(true);
     }
 
@@ -52,13 +53,9 @@ class FileSizeValidatorTest extends UnitTestCase
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1505304206);
-
         $options = ['minimum' => '0B', 'maximum' => '1'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
         $validator->validate(true);
     }
 
@@ -68,15 +65,9 @@ class FileSizeValidatorTest extends UnitTestCase
     public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToSmall(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '10M'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
-        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
         $file = new File(['identifier' => '/foo', 'name'=> 'bar.txt', 'size' => '1'], $mockedStorage);
         self::assertTrue($validator->validate($file)->hasErrors());
     }
@@ -87,15 +78,9 @@ class FileSizeValidatorTest extends UnitTestCase
     public function FileSizeValidatorHasErrorsIfFileResourceSizeIsToBig(): void
     {
         $options = ['minimum' => '1M', 'maximum' => '1M'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
-        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
         $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1048577'], $mockedStorage);
         self::assertTrue($validator->validate($file)->hasErrors());
     }
@@ -106,11 +91,8 @@ class FileSizeValidatorTest extends UnitTestCase
     public function FileSizeValidatorHasNoErrorsIfInputIsEmptyString(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate('')->hasErrors());
     }
 
@@ -120,11 +102,8 @@ class FileSizeValidatorTest extends UnitTestCase
     public function FileSizeValidatorHasErrorsIfInputIsNoFileResource(): void
     {
         $options = ['minimum' => '0B', 'maximum' => '1M'];
-        $validator = $this->getMockBuilder(FileSizeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs(['options' => $options])
-            ->getMock();
-
+        $validator = new FileSizeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate('string')->hasErrors());
     }
 }

@@ -15,13 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class FloatValidatorTest extends UnitTestCase
+class FloatValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     public function validFloats(): array
     {
         return [
@@ -40,9 +47,8 @@ class FloatValidatorTest extends UnitTestCase
      */
     public function floatValidatorReturnsNoErrorsForAValidFloat(float|string $float): void
     {
-        $validator = $this->getMockBuilder(FloatValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $validator = new FloatValidator();
+        $validator->setOptions([]);
         self::assertFalse($validator->validate($float)->hasErrors());
     }
 
@@ -61,9 +67,8 @@ class FloatValidatorTest extends UnitTestCase
      */
     public function floatValidatorReturnsErrorForAnInvalidFloat(int|string $float): void
     {
-        $validator = $this->getMockBuilder(FloatValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $validator = new FloatValidator();
+        $validator->setOptions([]);
         self::assertTrue($validator->validate($float)->hasErrors());
     }
 
@@ -72,9 +77,8 @@ class FloatValidatorTest extends UnitTestCase
      */
     public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject(): void
     {
-        $validator = $this->getMockBuilder(FloatValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $validator = new FloatValidator();
+        $validator->setOptions([]);
         self::assertCount(1, $validator->validate(123456)->getErrors());
     }
 }

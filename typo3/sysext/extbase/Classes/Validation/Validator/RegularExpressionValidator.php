@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 /**
  * Validator based on regular expressions.
  */
-class RegularExpressionValidator extends AbstractValidator
+final class RegularExpressionValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -33,10 +35,9 @@ class RegularExpressionValidator extends AbstractValidator
     /**
      * Checks if the given value matches the specified regular expression.
      *
-     * @param mixed $value The value that should be validated
-     * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
+     * @throws InvalidValidationOptionsException
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         $result = preg_match($this->options['regularExpression'], $value);
         if ($result === 0) {

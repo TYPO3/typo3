@@ -328,16 +328,15 @@ abstract class ActionController implements ControllerInterface
      *
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    protected function initializeActionMethodValidators()
+    protected function initializeActionMethodValidators(): void
     {
         if ($this->arguments->count() === 0) {
             return;
         }
 
-        $classSchemaMethod = $this->reflectionService->getClassSchema(static::class)
-            ->getMethod($this->actionMethodName);
+        $classSchemaMethod = $this->reflectionService->getClassSchema(static::class)->getMethod($this->actionMethodName);
 
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $classSchemaMethodParameter = $classSchemaMethod->getParameter($argument->getName());
             // At this point validation is skipped if there is an IgnoreValidation annotation.
@@ -346,30 +345,16 @@ abstract class ActionController implements ControllerInterface
             if ($classSchemaMethodParameter->ignoreValidation()) {
                 continue;
             }
-
-            // @todo: It's quite odd that an instance of ConjunctionValidator is created directly here.
-            //        \TYPO3\CMS\Extbase\Validation\ValidatorResolver::getBaseValidatorConjunction could/should be used
-            //        here, to benefit of the built in 1st level cache of the ValidatorResolver.
-            $validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
-
+            /** @var ConjunctionValidator $validator */
+            $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class, []);
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
-                if (method_exists($validatorDefinition['className'], 'setOptions')) {
-                    /** @var ValidatorInterface $validatorInstance */
-                    $validatorInstance = GeneralUtility::makeInstance($validatorDefinition['className']);
-                    $validatorInstance->setOptions($validatorDefinition['options']);
-                } else {
-                    // @deprecated since v11: v12 ValidatorInterface requires setOptions() to be implemented and skips the above test.
-                    /** @var ValidatorInterface $validatorInstance */
-                    $validatorInstance = GeneralUtility::makeInstance(
-                        $validatorDefinition['className'],
-                        $validatorDefinition['options']
-                    );
-                }
+                /** @var ValidatorInterface $validatorInstance */
+                $validatorInstance = GeneralUtility::makeInstance($validatorDefinition['className']);
+                $validatorInstance->setOptions($validatorDefinition['options']);
                 $validator->addValidator(
                     $validatorInstance
                 );
             }
-
             $baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($baseValidatorConjunction->count() > 0) {
                 $validator->addValidator($baseValidatorConjunction);
@@ -386,7 +371,7 @@ abstract class ActionController implements ControllerInterface
      */
     public function initializeControllerArgumentsBaseValidators()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
             if ($validator !== null) {
@@ -501,7 +486,7 @@ abstract class ActionController implements ControllerInterface
         // todo: support this via method-reflection
 
         $preparedArguments = [];
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $preparedArguments[] = $argument->getValue();
         }
@@ -872,7 +857,7 @@ abstract class ActionController implements ControllerInterface
      */
     protected function mapRequestArgumentsToControllerArguments()
     {
-        /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+        /** @var Argument $argument */
         foreach ($this->arguments as $argument) {
             $argumentName = $argument->getName();
             if ($this->request->hasArgument($argumentName)) {

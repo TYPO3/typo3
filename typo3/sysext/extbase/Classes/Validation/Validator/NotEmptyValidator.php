@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for not empty values.
  */
-class NotEmptyValidator extends AbstractValidator
+final class NotEmptyValidator extends AbstractValidator
 {
     /**
      * This validator always needs to be executed even if the given value is empty.
@@ -29,11 +31,9 @@ class NotEmptyValidator extends AbstractValidator
     protected $acceptsEmptyValues = false;
 
     /**
-     * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
-     *
-     * @param mixed $value The value that should be validated
+     * Checks if the given value ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if ($value === null) {
             $this->addError(

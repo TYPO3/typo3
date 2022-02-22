@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  * Scope: frontend
  * @internal
  */
-class CountValidator extends AbstractValidator
+final class CountValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -41,10 +41,8 @@ class CountValidator extends AbstractValidator
 
     /**
      * The given value is valid if it is an array or \Countable that contains the specified amount of elements.
-     *
-     * @param mixed $value
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (!is_array($value) && !($value instanceof \Countable)) {
             $this->addError(

@@ -31,27 +31,12 @@ class CustomValidator extends AbstractValidator
 
     public IconFactory $iconFactory;
 
-    public function injectIconFactory(IconFactory $iconFactory)
+    public function __construct(IconFactory $iconFactory)
     {
         $this->iconFactory = $iconFactory;
     }
 
-    public function __construct(array $options = [])
-    {
-    }
-
-    /**
-     * @todo: Will be merged into AbstractValidator in v12.
-     */
-    public function setOptions(array $options): void
-    {
-        $this->initializeDefaultOptions($options);
-    }
-
-    /**
-     * @param mixed $value
-     */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
     }
 }

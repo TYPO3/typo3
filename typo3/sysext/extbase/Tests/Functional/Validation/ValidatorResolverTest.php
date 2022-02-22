@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
 use ExtbaseTeam\TestValidators\Domain\Model\AnotherModel;
 use ExtbaseTeam\TestValidators\Domain\Model\Model;
-use ExtbaseTeam\TestValidators\Validation\Validator\CustomNotInjectableValidator;
 use ExtbaseTeam\TestValidators\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -57,26 +56,14 @@ class ValidatorResolverTest extends FunctionalTestCase
 
     /**
      * @test
-     * @deprecated: Obsolete in v12 and drop CustomNotInjectableValidator
-     */
-    public function createValidatorSetsOptions(): void
-    {
-        $subject = $this->getContainer()->get(ValidatorResolver::class);
-        $options = ['foo' => 'bar'];
-        $validator = $subject->createValidator(CustomNotInjectableValidator::class, $options);
-        self::assertSame($options, $validator->getOptions());
-    }
-
-    /**
-     * @test
      */
     public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction(): void
     {
         $subject = $this->getAccessibleMock(
             ValidatorResolver::class,
-            ['dummy']
+            ['dummy'],
+            [$this->getContainer()->get(ReflectionService::class)]
         );
-        $subject->injectReflectionService($this->getContainer()->get(ReflectionService::class));
 
         $subject->_call(
             'buildBaseValidatorConjunction',

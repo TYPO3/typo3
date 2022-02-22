@@ -15,17 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\TextValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for the text validator
- */
-class TextValidatorTest extends UnitTestCase
+class TextValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     public function isValidDataProvider(): array
     {
         return [
@@ -86,7 +90,8 @@ class TextValidatorTest extends UnitTestCase
      */
     public function isValidHasNoError(bool $expectation, string $testString): void
     {
-        $validator = $this->getMockBuilder(TextValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new TextValidator();
+        $validator->setOptions([]);
         self::assertSame($expectation, $validator->validate($testString)->hasErrors());
     }
 
@@ -95,9 +100,10 @@ class TextValidatorTest extends UnitTestCase
      */
     public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities(): void
     {
-        $validator = $this->getMockBuilder(TextValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new TextValidator();
+        $validator->setOptions([]);
         // we only test for the error code, after the translation Method for message is mocked anyway
-        $expected = [new Error('', 1221565786)];
+        $expected = [new Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786)];
         self::assertEquals($expected, $validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
     }
 }

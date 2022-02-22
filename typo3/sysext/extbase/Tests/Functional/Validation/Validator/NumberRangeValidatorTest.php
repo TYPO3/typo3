@@ -17,15 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class NumberRangeValidatorTest extends UnitTestCase
+class NumberRangeValidatorTest extends FunctionalTestCase
 {
-    protected string $validatorClassName = NumberRangeValidator::class;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
 
     /**
      * @test
@@ -33,10 +35,8 @@ class NumberRangeValidatorTest extends UnitTestCase
     public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
-        $validator = $this->getMockBuilder($this->validatorClassName)
-            ->addMethods(['dummy'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new NumberRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(10.5)->hasErrors());
     }
 
@@ -46,10 +46,8 @@ class NumberRangeValidatorTest extends UnitTestCase
     public function numberRangeValidatorReturnsErrorForANumberOutOfRange(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
-        $validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new NumberRangeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate(1000.1)->hasErrors());
     }
 
@@ -59,10 +57,8 @@ class NumberRangeValidatorTest extends UnitTestCase
     public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange(): void
     {
         $options = ['minimum' => 1000, 'maximum' => 0];
-        $validator = $this->getMockBuilder($this->validatorClassName)
-            ->addMethods(['dummy'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new NumberRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(100)->hasErrors());
     }
 
@@ -72,10 +68,8 @@ class NumberRangeValidatorTest extends UnitTestCase
     public function numberRangeValidatorReturnsErrorForAString(): void
     {
         $options = ['minimum' => 0, 'maximum' => 1000];
-        $validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new NumberRangeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate('not a number')->hasErrors());
     }
 }

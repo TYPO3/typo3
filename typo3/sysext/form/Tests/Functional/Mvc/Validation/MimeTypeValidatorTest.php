@@ -18,11 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFile;
+use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,7 +35,7 @@ class MimeTypeValidatorTest extends FunctionalTestCase
     /**
      * @var array<string, string>
      */
-    private $files = [
+    private array $files = [
         'file.exe' => "MZ\x90\x00\x03\x00",
         'file.zip' => "PK\x03\x04",
         'file.jpg' => "\xFF\xD8\xFF\xDB",
@@ -41,25 +43,106 @@ class MimeTypeValidatorTest extends FunctionalTestCase
         'file.pdf' => '%PDF-',
     ];
 
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $tmp;
-
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
-        $this->tmp = vfsStream::setup('tmp', null, $this->files);
+        vfsStream::setup('tmp', null, $this->files);
     }
 
-    protected function tearDown(): void
+    /**
+     * @test
+     */
+    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsString(): void
     {
-        unset($GLOBALS['LANG'], $this->tmp);
-        parent::tearDown();
+        $this->expectException(InvalidValidationOptionsException::class);
+        $this->expectExceptionCode(1471713296);
+        $options = ['allowedMimeTypes' => ''];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        $validator->validate(true);
     }
 
-    public function dataProvider(): array
+    /**
+     * @test
+     */
+    public function MimeTypeValidatorThrowsExceptionIfAllowedMimeTypesOptionIsEmptyArray(): void
+    {
+        $this->expectException(InvalidValidationOptionsException::class);
+        $this->expectExceptionCode(1471713296);
+        $options = ['allowedMimeTypes' => []];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        $validator->validate(true);
+    }
+
+    /**
+     * @test
+     */
+    public function MimeTypeValidatorReturnsTrueIfFileResourceIsNotAllowedMimeType(): void
+    {
+        $options = ['allowedMimeTypes' => ['image/jpeg']];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $file = new File(['name' => 'foo', 'identifier' => '/foo', 'mime_type' => 'image/png'], $mockedStorage);
+        self::assertTrue($validator->validate($file)->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function MimeTypeValidatorReturnsFalseIfInputIsEmptyString(): void
+    {
+        $options = ['allowedMimeTypes' => ['fake']];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        self::assertFalse($validator->validate('')->hasErrors());
+    }
+
+    /**
+     * @test
+     */
+    public function MimeTypeValidatorReturnsTrueIfInputIsNoFileResource(): void
+    {
+        $options = ['allowedMimeTypes' => ['fake']];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        self::assertTrue($validator->validate('string')->hasErrors());
+    }
+
+    public function fileExtensionMatchesMimeTypesDataProvider(): array
+    {
+        $allowedMimeTypes = ['application/pdf', 'application/vnd.oasis.opendocument.text'];
+        return [
+            // filename,      file mime-type,    allowed types,     is valid (is allowed)
+            ['something.pdf', 'application/pdf', $allowedMimeTypes, true],
+            ['something.txt', 'application/pdf', $allowedMimeTypes, false],
+            ['something.pdf', 'application/pdf', [false], false],
+            ['something.pdf', 'false', $allowedMimeTypes, false],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider fileExtensionMatchesMimeTypesDataProvider
+     */
+    public function fileExtensionMatchesMimeTypes(string $fileName, string $fileMimeType, array $allowedMimeTypes, bool $isValid): void
+    {
+        $options = ['allowedMimeTypes' => $allowedMimeTypes];
+        $validator = new MimeTypeValidator();
+        $validator->setOptions($options);
+        $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
+        $file = new File([
+            'name' => $fileName,
+            'identifier' => '/folder/' . $fileName,
+            'mime_type' => $fileMimeType,
+        ], $mockedStorage);
+        $result = $validator->validate($file);
+        self::assertSame($isValid, !$result->hasErrors());
+    }
+
+    public function validateHandlesMimeTypesOfFilesDataProvider(): array
     {
         // error-codes
         // + 1471708998: mime-type not allowed
@@ -116,14 +199,15 @@ class MimeTypeValidatorTest extends FunctionalTestCase
      * @param List<int> $expectedErrorCodes
      *
      * @test
-     * @dataProvider dataProvider
+     * @dataProvider validateHandlesMimeTypesOfFilesDataProvider
      */
-    public function someTest(array $uploadData, array $allowedMimeTypes, array $expectedErrorCodes = []): void
+    public function validateHandlesMimeTypesOfFiles(array $uploadData, array $allowedMimeTypes, array $expectedErrorCodes = []): void
     {
         $uploadData['error'] = \UPLOAD_ERR_OK;
         $uploadData['size'] = filesize($uploadData['tmp_name']);
 
-        $validator = new MimeTypeValidator(['allowedMimeTypes' => $allowedMimeTypes]);
+        $validator = new MimeTypeValidator();
+        $validator->setOptions(['allowedMimeTypes' => $allowedMimeTypes]);
 
         $resource = new PseudoFile($uploadData);
         $result = $validator->validate($resource);

@@ -15,17 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
+namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator;
 use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class DateRangeValidatorTest extends UnitTestCase
+class DateRangeValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+    }
 
     /**
      * @test
@@ -34,13 +38,9 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1521293813);
-
         $options = ['minimum' => '1972-01', 'maximum' => ''];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         $validator->validate(true);
     }
 
@@ -51,13 +51,9 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1521293814);
-
         $options = ['minimum' => '', 'maximum' => '1972-01'];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         $validator->validate(true);
     }
 
@@ -67,11 +63,8 @@ class DateRangeValidatorTest extends UnitTestCase
     public function DateRangeValidatorReturnsTrueIfInputIsNoDateTime(): void
     {
         $options = ['minimum' => '2018-03-17', 'maximum' => '2018-03-17'];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate(true)->hasErrors());
     }
 
@@ -82,11 +75,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 
@@ -97,11 +87,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -112,11 +99,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -127,11 +111,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-17');
         $options = ['maximum' => '2018-03-18'];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -142,11 +123,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-18');
         $options = ['maximum' => '2018-03-18'];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -157,11 +135,8 @@ class DateRangeValidatorTest extends UnitTestCase
     {
         $input = \DateTime::createFromFormat('Y-m-d', '2018-03-19');
         $options = ['maximum' => '2018-03-18'];
-        $validator = $this->getMockBuilder(DateRangeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new DateRangeValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 }

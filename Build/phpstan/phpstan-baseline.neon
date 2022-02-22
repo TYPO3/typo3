@@ -2671,11 +2671,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Domain/Model/FileReference.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Error\\\\Result and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/Arguments.php
@@ -2986,21 +2981,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/ConjunctionValidator.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\ValidatorResolver\\:\\:createValidator\\(\\) should return TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface but returns null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Validation/ValidatorResolver.php
-
-		-
 			message: "#^Parameter \\#1 \\$iterator of method ExtbaseTeam\\\\BlogExample\\\\Controller\\\\BlogController\\:\\:getStructure\\(\\) expects iterable\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\AbstractEntity\\>&Iterator, array\\|TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/BlogController.php
@@ -3051,11 +3031,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/TtContent.php
 
 		-
-			message: "#^Constructor of class ExtbaseTeam\\\\TestValidators\\\\Validation\\\\Validator\\\\CustomValidator has an unused parameter \\$options\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_validators/Classes/Validation/Validator/CustomValidator.php
-
-		-
 			message: "#^Parameter \\#1 \\$currentRequest of static method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Dispatcher\\:\\:buildRequestFromCurrentRequestAndForwardResponse\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Request, TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
@@ -3064,11 +3039,6 @@ parameters:
 			message: "#^Variable \\$expectations on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
-
-		-
-			message: "#^Variable \\$validator in PHPDoc tag @var does not match assigned variable \\$conjunctionValidator\\.$#"
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
 
 		-
 			message: "#^Parameter \\#2 \\$optionKey of method TYPO3\\\\CMS\\\\Extbase\\\\Property\\\\PropertyMappingConfiguration\\:\\:setTypeConverterOption\\(\\) expects string, int given\\.$#"
@@ -3394,21 +3364,6 @@ parameters:
 			message: "#^Offset 0 does not exist on array\\{\\}\\.$#"
 			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
-
-		-
-			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:validate\\(\\)\\.$#"
-			count: 4
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberRangeValidatorTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\NumberValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/NumberValidatorTest.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Tests\\\\Unit\\\\Validation\\\\Validator\\\\UrlValidatorTest\\:\\:\\$validator \\(TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\UrlValidator\\) does not accept PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Validation/Validator/UrlValidatorTest.php
 
 		-
 			message: "#^Offset 'message' does not exist on string\\.$#"
@@ -3986,11 +3941,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractSection.php
 
 		-
-			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ValidatorInterface\\:\\:setOptions\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/Renderable/AbstractRenderable.php
-
-		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:setRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Renderer/FluidFormRenderer.php
@@ -4104,11 +4054,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Functional\\\\Mvc\\\\Validation\\\\MimeTypeValidatorTest\\:\\:\\$tmp is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Mvc/Validation/MimeTypeValidatorTest.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"

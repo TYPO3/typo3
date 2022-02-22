@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,14 +20,14 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for floats.
  */
-class FloatValidator extends AbstractValidator
+final class FloatValidator extends AbstractValidator
 {
     /**
      * The given value is valid if it is of type float or a string matching the regular expression [0-9.e+-]
      *
      * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (is_float($value)) {
             return;

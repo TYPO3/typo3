@@ -15,34 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\UrlValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class UrlValidatorTest extends UnitTestCase
+class UrlValidatorTest extends FunctionalTestCase
 {
-    protected string $validatorClassName = UrlValidator::class;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Validation\Validator\UrlValidator
-     */
-    protected $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @return array
-     */
     public function urlDataProvider(): array
     {
         return [
@@ -124,6 +110,8 @@ class UrlValidatorTest extends UnitTestCase
      */
     public function urlValidatorDetectsUrlsCorrectly($value, $expected): void
     {
-        self::assertSame($expected, !$this->validator->validate($value)->hasErrors());
+        $validator = new UrlValidator();
+        $validator->setOptions([]);
+        self::assertSame($expected, !$validator->validate($value)->hasErrors());
     }
 }

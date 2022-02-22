@@ -15,22 +15,28 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\StringValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for the string length validator
- */
-class StringValidatorTest extends UnitTestCase
+class StringValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
     public function stringValidatorShouldValidateString(): void
     {
-        self::assertFalse((new StringValidator())->validate('Hello World')->hasErrors());
+        $subject = new StringValidator();
+        $subject->setOptions([]);
+        self::assertFalse($subject->validate('Hello World')->hasErrors());
     }
 
     /**
@@ -38,12 +44,9 @@ class StringValidatorTest extends UnitTestCase
      */
     public function stringValidatorShouldReturnErrorIfNumberIsGiven(): void
     {
-        /** @var StringValidator $validator */
-        $validator = $this->getMockBuilder(StringValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-
-        self::assertTrue($validator->validate(42)->hasErrors());
+        $subject = new StringValidator();
+        $subject->setOptions([]);
+        self::assertTrue($subject->validate(42)->hasErrors());
     }
 
     /**
@@ -51,19 +54,14 @@ class StringValidatorTest extends UnitTestCase
      */
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven(): void
     {
-        /** @var StringValidator $validator */
-        $validator = $this->getMockBuilder(StringValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
-
+        $subject = new StringValidator();
+        $subject->setOptions([]);
         $object = new class() {
-            /** @return string */
-            public function __toString()
+            public function __toString(): string
             {
                 return 'ASDF';
             }
         };
-
-        self::assertTrue($validator->validate($object)->hasErrors());
+        self::assertTrue($subject->validate($object)->hasErrors());
     }
 }

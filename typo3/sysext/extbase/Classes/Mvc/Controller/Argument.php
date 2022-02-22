@@ -75,14 +75,14 @@ class Argument
     /**
      * A custom validator, used supplementary to the base validation
      *
-     * @var \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface
+     * @var ValidatorInterface
      */
     protected $validator;
 
     /**
      * The validation results. This can be asked if the argument has errors.
      *
-     * @var \TYPO3\CMS\Extbase\Error\Result
+     * @var Result
      */
     protected $validationResults;
 
@@ -127,8 +127,8 @@ class Argument
      * Sets the short name of this argument.
      *
      * @param string $shortName A "short name" - a single character
+     * @return Argument $this
      * @throws \InvalidArgumentException if $shortName is not a character
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
      */
     public function setShortName($shortName)
     {
@@ -163,7 +163,7 @@ class Argument
      * Marks this argument to be required
      *
      * @param bool $required TRUE if this argument should be required
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
+     * @return Argument $this
      */
     public function setRequired($required)
     {
@@ -185,7 +185,7 @@ class Argument
      * Sets the default value of the argument
      *
      * @param mixed $defaultValue Default value
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
+     * @return Argument $this
      */
     public function setDefaultValue($defaultValue)
     {
@@ -206,8 +206,8 @@ class Argument
     /**
      * Sets a custom validator which is used supplementary to the base validation
      *
-     * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The actual validator object
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument Returns $this (used for fluent interface)
+     * @param ValidatorInterface $validator The actual validator object
+     * @return Argument Returns $this (used for fluent interface)
      */
     public function setValidator(ValidatorInterface $validator)
     {
@@ -218,7 +218,7 @@ class Argument
     /**
      * Returns the set validator
      *
-     * @return \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface The set validator, NULL if none was set
+     * @return ValidatorInterface The set validator, NULL if none was set
      */
     public function getValidator()
     {
@@ -230,7 +230,7 @@ class Argument
      *
      * @param mixed $rawValue The value of this argument
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
+     * @return Argument
      */
     public function setValue($rawValue)
     {
@@ -254,7 +254,7 @@ class Argument
     /**
      * Return the Property Mapping Configuration used for this argument; can be used by the initialize*action to modify the Property Mapping.
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
+     * @return MvcPropertyMappingConfiguration
      */
     public function getPropertyMappingConfiguration()
     {
@@ -280,7 +280,7 @@ class Argument
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Error\Result
+     * @return Result
      */
     public function validate(): Result
     {

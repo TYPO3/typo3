@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +22,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 /**
  * Validator for string length.
  */
-class StringLengthValidator extends AbstractValidator
+final class StringLengthValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -35,10 +37,9 @@ class StringLengthValidator extends AbstractValidator
      * if an object is given) and its length is between minimum and maximum
      * specified in the validation options.
      *
-     * @param mixed $value The value that should be validated
-     * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
+     * @throws InvalidValidationOptionsException
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if ($this->options['maximum'] < $this->options['minimum']) {
             throw new InvalidValidationOptionsException('The \'maximum\' is shorter than the \'minimum\' in the StringLengthValidator.', 1238107096);

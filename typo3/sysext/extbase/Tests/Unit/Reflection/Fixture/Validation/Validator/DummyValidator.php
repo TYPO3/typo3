@@ -25,18 +25,15 @@ use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
  */
 class DummyValidator implements ValidatorInterface
 {
-    /**
-     * @param mixed $value The value that should be validated
-     * @return Result
-     */
-    public function validate($value): Result
+    public function validate(mixed $value): Result
     {
         return new Result();
     }
 
-    /**
-     * @return array
-     */
+    public function setOptions(array $options): void
+    {
+    }
+
     public function getOptions(): array
     {
         return [];

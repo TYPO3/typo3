@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,14 +20,12 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for integers.
  */
-class IntegerValidator extends AbstractValidator
+final class IntegerValidator extends AbstractValidator
 {
     /**
      * Checks if the given value is a valid integer.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (filter_var($value, FILTER_VALIDATE_INT) === false) {
             $this->addError(

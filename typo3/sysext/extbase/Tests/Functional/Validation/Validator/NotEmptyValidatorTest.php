@@ -15,22 +15,27 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase for the not empty validator
- */
-class NotEmptyValidatorTest extends UnitTestCase
+class NotEmptyValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
     public function notEmptyValidatorReturnsNoErrorForASimpleString(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertFalse($validator->validate('a not empty string')->hasErrors());
     }
 
@@ -39,7 +44,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorReturnsErrorForAnEmptyString(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertTrue($validator->validate('')->hasErrors());
     }
 
@@ -48,7 +54,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorReturnsErrorForANullValue(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertTrue($validator->validate(null)->hasErrors());
     }
 
@@ -57,7 +64,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertCount(1, $validator->validate('')->getErrors());
     }
 
@@ -66,7 +74,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertCount(1, $validator->validate(null)->getErrors());
     }
 
@@ -75,7 +84,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorWorksForEmptyArrays(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertTrue($validator->validate([])->hasErrors());
         self::assertFalse($validator->validate([1 => 2])->hasErrors());
     }
@@ -85,7 +95,8 @@ class NotEmptyValidatorTest extends UnitTestCase
      */
     public function notEmptyValidatorWorksForEmptyCountableObjects(): void
     {
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertTrue($validator->validate(new \SplObjectStorage())->hasErrors());
     }
 
@@ -96,7 +107,8 @@ class NotEmptyValidatorTest extends UnitTestCase
     {
         $countableObject = new \SplObjectStorage();
         $countableObject->attach(new \stdClass());
-        $validator = $this->getMockBuilder(NotEmptyValidator::class)->onlyMethods(['translateErrorMessage'])->getMock();
+        $validator = new NotEmptyValidator();
+        $validator->setOptions([]);
         self::assertFalse($validator->validate($countableObject)->hasErrors());
     }
 }

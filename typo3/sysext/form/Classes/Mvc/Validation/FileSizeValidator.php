@@ -30,7 +30,7 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
  * Scope: frontend
  * @internal
  */
-class FileSizeValidator extends AbstractValidator
+final class FileSizeValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -45,7 +45,7 @@ class FileSizeValidator extends AbstractValidator
      *
      * @param FileReference|File|PseudoFile $resource
      */
-    public function isValid($resource)
+    public function isValid(mixed $resource): void
     {
         $this->validateOptions();
         if ($resource instanceof FileReference) {
@@ -98,7 +98,7 @@ class FileSizeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions()
+    protected function validateOptions(): void
     {
         if (!preg_match('/^(\d*\.?\d+)(B|K|M|G)$/i', $this->options['minimum'])) {
             throw new InvalidValidationOptionsException('The option "minimum" has an invalid format. Valid formats are something like this: "10B|K|M|G".', 1505304205);

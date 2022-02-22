@@ -197,14 +197,11 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     }
 
     /**
-     * Create a validator for the element
+     * Create a validator for the element.
      *
-     * @param string $validatorIdentifier
-     * @param array $options
-     * @return mixed
      * @throws ValidatorPresetNotFoundException
      */
-    public function createValidator(string $validatorIdentifier, array $options = [])
+    public function createValidator(string $validatorIdentifier, array $options = []): ValidatorInterface
     {
         $validatorsDefinition = $this->getRootForm()->getValidatorsDefinition();
         if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
@@ -212,16 +209,9 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
             $defaultOptions = $validatorsDefinition[$validatorIdentifier]['options'] ?? [];
 
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
-
-            if (method_exists($implementationClassName, 'setOptions')) {
-                /** @var ValidatorInterface $validator */
-                $validator = GeneralUtility::makeInstance($implementationClassName);
-                $validator->setOptions($defaultOptions);
-            } else {
-                // @deprecated since v11: v12 ValidatorInterface requires setOptions() to be implemented and skips the above test.
-                /** @var ValidatorInterface $validator */
-                $validator = GeneralUtility::makeInstance($implementationClassName, $defaultOptions);
-            }
+            /** @var ValidatorInterface $validator */
+            $validator = GeneralUtility::makeInstance($implementationClassName);
+            $validator->setOptions($defaultOptions);
             $this->addValidator($validator);
             return $validator;
         }
@@ -229,9 +219,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
     }
 
     /**
-     * Add a validator to the element
-     *
-     * @param ValidatorInterface $validator
+     * Add a validator to the element.
      */
     public function addValidator(ValidatorInterface $validator)
     {

@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  *
  * Scope: frontend
  */
-class EmptyValidator extends AbstractValidator
+final class EmptyValidator extends AbstractValidator
 {
     /**
      * This validator always needs to be executed even if the given value is empty.
@@ -36,10 +36,8 @@ class EmptyValidator extends AbstractValidator
 
     /**
      * Checks if the given property ($propertyValue) is empty (NULL, empty string, empty array or empty object).
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if (!empty($value)) {
             $this->addError(

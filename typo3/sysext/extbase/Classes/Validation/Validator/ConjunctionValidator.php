@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,16 +22,15 @@ use TYPO3\CMS\Extbase\Error\Result;
 /**
  * Validator to chain many validators in a conjunction (logical and).
  */
-class ConjunctionValidator extends AbstractCompositeValidator
+final class ConjunctionValidator extends AbstractCompositeValidator
 {
     /**
      * Checks if the given value is valid according to the validators of the conjunction.
      * Every validator has to be valid, to make the whole conjunction valid.
      *
      * @param mixed $value The value that should be validated
-     * @return Result
      */
-    public function validate($value)
+    public function validate(mixed $value): Result
     {
         $validators = $this->getValidators();
         if ($validators->count() > 0) {

@@ -76,11 +76,10 @@ class ActionControllerTest extends FunctionalTestCase
         $arguments = $this->subject->getArguments();
         $argument = $arguments->getArgument('barParam');
 
-        /** @var ConjunctionValidator $validator */
+        /** @var ConjunctionValidator $conjunctionValidator */
         $conjunctionValidator = $argument->getValidator();
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
-        /** @var \SplObjectStorage $validators */
         $validators = $conjunctionValidator->getValidators();
         self::assertInstanceOf(\SplObjectStorage::class, $validators);
 
@@ -104,7 +103,7 @@ class ActionControllerTest extends FunctionalTestCase
         $arguments = $this->subject->getArguments();
         $argument = $arguments->getArgument('bazParam');
 
-        /** @var ConjunctionValidator $validator */
+        /** @var ConjunctionValidator $conjunctionValidator */
         $conjunctionValidator = $argument->getValidator();
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 

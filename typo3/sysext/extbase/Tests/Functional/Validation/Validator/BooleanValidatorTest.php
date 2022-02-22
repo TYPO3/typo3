@@ -15,26 +15,28 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Testcase
- */
-class BooleanValidatorTest extends UnitTestCase
+class BooleanValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
     public function booleanValidatorReturnsNoErrorForAFalseStringExpectation(): void
     {
         $options = ['is' => 'false'];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
@@ -44,10 +46,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsNoErrorForATrueStringExpectation(): void
     {
         $options = ['is' => 'true'];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
@@ -57,10 +57,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsNoErrorForATrueExpectation(): void
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 
@@ -70,10 +68,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsNoErrorForAFalseExpectation(): void
     {
         $options = ['is' => false];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(false)->hasErrors());
     }
 
@@ -83,10 +79,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsErrorForTrueWhenFalseExpected(): void
     {
         $options = ['is' => false];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate(true)->hasErrors());
     }
 
@@ -96,10 +90,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsErrorForFalseWhenTrueExpected(): void
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate(false)->hasErrors());
     }
 
@@ -109,10 +101,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsErrorForAString(): void
     {
         $options = ['is' => true];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertTrue($validator->validate('a string')->hasErrors());
     }
 
@@ -122,10 +112,8 @@ class BooleanValidatorTest extends UnitTestCase
     public function booleanValidatorReturnsTrueIfNoParameterIsGiven(): void
     {
         $options = [];
-        $validator = $this->getMockBuilder(BooleanValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
+        $validator = new BooleanValidator();
+        $validator->setOptions($options);
         self::assertFalse($validator->validate(true)->hasErrors());
     }
 }

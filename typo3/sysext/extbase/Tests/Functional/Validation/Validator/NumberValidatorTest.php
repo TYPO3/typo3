@@ -15,32 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Error;
 use TYPO3\CMS\Extbase\Validation\Validator\NumberValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class NumberValidatorTest extends UnitTestCase
+class NumberValidatorTest extends FunctionalTestCase
 {
-    protected string $validatorClassName = NumberValidator::class;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    public function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->validator = $this->getMockBuilder($this->validatorClassName)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
     /**
@@ -48,7 +36,9 @@ class NumberValidatorTest extends UnitTestCase
      */
     public function numberValidatorReturnsTrueForASimpleInteger(): void
     {
-        self::assertFalse($this->validator->validate(1029437)->hasErrors());
+        $subject = new NumberValidator();
+        $subject->setOptions([]);
+        self::assertFalse($subject->validate(1029437)->hasErrors());
     }
 
     /**
@@ -56,9 +46,11 @@ class NumberValidatorTest extends UnitTestCase
      */
     public function numberValidatorReturnsFalseForAString(): void
     {
+        $subject = new NumberValidator();
+        $subject->setOptions([]);
         $expectedResult = new Result();
         // we only test for the error code, after the message translation method is mocked
-        $expectedResult->addError(new Error('', 1221563685));
-        self::assertEquals($expectedResult, $this->validator->validate('not a number'));
+        $expectedResult->addError(new Error('The given subject was not a valid number.', 1221563685));
+        self::assertEquals($expectedResult, $subject->validate('not a number'));
     }
 }

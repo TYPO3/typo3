@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,15 +20,13 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for DateTime/DateTimeImmutable objects.
  */
-class DateTimeValidator extends AbstractValidator
+final class DateTimeValidator extends AbstractValidator
 {
     /**
      * Checks if the given value is a valid DateTime object. If this is not
      * the case, the function adds an error.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         $this->result->clear();
         if ($value instanceof \DateTimeInterface) {

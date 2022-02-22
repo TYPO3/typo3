@@ -21,10 +21,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 class CustomValidator extends AbstractValidator
 {
-    /**
-     * @param mixed $value
-     */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
     }
 }

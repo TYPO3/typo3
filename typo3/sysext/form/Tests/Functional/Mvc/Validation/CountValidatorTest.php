@@ -15,16 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation;
+namespace TYPO3\CMS\Form\Tests\Functional\Mvc\Validation;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Mvc\Validation\CountValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class CountValidatorTest extends UnitTestCase
+class CountValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+    }
 
     /**
      * @test
@@ -32,16 +36,12 @@ class CountValidatorTest extends UnitTestCase
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMaximum(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new CountValidator();
+        $validator->setOptions($options);
         $input = [
             'klaus',
             'steve',
         ];
-
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -51,16 +51,12 @@ class CountValidatorTest extends UnitTestCase
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new CountValidator();
+        $validator->setOptions($options);
         $input = [
             'klaus',
             'steve',
         ];
-
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -70,16 +66,12 @@ class CountValidatorTest extends UnitTestCase
     public function CountValidatorReturnsFalseIfInputItemsCountIsEqualToMinimumAndMaximum(): void
     {
         $options = ['minimum' => 2, 'maximum' => 2];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new CountValidator();
+        $validator->setOptions($options);
         $input = [
             'klaus',
             'steve',
         ];
-
         self::assertFalse($validator->validate($input)->hasErrors());
     }
 
@@ -89,17 +81,13 @@ class CountValidatorTest extends UnitTestCase
     public function CountValidatorReturnsTrueIfInputCountHasMoreItemsAsMaximumValue(): void
     {
         $options = ['minimum' => 1, 'maximum' => 2];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new CountValidator();
+        $validator->setOptions($options);
         $input = [
             'klaus',
             'steve',
             'francine',
         ];
-
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 
@@ -109,15 +97,11 @@ class CountValidatorTest extends UnitTestCase
     public function CountValidatorReturnsTrueIfInputCountHasLessItemsAsMinimumValue(): void
     {
         $options = ['minimum' => 2, 'maximum' => 3];
-        $validator = $this->getMockBuilder(CountValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([$options])
-            ->getMock();
-
+        $validator = new CountValidator();
+        $validator->setOptions($options);
         $input = [
             'klaus',
         ];
-
         self::assertTrue($validator->validate($input)->hasErrors());
     }
 }

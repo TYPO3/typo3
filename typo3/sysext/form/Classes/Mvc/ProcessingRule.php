@@ -55,6 +55,7 @@ class ProcessingRule
         $this->propertyMapper = $propertyMapper;
         $this->propertyMappingConfiguration = GeneralUtility::makeInstance(PropertyMappingConfiguration::class);
         $this->validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
+        $this->validator->setOptions([]);
         $this->processingMessages = GeneralUtility::makeInstance(Result::class);
     }
 

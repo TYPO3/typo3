@@ -23,9 +23,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DisjunctionValidatorTest extends UnitTestCase
 {
 
@@ -34,15 +31,16 @@ class DisjunctionValidatorTest extends UnitTestCase
      */
     public function validateReturnsNoErrorsIfOneValidatorReturnsNoError(): void
     {
-        $validatorDisjunction = new DisjunctionValidator([]);
+        $validatorDisjunction = new DisjunctionValidator();
+        $validatorDisjunction->setOptions([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
             ->getMock();
         $validatorObject->method('validate')->willReturn(new Result());
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
             ->getMock();
         $secondValidatorObject->method('validate')->willReturn($errors);
         $validatorDisjunction->addValidator($validatorObject);
@@ -55,19 +53,20 @@ class DisjunctionValidatorTest extends UnitTestCase
      */
     public function validateReturnsAllErrorsIfAllValidatorsReturnErrors(): void
     {
-        $validatorDisjunction = new DisjunctionValidator([]);
+        $validatorDisjunction = new DisjunctionValidator();
+        $validatorDisjunction->setOptions([]);
         $error1 = new Error('Error', 123);
         $error2 = new Error('Error2', 123);
         $errors1 = new Result();
         $errors1->addError($error1);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
             ->getMock();
         $validatorObject->method('validate')->willReturn($errors1);
         $errors2 = new Result();
         $errors2->addError($error2);
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
             ->getMock();
         $secondValidatorObject->method('validate')->willReturn($errors2);
         $validatorDisjunction->addValidator($validatorObject);

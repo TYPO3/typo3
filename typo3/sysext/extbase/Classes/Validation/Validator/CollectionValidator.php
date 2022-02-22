@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -15,7 +17,6 @@
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 /**
  * A generic collection validator.
  */
-class CollectionValidator extends GenericObjectValidator
+final class CollectionValidator extends AbstractGenericObjectValidator
 {
     /**
      * @var array
@@ -34,26 +35,15 @@ class CollectionValidator extends GenericObjectValidator
         'elementType' => [null, 'The type of the elements in the collection', 'string'],
     ];
 
-    /**
-     * @var ValidatorResolver
-     */
-    protected $validatorResolver;
-
-    public function __construct(array $options = [])
+    public function __construct(protected readonly ValidatorResolver $validatorResolver)
     {
-        parent::__construct($options);
-
-        $this->validatorResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
     }
 
     /**
      * Checks if the given value is valid according to the validator, and returns
      * the Error Messages object which occurred.
-     *
-     * @param mixed $value The value that should be validated
-     * @return \TYPO3\CMS\Extbase\Error\Result
      */
-    public function validate($value)
+    public function validate(mixed $value): Result
     {
         $this->result = new Result();
 
@@ -83,10 +73,8 @@ class CollectionValidator extends GenericObjectValidator
      *
      * Either elementValidator or elementType must be given, otherwise validation
      * will be skipped.
-     *
-     * @param mixed $value A collection to be validated
      */
-    protected function isValid($value)
+    protected function isValid(mixed $value): void
     {
         foreach ($value as $index => $collectionElement) {
             if (isset($this->options['elementValidator'])) {
@@ -99,7 +87,7 @@ class CollectionValidator extends GenericObjectValidator
             if ($collectionElementValidator instanceof ObjectValidatorInterface) {
                 $collectionElementValidator->setValidatedInstancesContainer($this->validatedInstancesContainer);
             }
-            $this->result->forProperty($index)->merge($collectionElementValidator->validate($collectionElement));
+            $this->result->forProperty((string)$index)->merge($collectionElementValidator->validate($collectionElement));
         }
     }
 }

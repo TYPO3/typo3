@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Validation\Fixtures;
+namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Fixtures;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
@@ -24,10 +24,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
  */
 class TestValidator extends AbstractValidator
 {
-    /**
-     * @param mixed $value
-     */
-    public function isValid($value): void
+    public function isValid(mixed $value): void
     {
         if ($value === 'addError') {
             $this->addError('Error', 1480201569);

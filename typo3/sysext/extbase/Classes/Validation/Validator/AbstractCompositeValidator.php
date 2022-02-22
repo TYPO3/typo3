@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -30,39 +32,24 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      */
     protected $supportedOptions = [];
 
-    /**
-     * @var array
-     */
-    protected $options = [];
+    protected array $options = [];
+    protected \SplObjectStorage $validators;
 
     /**
      * @var \SplObjectStorage
-     */
-    protected $validators;
-
-    /**
-     * @var \SplObjectStorage
+     * @todo: It's unclear if this is always correctly initialized.
      */
     protected $validatedInstancesContainer;
 
-    /**
-     * Constructs the composite validator and sets validation options
-     *
-     * @param array $options Options for the validator
-     * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
-     * @todo: __construct() will vanish in v12, this abstract will implement setOptions() to set and initialize default options.
-     */
-    public function __construct(array $options = [])
+    public function setOptions(array $options): void
     {
         $this->initializeDefaultOptions($options);
     }
 
     /**
-     * Adds a new validator to the conjunction.
-     *
-     * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator that should be added
+     * Adds a new validator to the composition.
      */
-    public function addValidator(ValidatorInterface $validator)
+    public function addValidator(ValidatorInterface $validator): void
     {
         if ($validator instanceof ObjectValidatorInterface) {
             // @todo: provide bugfix as soon as it is fixed in TYPO3.Flow (https://forge.typo3.org/issues/48093)
@@ -74,10 +61,9 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     /**
      * Removes the specified validator.
      *
-     * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator to remove
-     * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
+     * @throws NoSuchValidatorException
      */
-    public function removeValidator(ValidatorInterface $validator)
+    public function removeValidator(ValidatorInterface $validator): void
     {
         if (!$this->validators->contains($validator)) {
             throw new NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);
@@ -86,43 +72,33 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     }
 
     /**
-     * Returns the number of validators contained in this conjunction.
-     *
-     * @return int The number of validators
-     * @todo Set to return type int as breaking change in v12.
+     * Returns the number of validators contained in this composition.
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->validators);
     }
 
     /**
      * Returns the child validators of this Composite Validator
-     *
-     * @return \SplObjectStorage
      */
-    public function getValidators()
+    public function getValidators(): \SplObjectStorage
     {
         return $this->validators;
     }
 
     /**
      * Returns the options for this validator
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
      * Allows to set a container to keep track of validated instances.
-     *
-     * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
      */
-    public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer)
+    public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer): void
     {
         $this->validatedInstancesContainer = $validatedInstancesContainer;
     }

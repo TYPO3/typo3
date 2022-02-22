@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for boolean values
  */
-class BooleanValidator extends AbstractValidator
+final class BooleanValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -38,10 +40,8 @@ class BooleanValidator extends AbstractValidator
      *
      * Also testing for '1' (true), '0' and '' (false) because casting varies between
      * tests and actual usage. This makes the validator loose but still keeping functionality.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         // see comment above, check if expectation is NULL, then nothing to do!
         if ($this->options['is'] === null) {

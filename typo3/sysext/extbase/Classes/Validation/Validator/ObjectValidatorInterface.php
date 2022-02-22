@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,5 +27,5 @@ interface ObjectValidatorInterface extends ValidatorInterface
      *
      * @param \SplObjectStorage $validatedInstancesContainer A container to keep track of validated instances
      */
-    public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer);
+    public function setValidatedInstancesContainer(\SplObjectStorage $validatedInstancesContainer): void;
 }

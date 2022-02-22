@@ -21,9 +21,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractCompositeV
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the abstract base-class of composite-validators
- */
 class AbstractCompositeValidatorTest extends UnitTestCase
 {
     /**
@@ -36,7 +33,8 @@ class AbstractCompositeValidatorTest extends UnitTestCase
             'demoOption' => 42,
         ];
         $expectedOptions = $inputOptions;
-        $validator = new AbstractCompositeValidatorClass($inputOptions);
+        $validator = new AbstractCompositeValidatorClass();
+        $validator->setOptions($inputOptions);
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
@@ -50,7 +48,8 @@ class AbstractCompositeValidatorTest extends UnitTestCase
             'requiredOption' => 666,
             'demoOption' => PHP_INT_MAX,
         ];
-        $validator = new AbstractCompositeValidatorClass($inputOptions);
+        $validator = new AbstractCompositeValidatorClass();
+        $validator->setOptions($inputOptions);
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
@@ -62,7 +61,8 @@ class AbstractCompositeValidatorTest extends UnitTestCase
         $inputOptions = ['invalidoption' => 42];
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1339079804);
-        new AbstractCompositeValidatorClass($inputOptions);
+        $validator = new AbstractCompositeValidatorClass();
+        $validator->setOptions($inputOptions);
     }
 
     /**
@@ -73,6 +73,7 @@ class AbstractCompositeValidatorTest extends UnitTestCase
         $inputOptions = [];
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1339163922);
-        new AbstractCompositeValidatorClass($inputOptions);
+        $validator = new AbstractCompositeValidatorClass();
+        $validator->setOptions($inputOptions);
     }
 }

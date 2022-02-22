@@ -25,7 +25,7 @@ use TYPO3\CMS\Form\Mvc\Validation\Exception\InvalidValidationOptionsException;
  *
  * Scope: frontend
  */
-class DateRangeValidator extends AbstractValidator
+final class DateRangeValidator extends AbstractValidator
 {
     /**
      * @var array
@@ -39,7 +39,7 @@ class DateRangeValidator extends AbstractValidator
     /**
      * @param \DateTime $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         $this->validateOptions();
 
@@ -52,7 +52,6 @@ class DateRangeValidator extends AbstractValidator
                 ) ?? '',
                 1521293685
             );
-
             return;
         }
 
@@ -61,10 +60,7 @@ class DateRangeValidator extends AbstractValidator
         $format = $this->options['format'];
         $value->modify('midnight');
 
-        if (
-            $minimum instanceof \DateTime
-            && $value < $minimum
-        ) {
+        if ($minimum instanceof \DateTime && $value < $minimum) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validation.error.1521293686',
@@ -76,10 +72,7 @@ class DateRangeValidator extends AbstractValidator
             );
         }
 
-        if (
-            $maximum instanceof \DateTime
-            && $value > $maximum
-        ) {
+        if ($maximum instanceof \DateTime && $value > $maximum) {
             $this->addError(
                 $this->translateErrorMessage(
                     'validation.error.1521293687',
@@ -97,7 +90,7 @@ class DateRangeValidator extends AbstractValidator
      *
      * @throws InvalidValidationOptionsException if the configured validation options are incorrect
      */
-    protected function validateOptions()
+    protected function validateOptions(): void
     {
         if (!empty($this->options['minimum'])) {
             $minimum = \DateTime::createFromFormat($this->options['format'], $this->options['minimum']);
@@ -105,7 +98,6 @@ class DateRangeValidator extends AbstractValidator
                 $message = sprintf('The option "minimum" (%s) could not be converted to \DateTime from format "%s".', $this->options['minimum'], $this->options['format']);
                 throw new InvalidValidationOptionsException($message, 1521293813);
             }
-
             $minimum->modify('midnight');
             $this->options['minimum'] = $minimum;
         }
@@ -116,7 +108,6 @@ class DateRangeValidator extends AbstractValidator
                 $message = sprintf('The option "maximum" (%s) could not be converted to \DateTime from format "%s".', $this->options['maximum'], $this->options['format']);
                 throw new InvalidValidationOptionsException($message, 1521293814);
             }
-
             $maximum->modify('midnight');
             $this->options['maximum'] = $maximum;
         }

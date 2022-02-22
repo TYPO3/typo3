@@ -21,9 +21,6 @@ use TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture\AbstractValidatorC
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for the abstract base-class of validators
- */
 class AbstractValidatorTest extends UnitTestCase
 {
     /**
@@ -36,7 +33,8 @@ class AbstractValidatorTest extends UnitTestCase
             'demoOption' => 42,
         ];
         $expectedOptions = $inputOptions;
-        $validator = new AbstractValidatorClass($inputOptions);
+        $validator = new AbstractValidatorClass();
+        $validator->setOptions($inputOptions);
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
@@ -50,7 +48,8 @@ class AbstractValidatorTest extends UnitTestCase
             'requiredOption' => 666,
             'demoOption' => PHP_INT_MAX,
         ];
-        $validator = new AbstractValidatorClass($inputOptions);
+        $validator = new AbstractValidatorClass();
+        $validator->setOptions($inputOptions);
         self::assertSame($expectedOptions, $validator->getOptions());
     }
 
@@ -62,7 +61,8 @@ class AbstractValidatorTest extends UnitTestCase
         $inputOptions = ['invalidoption' => 42];
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981890);
-        new AbstractValidatorClass($inputOptions);
+        $validator = new AbstractValidatorClass();
+        $validator->setOptions($inputOptions);
     }
 
     /**
@@ -73,6 +73,7 @@ class AbstractValidatorTest extends UnitTestCase
         $inputOptions = [];
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1379981891);
-        new AbstractValidatorClass($inputOptions);
+        $validator = new AbstractValidatorClass();
+        $validator->setOptions($inputOptions);
     }
 }

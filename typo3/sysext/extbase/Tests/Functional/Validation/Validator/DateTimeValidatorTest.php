@@ -15,32 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class DateTimeValidatorTest extends UnitTestCase
+class DateTimeValidatorTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     * @dataProvider dateTimeValues
-     */
-    public function acceptsDateTimeValues($value): void
+    protected function setUp(): void
     {
-        $validator = new DateTimeValidator();
-        $result = $validator->validate($value);
-
-        self::assertFalse($result->hasErrors());
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
     }
 
-    /**
-     * @return array
-     */
-    public function dateTimeValues(): array
+    public function acceptsDateTimeValuesDataProvider(): array
     {
         return [
             \DateTime::class => [
@@ -62,14 +51,23 @@ class DateTimeValidatorTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider acceptsDateTimeValuesDataProvider
+     */
+    public function acceptsDateTimeValues($value): void
+    {
+        $validator = new DateTimeValidator();
+        $result = $validator->validate($value);
+        self::assertFalse($result->hasErrors());
+    }
+
+    /**
+     * @test
      */
     public function addsErrorForInvalidValue(): void
     {
-        $validator = $this->getMockBuilder(DateTimeValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->getMock();
+        $validator = new DateTimeValidator();
+        $validator->setOptions([]);
         $result = $validator->validate(false);
-
         self::assertTrue($result->hasErrors());
     }
 }

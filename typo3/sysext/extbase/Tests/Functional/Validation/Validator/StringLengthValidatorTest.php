@@ -15,17 +15,21 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+namespace TYPO3\CMS\Extbase\Tests\Functional\Validation\Validator;
 
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Test case
- */
-class StringLengthValidatorTest extends UnitTestCase
+class StringLengthValidatorTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
     /**
      * @test
      */
@@ -47,8 +51,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorForAStringShorterThanMaxLengthAndLongerThanMinLength(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 0, 'maximum' => 50]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 0, 'maximum' => 50]);
         self::assertFalse($validator->validate('this is a very simple string')->hasErrors());
     }
 
@@ -57,12 +61,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsErrorForAStringShorterThanThanMinLength(): void
     {
-        /** @var StringLengthValidator $validator */
-        $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
-            ->getMock();
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 50, 'maximum' => 100]);
         self::assertTrue($validator->validate('this is a very short string')->hasErrors());
     }
 
@@ -71,12 +71,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsErrorsForAStringLongerThanThanMaxLength(): void
     {
-        /** @var StringLengthValidator $validator */
-        $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([['minimum' => 5, 'maximum' => 10]])
-            ->getMock();
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 5, 'maximum' => 10]);
         self::assertTrue($validator->validate('this is a very short string')->hasErrors());
     }
 
@@ -85,8 +81,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorsForAStringLongerThanThanMinLengthAndMaxLengthNotSpecified(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 5]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 5]);
         self::assertFalse($validator->validate('this is a very short string')->hasErrors());
     }
 
@@ -95,8 +91,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorsForAStringShorterThanThanMaxLengthAndMinLengthNotSpecified(): void
     {
-        $validator = new StringLengthValidator(['maximum' => 100]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['maximum' => 100]);
         self::assertFalse($validator->validate('this is a very short string')->hasErrors());
     }
 
@@ -105,8 +101,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorsForAStringLengthEqualToMaxLengthAndMinLengthNotSpecified(): void
     {
-        $validator = new StringLengthValidator(['maximum' => 10]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['maximum' => 10]);
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
@@ -115,8 +111,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorForAStringLengthEqualToMinLengthAndMaxLengthNotSpecified(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 10]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 10]);
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
@@ -125,8 +121,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorIfMinLengthAndMaxLengthAreEqualAndTheGivenStringMatchesThisValue(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 10, 'maximum' => 10]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 10, 'maximum' => 10]);
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
@@ -135,8 +131,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorsIfTheStringLengthIsEqualToMaxLength(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 1, 'maximum' => 10]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 1, 'maximum' => 10]);
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
@@ -145,8 +141,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorReturnsNoErrorIfTheStringLengthIsEqualToMinLength(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 10, 'maximum' => 100]);
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 10, 'maximum' => 100]);
         self::assertFalse($validator->validate('1234567890')->hasErrors());
     }
 
@@ -157,12 +153,8 @@ class StringLengthValidatorTest extends UnitTestCase
     {
         $this->expectException(InvalidValidationOptionsException::class);
         $this->expectExceptionCode(1238107096);
-
-        /** @var StringLengthValidator $validator */
-        $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->onlyMethods(['addError', 'translateErrorMessage'])
-            ->setConstructorArgs([['minimum' => 101, 'maximum' => 100]])
-            ->getMock();
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 101, 'maximum' => 100]);
         $validator->validate('1234567890');
     }
 
@@ -171,12 +163,8 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorInsertsAnErrorObjectIfValidationFails(): void
     {
-        /** @var StringLengthValidator $validator */
-        $validator = $this->getMockBuilder(StringLengthValidator::class)
-            ->onlyMethods(['translateErrorMessage'])
-            ->setConstructorArgs([['minimum' => 50, 'maximum' => 100]])
-            ->getMock();
-
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 50, 'maximum' => 100]);
         self::assertCount(1, $validator->validate('this is a very short string')->getErrors());
     }
 
@@ -185,15 +173,14 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function stringLengthValidatorCanHandleAnObjectWithAToStringMethod(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 5, 'maximum' => 100]);
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 5, 'maximum' => 100]);
         $object = new class() {
-            /** @return string */
-            public function __toString()
+            public function __toString(): string
             {
                 return 'some string';
             }
         };
-
         self::assertFalse($validator->validate($object)->hasErrors());
     }
 
@@ -202,16 +189,15 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function validateReturnsErrorsIfTheGivenObjectCanNotBeConvertedToAString(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 5, 'maximum' => 100]);
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 5, 'maximum' => 100]);
         $object = new class() {
         };
-
         $result = $validator->validate($object);
 
         self::assertTrue($result->hasErrors());
         self::assertCount(1, $result->getErrors());
 
-        /** @var \TYPO3\CMS\Extbase\Validation\Error $error */
         $error = current($result->getErrors());
         self::assertSame(1238110957, $error->getCode());
     }
@@ -221,9 +207,9 @@ class StringLengthValidatorTest extends UnitTestCase
      */
     public function validateRegardsMultibyteStringsCorrectly(): void
     {
-        $validator = new StringLengthValidator(['minimum' => 0, 'maximum' => 8]);
+        $validator = new StringLengthValidator();
+        $validator->setOptions(['minimum' => 0, 'maximum' => 8]);
         $result = $validator->validate('überlang');
-
         self::assertFalse($result->hasErrors());
     }
 }

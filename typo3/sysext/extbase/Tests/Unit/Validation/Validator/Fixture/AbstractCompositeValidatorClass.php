@@ -34,26 +34,12 @@ class AbstractCompositeValidatorClass extends AbstractCompositeValidator
         'demoOption' => [PHP_INT_MAX, 'Some value', 'integer'],
     ];
 
-    /**
-     * Check if $value is valid. If it is not valid, needs to add an error
-     * to Result.
-     *
-     * @param mixed $value
-     */
-    protected function isValid($value): void
+    protected function isValid(mixed $value): void
     {
         // dummy
     }
 
-    /**
-     * Checks if the given value is valid according to the validator, and returns
-     * the Error Messages object which occurred.
-     *
-     * @param mixed $value The value that should be validated
-     * @return Result
-     * @api
-     */
-    public function validate($value): Result
+    public function validate(mixed $value): Result
     {
         return new Result();
     }

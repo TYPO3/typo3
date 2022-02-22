@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 /**
  * Validator for "plain" text.
  */
-class TextValidator extends AbstractValidator
+final class TextValidator extends AbstractValidator
 {
     /**
      * Checks if the given value is a valid text (contains no XML tags).
@@ -28,10 +28,8 @@ class TextValidator extends AbstractValidator
      * Be aware that the value of this check entirely depends on the output context.
      * The validated text is not expected to be secure in every circumstance, if you
      * want to be sure of that, use a customized regular expression or filter on output.
-     *
-     * @param mixed $value The value that should be validated
      */
-    public function isValid($value)
+    public function isValid(mixed $value): void
     {
         if ($value !== strip_tags((string)$value)) {
             $this->addError(
