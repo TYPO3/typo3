@@ -48,7 +48,7 @@ class GeneratorTest extends FunctionalTestCase
         $queryBuilder->getRestrictions()->removeAll();
         $count = (int)$queryBuilder->count('uid')
             ->from('tx_styleguide_elements_basic')
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertEquals(0, $count);
 
@@ -66,7 +66,7 @@ class GeneratorTest extends FunctionalTestCase
                     $queryBuilder->createNamedParameter($this->getPageUidFor('tx_styleguide_elements_basic'), \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
         self::assertGreaterThan(0, $count);
     }
@@ -94,7 +94,7 @@ class GeneratorTest extends FunctionalTestCase
             ->orderBy('pid', 'DESC')
             // add uid as deterministic last sorting, as not all dbms in all versions do that
             ->addOrderBy('uid', 'ASC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if ($row['uid'] ?? false) {

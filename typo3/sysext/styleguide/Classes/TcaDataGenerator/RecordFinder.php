@@ -55,7 +55,7 @@ class RecordFinder
                     $queryBuilder->createNamedParameter('tx_styleguide', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $uids = [];
         if (is_array($rows)) {
@@ -95,7 +95,7 @@ class RecordFinder
             ->orderBy('pid', 'DESC')
             // add uid as deterministic last sorting, as not all dbms in all versions do that
             ->addOrderBy('uid', 'ASC')
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
         if (count($row) !== 1) {
             throw new Exception(
@@ -164,7 +164,7 @@ class RecordFinder
                     $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
@@ -192,7 +192,7 @@ class RecordFinder
                     $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
@@ -221,7 +221,7 @@ class RecordFinder
                     $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)
                 )
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
