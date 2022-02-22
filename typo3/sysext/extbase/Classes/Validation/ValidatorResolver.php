@@ -125,13 +125,12 @@ class ValidatorResolver implements SingletonInterface
      * Example: $targetClassName is TYPO3\Foo\Domain\Model\Quux, then the validator will be found if it has the
      * name TYPO3\Foo\Domain\Validator\QuuxValidator
      *
-     * @param string $indexKey The key to use as index in $this->baseValidatorConjunctions; calculated from target class name and validation groups
+     * @param string $indexKey The key to use as index in $this->baseValidatorConjunctions, calculated from target class name.
      * @param string $targetClassName The data type to build the validation conjunction for. Needs to be the fully qualified class name.
-     * @param array $validationGroups The validation groups to build the validator for
      * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
      * @throws \InvalidArgumentException
      */
-    protected function buildBaseValidatorConjunction($indexKey, $targetClassName, array $validationGroups = [])
+    protected function buildBaseValidatorConjunction($indexKey, $targetClassName)
     {
         $conjunctionValidator = new ConjunctionValidator();
         $this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
@@ -162,7 +161,6 @@ class ValidatorResolver implements SingletonInterface
                             CollectionValidator::class,
                             [
                                 'elementType' => $property->getElementType(),
-                                'validationGroups' => $validationGroups,
                             ]
                         );
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
@@ -194,8 +192,6 @@ class ValidatorResolver implements SingletonInterface
                 }
 
                 foreach ($property->getValidators() as $validatorDefinition) {
-                    // @todo: Respect validationGroups
-
                     // @todo: At this point we already have the class name of the validator, thus there is not need
                     // @todo: calling \TYPO3\CMS\Extbase\Validation\ValidatorResolver::resolveValidatorObjectName inside
                     // @todo: \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to

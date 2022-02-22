@@ -32,7 +32,6 @@ class CollectionValidator extends GenericObjectValidator
     protected $supportedOptions = [
         'elementValidator' => [null, 'The validator type to use for the collection elements', 'string'],
         'elementType' => [null, 'The type of the elements in the collection', 'string'],
-        'validationGroups' => [null, 'The validation groups to link to', 'string'],
     ];
 
     /**
@@ -80,7 +79,7 @@ class CollectionValidator extends GenericObjectValidator
     /**
      * Checks for a collection and if needed validates the items in the collection.
      * This is done with the specified element validator or a validator based on
-     * the given element type and validation group.
+     * the given element type.
      *
      * Either elementValidator or elementType must be given, otherwise validation
      * will be skipped.
