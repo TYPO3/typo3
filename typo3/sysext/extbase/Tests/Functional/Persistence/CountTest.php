@@ -51,7 +51,7 @@ class CountTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/post-tag-mm.csv');
         $this->importCSVDataSet(__DIR__ . '/../Persistence/Fixtures/persons.csv');
 
-        $this->postRepository = $this->getContainer()->get(PostRepository::class);
+        $this->postRepository = $this->get(PostRepository::class);
     }
 
     /**
@@ -189,7 +189,7 @@ class CountTest extends FunctionalTestCase
      */
     public function queryWithAndConditionsToTheSameTableReturnExpectedCount(): void
     {
-        $personRepository = $this->getContainer()->get(PersonRepository::class);
+        $personRepository = $this->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -205,7 +205,7 @@ class CountTest extends FunctionalTestCase
      */
     public function queryWithOrConditionsToTheSameTableReturnExpectedCount(): void
     {
-        $personRepository = $this->getContainer()->get(PersonRepository::class);
+        $personRepository = $this->get(PersonRepository::class);
         $query = $personRepository->createQuery();
         $query->matching(
             $query->logicalOr(

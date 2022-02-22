@@ -65,7 +65,7 @@ class TranslatedSiteContentTest extends AbstractDataHandlerActionTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultPages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Rendering/DataSet/LiveDefaultElements.csv');
 
-        $this->contentRepository = $this->getContainer()->get(TtContentRepository::class);
+        $this->contentRepository = $this->get(TtContentRepository::class);
         $this->setUpFrontendRootPage(1, [
             'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Configuration/TypoScript/setup.typoscript',
             'typo3/sysext/extbase/Tests/Functional/Persistence/Fixtures/Frontend/ContentJsonRenderer.typoscript',

@@ -59,7 +59,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
                 'storagePid' => 20,
             ],
         ];
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
         $this->request = new Request();
         $this->request->setPluginName('Pi1');
@@ -67,7 +67,7 @@ class ControllerArgumentsMappingTest extends FunctionalTestCase
         $this->request->setControllerName('Blog');
         $this->request->setFormat('html');
 
-        $this->controller = $this->getContainer()->get(BlogController::class);
+        $this->controller = $this->get(BlogController::class);
     }
 
     public function actionGetsBlogFromUidArgumentDataProvider(): array

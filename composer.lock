@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a129fccce578ed751e35cce26f06604",
+    "content-hash": "eafbccbf0c3689dd12d3c52b4605c62a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9012,16 +9012,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.15.3",
+            "version": "6.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "8c9a180d277b9baadc57ba383a67486c8fcec06e"
+                "reference": "a2b80476c4f9b90f220e78338f38fc6e576ebc8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/8c9a180d277b9baadc57ba383a67486c8fcec06e",
-                "reference": "8c9a180d277b9baadc57ba383a67486c8fcec06e",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a2b80476c4f9b90f220e78338f38fc6e576ebc8d",
+                "reference": "a2b80476c4f9b90f220e78338f38fc6e576ebc8d",
                 "shasum": ""
             },
             "require": {
@@ -9045,6 +9045,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "TYPO3\\PrivateContainer\\": "Resources/Core/Functional/Extensions/private_container/Classes/",
                     "TYPO3\\TestingFramework\\": "Classes/"
                 }
             },
@@ -9074,9 +9075,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.15.3"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.0"
             },
-            "time": "2022-02-10T16:57:02+00:00"
+            "time": "2022-02-27T13:50:05+00:00"
         }
     ],
     "aliases": [],

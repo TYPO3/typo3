@@ -32,7 +32,7 @@ class ObjectManagerTest extends FunctionalTestCase
      */
     public function objectManagerCanInjectPsrContainerInterface(): void
     {
-        $subject = $this->getContainer()->get(ObjectManager::class);
+        $subject = $this->get(ObjectManager::class);
         $subject->get(Fixtures\Test::class);
     }
 }

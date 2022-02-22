@@ -214,7 +214,7 @@ class MfaProviderPropertyManagerTest extends FunctionalTestCase
     protected function createPropertyManager(string $providerIdentifier): MfaProviderPropertyManager
     {
         return MfaProviderPropertyManager::create(
-            $this->getContainer()->get(MfaProviderRegistry::class)->getProvider($providerIdentifier),
+            $this->get(MfaProviderRegistry::class)->getProvider($providerIdentifier),
             $this->user
         );
     }

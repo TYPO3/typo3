@@ -47,7 +47,7 @@ class ValidatorResolverTest extends FunctionalTestCase
      */
     public function createValidatorSetsOptionsAndDependenciesAreInjected(): void
     {
-        $subject = $this->getContainer()->get(ValidatorResolver::class);
+        $subject = $this->get(ValidatorResolver::class);
         $options = ['foo' => 'bar'];
         /** @var CustomValidator $validator */
         $validator = $subject->createValidator(CustomValidator::class, $options);
@@ -61,7 +61,7 @@ class ValidatorResolverTest extends FunctionalTestCase
      */
     public function createValidatorSetsOptions(): void
     {
-        $subject = $this->getContainer()->get(ValidatorResolver::class);
+        $subject = $this->get(ValidatorResolver::class);
         $options = ['foo' => 'bar'];
         $validator = $subject->createValidator(CustomNotInjectableValidator::class, $options);
         self::assertSame($options, $validator->getOptions());
@@ -76,7 +76,7 @@ class ValidatorResolverTest extends FunctionalTestCase
             ValidatorResolver::class,
             ['dummy']
         );
-        $subject->injectReflectionService($this->getContainer()->get(ReflectionService::class));
+        $subject->injectReflectionService($this->get(ReflectionService::class));
 
         $subject->_call(
             'buildBaseValidatorConjunction',

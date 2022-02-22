@@ -38,7 +38,7 @@ class MfaAjaxControllerTest extends FunctionalTestCase
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->subject = new MfaAjaxController($this->getContainer()->get(MfaProviderRegistry::class));
+        $this->subject = new MfaAjaxController($this->get(MfaProviderRegistry::class));
 
         $this->request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);

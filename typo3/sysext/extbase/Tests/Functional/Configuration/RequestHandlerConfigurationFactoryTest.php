@@ -35,7 +35,7 @@ class RequestHandlerConfigurationFactoryTest extends FunctionalTestCase
      */
     public function requestHandlerConfigurationFactoryLoadsRequestHandlersOfExtbaseAndFluid(): void
     {
-        $configuration = (new RequestHandlersConfigurationFactory(new NullFrontend('extbase'), $this->getContainer()->get(PackageManager::class), 'PackageDependentCacheIdentifier'))
+        $configuration = (new RequestHandlersConfigurationFactory(new NullFrontend('extbase'), $this->get(PackageManager::class), 'PackageDependentCacheIdentifier'))
             ->createRequestHandlersConfiguration();
 
         self::assertSame(

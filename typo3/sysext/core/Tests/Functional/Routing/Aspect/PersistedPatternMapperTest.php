@@ -319,7 +319,7 @@ class PersistedPatternMapperTest extends FunctionalTestCase
         try {
             // ensure no previous site configuration influences the test
             $path = $this->instancePath . '/typo3conf/sites';
-            $cache = $this->getContainer()->get('cache.core');
+            $cache = $this->get('cache.core');
             GeneralUtility::rmdir($path . '/' . $site->getIdentifier(), true);
             GeneralUtility::makeInstance(SiteConfiguration::class, $path, $cache)->write($site->getIdentifier(), $site->getConfiguration());
         } catch (\Exception $exception) {

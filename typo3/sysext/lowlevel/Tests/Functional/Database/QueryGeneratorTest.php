@@ -29,7 +29,7 @@ class QueryGeneratorTest extends FunctionalTestCase
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     /**

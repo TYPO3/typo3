@@ -254,11 +254,11 @@ class WorkspaceTest extends FunctionalTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton
         // here, to not run into warnings due to incomplete test setup.
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration([
             'extensionName' => 'blog_example',
             'pluginName' => 'test',
@@ -282,11 +282,11 @@ class WorkspaceTest extends FunctionalTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
-        $this->blogRepository = $this->getContainer()->get(BlogRepository::class);
+        $this->blogRepository = $this->get(BlogRepository::class);
         // ConfigurationManager is used by PersistenceManager to retrieve configuration.
         // We set a proper extensionName and pluginName for the ConfigurationManager singleton
         // here, to not run into warnings due to incomplete test setup.
-        $configurationManager = $this->getContainer()->get(ConfigurationManager::class);
+        $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration([
             'extensionName' => 'blog_example',
             'pluginName' => 'test',

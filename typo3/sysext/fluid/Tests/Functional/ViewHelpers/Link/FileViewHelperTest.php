@@ -241,7 +241,7 @@ class FileViewHelperTest extends FunctionalTestCase
 
     protected function getFile(int $fileUid): File
     {
-        return $this->getContainer()->get(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
+        return $this->get(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
     }
 
     protected function getFileReference(int $fileUid): FileReference
@@ -255,6 +255,6 @@ class FileViewHelperTest extends FunctionalTestCase
 
     protected function getProcessedFile(int $fileUid): ProcessedFile
     {
-        return $this->getContainer()->get(ProcessedFileRepository::class)->findByUid($fileUid);
+        return $this->get(ProcessedFileRepository::class)->findByUid($fileUid);
     }
 }

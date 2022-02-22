@@ -223,6 +223,6 @@ class ActionControllerArgumentTest extends FunctionalTestCase
 
     private function buildController(): ArgumentTestController
     {
-        return $this->getContainer()->get(ArgumentTestController::class);
+        return $this->get(ArgumentTestController::class);
     }
 }

@@ -42,7 +42,7 @@ class ImplementationClassNameTest extends FunctionalTestCase
      */
     public function aRepositoryObjectsAreTakenFromSession(): void
     {
-        $aRepository = $this->getContainer()->get(ARepository::class);
+        $aRepository = $this->get(ARepository::class);
         $a1 = $aRepository->findByUid(1);
         $a2 = $aRepository->findByUid(1);
 
@@ -54,7 +54,7 @@ class ImplementationClassNameTest extends FunctionalTestCase
      */
     public function bRepositoryObjectsAreTakenFromSession(): void
     {
-        $bRepository = $this->getContainer()->get(BRepository::class);
+        $bRepository = $this->get(BRepository::class);
         $b1 = $bRepository->findByUid(1);
         $b2 = $bRepository->findByUid(1);
 

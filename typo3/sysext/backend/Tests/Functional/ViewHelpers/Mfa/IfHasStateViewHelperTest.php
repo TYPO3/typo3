@@ -38,7 +38,7 @@ class IfHasStateViewHelperTest extends FunctionalTestCase
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRenderingContext()->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $this->view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Mfa/IfHasStateViewHelper.html');
-        $this->view->assign('provider', $this->getContainer()->get(MfaProviderRegistry::class)->getProvider('totp'));
+        $this->view->assign('provider', $this->get(MfaProviderRegistry::class)->getProvider('totp'));
     }
 
     /**

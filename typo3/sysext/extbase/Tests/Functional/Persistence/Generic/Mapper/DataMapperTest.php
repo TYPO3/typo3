@@ -38,7 +38,7 @@ class DataMapperTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->persistenceManager = $this->getContainer()->get(PersistenceManager::class);
+        $this->persistenceManager = $this->get(PersistenceManager::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
     }
 
