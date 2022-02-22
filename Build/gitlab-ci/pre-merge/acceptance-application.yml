@@ -13,6 +13,8 @@ acceptance application mariadb php 7.4 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptance -p 7.4 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1
 
 acceptance application mariadb php 8.1 pre-merge:
   stage: main
@@ -32,3 +34,5 @@ acceptance application mariadb php 8.1 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptance -p 8.1 -d mariadb -i 10.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1

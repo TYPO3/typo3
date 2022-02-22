@@ -14,6 +14,8 @@ acceptance install mariadb php 7.4 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mariadb -i 10.3 -p 7.4
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1
 
 acceptance install mysql php 8.1 pre-merge:
   stage: main
@@ -31,6 +33,8 @@ acceptance install mysql php 8.1 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d mysql -j 5.5 -p 8.1
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1
 
 acceptance install postgres php 7.4 pre-merge:
   stage: main
@@ -48,6 +52,8 @@ acceptance install postgres php 7.4 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 7.4
     - Build/Scripts/runTests.sh -s acceptanceInstall -d postgres -k 10 -p 7.4
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1
 
 acceptance install sqlite php 8.1 pre-merge:
   stage: main
@@ -65,3 +71,5 @@ acceptance install sqlite php 8.1 pre-merge:
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.1
     - Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite -p 8.1
+  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
+  retry: 1

@@ -1,6 +1,4 @@
 default:
-  # Always retry a failed job, so it has a chance to recover from a faulty machine or timing issue
-  retry: 1
   # Any job taking longer than this is considered 'failed'
   timeout: 30m
 
