@@ -175,19 +175,10 @@ abstract class AbstractConfigurationManager implements SingletonInterface
             }
 
             if (!empty($frameworkConfiguration['persistence']['recursive'])) {
-                // All implementations of getTreeList allow to pass the ids negative to include them into the result
-                // otherwise only childpages are returned
-                $storagePids = GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
-                array_walk($storagePids, static function (&$storagePid) {
-                    if ($storagePid > 0) {
-                        $storagePid = -$storagePid;
-                    }
-                });
                 $storagePids = $this->getRecursiveStoragePids(
-                    $storagePids,
+                    GeneralUtility::intExplode(',', $frameworkConfiguration['persistence']['storagePid']),
                     (int)$frameworkConfiguration['persistence']['recursive']
                 );
-
                 $frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
             }
         }

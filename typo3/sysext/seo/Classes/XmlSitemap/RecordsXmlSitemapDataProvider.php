@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
@@ -84,17 +85,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
         if (!empty($pids)) {
             $recursiveLevel = isset($this->config['recursive']) ? (int)$this->config['recursive'] : 0;
-            if ($recursiveLevel) {
-                $newList = [];
-                foreach ($pids as $pid) {
-                    $list = $this->cObj->getTreeList($pid, $recursiveLevel);
-                    if ($list) {
-                        $newList = array_merge($newList, explode(',', $list));
-                    }
-                }
-                $pids = array_merge($pids, $newList);
-            }
-
+            $pids = GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($pids, $recursiveLevel);
             $constraints[] = $queryBuilder->expr()->in('pid', $pids);
         }
 

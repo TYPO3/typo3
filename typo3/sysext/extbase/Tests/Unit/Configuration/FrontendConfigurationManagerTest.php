@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
@@ -305,127 +306,6 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function storagePidsAreExtendedIfRecursiveSearchIsConfigured(): void
-    {
-        $storagePids = [3, 5, 9];
-        $recursive = 99;
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            FrontendConfigurationManager::class,
-            [
-                'getContextSpecificFrameworkConfiguration',
-                'getTypoScriptSetup',
-                'getPluginConfiguration',
-                'getControllerConfiguration',
-            ],
-            [],
-            '',
-            false
-        );
-        $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock
-            ->method('getTreeList')
-            ->will(self::onConsecutiveCalls('4', '', '898,12'));
-        $abstractConfigurationManager->setContentObject($cObjectMock);
-
-        $expectedResult = [4, 898, 12];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid(): void
-    {
-        $storagePids = [-3, 5, 9];
-        $recursive = 99;
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            FrontendConfigurationManager::class,
-            [
-                'getContextSpecificFrameworkConfiguration',
-                'getTypoScriptSetup',
-                'getPluginConfiguration',
-                'getControllerConfiguration',
-            ],
-            [],
-            '',
-            false
-        );
-        $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock
-            ->method('getTreeList')
-            ->will(self::onConsecutiveCalls('3,4', '', '898,12'));
-        $abstractConfigurationManager->setContentObject($cObjectMock);
-
-        $expectedResult = [3, 4, 898, 12];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured(): void
-    {
-        $storagePids = [1, 2, 3];
-
-        /** @var FrontendConfigurationManager|MockObject|AccessibleObjectInterface $abstractConfigurationManager */
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            FrontendConfigurationManager::class,
-            [
-                'getContextSpecificFrameworkConfiguration',
-                'getTypoScriptSetup',
-                'getPluginConfiguration',
-                'getControllerConfiguration',
-            ],
-            [],
-            '',
-            false
-        );
-        $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects(self::never())->method('getTreeList');
-        $abstractConfigurationManager->setContentObject($cObjectMock);
-
-        $expectedResult = [1, 2, 3];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels(): void
-    {
-        $storagePids = [1, 2, 3];
-        $recursive = 0;
-
-        $abstractConfigurationManager = $this->getAccessibleMock(
-            FrontendConfigurationManager::class,
-            [
-                'getContextSpecificFrameworkConfiguration',
-                'getTypoScriptSetup',
-                'getPluginConfiguration',
-                'getControllerConfiguration',
-            ],
-            [],
-            '',
-            false
-        );
-
-        $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects(self::never())->method('getTreeList');
-        $abstractConfigurationManager->setContentObject($cObjectMock);
-
-        $expectedResult = [1, 2, 3];
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        self::assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function mergeConfigurationIntoFrameworkConfigurationWorksAsExpected(): void
     {
         $configuration = [
@@ -451,9 +331,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
-        $this->mockContentObject->method('getTreeList')->willReturn('1,2,3');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
+        $pageRepositoryMock = $this->createMock(PageRepository::class);
+        $pageRepositoryMock->method('getPageIdsRecursive')->willReturn([0, 1, 2, 3]);
+        $this->frontendConfigurationManager->_set('pageRepository', $pageRepositoryMock);
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(
             ['persistence' => ['storagePid' => '0,1,2,3']],
@@ -467,10 +349,12 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromGetTreeList(): void
+    public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromPageRepository(): void
     {
-        $this->mockContentObject->method('getTreeList')->willReturn('');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
+        $pageRepositoryMock = $this->createMock(PageRepository::class);
+        $pageRepositoryMock->method('getPageIdsRecursive')->willReturn([0]);
+        $this->frontendConfigurationManager->_set('pageRepository', $pageRepositoryMock);
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
         self::assertSame(

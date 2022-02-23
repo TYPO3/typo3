@@ -18,9 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -35,7 +38,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class PageRepositoryTest extends FunctionalTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -613,5 +617,68 @@ class PageRepositoryTest extends FunctionalTestCase
         self::assertFalse(isset($row['_PAGES_OVERLAY']));
         self::assertFalse(isset($row['_PAGES_OVERLAY_UID']));
         self::assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
+    }
+
+    /**
+     * @test
+     */
+    public function getPageIdsRecursiveTest(): void
+    {
+        // do not use cache_treelist
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => PHP_INT_MAX];
+        $subject = new PageRepository(
+            new Context([
+                'backend.user' => new UserAspect($user),
+            ])
+        );
+        // empty array does not do anything
+        $result = $subject->getPageIdsRecursive([], 1);
+        self::assertEquals([], $result);
+        // pid=0 does not do anything
+        $result = $subject->getPageIdsRecursive([0], 1);
+        self::assertEquals([0], $result);
+        // depth=0 does return given ids int-casted
+        $result = $subject->getPageIdsRecursive(['1'], 0);
+        self::assertEquals([1], $result);
+        $result = $subject->getPageIdsRecursive([1], 1);
+        self::assertEquals([1, 2, 3, 4], $result);
+        $result = $subject->getPageIdsRecursive([1], 2);
+        self::assertEquals([1, 2, 5, 7, 3, 8, 9, 4, 10], $result);
+        $result = $subject->getPageIdsRecursive([1000], 99);
+        self::assertEquals([1000, 1001], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getDescendantPageIdsRecursiveTest(): void
+    {
+        // do not use cache_treelist
+        $user = new BackendUserAuthentication();
+        $user->user = ['uid' => PHP_INT_MAX];
+        $subject = new PageRepository(
+            new Context([
+                'backend.user' => new UserAspect($user),
+            ])
+        );
+        // Negative numbers or "0" do not return anything
+        $result = $subject->getDescendantPageIdsRecursive(-1, 1);
+        self::assertEquals([], $result);
+        $result = $subject->getDescendantPageIdsRecursive(0, 1);
+        self::assertEquals([], $result);
+        $result = $subject->getDescendantPageIdsRecursive(1, 1);
+        self::assertEquals([2, 3, 4], $result);
+        $result = $subject->getDescendantPageIdsRecursive(1, 2);
+        self::assertEquals([2, 5, 7, 3, 8, 9, 4, 10], $result);
+        // "Begin" leaves out a level
+        $result = $subject->getDescendantPageIdsRecursive(1, 2, 1);
+        self::assertEquals([5, 7, 8, 9, 10], $result);
+        // Exclude a branch (3)
+        $result = $subject->getDescendantPageIdsRecursive(1, 2, excludePageIds: [3]);
+        self::assertEquals([2, 5, 7, 4, 10], $result);
+        // Include Page ID 6
+        $result = $subject->getDescendantPageIdsRecursive(1, 2, bypassEnableFieldsCheck:true);
+        self::assertEquals([2, 5, 6, 7, 3, 8, 9, 4, 10], $result);
     }
 }

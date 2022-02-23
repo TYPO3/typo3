@@ -2556,11 +2556,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Configuration/AbstractConfigurationManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:getTreeList\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Configuration/FrontendConfigurationManager.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\RequestInterface\\:\\:getControllerActionName\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Core/Bootstrap.php
@@ -4097,16 +4092,6 @@ parameters:
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:\\$getImgResourceHookObjects \\(array\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Unary operation \"\\-\" on int\\<1, max\\>\\|string results in an error\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 

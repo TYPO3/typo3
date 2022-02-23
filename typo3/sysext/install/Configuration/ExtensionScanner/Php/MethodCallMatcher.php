@@ -5211,4 +5211,11 @@ return [
             'Deprecation-96996-DeprecateTypoScriptFrontendController-checkEnableFields.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer->getTreeList' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 8,
+        'restFiles' => [
+            'Deprecation-97027-ContentObjectRenderer-getTreeList.rst',
+        ],
+    ],
 ];

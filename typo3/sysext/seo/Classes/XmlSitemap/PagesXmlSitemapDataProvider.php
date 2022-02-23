@@ -71,20 +71,16 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         $excludePagesRecursive = GeneralUtility::intExplode(',', $this->config['excludePagesRecursive'] ?? '', true);
-        $excludePagesRecursiveWhereClause = '';
-        if ($excludePagesRecursive !== []) {
-            $excludePagesRecursiveWhereClause = sprintf('uid NOT IN (%s)', implode(',', $excludePagesRecursive));
-        }
 
-        $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $treeList = $cObj->getTreeList(-$rootPageId, 99, 0, false, '', $excludePagesRecursiveWhereClause);
-        $treeListArray = GeneralUtility::intExplode(',', $treeList);
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pageIds = $pageRepository->getDescendantPageIdsRecursive($rootPageId, 99, 0, $excludePagesRecursive);
+        $pageIds = array_merge([$rootPageId], $pageIds);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
 
         $constraints = [
-            $queryBuilder->expr()->in('uid', $treeListArray),
+            $queryBuilder->expr()->in('uid', $pageIds),
         ];
 
         if (!empty($this->config['additionalWhere'])) {

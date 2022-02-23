@@ -22,9 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\Environment;
@@ -32,10 +30,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
-use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Html\SanitizerBuilderFactory;
@@ -5209,233 +5205,30 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
      * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
      * @return string Returns the list of ids as a comma separated string
+     * @deprecated since TYPO3 v12.0, will be removed in TYPO3 v13.0. Use PageRepository->getDescendantPageIdsRecursive() or PageRepository->getPageIdsRecursive() instead.
      */
     public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = false, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = [], $recursionLevel = 0)
     {
+        trigger_error('ContentObjectRenderer->getTreeList() will be removed in TYPO3 v13.0. Use PageRepository->getDescendantPageIdsRecursive() or PageRepository->getPageIdsRecursive() instead.', E_USER_DEPRECATED);
+        $addCurrentPageId = false;
         $id = (int)$id;
-        if (!$id) {
-            return '';
+        if ($id < 0) {
+            $id = abs($id);
+            $addCurrentPageId = true;
         }
-
-        // Init vars:
-        $allFields = 'uid,hidden,starttime,endtime,fe_group,extendToSubpages,doktype,php_tree_stop,mount_pid,mount_pid_ol,t3ver_state,l10n_parent' . $addSelectFields;
-        $depth = (int)$depth;
-        $begin = (int)$begin;
-        $theList = [];
-        $addId = 0;
-        $requestHash = '';
-
-        // First level, check id (second level, this is done BEFORE the recursive call)
-        $tsfe = $this->getTypoScriptFrontendController();
-        if (!$recursionLevel) {
-            // Check tree list cache
-            // First, create the hash for this request - not sure yet whether we need all these parameters though
-            $parameters = [
-                $id,
-                $depth,
-                $begin,
-                $dontCheckEnableFields,
-                $addSelectFields,
-                $moreWhereClauses,
-                $prevId_array,
-                GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]),
-            ];
-            $requestHash = md5(serialize($parameters));
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('cache_treelist');
-            $cacheEntry = $queryBuilder->select('treelist')
-                ->from('cache_treelist')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'md5hash',
-                        $queryBuilder->createNamedParameter($requestHash, \PDO::PARAM_STR)
-                    ),
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->gt(
-                            'expires',
-                            $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq('expires', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
-                    )
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchAssociative();
-
-            if (is_array($cacheEntry)) {
-                // Cache hit
-                return $cacheEntry['treelist'];
-            }
-            // If Id less than zero it means we should add the real id to list:
-            if ($id < 0) {
-                $addId = $id = abs($id);
-            }
-            // Check start page:
-            if ($tsfe->sys_page->getRawRecord('pages', $id, 'uid')) {
-                // Find mount point if any:
-                $mount_info = $tsfe->sys_page->getMountPointInfo($id);
-                if (is_array($mount_info)) {
-                    $id = $mount_info['mount_pid'];
-                    // In Overlay mode, use the mounted page uid as added ID!:
-                    if ($addId && $mount_info['overlay']) {
-                        $addId = $id;
-                    }
-                }
-            } else {
-                // Return blank if the start page was NOT found at all!
-                return '';
-            }
+        $pageRepository = $this->getTypoScriptFrontendController()->sys_page;
+        if ($dontCheckEnableFields) {
+            $backupEnableFields = $pageRepository->where_hid_del;
+            $pageRepository->where_hid_del = '';
         }
-        // Add this ID to the array of IDs
-        if ($begin <= 0) {
-            $prevId_array[] = $id;
+        $result = $pageRepository->getDescendantPageIdsRecursive($id, (int)$depth, (int)$begin, [], (bool)$dontCheckEnableFields);
+        if ($dontCheckEnableFields) {
+            $pageRepository->where_hid_del = $backupEnableFields;
         }
-        // Select sublevel:
-        if ($depth > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
-                    ),
-                    // tree is only built by language=0 pages
-                    $queryBuilder->expr()->eq('sys_language_uid', 0)
-                )
-                ->orderBy('sorting');
-
-            if (!empty($moreWhereClauses)) {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
-            }
-
-            $result = $queryBuilder->executeQuery();
-            while ($row = $result->fetchAssociative()) {
-                /** @var VersionState $versionState */
-                $versionState = VersionState::cast($row['t3ver_state']);
-                $tsfe->sys_page->versionOL('pages', $row);
-                if ($row === false
-                    || (int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
-                    || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
-                    || $versionState->indicatesPlaceholder()
-                ) {
-                    // falsy row means Overlay prevents access to this page.
-                    // Doing this after the overlay to make sure changes
-                    // in the overlay are respected.
-                    // However, we do not process pages below of and
-                    // including of type recycler and BE user section
-                    continue;
-                }
-                // Find mount point if any:
-                $next_id = $row['uid'];
-                $mount_info = $tsfe->sys_page->getMountPointInfo($next_id, $row);
-                // Overlay mode:
-                if (is_array($mount_info) && $mount_info['overlay']) {
-                    $next_id = $mount_info['mount_pid'];
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getQueryBuilderForTable('pages');
-                    $queryBuilder->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $queryBuilder->select(...GeneralUtility::trimExplode(',', $allFields, true))
-                        ->from('pages')
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($next_id, \PDO::PARAM_INT)
-                            )
-                        )
-                        ->orderBy('sorting')
-                        ->setMaxResults(1);
-
-                    if (!empty($moreWhereClauses)) {
-                        $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($moreWhereClauses));
-                    }
-
-                    $row = $queryBuilder->executeQuery()->fetchAssociative();
-                    $tsfe->sys_page->versionOL('pages', $row);
-                    if ((int)$row['doktype'] === PageRepository::DOKTYPE_RECYCLER
-                        || (int)$row['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION
-                        || $versionState->indicatesPlaceholder()
-                    ) {
-                        // Doing this after the overlay to make sure
-                        // changes in the overlay are respected.
-                        // see above
-                        continue;
-                    }
-                }
-                $accessVoter = GeneralUtility::makeInstance(RecordAccessVoter::class);
-                // Add record:
-                if ($dontCheckEnableFields || $accessVoter->accessGrantedForPageInRootLine($row, $tsfe->getContext())) {
-                    // Add ID to list:
-                    if ($begin <= 0) {
-                        if ($dontCheckEnableFields || $accessVoter->accessGranted('pages', $row, $tsfe->getContext())) {
-                            $theList[] = $next_id;
-                        }
-                    }
-                    // Next level:
-                    if ($depth > 1 && !$row['php_tree_stop']) {
-                        // Normal mode:
-                        if (is_array($mount_info) && !$mount_info['overlay']) {
-                            $next_id = $mount_info['mount_pid'];
-                        }
-                        // Call recursively, if the id is not in prevID_array:
-                        if (!in_array($next_id, $prevId_array)) {
-                            $theList = array_merge(
-                                $theList,
-                                GeneralUtility::intExplode(
-                                    ',',
-                                    $this->getTreeList(
-                                        $next_id,
-                                        $depth - 1,
-                                        $begin - 1,
-                                        $dontCheckEnableFields,
-                                        $addSelectFields,
-                                        $moreWhereClauses,
-                                        $prevId_array,
-                                        $recursionLevel + 1
-                                    ),
-                                    true
-                                )
-                            );
-                        }
-                    }
-                }
-            }
+        if ($addCurrentPageId) {
+            $result = array_merge([$id], $result);
         }
-        // If first run, check if the ID should be returned:
-        if (!$recursionLevel) {
-            if ($addId) {
-                if ($begin > 0) {
-                    $theList[] = 0;
-                } else {
-                    $theList[] = $addId;
-                }
-            }
-
-            $cacheEntry = [
-                'md5hash' => $requestHash,
-                'pid' => $id,
-                'treelist' => implode(',', $theList),
-                'tstamp' => $GLOBALS['EXEC_TIME'],
-            ];
-
-            // Only add to cache if not logged into TYPO3 Backend
-            if (!$this->getFrontendBackendUser() instanceof AbstractUserAuthentication) {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
-                try {
-                    $connection->transactional(static function ($connection) use ($cacheEntry) {
-                        $connection->insert('cache_treelist', $cacheEntry);
-                    });
-                } catch (\Throwable $e) {
-                }
-            }
-        }
-
-        return implode(',', $theList);
+        return implode(',', $result);
     }
 
     /**
@@ -5618,19 +5411,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     if ($storagePid === 'this') {
                         $storagePid = $this->getTypoScriptFrontendController()->id;
                     }
-                    if (MathUtility::canBeInterpretedAsInteger($storagePid) && $storagePid > 0) {
-                        $storagePid = -$storagePid;
-                    }
                 });
-                $expandedPidList = [];
-                foreach ($pidList as $value) {
-                    // Implementation of getTreeList allows to pass the id negative to include
-                    // it into the result otherwise only childpages are returned
-                    $expandedPidList = array_merge(
-                        GeneralUtility::intExplode(',', $this->getTreeList((int)$value, (int)($conf['recursive'] ?? 0))),
-                        $expandedPidList
-                    );
-                }
+                $expandedPidList = $this->getTypoScriptFrontendController()->sys_page->getPageIdsRecursive($pidList, $conf['recursive']);
                 $conf['pidInList'] = implode(',', $expandedPidList);
             }
         }
@@ -6251,16 +6033,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $configuration['key'] = $configuration['key'] ?? '';
         return $this->stdWrapValue('key', $configuration);
-    }
-
-    /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Backend\FrontendBackendUserAuthentication
-     */
-    protected function getFrontendBackendUser()
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**

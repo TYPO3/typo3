@@ -258,50 +258,6 @@ class ContentObjectRendererTest extends FunctionalTestCase
     }
 
     /**
-     * @test
-     */
-    public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet(): void
-    {
-        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList'], [$this->typoScriptFrontendController]);
-        $this->subject->start([], 'tt_content');
-
-        $conf = [
-            'recursive' => '15',
-            'pidInList' => '16, -35',
-        ];
-
-        $this->subject->expects(self::exactly(2))
-            ->method('getTreeList')
-            ->withConsecutive([-16, 15], [-35, 15])
-            ->willReturnOnConsecutiveCalls('15,16', '15,35');
-
-        $this->subject->getQuery('tt_content', $conf, true);
-    }
-
-    /**
-     * @test
-     */
-    public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet(): void
-    {
-        $this->typoScriptFrontendController->id = 27;
-
-        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList'], [$this->typoScriptFrontendController]);
-        $this->subject->start([], 'tt_content');
-
-        $conf = [
-            'pidInList' => 'this',
-            'recursive' => '4',
-        ];
-
-        $this->subject->expects(self::once())
-            ->method('getTreeList')
-            ->with(-27)
-            ->willReturn('27');
-
-        $this->subject->getQuery('tt_content', $conf, true);
-    }
-
-    /**
      * @return array
      */
     public function getWhereReturnCorrectQueryDataProvider(): array

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -32,21 +33,7 @@ abstract class AbstractLoginFormController extends ActionController
         if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
             return [0];
         }
-        $storagePids = explode(',', $this->settings['pages'] ?? '');
-        $storagePids = array_map('intval', $storagePids);
-
-        $recursionDepth = (int)($this->settings['recursive'] ?? 0);
-        if ($recursionDepth > 0) {
-            $recursiveStoragePids = $storagePids;
-            foreach ($storagePids as $startPid) {
-                $pids = $this->configurationManager->getContentObject()->getTreeList($startPid, $recursionDepth);
-                foreach (GeneralUtility::intExplode(',', $pids, true) as $pid) {
-                    $recursiveStoragePids[] = $pid;
-                }
-            }
-            $storagePids = $recursiveStoragePids;
-        }
-
-        return array_unique($storagePids);
+        $storagePids = GeneralUtility::intExplode(',', $this->settings['pages'] ?? '', true);
+        return GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($storagePids, (int)($this->settings['recursive'] ?? 0));
     }
 }

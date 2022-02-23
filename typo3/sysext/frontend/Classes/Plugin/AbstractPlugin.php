@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Page\DefaultJavaScriptAssetTrait;
@@ -1107,16 +1108,7 @@ class AbstractPlugin
         }
         $recursive = MathUtility::forceIntegerInRange($recursive, 0);
         $pid_list_arr = array_unique(GeneralUtility::intExplode(',', $pid_list, true));
-        $pid_list = [];
-        foreach ($pid_list_arr as $val) {
-            $val = MathUtility::forceIntegerInRange($val, 0);
-            if ($val) {
-                $_list = $this->cObj->getTreeList(-1 * $val, $recursive);
-                if ($_list) {
-                    $pid_list[] = $_list;
-                }
-            }
-        }
+        $pid_list = GeneralUtility::makeInstance(PageRepository::class)->getPageIdsRecursive($pid_list_arr, $recursive);
         return implode(',', $pid_list);
     }
 

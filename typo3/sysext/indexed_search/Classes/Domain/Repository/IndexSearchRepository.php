@@ -21,10 +21,10 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 use TYPO3\CMS\IndexedSearch\Utility\LikeWildcard;
@@ -481,15 +481,10 @@ class IndexSearchRepository
                 );
             $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
         } elseif ($searchRootPageIdList[0] >= 0) {
-            // Collecting all pages IDs in which to search;
+            // Collecting all pages IDs in which to search
             // filtering out ALL pages that are not accessible due to restriction containers. Does NOT look for "no_search" field!
-            $idList = [];
-            foreach ($searchRootPageIdList as $rootId) {
-                /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj */
-                $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-                $idList[] = $cObj->getTreeList(-1 * $rootId, 9999);
-            }
-            $idList = GeneralUtility::intExplode(',', implode(',', $idList));
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $idList = $pageRepository->getPageIdsRecursive($searchRootPageIdList, 9999);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',
@@ -1028,19 +1023,16 @@ class IndexSearchRepository
                 )
             );
         } elseif ($this->searchRootPageIdList >= 0) {
-            // Collecting all pages IDs in which to search;
+            // Collecting all pages IDs in which to search,
             // filtering out ALL pages that are not accessible due to restriction containers.
             // Does NOT look for "no_search" field!
             $siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
-            $pageIdList = [];
-            foreach ($siteIdNumbers as $rootId) {
-                $pageIdList[] = $this->getTypoScriptFrontendController()->cObj->getTreeList(-1 * $rootId, 9999);
-            }
+            $pageIdList = $this->getTypoScriptFrontendController()->sys_page->getPageIdsRecursive($siteIdNumbers, 9999);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
                     'ISEC.page_id',
                     $queryBuilder->createNamedParameter(
-                        array_unique(GeneralUtility::intExplode(',', implode(',', $pageIdList), true)),
+                        $pageIdList,
                         Connection::PARAM_INT_ARRAY
                     )
                 )

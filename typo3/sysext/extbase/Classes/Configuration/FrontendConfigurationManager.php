@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Configuration;
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -30,14 +31,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FrontendConfigurationManager extends AbstractConfigurationManager
 {
-    protected FlexFormService $flexFormService;
-
     public function __construct(
         TypoScriptService $typoScriptService,
-        FlexFormService $flexFormService
+        protected FlexFormService $flexFormService,
+        protected PageRepository $pageRepository
     ) {
         parent::__construct($typoScriptService);
-        $this->flexFormService = $flexFormService;
     }
 
     /**
@@ -124,19 +123,10 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
     {
         $pages = $this->contentObject->data['pages'] ?? '';
         if (is_string($pages) && $pages !== '') {
-            $list = [];
-            if ($this->contentObject->data['recursive'] > 0) {
-                $explodedPages = GeneralUtility::trimExplode(',', $pages);
-                foreach ($explodedPages as $pid) {
-                    $pids = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
-                    if ($pids !== '') {
-                        $list[] = $pids;
-                    }
-                }
-            }
-            if (!empty($list)) {
-                $pages = $pages . ',' . implode(',', $list);
-            }
+            $storagePids = GeneralUtility::intExplode(',', $pages, true);
+            $recursionDepth = (int)($this->contentObject->data['recursive'] ?? 0);
+            $recursiveStoragePids = $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);
+            $pages = implode(',', $recursiveStoragePids);
             ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, [
                 'persistence' => [
                     'storagePid' => $pages,
@@ -219,23 +209,10 @@ class FrontendConfigurationManager extends AbstractConfigurationManager
      *
      * @param array|int[] $storagePids Storage PIDs to start at; multiple PIDs possible as comma-separated list
      * @param int $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
-     * @return array|int[] storage PIDs
+     * @return int[] storage PIDs
      */
     protected function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
     {
-        array_map('intval', $storagePids);
-
-        if ($recursionDepth <= 0) {
-            return $storagePids;
-        }
-
-        $recursiveStoragePids = [];
-        foreach ($storagePids as $startPid) {
-            $pids = $this->getContentObject()->getTreeList($startPid, $recursionDepth, 0);
-            foreach (GeneralUtility::intExplode(',', $pids, true) as $pid) {
-                $recursiveStoragePids[] = $pid;
-            }
-        }
-        return array_unique($recursiveStoragePids);
+        return $this->pageRepository->getPageIdsRecursive($storagePids, $recursionDepth);
     }
 }

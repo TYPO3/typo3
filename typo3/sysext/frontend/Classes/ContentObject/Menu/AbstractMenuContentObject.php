@@ -771,17 +771,15 @@ abstract class AbstractMenuContentObject
         $mode = $this->conf['special.']['mode'] ?? '';
         // Get id's
         $beginAtLevel = MathUtility::forceIntegerInRange(($this->conf['special.']['beginAtLevel'] ?? 0), 0, 100);
-        $id_list_arr = [];
+        $pageIds = [];
         foreach ($items as $id) {
             // Exclude the current ID if beginAtLevel is > 0
             if ($beginAtLevel > 0) {
-                $id_list_arr[] = $this->parent_cObj->getTreeList($id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1);
+                $pageIds = array_merge($pageIds, $this->sys_page->getDescendantPageIdsRecursive($id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1));
             } else {
-                $id_list_arr[] = $this->parent_cObj->getTreeList(-1 * $id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1);
+                $pageIds = array_merge($pageIds, [$id], $this->sys_page->getDescendantPageIdsRecursive($id, $depth - 1 + $beginAtLevel, $beginAtLevel - 1));
             }
         }
-        $id_list = implode(',', $id_list_arr);
-        $pageIds = GeneralUtility::intExplode(',', $id_list);
         // Get sortField (mode)
         $sortField = $this->getMode($mode);
 
@@ -853,10 +851,11 @@ abstract class AbstractMenuContentObject
         if ($this->conf['special.']['keywordsField'] ?? false) {
             [$kfield] = explode(' ', trim($this->conf['special.']['keywordsField']));
         }
-        // If there are keywords and the startuid is present
+        // If there are keywords and the startUid is present
         if ($kw && $startUid) {
             $bA = MathUtility::forceIntegerInRange(($this->conf['special.']['beginAtLevel'] ?? 0), 0, 100);
-            $id_list = $this->parent_cObj->getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
+            $id_list = $this->sys_page->getDescendantPageIdsRecursive($startUid, $depth - 1 + $bA, $bA - 1);
+            $id_list = array_merge([(int)$startUid], $id_list);
             $kwArr = GeneralUtility::trimExplode(',', $kw, true);
             $keyWordsWhereArr = [];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -875,7 +874,7 @@ abstract class AbstractMenuContentObject
                 ->where(
                     $queryBuilder->expr()->in(
                         'uid',
-                        GeneralUtility::intExplode(',', $id_list, true)
+                        $id_list
                     ),
                     $queryBuilder->expr()->neq(
                         'uid',
