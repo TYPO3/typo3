@@ -52,6 +52,6 @@
         "typo3/cms-viewpage": "@dev"
     },
     "require-dev": {
-        "typo3/cms-styleguide": "~11.4.0"
+        "typo3/cms-styleguide": "~11.5.4"
     }
 }

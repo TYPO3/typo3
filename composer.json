@@ -120,7 +120,7 @@
 		"phpstan/phpstan": "^1.4.5",
 		"phpstan/phpstan-phpunit": "^1.0",
 		"phpunit/phpunit": "^9.5.10",
-		"typo3/cms-styleguide": "~11.5.3",
+		"typo3/cms-styleguide": "~11.5.4",
 		"typo3/testing-framework": "^6.15.3"
 	},
 	"suggest": {
