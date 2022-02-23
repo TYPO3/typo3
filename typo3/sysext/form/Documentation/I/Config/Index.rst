@@ -15,4 +15,3 @@ It addresses your concerns as and integrator and developer.
    persistenceManager/Index
    proto/Index
    formManager/Index
-   configuration/Index
