@@ -193,11 +193,18 @@ class UpgradeController extends AbstractController
     public function cardsAction(ServerRequestInterface $request): ResponseInterface
     {
         $view = $this->initializeView($request);
-        $installedExtensions = 0;
-        if (is_dir(Environment::getExtensionsPath())) {
-            $installedExtensions = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->count();
+        $hasExtensions = false;
+
+        foreach ($this->packageManager->getAvailablePackages() as $package) {
+            if (!$package->getPackageMetaData()->isExtensionType() || $package->getPackageMetaData()->isFrameworkType()) {
+                continue;
+            }
+
+            $hasExtensions = true;
+            break;
         }
-        $view->assign('extensionFoldersInTypo3conf', $installedExtensions);
+
+        $view->assign('hasExtensions', $hasExtensions);
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Upgrade/Cards'),
@@ -621,11 +628,19 @@ class UpgradeController extends AbstractController
      */
     public function extensionScannerGetDataAction(ServerRequestInterface $request): ResponseInterface
     {
-        $extensionsInTypo3conf = (new Finder())->directories()->in(Environment::getExtensionsPath())->depth(0)->sortByName();
+        $extensions = [];
+        foreach ($this->packageManager->getAvailablePackages() as $package) {
+            if (!$package->getPackageMetaData()->isExtensionType() || $package->getPackageMetaData()->isFrameworkType()) {
+                continue;
+            }
+
+            $extensions[] = $package->getPackageKey();
+        }
+        sort($extensions);
         $view = $this->initializeView($request);
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
-            'extensionScannerExtensionList' => $extensionsInTypo3conf,
+            'extensionScannerExtensionList' => $extensions,
             'extensionScannerFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerFiles'),
             'extensionScannerScanFileToken' => $formProtection->generateToken('installTool', 'extensionScannerScanFile'),
             'extensionScannerMarkFullyScannedRestFilesToken' => $formProtection->generateToken('installTool', 'extensionScannerMarkFullyScannedRestFiles'),
@@ -652,7 +667,7 @@ class UpgradeController extends AbstractController
     {
         // Get and validate path
         $extension = $request->getParsedBody()['install']['extension'];
-        $extensionBasePath = Environment::getExtensionsPath() . '/' . $extension;
+        $extensionBasePath = $this->packageManager->getPackage($extension)->getPackagePath();
         if (empty($extension) || !GeneralUtility::isAllowedAbsPath($extensionBasePath)) {
             throw new \RuntimeException(
                 'Path to extension ' . $extension . ' not allowed.',
@@ -741,7 +756,7 @@ class UpgradeController extends AbstractController
     {
         // Get and validate path and file
         $extension = $request->getParsedBody()['install']['extension'];
-        $extensionBasePath = Environment::getExtensionsPath() . '/' . $extension;
+        $extensionBasePath = $this->packageManager->getPackage($extension)->getPackagePath();
         if (empty($extension) || !GeneralUtility::isAllowedAbsPath($extensionBasePath)) {
             throw new \RuntimeException(
                 'Path to extension ' . $extension . ' not allowed.',
@@ -755,7 +770,7 @@ class UpgradeController extends AbstractController
             );
         }
         $file = $request->getParsedBody()['install']['file'];
-        $absoluteFilePath = $extensionBasePath . '/' . $file;
+        $absoluteFilePath = $extensionBasePath . $file;
         if (empty($file) || !GeneralUtility::isAllowedAbsPath($absoluteFilePath)) {
             throw new \RuntimeException(
                 'Path to file ' . $file . ' of extension ' . $extension . ' not allowed.',
