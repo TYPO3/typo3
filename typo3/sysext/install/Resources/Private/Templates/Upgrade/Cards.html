@@ -68,12 +68,12 @@
             <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Upgrade/TcaMigrationsCheck">Check TCA Migrations</button>
         </div>
     </div>
-    <div class="card card-size-fixed-small {f:if(condition:'!{extensionFoldersInTypo3conf}', then: 'card-disabled')}">
+    <div class="card card-size-fixed-small {f:if(condition:'!{hasExtensions}', then: 'card-disabled')}">
         <f:render partial="Card/Header" arguments="{ title: 'Scan Extension Files', subtitle: 'Extensions', icon: 'Icons/modules/install-scan-extensions.svg'}" />
         <div class="card-body">
             <p class="card-text">Scan extensions for usage of deprecated or outdated TYPO3 API calls.</p>
         </div>
-        <f:if condition="{extensionFoldersInTypo3conf}">
+        <f:if condition="{hasExtensions}">
             <f:then>
                 <div class="card-footer">
                     <button type="button" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/Upgrade/ExtensionScanner">Scan Extension Files</button>

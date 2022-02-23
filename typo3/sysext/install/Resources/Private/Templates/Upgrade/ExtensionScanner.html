@@ -68,10 +68,10 @@
     <h2>Extensions</h2>
 
     <div class="panel-group panel-group-flat panel-group-scanner-extensions">
-        <f:for each="{extensionScannerExtensionList}" as="extensionInTypo3conf" iteration="iterator">
+        <f:for each="{extensionScannerExtensionList}" as="extension" iteration="iterator">
             <div
-                class="panel panel-default panel-flat t3js-extensionScanner-extension t3js-extensionScanner-extension-{extensionInTypo3conf.filename}"
-                data-extension="{extensionInTypo3conf.filename}">
+                class="panel panel-default panel-flat t3js-extensionScanner-extension t3js-extensionScanner-extension-{extension}"
+                data-extension="{extension}">
                 <div class="panel-progress">
                     <div class="panel-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;"><span class="sr-only"></span></div>
                 </div>
@@ -79,7 +79,7 @@
                     <h2 class="panel-title">
                         <a href="#extension-{iterator.index}" class="collapsed" data-bs-toggle="collapse">
                             <span class="caret"></span>
-                            Extension: <strong>{extensionInTypo3conf.filename}</strong>
+                            Extension: <strong>{extension}</strong>
                             <span class="pull-right t3js-extensionScanner-number-of-files"></span>
                         </a>
                     </h2>
