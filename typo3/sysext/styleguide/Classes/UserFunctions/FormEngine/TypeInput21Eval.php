@@ -24,7 +24,7 @@ class TypeInput21Eval
 {
     public function returnFieldJS(): JavaScriptModuleInstruction
     {
-        return JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Styleguide/TypeInput21Eval');
+        return JavaScriptModuleInstruction::create('@typo3/styleguide/type-input21-eval.js');
     }
 
     /**

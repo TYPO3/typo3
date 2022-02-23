@@ -113,7 +113,7 @@ class BackendController extends ActionController
 
     protected function tcaAction(): ResponseInterface
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/ProcessingIndicator');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/processing-indicator.js');
         $finder = GeneralUtility::makeInstance(RecordFinder::class);
         $demoExists = count($finder->findUidsOfStyleguideEntryPages());
         $demoFrontendExists = count($finder->findUidsOfFrontendPages());
@@ -168,7 +168,7 @@ class BackendController extends ActionController
 
     protected function iconsAction(): ResponseInterface
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/FindIcons');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/find-icons.js');
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         $allIcons = $iconRegistry->getAllRegisteredIconIdentifiers();
         $overlays = array_filter(
@@ -192,7 +192,7 @@ class BackendController extends ActionController
 
     protected function flashMessagesAction(): ResponseInterface
     {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/RenderNotifications');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/render-notifications.js');
         $loremIpsum = GeneralUtility::makeInstance(KauderwelschService::class)->getLoremIpsum();
         // We're writing to an own queue here to position the messages within the body.
         // Normal modules wouldn't usually do this and would let ModuleTemplate layout take care of rendering
@@ -294,7 +294,7 @@ class BackendController extends ActionController
             'dateTimeFormat' => 'h:m d-m-Y',
         ]);
 
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Styleguide/Pagination');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/styleguide/pagination.js');
 
         return $this->moduleTemplate->renderResponse('Backend/Pagination');
     }
