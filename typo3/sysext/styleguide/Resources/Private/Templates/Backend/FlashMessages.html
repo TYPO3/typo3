@@ -76,29 +76,28 @@
                   </button>
                 </p>
                 <sg:code language="javascript" codeonly="true">
-                  <script>
-                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                          Notification.notice(
-                              'Notice',
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
-                          );
-                          Notification.info(
-                              'Info',
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
-                          );
-                          Notification.success(
-                              'OK',
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
-                          );
-                          Notification.warning(
-                              'Warning',
-                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
-                          );
-                          Notification.error(
-                              'Error',
-                              'Highway to the danger zone'
-                          );
-                      });
+                  <script type="module">
+                  import Notification from '@typo3/backend/notification.js';
+                  Notification.notice(
+                    'Notice',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                  );
+                  Notification.info(
+                    'Info',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                  );
+                  Notification.success(
+                    'OK',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                  );
+                  Notification.warning(
+                    'Warning',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt'
+                  );
+                  Notification.error(
+                    'Error',
+                    'Highway to the danger zone'
+                  );
                   </script>
                 </sg:code>
 
@@ -146,119 +145,118 @@
                   </button>
                 </p>
                 <sg:code language="javascript" codeonly="true">
-                  <script>
-                    require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                      Notification.notice(
-                        'Notice',
-                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                        5,
-                        [
-                          {
-                            label: 'Immediate action',
-                            action: new ImmediateAction(function () {
-                              alert('Immediate action done');
-                            }),
-                          },
-                          {
-                            label: 'Deferred action',
-                            action: new DeferredAction(function () {
-                              return new Promise(resolve => setTimeout(() => {
-                                alert('Deferred action done after 3000 ms');
-                                resolve();
-                              }, 3000));
-                            }),
-                          }
-                        ]
-                      );
-                      Notification.info(
-                        'Info',
-                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                        5,
-                        [
-                          {
-                            label: 'Immediate action',
-                            action: new ImmediateAction(function () {
-                              alert('Immediate action done');
-                            }),
-                          },
-                          {
-                            label: 'Deferred action',
-                            action: new DeferredAction(function () {
-                              return new Promise(resolve => setTimeout(() => {
-                                alert('Deferred action done after 3000 ms');
-                                resolve();
-                              }, 3000));
-                            }),
-                          }
-                        ]
-                      );
-                      Notification.success(
-                        'OK',
-                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                        5,
-                        [
-                          {
-                            label: 'Immediate action',
-                            action: new ImmediateAction(function () {
-                              alert('Immediate action done');
-                            }),
-                          },
-                          {
-                            label: 'Deferred action',
-                            action: new DeferredAction(function () {
-                              return new Promise(resolve => setTimeout(() => {
-                                alert('Deferred action done after 3000 ms');
-                                resolve();
-                              }, 3000));
-                            }),
-                          }
-                        ]
-                      );
-                      Notification.warning(
-                        'Warning',
-                        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
-                        5,
-                        [
-                          {
-                            label: 'Immediate action',
-                            action: new ImmediateAction(function () {
-                              alert('Immediate action done');
-                            }),
-                          },
-                          {
-                            label: 'Deferred action',
-                            action: new DeferredAction(function () {
-                              return new Promise(resolve => setTimeout(() => {
-                                alert('Deferred action done after 3000 ms');
-                                resolve();
-                              }, 3000));
-                            }),
-                          }
-                        ]
-                      );
-                      Notification.error(
-                        'Error',
-                        'Highway to the danger zone',
-                        0,
-                        [
-                          {
-                            label: 'Immediate action',
-                            action: new ImmediateAction(function () {
-                              alert('Immediate action done');
-                            }),
-                          },
-                          {
-                            label: 'Deferred action',
-                            action: new DeferredAction(function () {
-                              return new Promise(resolve => setTimeout(() => {
-                                alert('Deferred action done after 3000 ms');
-                                resolve();
-                              }, 3000));
-                            }),
-                          }
-                        ]
-                      );
-                    });
+                  <script type="module">
+                  import Notification from '@typo3/backend/notification.js';
+                  Notification.notice(
+                    'Notice',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                    5,
+                    [
+                      {
+                        label: 'Immediate action',
+                        action: new ImmediateAction(function () {
+                          alert('Immediate action done');
+                        }),
+                      },
+                      {
+                        label: 'Deferred action',
+                        action: new DeferredAction(function () {
+                          return new Promise(resolve => setTimeout(() => {
+                            alert('Deferred action done after 3000 ms');
+                            resolve();
+                          }, 3000));
+                        }),
+                      }
+                    ]
+                  );
+                  Notification.info(
+                    'Info',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                    5,
+                    [
+                      {
+                        label: 'Immediate action',
+                        action: new ImmediateAction(function () {
+                          alert('Immediate action done');
+                        }),
+                      },
+                      {
+                        label: 'Deferred action',
+                        action: new DeferredAction(function () {
+                          return new Promise(resolve => setTimeout(() => {
+                            alert('Deferred action done after 3000 ms');
+                            resolve();
+                          }, 3000));
+                        }),
+                      }
+                    ]
+                  );
+                  Notification.success(
+                    'OK',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                    5,
+                    [
+                      {
+                        label: 'Immediate action',
+                        action: new ImmediateAction(function () {
+                          alert('Immediate action done');
+                        }),
+                      },
+                      {
+                        label: 'Deferred action',
+                        action: new DeferredAction(function () {
+                          return new Promise(resolve => setTimeout(() => {
+                            alert('Deferred action done after 3000 ms');
+                            resolve();
+                          }, 3000));
+                        }),
+                      }
+                    ]
+                  );
+                  Notification.warning(
+                    'Warning',
+                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt',
+                    5,
+                    [
+                      {
+                        label: 'Immediate action',
+                        action: new ImmediateAction(function () {
+                          alert('Immediate action done');
+                        }),
+                      },
+                      {
+                        label: 'Deferred action',
+                        action: new DeferredAction(function () {
+                          return new Promise(resolve => setTimeout(() => {
+                            alert('Deferred action done after 3000 ms');
+                            resolve();
+                          }, 3000));
+                        }),
+                      }
+                    ]
+                  );
+                  Notification.error(
+                    'Error',
+                    'Highway to the danger zone',
+                    0,
+                    [
+                      {
+                        label: 'Immediate action',
+                        action: new ImmediateAction(function () {
+                          alert('Immediate action done');
+                        }),
+                      },
+                      {
+                        label: 'Deferred action',
+                        action: new DeferredAction(function () {
+                          return new Promise(resolve => setTimeout(() => {
+                            alert('Deferred action done after 3000 ms');
+                            resolve();
+                          }, 3000));
+                        }),
+                      }
+                    ]
+                  );
                   </script>
                 </sg:code>
               </div>
