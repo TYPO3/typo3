@@ -17,12 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Persistence;
 
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
@@ -33,6 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormPersistenceManagerTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -606,6 +612,135 @@ class FormPersistenceManagerTest extends UnitTestCase
     {
         $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
         self::assertSame($expectedMetaData, $formPersistenceManagerMock->_call('extractMetaDataFromCouldBeFormDefinition', $maybeRawFormDefinition));
+    }
+
+    /**
+     * @test
+     */
+    public function overrideByTypoScriptSettingsReturnsNotOverriddenConfigurationIfNoTypoScriptOverridesExists(): void
+    {
+        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        $mockController->_set('typoScriptSettings', [
+            'formDefinitionOverrides' => [
+            ],
+        ]);
+
+        $input = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => 'Label',
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => 'Label',
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
+    }
+
+    /**
+     * @test
+     */
+    public function overrideByTypoScriptSettingsReturnsOverriddenConfigurationIfTypoScriptOverridesExists(): void
+    {
+        $mockController = $this->getAccessibleMock(FormPersistenceManager::class, [
+            'dummy',
+        ], [], '', false);
+
+        $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
+        GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceProphecy->reveal());
+        $typoScriptServiceProphecy
+            ->resolvePossibleTypoScriptConfiguration(Argument::cetera())
+            ->willReturnArgument(0);
+
+        $mockController->_set('typoScriptSettings', [
+            'formDefinitionOverrides' => [
+                'ext-form-identifier' => [
+                    'label' => 'Label override',
+                    'renderables' => [
+                        0 => [
+                            'renderables' => [
+                                0 => [
+                                    'label' => 'Label override',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $input = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => 'Label',
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = [
+            'identifier' => 'ext-form-identifier',
+            'prototypeName' => 'standard',
+            'label' => 'Label override',
+            'renderables' => [
+                0 => [
+                    'identifier' => 'page-1',
+                    'type' => 'Page',
+                    'label' => 'Label',
+                    'renderables' => [
+                        0 => [
+                            'identifier' => 'text-1',
+                            'type' => 'Text',
+                            'label' => 'Label override',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
     }
 
     /**

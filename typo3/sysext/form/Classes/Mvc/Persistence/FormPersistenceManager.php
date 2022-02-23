@@ -33,12 +33,14 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\FileWriteException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
+use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniqueIdentifierException;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\NoUniquePersistenceIdentifierException;
@@ -59,6 +61,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected FilePersistenceSlot $filePersistenceSlot;
     protected ResourceFactory $resourceFactory;
     protected array $formSettings;
+    protected array $typoScriptSettings;
     protected FrontendInterface $runtimeCache;
 
     public function __construct(
@@ -74,12 +77,14 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         $this->filePersistenceSlot = $filePersistenceSlot;
         $this->resourceFactory = $resourceFactory;
         $this->formSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
+        $this->typoScriptSettings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'form');
         $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 
     /**
-     * Load the array formDefinition identified by $persistenceIdentifier, and return it.
-     * Only files with the extension .yaml or .form.yaml are loaded.
+     * Load the array formDefinition identified by $persistenceIdentifier,
+     * override it by TypoScript settings, and return it. Only files with
+     * the extension .yaml or .form.yaml are loaded.
      *
      * @param string $persistenceIdentifier
      * @return array
@@ -91,7 +96,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
 
         $yaml = $this->runtimeCache->get($cacheKey);
         if ($yaml !== false) {
-            return $yaml;
+            return $this->overrideByTypoScriptSettings($yaml);
         }
 
         if (PathUtility::isExtensionPath($persistenceIdentifier)) {
@@ -114,7 +119,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
         $this->runtimeCache->set($cacheKey, $yaml);
 
-        return $yaml;
+        return $this->overrideByTypoScriptSettings($yaml);
     }
 
     /**
@@ -607,6 +612,29 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         return false;
+    }
+
+    /**
+     * Every formDefinition setting is overridable by TypoScript.
+     * If the TypoScript configuration path
+     * plugin.tx_form.settings.formDefinitionOverrides.<identifier>
+     * exists, these settings are merged into the formDefinition.
+     *
+     * @param array<string, mixed> $formDefinition
+     * @return array<string, mixed>
+     */
+    protected function overrideByTypoScriptSettings(array $formDefinition): array
+    {
+        if (!empty($this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']] ?? null)) {
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $formDefinition,
+                $this->typoScriptSettings['formDefinitionOverrides'][$formDefinition['identifier']]
+            );
+            $formDefinition = GeneralUtility::makeInstance(TypoScriptService::class)
+                ->resolvePossibleTypoScriptConfiguration($formDefinition);
+        }
+
+        return $formDefinition;
     }
 
     /**

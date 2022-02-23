@@ -29,7 +29,6 @@ use TYPO3\CMS\Form\Domain\Configuration\ArrayProcessing\ArrayProcessor;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FinisherOptionsFlexFormOverridesConverter;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Converters\FlexFormFinisherOverridesConverterDto;
-use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 
 /**
@@ -40,7 +39,6 @@ use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
  */
 class FormFrontendController extends ActionController
 {
-
     /**
      * @var \TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface
      */
@@ -70,7 +68,6 @@ class FormFrontendController extends ActionController
         if (!empty($this->settings['persistenceIdentifier'])) {
             $formDefinition = $this->formPersistenceManager->load($this->settings['persistenceIdentifier']);
             $formDefinition['persistenceIdentifier'] = $this->settings['persistenceIdentifier'];
-            $formDefinition = $this->overrideByTypoScriptSettings($formDefinition);
             $formDefinition = $this->overrideByFlexFormSettings($formDefinition);
             $formDefinition = ArrayUtility::setValueByPath($formDefinition, 'renderingOptions._originalIdentifier', $formDefinition['identifier'], '.');
             $formDefinition['identifier'] .= '-' . $this->configurationManager->getContentObject()->data['uid'];
@@ -140,31 +137,6 @@ class FormFrontendController extends ActionController
                     $formDefinition['finishers'][$index] = $converterDto->getFinisherDefinition();
                 }
             }
-        }
-        return $formDefinition;
-    }
-
-    /**
-     * Every formDefinition setting are overridable by typoscript.
-     * If the typoscript configuration path
-     * plugin.tx_form.settings.formDefinitionOverrides.<identifier>
-     * exists, this settings are merged into the formDefinition.
-     *
-     * @param array $formDefinition
-     * @return array
-     */
-    protected function overrideByTypoScriptSettings(array $formDefinition): array
-    {
-        if (
-            isset($this->settings['formDefinitionOverrides'][$formDefinition['identifier']])
-            && !empty($this->settings['formDefinitionOverrides'][$formDefinition['identifier']])
-        ) {
-            ArrayUtility::mergeRecursiveWithOverrule(
-                $formDefinition,
-                $this->settings['formDefinitionOverrides'][$formDefinition['identifier']]
-            );
-            $formDefinition = GeneralUtility::makeInstance(TypoScriptService::class)
-                ->resolvePossibleTypoScriptConfiguration($formDefinition);
         }
         return $formDefinition;
     }
