@@ -172,7 +172,7 @@ class LanguageService
         if ($input === '') {
             return $input;
         }
-        $cacheIdentifier = 'labels_' . md5($input . '_' . (int)$this->debugKey);
+        $cacheIdentifier = 'labels_' . $this->lang . '_' . md5($input . '_' . (int)$this->debugKey);
         $cacheEntry = $this->runtimeCache->get($cacheIdentifier);
         if ($cacheEntry !== false) {
             return $cacheEntry;

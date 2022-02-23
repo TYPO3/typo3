@@ -242,4 +242,57 @@ class LanguageServiceTest extends FunctionalTestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider ensureMultiLanguageTranslationInSameContextWorkDataProvider
+     */
+    public function ensureMultiLanguageTranslationInSameContextWork(array $expectedLabelSet): void
+    {
+        foreach ($expectedLabelSet as $locale => $expectedLabels) {
+            $this->ensureLocalizationScenarioWorks($locale, self::LANGUAGE_FILE, $expectedLabels);
+        }
+    }
+
+    public function ensureMultiLanguageTranslationInSameContextWorkDataProvider(): \Generator
+    {
+        yield 'Multi language translation in same context works with default first' => [
+            'expectedLabelSet' => [
+                'default' => [
+                    'label1' => 'This is label #1',
+                    'label2' => 'This is label #2',
+                    'label3' => 'This is label #3',
+                ],
+                'fr' => [
+                    'label1' => 'Ceci est le libellé no. 1',
+                    'label2' => 'Ceci est le libellé no. 2',
+                    'label3' => 'Ceci est le libellé no. 3',
+                ],
+                'de' => [
+                    'label1' => 'This is label #1',
+                    'label2' => 'This is label #2',
+                    'label3' => 'This is label #3',
+                ],
+            ],
+        ];
+        yield 'Multi language translation in same context works with default last' => [
+            'expectedLabelSet' => [
+                'fr' => [
+                    'label1' => 'Ceci est le libellé no. 1',
+                    'label2' => 'Ceci est le libellé no. 2',
+                    'label3' => 'Ceci est le libellé no. 3',
+                ],
+                'de' => [
+                    'label1' => 'This is label #1',
+                    'label2' => 'This is label #2',
+                    'label3' => 'This is label #3',
+                ],
+                'default' => [
+                    'label1' => 'This is label #1',
+                    'label2' => 'This is label #2',
+                    'label3' => 'This is label #3',
+                ],
+            ],
+        ];
+    }
 }
