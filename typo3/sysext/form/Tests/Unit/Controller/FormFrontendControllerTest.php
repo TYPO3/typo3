@@ -317,6 +317,13 @@ class FormFrontendControllerTest extends UnitTestCase
                             'your.company@example.com overridden' => '',
                         ],
                         'format' => 'html overridden',
+                        'translation' => [
+                            'propertiesExcludedFromTranslation' => [
+                                'subject',
+                                'recipients',
+                                'format',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -457,6 +464,12 @@ class FormFrontendControllerTest extends UnitTestCase
                             'your.company@example.com overridden' => '',
                         ],
                         'format' => 'html',
+                        'translation' => [
+                            'propertiesExcludedFromTranslation' => [
+                                'subject',
+                                'recipients',
+                            ],
+                        ],
                     ],
                 ],
             ],

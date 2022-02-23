@@ -250,6 +250,10 @@ class TranslationService implements SingletonInterface
             throw new \InvalidArgumentException('The argument "optionKey" is empty', 1476216060);
         }
 
+        if (in_array($optionKey, $renderingOptions['propertiesExcludedFromTranslation'] ?? [], true)) {
+            return $optionValue;
+        }
+
         $finisherIdentifier = preg_replace('/Finisher$/', '', $finisherIdentifier);
         $translationFiles = $renderingOptions['translationFiles'] ?? [];
         if (empty($translationFiles)) {

@@ -975,6 +975,25 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * @test
      */
+    public function translateFinisherOptionSkipsTranslationIfTranslationShouldBeSkipped(): void
+    {
+        $finisherRenderingOptions = [
+            'propertiesExcludedFromTranslation' => [
+                'subject',
+            ],
+        ];
+
+        $mockFormRuntime = $this->getAccessibleMock(FormRuntime::class, [], [], '', false);
+
+        self::assertSame(
+            'subject value',
+            $this->mockTranslationService->_call('translateFinisherOption', $mockFormRuntime, 'SaveToDatabaseFinisher', 'subject', 'subject value', $finisherRenderingOptions)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function supportsArgumentsForFinisherOptionTranslations(): void
     {
         $formRuntimeXlfPaths = ['EXT:form/Tests/Unit/Service/Fixtures/locallang_form.xlf'];

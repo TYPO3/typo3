@@ -86,8 +86,32 @@ class FinisherOptionsFlexFormOverridesConverter
             }
         }
 
-        $finisherDefinition = ArrayUtility::setValueByPath($finisherDefinition, 'options.' . $optionKey, $value, '.');
+        $optionPath = 'options.' . $optionKey;
+
+        // Skip additional translation for finisher options that were changed via flexform
+        if ($this->optionValueHasChanged($finisherDefinition, $optionPath, $value)) {
+            $finisherDefinition['options']['translation']['propertiesExcludedFromTranslation'][] = $optionKey;
+        }
+
+        $finisherDefinition = ArrayUtility::setValueByPath($finisherDefinition, $optionPath, $value, '.');
 
         $this->converterDto->setFinisherDefinition($finisherDefinition);
+    }
+
+    /**
+     * Test if finisher option value differs from finisher definition.
+     *
+     * Compares the given finisher option value with the corresponding value in the
+     * finisher definition. Returns `true` if both values are equal, `false` otherwise.
+     *
+     * @param array<string, mixed> $finisherDefinition
+     */
+    protected function optionValueHasChanged(array $finisherDefinition, string $optionPath, mixed $value): bool
+    {
+        try {
+            return $value !== ArrayUtility::getValueByPath($finisherDefinition, $optionPath, '.');
+        } catch (MissingArrayPathException) {
+            return true;
+        }
     }
 }
