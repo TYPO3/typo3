@@ -74,7 +74,8 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
             if (!empty($allowedMimeTypes)) {
-                $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
+                $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
+                $mimeTypeValidator->setOptions(['allowedMimeTypes' => $allowedMimeTypes]);
                 $validators = [$mimeTypeValidator];
             }
 
