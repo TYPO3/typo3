@@ -549,6 +549,65 @@ class FormPersistenceManagerTest extends UnitTestCase
         self::assertFalse($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
     }
 
+    public function metaDataIsExtractedDataProvider(): \Generator
+    {
+        yield 'enclosed with single quotation marks and escaped single quotation marks within the label' => [
+            'maybeRawFormDefinition' => "label: 'Ouverture d''un compte'",
+            'expectedMetaData' => ['label' => "Ouverture d'un compte"],
+        ];
+
+        yield 'enclosed with double quotation marks and single quotation marks within the label' => [
+            'maybeRawFormDefinition' => 'label: "Demo: Just a \'label\'"',
+            'expectedMetaData' => ['label' => "Demo: Just a 'label'"],
+        ];
+
+        yield 'label enclosed with single quotation marks' => [
+            'maybeRawFormDefinition' => "label: 'Demo'",
+            'expectedMetaData' => ['label' => 'Demo'],
+        ];
+
+        yield 'label enclosed with double quotation marks' => [
+            'maybeRawFormDefinition' => 'label: "Demo"',
+            'expectedMetaData' => ['label' => 'Demo'],
+        ];
+
+        yield 'single quotation mark only at the start of the label' => [
+            'maybeRawFormDefinition' => "label: \\'Demo",
+            'expectedMetaData' => ['label' => "\\'Demo"],
+        ];
+
+        yield 'double quotation mark only at the start of the label' => [
+            'maybeRawFormDefinition' => 'label: \"Demo',
+            'expectedMetaData' => ['label' => '\"Demo'],
+        ];
+
+        yield 'multiple properties are extracted' => [
+            'maybeRawFormDefinition' => implode("\n", [
+                'type: "type:type"',
+                "identifier: 'identifier:identifier'",
+                'prototypeName: prototypeName:prototypeName',
+                'label: "Demo: Label"',
+                'other: "any-other-property"',
+            ]),
+            'expectedMetaData' => [
+                'type' => 'type:type',
+                'identifier' => 'identifier:identifier',
+                'prototypeName' => 'prototypeName:prototypeName',
+                'label' => 'Demo: Label',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider metaDataIsExtractedDataProvider
+     */
+    public function metaDataIsExtracted(string $maybeRawFormDefinition, array $expectedMetaData): void
+    {
+        $formPersistenceManagerMock = $this->getAccessibleMock(FormPersistenceManager::class, ['dummy'], [], '', false);
+        self::assertSame($expectedMetaData, $formPersistenceManagerMock->_call('extractMetaDataFromCouldBeFormDefinition', $maybeRawFormDefinition));
+    }
+
     /**
      * @test
      */

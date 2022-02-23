@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Mvc\Persistence;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -753,7 +755,8 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 continue;
             }
 
-            [$key, $value] = explode(':', $line);
+            [$key, $value] = explode(':', $line, 2);
+            $key = trim($key);
             if (
                 empty($key)
                 || empty($value)
@@ -762,7 +765,17 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 continue;
             }
 
-            $value = trim($value, " '\"\r");
+            if ($key === 'label') {
+                try {
+                    $parsedLabelLine = Yaml::parse($line);
+                    $value = $parsedLabelLine['label'] ?? '';
+                } catch (ParseException $e) {
+                    $value = '';
+                }
+            } else {
+                $value = trim($value, " '\"\r");
+            }
+
             $metaData[$key] = $value;
         }
 
