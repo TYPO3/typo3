@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TcaInputPlaceholders implements FormDataProviderInterface
 {
     /**
-     * Resolve placeholders for input/text fields. Placeholders that are simple
+     * Resolve placeholders for input/email/text fields. Placeholders that are simple
      * strings will be returned unmodified. Placeholders beginning with __row are
      * being resolved, possibly traversing multiple tables.
      *
@@ -41,10 +41,13 @@ class TcaInputPlaceholders implements FormDataProviderInterface
     public function addData(array $result)
     {
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            // Placeholders are only valid for input and text type fields
-            if (
-                (!in_array($fieldConfig['config']['type'] ?? false, ['input', 'text']))
-                || !isset($fieldConfig['config']['placeholder'])
+            // Placeholders are only valid for input, email and text type fields
+            if (!isset($fieldConfig['config']['placeholder'], $fieldConfig['config']['type'])
+                || (
+                    $fieldConfig['config']['type'] !== 'input'
+                    && $fieldConfig['config']['type'] !== 'text'
+                    && $fieldConfig['config']['type'] !== 'email'
+                )
             ) {
                 continue;
             }

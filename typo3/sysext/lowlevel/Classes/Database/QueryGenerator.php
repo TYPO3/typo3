@@ -1019,6 +1019,7 @@ class QueryGenerator
                     case 'passthrough':
                     case 'none':
                     case 'text':
+                    case 'email':
                     default:
                         $fields['type'] = 'text';
                 }
@@ -1469,6 +1470,7 @@ class QueryGenerator
                         case 'passthrough':
                         case 'none':
                         case 'text':
+                        case 'email':
                         default:
                             $this->fields[$fieldName]['type'] = 'text';
                     }

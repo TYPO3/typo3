@@ -153,11 +153,8 @@ return [
         'email' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.email',
             'config' => [
-                'type' => 'input',
+                'type' => 'email',
                 'size' => 20,
-                'eval' => 'trim,email',
-                'max' => 255,
-                'softref' => 'email[subst]',
             ],
         ],
         'realName' => [

@@ -180,6 +180,9 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'text':
                 $recordTitle = $this->getRecordTitleForTextType($rawValue);
                 break;
+            case 'email':
+                $recordTitle = $this->getRecordTitleForEmailType($rawValue);
+                break;
             case 'flex':
                 // @todo: Check if and how a label could be generated from flex field data
             default:
@@ -390,6 +393,21 @@ class TcaRecordTitle implements FormDataProviderInterface
      */
     protected function getRecordTitleForTextType($value)
     {
+        return trim(strip_tags($value));
+    }
+
+    /**
+     * Returns the record title for email fields
+     *
+     * @param mixed $value Current database value of this field
+     * @return string
+     */
+    protected function getRecordTitleForEmailType(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return '';
+        }
+
         return trim(strip_tags($value));
     }
 

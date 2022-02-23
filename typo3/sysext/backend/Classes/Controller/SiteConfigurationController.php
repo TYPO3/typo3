@@ -253,6 +253,7 @@ class SiteConfigurationController
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
                 switch ($type) {
                     case 'input':
+                    case 'email':
                     case 'text':
                         $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
                         $newSysSiteData[$fieldName] = $fieldValue;
@@ -284,6 +285,7 @@ class SiteConfigurationController
                                 $type = $siteTca[$foreignTable]['columns'][$childFieldName]['config']['type'];
                                 switch ($type) {
                                     case 'input':
+                                    case 'email':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;
@@ -340,6 +342,7 @@ class SiteConfigurationController
                                 $type = $siteTca['site_language']['columns'][$childFieldName]['config']['type'];
                                 switch ($type) {
                                     case 'input':
+                                    case 'email':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;

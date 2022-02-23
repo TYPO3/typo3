@@ -1528,6 +1528,9 @@ class DataHandler implements LoggerAwareInterface
             case 'input':
                 $res = $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
                 break;
+            case 'email':
+                $res = $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field);
+                break;
             case 'slug':
                 $res = $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []);
                 break;
@@ -1755,6 +1758,65 @@ class DataHandler implements LoggerAwareInterface
             // Convert the timestamp back to a date/time
             $res['value'] = $res['value'] ? gmdate($format, $res['value']) : $emptyValue;
         }
+        return $res;
+    }
+
+    /**
+     * Evaluate "email" type values.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int|string $id UID of record - mit be a NEW.. string for new records
+     * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
+     * @param string $field Field name
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForEmail(
+        string $value,
+        array $tcaFieldConf,
+        string $table,
+        int|string $id,
+        int $realPid,
+        string $field
+    ): array {
+        // Early return if required validation fails
+        // Note: The "required" check is evaluated but does not yet lead to an error, see
+        // the comment in the DataHandler::validateValueForRequired() for more information.
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            return [];
+        }
+
+        // Always trim the value
+        $value = trim($value);
+
+        if ($value !== '' && !GeneralUtility::validEmail($value)) {
+            // A non-empty value is given, which however is no valid email. Log this and unset the value afterwards.
+            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"' . $value . '" is not a valid e-mail address.', -1, [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]);
+            $value = '';
+        }
+
+        $res = [
+            'value' => $value,
+        ];
+
+        // Early return if no evaluation is configured
+        if (!isset($tcaFieldConf['eval'])) {
+            return $res;
+        }
+        $evalCodesArray = GeneralUtility::trimExplode(',', $tcaFieldConf['eval'], true);
+
+        // Process UNIQUE settings:
+        // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
+        if ($field && !empty($res['value'])) {
+            if (in_array('uniqueInPid', $evalCodesArray, true)) {
+                $res['value'] = $this->getUnique($table, $field, $res['value'], $id, $realPid);
+            }
+            if ($res['value'] && in_array('unique', $evalCodesArray, true)) {
+                $res['value'] = $this->getUnique($table, $field, $res['value'], $id);
+            }
+        }
+
         return $res;
     }
 
@@ -2661,11 +2723,6 @@ class DataHandler implements LoggerAwareInterface
                         $value = (string)idn_to_ascii($value);
                     }
                     break;
-                case 'email':
-                    if ((string)$value !== '') {
-                        $this->checkValue_input_ValidateEmail($value, $set, $table, $id);
-                    }
-                    break;
                 case 'saltedPassword':
                     // An incoming value is either the salted password if the user did not change existing password
                     // when submitting the form, or a plaintext new password that needs to be turned into a salted password now.
@@ -2717,35 +2774,6 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return !empty($value) || $value === '0';
-    }
-
-    /**
-     * If $value is not a valid e-mail address,
-     * $set will be set to false and a flash error
-     * message will be added
-     *
-     * @param string $value Value to evaluate
-     * @param bool $set TRUE if an update should be done
-     * @throws \InvalidArgumentException
-     * @throws \TYPO3\CMS\Core\Exception
-     */
-    protected function checkValue_input_ValidateEmail($value, &$set, string $table, $id)
-    {
-        if (GeneralUtility::validEmail($value)) {
-            return;
-        }
-
-        $set = false;
-        $this->log(
-            $table,
-            $id,
-            SystemLogDatabaseAction::UPDATE,
-            0,
-            SystemLogErrorClassification::SECURITY_NOTICE,
-            '"' . $value . '" is not a valid e-mail address.',
-            -1,
-            [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]
-        );
     }
 
     /**
@@ -4544,32 +4572,38 @@ class DataHandler implements LoggerAwareInterface
         foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fCfg) {
             $translateToMsg = '';
             // Check if we are just prefixing:
-            if (isset($fCfg['l10n_mode']) && $fCfg['l10n_mode'] === 'prefixLangTitle') {
-                if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
-                    $TSConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
-                    $tableEntries = $this->getTableEntries($table, $TSConfig);
-                    if (!empty($TSConfig['translateToMessage']) && !($tableEntries['disablePrependAtCopy'] ?? false)) {
-                        $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
-                        $translateToMsg = @sprintf($translateToMsg, $siteLanguage->getTitle());
-                    }
+            if (isset($fCfg['l10n_mode'], $fCfg['config']['type'])
+                && $fCfg['l10n_mode'] === 'prefixLangTitle'
+                && (
+                    $fCfg['config']['type'] === 'text'
+                    || $fCfg['config']['type'] === 'input'
+                    || $fCfg['config']['type'] === 'email'
+                )
+                && (string)$row[$fN] !== ''
+            ) {
+                $TSConfig = BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.'] ?? [];
+                $tableEntries = $this->getTableEntries($table, $TSConfig);
+                if (!empty($TSConfig['translateToMessage']) && !($tableEntries['disablePrependAtCopy'] ?? false)) {
+                    $translateToMsg = $this->getLanguageService()->sL($TSConfig['translateToMessage']);
+                    $translateToMsg = @sprintf($translateToMsg, $siteLanguage->getTitle());
+                }
 
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] ?? [] as $className) {
-                        $hookObj = GeneralUtility::makeInstance($className);
-                        if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
-                            // @todo Deprecate passing an array and pass the full SiteLanguage object instead
-                            $hookObj->processTranslateTo_copyAction(
-                                $row[$fN],
-                                ['uid' => $siteLanguage->getLanguageId(), 'title' => $siteLanguage->getTitle()],
-                                $this,
-                                $fN
-                            );
-                        }
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] ?? [] as $className) {
+                    $hookObj = GeneralUtility::makeInstance($className);
+                    if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
+                        // @todo Deprecate passing an array and pass the full SiteLanguage object instead
+                        $hookObj->processTranslateTo_copyAction(
+                            $row[$fN],
+                            ['uid' => $siteLanguage->getLanguageId(), 'title' => $siteLanguage->getTitle()],
+                            $this,
+                            $fN
+                        );
                     }
-                    if (!empty($translateToMsg)) {
-                        $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
-                    } else {
-                        $overrideValues[$fN] = $row[$fN];
-                    }
+                }
+                if (!empty($translateToMsg)) {
+                    $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
+                } else {
+                    $overrideValues[$fN] = $row[$fN];
                 }
             }
             if (($fCfg['config']['MM'] ?? false) && !empty($fCfg['config']['MM_oppositeUsage'])) {
@@ -8323,7 +8357,7 @@ class DataHandler implements LoggerAwareInterface
         $curData = $this->recordInfo($table, $uid, '*');
         $newData = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-            if ($conf['config']['type'] === 'input' && (string)$curData[$field] !== '') {
+            if (($conf['config']['type'] === 'input' || $conf['config']['type'] === 'email') && (string)$curData[$field] !== '') {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $conf['config']['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
                     $newV = $this->getUnique($table, $field, $curData[$field], $uid, $curData['pid']);

@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Mark columns that are used by input placeholders for further processing
+ * Mark columns that are used by placeholders for further processing
  */
 class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
 {
@@ -34,10 +34,13 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
     public function addData(array $result)
     {
         foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
-            // Placeholders are only valid for input and text type fields
-            if (
-                ($fieldConfig['config']['type'] !== 'input' && $fieldConfig['config']['type'] !== 'text')
-                || !isset($fieldConfig['config']['placeholder'])
+            // Placeholders are only valid for input, email and text type fields
+            if (!isset($fieldConfig['config']['placeholder'], $fieldConfig['config']['type'])
+                || (
+                    $fieldConfig['config']['type'] !== 'input'
+                    && $fieldConfig['config']['type'] !== 'text'
+                    && $fieldConfig['config']['type'] !== 'email'
+                )
             ) {
                 continue;
             }

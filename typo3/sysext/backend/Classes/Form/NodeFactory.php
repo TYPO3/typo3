@@ -71,6 +71,7 @@ class NodeFactory
         'check' => Element\CheckboxElement::class,
         'checkboxToggle' => Element\CheckboxToggleElement::class,
         'checkboxLabeledToggle' => Element\CheckboxLabeledToggleElement::class,
+        'email' => Element\EmailElement::class,
         'group' => Element\GroupElement::class,
         'folder' => Element\FolderElement::class,
         'input' => Element\InputTextElement::class,

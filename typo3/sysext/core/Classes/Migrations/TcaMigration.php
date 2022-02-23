@@ -68,6 +68,7 @@ class TcaMigration
         $tca = $this->migrateSelectAuthModeIndividualItemsKeywordToNewPosition($tca);
         $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
         $tca = $this->migrateRequiredFlag($tca);
+        $tca = $this->migrateEmailFlagToEmailType($tca);
 
         return $tca;
     }
@@ -616,8 +617,53 @@ class TcaMigration
 
                 $tca[$table]['columns'][$fieldName]['config']['required'] = true;
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
-                    . '"required" in its "eval" list. This is not  evaluated anymore and should be replaced '
+                    . '"required" in its "eval" list. This is not evaluated anymore and should be replaced '
                     . ' by `\'required\' => true`.';
+            }
+        }
+
+        return $tca;
+    }
+    /**
+     * Migrates [config][eval] = 'email' to [config][type] = 'email' and removes 'email' from [config][eval].
+     * If [config][eval] contains 'trim', it will also be removed. If [config][eval] becomes empty, the option
+     * will be removed completely.
+     */
+    protected function migrateEmailFlagToEmailType(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || !GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'email')
+                ) {
+                    // Early return in case column is not of type=input or does not define eval=email
+                    continue;
+                }
+
+                // Set the TCA type to "email"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'email';
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+                $evalList = array_filter($evalList, static function (string $eval) {
+                    // Remove "email" and "trim" from $evalList
+                    return $eval !== 'email' && $eval !== 'trim';
+                });
+
+                if ($evalList !== []) {
+                    // Write back filtered 'eval'
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                } else {
+                    // 'eval' is empty, remove whole configuration
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\'  defines '
+                    . '"email" in its "eval" list. The field has therefore been migrated to the TCA type \'email\'. '
+                    . 'Please adjust your TCA accordingly.';
             }
         }
 

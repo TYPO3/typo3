@@ -1649,4 +1649,80 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    private function evalEmailMigratedToTypeDataProvider(): iterable
+    {
+        yield 'eval=email migrated to type=email' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'email,trim,unique',
+                                'required' => true,
+                            ],
+                        ],
+                        'differentColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,unique',
+                            ],
+                        ],
+                        'wrongTypeColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'eval' => 'email,trim,unique',
+                            ],
+                        ],
+                        'alreadyMigratedColumn' => [
+                            'config' => [
+                                'type' => 'email',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'email',
+                                'eval' => 'unique',
+                                'required' => true,
+                            ],
+                        ],
+                        'differentColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,unique',
+                            ],
+                        ],
+                        'wrongTypeColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'eval' => 'email,trim,unique',
+                            ],
+                        ],
+                        'alreadyMigratedColumn' => [
+                            'config' => [
+                                'type' => 'email',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider evalEmailMigratedToTypeDataProvider
+     * @test
+     */
+    public function evalEmailMigratedToType(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

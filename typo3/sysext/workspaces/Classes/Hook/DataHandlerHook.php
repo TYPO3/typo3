@@ -1504,7 +1504,7 @@ class DataHandlerHook
     {
         $listArr = [];
         foreach ($GLOBALS['TCA'][$table]['columns'] ?? [] as $field => $configArr) {
-            if ($configArr['config']['type'] === 'input') {
+            if ($configArr['config']['type'] === 'input' || $configArr['config']['type'] === 'email') {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $configArr['config']['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray) || in_array('unique', $evalCodesArray)) {
                     $listArr[] = $field;

@@ -454,6 +454,10 @@ class ReferenceIndex implements LoggerAwareInterface
                 if ($conf['type'] === 'input' && isset($conf['renderType']) && $conf['renderType'] === 'inputLink' && empty($conf['softref'])) {
                     $conf['softref'] = 'typolink';
                 }
+                // Add a softref definition for email fields
+                if ($conf['type'] === 'email') {
+                    $conf['softref'] = 'email[subst]';
+                }
                 // Add DB:
                 $resultsFromDatabase = $this->getRelations_procDB($value, $conf, $uid, $table, $row);
                 if (!empty($resultsFromDatabase)) {
@@ -532,6 +536,10 @@ class ReferenceIndex implements LoggerAwareInterface
         // Add a softref definition for link fields if the TCA does not specify one already
         if (($dsConf['type'] ?? '') === 'input' && ($dsConf['renderType'] ?? '') === 'inputLink' && empty($dsConf['softref'])) {
             $dsConf['softref'] = 'typolink';
+        }
+        // Add a softref definition for email fields
+        if (($dsConf['type'] ?? '') === 'email') {
+            $dsConf['softref'] = 'email[subst]';
         }
         // Add DB:
         $resultsFromDatabase = $this->getRelations_procDB($dataValue, $dsConf, $uid, $table);
@@ -868,6 +876,7 @@ class ReferenceIndex implements LoggerAwareInterface
         return
             $this->isDbReferenceField($configuration)
             || ($configuration['type'] === 'input' && isset($configuration['renderType']) && $configuration['renderType'] === 'inputLink')
+            || $configuration['type'] === 'email'
             || $configuration['type'] === 'flex'
             || isset($configuration['softref'])
             ;

@@ -43,6 +43,7 @@ final class TableColumnType extends Enumeration
     const IMAGEMANIPULATION = 'IMAGEMANIPULATION';
     const SLUG = 'SLUG';
     const CATEGORY = 'CATEGORY';
+    const EMAIL = 'EMAIL';
 
     /**
      * @param mixed $type
