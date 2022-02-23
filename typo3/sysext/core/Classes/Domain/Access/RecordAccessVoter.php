@@ -92,12 +92,13 @@ class RecordAccessVoter
      */
     public function groupAccessGranted(string $table, array $record, Context $context): bool
     {
-        if (!$context->hasAspect('frontend.user')) {
-            return true;
-        }
         $configuration = $this->getEnableFieldsConfigurationForTable($table);
         if (!isset($configuration['fe_group']) || !($record[$configuration['fe_group']] ?? false)) {
             return true;
+        }
+        // No frontend user, but 'fe_group' is not empty, so shut this down.
+        if (!$context->hasAspect('frontend.user')) {
+            return false;
         }
         $pageGroupList = explode(',', (string)$record[$configuration['fe_group']]);
         return count(array_intersect($context->getAspect('frontend.user')->getGroupIds(), $pageGroupList)) > 0;
