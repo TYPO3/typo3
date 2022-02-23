@@ -655,7 +655,7 @@ class WorkspaceService implements SingletonInterface
             $pageList = [];
             foreach ($mountPoints as $mountPoint) {
                 $pageList = array_merge(
-                    $pageList
+                    $pageList,
                     [ (int)$mountPoint ],
                     $this->getPageChildrenRecursive((int)$mountPoint, (int)$recursionLevel, 0, $permsClause)
                 );
