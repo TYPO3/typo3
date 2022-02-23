@@ -7,7 +7,7 @@
 Full default configuration
 ==========================
 
-.. todo: this configuration needs  to be updated. It contains configuration
+.. todo: this configuration needs to be updated. It contains configuration
          values that have been removed, i.e. templatePathAndFilename
 
 .. code-block:: yaml

@@ -49,7 +49,7 @@ translationFiles
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
----------------------------
+----------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.app
@@ -84,7 +84,7 @@ dynamicJavaScriptModules.app
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.mediator:
 
 dynamicJavaScriptModules.mediator
---------------------------------
+---------------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.mediator
@@ -120,7 +120,7 @@ dynamicJavaScriptModules.mediator
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
----------------------------------
+----------------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.viewModel
@@ -156,7 +156,7 @@ dynamicJavaScriptModules.viewModel
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formeditor.dynamicjavascriptmodules.additionalviewmodelmodules:
 
 dynamicJavaScriptModules.additionalViewModelModules
---------------------------------------------------
+---------------------------------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formeditor.dynamicJavaScriptModules.additionalViewModelModules

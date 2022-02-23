@@ -17,7 +17,7 @@ Properties
 .. _typo3.cms.form.formmanager.dynamicjavascriptmodules.app:
 
 dynamicJavaScriptModules.app
----------------------------
+----------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.app
@@ -47,7 +47,7 @@ dynamicJavaScriptModules.app
 .. _typo3.cms.form.formmanager.dynamicjavascriptmodules.viewmodel:
 
 dynamicJavaScriptModules.viewModel
----------------------------------
+----------------------------------
 
 :aspect:`Option path`
       TYPO3.CMS.Form.formManager.dynamicJavaScriptModules.viewModel
@@ -67,8 +67,8 @@ dynamicJavaScriptModules.viewModel
          :emphasize-lines: 3
 
          dynamicJavaScriptModules:
-           app: @typo3/form/backend/form-manager.js
-           viewModel: @typo3/form/backend/form-manager/view-model.js
+           app: '@typo3/form/backend/form-manager.js'
+           viewModel: '@typo3/form/backend/form-manager/view-model.js'
 
 :aspect:`Description`
       Internal setting. ES6 module specifier for the form manager JavaScript view model.
