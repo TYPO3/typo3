@@ -228,7 +228,6 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', $requestType);
         $subject = $this->createPageRenderer();
-        $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
         $subject->enableMoveJsFromHeaderToFooter();
@@ -315,7 +314,6 @@ class PageRendererTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest('https://www.example.com/'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $subject = $this->createPageRenderer();
-        $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
         $subject->addJsFooterLibrary(
@@ -415,7 +413,6 @@ class PageRendererTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $subject = $this->createPageRenderer();
-        $subject->setCharSet('utf-8');
         $subject->setLanguage('default');
 
         $packages = [

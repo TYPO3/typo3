@@ -944,4 +944,9 @@ return [
             'Breaking-96708-RemovedSupportForAccesskeysInHMENU.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->metaCharset' => [
+        'restFiles' => [
+            'Breaking-97065-TYPO3FrontendAlwaysRenderedInUTF-8.rst',
+        ],
+    ],
 ];

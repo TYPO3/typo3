@@ -1201,22 +1201,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$charSet \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$jsInline \\(array\\<string, array\\>\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Page\\\\PageRenderer\\:\\:\\$lang \\(string\\) in isset\\(\\) is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
-
-		-
-			message: "#^Result of \\|\\| is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Page/PageRenderer.php
 

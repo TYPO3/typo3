@@ -546,7 +546,6 @@
         'message_preview': kw('message_preview'),
         'META': kw('META'),
         'meta': kw('meta'),
-        'metaCharset': kw('metaCharset'),
         'method': kw('method'),
         'min': kw('min'),
         'minH': kw('minH'),

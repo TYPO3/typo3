@@ -476,15 +476,6 @@ config.message_preview_workspace = <div class="previewbox">Displaying workspace 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="metaCharset" type="string">
-			<description><![CDATA[Charset used for the output document. For example in the meta tag:
-<meta http-equiv="Content-Type" content="text/html; charset=...>
-
-Is used for a) HTML meta-tag, b) HTTP header (unless disabled with .disableCharsetHeader) and c) xhtml prologues (if available)
-
-If metaCharset is different than utf-8 the output content is automatically converted to metaCharset before output and likewise are values posted back to the page converted from metaCharset to utf-8 for internal processing. This conversion takes time of course so there is another good reason to use the same charset for both.]]></description>
-			<default><![CDATA[utf-8]]></default>
-		</property>
 		<property name="moveJsFromHeaderToFooter" type="boolean">
 			<description><![CDATA[
 			If set, all Javascript (includes and inline) will be moved to the bottom of the HTML document, which is after content and before the closing body tag

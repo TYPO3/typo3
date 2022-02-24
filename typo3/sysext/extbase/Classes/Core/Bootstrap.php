@@ -179,7 +179,7 @@ class Bootstrap
                 // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
                 // Content-Type headers optionally carry charset information at the same time.
                 // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                $response = $response->withHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
+                $response = $response->withHeader('Content-Type', 'application/json; charset=utf-8');
             }
         }
 

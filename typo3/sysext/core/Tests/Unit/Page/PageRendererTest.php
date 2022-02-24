@@ -163,21 +163,6 @@ class PageRendererTest extends UnitTestCase
 
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
-        $subject->_set('charSet', 'utf-8');
-        $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-    }
-
-    /**
-     * @test
-     */
-    public function includeLanguageFileForInlineThrowsExceptionIfCharSetIsNotSet(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1284906026);
-
-        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
-        $subject->_set('lang', 'default');
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
     }
 

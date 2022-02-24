@@ -334,8 +334,8 @@ class Indexer
             $checkCHash = $this->checkContentHash();
             if (!is_array($checkCHash) || $check === 1) {
                 $Pstart = IndexedSearchUtility::milliseconds();
-                $this->log_push('Converting charset of content (' . $this->conf['metaCharset'] . ') to utf-8', '');
-                $this->charsetEntity2utf8($this->contentParts, $this->conf['metaCharset']);
+                $this->log_push('Converting entities of content', '');
+                $this->charsetEntity2utf8($this->contentParts);
                 $this->log_pull();
                 // Splitting words
                 $this->log_push('Extract words from content', '');
@@ -995,16 +995,12 @@ class Indexer
      * Convert character set and HTML entities in the value of input content array keys
      *
      * @param array $contentArr Standard content array
-     * @param string $charset Charset of the input content (converted to utf-8)
      */
-    public function charsetEntity2utf8(&$contentArr, $charset)
+    public function charsetEntity2utf8(&$contentArr)
     {
         // Convert charset if necessary
         foreach ($contentArr as $key => $value) {
             if ((string)$contentArr[$key] !== '') {
-                if ($charset !== 'utf-8') {
-                    $contentArr[$key] = mb_convert_encoding($contentArr[$key], 'utf-8', $charset);
-                }
                 // decode all numeric / html-entities in the string to real characters:
                 $contentArr[$key] = html_entity_decode($contentArr[$key]);
             }

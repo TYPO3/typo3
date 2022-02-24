@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\IndexedSearch\Hook;
 
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -107,12 +105,10 @@ class TypoScriptFrontendHook
             $configuration['rootline_uids'][$rlkey] = $rldat['uid'];
         }
         // Content of page
-        $configuration['content'] = $this->convOutputCharset($tsfe->content, $tsfe->metaCharset);
+        $configuration['content'] = $tsfe->content;
         // Content string (HTML of TYPO3 page)
-        $configuration['indexedDocTitle'] = $this->convOutputCharset($tsfe->indexedDocTitle, $tsfe->metaCharset);
+        $configuration['indexedDocTitle'] = $tsfe->indexedDocTitle;
         // Alternative title for indexing
-        $configuration['metaCharset'] = $tsfe->metaCharset;
-        // Character set of content (will be converted to utf-8 during indexing)
         $configuration['mtime'] = $tsfe->register['SYS_LASTCHANGED'] ?? $tsfe->page['SYS_LASTCHANGED'];
         // Most recent modification time (seconds) of the content on the page. Used to evaluate whether it should be re-indexed.
         // Configuration of behavior
@@ -126,25 +122,5 @@ class TypoScriptFrontendHook
         $configuration['freeIndexUid'] = 0;
         $configuration['freeIndexSetId'] = 0;
         return $configuration;
-    }
-
-    /**
-     * Converts input string from utf-8 to metaCharset IF the two charsets are different.
-     *
-     * @param string $content Content to be converted.
-     * @param string $metaCharset
-     * @return string Converted content string.
-     */
-    protected function convOutputCharset(string $content, string $metaCharset): string
-    {
-        if ($metaCharset !== 'utf-8') {
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            try {
-                $content = $charsetConverter->conv($content, 'utf-8', $metaCharset);
-            } catch (UnknownCharsetException $e) {
-                throw new \RuntimeException('Invalid config.metaCharset: ' . $e->getMessage(), 1508916285);
-            }
-        }
-        return $content;
     }
 }

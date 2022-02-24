@@ -141,7 +141,7 @@ class PageRenderer implements SingletonInterface
      *
      * @var string
      */
-    protected $charSet;
+    protected $charSet = 'utf-8';
 
     /**
      * @var string
@@ -2097,8 +2097,8 @@ class PageRenderer implements SingletonInterface
         }
         $this->inlineLanguageLabelFiles = [];
         // Convert settings back to UTF-8 since json_encode() only works with UTF-8:
-        if ($this->getCharSet() && $this->getCharSet() !== 'utf-8' && is_array($this->inlineSettings)) {
-            $this->convertCharsetRecursivelyToUtf8($this->inlineSettings, $this->getCharSet());
+        if ($this->charSet !== 'utf-8' && is_array($this->inlineSettings)) {
+            $this->convertCharsetRecursivelyToUtf8($this->inlineSettings, $this->charSet);
         }
     }
 
@@ -2376,12 +2376,12 @@ class PageRenderer implements SingletonInterface
      */
     protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '')
     {
-        if (!isset($this->lang) || !isset($this->charSet)) {
-            throw new \RuntimeException('Language and character encoding are not set.', 1284906026);
+        if (!isset($this->lang)) {
+            throw new \RuntimeException('Language is are not set.', 1284906026);
         }
         $labelsFromFile = [];
         $allLabels = $this->readLLfile($fileRef);
-        if ($allLabels !== false) {
+        if (is_array($allLabels)) {
             // Merge language specific translations:
             if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
                 $labels = array_merge($allLabels['default'], $allLabels[$this->lang]);
@@ -2391,7 +2391,7 @@ class PageRenderer implements SingletonInterface
             // Iterate through all locallang labels:
             foreach ($labels as $label => $value) {
                 // If $selectionPrefix is set, only respect labels that start with $selectionPrefix
-                if ($selectionPrefix === '' || strpos($label, $selectionPrefix) === 0) {
+                if ($selectionPrefix === '' || str_starts_with($label, $selectionPrefix)) {
                     // Remove substring $stripFromSelectionName from label
                     $label = str_replace($stripFromSelectionName, '', $label);
                     $labelsFromFile[$label] = $value;

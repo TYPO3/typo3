@@ -23,8 +23,6 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -412,14 +410,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @var string
      */
     public $content = '';
-
-    /**
-     * Output charset of the websites content. This is the charset found in the
-     * header, meta tag etc. If different than utf-8 a conversion
-     * happens before output to browser. Defaults to utf-8.
-     * @var string
-     */
-    public $metaCharset = 'utf-8';
 
     /**
      * Internal calculations for labels
@@ -1554,10 +1544,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (is_array($this->pSetup['config.'] ?? null)) {
                         $this->config['config'] = array_replace_recursive($this->config['config'], $this->pSetup['config.']);
                     }
-                    // Rendering charset of HTML page.
-                    if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
-                        $this->metaCharset = $this->config['config']['metaCharset'];
-                    }
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                 }
@@ -2109,9 +2095,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 GeneralUtility::callUserFunction($_funcRef, $_params, $this);
             }
         }
-        // Convert charset for output. Any hooks before (including indexed search) will have to convert from UTF-8 to the target
-        // charset as well.
-        $this->content = $this->convOutputCharset($this->content);
         // Storing for cache:
         if (!$this->no_cache) {
             $this->realPageCacheContent();
@@ -2238,8 +2221,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 '<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
             ],
             [
-                $this->convOutputCharset(implode(LF, $this->additionalHeaderData)),
-                $this->convOutputCharset(implode(LF, $this->additionalFooterData)),
+                implode(LF, $this->additionalHeaderData),
+                implode(LF, $this->additionalFooterData),
             ],
             $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
         );
@@ -2306,7 +2289,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                             $nonCacheableContent = $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableData[$nonCacheableKey]['postUserFunc'], $nonCacheableData[$nonCacheableKey]['conf'], $nonCacheableData[$nonCacheableKey]['content']);
                             break;
                     }
-                    $this->content .= $this->convOutputCharset($nonCacheableContent);
+                    $this->content .= $nonCacheableContent;
                     $this->content .= substr($contentPart, 35);
                     $timeTracker->pull($nonCacheableContent);
                 } else {
@@ -2364,7 +2347,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Set header for charset-encoding unless disabled
         if (empty($this->config['config']['disableCharsetHeader'])) {
-            $response = $response->withHeader('Content-Type', $this->contentType . '; charset=' . trim($this->metaCharset));
+            $response = $response->withHeader('Content-Type', $this->contentType . '; charset=utf-8');
         }
         // Set header for content language unless disabled
         $contentLanguage = $this->language->getTwoLetterIsoCode();
@@ -2712,27 +2695,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)->createFromSiteLanguage($this->language);
         // Always disable debugging for TSFE
         $this->languageService->debugKey = false;
-    }
-
-    /**
-     * Converts input string from utf-8 to metaCharset IF the two charsets are different.
-     *
-     * @param string $content Content to be converted.
-     * @return string Converted content string.
-     * @throws \RuntimeException if an invalid charset was configured
-     */
-    public function convOutputCharset($content)
-    {
-        if ($this->metaCharset !== 'utf-8') {
-            /** @var CharsetConverter $charsetConverter */
-            $charsetConverter = GeneralUtility::makeInstance(CharsetConverter::class);
-            try {
-                $content = $charsetConverter->conv($content, 'utf-8', $this->metaCharset);
-            } catch (UnknownCharsetException $e) {
-                throw new \RuntimeException('Invalid config.metaCharset: ' . $e->getMessage(), 1508916185);
-            }
-        }
-        return $content;
     }
 
     /**

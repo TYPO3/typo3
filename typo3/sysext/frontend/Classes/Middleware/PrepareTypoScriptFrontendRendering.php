@@ -52,7 +52,7 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        /** @var TypoScriptFrontendController */
+        /** @var TypoScriptFrontendController $controller */
         $controller = $request->getAttribute('frontend.controller');
 
         // as long as TSFE throws errors with the global object, this needs to be set, but
@@ -67,14 +67,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // After this, we should have a valid config-array ready
         $controller->getConfigArray($request);
 
-        // Convert POST data to utf-8 for internal processing if metaCharset is different
-        if ($controller->metaCharset !== 'utf-8' && $request->getMethod() === 'POST') {
-            $parsedBody = $request->getParsedBody();
-            if (is_array($parsedBody) && !empty($parsedBody)) {
-                $this->convertCharsetRecursivelyToUtf8($parsedBody, $controller->metaCharset);
-                $request = $request->withParsedBody($parsedBody);
-            }
-        }
         $response = $handler->handle($request);
 
         /**
@@ -86,22 +78,5 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         $controller->releaseLocks();
 
         return $response;
-    }
-
-    /**
-     * Small helper function to convert charsets for arrays to UTF-8
-     *
-     * @param mixed $data given by reference (string/array usually)
-     * @param string $fromCharset convert FROM this charset
-     */
-    protected function convertCharsetRecursivelyToUtf8(&$data, string $fromCharset)
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($data[$key])) {
-                $this->convertCharsetRecursivelyToUtf8($data[$key], $fromCharset);
-            } elseif (is_string($data[$key])) {
-                $data[$key] = mb_convert_encoding($data[$key], 'utf-8', $fromCharset);
-            }
-        }
     }
 }

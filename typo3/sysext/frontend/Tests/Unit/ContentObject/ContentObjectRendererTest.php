@@ -1175,7 +1175,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeTsfe(): void
     {
-        self::assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('tsfe:metaCharset'));
+        $GLOBALS['TSFE']->intTarget = 'foo';
+        self::assertEquals($GLOBALS['TSFE']->intTarget, $this->subject->getData('tsfe:intTarget'));
     }
 
     /**
@@ -1325,16 +1326,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
         self::assertEquals(2, $this->subject->getData('level'));
-    }
-
-    /**
-     * Checks if getData() works with type "global"
-     *
-     * @test
-     */
-    public function getDataWithTypeGlobal(): void
-    {
-        self::assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('global:TSFE|metaCharset'));
     }
 
     /**

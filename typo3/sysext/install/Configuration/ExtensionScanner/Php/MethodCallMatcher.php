@@ -5218,4 +5218,11 @@ return [
             'Deprecation-97027-ContentObjectRenderer-getTreeList.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->convOutputCharset' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-97065-TYPO3FrontendAlwaysRenderedInUTF-8.rst',
+        ],
+    ],
 ];

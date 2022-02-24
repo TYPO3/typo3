@@ -54,7 +54,6 @@ trait PageRendererBackendSetupTrait
     ): void {
         // Yes, hardcoded on purpose
         $pageRenderer->setXmlPrologAndDocType('<!DOCTYPE html>');
-        $pageRenderer->setCharSet('utf-8');
         $pageRenderer->setLanguage($languageService->lang);
         $pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
         $pageRenderer->setFavIcon($this->getBackendFavicon($extensionConfiguration, $request));

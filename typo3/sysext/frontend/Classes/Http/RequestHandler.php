@@ -257,8 +257,6 @@ class RequestHandler implements RequestHandlerInterface
         if ($headerComment) {
             $pageRenderer->addInlineComment("\t" . str_replace(LF, LF . "\t", $headerComment) . LF);
         }
-        // Setting charset:
-        $theCharset = $controller->metaCharset;
         $htmlTagAttributes = [];
         $htmlLang = $siteLanguage->getHreflang() ?: '';
 
@@ -274,14 +272,14 @@ class RequestHandler implements RequestHandlerInterface
                 $xmlDocument = false;
                 break;
             case 'xml_10':
-                $docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
+                $docTypeParts[] = '<?xml version="1.0" encoding="utf-8"?>';
                 break;
             case 'xml_11':
-                $docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
+                $docTypeParts[] = '<?xml version="1.1" encoding="utf-8"?>';
                 break;
             case '':
                 if ($controller->xhtmlVersion) {
-                    $docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
+                    $docTypeParts[] = '<?xml version="1.0" encoding="utf-8"?>';
                 } else {
                     $xmlDocument = false;
                 }
@@ -377,8 +375,6 @@ class RequestHandler implements RequestHandlerInterface
             $headTag = $controller->cObj->stdWrap($headTag, $controller->pSetup['headTag.']);
         }
         $pageRenderer->setHeadTag($headTag);
-        // Setting charset meta tag:
-        $pageRenderer->setCharSet($theCharset);
         $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
         if ($controller->baseUrl) {
             $pageRenderer->setBaseUrl($controller->baseUrl);
