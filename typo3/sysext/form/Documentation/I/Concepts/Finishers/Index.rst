@@ -64,6 +64,26 @@ The :php:`EmailFinisher` sends an email to one recipient. EXT:form uses two
 ``EmailToSender``.
 
 
+.. _concepts-finishers-emailfinisher-bcc-recipients:
+
+Working with BCC recipients
+"""""""""""""""""""""""""""
+
+Both email finishers support different recipient types, including Carbon Copy
+(CC) and Blind Carbon Copy (BCC). Depending on the configuration of the server
+and the TYPO3 instance, it may not be possible to send emails to BCC recipients.
+The configuration of the :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_sendmail_command']`
+value is crucial. As documented in :ref:`CORE API <t3coreapi:mail-configuration-sendmail>`,
+TYPO3 recommends the parameter :php:`-bs` (instead of :php:`-t -i`) when using
+:php:`sendmail`. The parameter :php:`-bs` tells TYPO3 to use the SMTP standard
+and that way the BCC recipients are properly set. `Symfony <https://symfony.com/doc/current/mailer.html#using-built-in-transports>`__
+refers to the problem of using the :php:`-t` parameter as well. Since TYPO3 7.5
+(`#65791 <https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/7.5/Feature-65791-UsePHPConfiguredSendmailPathIfMAILtransportSendmailIsActive.html>`__)
+the :php:`transport_sendmail_command` is automatically set from the PHP runtime
+configuration and saved. Thus, if you have problems with sending emails to BCC
+recipients, check the above mentioned configuration.
+
+
 .. _concepts-finishers-emailfinisher-fluidemail:
 
 About FluidEmail
