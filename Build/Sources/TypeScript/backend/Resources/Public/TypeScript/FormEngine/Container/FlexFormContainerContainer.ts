@@ -103,6 +103,7 @@ class FlexFormContainerContainer {
 
           this.container.appendChild(actionField);
           this.container.classList.add('t3-flex-section--deleted');
+          this.container.classList.add('has-change');
           new RegularEvent('transitionend', (): void => {
             this.container.classList.add('hidden');
 
