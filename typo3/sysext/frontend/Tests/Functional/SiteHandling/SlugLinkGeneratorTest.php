@@ -1472,34 +1472,43 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 'https://acme.us/',
                 1100,
                 [
-                    ['title' => 'English', 'link' => '/welcome'],
-                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
-                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
+                    ['title' => 'English', 'link' => '/welcome', 'active' => 1, 'current' => 0, 'available' => 1],
+                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue', 'active' => 0, 'current' => 0, 'available' => 1],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue', 'active' => 0, 'current' => 0, 'available' => 1],
                 ],
             ],
             'ACME Inc (FR)' => [
                 'https://acme.fr/',
                 1100,
                 [
-                    ['title' => 'English', 'link' => 'https://acme.us/welcome'],
-                    ['title' => 'French', 'link' => '/bienvenue'],
-                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue'],
+                    ['title' => 'English', 'link' => 'https://acme.us/welcome', 'active' => 0, 'current' => 0, 'available' => 1],
+                    ['title' => 'French', 'link' => '/bienvenue', 'active' => 1, 'current' => 0, 'available' => 1],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/bienvenue', 'active' => 0, 'current' => 0, 'available' => 1],
                 ],
             ],
             'ACME Inc (FR-CA)' => [
                 'https://acme.ca/',
                 1100,
                 [
-                    ['title' => 'English', 'link' => 'https://acme.us/welcome'],
-                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue'],
-                    ['title' => 'Franco-Canadian', 'link' => '/bienvenue'],
+                    ['title' => 'English', 'link' => 'https://acme.us/welcome', 'active' => 0, 'current' => 0, 'available' => 1],
+                    ['title' => 'French', 'link' => 'https://acme.fr/bienvenue', 'active' => 0, 'current' => 0, 'available' => 1],
+                    ['title' => 'Franco-Canadian', 'link' => '/bienvenue', 'active' => 1, 'current' => 0, 'available' => 1],
                 ],
             ],
             'ACME Blog' => [
                 'https://blog.acme.com/',
                 2100,
                 [
-                    ['title' => 'Default', 'link' => '/authors'],
+                    ['title' => 'Default', 'link' => '/authors', 'active' => 1, 'current' => 0, 'available' => 1],
+                ],
+            ],
+            'ACME Inc (EN) with a subpage' => [
+                'https://acme.us/about',
+                1600,
+                [
+                    ['title' => 'English', 'link' => '/about', 'active' => 1, 'current' => 0, 'available' => 1],
+                    ['title' => 'French', 'link' => 'https://acme.fr/about', 'active' => 0, 'current' => 0, 'available' => 0],
+                    ['title' => 'Franco-Canadian', 'link' => 'https://acme.ca/about', 'active' => 0, 'current' => 0, 'available' => 0],
                 ],
             ],
         ];
@@ -1526,7 +1535,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         );
 
         $json = json_decode((string)$response->getBody(), true);
-        $json = $this->filterMenu($json);
+        $json = $this->filterMenu($json, ['title', 'link', 'available', 'active', 'current']);
 
         self::assertSame($expectation, $json);
     }
