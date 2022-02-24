@@ -80,6 +80,35 @@ $tree-line-height: 20px;
     transition: transform 0.2s;
 }
 
+.form-editor {
+    padding: 0 0.5em;
+}
+
+.form-control-wrap {
+    margin: 0;
+    padding: 0.5rem 0;
+
+    .table {
+        margin: 0;
+    }
+}
+
+.form-group-select {
+    padding-bottom: 0.5rem;
+
+    .form-control-wrap {
+        padding: 0;
+    }
+
+    .t3-form-add-collection-element {
+        padding-bottom: 0;
+    }
+
+    .form-select {
+        margin-top: 0.5rem;
+    }
+}
+
 //
 // X-Component
 //
@@ -87,7 +116,7 @@ $tree-line-height: 20px;
     position: absolute;
     top: 0;
     height: 100%;
-    line-height: normal;
+    line-height: inherit;
     background: $navigation-bg;
 
     a {
@@ -289,7 +318,7 @@ $tree-line-height: 20px;
 }
 
 #t3-form-inspector {
-    padding: 1em 0.5em;
+    padding: 1em 0;
 
     h2,
     h3,
@@ -319,7 +348,7 @@ $tree-line-height: 20px;
     }
 
     h4 {
-        padding: 0.8em 3em 0.8em 4em;
+        padding: 0.8em 3.5em 0.8em 2.8em;
         font-weight: 500;
         background-color: $panel-default-heading-bg;
 
@@ -328,8 +357,18 @@ $tree-line-height: 20px;
         }
     }
 
+    .form-section-headline {
+        padding: 0;
+    }
+
     .icon-size-small {
         line-height: $line-height-base;
+    }
+
+    .input-group {
+        .t3-form-controls {
+            flex: 1 1 auto;
+        }
     }
 
     .input-group-btn {
@@ -345,7 +384,6 @@ $tree-line-height: 20px;
 
     .t3-form-control-group,
     .t3-form-add-collection-element {
-        margin: 1.5em 0.5em;
         clear: both;
     }
 
@@ -380,12 +418,12 @@ $tree-line-height: 20px;
 // Inspector Collection
 //
 .t3-form-add-collection-element {
-    padding-bottom: 1em;
+    padding-bottom: 0.5rem;
 }
 
 .t3-form-collection-container {
     margin-top: -1em;
-    padding: 0.6em;
+    padding: 0.5em;
 
     .ui-sortable-handle {
         cursor: auto;
@@ -394,11 +432,11 @@ $tree-line-height: 20px;
     h4 {
         cursor: move;
     }
-}
 
-#t3-form-inspector-validators.t3-form-collection-container,
-#t3-form-inspector-finishers.t3-form-collection-container {
-    margin-top: -2.25em;
+    .t3-form-control-group {
+        margin-right: 0.5em;
+        margin-left: 0.5em;
+    }
 }
 
 .t3-form-collection-element {
@@ -414,9 +452,23 @@ $tree-line-height: 20px;
         top: 0.5em;
     }
 
-    h4 > .icon {
-        position: absolute;
-        left: 2.2em;
+    h4 {
+        > .icon {
+            position: absolute;
+            left: 1em;
+        }
+    }
+
+    .form-editor {
+        padding: 0;
+    }
+
+    .panel-collapse {
+        .form-editor {
+            &:first-child {
+                margin-top: 1em;
+            }
+        }
     }
 }
 
@@ -1094,7 +1146,7 @@ $tree-line-height: 20px;
         font-size: 0.8em;
         font-weight: 700;
         background-color: $danger;
-        margin-top: 0.5em;
+        margin-bottom: 0.5em;
         padding: 0.1em 0.5em;
         border-radius: 2px;
     }
@@ -1128,13 +1180,12 @@ $tree-line-height: 20px;
 }
 
 #t3-form-inspector-panels {
-    span.t3-form-validation-errors,
-    .inspector-editor-hint {
+    span.t3-form-validation-errors {
         display: inline-block;
         color: #fff;
         font-size: 0.8em;
         font-weight: 700;
-        margin-top: 0.5em;
+        margin-bottom: 0.5em;
         padding: 0.1em 0.5em;
         border-radius: 2px;
         line-height: 1.5em;
@@ -1142,10 +1193,6 @@ $tree-line-height: 20px;
 
     span.t3-form-validation-errors {
         background-color: $danger;
-    }
-
-    .inspector-editor-hint {
-        background-color: $gray-700;
     }
 }
 

@@ -2,49 +2,51 @@
 <div class="form-editor">
     <div class="t3-form-control-group form-group property-grid">
         <label data-random-id data-random-id-attribute="for" data-random-id-number="1"><span data-template-property="label"></span></label>
-        <div data-editor="new-property-grid" data-template-property="newPropertyPath">
-            <table class="table table-hover" data-identifier="propertyGridContainer">
-                <thead>
-                    <tr data-identifier="headerRow">
-                        <th></th>
-                        <th data-identifier="column" data-column="label"></th>
-                        <th data-identifier="column" data-column="value"></th>
-                        <th data-identifier="column" data-column="selected"></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr data-identifier="rowItem">
-                        <td><span class="sort-row-field" data-identifier="sortRow"><core:icon identifier="actions-move-move" /></span></td>
-                        <td data-identifier="column" data-column="label"><input type="text" class="form-control" value="" data-identifier="label" /></td>
-                        <td data-identifier="column" data-column="value"><input type="text" class="form-control" value="" data-identifier="value" /></td>
-                        <td data-identifier="column" data-column="selected"><input type="checkbox" data-identifier="selectValue" /></td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.remove')}" data-identifier="deleteRow">
-                                    <core:icon identifier="actions-delete" />
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr data-identifier="addRowItem">
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button data-random-id data-random-id-attribute="id" data-random-id-number="1" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.add')}" data-identifier="addRow">
-                                    <core:icon identifier="actions-add" />
-                                </button>
-                            </div>
-                        </td>
-                        <td data-identifier="column" data-column="label"></td>
-                        <td data-identifier="column" data-column="value"></td>
-                        <td data-identifier="column" data-column="selected"></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="formengine-field-item">
+            <span data-template-property="fieldExplanationText" class="formengine-field-item-description text-muted"></span>
+            <div data-editor="new-property-grid" data-template-property="newPropertyPath" class="form-control-wrap">
+                <table class="table table-hover" data-identifier="propertyGridContainer">
+                    <thead>
+                        <tr data-identifier="headerRow">
+                            <th></th>
+                            <th data-identifier="column" data-column="label"></th>
+                            <th data-identifier="column" data-column="value"></th>
+                            <th data-identifier="column" data-column="selected"></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-identifier="rowItem">
+                            <td><span class="sort-row-field" data-identifier="sortRow"><core:icon identifier="actions-move-move" /></span></td>
+                            <td data-identifier="column" data-column="label"><input type="text" class="form-control" value="" data-identifier="label" /></td>
+                            <td data-identifier="column" data-column="value"><input type="text" class="form-control" value="" data-identifier="value" /></td>
+                            <td data-identifier="column" data-column="selected"><input type="checkbox" data-identifier="selectValue" /></td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.remove')}" data-identifier="deleteRow">
+                                        <core:icon identifier="actions-delete" />
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-identifier="addRowItem">
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button data-random-id data-random-id-attribute="id" data-random-id-number="1" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.add')}" data-identifier="addRow">
+                                        <core:icon identifier="actions-add" />
+                                    </button>
+                                </div>
+                            </td>
+                            <td data-identifier="column" data-column="label"></td>
+                            <td data-identifier="column" data-column="value"></td>
+                            <td data-identifier="column" data-column="selected"></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div data-editor="property-grid" data-template-property="propertyPath" class="t3-form-grid"></div>
-        <span class="inspector-editor-hint" data-template-property="fieldExplanationText"></span>
         <span data-template-property="validationErrors"></span>
     </div>
 </div>

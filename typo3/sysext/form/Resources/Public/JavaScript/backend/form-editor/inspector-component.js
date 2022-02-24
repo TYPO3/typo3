@@ -1239,7 +1239,7 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
             iconWrap = $('<a></a>')
               .attr('href', _getCollectionElementId(collectionName, collectionElementIdentifier, true))
               .attr('data-bs-toggle', 'collapse')
-              .attr('aria-expanded', 'true')
+              .attr('aria-expanded', 'false')
               .attr('aria-controls', _getCollectionElementId(collectionName, collectionElementIdentifier))
               .addClass('collapsed')
               .append($(icon));
