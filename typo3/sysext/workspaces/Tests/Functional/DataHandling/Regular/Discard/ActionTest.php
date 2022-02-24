@@ -691,4 +691,59 @@ class ActionTest extends AbstractActionTestCase
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['deletedPageId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteDraftParentPage.csv');
     }
+
+    /**
+     * Test does not make sense in Modify, Publish and PublishAll
+     *
+     * @test
+     */
+    public function deletingDefaultLanguageElementDiscardsConnectedLocalizedElement(): void
+    {
+        // Switch to live workspace and localize page in live
+        $this->setWorkspaceId(0);
+        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+
+        // Localize 'Regular Element #2' (289) in workspace "connected mode"
+        $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+
+        // And now *delete* the default language content element 'Regular Element #2' (289) in *live*,
+        // which should *discard* the above localized content element in workspaces again.
+        $this->setWorkspaceId(0);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingDefaultLanguageElementDiscardsConnectedLocalizedElement.csv');
+    }
+
+    /**
+     * Similar to above, but with a translation chain: Element 2 is first translated to language 1, then
+     * translated to language 2 again. Both records should be discarded when discarding live element.
+     *
+     * Test does not make sense in Modify, Publish and PublishAll.
+     *
+     * @test
+     */
+    public function deletingDefaultLanguageElementDiscardsConnectedLocalizedElementChain(): void
+    {
+        // Switch to live workspace and localize page in live
+        $this->setWorkspaceId(0);
+        $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+
+        // Localize 'Regular Element #2' (289) in workspace "connected mode"
+        $newRecordIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_LanguageId);
+        $localizedRecordId = $newRecordIds['tt_content'][self::VALUE_ContentIdSecond];
+        // Localize 'Regular Element #2' (289) in workspace "connected mode" to language 2 as 'translation of translation':
+        // l10n_parent still points to 289, but l10n_source points to 321.
+        $this->actionService->localizeRecord(self::TABLE_Content, $localizedRecordId, self::VALUE_LanguageIdSecond);
+
+        // And now *delete* the default language content element 'Regular Element #2' (289) in *live*,
+        // which should *discard* the above localized content elements in workspaces again.
+        $this->setWorkspaceId(0);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingDefaultLanguageElementDiscardsConnectedLocalizedElementChain.csv');
+    }
 }

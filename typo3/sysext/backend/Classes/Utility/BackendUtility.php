@@ -3007,66 +3007,67 @@ class BackendUtility
         $includeDeletedRecords = false,
         $row = null
     ) {
+        if (!static::isTableWorkspaceEnabled($table)) {
+            return null;
+        }
+
         $outputRows = [];
-        if (static::isTableWorkspaceEnabled($table)) {
-            if (is_array($row) && !$includeDeletedRecords) {
+        if (is_array($row) && !$includeDeletedRecords) {
+            $row['_CURRENT_VERSION'] = true;
+            $outputRows[] = $row;
+        } else {
+            // Select UID version:
+            $row = self::getRecord($table, $uid, $fields, '', !$includeDeletedRecords);
+            // Add rows to output array:
+            if ($row) {
                 $row['_CURRENT_VERSION'] = true;
                 $outputRows[] = $row;
-            } else {
-                // Select UID version:
-                $row = self::getRecord($table, $uid, $fields, '', !$includeDeletedRecords);
-                // Add rows to output array:
-                if ($row) {
-                    $row['_CURRENT_VERSION'] = true;
-                    $outputRows[] = $row;
-                }
             }
-
-            $queryBuilder = static::getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-
-            // build fields to select
-            $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
-
-            $queryBuilder
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-                )
-                ->orderBy('uid', 'DESC');
-
-            if (!$includeDeletedRecords) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            }
-
-            if ($workspace === 0) {
-                // Only in Live WS
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                    )
-                );
-            } elseif ($workspace !== null) {
-                // In Live WS and Workspace with given ID
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->in(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter([0, (int)$workspace], Connection::PARAM_INT_ARRAY)
-                    )
-                );
-            }
-
-            $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
-
-            // Add rows to output array:
-            if (is_array($rows)) {
-                $outputRows = array_merge($outputRows, $rows);
-            }
-            return $outputRows;
         }
-        return null;
+
+        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        // build fields to select
+        $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
+
+        $queryBuilder
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            )
+            ->orderBy('uid', 'DESC');
+
+        if (!$includeDeletedRecords) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+
+        if ($workspace === 0) {
+            // Only in Live WS
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                )
+            );
+        } elseif ($workspace !== null) {
+            // In Live WS and Workspace with given ID
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter([0, (int)$workspace], Connection::PARAM_INT_ARRAY)
+                )
+            );
+        }
+
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        // Add rows to output array:
+        if (is_array($rows)) {
+            $outputRows = array_merge($outputRows, $rows);
+        }
+        return $outputRows;
     }
 
     /**
