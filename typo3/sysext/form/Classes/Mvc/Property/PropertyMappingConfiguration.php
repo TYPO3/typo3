@@ -79,13 +79,17 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
                 $validators = [$mimeTypeValidator];
             }
 
-            $processingRule = $renderable->getRootForm()->getProcessingRule($renderable->getIdentifier());
-            foreach (clone $processingRule->getValidators() as $validator) {
-                if (!($validator instanceof NotEmptyValidator)) {
-                    $validators[] = $validator;
-                    $processingRule->removeValidator($validator);
-                }
-            }
+            $renderable->getRootForm()
+                ->getProcessingRule($renderable->getIdentifier())
+                ->filterValidators(
+                    static function ($validator) use (&$validators) {
+                        if ($validator instanceof NotEmptyValidator) {
+                            return true;
+                        }
+                        $validators[] = $validator;
+                        return false;
+                    }
+                );
 
             $uploadConfiguration = [
                 UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS => $validators,
