@@ -8,7 +8,7 @@ For Integrators
 ===============
 
 .. toctree::
-   :hidden:
+   :maxdepth: 1
 
    Concepts/Index
    Config/Index
