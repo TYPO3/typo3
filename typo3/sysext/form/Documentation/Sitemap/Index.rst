@@ -1,7 +1,4 @@
-.. include:: /Includes.rst.txt
-
 :template: sitemap.html
-
 
 .. _Sitemap:
 
