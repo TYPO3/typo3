@@ -180,6 +180,8 @@ class FlexFormSectionContainer {
       FormEngine.reinitialize();
       FormEngine.Validation.initializeInputFields();
       FormEngine.Validation.validate(sectionContainer);
+
+      this.container.classList.add('has-change');
     });
   }
 
