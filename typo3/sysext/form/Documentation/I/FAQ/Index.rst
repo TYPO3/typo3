@@ -91,6 +91,37 @@ to learn about the recommended ways.
    }
 
 
+.. _faq-prevent-double-submissions:
+
+How do I disable multiple form submissions?
+===========================================
+
+The use case is quite obvious: a user can submit a form twice by double
+clicking the submit button. This could cause trouble since the attached finishers
+are processed multiple times.
+
+Right now, there are no plans to integrate a feature to prevent this behaviour,
+especially not server side. An easy solution could be the integration of a
+JavaScript function to stop the behaviour. TYPO3 itself does not take care of
+any frontend integration and does not want to ship JavaScript solutions for
+the frontend. Therefore, integrators have to take care and implement a solution.
+
+As an example, check out the following JavaScript snippet. This should do the
+trick. It can be added to the site package of the TYPO3 installation. Please
+note, the selector (here :js:`myform-123`) has to be adapted to the id of the
+corresponding form.
+
+.. code-block:: js
+
+   document.getElementById('myform-123')
+       .addEventListener('submit', function(e) {
+           e.target.querySelectorAll('[type="submit"]')
+               .forEach(function(button) {
+                   button.disabled = true;
+               });
+       });
+
+
 .. _faq-migrate-from-v7:
 
 How do I migrate from EXT:form v7?
@@ -105,8 +136,8 @@ still needed.
 
 .. _faq-date-picker:
 
-How does the date picker work?
-==============================
+How does the date picker (jQuery) work?
+=======================================
 
 EXT:form ships a datepicker form element. To unfold its full potential you
 should add jquery JavaScript files and jqueryUi JavaScript and CSS files to
@@ -126,8 +157,8 @@ Possible, yes. But we are not aware of an integration.
 Is there some kind of export module for saved forms?
 ====================================================
 
-Currently, there are no plans to implement such a feature. There are
-concerns regarding the data privacy when it comes to storing user data in
+Currently, there are no plans to implement such a feature into the core. There
+are concerns regarding the data privacy when it comes to storing user data in
 your TYPO3 database permanently. The great folks of Pagemachine created an
 `extension <https://github.com/pagemachine/typo3-formlog>`_ for this behalf.
 
