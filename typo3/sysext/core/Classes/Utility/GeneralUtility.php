@@ -80,7 +80,7 @@ class GeneralUtility
     protected static $finalClassNameCache = [];
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, string|bool|array<string, string|bool|null>|null>
      */
     protected static $indpEnvCache = [];
 
@@ -2402,7 +2402,7 @@ class GeneralUtility
      * This should be used instead of getEnv() and $_SERVER/ENV_VARS to get reliable values for all situations.
      *
      * @param string $getEnvName Name of the "environment variable"/"server variable" you wish to use. Valid values are SCRIPT_NAME, SCRIPT_FILENAME, REQUEST_URI, PATH_INFO, REMOTE_ADDR, REMOTE_HOST, HTTP_REFERER, HTTP_HOST, HTTP_USER_AGENT, HTTP_ACCEPT_LANGUAGE, QUERY_STRING, TYPO3_DOCUMENT_ROOT, TYPO3_HOST_ONLY, TYPO3_HOST_ONLY, TYPO3_REQUEST_HOST, TYPO3_REQUEST_URL, TYPO3_REQUEST_SCRIPT, TYPO3_REQUEST_DIR, TYPO3_SITE_URL, _ARRAY
-     * @return string Value based on the input key, independent of server/os environment.
+     * @return string|bool|array<string, string|bool|null>|null Value based on the input key, independent of server/OS environment.
      * @throws \UnexpectedValueException
      */
     public static function getIndpEnv($getEnvName)
