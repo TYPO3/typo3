@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
+use TYPO3\CMS\Form\Tests\Unit\Mvc\Fixtures\AnotherTestValidator;
 use TYPO3\CMS\Form\Tests\Unit\Mvc\Validation\Fixtures\TestValidator;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,7 +32,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProcessingRuleTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     /**
      * @test
      */
@@ -42,6 +45,36 @@ class ProcessingRuleTest extends UnitTestCase
         $validators = $subject->getValidators();
         $validators->rewind();
         self::assertInstanceOf(AbstractValidator::class, $validators->current());
+    }
+
+    /**
+     * @test
+     */
+    public function removeAllRemovesAllValidators(): void
+    {
+        $subject = new ProcessingRule($this->prophesize(PropertyMapper::class)->reveal());
+        $subject->addValidator(new TestValidator());
+        $subject->addValidator(new AnotherTestValidator());
+        $subject->addValidator(new TestValidator());
+        $subject->removeAllValidators();
+        self::assertCount(0, $subject->getValidators());
+    }
+
+    /**
+     * @test
+     */
+    public function filterValidatorRemovesValidatorsDependingOnClosure(): void
+    {
+        $subject = new ProcessingRule($this->prophesize(PropertyMapper::class)->reveal());
+        $subject->addValidator(new TestValidator());
+        $subject->addValidator(new AnotherTestValidator());
+        $subject->addValidator(new TestValidator());
+        $subject->filterValidators(static function ($validator) {
+            return $validator instanceof AnotherTestValidator;
+        });
+        $validators = $subject->getValidators();
+        self::assertCount(1, $validators);
+        self::assertInstanceOf(AnotherTestValidator::class, $validators->current());
     }
 
     /**

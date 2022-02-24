@@ -106,6 +106,33 @@ class ProcessingRule
     }
 
     /**
+     * Initializes a new validator container
+     *
+     * @internal
+     */
+    public function removeAllValidators(): void
+    {
+        $this->filterValidators(fn () => false);
+    }
+
+    /**
+     * Filters validators based on a closure
+     *
+     * @internal
+     */
+    public function filterValidators(\Closure $filter): void
+    {
+        $validatorsToRemove = new \SplObjectStorage();
+        $validators = $this->getValidators();
+        foreach ($validators as $validator) {
+            if (!$filter($validator)) {
+                $validatorsToRemove->attach($validator);
+            }
+        }
+        $validators->removeAll($validatorsToRemove);
+    }
+
+    /**
      * Removes the specified validator.
      *
      * @param ValidatorInterface $validator The validator to remove
