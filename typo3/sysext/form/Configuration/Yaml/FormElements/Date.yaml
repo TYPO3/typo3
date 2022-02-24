@@ -111,6 +111,8 @@ TYPO3:
                           identifier: header
                           templateName: Inspector-CollectionElementHeaderEditor
                           label: formEditor.elements.DatePicker.validators.DateRange.editor.header.label
+                        # Deprecated since v12, will be removed in v13
+                        # Instead of using the key 200, the validationErrorMessage will be moved to the key 400
                         200:
                           identifier: validationErrorMessage
                           templateName: Inspector-ValidationErrorMessageEditor
@@ -141,6 +143,17 @@ TYPO3:
                             10: RFC3339FullDateOrEmpty
                           additionalElementPropertyPaths:
                             10: properties.fluidAdditionalAttributes.max
+                        # This will be enabled in TYPO3 13.0
+                        #400:
+                          #identifier: validationErrorMessage
+                          #templateName: Inspector-ValidationErrorMessageEditor
+                          #label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label
+                          #fieldExplanationText: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText
+                          #errorCodes:
+                            #10: 1521293685
+                            #20: 1521293686
+                            #30: 1521293687
+                          #propertyPath: properties.validationErrorMessages
                         9999:
                           identifier: removeButton
                           templateName: Inspector-RemoveElementEditor
