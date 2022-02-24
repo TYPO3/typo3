@@ -99,6 +99,7 @@ formEditor
                   80:
                     value: NumberRange
                     label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                  # @deprecated since v12, will be removed in v13
                   90:
                     value: RegularExpression
                     label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label

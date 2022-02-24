@@ -83,6 +83,7 @@ formEditor
                     10:
                       value: ''
                       label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                    # @deprecated since v12, will be removed in v13
                     90:
                       value: RegularExpression
                       label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
