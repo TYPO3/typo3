@@ -231,6 +231,7 @@ formEditor
                        propertyPath: options.regularExpression
                        propertyValidators:
                          10: NotEmpty
+                         20: RegularExpressionPattern
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor

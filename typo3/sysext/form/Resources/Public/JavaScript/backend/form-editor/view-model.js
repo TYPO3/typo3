@@ -434,6 +434,30 @@ function factory($, TreeComponent, ModalsComponent, InspectorComponent, StageCom
           return getFormEditorApp().getFormElementPropertyValidatorDefinition('RFC3339FullDate')['errorMessage'] || 'invalid value';
         }
       });
+
+      getFormEditorApp().addPropertyValidationValidator('RegularExpressionPattern', function(formElement, propertyPath) {
+        var value = formElement.get(propertyPath), isValid = true;
+
+        if (!getUtility().isNonEmptyString(value)) {
+          return getFormEditorApp().getFormElementPropertyValidatorDefinition('RegularExpressionPattern')['errorMessage'] || 'invalid value';
+        }
+
+        try {
+          var matches = value.match(/^\/(.*)\/[gmixsuUAJD]*$/);
+
+          if (null !== matches) {
+            new RegExp(matches[1]);
+          } else {
+            isValid = false;
+          }
+        } catch (e) {
+          isValid = false;
+        }
+
+        if (!isValid) {
+          return getFormEditorApp().getFormElementPropertyValidatorDefinition('RegularExpressionPattern')['errorMessage'] || 'invalid value';
+        }
+      });
     };
 
     /**

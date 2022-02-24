@@ -35,3 +35,4 @@ formEditor.propertyCollections.validators.80.editors.200
                        propertyPath: options.regularExpression
                        propertyValidators:
                          10: NotEmpty
+                         20: RegularExpressionPattern

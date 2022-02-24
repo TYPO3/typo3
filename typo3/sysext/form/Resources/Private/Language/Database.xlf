@@ -107,10 +107,10 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" resname="tt_content.finishersDefinition.EmailToSender.addHtmlPart.label" xml:space="preserve">
                 <source>Add HTML mail part</source>
             </trans-unit>
-			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" resname="tt_content.finishersDefinition.EmailToSender.language.label" xml:space="preserve">
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.label" resname="tt_content.finishersDefinition.EmailToSender.language.label" xml:space="preserve">
                 <source>Translation language</source>
             </trans-unit>
-			<trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" resname="tt_content.finishersDefinition.EmailToSender.language.1" xml:space="preserve">
+            <trans-unit id="tt_content.finishersDefinition.EmailToSender.language.1" resname="tt_content.finishersDefinition.EmailToSender.language.1" xml:space="preserve">
                 <source>Default</source>
             </trans-unit>
             <trans-unit id="tt_content.finishersDefinition.EmailToSender.title.label" resname="tt_content.finishersDefinition.EmailToSender.title.label" xml:space="preserve">
@@ -150,7 +150,7 @@
             <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.language.1" resname="tt_content.finishersDefinition.EmailToReceiver.language.1" xml:space="preserve">
                 <source>Default</source>
             </trans-unit>
-			<trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" resname="tt_content.finishersDefinition.EmailToReceiver.title.label" xml:space="preserve">
+            <trans-unit id="tt_content.finishersDefinition.EmailToReceiver.title.label" resname="tt_content.finishersDefinition.EmailToReceiver.title.label" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
 
@@ -254,16 +254,16 @@
             <trans-unit id="formEditor.new_page_button" resname="formEditor.new_page_button" xml:space="preserve">
                 <source>Create new step</source>
             </trans-unit>
-			<trans-unit id="formEditor.previous_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+            <trans-unit id="formEditor.previous_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
                 <source>Previous step</source>
             </trans-unit>
-			<trans-unit id="formEditor.next_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+            <trans-unit id="formEditor.next_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
                 <source>Next step</source>
             </trans-unit>
-			<trans-unit id="formEditor.preview_mode_button" resname="formEditor.preview_mode_button" xml:space="preserve">
+            <trans-unit id="formEditor.preview_mode_button" resname="formEditor.preview_mode_button" xml:space="preserve">
                 <source>Preview mode</source>
             </trans-unit>
-			<trans-unit id="formEditor.edit_mode_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+            <trans-unit id="formEditor.edit_mode_button" resname="formEditor.edit_mode_button" xml:space="preserve">
                 <source>Edit mode</source>
             </trans-unit>
             <trans-unit id="formEditor.structure" resname="formEditor.structure" xml:space="preserve">
@@ -289,6 +289,9 @@
             </trans-unit>
             <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label" resname="formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label" xml:space="preserve">
                 <source>Invalid date format. Valid format: Y-m-d (2018-03-17)</source>
+            </trans-unit>
+            <trans-unit id="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label" resname="formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label" xml:space="preserve">
+                <source>Invalid pattern</source>
             </trans-unit>
 
             <trans-unit id="formEditor.formElementGroups.input.label" resname="formEditor.formElementGroups.input.label" xml:space="preserve">
@@ -650,16 +653,16 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.attachUploads.label" xml:space="preserve">
                 <source>Attach uploads</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.label" xml:space="preserve">
                 <source>Translation language</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToSender.editor.language.1" xml:space="preserve">
                 <source>EN</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
                 <source>The title, being shown in the Email</source>
             </trans-unit>
 
@@ -711,10 +714,10 @@
             <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" resname="formEditor.elements.Form.finisher.EmailToReceiver.editor.language.1" xml:space="preserve">
                 <source>EN</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.label" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.label" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
+            <trans-unit id="formEditor.elements.Form.finisher.EmailToReceiver.editor.title.fieldExplanationText" resname="formEditor.elements.Form.finisher.EmailToSender.editor.title.fieldExplanationText" xml:space="preserve">
                 <source>The title, being shown in the Email</source>
             </trans-unit>
 
@@ -799,10 +802,10 @@
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label" xml:space="preserve">
                 <source>Large</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label" xml:space="preserve">
                 <source>Extra large</source>
             </trans-unit>
-			<trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" xml:space="preserve">
+            <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label" xml:space="preserve">
                 <source>Extra extra large</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" resname="formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label" xml:space="preserve">

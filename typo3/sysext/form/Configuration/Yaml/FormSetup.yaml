@@ -123,6 +123,8 @@ TYPO3:
                 errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
               RFC3339FullDate:
                 errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
+              RegularExpressionPattern:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
             formElementGroups:
               input:

@@ -107,6 +107,7 @@ formEditor
                         propertyPath: options.regularExpression
                         propertyValidators:
                           10: NotEmpty
+                          20: RegularExpressionPattern
               label: formEditor.elements.Url.label
               group: html5
               groupSorting: 300

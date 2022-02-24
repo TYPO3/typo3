@@ -544,6 +544,8 @@ formElementPropertyValidatorsDefinition
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
              RFC3339FullDate:
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
+             RegularExpressionPattern:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
       - :ref:`"[TextEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`
@@ -599,6 +601,8 @@ formElementPropertyValidatorsDefinition.<formElementPropertyValidatorIdentifier>
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
              RFC3339FullDate:
                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
+             RegularExpressionPattern:
+               errorMessage: formEditor.formElementPropertyValidatorsDefinition.RegularExpressionPattern.label
 
 :aspect:`Related options`
       - :ref:`"[TextEditor] propertyValidators"<typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-texteditor>`

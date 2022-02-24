@@ -109,6 +109,7 @@ formEditor
                         propertyPath: options.regularExpression
                         propertyValidators:
                           10: NotEmpty
+                          20: RegularExpressionPattern
               label: formEditor.elements.Telephone.label
               group: html5
               groupSorting: 200
