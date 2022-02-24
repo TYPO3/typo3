@@ -4850,8 +4850,55 @@ class DataHandler implements LoggerAwareInterface
         if ($table === 'pages') {
             $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
         } else {
+            $this->discardLocalizedWorkspaceVersionsOfRecord((string)$table, (int)$uid);
             $this->discardWorkspaceVersionsOfRecord($table, $uid);
             $this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
+        }
+    }
+
+    /**
+     * When deleting a live element with sys_language_uid = 0, there may be translated records that
+     * have been created in workspaces only (t3ver_state=1). Those have to be discarded explicitly
+     * since the other 'delete' related code does not consider this case, otherwise the 'new' workspace
+     * translation would be dangling when the live record is gone.
+     */
+    protected function discardLocalizedWorkspaceVersionsOfRecord(string $table, int $uid): void
+    {
+        if (!BackendUtility::isTableLocalizable($table)
+            || !BackendUtility::isTableWorkspaceEnabled($table)
+            || !$this->BE_USER->recordEditAccessInternals($table, $uid)
+        ) {
+            return;
+        }
+        $liveRecord = BackendUtility::getRecord($table, $uid);
+        if ((int)$liveRecord['sys_language_uid'] !== 0 || (int)$liveRecord['t3ver_wsid'] !== 0) {
+            // Don't do anything if we're not deleting a live record in default language
+            return;
+        }
+        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        $localizationParentFieldName = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder = $queryBuilder->select('*')->from($table)
+            ->where(
+                // workspace elements
+                $queryBuilder->expr()->gt('t3ver_wsid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                // with sys_language_uid > 0
+                $queryBuilder->expr()->gt($languageField, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                // in state 'new'
+                $queryBuilder->expr()->eq('t3ver_state', $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)),
+                // with "l10n_parent" set to uid of live record
+                $queryBuilder->expr()->eq($localizationParentFieldName, $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            );
+        $result = $queryBuilder->executeQuery();
+        while ($row = $result->fetchAssociative()) {
+            // BE user must be put into this workspace temporarily so stuff like refindex updating
+            // is properly registered for this workspace when discarding records in there.
+            $currentUserWorkspace = $this->BE_USER->workspace;
+            $this->BE_USER->workspace = (int)$row['t3ver_wsid'];
+            $this->discard($table, null, $row);
+            // Switch user back to original workspace
+            $this->BE_USER->workspace = $currentUserWorkspace;
         }
     }
 
