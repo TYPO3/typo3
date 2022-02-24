@@ -4,17 +4,6 @@
     xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
-<f:comment>
-    This is an ugly workaround.
-    The function module in Web->Info already renders a form tag, and there is
-    no easy way to circumvent this. The page id is needed for the info module
-    that is not extbase based to figure the permissions. Thus, we have to add
-    the page Id manually to hint the info module about that.
-</f:comment>
-<f:if condition="{isSubmoduleLayout}">
-    <input type="hidden" name="id" value="{constraint.pageId}" />
-</f:if>
-
 <f:form object="{constraint}" action="list" name="constraint">
     <div class="row row-cols-auto align-items-end g-3">
 
@@ -46,18 +35,6 @@
                     options="{workspaces}"
                     class="form-select"
                     id="belog-workspaces"
-                />
-            </div>
-        </f:if>
-
-        <f:if condition="{isSubmoduleLayout}">
-            <div class="col">
-                <label for="belog-depth" class="form-label"><f:translate key="chLog_menuDepth" /></label>
-                <f:form.select
-                    property="depth"
-                    options="{pageDepths}"
-                    class="form-select"
-                    id="belog-depth"
                 />
             </div>
         </f:if>

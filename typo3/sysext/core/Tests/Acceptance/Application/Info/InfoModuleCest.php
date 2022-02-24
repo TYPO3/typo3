@@ -56,7 +56,6 @@ class InfoModuleCest
             ['option' => 'Pagetree Overview', 'expect' => 'Pagetree Overview'],
             ['option' => 'Localization Overview', 'expect' => 'Localization Overview'],
             ['option' => 'Page TSconfig', 'expect' => 'Page TSconfig'],
-            ['option' => 'Log', 'expect' => 'Administration log'],
         ];
     }
 }

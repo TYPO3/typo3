@@ -23,9 +23,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Belog\Domain\Model\Constraint;
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -62,29 +62,28 @@ class BackendLogController extends ActionController
         $this->settings['dateTimeFormat'] = 'h:m d-m-Y';
         $constraintConfiguration = $this->arguments->getArgument('constraint')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('@typo3/backend/global-event-handler.js');
-        $pageRenderer->loadJavaScriptModule('@typo3/belog/backend-log.js');
     }
 
     /**
      * Show general information and the installed modules
      *
      * @param Constraint|null $constraint
-     * @param int|null $pageId
-     * @param string $layout
      * @param string $operation
      * @return ResponseInterface
      */
-    public function listAction(Constraint $constraint = null, int $pageId = null, string $layout = 'Module', string $operation = ''): ResponseInterface
+    public function listAction(Constraint $constraint = null, string $operation = ''): ResponseInterface
     {
+        // @todo Make $pageId and $depth constraints selectable in the filter (UX). The $pageId
+        //       constraint was previously provided as non namespaced argument (usage in Web>Info).
+        //       But System>Log does not use the page tree navigation component. Therefore, a new
+        //       filter field must be added, e.g. using the element browser for the selection.
+
         if ($operation === 'reset-filters') {
             $constraint = new Constraint();
         } elseif ($constraint === null) {
             $constraint = $this->getConstraintFromBeUserData();
         }
         $this->persistConstraintInBeUserData($constraint);
-        $constraint->setPageId($pageId);
         $this->resetConstraintsOnMemoryExhaustionError();
         $this->setStartAndEndTimeFromTimeSelector($constraint);
         $showWorkspaceSelector = $this->forceWorkspaceSelectionIfInWorkspace($constraint);
@@ -92,8 +91,6 @@ class BackendLogController extends ActionController
         $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
         $assigns = [
             'settings' => $this->settings,
-            'pageId' => $pageId,
-            'layout' => $layout,
             'groupedLogEntries' => $groupedLogEntries,
             'constraint' => $constraint,
             'userGroups' => $this->createUserAndGroupListForSelectOptions(),
@@ -106,17 +103,12 @@ class BackendLogController extends ActionController
             'level' => $constraint->getLevel(),
             'showWorkspaceSelector' => $showWorkspaceSelector,
         ];
-        if ($layout === 'Module') {
-            // Main module 'Log' module renders a ModuleTemplate view
-            $view = $this->moduleTemplateFactory->create($this->request);
-            $view->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
-            $view->assignMultiple($assigns);
-            return $view->renderResponse('BackendLog/List');
-        }
-        // Render default extbase view for log module in 'info'
-        $this->view->assignMultiple($assigns);
 
-        return $this->htmlResponse();
+        return $this->moduleTemplateFactory
+            ->create($this->request)
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
+            ->assignMultiple($assigns)
+            ->renderResponse('BackendLog/List');
     }
 
     /**
@@ -160,7 +152,9 @@ class BackendLogController extends ActionController
      */
     protected function persistConstraintInBeUserData(Constraint $constraint): void
     {
-        $GLOBALS['BE_USER']->pushModuleData('system_BelogLog', ['constraint' => serialize($constraint)]);
+        $moduleData = $this->request->getAttribute('moduleData');
+        $moduleData->set('constraint', serialize($constraint));
+        $this->getBackendUser()->pushModuleData($moduleData->getModuleIdentifier(), $moduleData->toArray());
     }
 
     /**
@@ -291,8 +285,8 @@ class BackendLogController extends ActionController
             return false;
         }
 
-        if ($GLOBALS['BE_USER']->workspace !== 0) {
-            $constraint->setWorkspaceUid($GLOBALS['BE_USER']->workspace);
+        if ($this->getBackendUser()->workspace !== 0) {
+            $constraint->setWorkspaceUid($this->getBackendUser()->workspace);
             return false;
         }
         return true;
@@ -331,5 +325,10 @@ class BackendLogController extends ActionController
         }
         $constraint->setStartTimestamp($startTime);
         $constraint->setEndTimestamp($endTime);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

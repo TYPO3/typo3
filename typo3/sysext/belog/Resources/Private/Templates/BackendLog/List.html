@@ -2,8 +2,16 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
-<f:layout name="{layout}"/>
+<f:layout name="Module"/>
 <f:section name="Content">
+
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/global-event-handler.js',
+            1: '@typo3/belog/backend-log.js'
+        }"
+    />
+
     <h1>
         <f:translate key="adminLog" />
     </h1>

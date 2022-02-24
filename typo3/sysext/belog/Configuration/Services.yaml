@@ -12,6 +12,3 @@ services:
       - name: event.listener
         identifier: 'belog/show-latest-errors'
         method: 'appendMessage'
-
-  TYPO3\CMS\Belog\Module\BackendLogModuleBootstrap:
-    public: true

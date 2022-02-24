@@ -36,14 +36,7 @@
                                 <f:translate key="chLog_l_user"/>
                             </th>
                             <th>
-                                <f:if condition="{isSubmoduleLayout}">
-                                    <f:then>
-                                        <f:translate key="chLog_l_table"/>
-                                    </f:then>
-                                    <f:else>
-                                        <f:translate key="chLog_l_level"/>
-                                    </f:else>
-                                </f:if>
+                                <f:translate key="chLog_l_level"/>
                             </th>
                             <th>
                                 <f:translate key="chLog_l_channel"/>
@@ -100,14 +93,7 @@
                                     </f:if>
                                 </td>
                                 <td>
-                                    <f:if condition="{isSubmoduleLayout}">
-                                        <f:then>
-                                            {logItem.tableName}
-                                        </f:then>
-                                        <f:else>
-                                            {logItem.level}
-                                        </f:else>
-                                    </f:if>
+                                    {logItem.level}
                                 </td>
                                 <td>
                                     {logItem.channel}
