@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\Exception\FormDefinitionConsistencyException;
 use TYPO3\CMS\Form\Domain\Model\Exception\ValidatorPresetNotFoundException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
@@ -39,7 +40,6 @@ use TYPO3\CMS\Form\Domain\Model\FormDefinition;
  */
 abstract class AbstractRenderable implements RenderableInterface, VariableRenderableInterface
 {
-
     /**
      * Abstract "type" of this Renderable. Is used during the rendering process
      * to determine the template file or the View PHP class being used to render
@@ -97,6 +97,8 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      * @var array
      */
     protected $variants = [];
+
+    protected ?ValidatorResolver $validatorResolver = null;
 
     /**
      * Get the type of the renderable
@@ -204,11 +206,17 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
         if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
             $implementationClassName = $validatorsDefinition[$validatorIdentifier]['implementationClassName'];
             $defaultOptions = $validatorsDefinition[$validatorIdentifier]['options'] ?? [];
-
             ArrayUtility::mergeRecursiveWithOverrule($defaultOptions, $options);
+            // @todo: It would be great if Renderable's and FormElements could use DI, but especially
+            //        FormElements which extend AbstractRenderable pollute __construct() with manual
+            //        arguments. To retrieve the ValidatorResolver, we have to fall back to getContainer()
+            //        for now, until this has been resolved.
+            if ($this->validatorResolver === null) {
+                $container = GeneralUtility::getContainer();
+                $this->validatorResolver = $container->get(ValidatorResolver::class);
+            }
             /** @var ValidatorInterface $validator */
-            $validator = GeneralUtility::makeInstance($implementationClassName);
-            $validator->setOptions($defaultOptions);
+            $validator = $this->validatorResolver->createValidator($implementationClassName, $defaultOptions);
             $this->addValidator($validator);
             return $validator;
         }

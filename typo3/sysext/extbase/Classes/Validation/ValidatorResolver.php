@@ -50,20 +50,11 @@ class ValidatorResolver implements SingletonInterface
      */
     public function createValidator(string $validatorType, array $validatorOptions = []): ?ValidatorInterface
     {
-        // todo: ValidatorResolver should not take care of creating validator instances.
-        // todo: Instead, a factory should be used.
         try {
             $validatorObjectName = ValidatorClassNameResolver::resolve($validatorType);
-
             /** @var ValidatorInterface $validator */
             $validator = GeneralUtility::makeInstance($validatorObjectName);
             $validator->setOptions($validatorOptions);
-
-            // @todo: Move this check into ClassSchema
-            if (!($validator instanceof ValidatorInterface)) {
-                throw new NoSuchValidatorException('The validator "' . $validatorObjectName . '" does not implement TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface!', 1300694875);
-            }
-
             return $validator;
         } catch (NoSuchValidatorException $e) {
             GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->debug($e->getMessage());
@@ -108,8 +99,8 @@ class ValidatorResolver implements SingletonInterface
      */
     protected function buildBaseValidatorConjunction(string $indexKey, string $targetClassName): void
     {
-        $conjunctionValidator = new ConjunctionValidator();
-        $conjunctionValidator->setOptions([]);
+        /** @var ConjunctionValidator $conjunctionValidator */
+        $conjunctionValidator = $this->createValidator(ConjunctionValidator::class);
         $this->baseValidatorConjunctions[$indexKey] = $conjunctionValidator;
 
         // note: the simpleType check reduces lookups to the class loader
@@ -117,8 +108,8 @@ class ValidatorResolver implements SingletonInterface
             $classSchema = $this->reflectionService->getClassSchema($targetClassName);
 
             // Model based validator
-            $objectValidator = GeneralUtility::makeInstance(GenericObjectValidator::class);
-            $objectValidator->setOptions([]);
+            /** @var GenericObjectValidator $objectValidator */
+            $objectValidator = $this->createValidator(GenericObjectValidator::class);
             foreach ($classSchema->getProperties() as $property) {
                 if ($property->getType() === null) {
                     // todo: The type is only necessary here for further analyzing whether it's a simple type or
@@ -134,12 +125,8 @@ class ValidatorResolver implements SingletonInterface
                 // todo: in the ClassSchema. The information could be made available and not evaluated here again.
                 if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                     if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
-                        $collectionValidator = $this->createValidator(
-                            CollectionValidator::class,
-                            [
-                                'elementType' => $property->getElementType(),
-                            ]
-                        );
+                        /** @var CollectionValidator $collectionValidator */
+                        $collectionValidator = $this->createValidator(CollectionValidator::class, ['elementType' => $property->getElementType()]);
                         $objectValidator->addPropertyValidator($property->getName(), $collectionValidator);
                     } elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && !in_array(SingletonInterface::class, class_implements($propertyTargetClassName, true) ?: [], true)) {
                         /*

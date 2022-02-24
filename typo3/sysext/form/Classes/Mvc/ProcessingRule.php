@@ -23,6 +23,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 
 /**
  * A processing Rule contains information for property mapping and validation.
@@ -44,18 +45,19 @@ class ProcessingRule
     protected PropertyMappingConfiguration $propertyMappingConfiguration;
     protected ConjunctionValidator $validator;
     protected Result $processingMessages;
-    protected PropertyMapper $propertyMapper;
 
     /**
      * Constructs this processing rule
      * @internal
      */
-    public function __construct(PropertyMapper $propertyMapper)
-    {
-        $this->propertyMapper = $propertyMapper;
+    public function __construct(
+        protected readonly PropertyMapper $propertyMapper,
+        ValidatorResolver $validatorResolver,
+    ) {
         $this->propertyMappingConfiguration = GeneralUtility::makeInstance(PropertyMappingConfiguration::class);
-        $this->validator = GeneralUtility::makeInstance(ConjunctionValidator::class);
-        $this->validator->setOptions([]);
+        /** @var ConjunctionValidator $validator */
+        $validator = $validatorResolver->createValidator(ConjunctionValidator::class);
+        $this->validator = $validator;
         $this->processingMessages = GeneralUtility::makeInstance(Result::class);
     }
 

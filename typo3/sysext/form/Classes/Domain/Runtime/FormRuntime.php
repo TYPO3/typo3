@@ -43,6 +43,7 @@ use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -106,12 +107,9 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 {
     const HONEYPOT_NAME_SESSION_IDENTIFIER = 'tx_form_honeypot_name_';
 
-    protected ContainerInterface $container;
     protected ?FormDefinition $formDefinition = null;
     protected ?Request $request = null;
     protected ResponseInterface $response;
-    protected HashService $hashService;
-    protected ConfigurationManagerInterface $configurationManager;
 
     /**
      * @var FormState
@@ -161,13 +159,12 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     protected $currentFinisher;
 
     public function __construct(
-        ContainerInterface $container,
-        ConfigurationManagerInterface $configurationManager,
-        HashService $hashService
+        // @todo: Set readonly when FormRuntimeTest has been rewritten to a functional test
+        protected ContainerInterface $container,
+        protected readonly ConfigurationManagerInterface $configurationManager,
+        protected readonly HashService $hashService,
+        protected readonly ValidatorResolver $validatorResolver,
     ) {
-        $this->container = $container;
-        $this->configurationManager = $configurationManager;
-        $this->hashService = $hashService;
         $this->response = new Response();
     }
 
@@ -353,7 +350,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             $honeypotNameFromSession = $this->getHoneypotNameFromSession($this->lastDisplayedPage);
             if ($honeypotNameFromSession) {
                 $honeypotElement = $this->lastDisplayedPage->createElement($honeypotNameFromSession, $renderingOptions['honeypot']['formElementToUse']);
-                $validator = GeneralUtility::makeInstance(EmptyValidator::class);
+                $validator = $this->validatorResolver->createValidator(EmptyValidator::class);
                 $honeypotElement->addValidator($validator);
             }
         }
@@ -398,7 +395,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];
             $honeypotElement = $this->currentPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
-            $validator = GeneralUtility::makeInstance(EmptyValidator::class);
+            $validator = $this->validatorResolver->createValidator(EmptyValidator::class);
 
             $honeypotElement->addValidator($validator);
             if (random_int(0, 1) === 1) {

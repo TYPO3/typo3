@@ -35,6 +35,9 @@ services:
     public: true
     shared: false
 
+  TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration:
+    public: true
+
   TYPO3\CMS\Form\Slot\ResourcePublicationSlot:
     tags:
       - name: event.listener

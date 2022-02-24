@@ -17,11 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration as ExtbasePropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Mvc\ProcessingRule;
@@ -35,6 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PropertyMappingConfigurationTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var bool Reset singletons created by subject
      */
@@ -98,8 +102,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('getIdentifier')
             ->willReturn('foobar');
 
-        // Property Mapping Configuration
-        $this->propertyMappingConfiguration = new PropertyMappingConfiguration();
+        $this->propertyMappingConfiguration = new PropertyMappingConfiguration($this->prophesize(ValidatorResolver::class)->reveal());
     }
 
     /**
@@ -124,7 +127,9 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->method('setTypeConverterOptions')
             ->with(UploadedFileReferenceConverter::class);
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        // Property Mapping Configuration
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($this->prophesize(ValidatorResolver::class)->reveal());
+        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
     /**
@@ -155,7 +160,12 @@ class PropertyMappingConfigurationTest extends UnitTestCase
                 $this->assertInstanceOf(MimeTypeValidator::class, $validators[0]);
             });
 
-        $this->propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
+        $mimeTypeValidator = new MimeTypeValidator();
+        $mimeTypeValidator->setOptions(['allowedMimeTypes' => []]);
+        $validatorResolver = $this->prophesize(ValidatorResolver::class);
+        $validatorResolver->createValidator(MimeTypeValidator::class, ['allowedMimeTypes' => ['text/plain', 'application/x-www-form-urlencoded']])->willReturn($mimeTypeValidator);
+        $propertyMappingConfiguration = new PropertyMappingConfiguration($validatorResolver->reveal());
+        $propertyMappingConfiguration->afterBuildingFinished($this->fileUpload);
     }
 
     /**

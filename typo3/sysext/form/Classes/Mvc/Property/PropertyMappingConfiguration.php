@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
@@ -35,6 +36,9 @@ use TYPO3\CMS\Form\Mvc\Validation\MimeTypeValidator;
  */
 class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
 {
+    public function __construct(protected readonly ValidatorResolver $validatorResolver)
+    {
+    }
 
     /**
      * This hook is called for each form element after the class
@@ -74,8 +78,7 @@ class PropertyMappingConfiguration implements AfterFormStateInitializedInterface
                 $allowedMimeTypes = array_filter($renderable->getProperties()['allowedMimeTypes']);
             }
             if (!empty($allowedMimeTypes)) {
-                $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
-                $mimeTypeValidator->setOptions(['allowedMimeTypes' => $allowedMimeTypes]);
+                $mimeTypeValidator = $this->validatorResolver->createValidator(MimeTypeValidator::class, ['allowedMimeTypes' => $allowedMimeTypes]);
                 $validators = [$mimeTypeValidator];
             }
 
