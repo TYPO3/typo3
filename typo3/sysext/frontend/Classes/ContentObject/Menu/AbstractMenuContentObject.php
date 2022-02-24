@@ -615,6 +615,11 @@ abstract class AbstractMenuContentObject
             // Find overlay record:
             if ($sUid) {
                 $lRecs = $this->sys_page->getPageOverlay($currentPageWithNoOverlay, $sUid);
+                // getPageOverlay() might return the original record again, if so this is emptied
+                // this should be fixed in PageRepository in the future.
+                if (!empty($lRecs) && !isset($lRecs['_PAGES_OVERLAY'])) {
+                    $lRecs = [];
+                }
             } else {
                 $lRecs = [];
             }
