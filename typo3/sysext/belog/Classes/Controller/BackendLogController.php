@@ -26,6 +26,7 @@ use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -50,7 +51,7 @@ class BackendLogController extends ActionController
     /**
      * Initialize list action
      */
-    public function initializeListAction()
+    public function initializeListAction(): void
     {
         if (!isset($this->settings['dateFormat'])) {
             $this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'd-m-Y';
@@ -73,25 +74,36 @@ class BackendLogController extends ActionController
      */
     public function listAction(Constraint $constraint = null, string $operation = ''): ResponseInterface
     {
-        // @todo Make $pageId and $depth constraints selectable in the filter (UX). The $pageId
-        //       constraint was previously provided as non namespaced argument (usage in Web>Info).
-        //       But System>Log does not use the page tree navigation component. Therefore, a new
-        //       filter field must be added, e.g. using the element browser for the selection.
-
         if ($operation === 'reset-filters') {
             $constraint = new Constraint();
         } elseif ($constraint === null) {
             $constraint = $this->getConstraintFromBeUserData();
         }
+
+        $access = true;
+        $pageId = $constraint->getPageId();
+        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        if ($pageId === 0 || (BackendUtility::readPageAccess($pageId, $permsClause) ?: []) === []) {
+            if (!$this->getBackendUser()->isAdmin()) {
+                // User does not have access to selected site
+                $access = false;
+            }
+
+            if ($pageId === 0) {
+                // In case no page is selected, set depth to 0 to display only "global" logs
+                $constraint->setDepth(0);
+            }
+        }
+
         $this->persistConstraintInBeUserData($constraint);
         $this->resetConstraintsOnMemoryExhaustionError();
         $this->setStartAndEndTimeFromTimeSelector($constraint);
         $showWorkspaceSelector = $this->forceWorkspaceSelectionIfInWorkspace($constraint);
-        $logEntries = $this->logEntryRepository->findByConstraint($constraint);
-        $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
-        $assigns = [
+
+        $viewVariables = [
+            'access' => $access,
             'settings' => $this->settings,
-            'groupedLogEntries' => $groupedLogEntries,
+            'pageId' => $pageId,
             'constraint' => $constraint,
             'userGroups' => $this->createUserAndGroupListForSelectOptions(),
             'selectableNumberOfLogEntries' => $this->createSelectableNumberOfLogEntriesOptions(),
@@ -104,10 +116,17 @@ class BackendLogController extends ActionController
             'showWorkspaceSelector' => $showWorkspaceSelector,
         ];
 
+        if ($access) {
+            // Only fetch log entries if user has access
+            $logEntries = $this->logEntryRepository->findByConstraint($constraint);
+            $groupedLogEntries = $this->groupLogEntriesDay($logEntries);
+            $viewVariables['groupedLogEntries'] = $groupedLogEntries;
+        }
+
         return $this->moduleTemplateFactory
             ->create($this->request)
             ->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
-            ->assignMultiple($assigns)
+            ->assignMultiple($viewVariables)
             ->renderResponse('BackendLog/List');
     }
 

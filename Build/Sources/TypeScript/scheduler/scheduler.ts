@@ -234,9 +234,8 @@ class Scheduler {
         throw 'value not defined in message';
       }
 
-      const result = e.data.value.split('_');
       const field = <HTMLInputElement>document.querySelector('input[name="' + e.data.fieldName + '"]');
-      field.value = result[1];
+      field.value = e.data.value.split('_').pop();
     }
   }
 

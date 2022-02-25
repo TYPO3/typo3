@@ -21,12 +21,27 @@
         arguments="{_all}"
     />
 
-    <div class="divider"></div>
+    <f:if condition="{access}">
+        <f:then>
+            <div class="divider"></div>
 
-    <f:render
-        partial="Content/LogEntries"
-        arguments="{_all}"
-    />
+            <f:render
+                partial="Content/LogEntries"
+                arguments="{_all}"
+            />
+        </f:then>
+        <f:else if="!{pageId}">
+            <f:be.infobox state="-1" title="{f:translate(key: 'LLL:EXT:belog/Resources/Private/Language/locallang.xlf:info.selectPage.title')}">
+                <p><f:translate key="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:info.selectPage.message" /></p>
+            </f:be.infobox>
+        </f:else>
+        <f:else>
+            <f:be.infobox state="2" title="{f:translate(key: 'LLL:EXT:belog/Resources/Private/Language/locallang.xlf:error.noAccess.title')}">
+                <p><f:translate key="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:error.noAccess.message" /></p>
+            </f:be.infobox>
+        </f:else>
+    </f:if>
+
 </f:section>
 
 </html>

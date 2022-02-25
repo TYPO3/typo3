@@ -36,7 +36,14 @@
                                 <f:translate key="chLog_l_user"/>
                             </th>
                             <th>
-                                <f:translate key="chLog_l_level"/>
+                                <f:if condition="{pageId}">
+                                    <f:then>
+                                        <f:translate key="chLog_l_table"/>
+                                    </f:then>
+                                    <f:else>
+                                        <f:translate key="chLog_l_level"/>
+                                    </f:else>
+                                </f:if>
                             </th>
                             <th>
                                 <f:translate key="chLog_l_channel"/>
@@ -93,7 +100,14 @@
                                     </f:if>
                                 </td>
                                 <td>
-                                    {logItem.level}
+                                    <f:if condition="{pageId}">
+                                        <f:then>
+                                            {logItem.tableName}
+                                        </f:then>
+                                        <f:else>
+                                            {logItem.level}
+                                        </f:else>
+                                    </f:if>
                                 </td>
                                 <td>
                                     {logItem.channel}

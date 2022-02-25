@@ -4,7 +4,7 @@
     xmlns:belog="http://typo3.org/ns/TYPO3/CMS/Belog/ViewHelpers"
     data-namespace-typo3-fluid="true">
 
-<f:form object="{constraint}" action="list" name="constraint">
+<f:form object="{constraint}" action="list" name="constraint" class="belog-filter-form">
     <div class="row row-cols-auto align-items-end g-3">
 
         <div class="col">
@@ -35,6 +35,40 @@
                     options="{workspaces}"
                     class="form-select"
                     id="belog-workspaces"
+                />
+            </div>
+        </f:if>
+
+        <div class="col">
+            <label for="belog-pageId" class="form-label"><f:translate key="chLog_menuPageId" /></label>
+            <div class="input-group">
+                <f:form.textfield
+                    type="number"
+                    property="pageId"
+                    value="{pageId}"
+                    id="belog-pageId"
+                    class="form-control"
+                />
+                <button
+                    class="btn btn-default t3js-element-browser"
+                    data-target="{f:be.uri(route: 'wizard_element_browser')}"
+                    data-trigger-for="belog-pageId"
+                    data-mode="db"
+                    title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
+                >
+                    <core:icon identifier="actions-insert-record" />
+                </button>
+            </div>
+        </div>
+
+        <f:if condition="{pageId}">
+            <div class="col">
+                <label for="belog-depth" class="form-label"><f:translate key="chLog_menuDepth" /></label>
+                <f:form.select
+                    property="depth"
+                    options="{pageDepths}"
+                    class="form-select"
+                    id="belog-depth"
                 />
             </div>
         </f:if>

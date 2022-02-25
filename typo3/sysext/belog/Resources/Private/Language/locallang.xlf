@@ -318,6 +318,9 @@
 			<trans-unit id="chLog_menuUsers" resname="chLog_menuUsers">
 				<source>Users</source>
 			</trans-unit>
+			<trans-unit id="chLog_menuPageId" resname="chLog_menuPageId">
+				<source>Page</source>
+			</trans-unit>
 			<trans-unit id="chLog_menuDepth" resname="chLog_menuDepth">
 				<source>Depth</source>
 			</trans-unit>
@@ -341,6 +344,18 @@
 			</trans-unit>
 			<trans-unit id="actions.delete.noRowFound" resname="actions.delete.noRowFound">
 				<source>Log entry could not be found.</source>
+			</trans-unit>
+			<trans-unit id="info.selectPage.title" resname="info.selectPage.title">
+				<source>No page selected</source>
+			</trans-unit>
+			<trans-unit id="info.selectPage.message" resname="info.selectPage.message">
+				<source>Select a page to display logs for.</source>
+			</trans-unit>
+			<trans-unit id="error.noAccess.title" resname="error.noAccess.title">
+				<source>No access!</source>
+			</trans-unit>
+			<trans-unit id="error.noAccess.message" resname="error.noAccess.message">
+				<source>You don't have access to the selected page.</source>
 			</trans-unit>
 		</body>
 	</file>

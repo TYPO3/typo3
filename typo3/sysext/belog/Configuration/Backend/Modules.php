@@ -8,7 +8,7 @@ use TYPO3\CMS\Belog\Controller\BackendLogController;
 return [
     'system_BelogLog' => [
         'parent' => 'system',
-        'access' => 'admin',
+        'access' => 'user',
         'iconIdentifier' => 'module-belog',
         'labels' => 'LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf',
         'extensionName' => 'Belog',
