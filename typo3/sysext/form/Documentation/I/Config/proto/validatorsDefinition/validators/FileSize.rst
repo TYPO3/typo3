@@ -10,12 +10,19 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1505303626
-- 1505305752
-- 1505305753
+- Error code: `1505303626`
+- Error message: `You must enter an instance of \TYPO3\CMS\Extbase\Domain\Model\FileReference
+  or \TYPO3\CMS\Core\Resource\File.`
+
+- Error code: `1505305752`
+- Error message: `You must select a file that is larger than %s in size.`
+
+- Error code: `1505305753`
+- Error message: `You must select a file that is no larger than %s.`
+
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.filesize-properties:
 

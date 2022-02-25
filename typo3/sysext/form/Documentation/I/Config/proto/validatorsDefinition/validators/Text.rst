@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.text-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221565786
+- Error code: `1221565786`
+- Error message: `The given subject was not a valid text (e.g. contained XML tags).`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.text-properties:

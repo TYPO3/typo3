@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.integer-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221560494
+- Error code: `1221560494`
+- Error message: `The given subject was not a valid integer.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.integer-properties:

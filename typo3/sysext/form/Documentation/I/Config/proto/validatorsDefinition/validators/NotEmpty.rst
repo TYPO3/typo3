@@ -10,13 +10,20 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221560910
-- 1221560718
-- 1347992400
-- 1347992453
+- Error code: `1221560910`
+- Error message: `The given subject was NULL.`
+
+- Error code: `1221560718`
+- Error message: `The given subject was empty.`
+
+- Error code: `1347992400`
+- Error message: `The given subject was empty.`
+
+- Error code: `1347992453`
+- Error message: `The given subject was empty.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.notempty-properties:

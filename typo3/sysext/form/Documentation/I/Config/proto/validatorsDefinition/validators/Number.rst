@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221563685
+- Error code: `1221563685`
+- Error message: `The given subject was not a valid number.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.number-properties:

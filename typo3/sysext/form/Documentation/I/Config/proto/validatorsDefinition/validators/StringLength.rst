@@ -10,14 +10,23 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1238110957
-- 1269883975
-- 1428504122
-- 1238108068
-- 1238108069
+- Error code: `1238110957`
+- Error message: `The given object could not be converted to a string.`
+
+- Error code: `1269883975`
+- Error message: `The given value was not a valid string.`
+
+- Error code: `1428504122`
+- Error message: `The length of the given string was not between %s and %s characters.`
+
+- Error code: `1238108068`
+- Error message: `The length of the given string is less than %s characters.`
+
+- Error code: `1238108069`
+- Error message: `The length of the given string exceeded %s characters.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.stringlength-properties:

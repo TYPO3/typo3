@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.float-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221560288
+- Error code: `1221560288`
+- Error message: `The given subject was not a valid float.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.float-properties:

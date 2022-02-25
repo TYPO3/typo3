@@ -1,38 +1,41 @@
 .. include:: /Includes.rst.txt
 
 
-.. _typo3.cms.form.prototypes.validatorsdefinition.count:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange:
 
-=======
-[Count]
-=======
+===========
+[DateRange]
+===========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count-validationerrorcodes:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange-validationerrorcodes:
 
 Validation error codes
 ======================
 
-- Error code: `1475002976`
-- Error message: `You must enter a countable subject.`
+- Error code: `1521293685`
+- Error message: `You must enter an instance of \DateTime.`
 
-- Error code: `1475002994`
-- Error message: `You must select between %s to %s elements.`
+- Error code: `1521293686`
+- Error message: `You must select a date before %s.`
+
+- Error code: `1521293687`
+- Error message: `You must select a date after %s.`
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count-properties:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange-properties:
 
 Properties
 ==========
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.implementationClassName:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.implementationClassName:
 
 implementationClassName
 -----------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.implementationClassName
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.implementationClassName
 
 :aspect:`Data type`
       string
@@ -49,7 +52,7 @@ implementationClassName
          :emphasize-lines: 2
 
          Count:
-           implementationClassName: TYPO3\CMS\Form\Mvc\Validation\CountValidator
+           implementationClassName: TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator
 
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
@@ -58,16 +61,16 @@ implementationClassName
       .. include:: ../properties/implementationClassName.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.options.minimum:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.options.minimum:
 
-options.minimum
----------------
+options.format
+--------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.minimum
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.options.format
 
 :aspect:`Data type`
-      int
+      string
 
 :aspect:`Needed by`
       Frontend
@@ -76,43 +79,24 @@ options.minimum
       Yes
 
 :aspect:`Default value (for prototype 'standard')`
-      undefined
+      .. code-block:: yaml
+         :linenos:
+
+         DateRange:
+           options:
+             format: Y-m-d
 
 :aspect:`Description`
-      The minimum count to accept.
+      The format of the date.
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.options.maximum:
-
-options.maximum
----------------
-
-:aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.options.maximum
-
-:aspect:`Data type`
-      int
-
-:aspect:`Needed by`
-      Frontend
-
-:aspect:`Mandatory`
-      Yes
-
-:aspect:`Default value (for prototype 'standard')`
-      undefined
-
-:aspect:`Description`
-      The maximum count to accept.
-
-
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.iconidentifier:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.iconidentifier:
 
 formeditor.iconIdentifier
 -------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.iconIdentifier
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.iconIdentifier
 
 :aspect:`Data type`
       string
@@ -128,10 +112,10 @@ formeditor.iconIdentifier
          :linenos:
          :emphasize-lines: 3
 
-         Count:
+         DateRange:
            formEditor:
              iconIdentifier: form-validator
-             label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
+             label: formEditor.elements.FormElement.validators.DateRange.editor.header.label
 
 .. :aspect:`Good to know`
       ToDo
@@ -140,13 +124,13 @@ formeditor.iconIdentifier
       .. include:: ../properties/iconIdentifier.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.label:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.label:
 
 formeditor.label
 ----------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.label
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.label
 
 :aspect:`Data type`
       string
@@ -162,10 +146,10 @@ formeditor.label
          :linenos:
          :emphasize-lines: 4
 
-         Count:
+         DateRange:
            formEditor:
              iconIdentifier: form-validator
-             label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
+             label: formEditor.elements.FormElement.validators.DateRange.editor.header.label
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -174,13 +158,13 @@ formeditor.label
       .. include:: ../properties/label.rst
 
 
-.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.count.formeditor.predefineddefaults:
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.daterange.formeditor.predefineddefaults:
 
 formeditor.predefinedDefaults
 -----------------------------
 
 :aspect:`Option path`
-      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.Count.formEditor.predefinedDefaults
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.validatorsDefinition.DateRange.formEditor.predefinedDefaults
 
 :aspect:`Data type`
       array
@@ -196,7 +180,7 @@ formeditor.predefinedDefaults
          :linenos:
          :emphasize-lines: 3-
 
-         Count:
+         DateRange:
            formEditor:
              predefinedDefaults:
                options:

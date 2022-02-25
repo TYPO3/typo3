@@ -9,11 +9,14 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221563685
-- 1221561046
+- Error code: `1221563685`
+- Error message: `The given subject was not a valid number.`
+
+- Error code: `1221561046`
+- Error message: `The given subject was not in the valid range (%s - %s).`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.numberrange-properties:
