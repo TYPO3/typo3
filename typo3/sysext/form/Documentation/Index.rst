@@ -48,6 +48,7 @@ a GNU/GPL CMS/Framework available from https://typo3.org/
    Introduction/Index
    QuickStartForEditors/Index
    QuickStartForIntegrators/Index
+   D/Index
    I/Index
    E/Index
    Targets
