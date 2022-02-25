@@ -1213,27 +1213,43 @@ function factory($, Helper, Icons, Notification, Modal, MessageUtility) {
           .getTemplatePropertyDomElement('header-label', editorHtml)
           .prepend($(icon));
 
-        Icons.getIcon(
-          getHelper().getDomElementDataAttributeValue('collapse'),
-          Icons.sizes.small,
-          null,
-          Icons.states.default,
-          Icons.markupIdentifiers.inline
-        ).then(function(icon) {
-          var iconWrap;
-          iconWrap = $('<a></a>')
-            .attr('href', _getCollectionElementId(collectionName, collectionElementIdentifier, true))
-            .attr('data-bs-toggle', 'collapse')
-            .attr('aria-expanded', 'true')
-            .attr('aria-controls', _getCollectionElementId(collectionName, collectionElementIdentifier))
-            .addClass('collapsed')
-            .append($(icon));
+        const editors = getFormEditorApp().getPropertyCollectionElementConfiguration(
+          collectionElementIdentifier,
+          collectionName
+        ).editors;
 
-          getHelper()
-            .getTemplatePropertyDomElement('header-label', editorHtml)
-            .prepend(iconWrap);
-        });
-      };
+        if (!(
+          (
+            editors.length === 2
+            && editors[0]['identifier'] === 'header'
+            && editors[1]['identifier'] === 'removeButton'
+          ) || (
+            editors.length === 1
+            && editors[0]['identifier'] === 'header'
+          ))
+        ) {
+          Icons.getIcon(
+            getHelper().getDomElementDataAttributeValue('collapse'),
+            Icons.sizes.small,
+            null,
+            Icons.states.default,
+            Icons.markupIdentifiers.inline
+          ).then(function(icon) {
+            var iconWrap;
+            iconWrap = $('<a></a>')
+              .attr('href', _getCollectionElementId(collectionName, collectionElementIdentifier, true))
+              .attr('data-bs-toggle', 'collapse')
+              .attr('aria-expanded', 'true')
+              .attr('aria-controls', _getCollectionElementId(collectionName, collectionElementIdentifier))
+              .addClass('collapsed')
+              .append($(icon));
+
+            getHelper()
+              .getTemplatePropertyDomElement('header-label', editorHtml)
+              .prepend(iconWrap);
+          });
+        };
+      }
 
       collectionElementConfiguration = getFormEditorApp().getFormEditorDefinition(collectionName, collectionElementIdentifier);
       Icons.getIcon(

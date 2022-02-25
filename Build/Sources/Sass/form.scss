@@ -420,6 +420,18 @@ $tree-line-height: 20px;
     }
 }
 
+.t3-form-validator-editor {
+    .collapsed {
+        .icon-actions-view-table-expand {
+            @include collapsed-icon-animation();
+        }
+    }
+
+    .icon-actions-view-table-expand {
+        @include expanded-icon-animation();
+    }
+}
+
 //
 // Inspector Property Grid
 //
