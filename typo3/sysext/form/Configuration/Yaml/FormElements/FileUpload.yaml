@@ -53,6 +53,22 @@ prototypes:
                 10:
                   value: '1:/user_upload/'
                   label: '1:/user_upload/'
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                20:
+                  value: 'photo'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.photo
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

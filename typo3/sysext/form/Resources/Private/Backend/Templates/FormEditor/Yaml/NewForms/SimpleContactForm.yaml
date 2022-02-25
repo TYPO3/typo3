@@ -34,6 +34,7 @@ renderables:
         properties:
           fluidAdditionalAttributes:
             placeholder: 'Name'
+            autocomplete: name
         defaultValue: ''
         validators:
           -
@@ -52,10 +53,11 @@ renderables:
       -
         identifier: email
         label: 'Email'
-        type: Text
+        type: Email
         properties:
           fluidAdditionalAttributes:
             placeholder: 'Email address'
+            autocomplete: email
         defaultValue: ''
         validators:
           -

@@ -37,6 +37,31 @@ prototypes:
               propertyPath: properties.fluidAdditionalAttributes.step
               propertyValidators:
                 10: Integer
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                50:
+                  value: 'postal-code'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.postal-code
+                60:
+                  value: 'bday-day'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.bday-day
+                70:
+                  value: 'bday-month'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.bday-month
+                80:
+                  value: 'bday-year'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.bday-year
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

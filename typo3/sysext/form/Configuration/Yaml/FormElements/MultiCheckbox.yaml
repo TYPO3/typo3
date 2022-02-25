@@ -31,6 +31,28 @@ prototypes:
               removeLastAvailableRowFlashMessageMessage: formEditor.elements.SelectionMixin.editor.options.removeLastAvailableRowFlashMessageMessage
               shouldShowPreselectedValueColumn: multiple
               multiSelection: true
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                20:
+                  value: 'honorific-prefix'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix
+                30:
+                  value: 'honorific-suffix'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.honorific-suffix
+                70:
+                  value: 'language'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.language
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

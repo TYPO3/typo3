@@ -28,6 +28,79 @@ prototypes:
               templateName: Inspector-TextEditor
               label: formEditor.elements.TextMixin.editor.defaultValue.label
               propertyPath: defaultValue
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                20:
+                  value: 'name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.name
+                30:
+                  value: 'honorific-prefix'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.honorific-prefix
+                40:
+                  value: 'given-name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.given-name
+                50:
+                  value: 'additional-name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.additional-name
+                60:
+                  value: 'family-name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.family-name
+                70:
+                  value: 'honorific-suffix'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.honorific-suffix
+                80:
+                  value: 'nickname'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.nickname
+                90:
+                  value: 'organization-title'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.organization-title
+                100:
+                  value: 'username'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.username
+                110:
+                  value: 'organization'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.organization
+                120:
+                  value: 'address-line1'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.address-line1
+                130:
+                  value: 'address-line2'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.address-line2
+                140:
+                  value: 'address-level1'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.address-level1
+                150:
+                  value: 'address-level2'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.address-level2
+                190:
+                  value: 'country-name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.country-name
+                200:
+                  value: 'postal-code'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.postal-code
+                210:
+                  value: 'tel'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.tel
+                220:
+                  value: 'impp'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.impp
+                230:
+                  value: 'sex'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.sex
+                240:
+                  value: 'language'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.language
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

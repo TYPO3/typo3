@@ -38,6 +38,22 @@ prototypes:
               templateName: Inspector-CheckboxEditor
               label: formEditor.elements.DatePicker.editor.displayTimeSelector.label
               propertyPath: properties.displayTimeSelector
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                20:
+                  value: 'bday'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.bday
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

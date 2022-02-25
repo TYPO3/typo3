@@ -39,6 +39,25 @@ prototypes:
               templateName: Inspector-CountrySelectEditor
               label: formEditor.elements.CountrySelect.editor.excludeCountries.label
               propertyPath: properties.excludeCountries
+            600:
+              identifier: autocomplete
+              templateName: Inspector-SingleSelectEditor
+              label: formEditor.elements.FormElement.editor.autocomplete.label
+              propertyPath: properties.fluidAdditionalAttributes.autocomplete
+              doNotSetIfPropertyValueIsEmpty: true
+              selectOptions:
+                10:
+                  value: ''
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.none
+                15:
+                  value: 'off'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.off
+                20:
+                  value: 'country'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.country
+                30:
+                  value: 'country-name'
+                  label: formEditor.elements.FormElement.editor.autocomplete.option.country-name
             700:
               identifier: gridColumnViewPortConfiguration
               templateName: Inspector-GridColumnViewPortConfigurationEditor

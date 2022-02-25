@@ -1,0 +1,9 @@
+plugin.tx_form {
+  settings {
+    yamlConfigurations {
+      # register your own additional configuration
+      # choose a number higher than 10 (10 is reserved)
+      100 = EXT:my_sitepackage/Configuration/Form/CustomFormSetup.yaml
+    }
+  }
+}

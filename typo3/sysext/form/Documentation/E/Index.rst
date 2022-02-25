@@ -1,6 +1,5 @@
 .. include:: /Includes.rst.txt
 
-
 .. _forEditors:
 
 ===========
@@ -52,10 +51,11 @@ TYPO3 extensions that retrofit such behavior. We recommend not to use such
 extensions. Instead, you should check if the form data can be transferred
 directly to your CRM or similar tools.
 
-.. toctree::
-   :maxdepth: 1
+..  toctree::
+    :maxdepth: 1
 
-   FormElements/Index
-   Validators/Index
-   Finishers/Index
-   Tutorials/Index
+    FormElements/Index
+    Validators/Index
+    Finishers/Index
+    Accessibility/Index
+    Tutorials/Index
