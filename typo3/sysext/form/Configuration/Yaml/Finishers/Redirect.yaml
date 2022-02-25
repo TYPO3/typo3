@@ -13,6 +13,7 @@ TYPO3:
                   options:
                     pageUid: ''
                     additionalParameters: ''
+                    fragment: ''
               FormEngine:
                 label: tt_content.finishersDefinition.Redirect.label
                 elements:
@@ -29,5 +30,9 @@ TYPO3:
                           disabled: 1
                   additionalParameters:
                     label: tt_content.finishersDefinition.Redirect.additionalParameters.label
+                    config:
+                      type: input
+                  fragment:
+                    label: tt_content.finishersDefinition.Redirect.fragment.label
                     config:
                       type: input

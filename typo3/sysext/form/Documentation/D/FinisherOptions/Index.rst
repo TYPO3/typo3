@@ -747,6 +747,25 @@ additionalParameters
       Additional parameters which should be used on the target page
 
 
+.. _apireference-finisheroptions-redirectfinisher-options-fragment:
+
+fragment
+++++++++
+
+:aspect:`Data type`
+      string
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      empty string
+
+:aspect:`Description`
+      Add a fragment (e.g. `#c9` or `#foo`) to the redirect link.
+      The `#' character can be omitted.
+
+
 .. _apireference-finisheroptions-redirectfinisher-options-delay:
 
 delay

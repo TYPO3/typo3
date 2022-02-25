@@ -101,6 +101,35 @@ options.additionalParameters
       Additional parameters which should be used on the target page.
 
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.fragment:
+
+options.fragment
+----------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.finishersDefinition.Redirect.options.fragment
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Frontend
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value`
+      empty string
+
+:aspect:`Good to know`
+      - :ref:`"Redirect finisher"<apireference-finisheroptions-redirectfinisher>`
+      - :ref:`"Accessing form runtime values"<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>`
+
+:aspect:`Description`
+      Add a fragment (e.g. `#c9` or `#foo`) to the redirect link.
+      The `#' character can be omitted.
+
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.redirect.options.delay:
 
 options.delay
@@ -218,6 +247,7 @@ formeditor.iconIdentifier
                options:
                  pageUid: ''
                  additionalParameters: ''
+                 fragment: ''
 
 .. :aspect:`Good to know`
       ToDo
@@ -256,6 +286,7 @@ formeditor.label
                options:
                  pageUid: ''
                  additionalParameters: ''
+                 fragment: ''
 
 :aspect:`Good to know`
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
@@ -294,6 +325,7 @@ formeditor.predefinedDefaults
                options:
                  pageUid: ''
                  additionalParameters: ''
+                 fragment: ''
 
 .. :aspect:`Good to know`
       ToDo
@@ -376,6 +408,10 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.Redirect.additionalParameters.label
                  config:
                    type: input
+              fragment:
+                label: tt_content.finishersDefinition.Redirect.fragment.label
+                config:
+                  type: input
 
 :aspect:`Good to know`
       - :ref:`"Translate form plugin settings"<concepts-formplugin-translation-formengine>`

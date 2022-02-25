@@ -37,6 +37,7 @@ class RedirectFinisher extends AbstractFinisher
         'pageUid' => 1,
         'additionalParameters' => '',
         'statusCode' => 303,
+        'fragment' => '',
     ];
 
     /**
@@ -66,9 +67,10 @@ class RedirectFinisher extends AbstractFinisher
         $additionalParameters = is_string($additionalParameters) ? $additionalParameters : '';
         $additionalParameters = '&' . ltrim($additionalParameters, '&');
         $statusCode = (int)$this->parseOption('statusCode');
+        $fragment = (string)$this->parseOption('fragment');
 
         $this->finisherContext->cancel();
-        $this->redirect($pageUid, $additionalParameters, $statusCode);
+        $this->redirect($pageUid, $additionalParameters, $fragment, $statusCode);
     }
 
     /**
@@ -84,11 +86,12 @@ class RedirectFinisher extends AbstractFinisher
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @see forward()
      */
-    protected function redirect(int $pageUid = 1, string $additionalParameters = '', int $statusCode = 303)
+    protected function redirect(int $pageUid = 1, string $additionalParameters = '', string $fragment = '', int $statusCode = 303)
     {
         $typolinkConfiguration = [
             'parameter' => $pageUid,
             'additionalParams' => $additionalParameters,
+            'section' => $fragment,
         ];
         $redirectUri = $this->getTypoScriptFrontendController()->cObj->createUrl($typolinkConfiguration);
         $this->redirectToUri($redirectUri, $statusCode);

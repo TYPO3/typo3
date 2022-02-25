@@ -255,6 +255,9 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.propertycollections.finishers.30.editors.300:
 .. include:: Form/formEditor/propertyCollections/finishers/30/editors/300.rst
 
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.propertycollections.finishers.30.editors.400:
+.. include:: Form/formEditor/propertyCollections/finishers/30/editors/400.rst
+
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.form.formeditor.propertycollections.finishers.30.editors.9999:
 .. include:: Form/formEditor/propertyCollections/finishers/30/editors/9999.rst
 

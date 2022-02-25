@@ -163,6 +163,9 @@
             <trans-unit id="tt_content.finishersDefinition.Redirect.additionalParameters.label" resname="tt_content.finishersDefinition.Redirect.additionalParameters.label" xml:space="preserve">
                 <source>Additional link parameter</source>
             </trans-unit>
+            <trans-unit id="tt_content.finishersDefinition.Redirect.fragment.label" resname="tt_content.finishersDefinition.Redirect.fragment.label" xml:space="preserve">
+                <source>Add fragment to the redirect link</source>
+            </trans-unit>
 
             <trans-unit id="formManagerController.deleteAction.error.title" resname="formManagerController.deleteAction.error.title" xml:space="preserve">
                 <source>Delete error</source>
@@ -732,6 +735,15 @@
             </trans-unit>
             <trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" resname="formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label" xml:space="preserve">
                 <source>Additional parameters</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.label" resname="formEditor.elements.Form.finisher.Redirect.editor.fragment.label" xml:space="preserve">
+                <source>URL fragment</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel" resname="formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel" xml:space="preserve">
+                <source>Page Content</source>
+            </trans-unit>
+			<trans-unit id="formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText" resname="formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText" xml:space="preserve">
+                <source>You can use a content element identifier as URL fragment or set a custom fragment identifier.</source>
             </trans-unit>
 
             <trans-unit id="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" resname="formEditor.elements.Form.finisher.DeleteUploads.editor.header.label" xml:space="preserve">

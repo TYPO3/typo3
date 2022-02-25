@@ -375,6 +375,15 @@ formEditor
                        templateName: Inspector-TextEditor
                        label: formEditor.elements.Form.finisher.Redirect.editor.additionalParameters.label
                        propertyPath: options.additionalParameters
+                     400:
+                       identifier: fragment
+                       templateName: Inspector-Typo3WinBrowserEditor
+                       label: formEditor.elements.Form.finisher.Redirect.editor.fragment.label
+                       buttonLabel: formEditor.elements.Form.finisher.Redirect.editor.fragment.buttonLabel
+                       browsableType: tt_content
+                       iconIdentifier: mimetypes-x-content-text
+                       propertyPath: options.fragment
+                       fieldExplanationText: formEditor.elements.Form.finisher.Redirect.editor.fragment.fieldExplanationText
                      9999:
                        identifier: removeButton
                        templateName: Inspector-RemoveElementEditor
