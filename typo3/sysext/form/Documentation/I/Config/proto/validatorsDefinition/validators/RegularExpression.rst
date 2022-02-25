@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221565130
+- Error code: `1221565130`
+- Error message: `The given subject did not match the pattern.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.regularexpression-properties:

@@ -283,8 +283,10 @@ Concrete configurations
 
     validators/Alphanumeric
     validators/Count
+    validators/DateRange
     validators/DateTime
     validators/EmailAddress
+    validators/FileSize
     validators/Float
     validators/Integer
     validators/NotEmpty
@@ -293,4 +295,3 @@ Concrete configurations
     validators/RegularExpression
     validators/StringLength
     validators/Text
-    validators/FileSize

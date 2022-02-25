@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221559976
+- Error code: `1221559976`
+- Error message: `The given subject was not a valid email address.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.emailaddress-properties:

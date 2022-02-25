@@ -10,10 +10,11 @@
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric-validationerrorcodes:
 
-validation error codes
+Validation error codes
 ======================
 
-- 1221551320
+- Error code: `1221551320`
+- Error message: `The given subject was not a valid alphanumeric string.`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.alphanumeric-properties:

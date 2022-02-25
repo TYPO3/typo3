@@ -13,7 +13,8 @@
 validation error codes
 ======================
 
-- 1238087674
+- Error code: `1238087674`
+- Error message: `The given subject was not a valid DateTime. Got: '%s'`
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime-properties:
