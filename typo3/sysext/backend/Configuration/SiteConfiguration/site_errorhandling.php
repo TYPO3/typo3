@@ -20,7 +20,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorCode',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim, int',
+                'required' => true,
+                'eval' => 'trim, int',
                 'range' => [
                     'lower' => 0,
                     'upper' => 599,
@@ -58,7 +59,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorFluidTemplate',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorFluidTemplate.placeholder',
             ],
         ],
@@ -88,7 +90,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
-                'eval' => 'required',
+                'required' => true,
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [
@@ -103,7 +105,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorPhpClassFQCN',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorPhpClassFQCN.placeholder',
             ],
         ],

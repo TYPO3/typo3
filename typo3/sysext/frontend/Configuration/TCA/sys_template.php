@@ -35,7 +35,7 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 255,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'hidden' => [

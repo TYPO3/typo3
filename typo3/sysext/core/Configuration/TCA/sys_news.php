@@ -64,7 +64,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'content' => [

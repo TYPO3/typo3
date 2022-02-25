@@ -89,7 +89,8 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host',
             'config' => [
                 'type' => 'input',
-                'eval' => 'trim,required,' . \TYPO3\CMS\Redirects\Evaluation\SourceHost::class,
+                'required' => true,
+                'eval' => 'trim,' . \TYPO3\CMS\Redirects\Evaluation\SourceHost::class,
                 // items will be extended by local sys_domain records using dataprovider TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider
                 'valuePicker' => [
                     'items' => [
@@ -106,7 +107,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path.placeholder',
                 'max' => 2048,
             ],
@@ -142,7 +144,7 @@ return [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target',
             'config' => [
                 'type' => 'input',
-                'eval' =>'required',
+                'required' => true,
                 'renderType' => 'inputLink',
                 'softref' => 'typolink',
                 'fieldControl' => [

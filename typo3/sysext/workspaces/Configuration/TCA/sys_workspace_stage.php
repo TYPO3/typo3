@@ -22,7 +22,8 @@ return [
                 'type' => 'input',
                 'size' => 20,
                 'max' => 30,
-                'eval' => 'required,trim',
+                'required' => true,
+                'eval' => 'trim',
             ],
         ],
         'responsible_persons' => [

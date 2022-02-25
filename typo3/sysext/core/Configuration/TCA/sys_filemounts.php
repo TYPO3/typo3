@@ -30,7 +30,8 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'required,trim',
+                'required' => true,
+                'eval' => 'trim',
             ],
         ],
         'hidden' => [
@@ -67,7 +68,7 @@ return [
                     ['', 0],
                 ],
                 'maxitems' => 1,
-                'eval' => 'required',
+                'required' => true,
                 'range' => [
                     'lower' => 1,
                 ],

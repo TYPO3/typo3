@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Migrations;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Migrate TCA from old to new syntax. Used in bootstrap and Flex Form Data Structures.
  *
@@ -65,6 +67,7 @@ class TcaMigration
         $tca = $this->migrateRootUidToStartingPoints($tca);
         $tca = $this->migrateSelectAuthModeIndividualItemsKeywordToNewPosition($tca);
         $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
+        $tca = $this->migrateRequiredFlag($tca);
 
         return $tca;
     }
@@ -576,6 +579,45 @@ class TcaMigration
                     $this->messages[] = 'The property \'internal_type\' of the TCA field \'' . $fieldName . '\' of table \''
                         . $table . '\' is obsolete and has been removed. You can remove it from your TCA as it is not evaluated anymore.';
                 }
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][eval] = 'required' to [config][required] = true and removes 'required' from [config][eval].
+     * If [config][eval] becomes empty, it will be removed completely.
+     */
+    protected function migrateRequiredFlag(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (!GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'required')) {
+                    continue;
+                }
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+                // Remove "required" from $evalList
+                $evalList = array_filter($evalList, static function (string $eval) {
+                    return $eval !== 'required';
+                });
+                if ($evalList !== []) {
+                    // Write back filtered 'eval'
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                } else {
+                    // 'eval' is empty, remove whole configuration
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $tca[$table]['columns'][$fieldName]['config']['required'] = true;
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . '"required" in its "eval" list. This is not  evaluated anymore and should be replaced '
+                    . ' by `\'required\' => true`.';
             }
         }
 

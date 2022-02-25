@@ -134,7 +134,8 @@ class ActionTest extends AbstractDataHandlerActionTestCase
                             <type>text</type>
                             <rows>5</rows>
                             <cols>30</cols>
-                            <eval>trim,required</eval>
+                            <required>1</required>
+                            <eval>trim</eval>
                             <enableRichtext>1</enableRichtext>
                             <richtextConfiguration>default</richtextConfiguration>
                         </config>

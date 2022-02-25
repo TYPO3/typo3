@@ -23,7 +23,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 15,
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'English',
             ],
         ],
@@ -42,7 +43,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.base',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'default' => '/',
                 'placeholder' => '/',
             ],
@@ -61,7 +63,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.locale',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'size' => 20,
                 'placeholder' => 'en_US.UTF-8',
                 'valuePicker' => [

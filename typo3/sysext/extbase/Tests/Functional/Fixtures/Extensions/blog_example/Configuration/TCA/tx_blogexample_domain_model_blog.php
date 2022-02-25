@@ -91,7 +91,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 20,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
                 'max' => 256,
             ],
         ],
@@ -109,7 +110,7 @@ return [
             'label' => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xlf:tx_blogexample_domain_model_blog.description',
             'config' => [
                 'type' => 'text',
-                'eval' => 'required',
+                'required' => true,
                 'rows' => 30,
                 'cols' => 80,
             ],

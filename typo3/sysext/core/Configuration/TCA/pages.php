@@ -158,7 +158,8 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
             ],
         ],
         'rowDescription' => [
@@ -426,7 +427,8 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
                 'softref' => 'url',
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,

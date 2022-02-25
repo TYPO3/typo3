@@ -9,7 +9,7 @@
 					<config>
 						<type>input</type>
 						<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</placeholder>
-						<eval>required</eval>
+						<required>1</required>
 						<size>30</size>
 					</config>
 				</TCEforms>

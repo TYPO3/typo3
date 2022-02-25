@@ -26,7 +26,7 @@ return [
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'description' => [

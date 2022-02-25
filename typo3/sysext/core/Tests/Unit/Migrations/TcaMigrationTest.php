@@ -1529,4 +1529,124 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    public function requiredFlagIsMigratedDataProvider(): iterable
+    {
+        yield 'field contains eval=require' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'required',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'required' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field contains eval=trim,require' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,required',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'required' => true,
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field does not contain eval with require' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field does not contain eval' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider requiredFlagIsMigratedDataProvider
+     * @test
+     */
+    public function requiredFlagIsMigrated(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

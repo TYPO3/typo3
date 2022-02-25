@@ -31,7 +31,8 @@ return [
                 'type' => 'input',
                 'size' => 25,
                 'max' => 50,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
             ],
         ],
         'db_mountpoints' => [

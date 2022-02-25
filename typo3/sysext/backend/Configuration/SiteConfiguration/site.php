@@ -16,9 +16,10 @@ return [
                 'type' => 'input',
                 'size' => 35,
                 'max' => 255,
+                'required' => true,
                 // identifier is used as directory name - allow a-z,0-9,_,- as chars only.
                 // unique is additionally checked server side
-                'eval' => 'required, lower, alphanum_x, trim',
+                'eval' => 'lower, alphanum_x, trim',
             ],
         ],
         'rootPageId' => [
@@ -37,7 +38,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.base',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
             ],
         ],
         'baseVariants' => [

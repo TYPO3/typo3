@@ -47,7 +47,8 @@ class PersistedPatternMapperTest extends FunctionalTestCase
             'prefixParentPageSlug' => false,
         ],
         'fallbackCharacter' => '-',
-        'eval' => 'required,uniqueInSite',
+        'required' => true,
+        'eval' => 'uniqueInSite',
         'default' => '',
     ];
 

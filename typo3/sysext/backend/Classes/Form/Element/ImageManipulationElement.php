@@ -203,7 +203,7 @@ class ImageManipulationElement extends AbstractFormElement
                 '@typo3/backend/image-manipulation.js'
             )->invoke('initializeTrigger');
             $arguments['formEngine']['field']['id'] = StringUtility::getUniqueId('formengine-image-manipulation-');
-            if (GeneralUtility::inList($config['eval'] ?? '', 'required')) {
+            if ($config['required'] ?? false) {
                 $arguments['formEngine']['validation'] = $this->getValidationDataAsJsonString(['required' => true]);
             }
         }

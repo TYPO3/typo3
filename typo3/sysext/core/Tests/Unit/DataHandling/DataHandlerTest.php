@@ -659,7 +659,8 @@ class DataHandlerTest extends UnitTestCase
                         'label' => 'A field',
                         'config' => [
                             'type' => 'input',
-                            'eval' => 'required,int',
+                            'required' => true,
+                            'eval' => 'int',
                         ],
                     ],
                 ],
@@ -682,7 +683,8 @@ class DataHandlerTest extends UnitTestCase
                     'label' => 'A field',
                     'config' => [
                         'type' => 'input',
-                        'eval' => 'required,int',
+                        'required' => true,
+                        'eval' => 'int',
                     ],
                 ],
             ],
@@ -722,7 +724,8 @@ class DataHandlerTest extends UnitTestCase
                                         'label' => 'A field',
                                         'config' => [
                                             'type' => 'input',
-                                            'eval' => 'required,int',
+                                            'required' => true,
+                                            'eval' => 'int',
                                         ],
                                     ],
                                 ],
@@ -776,7 +779,8 @@ class DataHandlerTest extends UnitTestCase
                                     'label' => 'A field',
                                     'config' => [
                                         'type' => 'input',
-                                        'eval' => 'required,int',
+                                        'required' => true,
+                                        'eval' => 'int',
                                     ],
                                 ],
                             ],
@@ -1343,5 +1347,53 @@ class DataHandlerTest extends UnitTestCase
         $this->expectExceptionCode(1336051942);
         $this->expectDeprecationMessage('Expected userFunc filter "TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\UserOddNumberFilter->filter" to return an array. Got NULL.');
         $this->subject->_call('applyFiltersToValues', $tcaFieldConfiguration, $values);
+    }
+
+    public function validateValueForRequiredReturnsExpectedValueDataHandler(): iterable
+    {
+        yield 'no required flag set with empty string' => [
+            [],
+            '',
+            true,
+        ];
+
+        yield 'no required flag set with (string)0' => [
+            [],
+            '0',
+            true,
+        ];
+
+        yield 'required flag set with empty string' => [
+            ['required' => true],
+            '',
+            false,
+        ];
+
+        yield 'required flag set with null value' => [
+            ['required' => true],
+            null,
+            false,
+        ];
+
+        yield 'required flag set with (string)0' => [
+            ['required' => true],
+            '0',
+            true,
+        ];
+
+        yield 'required flag set with non-empty string' => [
+            ['required' => true],
+            'foobar',
+            true,
+        ];
+    }
+
+    /**
+     * @dataProvider validateValueForRequiredReturnsExpectedValueDataHandler
+     * @test
+     */
+    public function validateValueForRequiredReturnsExpectedValue(array $tcaFieldConfig, $input, bool $expectation): void
+    {
+        self::assertSame($expectation, $this->subject->_call('validateValueForRequired', $tcaFieldConfig, $input));
     }
 }

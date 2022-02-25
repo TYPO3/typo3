@@ -17,7 +17,8 @@ return [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.placeholder',
                 'valuePicker' => [
                     'items' => [
@@ -43,7 +44,7 @@ return [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText',
             'config' => [
                 'type' => 'text',
-                'eval' => 'required',
+                'required' => true,
                 'valuePicker' => [
                     'items' => [
                         ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText.example1', 'User-agent: *
@@ -60,7 +61,7 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputLink',
-                'eval' => 'required',
+                'required' => true,
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [

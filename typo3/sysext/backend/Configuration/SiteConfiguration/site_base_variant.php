@@ -16,7 +16,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_base_variant.base',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.base.placeholder',
             ],
         ],
@@ -25,7 +26,8 @@ return [
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_base_variant.condition',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required, trim',
+                'required' => true,
+                'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
                         [ 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.applicationContext', 'applicationContext == "Production"'],

@@ -1627,7 +1627,9 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForText($value, $tcaFieldConf, $table, $realPid, $field)
     {
-        if (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            $valueArray = [];
+        } elseif (isset($tcaFieldConf['eval']) && $tcaFieldConf['eval'] !== '') {
             $cacheId = $this->getFieldEvalCacheIdentifier($tcaFieldConf['eval']);
             $evalCodesArray = $this->runtimeCache->get($cacheId);
             if (!is_array($evalCodesArray)) {
@@ -1700,7 +1702,9 @@ class DataHandler implements LoggerAwareInterface
             $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
         }
 
-        if (empty($tcaFieldConf['eval'])) {
+        if (!$this->validateValueForRequired($tcaFieldConf, (string)$value)) {
+            $res = [];
+        } elseif (empty($tcaFieldConf['eval'])) {
             $res = ['value' => $value];
         } else {
             // Process evaluation settings:
@@ -2519,16 +2523,12 @@ class DataHandler implements LoggerAwareInterface
     public function checkValue_text_Eval($value, $evalArray, $is_in)
     {
         $res = [];
+        /** @var true|false this is required as PHPstan doesn't know about evaluateFieldValue() $set */
         $set = true;
         foreach ($evalArray as $func) {
             switch ($func) {
                 case 'trim':
                     $value = trim((string)$value);
-                    break;
-                case 'required':
-                    if (!$value) {
-                        $set = false;
-                    }
                     break;
                 default:
                     if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
@@ -2628,11 +2628,6 @@ class DataHandler implements LoggerAwareInterface
                 case 'lower':
                     $value = mb_strtolower($value, 'utf-8');
                     break;
-                case 'required':
-                    if (!isset($value) || $value === '') {
-                        $set = false;
-                    }
-                    break;
                 case 'is_in':
                     $c = mb_strlen($value);
                     if ($c) {
@@ -2703,6 +2698,25 @@ class DataHandler implements LoggerAwareInterface
             $res['value'] = $value;
         }
         return $res;
+    }
+
+    /**
+     * Checks if required=true is set:
+     * if set: checks if the value is not empty (or not "0").
+     * if not set: does not matter, always returns true:
+     *
+     * @todo: If this requirement is not fulfilled, DataHandler should not execute any write statements, which could be
+     *        properly covered by tests then
+     *
+     * @return bool true if the required flag is set and the value is properly set, or if the required flag is not needed (and thus always valid).
+     */
+    protected function validateValueForRequired(array $tcaFieldConfig, mixed $value): bool
+    {
+        if (!isset($tcaFieldConfig['required']) || !$tcaFieldConfig['required']) {
+            return true;
+        }
+
+        return !empty($value) || $value === '0';
     }
 
     /**

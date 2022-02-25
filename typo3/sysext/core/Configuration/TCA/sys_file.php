@@ -58,7 +58,7 @@ return [
                 'readOnly' => true,
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'type' => [
