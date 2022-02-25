@@ -20,7 +20,11 @@
                             <td><span class="sort-row-field" data-identifier="sortRow"><core:icon identifier="actions-move-move" /></span></td>
                             <td data-identifier="column" data-column="label"><input type="text" class="form-control" value="" data-identifier="label" /></td>
                             <td data-identifier="column" data-column="value"><input type="text" class="form-control" value="" data-identifier="value" /></td>
-                            <td data-identifier="column" data-column="selected"><input type="checkbox" data-identifier="selectValue" /></td>
+                            <td data-identifier="column" data-column="selected">
+                                <span class="form-check form-toggle">
+                                    <input class="form-check-input t3js-multi-record-selection-check" data-identifier="selectValue" type="checkbox" />
+                                </span>
+                            </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.remove')}" data-identifier="deleteRow">

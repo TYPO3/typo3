@@ -775,7 +775,7 @@
                 <source>Description</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.label" resname="formEditor.elements.FormElement.editor.requiredValidator.label" xml:space="preserve">
-                <source>Required field</source>
+                <source>Field required</source>
             </trans-unit>
             <trans-unit id="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" resname="formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label" xml:space="preserve">
                 <source>Custom error message</source>

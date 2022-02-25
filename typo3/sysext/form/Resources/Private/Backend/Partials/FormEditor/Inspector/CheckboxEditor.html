@@ -1,16 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="form-editor">
     <div class="t3-form-control-group form-group">
-        <label data-random-id data-random-id-attribute="for" data-random-id-number="1">
+        <label class="t3js-formengine-label data-random-id data-random-id-attribute="for" data-random-id-number="1">
             <span data-template-property="label"></span>
         </label>
-        <div class="formengine-field-item">
-            <span data-template-property="fieldExplanationText" class="formengine-field-item-description text-muted"></span>
-            <div class="form-control-wrap">
-                <div class="t3-form-controls" data-identifier="inspectorEditorControlsWrapper">
-                    <input data-random-id data-random-id-attribute="id" data-random-id-number="1" type="checkbox" />
-                </div>
-            </div>
+        <div class="form-check form-switch" data-identifier="inspectorEditorControlsWrapper">
+            <input class="form-check-input" data-random-id data-random-id-attribute="id" data-random-id-number="1" type="checkbox" />
+            <label class="form-check-label" data-random-id data-random-id-attribute="for" data-random-id-number="1">
+                <span class="form-check-label-text"></span>
+            </label>
         </div>
     </div>
 </div>

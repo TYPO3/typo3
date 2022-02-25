@@ -93,6 +93,11 @@ $tree-line-height: 20px;
     }
 }
 
+.form-check.form-switch {
+    margin-bottom: 0;
+    padding-bottom: 0.5rem;
+}
+
 .form-group-select {
     padding-bottom: 0.5rem;
 
@@ -551,6 +556,10 @@ $tree-line-height: 20px;
         border-left: 1px solid $module-docheader-border !important;
         border-right: 1px solid $module-docheader-border !important;
         outline-offset: -5px !important;
+    }
+
+    .form-check {
+        padding-left: 3.2em;
     }
 }
 
