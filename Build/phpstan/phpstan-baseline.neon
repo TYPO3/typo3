@@ -3971,11 +3971,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
 
 		-
-			message: "#^Dead catch \\- TYPO3\\\\CMS\\\\Extbase\\\\Mvc\\\\Exception\\\\StopActionException is never thrown in the try block\\.$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/ViewHelpers/RenderViewHelper.php
-
-		-
 			message: "#^Class TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\Finishers\\\\FormElementInterface not found\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Tests/Unit/Domain/Finishers/AbstractFinisherTest.php

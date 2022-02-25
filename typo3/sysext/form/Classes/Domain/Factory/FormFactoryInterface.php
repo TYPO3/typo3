@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Form\Domain\Factory;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 
 /**
- * A Form Factory is responsible for building a {@link TYPO3\CMS\Form\Domain\Model\FormDefinition}.
+ * A Form Factory is responsible for building a {@link \TYPO3\CMS\Form\Domain\Model\FormDefinition}.
  * **Instead of implementing this interface, subclassing {@link AbstractFormFactory} is more appropriate
  * in most cases**.
  *

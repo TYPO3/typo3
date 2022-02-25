@@ -52,7 +52,7 @@ class FormViewHelper extends FluidFormViewHelper
             )
         );
 
-        // ONLY assign `__session` if form is performing (uncached)
+        // ONLY assign `__session` if form is performing (POST request)
         if ($formRuntime->canProcessFormSubmission() && $formRuntime->getFormSession() !== null) {
             $markup .= $this->createHiddenInputElement(
                 $prefix . '[__session]',
