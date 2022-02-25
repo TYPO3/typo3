@@ -1,0 +1,16 @@
+{
+	"name": "typo3/cms-form-caching-tests",
+	"type": "typo3-cms-extension",
+	"description": "",
+	"license": ["GPL-2.0-or-later"],
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\FormCachingTests\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "form_caching_tests"
+		}
+	}
+}

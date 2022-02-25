@@ -1,0 +1,44 @@
+entitySettings:
+  '*':
+    nodeColumnName: pid
+    columnNames:
+      id: uid
+    defaultValues:
+      pid: 0
+  page:
+    isNode: true
+    tableName: pages
+    parentColumnName: pid
+    languageColumnNames:
+      - l10n_parent
+      - l10n_source
+    defaultValues:
+      hidden: 0
+      perms_groupid: 0
+      perms_user: 31
+      perms_group: 31
+      perms_everybody: 31
+  content:
+    tableName: tt_content
+    languageColumnNames:
+      - l18n_parent
+      - l10n_source
+    defaultValues:
+      hidden: 0
+  template:
+    tableName: sys_template
+entities:
+  page:
+    - self: {id: 1000, title: 'my first website', slug: /, doktype: 1, is_siteroot: 1}
+      entities:
+        template:
+          - self: {id: 1000, title: main, root: 1, clear: 3, include_static_file: 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:form/Configuration/TypoScript/,EXT:form_caching_tests/Configuration/TypoScript', static_file_mode: 3, config: "@import 'EXT:form/Tests/Functional/Fixtures/Frontend/ContentRenderer.typoscript'\n@import 'EXT:form/Tests/Functional/RequestHandling/Fixtures/formSetup.typoscript'"}
+      children:
+        - self: {id: 1001, title: 'Form page', slug: /form, doktype: 1}
+          entities:
+            content:
+              - self: {id: 1000, CType: form_formframework, pi_flexform: "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n<data>\n<sheet index=\"sDEF\">\n<language index=\"lDEF\">\n<field index=\"settings.persistenceIdentifier\">\n<value index=\"vDEF\">EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/SinglestepTestForm.form.yaml</value>\n</field>\n<field index=\"settings.overrideFinishers\">\n<value index=\"vDEF\">0</value>\n</field>\n</language>\n</sheet>\n</data>\n</T3FlexForms>"}
+              - self: {id: 1001, CType: form_formframework, pi_flexform: "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n<data>\n<sheet index=\"sDEF\">\n<language index=\"lDEF\">\n<field index=\"settings.persistenceIdentifier\">\n<value index=\"vDEF\">EXT:form/Tests/Functional/RequestHandling/Fixtures/Forms/MultistepTestForm.form.yaml</value>\n</field>\n<field index=\"settings.overrideFinishers\">\n<value index=\"vDEF\">0</value>\n</field>\n</language>\n</sheet>\n</data>\n</T3FlexForms>"}
+              - self: {id: 1002, CType: list, list_type: formcachingtests_renderactioniscached}
+              - self: {id: 1003, CType: list, list_type: formcachingtests_allactionsuncached}
+              - self: {id: 1004, CType: list, list_type: formcachingtests_allactionscached}

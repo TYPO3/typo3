@@ -1,0 +1,38 @@
+identifier: singlestep-test-form
+type: Form
+prototypeName: standard
+label: 'Singlestep test form'
+finishers:
+  -
+    identifier: EmailToReceiver
+    options:
+      subject: 'Your message from singlestep-test-form: {text-1}'
+      recipients:
+        recipient@typo3.org: 'TYPO3'
+      senderAddress: 'recipient@typo3.org'
+      senderName: 'unicorn'
+      replyToRecipients: {  }
+      carbonCopyRecipients: {  }
+      blindCarbonCopyRecipients: {  }
+      format: html
+      attachUploads: 'true'
+      translation:
+        language: ''
+      useFluidEmail: 'true'
+      title: 'Confirmation of your message'
+  -
+    identifier: Confirmation
+    options:
+      message: 'Form is submitted'
+      contentElementUid: ''
+renderables:
+  -
+    identifier: page-1
+    label: 'Singlestep form through ext:form content element'
+    type: Page
+    renderables:
+      -
+        type: Text
+        identifier: text-1
+        label: Text
+        defaultValue: ''

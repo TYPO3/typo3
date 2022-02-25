@@ -1,0 +1,43 @@
+prototypeName: standard
+type: Form
+identifier: form-caching-tests-form-2
+label: 'form caching tests - form-2'
+finishers:
+  -
+    identifier: EmailToReceiver
+    options:
+      subject: 'Your message from form-caching-tests-form-2: {text-1}'
+      recipients:
+        recipient@typo3.org: 'TYPO3'
+      senderAddress: 'recipient@typo3.org'
+      senderName: 'unicorn'
+      replyToRecipients: {  }
+      carbonCopyRecipients: {  }
+      blindCarbonCopyRecipients: {  }
+      format: html
+      attachUploads: 'true'
+      translation:
+        language: ''
+      useFluidEmail: 'true'
+      title: 'Confirmation of your message'
+  -
+    identifier: Confirmation
+    options:
+      message: 'Form is submitted'
+      contentElementUid: ''
+
+renderables:
+  -
+    type: Page
+    identifier: page-1
+    label: Step
+    renderables:
+      -
+        type: Text
+        identifier: text-1
+        label: Text
+        defaultValue: ''
+  -
+    type: SummaryPage
+    identifier: summarypage-1
+    label: 'Summary step'
