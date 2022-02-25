@@ -1,0 +1,177 @@
+plugin.tx_formcachingtests {
+    view {
+        layoutRootPaths {
+            0 = EXT:form_caching_tests/Resources/Private/Layouts/
+        }
+
+        templateRootPaths {
+            0 = EXT:form_caching_tests/Resources/Private/Templates/
+        }
+
+        partialRootPaths {
+            0 = EXT:form_caching_tests/Resources/Private/Partials/
+        }
+    }
+}
+
+page = PAGE
+page {
+    1628755200 = FLUIDTEMPLATE
+    1628755200 {
+        file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+        settings {
+            persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+            formIdentifier = FormFromSimpleFluidtemplate
+            title = form from simple FLUIDTEMPLATE
+            controllerAction = perform
+        }
+        extbase.pluginName = Formframework
+        extbase.controllerExtensionName = Form
+        extbase.controllerName = FormFrontend
+        extbase.controllerActionName = render
+    }
+
+    1628755210 = COA
+    1628755210 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsCached
+                title = form from COA FLUIDTEMPLATE through custom extbase controller / AllActionsCached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = AllActionsCached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = AllActionsCached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755220 = COA_INT
+    1628755220 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsCached
+                title = form from COA_INT FLUIDTEMPLATE through custom extbase controller / AllActionsCached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = AllActionsCached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = AllActionsCached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755230 = COA
+    1628755230 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached
+                title = form from COA FLUIDTEMPLATE through custom extbase controller / RenderActionIsCached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = RenderActionIsCached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = RenderActionIsCached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755240 = COA_INT
+    1628755240 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerRenderActionIsCached
+                title = form from COA_INT FLUIDTEMPLATE through custom extbase controller / RenderActionIsCached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = RenderActionIsCached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = RenderActionIsCached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755250 = COA
+    1628755250 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaFluidtemplateThroughCustomExtbaseControllerAllActionsUncached
+                title = form from COA FLUIDTEMPLATE through custom extbase controller / AllActionsUncached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = AllActionsUncached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = AllActionsUncached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755260 = COA_INT
+    1628755260 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaIntFluidtemplateThroughCustomExtbaseControllerAllActionsUncached
+                title = form from COA_INT FLUIDTEMPLATE through custom extbase controller / AllActionsUncached
+                controllerAction = somePerform
+            }
+            extbase.pluginName = AllActionsUncached
+            extbase.controllerExtensionName = FormCachingTests
+            extbase.controllerName = AllActionsUncached
+            extbase.controllerActionName = someRender
+        }
+    }
+
+    1628755270 = COA
+    1628755270 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaFluidtemplateThroughExtFormController
+                title = form from COA FLUIDTEMPLATE through ext:form controller
+                controllerAction = perform
+            }
+            extbase.pluginName = Formframework
+            extbase.controllerExtensionName = Form
+            extbase.controllerName = FormFrontend
+            extbase.controllerActionName = render
+        }
+    }
+
+    1628755280 = COA_INT
+    1628755280 {
+        10 = FLUIDTEMPLATE
+        10 {
+            file = EXT:form_caching_tests/Resources/Private/Templates/FormFluidtemplate.html
+            settings {
+                persistenceIdentifier = EXT:form_caching_tests/Resources/Private/Form/Form2.form.yaml
+                formIdentifier = FormFromCoaIntFluidtemplateThroughExtFormController
+                title = form from COA_INT FLUIDTEMPLATE through ext:form controller
+                controllerAction = perform
+            }
+            extbase.pluginName = Formframework
+            extbase.controllerExtensionName = Form
+            extbase.controllerName = FormFrontend
+            extbase.controllerActionName = render
+        }
+    }
+}
