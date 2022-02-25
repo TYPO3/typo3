@@ -1619,8 +1619,8 @@ class BackendUtility
 
                     if (GeneralUtility::inList($theColConf['eval'] ?? '', 'date')) {
                         // Handle native date field
-                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-                            $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
+                        if (isset($theColConf['dbType']) && ($theColConf['dbType'] === 'date' || $theColConf['dbType'] === 'datetime')) {
+                            $value = $value === $dateTimeFormats[$theColConf['dbType']]['empty'] ? 0 : (int)strtotime($value);
                         } else {
                             $value = (int)$value;
                         }
