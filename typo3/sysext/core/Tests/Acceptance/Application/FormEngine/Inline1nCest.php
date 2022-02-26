@@ -52,24 +52,24 @@ class Inline1nCest
     public function checkIfExpandsAndCollapseShowInput(ApplicationTester $I): void
     {
         $I->wantTo('Expands the inline Element');
-        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
-        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
+        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_1_child][1][input_1]"]');
         $I->wantTo('check is the value in input');
-        $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'lipsum');
+        $I->seeInField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_1_child][1][input_1]"]', 'lipsum');
         $I->wantTo('Collapse the inline Element');
-        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["] .panel');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["] .panel');
     }
 
     public function hideAndUnhideInline1nInlineElement(ApplicationTester $I): void
     {
         $I->wantTo('Can hide a Inline Element');
-        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden');
-        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_child]["] button span[data-identifier="actions-edit-unhide"]');
+        $I->click('button span[data-identifier="actions-edit-hide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].t3-form-field-container-inline-hidden');
+        $I->waitForElement('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["] button span[data-identifier="actions-edit-unhide"]');
         $I->wantTo('Can unhide a Inline Element');
-        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
-        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_child]["].t3-form-field-container-inline-hidden', 2);
+        $I->click('button span[data-identifier="actions-edit-unhide"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
+        $I->waitForElementNotVisible('[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["].t3-form-field-container-inline-hidden', 2);
     }
 
     public function createInline1nInlineElement(ApplicationTester $I): void
@@ -92,8 +92,8 @@ class Inline1nCest
         $I->executeJS('$(\'a[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse\').click();');
         $I->wait(1);
 
-        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(3) > a');
+        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
+        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(3) > a');
     }
 
     /**
@@ -102,7 +102,7 @@ class Inline1nCest
     public function checkIfCanSortingInlineElement(ApplicationTester $I): void
     {
         $I->wantTo('Can sort an Inline Element');
-        $I->click('button span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_child]["]');
+        $I->click('button span[data-identifier="actions-move-down"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child]["]');
         $I->click('button[name="_savedok"]');
         $I->wait(3);
         $I->click('a[title="Close"]');
@@ -114,15 +114,15 @@ class Inline1nCest
         $I->wait(1);
 
         $I->wantTo('Check new sorting');
-        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
-        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > a');
+        $I->see('Fo Bar', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
+        $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(3) > a');
     }
 
     public function changeInline1nInlineInput(ApplicationTester $I): void
     {
-        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_child][1"]');
-        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]');
-        $I->fillField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_child][1][input_1]"]', 'hello world');
+        $I->click('div[data-bs-toggle="formengine-inline"]', '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child][1"]');
+        $I->waitForElement('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_1_child][1][input_1]"]');
+        $I->fillField('input[data-formengine-input-name="data[tx_styleguide_inline_1n_inline_1_child][1][input_1]"]', 'hello world');
         $I->click('button[name="_savedok"]');
         $I->wait(3);
         $I->click('a[title="Close"]');
@@ -132,7 +132,7 @@ class Inline1nCest
 
     public function deleteInline1nInlineElement(ApplicationTester $I, ModalDialog $modalDialog): void
     {
-        $inlineElementToDelete = '[data-field-name^="[tx_styleguide_inline_1n_child][1"]';
+        $inlineElementToDelete = '[data-field-name^="[tx_styleguide_inline_1n_inline_1_child][1"]';
         $I->wantTo('Cancel the delete dialog');
         $I->click('button span[data-identifier="actions-edit-delete"]', $inlineElementToDelete);
         $modalDialog->clickButtonInDialog('button[name="no"]');

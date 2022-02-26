@@ -6,6 +6,9 @@ modules:
         browser: chrome
         wait: 2
         host: chrome
+        capabilities:
+          chromeOptions:
+            args: ["--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu"]
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
     - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
         sessions:

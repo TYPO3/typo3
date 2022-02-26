@@ -6,26 +6,10 @@ modules:
         browser: chrome
         wait: 2
         host: chrome
+        capabilities:
+          chromeOptions:
+            args: [ "--headless", "--no-sandbox", "window-size=1280,1024", "--disable-gpu" ]
     - Asserts
-
-env:
-  headless:
-    modules:
-      config:
-        WebDriver:
-          host: localhost
-          port: 9515
-          url: http://localhost:8000/typo3temp/var/tests/acceptance
-          capabilities:
-            # Disable the "scroll to element before clicking" behavior as this breaks tests
-            # where for example a fixed docbar is used. Selenium scrolls to the element before
-            # clicking it and then complains that it can't click the element because another element
-            # is overlaying it.
-            # You have to ensure that the element is in the viewport by your own before clicking it!
-            # You can simply do that by scrolling to it.
-            elementScrollBehavior: 1
-            chromeOptions:
-              args: ["--headless", "--no-sandbox", "window-size=1280x1024", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--disable-gpu"]
 
   mysql:
     extensions:
