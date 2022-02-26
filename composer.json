@@ -51,7 +51,7 @@
 		"doctrine/dbal": "^2.13.5",
 		"doctrine/event-manager": "^1.0.0",
 		"doctrine/instantiator": "^1.4",
-		"doctrine/lexer": "^1.2.1",
+		"doctrine/lexer": "^1.2.2",
 		"egulias/email-validator": "^3.1",
 		"enshrined/svg-sanitize": "^0.15.4",
 		"guzzlehttp/guzzle": "^7.3.0",
