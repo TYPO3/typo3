@@ -118,10 +118,8 @@
 			<trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected">
 				<source>Really discard changes of the selected elements?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace" xml:space="preserve">
-				<source>Please note that this will affect all changes in the current workspace, which may be more than
-					you are currently seeing on your screen.
-				</source>
+			<trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace">
+				<source>Please note that this will affect all changes in the current workspace, which may be more than you are currently seeing on your screen.</source>
 			</trans-unit>
 			<trans-unit id="tooltip.generatePagePreview" resname="tooltip.generatePagePreview">
 				<source>Generate page preview links</source>

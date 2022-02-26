@@ -42,7 +42,7 @@
                 </div>
             </div>
         </form>
-        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
+        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, position: 'top'}" />
         <div id="workspace-content-wrapper">
             <div id="workspace-contents" class="table-fit mb-0" style="display: none">
                 <table class="table table-striped">
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages}" />
+        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, position: 'bottom'}" />
         <nav id="workspace-pagination" class="mt-3"></nav>
     </div>
 </html>
@@ -100,11 +100,11 @@
         <f:if condition="{stageActions}">
             <div class="col-auto">
                 <div class="row row-cols-auto align-items-center g-2">
-                    <div class="col">
+                    <label class="col" for="mass-action-{position}">
                         <strong><f:translate key="entireWorkspace" /></strong>
-                    </div>
+                    </label>
                     <div class="col">
-                        <select name="mass-action" class="form-select form-select-sm">
+                        <select name="mass-action" id="mass-action-{position}" class="form-select form-select-sm">
                             <option value=""><f:translate key="chooseMassAction" /></option>
                             <f:for each="{stageActions}" as="stageAction">
                                 <option value="{stageAction.action}">{stageAction.title}</option>
