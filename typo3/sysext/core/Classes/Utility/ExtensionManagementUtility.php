@@ -1480,6 +1480,14 @@ tt_content.' . $key . $suffix . ' {
 
         $activePackages = static::$packageManager->getActivePackages();
 
+        // To require TCA in a safe scoped environment avoiding local variable clashes.
+        // @see TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility\ExtensionManagementUtilityTcaRequireTest
+        // Note: Return type 'mixed' is intended, otherwise broken TCA files with missing "return [];" statement would
+        //       emit a "return value must be of type array, int returned" PHP TypeError. This is mitigated by an array
+        //       check below.
+        $scopedReturnRequire = static function (string $filename): mixed {
+            return require $filename;
+        };
         // First load "full table" files from Configuration/TCA
         foreach ($activePackages as $package) {
             try {
@@ -1489,7 +1497,7 @@ tt_content.' . $key . $suffix . ' {
                 continue;
             }
             foreach ($finder as $fileInfo) {
-                $tcaOfTable = require $fileInfo->getPathname();
+                $tcaOfTable = $scopedReturnRequire($fileInfo->getPathname());
                 if (is_array($tcaOfTable)) {
                     $tcaTableName = substr($fileInfo->getBasename(), 0, -4);
                     $GLOBALS['TCA'][$tcaTableName] = $tcaOfTable;
@@ -1497,6 +1505,11 @@ tt_content.' . $key . $suffix . ' {
             }
         }
 
+        // To require TCA Overrides in a safe scoped environment avoiding local variable clashes.
+        // @see TYPO3\CMS\Core\Tests\Functional\Utility\ExtensionManagementUtility\ExtensionManagementUtilityTcaOverrideRequireTest
+        $scopedRequire = static function (string $filename): void {
+            require $filename;
+        };
         // Execute override files from Configuration/TCA/Overrides
         foreach ($activePackages as $package) {
             try {
@@ -1506,7 +1519,7 @@ tt_content.' . $key . $suffix . ' {
                 continue;
             }
             foreach ($finder as $fileInfo) {
-                require $fileInfo->getPathname();
+                $scopedRequire($fileInfo->getPathname());
             }
         }
 
