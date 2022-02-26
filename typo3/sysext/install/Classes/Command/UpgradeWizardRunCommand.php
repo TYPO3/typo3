@@ -227,7 +227,7 @@ class UpgradeWizardRunCommand extends Command
     protected function runSingleWizard(
         UpgradeWizardInterface $instance
     ): int {
-        $this->output->title('Running Wizard ' . $instance->getTitle());
+        $this->output->title('Running Wizard "' . $instance->getTitle() . '"');
         if ($instance instanceof ConfirmableInterface) {
             $confirmation = $instance->getConfirmation();
             $defaultString = $confirmation->getDefaultValue() ? 'Y/n' : 'y/N';
