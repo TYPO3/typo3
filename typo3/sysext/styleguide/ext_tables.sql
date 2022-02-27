@@ -759,6 +759,45 @@ CREATE TABLE tx_styleguide_valuesdefault (
     select_2 text
 );
 
+CREATE TABLE tx_styleguide_l10nreadonly (
+    input text,
+    input_colorpicker text,
+    input_datetime text,
+    input_link text,
+    slug text,
+    checkbox int(11) DEFAULT '0' NOT NULL,
+    checkbox_toggle int(11) DEFAULT '0' NOT NULL,
+    checkbox_labeled_toggle int(11) DEFAULT '0' NOT NULL,
+    radio int(11) DEFAULT '0' NOT NULL,
+    none text,
+    group text,
+    group_mm text,
+    group_file text,
+    folder text,
+    image_manipulation text,
+    language int(11) DEFAULT '0' NOT NULL,
+    text text,
+    text_rte text,
+    text_belayoutwizard text,
+    text_t3editor text,
+    text_table text,
+    select_single text,
+    select_single_box text,
+    select_checkbox text,
+    select_tree text,
+    select_tree_mm text,
+    select_multiplesidebyside text,
+    select_multiplesidebyside_mm text,
+    inline text,
+    flex text
+);
+
+CREATE TABLE tx_styleguide_l10nreadonly_inline_child (
+    parentid int(11) DEFAULT '0' NOT NULL,
+    parenttable text,
+    input text,
+);
+
 #
 # Table structure for table 'tx_styleguide_inline_parentnosoftdelete'
 #
