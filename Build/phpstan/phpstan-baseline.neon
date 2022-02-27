@@ -126,16 +126,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\AbstractFormElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\GroupElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/GroupElement.php
-
-		-
 			message: "#^Offset 'arguments' on array\\{arguments\\: string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
@@ -146,28 +136,8 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/InputLinkElement.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\InputLinkElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/InputLinkElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\InputTextElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/InputTextElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\RadioElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/RadioElement.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 3
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\SelectCheckBoxElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
 
 		-
@@ -181,11 +151,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\SelectMultipleSideBySideElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
 			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: non\\-empty\\-array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
@@ -194,16 +159,6 @@ parameters:
 			message: "#^Offset 'items' on array\\{header\\: array\\{title\\: mixed, disabled\\?\\: false\\}, items\\: array\\<int, array\\{label\\: string, attributes\\: non\\-empty\\-array\\<literal\\-string&non\\-empty\\-string, mixed\\>\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\SelectSingleBoxElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleBoxElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\SelectSingleElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
 			message: "#^Offset 'header' on array\\{header\\: array\\{title\\: mixed\\}, items\\: non\\-empty\\-array\\<int, array\\{title\\: string, value\\: mixed, icon\\: string, selected\\: bool\\}\\>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -221,34 +176,9 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectSingleElement.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\SelectTreeElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectTreeElement.php
-
-		-
 			message: "#^Right side of && is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectTreeElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\TextElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/TextElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\TextTableElement\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/TextTableElement.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FieldControl\\\\EditPopup\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FieldControl/EditPopup.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FieldControl\\\\LinkPopup\\:\\:forwardOnFieldChangeQueryParams\\(\\) should return array\\<string, string\\> but returns array\\<string, array\\<int\\|string, array\\|string\\|TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Behavior\\\\OnFieldChangeInterface\\>\\|string\\>\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/FieldControl/LinkPopup.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
