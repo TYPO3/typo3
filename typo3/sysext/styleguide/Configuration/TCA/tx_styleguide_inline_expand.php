@@ -90,7 +90,7 @@ return [
                 'foreign_table_field' => 'parenttable',
                 'appearance' => [
                     'collapseAll' => false,
-                ]
+                ],
             ],
         ],
 
@@ -99,7 +99,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                inline_1,
+                inline_1
             ',
         ],
     ],

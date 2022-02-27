@@ -401,7 +401,8 @@ CREATE TABLE tx_styleguide_flex_flex_3_inline_1_child (
 
 
 CREATE TABLE tx_styleguide_inline_1n (
-    inline_1 int(11) DEFAULT '0' NOT NULL
+    inline_1 int(11) DEFAULT '0' NOT NULL,
+    inline_2 int(11) DEFAULT '0' NOT NULL
 );
 
 
@@ -413,7 +414,7 @@ CREATE TABLE tx_styleguide_inline_11_child (
     input_1 text DEFAULT '' NOT NULL
 );
 
-CREATE TABLE tx_styleguide_inline_1n_child (
+CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
     parentid int(11) DEFAULT '0' NOT NULL,
     parenttable text,
 
@@ -422,6 +423,17 @@ CREATE TABLE tx_styleguide_inline_1n_child (
     input_3 text,
     group_db_1 text,
     select_tree_1 text
+);
+
+CREATE TABLE tx_styleguide_inline_1n_inline_2_child (
+    parentid int(11) DEFAULT '0' NOT NULL,
+    parenttable text,
+
+    input_1 text,
+    inline_fal_1 int(11) DEFAULT '0' NOT NULL,
+    rte_1 text,
+    select_tree_1 text,
+    t3editor_1 text
 );
 
 CREATE TABLE tx_styleguide_inline_1nnol10n (

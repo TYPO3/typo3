@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Form engine - inline 1:n foreign field child',
+        'title' => 'Form engine - inline 1:n inline_1 foreign field child',
         'label' => 'input_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -52,8 +52,8 @@ return [
                         0,
                     ],
                 ],
-                'foreign_table' => 'tx_styleguide_inline_1n_child',
-                'foreign_table_where' => 'AND {#tx_styleguide_inline_1n_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_1n_child}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_styleguide_inline_1n_inline_1_child',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_1n_inline_1_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_1n_inline_1_child}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -70,8 +70,8 @@ return [
                         0,
                     ],
                 ],
-                'foreign_table' => 'tx_styleguide_inline_1n_child',
-                'foreign_table_where' => 'AND {#tx_styleguide_inline_1n_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_1n_child}.{#uid}!=###THIS_UID###',
+                'foreign_table' => 'tx_styleguide_inline_1n_inline_1_child',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_1n_inline_1_child}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_1n_inline_1_child}.{#uid}!=###THIS_UID###',
                 'default' => 0,
             ],
         ],

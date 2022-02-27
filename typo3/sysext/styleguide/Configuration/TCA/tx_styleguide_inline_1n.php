@@ -86,7 +86,7 @@ return [
             'description' => 'field description',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => 'tx_styleguide_inline_1n_child',
+                'foreign_table' => 'tx_styleguide_inline_1n_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
                 'appearance' => [
@@ -96,13 +96,31 @@ return [
                 ],
             ],
         ],
+        'inline_2' => [
+            'exclude' => 1,
+            'label' => 'inline_2 maxitems=3',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_inline_1n_inline_2_child',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+                'minitems' => 1,
+                'maxitems' => 3,
+                'appearance' => [
+                    'collapseAll' => 1,
+                ],
+            ],
+        ],
 
     ],
 
     'types' => [
         '0' => [
             'showitem' => '
-                inline_1,
+                --div--;inline_1,
+                    inline_1,
+                --div--;inline_2,
+                    inline_2,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
 
