@@ -59,7 +59,7 @@ trait OnFieldChangeTrait
     /**
      * Forwards URL query params for `LinkBrowserController`
      * @param list<OnFieldChangeInterface> $items `fieldChangeFunc` items
-     * @return array<string, string> relevant URL query params for `LinkBrowserController`
+     * @return array{fieldChangeFunc: array<int, array>, fieldChangeFuncHash: string} relevant URL query params for `LinkBrowserController`
      */
     protected function forwardOnFieldChangeQueryParams(array $items): array
     {
