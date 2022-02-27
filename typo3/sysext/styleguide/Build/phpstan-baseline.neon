@@ -66,74 +66,74 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFlex.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedBeUsers\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFolder\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedBeUsers.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFolder.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedBeUsers\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFolder\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedBeUsers.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFolder.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedBeUsersBeGroups\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedBeUsers\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedBeUsersBeGroups.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedBeUsers.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedBeUsersBeGroups\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedBeUsers\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedBeUsersBeGroups.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedBeUsers.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedPages\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedBeUsersBeGroups\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedPages.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedBeUsersBeGroups.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedPages\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedBeUsersBeGroups\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedPages.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedBeUsersBeGroups.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedStaticdata\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedPages\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedStaticdata.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedPages.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedStaticdata\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedPages\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedStaticdata.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedPages.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedSysFiles\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedStaticdata\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedSysFiles.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedStaticdata.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbAllowedSysFiles\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedStaticdata\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbAllowedSysFiles.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedStaticdata.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbFal\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedSysFiles\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbFal.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedSysFiles.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupDbFal\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupAllowedSysFiles\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupDbFal.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupAllowedSysFiles.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupFolder\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupFal\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupFolder.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupFal.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupFolder\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeGroupFal\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupFolder.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeGroupFal.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeImageManipulation\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"

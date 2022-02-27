@@ -199,12 +199,17 @@ CREATE TABLE tx_styleguide_elements_group (
     group_db_9 text,
     group_db_10 text,
     group_db_11 text,
-    group_folder_1 text,
     group_requestUpdate_1 text,
 
     flex_1 text
 );
 
+CREATE TABLE tx_styleguide_elements_folder
+(
+    folder_1 text,
+    folder_2 text,
+    flex_1 text
+);
 
 CREATE TABLE tx_styleguide_elements_imagemanipulation (
     group_db_1 text,

@@ -21,9 +21,9 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
- * Generate data for type=group fields
+ * Generate data for type=folder fields
  */
-class TypeGroupDbAllowedStaticdata extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeFolder extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=group
@@ -31,8 +31,7 @@ class TypeGroupDbAllowedStaticdata extends AbstractFieldGenerator implements Fie
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'group',
-                'allowed' => 'tx_styleguide_staticdata',
+                'type' => 'folder',
             ],
         ],
     ];
@@ -47,8 +46,7 @@ class TypeGroupDbAllowedStaticdata extends AbstractFieldGenerator implements Fie
     {
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $staticdataUids = $recordFinder->findUidsOfStaticdata();
-        // Return only one element
-        return (string)current($staticdataUids);
+        $folder = $recordFinder->findDemoFolderObject();
+        return $folder->getCombinedIdentifier();
     }
 }

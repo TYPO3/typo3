@@ -86,13 +86,15 @@ class FieldGeneratorResolver
         FieldGenerator\TypeUser::class,
 
         // type=group
-        FieldGenerator\TypeGroupDbFal::class,
-        FieldGenerator\TypeGroupDbAllowedBeUsersBeGroups::class,
-        FieldGenerator\TypeGroupDbAllowedBeUsers::class,
-        FieldGenerator\TypeGroupDbAllowedStaticdata::class,
-        FieldGenerator\TypeGroupDbAllowedPages::class,
-        FieldGenerator\TypeGroupDbAllowedSysFiles::class,
-        FieldGenerator\TypeGroupFolder::class,
+        FieldGenerator\TypeGroupFal::class,
+        FieldGenerator\TypeGroupAllowedBeUsersBeGroups::class,
+        FieldGenerator\TypeGroupAllowedBeUsers::class,
+        FieldGenerator\TypeGroupAllowedStaticdata::class,
+        FieldGenerator\TypeGroupAllowedPages::class,
+        FieldGenerator\TypeGroupAllowedSysFiles::class,
+
+        // type=folder
+        FieldGenerator\TypeFolder::class,
 
         // type=select
         FieldGenerator\TypeSelectRenderTypeSingleForeignTable::class,

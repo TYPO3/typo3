@@ -36,11 +36,6 @@ indent_size = 2
 [*.xlf]
 indent_style = tab
 
-# SQL-Files
-[*.sql]
-indent_style = tab
-indent_size = 2
-
 # .htaccess
 [{_.htaccess,.htaccess}]
 indent_style = tab

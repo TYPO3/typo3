@@ -207,16 +207,6 @@ return [
             ],
         ],
 
-        'group_folder_1' => [
-            'exclude' => 1,
-            'label' => 'group_folder_1 desription',
-            'description' => 'field description',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'folder',
-            ],
-        ],
-
         'group_requestUpdate_1' => [
             'exclude' => 1,
             'label' => 'group_requestUpdate_1',
@@ -335,10 +325,8 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;db,
+                --div--;type=group,
                     group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10,
-                --div--;internal_type=folder,
-                    group_folder_1,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,

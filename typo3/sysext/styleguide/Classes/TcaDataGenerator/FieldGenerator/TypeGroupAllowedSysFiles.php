@@ -23,7 +23,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for type=group fields
  */
-class TypeGroupDbAllowedSysFiles extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeGroupAllowedSysFiles extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array Match if type=group and allowed=pages

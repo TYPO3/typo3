@@ -23,7 +23,7 @@ use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 /**
  * Generate data for type=group fields
  */
-class TypeGroupDbAllowedBeUsersBeGroups extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeGroupAllowedBeUsers extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
      * @var array General match if type=group
@@ -32,7 +32,7 @@ class TypeGroupDbAllowedBeUsersBeGroups extends AbstractFieldGenerator implement
         'fieldConfig' => [
             'config' => [
                 'type' => 'group',
-                'allowed' => 'be_users,be_groups',
+                'allowed' => 'be_users',
             ],
         ],
     ];
@@ -47,15 +47,6 @@ class TypeGroupDbAllowedBeUsersBeGroups extends AbstractFieldGenerator implement
     {
         /** @var RecordFinder $recordFinder */
         $recordFinder = GeneralUtility::makeInstance(RecordFinder::class);
-        $beGroupUids = $recordFinder->findUidsOfDemoBeGroups();
-        $beUserUids = $recordFinder->findUidsOfDemoBeUsers();
-        $result = [];
-        foreach ($beGroupUids as $uid) {
-            $result[] = 'be_groups_' . $uid;
-        }
-        foreach ($beUserUids as $uid) {
-            $result[] = 'be_users_' . $uid;
-        }
-        return implode(',', $result);
+        return implode(',', $recordFinder->findUidsOfDemoBeUsers());
     }
 }
