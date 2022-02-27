@@ -607,6 +607,19 @@ CREATE TABLE tx_styleguide_inline_mnsymmetric_mm (
     branchsort int(10) DEFAULT '0' NOT NULL
 );
 
+CREATE TABLE tx_styleguide_inline_mnsymmetricgroup (
+    input_1 tinytext,
+    branches int(11) DEFAULT '0' NOT NULL
+);
+
+
+CREATE TABLE tx_styleguide_inline_mnsymmetricgroup_mm (
+    hotelid int(11) DEFAULT '0' NOT NULL,
+    branchid int(11) DEFAULT '0' NOT NULL,
+    hotelsort int(10) DEFAULT '0' NOT NULL,
+    branchsort int(10) DEFAULT '0' NOT NULL
+);
+
 
 CREATE TABLE tx_styleguide_inline_usecombination (
     inline_1 int(11) DEFAULT '0' NOT NULL

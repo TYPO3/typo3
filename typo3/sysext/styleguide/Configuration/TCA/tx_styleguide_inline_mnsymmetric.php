@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Form engine - inline mn symmetric',
+        'title' => 'Form engine - inline mn symmetric select',
         'label' => 'input_1',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

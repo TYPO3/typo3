@@ -43,6 +43,7 @@ class Generator extends AbstractGenerator
         TableHandler\InlineMn::class,
         TableHandler\InlineMnGroup::class,
         TableHandler\InlineMnSymmetric::class,
+        TableHandler\InlineMnSymmetricGroup::class,
         TableHandler\General::class,
     ];
 

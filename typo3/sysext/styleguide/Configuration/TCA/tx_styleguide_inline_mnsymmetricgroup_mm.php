@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Form engine - inline mn symmetric select mm',
+        'title' => 'Form engine - inline mn symmetric group mm',
         'label' => 'uid',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -38,8 +38,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
-                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_styleguide_inline_mnsymmetricgroup_mm',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetricgroup_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetricgroup_mm}.{#sys_language_uid} IN (-1,0)',
                 'default' => 0,
             ],
         ],
@@ -56,8 +56,8 @@ return [
                         0,
                     ],
                 ],
-                'foreign_table' => 'tx_styleguide_inline_mnsymmetric_mm',
-                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetric_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetric_mm}.{#uid}!=###THIS_UID###',
+                'foreign_table' => 'tx_styleguide_inline_mnsymmetricgroup_mm',
+                'foreign_table_where' => 'AND {#tx_styleguide_inline_mnsymmetricgroup_mm}.{#pid}=###CURRENT_PID### AND {#tx_styleguide_inline_mnsymmetricgroup_mm}.{#uid}!=###THIS_UID###',
                 'default' => 0,
             ],
         ],
@@ -78,21 +78,21 @@ return [
         'hotelid' => [
             'label' => 'hotelid',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_styleguide_inline_mnsymmetric',
+                'type' => 'group',
+                'allowed' => 'tx_styleguide_inline_mnsymmetricgroup',
+                'minitems' => 1,
                 'maxitems' => 1,
-                'localizeReferences' => 1,
+                'size' => 1,
             ],
         ],
         'branchid' => [
             'label' => 'branchid',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_styleguide_inline_mnsymmetric',
+                'type' => 'group',
+                'allowed' => 'tx_styleguide_inline_mnsymmetricgroup',
+                'minitems' => 1,
                 'maxitems' => 1,
-                'localizeReferences' => 1,
+                'size' => 1,
             ],
         ],
         'hotelsort' => [
