@@ -88,6 +88,9 @@ return [
                 'foreign_table' => 'tx_styleguide_inline_expand_inline_1_child',
                 'foreign_field' => 'parentid',
                 'foreign_table_field' => 'parenttable',
+                'appearance' => [
+                    'collapseAll' => false,
+                ]
             ],
         ],
 
