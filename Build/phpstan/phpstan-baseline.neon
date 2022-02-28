@@ -871,11 +871,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
 
 		-
-			message: "#^Parameter \\#1 \\$tokens of method Doctrine\\\\Common\\\\Lexer\\\\AbstractLexer\\:\\:isNextTokenAny\\(\\) expects array\\<string\\>, array\\<int, int\\> given\\.$#"
-			count: 13
-			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Classes/Database/Schema/Parser/Parser.php
