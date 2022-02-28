@@ -251,7 +251,6 @@ return [
             'default' => \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder::class,
             'i18n' => \TYPO3\CMS\Core\Html\I18nSanitizerBuilder::class,
         ],
-        'defaultCategorizedTables' => '',
         'displayErrors' => -1,
         'productionExceptionHandler' => \TYPO3\CMS\Core\Error\ProductionExceptionHandler::class,
         'debugExceptionHandler' => \TYPO3\CMS\Core\Error\DebugExceptionHandler::class,

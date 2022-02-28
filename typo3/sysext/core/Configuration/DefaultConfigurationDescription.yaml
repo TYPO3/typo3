@@ -148,9 +148,6 @@ SYS:
         reverseProxyPrefixSSL:
             type: text
             description: 'Prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.'
-        defaultCategorizedTables:
-            type: list
-            description: 'List of comma separated tables that are categorizable by default.'
         displayErrors:
             type: int
             allowedValues:
