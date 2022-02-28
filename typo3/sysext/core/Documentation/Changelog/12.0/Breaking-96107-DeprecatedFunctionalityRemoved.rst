@@ -316,10 +316,6 @@ The following global option handling have been dropped and are ignored:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']`
 
-The following global variables have been removed:
-
-- :php:`$GLOBALS['KEY']`
-
 The following hooks have been removed:
 
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions']`
@@ -377,10 +373,6 @@ The following fallbacks have been removed:
 The following database tables have been removed:
 
 - :sql:`sys_language`
-
-The following Backend route identifiers have been removed:
-
-- `routeIdentifier`
 
 The following global JavaScript variables have been removed:
 
