@@ -646,10 +646,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Fetching the id again, now with the preview settings reset.
             $this->fetch_the_id($request);
         }
-        // Final cleaning.
-        $this->contentPid = $this->id;
         // Setting language and fetch translated page
         $this->settingLanguage($request);
+        // Check the "content_from_pid" field of the resolved page
+        $this->contentPid = $this->resolveContentPid($request);
 
         // Update SYS_LASTCHANGED at the time, when $this->page might be changed by settingLanguage() and the $this->page was finally resolved
         $this->setRegisterValueForSysLastChanged($this->page);
@@ -2030,7 +2030,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        $this->contentPid = $this->resolveContentPid($request);
         // Global vars...
         $this->indexedDocTitle = $this->page['title'] ?? null;
         // Base url:
