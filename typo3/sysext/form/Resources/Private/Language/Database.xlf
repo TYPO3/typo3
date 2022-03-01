@@ -1103,6 +1103,15 @@
             <trans-unit id="formEditor.inspector.editor.formelement_selector.no_elements" resname="formEditor.inspector.editor.formelement_selector.no_elements" xml:space="preserve">
                 <source>No elements available</source>
             </trans-unit>
+            <trans-unit id="formEditor.inspector.editor.formelement.remove" resname="formEditor.inspector.editor.formelement.remove" xml:space="preserve">
+                <source>Remove this Element</source>
+            </trans-unit>
+            <trans-unit id="formEditor.inspector.editor.grid.add" resname="formEditor.inspector.editor.grid.add" xml:space="preserve">
+                <source>Add a new row</source>
+            </trans-unit>
+            <trans-unit id="formEditor.inspector.editor.grid.remove" resname="formEditor.inspector.editor.grid.remove" xml:space="preserve">
+                <source>Remove this row</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
