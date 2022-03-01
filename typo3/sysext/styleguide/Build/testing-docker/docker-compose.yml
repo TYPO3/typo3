@@ -417,7 +417,7 @@ services:
         fi
         mkdir -p .Build/.cache
         php -v | grep '^PHP';
-        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon
+        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --no-progress --no-interaction
       "
 
   phpstan_generate_baseline:
@@ -433,7 +433,7 @@ services:
         fi
         mkdir -p .Build/.cache
         php -v | grep '^PHP';
-        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --generate-baseline=Build/phpstan-baseline.neon
+        php -dxdebug.mode=off .Build/bin/phpstan analyze -c Build/phpstan.neon --no-progress --no-interaction --generate-baseline=Build/phpstan-baseline.neon
       "
 
   unit:
