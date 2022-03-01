@@ -63,7 +63,7 @@ to let styleguide create an example page tree with records by clicking the
 seconds for the system to crunch the data.
 
 ## Composer
-With [composer based](https://docs.typo3.org/m/typo3/guide-installation/master/en-us/QuickInstall/Composer/Index.html)
+With [composer based](https://docs.typo3.org/m/typo3/tutorial-getting-started/main/en-us/Installation/Install.html)
 TYPO3 installations, styleguide is easily added to the project.
 
 TYPO3 v11 based project:
