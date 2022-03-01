@@ -338,7 +338,7 @@ class DocumentationFile
      */
     protected function parseContent(string $rstContent): string
     {
-        $content = htmlspecialchars($rstContent);
+        $content = htmlspecialchars($rstContent, ENT_COMPAT | ENT_SUBSTITUTE);
         $content = (string)preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
         $content = (string)preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noreferrer">\\1</a>', $content);
         $content = (string)preg_replace('/(\n([=]*)\n(.*)\n([=]*)\n)/', '', $content, 1);
