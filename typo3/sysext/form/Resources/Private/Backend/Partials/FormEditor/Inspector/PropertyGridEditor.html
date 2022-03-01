@@ -21,14 +21,18 @@
                         <td data-identifier="column" data-column="selected"><input type="checkbox" data-identifier="selectValue" /></td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button class="btn btn-default" title="Remove this row" data-identifier="deleteRow"><core:icon identifier="actions-delete" /></button>
+                                <button class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.remove')}" data-identifier="deleteRow">
+                                    <core:icon identifier="actions-delete" />
+                                </button>
                             </div>
                         </td>
                     </tr>
                     <tr data-identifier="addRowItem">
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button data-random-id data-random-id-attribute="id" data-random-id-number="1" class="btn btn-default" title="Add a new row" data-identifier="addRow"><core:icon identifier="actions-add" /></button>
+                                <button data-random-id data-random-id-attribute="id" data-random-id-number="1" class="btn btn-default" title="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.inspector.editor.grid.add')}" data-identifier="addRow">
+                                    <core:icon identifier="actions-add" />
+                                </button>
                             </div>
                         </td>
                         <td data-identifier="column" data-column="label"></td>
