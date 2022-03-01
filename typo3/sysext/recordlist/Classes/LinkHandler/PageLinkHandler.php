@@ -86,10 +86,10 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 
         $id = (int)$this->linkParts['url']['pageuid'];
-        $pageRow = BackendUtility::getRecordWSOL('pages', $id);
+        $pageTitle = BackendUtility::getRecordWSOL('pages', $id, 'title')['title'] ?? '';
 
         return $lang->getLL('page')
-            . ' \'' . GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen) . '\''
+            . ($pageTitle ? ' \'' . GeneralUtility::fixed_lgd_cs($pageTitle, $titleLen) . '\'' : '')
             . ' (ID: ' . $id . (!empty($this->linkParts['url']['fragment']) ? ', #' . $this->linkParts['url']['fragment'] : '') . ')';
     }
 
