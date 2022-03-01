@@ -91,7 +91,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'max' => 23,
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'input_2' => [
@@ -100,7 +100,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
-                'eval' => 'trim,required,date',
+                'eval' => 'trim,date',
+                'required' => true,
             ],
         ],
         'input_3' => [
@@ -110,7 +111,8 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputLink',
                 'size' => 60,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
 
@@ -119,7 +121,7 @@ return [
             'label' => 'text_1 eval=required',
             'config' => [
                 'type' => 'text',
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
 
@@ -240,10 +242,10 @@ return [
             'label' => 'rte_1 eval=required',
             'config' => [
                 'type' => 'text',
-                'eval' => 'required',
                 'rows' => '15',
                 'cols' => '80',
                 'enableRichtext' => true,
+                'required' => true,
             ],
         ],
         'rte_2' => [
@@ -412,7 +414,7 @@ return [
             'label' => 'palette_input_1 eval=required',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
         'palette_input_2' => [
@@ -420,7 +422,7 @@ return [
             'label' => 'palette_input_2 eval=required',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
 

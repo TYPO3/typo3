@@ -107,7 +107,8 @@ return [
            'config' => [
                'type' => 'input',
                'width' => 200,
-               'eval' => 'trim,required',
+               'eval' => 'trim',
+               'required' => true,
            ],
        ],
        'description' => [

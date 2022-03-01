@@ -87,7 +87,7 @@ return [
             'label' => 'input_1',
             'config' => [
                 'type' => 'input',
-                'eval' => 'required',
+                'required' => true,
             ],
         ],
 

@@ -87,8 +87,8 @@ return [
             'label' => 'rte_1',
             'config' => [
                 'type' => 'text',
-                'eval' => 'required',
                 'enableRichtext' => true,
+                'required' => true,
             ],
         ],
 
