@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ================================================================
-Bugfix: #93635 - Add mail configuration for setting smtp domain
+Important: #93635 - Add mail configuration for setting smtp domain
 ================================================================
 
 See :issue:`93635`
@@ -23,6 +23,7 @@ correct EHLO-command to the relay-server.
 Configuration Example for GSuite.
 
 .. code-block:: php
+
     return [
         //....
         'MAIL' => [
@@ -42,6 +43,7 @@ Configuration Example for GSuite.
 Impact
 ======
 
-Now it is possible to set the smtp mail domain which is required for some relay-server.
+Now it is possible to set the smtp mail domain which is required for
+some relay-server.
 
 .. index:: LocalConfiguration, ext:core
