@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\Renderable;
 
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableVariant;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -71,5 +72,25 @@ final class RenderableVariantTest extends UnitTestCase
         ];
 
         self::assertEquals($expected, $mockFormElement->_get('properties'));
+    }
+
+    /**
+     * @test
+     */
+    public function renderableIsPassedToConditionEvaluation(): void
+    {
+        $mockFormElement = $this->getAccessibleMock(GenericFormElement::class, null, [], '', false);
+        $mockResolver = $this->getMockBuilder(Resolver::class)->disableOriginalConstructor()->getMock();
+        $subject = new RenderableVariant(
+            'variant',
+            [
+                'condition' => 'true',
+            ],
+            $mockFormElement
+        );
+        $mockResolver->expects(self::once())
+            ->method('evaluate')
+            ->with('true', ['renderable' => $mockFormElement]);
+        $subject->conditionMatches($mockResolver);
     }
 }

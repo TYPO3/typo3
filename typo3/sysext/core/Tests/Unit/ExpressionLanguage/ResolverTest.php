@@ -77,6 +77,8 @@ final class ResolverTest extends UnitTestCase
     {
         return [
             'var1 + var2' => ['var1 + var2', 3],
+            'var1 < contextVar' => ['var1 < contextVar', true],
+            'contextVar > var2' => ['contextVar > var2', true],
             'var1 < var2' => ['var1 < var2', true],
             'var2 < var1' => ['var2 < var1', false],
             'varArray' => ['varArray', ['foo' => 'bar']],
@@ -104,7 +106,7 @@ final class ResolverTest extends UnitTestCase
          ]);
         GeneralUtility::addInstance(DefaultProvider::class, $contextMock);
         $expressionLanguageResolver = new Resolver('default', []);
-        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression, ['contextVar' => 42]));
     }
 
     public static function basicExpressionHandlingWithContextVariablesDataProvider(): array
