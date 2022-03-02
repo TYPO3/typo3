@@ -37,7 +37,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $restriction->willImplement(EnforceableQueryRestrictionInterface::class);
         $restriction->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder)
             ->shouldBeCalled()
-            ->willReturn(new CompositeExpression(CompositeExpression::TYPE_AND, ['"aTable"."pid" = 0']));
+            ->willReturn(CompositeExpression::and('"aTable"."pid" = 0'));
         $restriction->isEnforced()->willReturn(true);
 
         $subject = new InstantiatableAbstractRestrictionContainer();
