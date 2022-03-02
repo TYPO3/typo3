@@ -291,7 +291,8 @@
 			"typo3/sysext/core/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/",
-			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
+			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
+			"typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/"
 		]
 	}
 }
