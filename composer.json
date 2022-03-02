@@ -121,7 +121,7 @@
 		"phpstan/phpstan-phpunit": "^1.0",
 		"phpunit/phpunit": "^9.5.10",
 		"typo3/cms-styleguide": "~11.5.4",
-		"typo3/testing-framework": "^6.16.1"
+		"typo3/testing-framework": "^6.16.2"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
@@ -290,7 +290,8 @@
 			"typo3/sysext/extbase/Tests/UnitDeprecated/Object/Container/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Fixtures/",
 			"typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/",
-			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/"
+			"typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
+			"typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/"
 		],
 		"files": [
 			"typo3/sysext/extbase/Tests/Fixture/TxClassWithGettersAndSetters.php"
