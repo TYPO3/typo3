@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader;
+use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -380,5 +381,18 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->initConditionMatcher();
         $result = $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']);
         self::assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse(): void
+    {
+        $this->initConditionMatcher();
+        $expressionProperty = new \ReflectionProperty(AbstractConditionMatcher::class, 'expressionLanguageResolver');
+        $resolverProphecy = $this->prophesize(Resolver::class);
+        $resolverProphecy->evaluate(Argument::cetera())->shouldNotBeCalled();
+        $expressionProperty->setValue($this->conditionMatcher, $resolverProphecy->reveal());
+        self::assertFalse($this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ELSE']));
     }
 }
