@@ -2401,11 +2401,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\ExpressionLanguage\\\\Resolver constructor invoked with 3 parameters, 2 required\\.$#"
-			count: 4
-			path: ../../typo3/sysext/core/Tests/Unit/ExpressionLanguage/ResolverTest.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Unit\\\\FormProtection\\\\BackendFormProtectionTest\\:\\:\\$subject \\(PHPUnit\\\\Framework\\\\MockObject\\\\MockObject&TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection&TYPO3\\\\TestingFramework\\\\Core\\\\AccessibleObjectInterface\\) does not accept TYPO3\\\\CMS\\\\Core\\\\FormProtection\\\\BackendFormProtection\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/FormProtection/BackendFormProtectionTest.php
