@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\ExpressionLanguage\DefaultProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\DefaultFunctionsProvider;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -80,19 +79,8 @@ class ResolverTest extends UnitTestCase
      */
     public function basicExpressionHandlingResultsWorksAsExpected(string $expression, $expectedResult)
     {
-        $request = new ServerRequest();
-        $expressionLanguageResolver = new Resolver('default', [], $request);
+        $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
-    }
-
-    /**
-     * @test
-     */
-    public function typoScriptElseConditionIsNotEvaluatedAndAlwaysReturnsFalse()
-    {
-        $request = new ServerRequest();
-        $expressionLanguageResolver = new Resolver('default', [], $request);
-        self::assertFalse($expressionLanguageResolver->evaluate('ELSE'));
     }
 
     /**
@@ -127,9 +115,8 @@ class ResolverTest extends UnitTestCase
             'varTrue' => true,
             'varFalse' => false,
          ]);
-        $request = new ServerRequest();
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
-        $expressionLanguageResolver = new Resolver('default', [], $request);
+        $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
@@ -168,10 +155,9 @@ class ResolverTest extends UnitTestCase
             'var1' => 'FOO',
             'var2' => 'foo'
          ]);
-        $request = new ServerRequest();
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
         GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProvider->reveal());
-        $expressionLanguageResolver = new Resolver('default', [], $request);
+        $expressionLanguageResolver = new Resolver('default', []);
         self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 }

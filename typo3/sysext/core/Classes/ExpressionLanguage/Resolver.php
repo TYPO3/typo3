@@ -76,12 +76,6 @@ class Resolver
      */
     public function evaluate(string $condition): bool
     {
-        // The TypoScript [ELSE] condition is not known by the Symfony Expression Language
-        // and must not be evaluated. If/else logic is handled in TypoScriptParser.
-        if (strtoupper($condition) === 'ELSE') {
-            return false;
-        }
-
         return (bool)$this->expressionLanguage->evaluate($condition, $this->expressionLanguageVariables);
     }
 
