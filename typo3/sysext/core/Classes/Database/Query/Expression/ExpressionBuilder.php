@@ -64,21 +64,51 @@ class ExpressionBuilder
     /**
      * Creates a conjunction of the given boolean expressions
      *
-     * @param string|CompositeExpression ...$expressions Optional clause. Requires at least one defined when converting to string.
+     * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
+     *
+     * @return CompositeExpression
+     * @see ExpressionBuilder::and() which will replace this method in v13.
      */
     public function andX(...$expressions): CompositeExpression
     {
-        return new CompositeExpression(CompositeExpression::TYPE_AND, $expressions);
+        return CompositeExpression::and(...$expressions);
     }
 
     /**
      * Creates a disjunction of the given boolean expressions.
      *
-     * @param string|CompositeExpression ...$expressions Optional clause. Requires at least one defined when converting to string.
+     * @param CompositeExpression|string ...$expressions Optional clause. Requires at least one defined when converting to string.
+     *
+     * @return CompositeExpression
+     * @see ExpressionBuilder::or() which will replace this method in v13.
      */
     public function orX(...$expressions): CompositeExpression
     {
-        return new CompositeExpression(CompositeExpression::TYPE_OR, $expressions);
+        return CompositeExpression::or(...$expressions);
+    }
+
+    /**
+     * Creates a conjunction of the given boolean expressions
+     *
+     * @param CompositeExpression|string|null ...$expressions Optional clause. Requires at least one defined when converting to string.
+     *
+     * @return CompositeExpression
+     */
+    public function and(...$expressions): CompositeExpression
+    {
+        return CompositeExpression::and(...$expressions);
+    }
+
+    /**
+     * Creates a disjunction of the given boolean expressions.
+     *
+     * @param CompositeExpression|string|null ...$expressions Optional clause. Requires at least one defined when converting to string.
+     *
+     * @return CompositeExpression
+     */
+    public function or(...$expressions): CompositeExpression
+    {
+        return CompositeExpression::or(...$expressions);
     }
 
     /**
