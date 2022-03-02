@@ -155,6 +155,18 @@ For example:
 :yaml:`formRuntime.getIdentifier() == "test"`.
 
 
+``renderable`` (VariableRenderableInterface)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:yaml:`renderable` holds the instance of renderable, the condition
+is applied to. This can be used e.g. to access the identifier of the
+current renderable without having to duplicate it.
+
+For example:
+
+:yaml:`formValues[renderable.getIdentifier()] == "special value"`.
+
+
 ``formValues`` (array)
 ^^^^^^^^^^^^^^^^^^^^^^
 
