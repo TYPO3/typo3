@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -32,10 +34,10 @@ class IndexedSearchUtility
      * @param string $tableName Table name to check
      * @return bool True if the given table is used
      */
-    public static function isTableUsed($tableName)
+    public static function isTableUsed(string $tableName): bool
     {
-        $tableList = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'];
-        return GeneralUtility::inList($tableList, $tableName);
+        $tableList = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] ?? '';
+        return $tableList !== '' && GeneralUtility::inList($tableList, $tableName);
     }
 
     /**
@@ -45,7 +47,7 @@ class IndexedSearchUtility
      * @param string $stringToHash String to hash
      * @return int Integer interpretation of the md5 hash of input string.
      */
-    public static function md5inthash($stringToHash)
+    public static function md5inthash(string $stringToHash): int
     {
         return (int)hexdec(substr(md5($stringToHash), 0, 7));
     }
@@ -59,7 +61,7 @@ class IndexedSearchUtility
      * @param array $operatorTranslateTable
      * @return array
      */
-    public static function getExplodedSearchString($sword, $defaultOperator, $operatorTranslateTable)
+    public static function getExplodedSearchString(string $sword, string $defaultOperator, array $operatorTranslateTable): array
     {
         $swordArray = [];
         $sword = trim($sword);
@@ -92,9 +94,9 @@ class IndexedSearchUtility
      * @param string $origSword The raw sword string from outside
      * @param string $specchars Special chars which are used as operators (+- is default)
      * @param string $delchars Special chars which are deleted if the append the searchword (+-., is default)
-     * @return mixed Returns an ARRAY if there were search words, otherwise the return value may be unset.
+     * @return array<string>|null Returns an ARRAY if there were search words, otherwise the return value may be unset.
      */
-    protected static function split($origSword, $specchars = '+-', $delchars = '+.,-')
+    protected static function split(string $origSword, string $specchars = '+-', string $delchars = '+.,-'): ?array
     {
         $value = null;
         $sword = $origSword;
@@ -108,12 +110,12 @@ class IndexedSearchUtility
                 // Removes everything till next double-quote
                 preg_match('/^[^"]*/', $sword, $reg);
                 // reg[0] is the value, should not be trimmed
-                $value[] = $reg[0];
+                $value[] = (string)$reg[0];
                 $sword = (string)preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
                 // Removes last double-quote
                 $sword = trim((string)preg_replace('/^"/', '', $sword));
             } elseif (preg_match('/^' . $specs . '/', $sword, $reg)) {
-                $value[] = $reg[0];
+                $value[] = (string)$reg[0];
                 // Removes = sign
                 $sword = trim((string)preg_replace('/^' . $specs . '/', '', $sword));
             } elseif (preg_match('/[\\+\\-]/', $sword)) {
@@ -149,7 +151,7 @@ class IndexedSearchUtility
      * @param array $operatorTranslateTable an array of possible operators
      * @return string|null If found, the SQL operator for the localized input operator.
      */
-    protected static function getOperator($operator, $operatorTranslateTable)
+    protected static function getOperator(string $operator, array $operatorTranslateTable): ?string
     {
         $operator = trim($operator);
         // case-conversion is charset insensitive, but it doesn't spoil
@@ -169,10 +171,8 @@ class IndexedSearchUtility
 
     /**
      * Gets the unixtime as milliseconds.
-     *
-     * @return int The unixtime as milliseconds
      */
-    public static function milliseconds()
+    public static function milliseconds(): int
     {
         return (int)round(microtime(true) * 1000);
     }
