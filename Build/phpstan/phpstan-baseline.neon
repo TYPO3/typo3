@@ -76,11 +76,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Controller/File/ThumbnailController.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with string\\|null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/FormInlineAjaxController.php
-
-		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$expressions of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\ExpressionBuilder\\:\\:orX\\(\\) expects string, TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\Expression\\\\CompositeExpression given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Controller/SiteConfigurationController.php
