@@ -529,7 +529,7 @@ class HtmlParser
                                                 // Classes are case sensitive
                                                 if ($attr === 'class') {
                                                     $newClasses = [];
-                                                    $classes = GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr], true);
+                                                    $classes = GeneralUtility::trimExplode(' ', $tagAttrib[0][$attr] ?? '', true);
                                                     foreach ($classes as $class) {
                                                         if (in_array($class, $params['list'])) {
                                                             $newClasses[] = $class;
@@ -541,7 +541,7 @@ class HtmlParser
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 } else {
-                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
+                                                    if (!in_array($this->caseShift($tagAttrib[0][$attr] ?? '', $params['casesensitiveComp'] ?? false), (array)$this->caseShift($params['list'], $params['casesensitiveComp'], $tagName))) {
                                                         $tagAttrib[0][$attr] = $params['list'][0];
                                                     }
                                                 }
