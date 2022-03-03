@@ -611,6 +611,11 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/BcryptPasswordHash.php
 
 		-
+			message: "#^Binary operation \"\\*\\=\" between non\\-empty\\-string and \\-1 results in an error\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
+
+		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
@@ -1064,6 +1069,16 @@ parameters:
 			message: "#^Parameter \\#2 \\$folder of method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\ResourceStorage\\:\\:checkFolderActionPermission\\(\\) expects TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder\\|null, TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
+
+		-
+			message: "#^Binary operation \"\\*\" between float and string results in an error\\.$#"
+			count: 4
+			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
+
+		-
+			message: "#^Binary operation \"/\" between float and non\\-empty\\-string results in an error\\.$#"
+			count: 4
+			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/Area.php
 
 		-
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\CropVariant\\:\\:\\$allowedAspectRatios \\(array\\<TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\ImageManipulation\\\\Ratio\\>\\) on left side of \\?\\? is not nullable\\.$#"
@@ -1659,6 +1674,11 @@ parameters:
 			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\TypoScript\\\\TemplateService\\:\\:getRootlineLevel\\(\\) should return int but returns false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/TypoScript/TemplateService.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with mixed will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
 
 		-
 			message: "#^Result of && is always false\\.$#"
@@ -2424,6 +2444,11 @@ parameters:
 			message: "#^Parameter \\#5 \\$relativePosition of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addTcaSelectItem\\(\\) expects string, array given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotSame\\(\\) with object and object will always evaluate to false\\.$#"
+			count: 2
+			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
@@ -3571,6 +3596,11 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/FormViewHelper.php
 
 		-
+			message: "#^Call to function is_int\\(\\) with mixed will always evaluate to false\\.$#"
+			count: 1
+			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/BytesViewHelper.php
+
+		-
 			message: "#^Call to an undefined method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContextInterface\\:\\:getRequest\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Format/HtmlViewHelper.php
@@ -4166,6 +4196,11 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
 
 		-
+			message: "#^Variable \\$altArray in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/AbstractMenuContentObject.php
+
+		-
 			message: "#^Variable \\$configuration on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 3
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/Menu/CategoryMenuUtility.php
@@ -4691,6 +4726,11 @@ parameters:
 			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Info\\\\Controller\\\\TranslationStatusController\\:\\:getLangStatus\\(\\) should return array but returns mixed\\.$#"
+			count: 1
+			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
+
+		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Command/UpgradeWizardListCommand.php
@@ -4879,11 +4919,6 @@ parameters:
 			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
-
-		-
-			message: "#^Call to function is_subclass_of\\(\\) with non\\-empty\\-string and 'TYPO3\\\\\\\\CMS\\\\\\\\Install\\\\\\\\Updates\\\\\\\\RowUpdater\\\\\\\\RowUpdaterInterface' will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Service/UpgradeWizardsService.php
 
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
