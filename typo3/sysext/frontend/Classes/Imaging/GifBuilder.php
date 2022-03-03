@@ -137,7 +137,7 @@ class GifBuilder extends GraphicalFunctions
             }
             // Initializing global Char Range Map
             $this->charRangeMap = [];
-            if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'])) {
+            if (($GLOBALS['TSFE'] ?? null) instanceof TypoScriptFrontendController && is_array($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] ?? null)) {
                 foreach ($GLOBALS['TSFE']->tmpl->setup['_GIFBUILDER.']['charRangeMap.'] as $cRMcfgkey => $cRMcfg) {
                     if (is_array($cRMcfg)) {
                         // Initializing:
@@ -212,7 +212,7 @@ class GifBuilder extends GraphicalFunctions
                                 $this->setup[$theKey . '.']['BBOX'] = $essentialFileInfo;
                                 $this->objBB[$theKey] = $essentialFileInfo;
                                 if ($conf['mask'] ?? false) {
-                                    $maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
+                                    $maskInfo = $this->getResource($conf['mask'], $conf['mask.'] ?? []);
                                     if ($maskInfo) {
                                         // the same selection criteria as regarding fileInfo above apply here
                                         if (($maskInfo['processedFile'] ?? null) instanceof ProcessedFile) {
