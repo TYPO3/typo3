@@ -18,24 +18,6 @@ services:
         command: 'syslog:list'
         description: 'Show entries from the sys_log database table of the last 24 hours.'
 
-  TYPO3\CMS\Lowlevel\Command\MissingFilesCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:missingfiles'
-        description: 'Find all file references from records pointing to a missing (non-existing) file.'
-
-  TYPO3\CMS\Lowlevel\Command\LostFilesCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:lostfiles'
-        description: 'Looking for files in the uploads/ folder which do not have a reference in TYPO3 managed records.'
-
-  TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand:
-    tags:
-      - name: 'console.command'
-        command: 'cleanup:multiplereferencedfiles'
-        description: 'Looking for files from TYPO3 managed records which are referenced more than once'
-
   TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand:
     tags:
       - name: 'console.command'
