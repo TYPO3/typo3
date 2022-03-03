@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\RouteCollection;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RouterTest extends FunctionalTestCase
@@ -104,5 +105,27 @@ class RouterTest extends FunctionalTestCase
         $result = $subject->matchResult($request);
         self::assertEquals('custom-route', $result->getRouteName());
         self::assertEquals(['identifier' => 'my-identifier'], $result->getArguments());
+    }
+
+    /**
+     * @test
+     */
+    public function matchResultReturnsRouteForSubRoute(): void
+    {
+        $subject = $this->get(Router::class);
+        $subject->addRoute('main_module', new Route('/module/main/module', []));
+        $routeCollection = new RouteCollection();
+        $routeCollection->add('subroute', new Route('/subroute', []));
+        $routeCollection->addNamePrefix('main_module.');
+        $routeCollection->addPrefix('/module/main/module');
+        $subject->addRouteCollection($routeCollection);
+
+        $resultMainModule = $subject->matchResult(new ServerRequest('/module/main/module'));
+        self::assertEquals('main_module', $resultMainModule->getRouteName());
+        self::assertEquals('/module/main/module', $resultMainModule->getRoute()->getPath());
+
+        $resultSubRoute = $subject->matchResult(new ServerRequest('/module/main/module/subroute'));
+        self::assertEquals('main_module.subroute', $resultSubRoute->getRouteName());
+        self::assertEquals('/module/main/module/subroute', $resultSubRoute->getRoute()->getPath());
     }
 }

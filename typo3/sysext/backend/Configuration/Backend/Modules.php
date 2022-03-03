@@ -53,7 +53,18 @@ return [
         'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_module.xlf',
         'routes' => [
             '_default' => [
-                'target' => SiteConfigurationController::class . '::handleRequest',
+                'target' => SiteConfigurationController::class . '::overviewAction',
+            ],
+            'edit' => [
+                'target' => SiteConfigurationController::class . '::editAction',
+            ],
+            'save' => [
+                'target' => SiteConfigurationController::class . '::saveAction',
+                'methods' => ['POST'],
+            ],
+            'delete' => [
+                'target' => SiteConfigurationController::class . '::deleteAction',
+                'methods' => ['POST'],
             ],
         ],
     ],

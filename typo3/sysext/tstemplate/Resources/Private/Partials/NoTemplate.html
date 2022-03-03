@@ -67,7 +67,7 @@
                         <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang.xml:extTemplateDescription" />
                     </p>
                     <div>
-                        <form action="{f:be.uri(route: 'web_ts', parameters: '{id: pageUid}')}" method="post">
+                        <form action="{f:be.uri(route: moduleIdentifier, parameters: '{id: pageUid}')}" method="post">
                             <input type="hidden" name="action" value="createExtensionTemplate" />
                             <input
                                 class="btn btn-default"

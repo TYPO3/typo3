@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing;
 
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
+use TYPO3\CMS\Backend\Routing\Route as Typo3Route;
 
 /**
  * Extensible container based on Symfony's Route Collection
@@ -26,4 +28,14 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  */
 class RouteCollection extends SymfonyRouteCollection
 {
+    public function add(string $name, Typo3Route|SymfonyRoute $route, int $priority = 0)
+    {
+        if ($route instanceof Typo3Route) {
+            $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
+            $symfonyRoute->setMethods($route->getMethods());
+            parent::add($name, $symfonyRoute, $priority);
+        } else {
+            parent::add($name, $route, $priority);
+        }
+    }
 }

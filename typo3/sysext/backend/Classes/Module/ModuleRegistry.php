@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Module;
 
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Routing\RouteCollection;
 
 /**
  * @internal Always use the ModuleProvider API to access modules
@@ -93,13 +94,29 @@ final class ModuleRegistry
     public function registerRoutesForModules(Router $router): void
     {
         foreach ($this->modules as $module) {
-            if ($module->hasParentModule() || $module->isStandalone()) {
-                $router->addRoute(
-                    $module->getIdentifier(),
-                    new Route($module->getPath(), $module->getDefaultRouteOptions()),
-                    $module->getAliases()
-                );
+            if (!$module->hasParentModule() && !$module->isStandalone()) {
+                // Skip modules first level modules, which are not standalone
+                continue;
             }
+            $routeCollection = new RouteCollection();
+            foreach ($module->getDefaultRouteOptions() as $routeIdentifier => $routeOptions) {
+                if ($routeIdentifier === '_default') {
+                    // Add the first
+                    $router->addRoute(
+                        $module->getIdentifier(),
+                        new Route($module->getPath(), $routeOptions),
+                        $module->getAliases()
+                    );
+                } else {
+                    $routeCollection->add(
+                        $routeIdentifier,
+                        new Route(($routeOptions['path'] ?? false) ?: ('/' . $routeIdentifier), $routeOptions)
+                    );
+                }
+            }
+            $routeCollection->addNamePrefix($module->getIdentifier() . '.');
+            $routeCollection->addPrefix($module->getPath());
+            $router->addRouteCollection($routeCollection);
         }
     }
 

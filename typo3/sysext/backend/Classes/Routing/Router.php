@@ -18,10 +18,10 @@ namespace TYPO3\CMS\Backend\Routing;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Route as SymfonyRoute;
-use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use TYPO3\CMS\Backend\Routing\Exception\MethodNotAllowedException;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Core\Routing\RequestContextFactory;
+use TYPO3\CMS\Core\Routing\RouteCollection;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -40,13 +40,14 @@ class Router implements SingletonInterface
     /**
      * All routes used in the TYPO3 Backend
      */
-    protected SymfonyRouteCollection $routeCollection;
+    protected RouteCollection $routeCollection;
 
     public function __construct(
         protected readonly RequestContextFactory $requestContextFactory
     ) {
-        $this->routeCollection = new SymfonyRouteCollection();
+        $this->routeCollection = new RouteCollection();
     }
+
     /**
      * Adds a new route with a given identifier
      */
@@ -58,6 +59,11 @@ class Router implements SingletonInterface
         foreach ($aliases as $aliasName) {
             $this->routeCollection->addAlias($aliasName, $routeIdentifier);
         }
+    }
+
+    public function addRouteCollection(RouteCollection $routeCollection): void
+    {
+        $this->routeCollection->addCollection($routeCollection);
     }
 
     /**
@@ -89,7 +95,7 @@ class Router implements SingletonInterface
     /**
      * @internal only use in Core, this should not be exposed
      */
-    public function getRouteCollection(): SymfonyRouteCollection
+    public function getRouteCollection(): RouteCollection
     {
         return $this->routeCollection;
     }
@@ -101,7 +107,7 @@ class Router implements SingletonInterface
      * @return Route the first Route object found
      * @throws ResourceNotFoundException If the resource could not be found
      */
-    public function match($pathInfo)
+    public function match($pathInfo): Route
     {
         foreach ($this->routeCollection->getIterator() as $routeIdentifier => $route) {
             // This check is done in a simple way as there are no parameters yet (get parameters only)
@@ -162,7 +168,7 @@ class Router implements SingletonInterface
      *
      * @return Route the first Route object found
      */
-    public function matchRequest(ServerRequestInterface $request)
+    public function matchRequest(ServerRequestInterface $request): Route
     {
         return $this->matchResult($request)->getRoute();
     }

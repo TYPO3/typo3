@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Module;
 
+use TYPO3\CMS\Backend\Exception\NonRoutableModuleException;
+
 /**
  * A standard backend nodule
  */
@@ -31,34 +33,33 @@ class Module extends BaseModule implements ModuleInterface
 
     public function getDefaultRouteOptions(): array
     {
-        $defaultTarget = '';
+        $defaultRouteOptions = [];
 
-        if (!isset($this->routes['_default']['target'])) {
-            if ($this->hasSubModules()) {
-                $submodules = $this->getSubModules();
-                $firstSubModule = reset($submodules);
-                if ($firstSubModule->getDefaultRouteOptions()['target'] ?? false) {
-                    $defaultTarget = $firstSubModule->getDefaultRouteOptions()['target'];
-                }
+        if ($this->routes !== []) {
+            foreach ($this->routes as $routeIdentifier => $routeOptions) {
+                $defaultRouteOptions[$routeIdentifier] = array_replace($routeOptions, [
+                    'module' => $this,
+                    'packageName' => $this->packageName,
+                    'absolutePackagePath' => $this->absolutePackagePath,
+                    'access' => $this->access,
+                ]);
             }
-        } else {
-            $defaultTarget = $this->routes['_default']['target'];
+        } elseif ($this->hasSubModules()) {
+            // In case no routes are defined but the module has submodules,
+            // fall back and use the first submodules' route options instead.
+            $submodules = $this->getSubModules();
+            $firstSubModule = reset($submodules);
+            $defaultRouteOptions = $firstSubModule->getDefaultRouteOptions();
         }
 
-        if ($defaultTarget === '') {
-            throw new \InvalidArgumentException(
-                'No default target could be resolved for module ' . $this->identifier,
+        if ($defaultRouteOptions === []) {
+            throw new NonRoutableModuleException(
+                'No routes could be resolved for module ' . $this->identifier,
                 1674063354
             );
         }
 
-        return [
-            'module' => $this,
-            'packageName' => $this->packageName,
-            'absolutePackagePath' => $this->absolutePackagePath,
-            'access' => $this->access,
-            'target' => $defaultTarget,
-        ];
+        return $defaultRouteOptions;
     }
 
     public static function createFromConfiguration(string $identifier, array $configuration): static

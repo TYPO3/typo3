@@ -37,4 +37,14 @@ class UriBuilderTest extends FunctionalTestCase
         $routeFromAlias = $subject->buildUriFromRoute('web_WorkspacesWorkspaces');
         self::assertEquals($routeFromAlias->getPath(), $route->getPath());
     }
+
+    /**
+     * @test
+     */
+    public function buildUriFromRouteResolvesSubModule(): void
+    {
+        $subject = GeneralUtility::makeInstance(UriBuilder::class);
+        $route = $subject->buildUriFromRoute('site_configuration.edit');
+        self::assertStringEndsWith('/module/site/configuration/edit', $route->getPath());
+    }
 }

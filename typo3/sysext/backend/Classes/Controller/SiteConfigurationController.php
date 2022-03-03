@@ -39,7 +39,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -66,8 +65,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 #[Controller]
 class SiteConfigurationController
 {
-    protected const ALLOWED_ACTIONS = ['overview', 'edit', 'save', 'delete'];
-
     public function __construct(
         protected readonly SiteFinder $siteFinder,
         protected readonly IconFactory $iconFactory,
@@ -77,27 +74,14 @@ class SiteConfigurationController
     }
 
     /**
-     * Main entry method: Dispatch to other actions - those method names that end with "Action".
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        // forcing uncached sites will re-initialize `SiteFinder`
-        // which is used later by FormEngine (implicit behavior)
-        $this->siteFinder->getAllSites(false);
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
-        if (!in_array($action, self::ALLOWED_ACTIONS, true)) {
-            return new HtmlResponse('Action not allowed', 400);
-        }
-        return $this->{$action . 'Action'}($request);
-    }
-
-    /**
      * List pages that have 'is_siteroot' flag set - those that have the globe icon in page tree.
      * Link to Add / Edit / Delete for each.
      */
-    protected function overviewAction(ServerRequestInterface $request): ResponseInterface
+    public function overviewAction(ServerRequestInterface $request): ResponseInterface
     {
-        $allSites = $this->siteFinder->getAllSites();
+        // forcing uncached sites will re-initialize `SiteFinder`
+        // which is used later by FormEngine (implicit behavior)
+        $allSites = $this->siteFinder->getAllSites(false);
         $pages = $this->getAllSitePages();
         $unassignedSites = [];
         $duplicatedRootPages = [];
@@ -136,8 +120,11 @@ class SiteConfigurationController
      *
      * @throws \RuntimeException
      */
-    protected function editAction(ServerRequestInterface $request): ResponseInterface
+    public function editAction(ServerRequestInterface $request): ResponseInterface
     {
+        // forcing uncached sites will re-initialize `SiteFinder`
+        // which is used later by FormEngine (implicit behavior)
+        $allSites = $this->siteFinder->getAllSites(false);
         // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
@@ -155,7 +142,6 @@ class SiteConfigurationController
             $defaultValues['site']['rootPageId'] = $pageUid;
         }
 
-        $allSites = $this->siteFinder->getAllSites();
         if (!$isNewConfig && !isset($allSites[$siteIdentifier])) {
             throw new \RuntimeException('Existing config for site ' . $siteIdentifier . ' not found', 1521561226);
         }
@@ -206,15 +192,18 @@ class SiteConfigurationController
      *
      * @throws \RuntimeException
      */
-    protected function saveAction(ServerRequestInterface $request): ResponseInterface
+    public function saveAction(ServerRequestInterface $request): ResponseInterface
     {
+        // forcing uncached sites will re-initialize `SiteFinder`
+        // which is used later by FormEngine (implicit behavior)
+        $this->siteFinder->getAllSites(false);
         // Put site and friends TCA into global TCA
         // @todo: We might be able to get rid of that later
         $GLOBALS['TCA'] = array_merge($GLOBALS['TCA'], GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca());
 
         $siteTca = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
 
-        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
+        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration');
         $parsedBody = $request->getParsedBody();
         if (isset($parsedBody['closeDoc']) && (int)$parsedBody['closeDoc'] === 1) {
             // Closing means no save, just redirect to overview
@@ -427,7 +416,7 @@ class SiteConfigurationController
             // Do not store new config if a validation error is thrown, but redirect only to show a generated flash message
         }
 
-        $saveRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'edit', 'site' => $siteIdentifier]);
+        $saveRoute = $this->uriBuilder->buildUriFromRoute('site_configuration.edit', ['site' => $siteIdentifier]);
         if ($isSaveClose) {
             return new RedirectResponse($overviewRoute);
         }
@@ -647,7 +636,7 @@ class SiteConfigurationController
     /**
      * Delete an existing configuration
      */
-    protected function deleteAction(ServerRequestInterface $request): ResponseInterface
+    public function deleteAction(ServerRequestInterface $request): ResponseInterface
     {
         $siteIdentifier = $request->getQueryParams()['site'] ?? '';
         if (empty($siteIdentifier)) {
@@ -663,7 +652,7 @@ class SiteConfigurationController
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
-        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
+        $overviewRoute = $this->uriBuilder->buildUriFromRoute('site_configuration');
         return new RedirectResponse($overviewRoute);
     }
 

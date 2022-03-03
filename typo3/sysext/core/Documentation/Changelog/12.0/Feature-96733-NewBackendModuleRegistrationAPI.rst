@@ -197,18 +197,28 @@ Default:
 +----------------------------+---------------------------------------------------------------------+
 | Option                     | Description                                                         |
 +============================+=====================================================================+
-| routes (:php:`array`)      | Define the routes to this module. Each route requires a `path` and  |
-|                            | the `target`, except the mandatory `_default` route, which uses     |
-|                            | the `path` from the top-level configuration::                       |
+| routes (:php:`array`)      | Define the routes to this module. Each route requires at least the  |
+|                            | `target`. The `_default` route is mandatory, except for modules,    |
+|                            | which can fall back to a sub module. The `_default` routes' `path`  |
+|                            | is taken from the top-level configuration. For all other routes     |
+|                            | is the route identifier taken as `path`, if not explicitly defined. |
+|                            | Each route can define any controller / action pair and can restrict |
+|                            | the allowed HTTP methods::                                          |
 |                            |                                                                     |
 |                            |     routes' => [                                                    |
 |                            |         '_default' => [                                             |
-|                            |             'target' => Controller::class . '::handleRequest',      |
+|                            |             'target' => ControllerA::class . '::handleRequest',     |
+|                            |         ],                                                          |
+|                            |         'edit' => [                                                 |
+|                            |             'path' => '/edit-me',                                   |
+|                            |             'target' => ControllerA::class . '::edit',              |
+|                            |         ],                                                          |
+|                            |         'manage' => [                                               |
+|                            |             'target' => ControllerB::class . '::manage',            |
+|                            |             'methods' => ['POST'],                                  |
 |                            |         ],                                                          |
 |                            |     ],                                                              |
 |                            |                                                                     |
-|                            | Please note, using additional routes - next to `_default` - is not  |
-|                            | yet implemented.                                                    |
 +----------------------------+---------------------------------------------------------------------+
 
 Extbase:

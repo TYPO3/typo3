@@ -90,7 +90,7 @@
                                             </a>
                                             <f:if condition="{page.siteIdentifier}">
                                                 <f:then>
-                                                    <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                                                    <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
                                                         {rootLinePage.title} [ID: {page.uid}]
                                                     </f:be.link>
                                                 </f:then>
@@ -113,7 +113,7 @@
                                     </f:then>
                                     <f:else>
                                         <div>
-                                            <f:be.link route="site_configuration" parameters="{action: 'edit', pageUid: page.uid}" title="Create configuration" class="btn btn-primary">
+                                            <f:be.link route="site_configuration.edit" parameters="{pageUid: page.uid}" title="Create configuration" class="btn btn-primary">
                                                 <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.addSiteConfiguration" />
                                             </f:be.link>
                                         </div>
@@ -148,12 +148,12 @@
                             <td class="col-control nowrap">
                                 <div class="btn-group">
                                     <f:if condition="{page.siteIdentifier}">
-                                        <f:be.link route="site_configuration" parameters="{action: 'edit', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
+                                        <f:be.link route="site_configuration.edit" parameters="{site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
                                             <core:icon identifier="actions-open" />
                                         </f:be.link>
                                         <f:be.link
-                                            route="site_configuration"
-                                            parameters="{action: 'delete', site:page.siteIdentifier}"
+                                            route="site_configuration.delete"
+                                            parameters="{site:page.siteIdentifier}"
                                             class="btn btn-default t3js-modal-trigger"
                                             title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
                                             data="{

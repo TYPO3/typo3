@@ -54,11 +54,13 @@ class ExtbaseModule extends BaseModule implements ModuleInterface
     public function getDefaultRouteOptions(): array
     {
         return [
-            'module' => $this,
-            'packageName' => $this->packageName,
-            'absolutePackagePath' => $this->absolutePackagePath,
-            'access' => $this->access,
-            'target' => Bootstrap::class . '::handleBackendRequest',
+            '_default' => [
+                'module' => $this,
+                'packageName' => $this->packageName,
+                'absolutePackagePath' => $this->absolutePackagePath,
+                'access' => $this->access,
+                'target' => Bootstrap::class . '::handleBackendRequest',
+            ],
         ];
     }
 
