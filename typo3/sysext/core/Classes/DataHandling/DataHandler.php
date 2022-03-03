@@ -1516,53 +1516,22 @@ class DataHandler implements LoggerAwareInterface
             return $res;
         }
 
-        switch ($tcaFieldConf['type']) {
-            case 'text':
-                $res = $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field);
-                break;
-            case 'passthrough':
-            case 'imageManipulation':
-            case 'user':
-                $res['value'] = $value;
-                break;
-            case 'input':
-                $res = $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field);
-                break;
-            case 'email':
-                $res = $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field);
-                break;
-            case 'slug':
-                $res = $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []);
-                break;
-            case 'language':
-                $res = $this->checkValueForLanguage((int)$value, $table, $field);
-                break;
-            case 'category':
-                $res = $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field);
-                break;
-            case 'check':
-                $res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
-                break;
-            case 'radio':
-                $res = $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
-                break;
-            case 'group':
-            case 'folder':
-            case 'select':
-                $res = $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field);
-                break;
-            case 'inline':
-                $res = $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [];
-                break;
-            case 'flex':
-                // FlexForms are only allowed for real fields.
-                if ($field) {
-                    $res = $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field);
-                }
-                break;
-            default:
-                // Do nothing
-        }
+        $res = (array)match ((string)$tcaFieldConf['type']) {
+            'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
+            'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field),
+            'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
+            'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
+            'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'language' => $this->checkValueForLanguage((int)$value, $table, $field),
+            'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
+            'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
+            'group', 'folder', 'select' => $this->checkValueForGroupFolderSelect($res, $value, $tcaFieldConf, $table, $id, $status, $field),
+            'passthrough', 'imageManipulation', 'user' => ['value' => $value],
+            default => [],
+        };
+
         $res = $this->checkValueForInternalReferences($res, $value, $tcaFieldConf, $table, $id, $field);
         return $res;
     }
