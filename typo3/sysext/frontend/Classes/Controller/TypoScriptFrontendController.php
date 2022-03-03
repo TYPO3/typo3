@@ -121,7 +121,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * The rootLine (all the way to tree root, not only the current site!)
-     * @var array
      */
     public array $rootLine = [];
 
@@ -141,18 +140,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Gets set when we are processing a page of type mountpoint with enabled overlay in getPageAndRootline()
      * Used later in checkPageForMountpointRedirect() to determine the final target URL where the user
      * should be redirected to.
-     *
-     * @var array|null
      */
-    protected $originalMountPointPage;
+    protected ?array $originalMountPointPage = null;
 
     /**
      * Gets set when we are processing a page of type shortcut in the early stages
      * of the request, used later in the request to resolve the shortcut and redirect again.
-     *
-     * @var array|null
      */
-    protected $originalShortcutPage;
+    protected ?array $originalShortcutPage = null;
 
     /**
      * sys_page-object, pagefunctions
@@ -170,9 +165,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Array containing a history of why a requested page was not accessible.
-     * @var array
      */
-    protected $pageAccessFailureHistory = [];
+    protected array $pageAccessFailureHistory = [];
 
     /**
      * @var string
@@ -223,10 +217,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Set to the expire time of cached content
-     * @var int
      * @internal
      */
-    protected $cacheExpires = 0;
+    protected int $cacheExpires = 0;
 
     /**
      * Used by template fetching system. This array is an identification of
@@ -255,27 +248,24 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * This hash is unique to the template, the $this->id and $this->type vars and
      * the list of groups. Used to get and later store the cached data
-     * @var string
      * @internal
      */
-    public $newHash = '';
+    public string $newHash = '';
 
     /**
      * This flag is set before the page is generated IF $this->no_cache is set. If this
      * flag is set after the page content was generated, $this->no_cache is forced to be set.
      * This is done in order to make sure that PHP code from Plugins / USER scripts does not falsely
      * clear the no_cache flag.
-     * @var bool
      * @internal
      */
-    protected $no_cacheBeforePageGen = false;
+    protected bool $no_cacheBeforePageGen = false;
 
     /**
      * May be set to the pagesTSconfig
-     * @var array|string
      * @internal
      */
-    protected $pagesTSconfig = '';
+    protected ?array $pagesTSconfig = null;
 
     /**
      * Eg. insert JS-functions in this array ($additionalHeaderData) to include them
@@ -318,7 +308,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * If set, typolink() function encrypts email addresses.
-     * @var int
      */
     public int $spamProtectEmailAddresses = 0;
 
@@ -338,59 +327,49 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
      * extensions.
-     * @var array
      */
-    public $applicationData = [];
+    public array $applicationData = [];
 
-    /**
-     * @var array
-     */
-    public $register = [];
+    public array $register = [];
 
     /**
      * Stack used for storing array and retrieving register arrays (see
      * LOAD_REGISTER and RESTORE_REGISTER)
-     * @var array
      */
-    public $registerStack = [];
+    public array $registerStack = [];
 
     /**
      * Used by RecordContentObject and ContentContentObject to ensure the a records is NOT
      * rendered twice through it!
-     * @var array
      */
-    public $recordRegister = [];
+    public array $recordRegister = [];
 
     /**
      * This is set to the [table]:[uid] of the latest record rendered. Note that
      * class ContentObjectRenderer has an equal value, but that is pointing to the
      * record delivered in the $data-array of the ContentObjectRenderer instance, if
      * the cObjects CONTENT or RECORD created that instance
-     * @var string
      */
-    public $currentRecord = '';
+    public string $currentRecord = '';
 
     /**
      * Used to generate page-unique keys. Point is that uniqid() functions is very
-     * slow, so a unikey key is made based on this, see function uniqueHash()
-     * @var int
+     * slow, so a unique key is made based on this, see function uniqueHash()
      * @internal
      */
-    protected $uniqueCounter = 0;
+    protected int $uniqueCounter = 0;
 
     /**
-     * @var string
      * @internal
      */
-    protected $uniqueString = '';
+    protected string $uniqueString = '';
 
     /**
      * This value will be used as the title for the page in the indexer (if
      * indexing happens)
-     * @var string
      * @internal only used by TYPO3 Core, use PageTitle API instead.
      */
-    public $indexedDocTitle = '';
+    public string $indexedDocTitle = '';
 
     /**
      * The base URL set for the page header.
@@ -413,20 +392,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Internal calculations for labels
-     *
-     * @var LanguageService
      */
-    protected $languageService;
+    protected ?LanguageService $languageService = null;
 
     /**
      * @var LockingStrategyInterface[][]
      */
-    protected $locks = [];
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected array $locks = [];
+    protected ?PageRenderer $pageRenderer = null;
 
     /**
      * The page cache object, use this to save pages to the cache and to
@@ -436,19 +409,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected $pageCache;
 
-    /**
-     * @var array
-     */
-    protected $pageCacheTags = [];
+    protected array $pageCacheTags = [];
 
     /**
      * Content type HTTP header being sent in the request.
      * @todo Ticket: #63642 Should be refactored to a request/response model later
      * @internal Should only be used by TYPO3 core for now
-     *
-     * @var string
      */
-    protected $contentType = 'text/html';
+    protected string $contentType = 'text/html';
 
     /**
      * Doctype to use
@@ -470,10 +438,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * The context for keeping the current state, mostly related to current page information,
      * backend user / frontend user access, workspaceId
-     *
-     * @var Context
      */
-    protected $context;
+    protected Context $context;
 
     /**
      * If debug mode is enabled, this contains the information if a page is fetched from cache,
