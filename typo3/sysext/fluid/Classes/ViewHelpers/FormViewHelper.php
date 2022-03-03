@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -70,6 +73,7 @@ class FormViewHelper extends AbstractFormViewHelper
     protected HashService $hashService;
     protected MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService;
     protected ExtensionService $extensionService;
+    protected ConfigurationManagerInterface $configurationManager;
 
     /**
      * We need the arguments of the formActionUri on request hash calculation
@@ -90,6 +94,11 @@ class FormViewHelper extends AbstractFormViewHelper
     public function injectExtensionService(ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
+    }
+
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
     }
 
     public function initializeArguments(): void
@@ -379,6 +388,14 @@ class FormViewHelper extends AbstractFormViewHelper
     protected function getDefaultFieldNamePrefix(): string
     {
         $request = $this->renderingContext->getRequest();
+        // New Backend URLs doe not have a prefix anymore
+        if (!$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')
+            && $request instanceof ServerRequestInterface
+            && $request->getAttribute('applicationType')
+            && ApplicationType::fromRequest($request)->isBackend()
+        ) {
+            return '';
+        }
         if ($this->hasArgument('extensionName')) {
             $extensionName = $this->arguments['extensionName'];
         } else {

@@ -74,7 +74,7 @@ class Repository {
           btnClass: 'btn-info',
           trigger: (): void => {
             this.getResolveDependenciesAndInstallResult(data.url
-              + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + this.downloadPath);
+              + '&downloadPath=' + this.downloadPath);
             Modal.dismiss();
           },
         },
@@ -84,7 +84,7 @@ class Repository {
         Notification.error(data.title, data.message, 15);
       } else {
         this.getResolveDependenciesAndInstallResult(data.url
-          + '&tx_extensionmanager_tools_extensionmanagerextensionmanager[downloadPath]=' + this.downloadPath);
+          + '&downloadPath=' + this.downloadPath);
       }
     }
   }

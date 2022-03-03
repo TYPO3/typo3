@@ -48,7 +48,7 @@ class ActionControllerArgumentTest extends FunctionalTestCase
         parent::setUp();
         $this->pluginNamespacePrefix = strtolower('tx_' . $this->extensionName . '_' . $this->pluginName);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 
     public function validationErrorReturnsToForwardedPreviousActionDataProvider(): array

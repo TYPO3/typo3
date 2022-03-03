@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
-use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -161,30 +160,41 @@ class RequestBuilder implements SingletonInterface
     public function build(ServerRequestInterface $mainRequest)
     {
         $configuration = [];
+        // To be used in TYPO3 Backend for Extbase modules that do not need the "namespaces" GET and POST parameters anymore.
+        $useArgumentsWithoutNamespace = false;
         // Load values from the route object, this is used for TYPO3 Backend Modules
         $module = $mainRequest->getAttribute('module');
         if ($module instanceof ExtbaseModule) {
             $configuration = [
                 'controllerConfiguration' => $module->getControllerActions(),
             ];
+            $useArgumentsWithoutNamespace = !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend');
         }
         $this->loadDefaultValues($configuration);
         $pluginNamespace = $this->extensionService->getPluginNamespace($this->extensionName, $this->pluginName);
         $queryArguments = $mainRequest->getAttribute('routing');
-        if ($queryArguments instanceof PageArguments) {
+        if ($useArgumentsWithoutNamespace) {
+            $parameters = $mainRequest->getQueryParams();
+        } elseif ($queryArguments instanceof PageArguments) {
             $parameters = $queryArguments->get($pluginNamespace) ?? [];
         } else {
             $parameters = $mainRequest->getQueryParams()[$pluginNamespace] ?? [];
         }
         $parameters = is_array($parameters) ? $parameters : [];
         if ($mainRequest->getMethod() === 'POST') {
-            $postParameters = $mainRequest->getParsedBody()[$pluginNamespace] ?? [];
+            if ($useArgumentsWithoutNamespace) {
+                $postParameters = $mainRequest->getParsedBody();
+            } else {
+                $postParameters = $mainRequest->getParsedBody()[$pluginNamespace] ?? [];
+            }
             $postParameters = is_array($postParameters) ? $postParameters : [];
-            ArrayUtility::mergeRecursiveWithOverrule($parameters, $postParameters);
+            $parameters = array_replace_recursive($parameters, $postParameters);
         }
 
         $files = $this->untangleFilesArray($_FILES);
-        if (is_array($files[$pluginNamespace] ?? null)) {
+        if ($useArgumentsWithoutNamespace) {
+            $parameters = array_replace_recursive($parameters, $files);
+        } elseif (is_array($files[$pluginNamespace] ?? null)) {
             $parameters = array_replace_recursive($parameters, $files[$pluginNamespace]);
         }
 

@@ -89,7 +89,8 @@ class UploadExtensionFileController extends AbstractController
                 1444725853
             );
         }
-        $file = $_FILES['tx_extensionmanager_tools_extensionmanagerextensionmanager'];
+        // @todo: this is ugly!
+        $file = $_FILES;
         $fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
         try {
             // If the file name isn't valid an error will be thrown

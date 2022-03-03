@@ -1038,9 +1038,7 @@ class InstallerController
                     RouteRedirect::create(
                         'tools_ExtensionmanagerExtensionmanager',
                         [
-                            'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                                'action' => 'distributions',
-                            ],
+                            'action' => 'distributions',
                         ]
                     )
                 );

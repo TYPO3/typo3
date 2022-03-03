@@ -60,7 +60,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         foreach ($installPaths as $installPathType => $installPath) {
             /** @var string $installPathType */
             $pathSelector .= '<li>
-                <input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="' . htmlspecialchars($this->getDefaultFieldNamePrefix()) . '[downloadPath]" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
+                <input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="downloadPath" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
                 <label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
             </li>';
         }
@@ -95,14 +95,6 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
         $this->tag->setContent($label . $pathSelector);
         $this->tag->addAttribute('class', $this->arguments['class']);
         return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
-    }
-
-    /**
-     * Retrieves the field name prefix for this form
-     */
-    protected function getDefaultFieldNamePrefix(): string
-    {
-        return $this->extensionService->getPluginNamespace('Extensionmanager', 'tools_ExtensionmanagerExtensionmanager');
     }
 
     protected function getLanguageService(): LanguageService

@@ -136,8 +136,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForPrefixesArgumentsWithExtensionAndPluginNameAndSetsControllerArgument(): void
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
-        $expectedArguments = ['tx_someextension_someplugin' => ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController']];
+        $expectedArguments =['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'];
         $GLOBALS['TSFE'] = null;
         $this->uriBuilder->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -148,10 +147,9 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForRecursivelyMergesAndOverrulesControllerArgumentsWithArguments(): void
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
-        $arguments = ['tx_someextension_someplugin' => ['foo' => 'bar'], 'additionalParam' => 'additionalValue'];
+        $arguments = ['foo' => 'bar', 'additionalParam' => 'additionalValue'];
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
-        $expectedArguments = ['tx_someextension_someplugin' => ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'], 'additionalParam' => 'additionalValue'];
+        $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue'];
         $this->uriBuilder->setArguments($arguments);
         $this->uriBuilder->uriFor(null, $controllerArguments, 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -162,8 +160,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForOnlySetsActionArgumentIfSpecified(): void
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
-        $expectedArguments = ['tx_someextension_someplugin' => ['controller' => 'SomeController']];
+        $expectedArguments = ['controller' => 'SomeController'];
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -173,9 +170,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsControllerFromRequestIfControllerIsNotSet(): void
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
         $this->mockRequest->expects(self::once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
-        $expectedArguments = ['tx_someextension_someplugin' => ['controller' => 'SomeControllerFromRequest']];
+        $expectedArguments = ['controller' => 'SomeControllerFromRequest'];
         $this->uriBuilder->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -185,9 +181,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsExtensionNameFromRequestIfExtensionNameIsNotSet(): void
     {
-        $this->mockExtensionService->method('getPluginNamespace')->willReturn('tx_someextensionnamefromrequest_someplugin');
         $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
-        $expectedArguments = ['tx_someextensionnamefromrequest_someplugin' => ['controller' => 'SomeController']];
+        $expectedArguments = ['controller' => 'SomeController'];
         $this->uriBuilder->uriFor(null, [], 'SomeController', null, 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }
@@ -195,11 +190,22 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSet(): void
+    public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSetInFrontend(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest(new Uri('')))->withAttribute('applicationType', 1);
         $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_somepluginnamefromrequest');
         $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
+        $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
+        self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
+    }
+    /**
+     * @test
+     */
+    public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSet(): void
+    {
+        $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
+        $expectedArguments = ['controller' => 'SomeController'];
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
     }

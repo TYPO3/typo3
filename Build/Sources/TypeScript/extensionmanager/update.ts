@@ -53,7 +53,7 @@ class ExtensionManagerUpdate {
 
   private updateFromTer(url: string, forceUpdate: boolean): void {
     if (forceUpdate) {
-      url = url + '&tx_extensionmanager_tools_extensionmanagerextensionmanager%5BforceUpdateCheck%5D=1';
+      url = url + '&forceUpdateCheck=1';
     }
 
     // Hide triggers for TER update

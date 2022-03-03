@@ -66,7 +66,7 @@ class GetExtensionsCest
      */
     public function checkSearchFilterListFindsExtensionKey(ApplicationTester $I): void
     {
-        $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'superext');
+        $I->fillField('input[name="search"]', 'superext');
         $I->click('Go');
         // @todo do something about the double loading of the table, it is rendered twice (not double, but once, then retrieve extension list loader, then second time)
         $I->waitForElementVisible('#terSearchTable');
@@ -77,8 +77,8 @@ class GetExtensionsCest
 
         $I->amGoingTo('search extension needed ext and submit with enter');
 
-        $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'neededext');
-        $I->pressKey('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', WebDriverKeys::ENTER);
+        $I->fillField('input[name="search"]', 'neededext');
+        $I->pressKey('input[name="search"]', WebDriverKeys::ENTER);
         $I->waitForElementVisible('#terSearchTable');
         $I->wait(3);
         $I->waitForElementNotVisible('div#nprogess');
@@ -91,7 +91,7 @@ class GetExtensionsCest
      */
     public function checkSearchFilterListFindsPartOfExtensionKey(ApplicationTester $I): void
     {
-        $I->fillField('input[name="tx_extensionmanager_tools_extensionmanagerextensionmanager[search]"]', 'ext');
+        $I->fillField('input[name="search"]', 'ext');
         $I->click('Go');
         $I->waitForElementVisible('#terSearchTable');
         $I->seeNumberOfElements('#terSearchTable tbody tr', 2);

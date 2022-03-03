@@ -217,9 +217,7 @@ class ExtensionManager {
           trigger: (): void => {
             NProgress.start();
             new AjaxRequest(data.url).withQueryArguments({
-              tx_extensionmanager_tools_extensionmanagerextensionmanager: {
-                version: $('input:radio[name=version]:checked', Modal.currentModal).val(),
-              }
+              version: $('input:radio[name=version]:checked', Modal.currentModal).val(),
             }).get().finally((): void => {
               location.reload();
             });

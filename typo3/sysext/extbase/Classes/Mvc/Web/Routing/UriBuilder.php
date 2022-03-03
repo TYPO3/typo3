@@ -550,6 +550,8 @@ class UriBuilder
         }
         if ($this->argumentPrefix !== null) {
             $prefixedControllerArguments = [$this->argumentPrefix => $controllerArguments];
+        } elseif (!$isFrontend && !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')) {
+            $prefixedControllerArguments = $controllerArguments;
         } else {
             $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
             $prefixedControllerArguments = [$pluginNamespace => $controllerArguments];

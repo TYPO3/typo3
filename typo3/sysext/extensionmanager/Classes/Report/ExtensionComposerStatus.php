@@ -61,22 +61,17 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         ];
 
         $queryParameters = [
-            'tx_extensionmanager_tools_extensionmanagerextensionmanager' => [
-                'action' => 'list',
-                'controller' => 'ExtensionComposerStatus',
-            ],
+            'action' => 'list',
+            'controller' => 'ExtensionComposerStatus',
         ];
 
         if ($request !== null) {
-            $queryParameters['tx_extensionmanager_tools_extensionmanagerextensionmanager']['returnUrl'] =
+            $queryParameters['returnUrl'] =
                 $request->getAttribute('normalizedParams')->getRequestUri();
         }
 
         $dispatchAction = 'TYPO3.ModuleMenu.showModule';
-        $dispatchArgs = [
-            'tools_ExtensionmanagerExtensionmanager',
-            '&' . http_build_query($queryParameters),
-        ];
+        $dispatchArgs = [http_build_query($queryParameters)];
 
         foreach ($deficits as $key => $deficit) {
             $message = '';

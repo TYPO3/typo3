@@ -67,7 +67,7 @@ class SysLogButtonProvider implements ButtonProviderInterface, ElementAttributes
         return [
             'data-dispatch-action' => 'TYPO3.ModuleMenu.showModule',
             'data-dispatch-args-list' => 'system_BelogLog,&'
-                . http_build_query(['tx_belog_system_beloglog' => ['constraint' => ['level' => 'notice']]]),
+                . http_build_query(['constraint' => ['channel' => 'php']]),
         ];
     }
 }

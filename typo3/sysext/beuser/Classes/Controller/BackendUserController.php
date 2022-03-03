@@ -175,7 +175,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'index']])
+            ->setArguments(['action' => 'index'])
             ->setDisplayName(LocalizationUtility::translate('backendUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -209,7 +209,7 @@ class BackendUserController extends ActionController
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'online']])
+            ->setArguments(['action' => 'online'])
             ->setDisplayName(LocalizationUtility::translate('onlineUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -246,7 +246,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($addUserButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'show', 'uid' => $uid]])
+            ->setArguments(['action' => 'show', 'uid' => $uid])
             ->setDisplayName(LocalizationUtility::translate('backendUser', 'beuser') . ': ' . (string)$data['user']['username']);
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -284,7 +284,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'compare']])
+            ->setArguments(['action' => 'compare'])
             ->setDisplayName(LocalizationUtility::translate('compareUsers', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -406,7 +406,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($addGroupButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'groups']])
+            ->setArguments(['action' => 'groups'])
             ->setDisplayName(LocalizationUtility::translate('backendUserGroupsMenu', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 
@@ -438,7 +438,7 @@ class BackendUserController extends ActionController
         $buttonBar->addButton($backButton);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('system_BeuserTxBeuser')
-            ->setArguments(['tx_beuser_system_beusertxbeuser' => ['action' => 'compareGroups']])
+            ->setArguments(['action' => 'compareGroups'])
             ->setDisplayName(LocalizationUtility::translate('compareBackendUsersGroups', 'beuser'));
         $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 

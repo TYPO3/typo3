@@ -127,7 +127,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['format' => 'json']]);
+        $mainRequest = $mainRequest->withQueryParams(['format' => 'json']);
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
@@ -195,6 +195,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
+        $configuration['features']['enableNamespacedArgumentsForBackend'] = 1;
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
@@ -254,6 +255,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
+        $configuration['features']['enableNamespacedArgumentsForBackend'] = 1;
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
@@ -314,7 +316,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
+        $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -349,7 +351,7 @@ class RequestBuilderTest extends FunctionalTestCase
         $configurationManager->setConfiguration($configuration);
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
+        $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
         $mainRequest = $mainRequest->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
@@ -406,7 +408,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'NonExistentController']]);
+        $mainRequest = $mainRequest->withQueryParams(['controller' => 'NonExistentController']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -441,7 +443,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['controller' => 'User']]);
+        $mainRequest = $mainRequest->withQueryParams(['controller' => 'User']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -479,7 +481,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
+        $mainRequest = $mainRequest->withQueryParams(['action' => 'NonExistentAction']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -515,7 +517,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'NonExistentAction']]);
+        $mainRequest = $mainRequest->withQueryParams(['action' => 'NonExistentAction']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $requestBuilder->build($mainRequest);
     }
@@ -581,7 +583,7 @@ class RequestBuilderTest extends FunctionalTestCase
 
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest->withAttribute('module', $module);
-        $mainRequest = $mainRequest->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']]);
+        $mainRequest = $mainRequest->withQueryParams(['action' => 'show']);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -630,7 +632,7 @@ class RequestBuilderTest extends FunctionalTestCase
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest
-            ->withQueryParams(['tx_blog_example_blog' => ['action' => 'show']])
+            ->withQueryParams(['action' => 'show'])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $extensionName = 'blog_example';
@@ -670,24 +672,23 @@ class RequestBuilderTest extends FunctionalTestCase
         $mainRequest = $this->prepareServerRequest('https://example.com/');
         $mainRequest = $mainRequest
             ->withAttribute('routing', $pageArguments)
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $GLOBALS['TYPO3_REQUEST'] = $mainRequest;
 
         $extensionName = 'blog_example';
         $pluginName = 'blog';
 
-        $module = ExtbaseModule::createFromConfiguration($pluginName, [
-            'packageName' => 'typo3/cms-blog-example',
-            'path' => '/blog-example',
-            'extensionName' => $extensionName,
-            'controllerActions' => [
-                BlogController::class => ['list', 'show'],
-            ],
-        ]);
-        $mainRequest = $mainRequest->withAttribute('module', $module);
-
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'] = [
+            BlogController::class => [
+                'className' => BlogController::class,
+                'alias' => 'blog',
+                'actions' => ['list', 'show'],
+            ],
+        ];
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
@@ -706,7 +707,7 @@ class RequestBuilderTest extends FunctionalTestCase
     {
         $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
         $mainRequest = $mainRequest
-            ->withParsedBody(['tx_blog_example_blog' => ['action' => 'show']])
+            ->withParsedBody(['action' => 'show'])
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
 
         $extensionName = 'blog_example';

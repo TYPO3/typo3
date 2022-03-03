@@ -27,6 +27,7 @@ call_user_func(static function () {
     // Add module configuration
     ExtensionManagementUtility::addTypoScriptSetup(
         'module.tx_form {
+    features.enableNamespacedArgumentsForBackend = 1
     settings {
         yamlConfigurations {
             10 = EXT:form/Configuration/Yaml/FormSetup.yaml

@@ -11,5 +11,7 @@ config.tx_extbase {
 		skipDefaultArguments = 0
 		# if set to 1, the enable fields are ignored in BE context
 		ignoreAllEnableFieldsInBe = 0
+		# if set to 1, the arguments of backend links will be prefixed with the backend module namespace
+		enableNamespacedArgumentsForBackend = 0
 	}
 }
