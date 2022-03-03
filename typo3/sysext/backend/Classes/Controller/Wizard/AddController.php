@@ -228,7 +228,7 @@ class AddController extends AbstractWizardController
         // Get TSconfig for it.
         $TSconfig = BackendUtility::getTCEFORM_TSconfig(
             $this->P['table'],
-            is_array($record) ? $record : ['pid' => $this->P['pid']]
+            is_array($record) ? $record : ['pid' => (int)$this->P['params']['pid']]
         );
         // Set [params][pid]
         if (strpos($this->P['params']['pid'], '###') === 0 && substr($this->P['params']['pid'], -3) === '###') {
@@ -242,6 +242,7 @@ class AddController extends AbstractWizardController
             $this->pid = (int)$this->P['params']['pid'];
         }
         // Return if new record as parent (not possibly/allowed)
+        // @todo how could this happen? pid is cast to int in the if/else above
         if ($this->pid === '') {
             // HTTP Redirect is performed by processRequest()
             return;
