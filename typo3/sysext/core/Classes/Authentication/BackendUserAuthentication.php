@@ -1833,72 +1833,64 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     /**
      * Checking if a workspace is allowed for backend user
      *
-     * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
-     * @param string $fields List of fields to select. Default fields are all
-     * @return array Output will also show how access was granted. Admin users will have a true output regardless of input.
+     * @param int|array $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 (live)
+     * @return array|false Output will also show how access was granted. Admin users will have a true output regardless of input.
      * @internal should only be used from within TYPO3 Core
      */
-    public function checkWorkspace($wsRec, $fields = '*')
+    public function checkWorkspace(int|array $wsRec): array|false
     {
-        $retVal = false;
-        // If not array, look up workspace record:
+        // If not array, look up workspace record
         if (!is_array($wsRec)) {
-            switch ((string)$wsRec) {
-                case '0':
-                    $wsRec = ['uid' => $wsRec];
-                    break;
-                default:
-                    if (ExtensionManagementUtility::isLoaded('workspaces')) {
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
-                        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-                        $wsRec = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields))
-                            ->from('sys_workspace')
-                            ->where($queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
-                            ))
-                            ->orderBy('title')
-                            ->setMaxResults(1)
-                            ->executeQuery()
-                            ->fetchAssociative();
-                    }
+            if ($wsRec === 0) {
+                $wsRec = ['uid' => 0];
+            } elseif (ExtensionManagementUtility::isLoaded('workspaces')) {
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+                $wsRec = $queryBuilder
+                    ->select('*')
+                    ->from('sys_workspace')
+                    ->where($queryBuilder->expr()->eq(
+                        'uid',
+                        $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
+                    ))
+                    ->executeQuery()
+                    ->fetchAssociative();
             }
         }
-        // If wsRec is set to an array, evaluate it:
-        if (is_array($wsRec)) {
-            if ($this->isAdmin()) {
-                return array_merge($wsRec, ['_ACCESS' => 'admin']);
-            }
-            switch ((string)$wsRec['uid']) {
-                    case '0':
-                        $retVal = (($this->groupData['workspace_perms'] ?? 0) & 1)
-                            ? array_merge($wsRec, ['_ACCESS' => 'online'])
-                            : false;
-                        break;
-                    default:
-                        // Checking if the guy is admin:
-                        if (GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
-                            return array_merge($wsRec, ['_ACCESS' => 'owner']);
-                        }
-                        // Checking if he is owner through a user group of his:
-                        foreach ($this->userGroupsUID as $groupUid) {
-                            if (GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
-                                return array_merge($wsRec, ['_ACCESS' => 'owner']);
-                            }
-                        }
-                        // Checking if he is member as user:
-                        if (GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
-                            return array_merge($wsRec, ['_ACCESS' => 'member']);
-                        }
-                        // Checking if he is member through a user group of his:
-                        foreach ($this->userGroupsUID as $groupUid) {
-                            if (GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
-                                return array_merge($wsRec, ['_ACCESS' => 'member']);
-                            }
-                        }
-                }
+        // If wsRec is set to an array, evaluate it, otherwise return false
+        if (!is_array($wsRec)) {
+            return false;
         }
-        return $retVal;
+        if ($this->isAdmin()) {
+            return array_merge($wsRec, ['_ACCESS' => 'admin']);
+        }
+        // User is in live, and be_groups.workspace_perms has bitmask=1 included
+        if ($wsRec['uid'] === 0) {
+            return (($this->groupData['workspace_perms'] ?? 0) & 1)
+                ? array_merge($wsRec, ['_ACCESS' => 'online'])
+                : false;
+        }
+        // Checking if the person is workspace owner
+        if (GeneralUtility::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
+            return array_merge($wsRec, ['_ACCESS' => 'owner']);
+        }
+        // Checking if the editor is owner through an included user group
+        foreach ($this->userGroupsUID as $groupUid) {
+            if (GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
+                return array_merge($wsRec, ['_ACCESS' => 'owner']);
+            }
+        }
+        // Checking if the user is member of the workspace
+        if (GeneralUtility::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
+            return array_merge($wsRec, ['_ACCESS' => 'member']);
+        }
+        // Checking if the user is member through an included user group
+        foreach ($this->userGroupsUID as $groupUid) {
+            if (GeneralUtility::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
+                return array_merge($wsRec, ['_ACCESS' => 'member']);
+            }
+        }
+        return false;
     }
 
     /**
@@ -1952,16 +1944,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
      */
     public function setTemporaryWorkspace($workspaceId)
     {
-        $result = false;
-        $workspaceRecord = $this->checkWorkspace($workspaceId);
+        $workspaceRecord = $this->checkWorkspace((int)$workspaceId);
 
         if ($workspaceRecord) {
             $this->workspaceRec = $workspaceRecord;
             $this->workspace = (int)$workspaceId;
-            $result = true;
+            return true;
         }
-
-        return $result;
+        return false;
     }
 
     /**

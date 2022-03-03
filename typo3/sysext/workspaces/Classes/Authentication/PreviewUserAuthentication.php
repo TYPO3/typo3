@@ -53,32 +53,27 @@ class PreviewUserAuthentication extends BackendUserAuthentication
      * Checking if a workspace is allowed for backend user
      * This method is intentionally called with setTemporaryWorkspace() to check if the workspace exists.
      *
-     * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0
-     * @param string $fields List of fields to select. Default is to fetch all of them
-     * @return array|bool Output will also show how access was granted. For preview users, if the record exists, it's a go.
+     * @param array|int $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0
+     * @return array|false Output will also show how access was granted. For preview users, if the record exists, it's a go.
      */
-    public function checkWorkspace($wsRec, $fields = '*')
+    public function checkWorkspace(int|array $wsRec): array|false
     {
         // If not array, look up workspace record:
         if (!is_array($wsRec)) {
-            switch ((int)$wsRec) {
-                case '0':
-                    $wsRec = ['uid' => (int)$wsRec];
-                    break;
-                default:
-                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
-                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-                    $wsRec = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields))
-                        ->from('sys_workspace')
-                        ->where($queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
-                        ))
-                        ->orderBy('title')
-                        ->setMaxResults(1)
-                        ->executeQuery()
-                        ->fetchAssociative();
+            if ($wsRec === 0) {
+                return ['uid' => 0, '_ACCESS' => 'member'];
             }
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+            $wsRec = $queryBuilder
+                ->select('*')
+                ->from('sys_workspace')
+                ->where($queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($wsRec, \PDO::PARAM_INT)
+                ))
+                ->executeQuery()
+                ->fetchAssociative();
         }
         // If the workspace exists in the database, the preview user is automatically a member to that workspace
         if (is_array($wsRec)) {

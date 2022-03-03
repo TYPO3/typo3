@@ -56,7 +56,7 @@ class WorkspaceService implements SingletonInterface
     {
         $availableWorkspaces = [];
         // add default workspaces
-        if ($GLOBALS['BE_USER']->checkWorkspace(['uid' => (string)self::LIVE_WORKSPACE_ID])) {
+        if ($GLOBALS['BE_USER']->checkWorkspace(self::LIVE_WORKSPACE_ID)) {
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = self::getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
