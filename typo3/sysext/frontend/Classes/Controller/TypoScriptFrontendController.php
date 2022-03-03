@@ -781,7 +781,30 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $timeTracker->pull();
         $timeTracker->push('fetch_the_id rootLine/');
         try {
-            $this->getPageAndRootlineWithDomain($request);
+            // Sets ->page and ->rootline information based on ->id. ->id may change during this operation.
+            // If the found Page ID is not within the site, then pageNotFound is set.
+            $this->getPageAndRootline($request);
+            // Checks if the rootPageId of the site is in the resolved rootLine.
+            // This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
+            $siteRootWithinRootlineFound = false;
+            foreach ($this->rootLine as $pageInRootLine) {
+                if ((int)$pageInRootLine['uid'] === $this->site->getRootPageId()) {
+                    $siteRootWithinRootlineFound = true;
+                    break;
+                }
+            }
+            // Page is 'not found' in case the id was outside the domain, code 3
+            // This can only happen if there was a shortcut. So $this->page is now the shortcut target
+            // But the original page is in $this->originalShortcutPage.
+            // This only happens if people actually call TYPO3 with index.php?id=123 where 123 is in a different
+            // page tree. This is not allowed.
+            $directlyRequestedId = (int)($request->getQueryParams()['id'] ?? 0);
+            if (!$siteRootWithinRootlineFound && $directlyRequestedId && (int)($this->originalShortcutPage['uid'] ?? 0) !== $directlyRequestedId) {
+                $this->pageNotFound = 3;
+                $this->id = $this->site->getRootPageId();
+                // re-get the page and rootline if the id was not found.
+                $this->getPageAndRootline($request);
+            }
         } catch (ShortcutTargetPageNotFoundException $e) {
             $this->pageNotFound = 1;
         }
@@ -1173,37 +1196,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             }
         }
         return $output;
-    }
-
-    /**
-     * Sets ->page and ->rootline information based on ->id. ->id may change during this operation.
-     * If the found Page ID is not within the site, then pageNotFound is set.
-     */
-    protected function getPageAndRootlineWithDomain(ServerRequestInterface $request)
-    {
-        $this->getPageAndRootline($request);
-        if ($this->rootLine === []) {
-            return;
-        }
-        // Checks if the rootPageId of the site is in the resolved rootLine.
-        // This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
-        foreach ($this->rootLine as $pageInRootLine) {
-            if ((int)$pageInRootLine['uid'] === $this->site->getRootPageId()) {
-                return;
-            }
-        }
-        // Page is 'not found' in case the id was outside the domain, code 3
-        // This can only happen if there was a shortcut. So $this->page is now the shortcut target
-        // But the original page is in $this->originalShortcutPage.
-        // This only happens if people actually call TYPO3 with index.php?id=123 where 123 is in a different
-        // page tree. This is not allowed.
-        $directlyRequestedId = (int)($request->getQueryParams()['id'] ?? 0);
-        if ($directlyRequestedId && (int)($this->originalShortcutPage['uid'] ?? 0) !== $directlyRequestedId) {
-            $this->pageNotFound = 3;
-            $this->id = $this->site->getRootPageId();
-            // re-get the page and rootline if the id was not found.
-            $this->getPageAndRootline($request);
-        }
     }
 
     /********************************************
