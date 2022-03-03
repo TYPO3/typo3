@@ -355,7 +355,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
                 // Get the name of the field used as foreign selector (if any):
                 $foreignSelector = isset($parentConfig['foreign_selector']) && $parentConfig['foreign_selector'] ? $parentConfig['foreign_selector'] : false;
-                $selectedValue = $foreignSelector ? GeneralUtility::quoteJSvalue($childData['databaseRow'][$foreignSelector]) : null;
+                $selectedValue = $foreignSelector ? $childData['databaseRow'][$foreignSelector] : null;
                 if (is_array($selectedValue)) {
                     $selectedValue = $selectedValue[0];
                 }
