@@ -25,12 +25,9 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\PageTsConfig;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\Context\VisibilityAspect;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
@@ -544,22 +541,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Clears the preview-flags, sets sim_exec_time to current time.
-     * Hidden pages must be hidden as default, $GLOBALS['SIM_EXEC_TIME'] is set to $GLOBALS['EXEC_TIME']
-     * in bootstrap initializeGlobalTimeVariables(). Alter it by adding or subtracting seconds.
-     */
-    public function clear_preview()
-    {
-        if ($this->isInPreviewMode()) {
-            $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
-            $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
-            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
-            $this->context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
-            $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
-        }
-    }
-
-    /**
      * Checks if a backend user is logged in
      *
      * @return bool whether a backend user is logged in
@@ -584,24 +565,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $parameters = ['parentObject' => $this];
             GeneralUtility::callUserFunction($functionReference, $parameters, $this);
         }
-        // If there is a Backend login we are going to check for any preview settings
-        $originalFrontendUserGroups = $this->applyPreviewSettings($this->getBackendUser());
+
         // If the front-end is showing a preview, caching MUST be disabled.
-        $isPreview = $this->isInPreviewMode();
-        if ($isPreview) {
+        if ($this->isInPreviewMode()) {
             $this->disableCache();
         }
         // Now, get the id, validate access etc:
         $this->fetch_the_id($request);
-        // Check if backend user has read access to this page. If not, recalculate the id.
-        if ($this->isBackendUserLoggedIn() && $isPreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
-            $this->unsetBackendUser();
-            // Resetting
-            $this->clear_preview();
-            $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
-            // Fetching the id again, now with the preview settings reset.
-            $this->fetch_the_id($request);
-        }
+
         // Setting language and fetch translated page
         $this->settingLanguage($request);
         // Check the "content_from_pid" field of the resolved page
@@ -615,65 +586,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
-    }
-
-    protected function unsetBackendUser(): void
-    {
-        // Register an empty backend user as aspect
-        unset($GLOBALS['BE_USER']);
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class));
-        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class));
-    }
-
-    /**
-     * Evaluates admin panel or workspace settings to see if
-     * visibility settings like
-     * - Preview Aspect: isPreview
-     * - Visibility Aspect: includeHiddenPages
-     * - Visibility Aspect: includeHiddenContent
-     * - $simUserGroup
-     * should be applied to the current object.
-     *
-     * @param FrontendBackendUserAuthentication $backendUser
-     * @return string|null null if no changes to the current frontend usergroups have been made, otherwise the original list of frontend usergroups
-     * @internal
-     */
-    protected function applyPreviewSettings($backendUser = null)
-    {
-        if (!$backendUser) {
-            return null;
-        }
-        $originalFrontendUserGroup = null;
-        if ($this->fe_user->user) {
-            $originalFrontendUserGroup = $this->context->getPropertyFromAspect('frontend.user', 'groupIds');
-        }
-
-        // The preview flag is set if the current page turns out to be hidden
-        if ($this->checkIfPageIsHidden($this->id)) {
-            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
-            /** @var VisibilityAspect $aspect */
-            $aspect = $this->context->getAspect('visibility');
-            $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
-            $this->context->setAspect('visibility', $newAspect);
-        }
-        // The preview flag will be set if an offline workspace will be previewed
-        if ($this->whichWorkspace() > 0) {
-            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
-        }
-        return $this->context->getPropertyFromAspect('frontend.preview', 'preview', false) ? $originalFrontendUserGroup : null;
-    }
-
-    /**
-     * Checks if the page is hidden in the active workspace + language setup.
-     * If it is hidden, preview flags will be set.
-     */
-    protected function checkIfPageIsHidden(int $pageId): bool
-    {
-        $pageRepository = $this->sys_page ?: GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        return $pageRepository->checkIfPageIsHidden(
-            $pageId,
-            LanguageAspectFactory::createFromSiteLanguage($this->language)
-        );
     }
 
     /**
@@ -772,6 +684,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getPageAndRootline($request);
             }
         } catch (ShortcutTargetPageNotFoundException $e) {
+            $this->pageNotFound = 1;
+        }
+        // Check if backend user has read access to this page.
+        // @todo move to TypoScriptFrontendInitialization middleware
+        if ($this->isBackendUserLoggedIn() && $this->isInPreviewMode() && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             $this->pageNotFound = 1;
         }
         $timeTracker->pull();

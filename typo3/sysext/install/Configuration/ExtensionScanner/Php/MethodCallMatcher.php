@@ -5225,4 +5225,11 @@ return [
             'Breaking-97065-TYPO3FrontendAlwaysRenderedInUTF-8.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->clear_preview' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Breaking-97091-TSFE-clear_previewHasBeenRemoved.rst',
+        ],
+    ],
 ];

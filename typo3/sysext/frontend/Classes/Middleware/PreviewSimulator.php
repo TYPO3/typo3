@@ -23,8 +23,14 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * Middleware for handling preview settings
@@ -51,19 +57,53 @@ class PreviewSimulator implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+            $pageArguments = $request->getAttribute('routing', null);
+            if (!$pageArguments instanceof PageArguments) {
+                return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                    $request,
+                    'Page Arguments could not be resolved',
+                    ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
+                );
+            }
+            if ($this->context->hasAspect('visibility')) {
+                $visibilityAspect = $this->context->getAspect('visibility');
+            } else {
+                $visibilityAspect = GeneralUtility::makeInstance(VisibilityAspect::class);
+            }
+            // The preview flag is set if the current page turns out to be hidden
+            $showHiddenPages = $this->checkIfPageIsHidden($pageArguments->getPageId(), $request);
             $simulatingDate = $this->simulateDate($request);
             $simulatingGroup = $this->simulateUserGroup($request);
-            $showHiddenRecords = ($this->context->hasAspect('visibility') ? $this->context->getAspect('visibility')->includeHidden() : false);
-            $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords;
+            $showHiddenRecords = $visibilityAspect->includeHidden();
+            $isOfflineWorkspace = $this->context->getPropertyFromAspect('workspace', 'id', 0) > 0;
+            $isPreview = $simulatingDate || $simulatingGroup || $showHiddenRecords || $showHiddenPages || $isOfflineWorkspace;
             if ($this->context->hasAspect('frontend.preview')) {
                 $previewAspect = $this->context->getAspect('frontend.preview');
                 $isPreview = $previewAspect->isPreview() || $isPreview;
             }
             $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
             $this->context->setAspect('frontend.preview', $previewAspect);
+
+            if ($showHiddenPages) {
+                $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords());
+                $this->context->setAspect('visibility', $newAspect);
+            }
         }
 
         return $handler->handle($request);
+    }
+
+    /**
+     * Checks if the page is hidden in the active workspace + language setup.
+     */
+    protected function checkIfPageIsHidden(int $pageId, ServerRequestInterface $request): bool
+    {
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
+        $site = $request->getAttribute('site', null);
+        return $pageRepository->checkIfPageIsHidden(
+            $pageId,
+            LanguageAspectFactory::createFromSiteLanguage($request->getAttribute('language', $site->getDefaultLanguage()))
+        );
     }
 
     /**
