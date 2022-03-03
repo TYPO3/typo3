@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2817b50e333a3b63ddb6117251e997c",
+    "content-hash": "ffb1f9b636cecefa553166f2b6d7f5a5",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7034,16 +7034,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.4.5",
+            "version": "1.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "150d1fbd82fb71ff76b3bd7f6ea6006d89c5f0c3"
+                "reference": "2a6d6704b17c4db6190cc3104056c0aad740cb15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/150d1fbd82fb71ff76b3bd7f6ea6006d89c5f0c3",
-                "reference": "150d1fbd82fb71ff76b3bd7f6ea6006d89c5f0c3",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2a6d6704b17c4db6190cc3104056c0aad740cb15",
+                "reference": "2a6d6704b17c4db6190cc3104056c0aad740cb15",
                 "shasum": ""
             },
             "require": {
@@ -7074,7 +7074,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.4.5"
+                "source": "https://github.com/phpstan/phpstan/tree/1.4.8"
             },
             "funding": [
                 {
@@ -7094,7 +7094,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-02T19:35:10+00:00"
+            "time": "2022-03-04T13:03:56+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -9008,16 +9008,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.16.0",
+            "version": "6.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "a2b80476c4f9b90f220e78338f38fc6e576ebc8d"
+                "reference": "774d2123c907261b79f554c98f25f93ed2b0ee8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/a2b80476c4f9b90f220e78338f38fc6e576ebc8d",
-                "reference": "a2b80476c4f9b90f220e78338f38fc6e576ebc8d",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/774d2123c907261b79f554c98f25f93ed2b0ee8c",
+                "reference": "774d2123c907261b79f554c98f25f93ed2b0ee8c",
                 "shasum": ""
             },
             "require": {
@@ -9037,6 +9037,11 @@
             },
             "conflict": {
                 "doctrine/dbal": "2.13.0 || 2.13.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.4.6",
+                "typo3/cms-workspaces": "10.*.*@dev || 11.*.*@dev",
+                "typo3/coding-standards": "^0.5.0"
             },
             "type": "library",
             "autoload": {
@@ -9071,9 +9076,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/6.16.1"
             },
-            "time": "2022-02-27T13:50:05+00:00"
+            "time": "2022-03-04T16:41:08+00:00"
         }
     ],
     "aliases": [],

@@ -117,11 +117,11 @@
 		"php-webdriver/webdriver": "^1.12.0",
 		"phpspec/prophecy": "^1.14.0",
 		"phpspec/prophecy-phpunit": "^2.0",
-		"phpstan/phpstan": "^1.4.5",
+		"phpstan/phpstan": "^1.4.8",
 		"phpstan/phpstan-phpunit": "^1.0",
 		"phpunit/phpunit": "^9.5.10",
 		"typo3/cms-styleguide": "~11.5.4",
-		"typo3/testing-framework": "^6.16.0"
+		"typo3/testing-framework": "^6.16.1"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",
