@@ -56,6 +56,16 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeCheck.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeEmail\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeEmail.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeEmail\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeEmail.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeFlex\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeFlex.php
@@ -294,16 +304,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputEvalDouble2\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputEvalDouble2.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputEvalEmail\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputEvalEmail.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputEvalEmail\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputEvalEmail.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputEvalInt\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
