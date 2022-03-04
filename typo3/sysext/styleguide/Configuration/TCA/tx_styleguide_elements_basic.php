@@ -477,10 +477,9 @@ return [
         'input_39' => [
             'exclude' => 1,
             'label' => 'input_39',
-            'description' => 'eval=email',
+            'description' => 'type=email',
             'config' => [
-                'type' => 'input',
-                'eval' => 'email',
+                'type' => 'email',
             ],
         ],
         'input_40' => [

@@ -19,18 +19,17 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=email fields
  */
-class TypeInputEvalEmail extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeEmail extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * @var array General match if type=email
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'eval' => 'email',
+                'type' => 'email',
             ],
         ],
     ];
