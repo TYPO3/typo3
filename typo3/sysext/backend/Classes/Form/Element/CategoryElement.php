@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CategoryElement extends AbstractFormElement
 {
     private const MIN_ITEMS_COUNT = 5;
-    private const DEFAUTL_ITEMS_COUNT = 15;
+    private const DEFAULT_ITEMS_COUNT = 15;
     private const ITEM_HEIGHT_BASE = 20;
 
     /**
@@ -66,7 +66,7 @@ class CategoryElement extends AbstractFormElement
         $exclusiveKeys = $config['exclusiveKeys'] ?? '';
         $height = ((int)($config['size'] ?? 0) > 0)
             ? max(self::MIN_ITEMS_COUNT, (int)$config['size'])
-            : self::DEFAUTL_ITEMS_COUNT;
+            : self::DEFAULT_ITEMS_COUNT;
         $heightInPx = $height * self::ITEM_HEIGHT_BASE;
         $treeWrapperId = 'tree_' . $formElementId;
         $fieldId = 'tree_record_' . $formElementId;
