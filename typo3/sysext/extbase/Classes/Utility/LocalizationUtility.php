@@ -63,7 +63,7 @@ class LocalizationUtility
      *
      * @param string $key The key from the LOCAL_LANG array for which to return the value.
      * @param string|null $extensionName The name of the extension
-     * @param array $arguments The arguments of the extension, being passed over to vsprintf
+     * @param array $arguments The arguments of the extension, being passed over to sprintf
      * @param string $languageKey The language key or null for using the current language from the system
      * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found.
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
