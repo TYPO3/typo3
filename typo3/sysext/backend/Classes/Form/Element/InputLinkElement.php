@@ -358,7 +358,7 @@ class InputLinkElement extends AbstractFormElement
         // Resolve the actual link
         switch ($linkData['type']) {
             case LinkService::TYPE_PAGE:
-                $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
+                $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'] ?? null, '1=1');
                 // Is this a real page
                 if ($pageRecord['uid'] ?? 0) {
                     $fragmentTitle = '';
