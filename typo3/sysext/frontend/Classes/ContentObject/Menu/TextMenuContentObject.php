@@ -76,7 +76,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
             $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;
-            $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
+            $this->I['spacer'] = $this->menuArr[$key]['isSpacer'] ?? false;
             // Make link tag
             $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
             $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
