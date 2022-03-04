@@ -157,7 +157,7 @@ class TcaItemsProcessorFunctions
                 // Add item to be selected:
                 $fieldDefinition['items'][] = [
                     '[' . $allowDenyModeLabel . '] ' . $itemLabel,
-                    $groupKey . ':' . preg_replace('/[:|,]/', '', $itemValue) . ':' . $allowDenyMode,
+                    $groupKey . ':' . preg_replace('/[:|,]/', '', (string)$itemValue) . ':' . $allowDenyMode,
                     $icons[$allowDenyMode],
                 ];
             }
