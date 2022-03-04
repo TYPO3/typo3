@@ -79,10 +79,16 @@ configuration paths:
                  formEditor:
 
 
+.. _concepts-formeditor-components-in-detail:
+
+Form editor components in detail
+--------------------------------
+
+
 .. _concepts-formeditor-stage:
 
 Stage
------
+^^^^^
 
 The ``Stage`` is the central visual component of the form editor which
 displays the form elements in two different modes:
@@ -116,7 +122,7 @@ For more information, read the following chapter: ':ref:`Common abstract view fo
 .. _concepts-formeditor-inspector:
 
 Inspector
----------
+^^^^^^^^^
 
 The ``Inspector`` component is situated on the right side of the ``form
 editor``. It is a modular, extremely flexible, and context specific toolbar
@@ -142,6 +148,131 @@ we have got a validator "Number range" with two validator options called
 spouse" and "Age infant". For both form elements the validator is available
 but for the form element "Age child" the validator option "Minimum" is not
 editable and the option "Maximum" is pre-filled with a certain value.
+
+
+.. _concepts-formeditor-translation-formeditor:
+
+Translation of the form editor
+------------------------------
+
+All option values which reside below the following configuration keys can be
+translated:
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+             formElementsDefinition:
+               <formElementTypeIdentifier>:
+                 formEditor:
+             finishersDefinition:
+               <finisherIdentifier>
+                 formEditor:
+             validatorsDefinition:
+               <validatorIdentifier>
+                 formEditor:
+
+The translation files of the ``form editor`` are loaded as follows:
+
+.. code-block:: yaml
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formEditor:
+               translationFiles:
+                 # custom translation file
+                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
+
+The process searches for each option value within all of the defined
+translation files. If a translation is found, the translated option value
+will be used in preference.
+
+Imagine, the following is defined for an option value:
+
+.. code-block:: yaml
+
+   ...
+   label: 'formEditor.elements.Form.editor.finishers.label'
+   ...
+
+First of all, the process searches for the translation key ``formEditor.elements.Form.editor.finishers.label``
+within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'``
+and after it inside the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``
+(loaded by default). If nothing is found, the option value will be
+displayed unmodified.
+
+
+.. _concepts-formeditor-customization-formeditor:
+
+Customization of the form editor
+--------------------------------
+
+As mentioned earlier, the interface can be customized by writing YAML
+configuration. The configuration is not stored within one central configuration
+file. Instead, the configuration is defined for each element the form framework
+provides (see `EXT:form/form/Configuration/Yaml/FormElements/`). In addition,
+the :yaml:`Form` element itself (see `EXT:form/Configuration/Yaml/FormElements/Form.yaml`)
+ships some basic configuration of the form editor.
+
+A common use case for customization is to remove form elements from the form
+editor. In contrast to other TYPO3 modules, the form editor cannot be configured
+via backend user groups and the well known `Access Lists`. Within the form module
+this has to be done via YAML configuration. Please keep in mind, it is not possible
+to configure the form editor depending on the user's group / access rights.
+
+Quite often, integrators tend to unset whole form elements as shown below.
+In this example, the :yaml:`AdvancedPassword` form element is removed form
+the form framework completely. This way, integrators and developers won't be able
+to use this element in their manually created YAML definitions or via API anymore.
+
+.. code-block:: yaml
+   :linenos:
+   :emphasize-lines: 7
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               AdvancedPassword: null
+
+
+The correct way is to unset the :ref:`group property <typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.group>`.
+This property defines within which group within the ``form editor`` "new Element"
+modal the form element should be shown. Unsetting this property will remove the
+form element safely form the form editor. Check out the following example. The
+configuration removes the :yaml:`AdvancedPassword` form element from.
+
+.. code-block:: yaml
+   :linenos:
+   :emphasize-lines: 9
+
+   TYPO3:
+     CMS:
+       Form:
+         prototypes:
+           standard:
+             formElementsDefinition:
+               AdvancedPassword:
+                 formEditor:
+                   group: null
+
+
+.. _concepts-formeditor-extending:
+
+Extending the form editor
+-------------------------
+
+Learn :ref:`here <concepts-finishers-customfinisherimplementations-extend-gui>`
+how to make the finisher configurable in the backend UI.
 
 
 .. _concepts-formeditor-basicjavascriptconcepts:
@@ -463,71 +594,3 @@ The following methods can be utilized in order to access the data of a
 
 For more information, head to the API reference and read the section about
 the ':ref:`FormElement model<apireference-formeditor-basicjavascriptconcepts-formelementmodel>`'.
-
-
-.. _concepts-formeditor-translation-formeditor:
-
-Translation of form editor
---------------------------
-
-All option values which reside below the following configuration keys can be
-translated:
-
-.. code-block:: yaml
-
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-             formElementsDefinition:
-               <formElementTypeIdentifier>:
-                 formEditor:
-             finishersDefinition:
-               <finisherIdentifier>
-                 formEditor:
-             validatorsDefinition:
-               <validatorIdentifier>
-                 formEditor:
-
-The translation files of the ``form editor`` are loaded as follows:
-
-.. code-block:: yaml
-
-   TYPO3:
-     CMS:
-       Form:
-         prototypes:
-           standard:
-             formEditor:
-               translationFiles:
-                 # custom translation file
-                 20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'
-
-The process searches for each option value within all of the defined
-translation files. If a translation is found, the translated option value
-will be used in preference.
-
-Imagine, the following is defined for an option value:
-
-.. code-block:: yaml
-
-   ...
-   label: 'formEditor.elements.Form.editor.finishers.label'
-   ...
-
-First of all, the process searches for the translation key ``formEditor.elements.Form.editor.finishers.label``
-within the file ``20: 'EXT:my_site_package/Resources/Private/Language/Database.xlf'``
-and after it inside the file ``10: 'EXT:form/Resources/Private/Language/Database.xlf'``
-(loaded by default). If nothing is found, the option value will be
-displayed unmodified.
-
-
-.. _concepts-formeditor-extending:
-
-Examples for extending the editor
----------------------------------
-
-Learn :ref:`here <concepts-finishers-customfinisherimplementations-extend-gui>`
-how to make the finisher configurable in the backend UI.

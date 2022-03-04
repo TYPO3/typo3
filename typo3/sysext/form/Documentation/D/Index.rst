@@ -3,9 +3,9 @@
 
 .. _apireference:
 
-=============================
+==============================
 For Developers / API Reference
-=============================
+==============================
 
 This chapter is a complete reference of the API of the form framework. It
 mainly addresses your concerns as a developer.
