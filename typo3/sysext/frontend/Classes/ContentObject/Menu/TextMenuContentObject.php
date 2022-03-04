@@ -76,7 +76,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
             $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;
-            $this->I['spacer'] = $this->menuArr[$key]['isSpacer'];
+            $this->I['spacer'] = $this->menuArr[$key]['isSpacer'] ?? false;
             // Set access key
             if ($this->mconf['accessKey'] ?? false) {
                 $this->I['accessKey'] = $this->accessKey((string)($this->I['title'] ?? ''));
