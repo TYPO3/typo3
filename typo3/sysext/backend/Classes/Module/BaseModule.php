@@ -137,28 +137,7 @@ abstract class BaseModule
 
     public function addSubModule(ModuleInterface $module): void
     {
-        if (in_array('top', $module->getPosition(), true)) {
-            $this->subModules = array_merge([$module->getIdentifier() => $module], $this->subModules);
-            return;
-        }
-        if (($module->getPosition()['before'] ?? false)
-            && ($modulePosition = array_search($module->getPosition()['before'], array_keys($this->subModules), true)) !== false
-        ) {
-            $this->subModules = array_slice($this->subModules, 0, $modulePosition)
-                + [$module->getIdentifier() => $module]
-                + array_slice($this->subModules, $modulePosition);
-            return;
-        }
-
-        if (($module->getPosition()['after'] ?? false)
-            && ($modulePosition = array_search($module->getPosition()['after'], array_keys($this->subModules), true)) !== false
-        ) {
-            $this->subModules = array_slice($this->subModules, 0, $modulePosition + 1)
-                + [$module->getIdentifier() => $module]
-                + array_slice($this->subModules, $modulePosition + 1);
-            return;
-        }
-        $this->subModules = array_merge($this->subModules, [$module->getIdentifier() => $module]);
+        $this->subModules[$module->getIdentifier()] = $module;
     }
 
     public function hasSubModule(string $identifier): bool
@@ -234,6 +213,16 @@ abstract class BaseModule
         }
 
         if (is_array($configuration['position'] ?? false)) {
+            if (in_array('top', $configuration['position'], true)) {
+                $configuration['position'] = [
+                    'before' => '*',
+                ];
+            }
+            if (in_array('bottom', $configuration['position'], true)) {
+                $configuration['position'] = [
+                    'after' => '*',
+                ];
+            }
             $obj->position = $configuration['position'];
         }
         if (is_array($configuration['appearance'] ?? false)) {

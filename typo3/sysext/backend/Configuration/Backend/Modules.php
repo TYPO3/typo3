@@ -11,7 +11,7 @@ use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 return [
     'web_layout' => [
         'parent' => 'web',
-        'position' => ['top'],
+        'position' => ['before' => '*'],
         'access' => 'user',
         'path' => '/module/web/layout',
         'iconIdentifier' => 'module-page',
@@ -29,7 +29,7 @@ return [
     ],
     'site_configuration' => [
         'parent' => 'site',
-        'position' => ['top'],
+        'position' => ['before' => '*'],
         'access' => 'admin',
         'path' => '/module/site/configuration',
         'iconIdentifier' => 'module-sites',
@@ -42,7 +42,7 @@ return [
     ],
     'help_AboutAbout' => [
         'parent' => 'help',
-        'position' => ['top'],
+        'position' => ['before' => '*'],
         'access' => 'user',
         'path' => '/module/help/about',
         'iconIdentifier' => 'module-about',

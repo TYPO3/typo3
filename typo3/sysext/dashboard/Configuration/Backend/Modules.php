@@ -7,7 +7,7 @@ use TYPO3\CMS\Dashboard\Controller\DashboardController;
  */
 return [
     'dashboard' => [
-        'position' => ['top'],
+        'position' => ['before' => '*'],
         'standalone' => true,
         'access' => 'user',
         'path' => '/module/dashboard',

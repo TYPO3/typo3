@@ -71,7 +71,7 @@ Will now be registered in :file:`Configuration/Backend/Modules.php`:
     return [
         'web_module' => [
             'parent' => 'web',
-            'position' => ['top'],
+            'position' => ['before' => '*'],
             'access' => 'admin',
             'workspaces' => 'live',
             'path' => '/module/web/example',
@@ -131,9 +131,11 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | workspaces (:php:`string`)                               | Can be `*` (= always), `live` or `offline`                       |
 +----------------------------------------------------------+------------------------------------------------------------------+
-| position (:php:`array`)                                  | The module position. Allowed values are `top` and `bottom` as    |
-|                                                          | well as the key value pairs `before => <identifier>` and         |
-|                                                          | `after => <identifier>`.                                         |
+| position (:php:`array`)                                  | The module position. Allowed values are `before => <identifier>` |
+|                                                          | and `after => <identifier>`. To define modules on top or at the  |
+|                                                          | the bottom, `before => *` and `after => *` can be used. Using    |
+|                                                          | the `top` and `bottom` values (without key) is deprecated and    |
+|                                                          | will be removed in upcoming versions.                            |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | appearance (:php:`array`)                                | Allows to define additional appearance options:                  |
 |                                                          |   - `renderInModuleMenu` (:php:`bool`)                           |

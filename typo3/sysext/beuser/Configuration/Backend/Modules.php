@@ -9,7 +9,7 @@ use TYPO3\CMS\Beuser\Controller\PermissionController;
 return [
     'system_BeuserTxPermission' => [
         'parent' => 'system',
-        'position' => ['top'],
+        'position' => ['before' => '*'],
         'access' => 'admin',
         'path' => '/module/system/permissions',
         'iconIdentifier' => 'module-permission',
