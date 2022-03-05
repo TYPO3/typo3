@@ -5086,21 +5086,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Classes/Http/Middleware/RedirectHandler.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with TYPO3\\\\CMS\\\\Frontend\\\\Typolink\\\\LinkResultInterface will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
-
-		-
-			message: "#^Offset 0 on \\*NEVER\\* on left side of \\?\\? always exists and is always null\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
-
-		-
 			message: "#^Strict comparison using \\=\\=\\= between bool and 0 will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/redirects/Classes/ViewHelpers/TargetPageIdViewHelper.php

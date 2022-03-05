@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
-use TYPO3\CMS\Frontend\Typolink\LinkResultInterface;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 
 /**
@@ -311,12 +310,15 @@ class RedirectService implements LoggerAwareInterface
             return null;
         }
         $controller = $this->bootFrontendController($site, $queryParams, $originalRequest);
-        /** @var AbstractTypolinkBuilder $linkBuilder */
         $linkBuilder = GeneralUtility::makeInstance(
             $GLOBALS['TYPO3_CONF_VARS']['FE']['typolinkBuilder'][$linkDetails['type']],
             $controller->cObj,
             $controller
         );
+        if (!$linkBuilder instanceof AbstractTypolinkBuilder) {
+            // @todo: Add a proper interface.
+            throw new \RuntimeException('Single link builder must extend AbstractTypolinkBuilder', 1646504471);
+        }
         try {
             $configuration = [
                 'parameter' => (string)$redirectRecord['target'],
@@ -330,13 +332,7 @@ class RedirectService implements LoggerAwareInterface
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
             $result = $linkBuilder->build($linkDetails, '', '', $configuration);
-            if (is_array($result)) {
-                return new Uri($result[0] ?? '');
-            }
-            if ($result instanceof LinkResultInterface) {
-                return new Uri($result->getUrl());
-            }
-            return null;
+            return new Uri($result->getUrl());
         } catch (UnableToLinkException $e) {
             // This exception is also thrown by the DatabaseRecordTypolinkBuilder
             $url = $controller->cObj->lastTypoLinkUrl;
