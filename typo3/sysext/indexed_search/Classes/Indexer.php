@@ -203,10 +203,8 @@ class Indexer
 
     /**
      * Metaphone object, if any
-     *
-     * @var \TYPO3\CMS\IndexedSearch\Utility\DoubleMetaPhoneUtility
      */
-    public $metaphoneObj;
+    public ?DoubleMetaPhoneUtility $metaphoneObj = null;
 
     /**
      * Lexer object for word splitting
@@ -943,7 +941,7 @@ class Indexer
      * @param string $fileExtension File extension, eg. "pdf", "doc" etc.
      * @param string $absoluteFileName Absolute filename of file (must exist and be validated OK before calling function)
      * @param string $sectionPointer Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
-     * @return array Standard content array (title, description, keywords, body keys)
+     * @return array|null Standard content array (title, description, keywords, body keys)
      */
     public function readFileContent($fileExtension, $absoluteFileName, $sectionPointer)
     {
@@ -1145,7 +1143,7 @@ class Indexer
         if (is_object($this->metaphoneObj)) {
             $metaphoneRawValue = $this->metaphoneObj->metaphone($word, $this->conf['sys_language_uid']);
         } else {
-            // Use native PHP function instead of advanced doubleMetaphone class
+            // Use native PHP functions instead of advanced doubleMetaphone class
             $metaphoneRawValue = metaphone($word);
         }
         if ($returnRawMetaphoneValue) {

@@ -4671,11 +4671,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 2
-			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
-
-		-
 			message: "#^Offset int\\<0, max\\> does not exist on array\\{\\}\\.$#"
 			count: 1
 			path: ../../typo3/sysext/indexed_search/Classes/Indexer.php
