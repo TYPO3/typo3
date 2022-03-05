@@ -121,7 +121,7 @@ class ConfigurationManager
      *
      * @return array Content array of local configuration file
      */
-    public function getLocalConfiguration()
+    public function getLocalConfiguration(): array
     {
         return require $this->getLocalConfigurationFileLocation();
     }
@@ -130,10 +130,9 @@ class ConfigurationManager
      * Get the file location of the local configuration file,
      * currently the path and filename.
      *
-     * @return string
      * @internal
      */
-    public function getLocalConfigurationFileLocation()
+    public function getLocalConfigurationFileLocation(): string
     {
         return Environment::getLegacyConfigPath() . '/' . $this->localConfigurationFile;
     }
@@ -339,17 +338,13 @@ class ConfigurationManager
      * @internal
      * @throws \UnexpectedValueException
      */
-    public function exportConfiguration()
+    public function exportConfiguration(): void
     {
         if (@is_file($this->getLocalConfigurationFileLocation())) {
             $localConfiguration = $this->getLocalConfiguration();
-            if (is_array($localConfiguration)) {
-                $defaultConfiguration = $this->getDefaultConfiguration();
-                ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $localConfiguration);
-                $GLOBALS['TYPO3_CONF_VARS'] = $defaultConfiguration;
-            } else {
-                throw new \UnexpectedValueException('LocalConfiguration invalid.', 1349272276);
-            }
+            $defaultConfiguration = $this->getDefaultConfiguration();
+            ArrayUtility::mergeRecursiveWithOverrule($defaultConfiguration, $localConfiguration);
+            $GLOBALS['TYPO3_CONF_VARS'] = $defaultConfiguration;
         } else {
             // No LocalConfiguration (yet), load DefaultConfiguration
             $GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();

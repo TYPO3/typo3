@@ -566,11 +566,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Composer/PackageArtifactBuilder.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Configuration/ConfigurationManager.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Configuration/ExtensionConfiguration.php
