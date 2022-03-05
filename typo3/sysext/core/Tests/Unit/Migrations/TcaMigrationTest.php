@@ -1725,4 +1725,76 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    private function typeNoneColsMigratedToSizeDataProvider(): iterable
+    {
+        yield 'type none cols migrated to size' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'none',
+                                'format' => 'int',
+                                'cols' => 20,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'none',
+                                'format' => 'int',
+                                'size' => 20,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'cols has priority over size and overrides it, if both are set' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'none',
+                                'pass_content' => true,
+                                'cols' => 20,
+                                'size' => 30,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'none',
+                                'pass_content' => true,
+                                'size' => 20,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider typeNoneColsMigratedToSizeDataProvider
+     * @test
+     */
+    public function typeNoneColsMigratedToSize(array $tca, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($tca));
+    }
 }

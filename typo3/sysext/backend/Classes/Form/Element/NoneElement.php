@@ -23,6 +23,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class NoneElement extends AbstractFormElement
 {
     /**
+     * @var int
+     */
+    protected $minimumInputWidth = 5;
+
+    /**
      * Default field information enabled for this element.
      *
      * @var array
@@ -46,7 +51,7 @@ class NoneElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
         $itemValue = $parameterArray['itemFormElValue'];
 
-        if (isset($config['format']) && $config['format']) {
+        if ($config['format'] ?? false) {
             $formatOptions = $config['format.'] ?? [];
             $itemValue = $this->formatValue($config['format'], $itemValue, $formatOptions);
         }
@@ -54,8 +59,8 @@ class NoneElement extends AbstractFormElement
             $itemValue = htmlspecialchars($itemValue);
         }
 
-        $cols = ($config['cols'] ?? false) ?: ($config['size'] ?? false) ?: $this->defaultInputWidth;
-        $size = MathUtility::forceIntegerInRange($cols, 5, $this->maxInputWidth);
+        $size = $config['size'] ?? $this->defaultInputWidth;
+        $size = MathUtility::forceIntegerInRange($size, $this->minimumInputWidth, $this->maxInputWidth);
         $width = $this->formMaxWidth($size);
 
         $fieldInformationResult = $this->renderFieldInformation();

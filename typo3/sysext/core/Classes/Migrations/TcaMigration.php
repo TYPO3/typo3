@@ -69,6 +69,7 @@ class TcaMigration
         $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
         $tca = $this->migrateRequiredFlag($tca);
         $tca = $this->migrateEmailFlagToEmailType($tca);
+        $tca = $this->migrateTypeNoneColsToSize($tca);
 
         return $tca;
     }
@@ -661,9 +662,35 @@ class TcaMigration
                     unset($tca[$table]['columns'][$fieldName]['config']['eval']);
                 }
 
-                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\'  defines '
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . '"email" in its "eval" list. The field has therefore been migrated to the TCA type \'email\'. '
                     . 'Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates type => "none" [config][cols] to [config][size] and removes "cols".
+     */
+    protected function migrateTypeNoneColsToSize(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'none' || !array_key_exists('cols', $fieldConfig['config'])) {
+                    continue;
+                }
+
+                $tca[$table]['columns'][$fieldName]['config']['size'] = $fieldConfig['config']['cols'];
+                unset($tca[$table]['columns'][$fieldName]['config']['cols']);
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . '"cols" in its config. This value has been migrated to the option "size". Please adjust your TCA accordingly.';
             }
         }
 
