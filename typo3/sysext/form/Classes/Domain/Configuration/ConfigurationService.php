@@ -59,10 +59,7 @@ class ConfigurationService implements SingletonInterface
      */
     protected $firstLevelCache = [];
 
-    /**
-     * @var TranslationService
-     */
-    protected $translationService;
+    protected ?TranslationService $translationService = null;
 
     public function __construct(ConfigurationManagerInterface $configurationManager)
     {
