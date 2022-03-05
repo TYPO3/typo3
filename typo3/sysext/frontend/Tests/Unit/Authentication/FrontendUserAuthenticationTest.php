@@ -77,7 +77,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
@@ -119,7 +119,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         $userSessionManager = $this->prophesize(UserSessionManager::class);
@@ -155,7 +155,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         $sessionRecord = [
@@ -207,7 +207,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
@@ -272,7 +272,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup
@@ -340,7 +340,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $expressionBuilderProphecy = $this->prophesize(ExpressionBuilder::class);
         $queryBuilderProphecy->expr()->willReturn($expressionBuilderProphecy->reveal());
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
-        $expressionBuilderProphecy->andX(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
+        $expressionBuilderProphecy->and(Argument::cetera())->willReturn($compositeExpressionProphecy->reveal());
         $expressionBuilderProphecy->in(Argument::cetera())->willReturn('');
 
         // Main session backend setup

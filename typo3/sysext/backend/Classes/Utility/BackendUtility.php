@@ -231,8 +231,8 @@ class BackendUtility
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable($table)
             ->getExpressionBuilder();
-        $query = $expressionBuilder->andX();
-        $invQuery = $expressionBuilder->orX();
+        $query = $expressionBuilder->and();
+        $invQuery = $expressionBuilder->or();
 
         $ctrl += [
             'enablecolumns' => [],
@@ -248,7 +248,7 @@ class BackendUtility
                 $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
                 $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
                 $invQuery->add(
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->neq($field, 0),
                         $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
                     )
@@ -257,13 +257,13 @@ class BackendUtility
             if ($ctrl['enablecolumns']['endtime'] ?? false) {
                 $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
                 $query->add(
-                    $expressionBuilder->orX(
+                    $expressionBuilder->or(
                         $expressionBuilder->eq($field, 0),
                         $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
                     )
                 );
                 $invQuery->add(
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->neq($field, 0),
                         $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
                     )
@@ -3173,9 +3173,9 @@ class BackendUtility
                             't3ver_wsid',
                             $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                         ),
-                        $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->or(
                             // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                            $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->and(
                                 $queryBuilder->expr()->eq(
                                     'uid',
                                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)

@@ -152,7 +152,7 @@ class DeletedRecordsCommand extends Command
                 ->select('uid', 'deleted')
                 ->from('pages')
                 ->where(
-                    $queryBuilderForPages->expr()->andX(
+                    $queryBuilderForPages->expr()->and(
                         $queryBuilderForPages->expr()->eq(
                             'uid',
                             $queryBuilderForPages->createNamedParameter($pageId, \PDO::PARAM_INT)

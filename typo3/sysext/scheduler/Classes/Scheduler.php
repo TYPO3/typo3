@@ -328,7 +328,7 @@ class Scheduler implements SingletonInterface
                     't.nextexecution',
                     $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('g.hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->isNull('g.hidden')
                 ),

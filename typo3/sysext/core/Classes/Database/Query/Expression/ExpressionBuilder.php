@@ -94,7 +94,7 @@ class ExpressionBuilder
      *
      * @return CompositeExpression
      */
-    public function and(...$expressions): CompositeExpression
+    public function and(CompositeExpression|string|null ...$expressions): CompositeExpression
     {
         return CompositeExpression::and(...$expressions);
     }
@@ -106,7 +106,7 @@ class ExpressionBuilder
      *
      * @return CompositeExpression
      */
-    public function or(...$expressions): CompositeExpression
+    public function or(CompositeExpression|string|null ...$expressions): CompositeExpression
     {
         return CompositeExpression::or(...$expressions);
     }
@@ -344,7 +344,7 @@ class ExpressionBuilder
             case 'mssql':
                 // See unit and functional tests for details
                 if ($isColumn) {
-                    $expression = $this->orX(
+                    $expression = $this->or(
                         $this->eq($fieldName, $value),
                         $this->like($fieldName, $value . ' + \',%\''),
                         $this->like($fieldName, '\'%,\' + ' . $value),
@@ -356,7 +356,7 @@ class ExpressionBuilder
                         ['[[]', '[%]'],
                         $this->unquoteLiteral($value)
                     );
-                    $expression = $this->orX(
+                    $expression = $this->or(
                         $this->eq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
                         $this->like($fieldName, $this->literal($likeEscapedValue . ',%')),
                         $this->like($fieldName, $this->literal('%,' . $likeEscapedValue)),
@@ -457,7 +457,7 @@ class ExpressionBuilder
             case 'mssql':
                 // See unit and functional tests for details
                 if ($isColumn) {
-                    $expression = $this->andX(
+                    $expression = $this->and(
                         $this->neq($fieldName, $value),
                         $this->notLike($fieldName, $value . ' + \',%\''),
                         $this->notLike($fieldName, '\'%,\' + ' . $value),
@@ -469,7 +469,7 @@ class ExpressionBuilder
                         ['[[]', '[%]'],
                         $this->unquoteLiteral($value)
                     );
-                    $expression = $this->andX(
+                    $expression = $this->and(
                         $this->neq($fieldName, $this->literal($this->unquoteLiteral((string)$value))),
                         $this->notLike($fieldName, $this->literal($likeEscapedValue . ',%')),
                         $this->notLike($fieldName, $this->literal('%,' . $likeEscapedValue)),

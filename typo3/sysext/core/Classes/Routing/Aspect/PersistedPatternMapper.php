@@ -288,7 +288,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
                 $values['uid'],
                 \PDO::PARAM_INT
             );
-            $constraints[] = $queryBuilder->expr()->orX(
+            $constraints[] = $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq('uid', $idParameter),
                 $queryBuilder->expr()->eq($this->languageParentFieldName, $idParameter)
             );

@@ -883,7 +883,7 @@ abstract class AbstractMenuContentObject
                 );
 
             if (!empty($keyWordsWhereArr)) {
-                $queryBuilder->andWhere($queryBuilder->expr()->orX(...$keyWordsWhereArr));
+                $queryBuilder->andWhere($queryBuilder->expr()->or(...$keyWordsWhereArr));
             }
 
             if (!empty($this->excludedDoktypes)) {

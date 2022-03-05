@@ -80,7 +80,7 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
                     );
                 } elseif ($tableName !== 'pages') {
                     // Show only records of the live and current workspace in case we are in a versioning preview
-                    $constraints[] = $expressionBuilder->orX(
+                    $constraints[] = $expressionBuilder->or(
                         $expressionBuilder->eq($tableAlias . '.t3ver_wsid', 0),
                         $expressionBuilder->eq($tableAlias . '.t3ver_wsid', (int)$this->workspaceId)
                     );
@@ -91,6 +91,6 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
                 }
             }
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

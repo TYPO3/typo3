@@ -2465,7 +2465,7 @@ class DataHandler implements LoggerAwareInterface
             && ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '') !== '') {
             $queryBuilder
                 ->andWhere(
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                     // records without l10n_parent must be taken into account (in any language)
                         $queryBuilder->expr()->eq(
                             $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
@@ -7658,7 +7658,7 @@ class DataHandler implements LoggerAwareInterface
 
             if ($considerWorkspaces) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq('t3ver_oid', 0),
                         $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
                     )
@@ -7742,7 +7742,7 @@ class DataHandler implements LoggerAwareInterface
 
                 if ($considerWorkspaces) {
                     $queryBuilder->andWhere(
-                        $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->or(
                             $queryBuilder->expr()->eq('t3ver_oid', 0),
                             $queryBuilder->expr()->eq('t3ver_state', VersionState::MOVE_POINTER)
                         )

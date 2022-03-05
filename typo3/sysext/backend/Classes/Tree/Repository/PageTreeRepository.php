@@ -526,7 +526,7 @@ class PageTreeRepository
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
 
-        $searchParts = $expressionBuilder->orX();
+        $searchParts = $expressionBuilder->or();
         if (is_numeric($searchFilter) && $searchFilter > 0) {
             $searchParts->add(
                 $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_INT))
@@ -534,7 +534,7 @@ class PageTreeRepository
         }
         $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
 
-        $searchWhereAlias = $expressionBuilder->orX(
+        $searchWhereAlias = $expressionBuilder->or(
             $expressionBuilder->like(
                 'nav_title',
                 $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)

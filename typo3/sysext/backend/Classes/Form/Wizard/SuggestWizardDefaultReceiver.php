@@ -228,7 +228,7 @@ class SuggestWizardDefaultReceiver
                 $constraints[] = $this->buildConstraintBlock($splitString);
             }
             foreach ($constraints as $constraint) {
-                $this->queryBuilder->andWhere($expressionBuilder->andX($constraint));
+                $this->queryBuilder->andWhere($expressionBuilder->and($constraint));
             }
         }
         if (!empty($this->allowedPages)) {
@@ -254,7 +254,7 @@ class SuggestWizardDefaultReceiver
     protected function buildConstraintBlock(string $searchString)
     {
         $expressionBuilder = $this->queryBuilder->expr();
-        $selectParts = $expressionBuilder->orX();
+        $selectParts = $expressionBuilder->or();
         if (MathUtility::canBeInterpretedAsInteger($searchString) && (int)$searchString > 0) {
             $selectParts->add($expressionBuilder->eq('uid', (int)$searchString));
         }

@@ -311,7 +311,7 @@ class BulkExtensionRepositoryWriter implements \SplObserver
                 'a',
                 self::TABLE_NAME,
                 'b',
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('a.remote', $queryBuilder->quoteIdentifier('b.remote')),
                     $queryBuilder->expr()->eq('a.extension_key', $queryBuilder->quoteIdentifier('b.extension_key')),
                     $queryBuilder->expr()->lt('a.integer_version', $queryBuilder->quoteIdentifier('b.integer_version'))

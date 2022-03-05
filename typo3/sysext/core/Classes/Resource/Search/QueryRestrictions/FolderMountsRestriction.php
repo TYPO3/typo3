@@ -68,13 +68,13 @@ class FolderMountsRestriction extends AbstractRestrictionContainer
     {
         if (!$this->backendUser->isAdmin() && empty($this->getFolderMounts())) {
             // If the user isn't an admin but has no mounted folders, add an expression leading to an empty result
-            return $expressionBuilder->andX('1=0');
+            return $expressionBuilder->and('1=0');
         }
         $constraints = [];
         foreach ($this->restrictions as $restriction) {
             $constraints[] = $restriction->buildExpression($queriedTables, $expressionBuilder);
         }
-        return $expressionBuilder->orX(...$constraints);
+        return $expressionBuilder->or(...$constraints);
     }
 
     /**

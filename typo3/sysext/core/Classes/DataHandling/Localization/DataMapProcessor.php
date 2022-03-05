@@ -1116,7 +1116,7 @@ class DataMapProcessor
                     $zeroParameter
                 ),
                 // any parent or source pointers
-                $queryBuilder->expr()->orX(...$ancestorPredicates),
+                $queryBuilder->expr()->or(...$ancestorPredicates),
             ];
         } elseif (!empty($fieldNames['origin'])) {
             // fetch by origin dependency ("copied from")

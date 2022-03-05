@@ -74,11 +74,11 @@ class PagePermissionRestriction implements QueryRestrictionInterface
 
             $constraint = $this->buildUserConstraints($expressionBuilder, $tableAlias);
             if ($constraint) {
-                $constraints[] = $expressionBuilder->andX($constraint);
+                $constraints[] = $expressionBuilder->and($constraint);
             }
         }
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 
     /**
@@ -96,13 +96,13 @@ class PagePermissionRestriction implements QueryRestrictionInterface
             return null;
         }
         // User permissions
-        $constraint = $expressionBuilder->orX(
+        $constraint = $expressionBuilder->or(
             $expressionBuilder->comparison(
                 $expressionBuilder->bitAnd($tableAlias . '.perms_everybody', $this->permissions),
                 ExpressionBuilder::EQ,
                 $this->permissions
             ),
-            $expressionBuilder->andX(
+            $expressionBuilder->and(
                 $expressionBuilder->eq($tableAlias . '.perms_userid', $this->userAspect->get('id')),
                 $expressionBuilder->comparison(
                     $expressionBuilder->bitAnd($tableAlias . '.perms_user', $this->permissions),
@@ -116,7 +116,7 @@ class PagePermissionRestriction implements QueryRestrictionInterface
         $groupIds = array_map('intval', $this->userAspect->getGroupIds());
         if (!empty($groupIds)) {
             $constraint->add(
-                $expressionBuilder->andX(
+                $expressionBuilder->and(
                     $expressionBuilder->in(
                         $tableAlias . '.perms_groupid',
                         $groupIds

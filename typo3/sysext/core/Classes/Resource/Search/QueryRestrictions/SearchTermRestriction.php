@@ -55,7 +55,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
             $constraints[] = $this->makeQuerySearchByTable($tableName, $tableAlias);
         }
 
-        return $expressionBuilder->orX(...$constraints);
+        return $expressionBuilder->or(...$constraints);
     }
 
     /**
@@ -90,14 +90,14 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 // Check whether search should be case-sensitive or not
                 if (in_array('case', (array)($fieldConfig['search'] ?? []), true)) {
                     // case sensitive
-                    $searchConstraint = $this->queryBuilder->expr()->andX(
+                    $searchConstraint = $this->queryBuilder->expr()->and(
                         $this->queryBuilder->expr()->like(
                             $tableAlias . '.' . $fieldName,
                             $this->queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
                         )
                     );
                 } else {
-                    $searchConstraint = $this->queryBuilder->expr()->andX(
+                    $searchConstraint = $this->queryBuilder->expr()->and(
                     // case insensitive
                         $this->queryBuilder->expr()->comparison(
                             'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
@@ -116,10 +116,10 @@ class SearchTermRestriction implements QueryRestrictionInterface
                     $constraintsForParts[] = $searchConstraint;
                 }
             }
-            $constraints[] = $this->queryBuilder->expr()->orX(...$constraintsForParts);
+            $constraints[] = $this->queryBuilder->expr()->or(...$constraintsForParts);
         }
 
-        return $this->queryBuilder->expr()->andX(...$constraints);
+        return $this->queryBuilder->expr()->and(...$constraints);
     }
 
     /**

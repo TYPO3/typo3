@@ -758,7 +758,7 @@ class IndexSearchRepository
             ->getQueryBuilderForTable('index_section')
             ->expr();
 
-        $whereClause = $expressionBuilder->andX();
+        $whereClause = $expressionBuilder->and();
         $match = false;
         if (!($this->searchRootPageIdList < 0)) {
             $whereClause->add(
@@ -1086,7 +1086,7 @@ class IndexSearchRepository
             if (!empty($this->wSelClauses)) {
                 // So, words are combined in an OR statement
                 // (no "sentence search" should be done here - may deselect results)
-                $wordSel = $queryBuilder->expr()->orX();
+                $wordSel = $queryBuilder->expr()->or();
                 foreach ($this->wSelClauses as $wSelClause) {
                     $wordSel->add(QueryHelper::stripLogicalOperatorPrefix($wSelClause));
                 }

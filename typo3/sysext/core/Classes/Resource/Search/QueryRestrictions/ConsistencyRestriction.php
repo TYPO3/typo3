@@ -46,6 +46,6 @@ class ConsistencyRestriction implements QueryRestrictionInterface
             }
         }
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

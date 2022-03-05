@@ -63,7 +63,7 @@ class SysNoteRepository
             ->where(
                 $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('sys_note.pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))
                 )

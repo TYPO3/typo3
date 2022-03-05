@@ -487,13 +487,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ->expr();
 
             // User
-            $constraint = $expressionBuilder->orX(
+            $constraint = $expressionBuilder->or(
                 $expressionBuilder->comparison(
                     $expressionBuilder->bitAnd('pages.perms_everybody', $perms),
                     ExpressionBuilder::EQ,
                     $perms
                 ),
-                $expressionBuilder->andX(
+                $expressionBuilder->and(
                     $expressionBuilder->eq('pages.perms_userid', (int)$this->user['uid']),
                     $expressionBuilder->comparison(
                         $expressionBuilder->bitAnd('pages.perms_user', $perms),
@@ -506,7 +506,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Group (if any is set)
             if (!empty($this->userGroupsUID)) {
                 $constraint->add(
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->in(
                             'pages.perms_groupid',
                             $this->userGroupsUID

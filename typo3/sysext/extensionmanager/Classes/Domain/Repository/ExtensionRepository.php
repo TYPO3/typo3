@@ -193,7 +193,7 @@ class ExtensionRepository extends Repository
             ->addSelectLiteral($caseStatement)
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->orX(...array_values($searchConstraints)),
+                $queryBuilder->expr()->or(...array_values($searchConstraints)),
                 $queryBuilder->expr()->eq('current_version', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->gte('review_state', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             )

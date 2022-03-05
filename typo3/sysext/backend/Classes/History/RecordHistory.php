@@ -346,7 +346,7 @@ class RecordHistory
             );
         } else {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('workspace', 0),
                     $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($backendUser->workspace, \PDO::PARAM_INT))
                 )

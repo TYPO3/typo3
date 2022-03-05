@@ -189,9 +189,9 @@ class PageRepository implements LoggerAwareInterface
                 // de-selecting hidden pages - we need versionOL() to unset them only
                 // if the overlay record instructs us to.
                 // Clear where_hid_del and restrict to live and current workspaces
-                $this->where_hid_del = ' AND ' . $expressionBuilder->andX(
+                $this->where_hid_del = ' AND ' . $expressionBuilder->and(
                     $expressionBuilder->eq('pages.deleted', 0),
-                    $expressionBuilder->orX(
+                    $expressionBuilder->or(
                         $expressionBuilder->eq('pages.t3ver_wsid', 0),
                         $expressionBuilder->eq('pages.t3ver_wsid', (int)$this->versioningWorkspaceId)
                     ),
@@ -201,7 +201,7 @@ class PageRepository implements LoggerAwareInterface
                 // add starttime / endtime, and check for hidden/deleted
                 // Filter out new/deleted place-holder pages in case we are NOT in a
                 // versioning preview (that means we are online!)
-                $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
+                $this->where_hid_del = ' AND ' . (string)$expressionBuilder->and(
                     QueryHelper::stripLogicalOperatorPrefix(
                         $this->enableFields('pages', (int)$show_hidden, ['fe_group' => true])
                     ),
@@ -1439,7 +1439,7 @@ class PageRepository implements LoggerAwareInterface
                 } else {
                     // show only records of live and of the current workspace
                     // in case we are in a versioning preview
-                    $constraints[] = $expressionBuilder->orX(
+                    $constraints[] = $expressionBuilder->or(
                         $expressionBuilder->eq($table . '.t3ver_wsid', 0),
                         $expressionBuilder->eq($table . '.t3ver_wsid', (int)$this->versioningWorkspaceId)
                     );
@@ -1448,7 +1448,7 @@ class PageRepository implements LoggerAwareInterface
                 // Filter out versioned records
                 if (empty($ignore_array['pid'])) {
                     // Always filter out versioned records that have an "offline" record
-                    $constraints[] = $expressionBuilder->orX(
+                    $constraints[] = $expressionBuilder->or(
                         $expressionBuilder->eq($table . '.t3ver_oid', 0),
                         $expressionBuilder->eq($table . '.t3ver_state', VersionState::MOVE_POINTER)
                     );
@@ -1473,7 +1473,7 @@ class PageRepository implements LoggerAwareInterface
                     }
                     if (($ctrl['enablecolumns']['endtime'] ?? false) && !($ignore_array['endtime'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                        $constraints[] = $expressionBuilder->orX(
+                        $constraints[] = $expressionBuilder->or(
                             $expressionBuilder->eq($field, 0),
                             $expressionBuilder->gt(
                                 $field,
@@ -1507,7 +1507,7 @@ class PageRepository implements LoggerAwareInterface
             throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is called with an invalid table name as argument.', 1283790586);
         }
 
-        return empty($constraints) ? '' : ' AND ' . $expressionBuilder->andX(...$constraints);
+        return empty($constraints) ? '' : ' AND ' . $expressionBuilder->and(...$constraints);
     }
 
     /**
@@ -1548,7 +1548,7 @@ class PageRepository implements LoggerAwareInterface
             $orChecks[] = $expressionBuilder->inSet($field, $expressionBuilder->literal($value));
         }
 
-        $accessGroupWhere = ' AND (' . $expressionBuilder->orX(...$orChecks) . ')';
+        $accessGroupWhere = ' AND (' . $expressionBuilder->or(...$orChecks) . ')';
         $cache->set($cacheIdentifier, $accessGroupWhere);
         return $accessGroupWhere;
     }
@@ -1676,9 +1676,9 @@ class PageRepository implements LoggerAwareInterface
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                     // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                        $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',
                                 $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
@@ -1714,9 +1714,9 @@ class PageRepository implements LoggerAwareInterface
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)
                     ),
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                     // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                        $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq(
                                 'uid',
                                 $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
@@ -2059,16 +2059,16 @@ class PageRepository implements LoggerAwareInterface
                 }
             }
             // Check for the language and all its fallbacks (except for default language)
-            $constraint = $queryBuilder->expr()->andX(
+            $constraint = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
             );
             // If the fallback language Ids also contains the default language, this needs to be considered
             if (in_array(0, $languagesToCheck, true)) {
-                $constraint = $queryBuilder->expr()->orX(
+                $constraint = $queryBuilder->expr()->or(
                     $constraint,
                     // Ensure to also fetch the default record
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
                         $queryBuilder->expr()->eq('sys_language_uid', 0)
                     )

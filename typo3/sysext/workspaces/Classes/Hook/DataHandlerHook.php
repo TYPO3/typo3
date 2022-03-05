@@ -822,7 +822,7 @@ class DataHandlerHook
         );
         $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
         if ($translationSourceFieldName) {
-            $constraints = $queryBuilder->expr()->orX(
+            $constraints = $queryBuilder->expr()->or(
                 $constraints,
                 $queryBuilder->expr()->eq(
                     $translationSourceFieldName,
@@ -1035,7 +1035,7 @@ class DataHandlerHook
         );
         $translationSourceFieldName = $GLOBALS['TCA'][$table]['ctrl']['translationSource'] ?? null;
         if ($translationSourceFieldName) {
-            $constraints = $queryBuilder->expr()->orX(
+            $constraints = $queryBuilder->expr()->or(
                 $constraints,
                 $queryBuilder->expr()->eq(
                     $translationSourceFieldName,
@@ -1157,7 +1157,7 @@ class DataHandlerHook
                         ),
                         // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
                         // fail to delete later in DH->discard() and would create "can't do that" log entries.
-                        $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->or(
                             $queryBuilder->expr()->gt(
                                 't3ver_oid',
                                 $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)

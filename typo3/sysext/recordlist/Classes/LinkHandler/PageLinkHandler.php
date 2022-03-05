@@ -153,7 +153,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 ->select('*')
                 ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq(
                             'pid',
                             $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)

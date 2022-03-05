@@ -702,8 +702,8 @@ class SiteConfigurationController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('sys_language_uid', 0),
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('pid', 0),
                         $queryBuilder->expr()->neq('doktype', PageRepository::DOKTYPE_SYSFOLDER)
                     ),

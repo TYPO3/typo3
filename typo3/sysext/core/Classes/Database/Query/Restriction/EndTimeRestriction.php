@@ -60,12 +60,12 @@ class EndTimeRestriction implements QueryRestrictionInterface
                     );
                 }
                 $fieldName = $tableAlias . '.' . $endTimeFieldName;
-                $constraints[] = $expressionBuilder->orX(
+                $constraints[] = $expressionBuilder->or(
                     $expressionBuilder->eq($fieldName, 0),
                     $expressionBuilder->gt($fieldName, (int)$this->accessTimeStamp)
                 );
             }
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

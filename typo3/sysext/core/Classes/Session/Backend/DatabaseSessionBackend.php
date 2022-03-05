@@ -116,7 +116,7 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
         $query = $this->getQueryBuilder();
         $query->delete($this->configuration['table'])
             ->where(
-                $query->expr()->orX(
+                $query->expr()->or(
                     $query->expr()->eq('ses_id', $query->createNamedParameter($this->hash($sessionId), \PDO::PARAM_STR)),
                     $query->expr()->eq('ses_id', $query->createNamedParameter($sessionId, \PDO::PARAM_STR))
                 )

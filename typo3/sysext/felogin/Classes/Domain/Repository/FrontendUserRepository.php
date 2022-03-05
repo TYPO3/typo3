@@ -171,7 +171,7 @@ class FrontendUserRepository
             ->select('email')
             ->from($this->getTable())
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('username', $queryBuilder->createNamedParameter($usernameOrEmail)),
                     $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($usernameOrEmail))
                 )

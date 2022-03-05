@@ -338,7 +338,7 @@ class WorkspaceService implements SingletonInterface
         if ($pageList) {
             $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
             if ($table === 'pages') {
-                $constraints[] = $queryBuilder->expr()->orX(
+                $constraints[] = $queryBuilder->expr()->or(
                     $queryBuilder->expr()->in(
                         'B.uid',
                         $queryBuilder->createNamedParameter(
@@ -463,7 +463,7 @@ class WorkspaceService implements SingletonInterface
         if ($pageList) {
             $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
             if ($table === 'pages' && $transOrigPointerField !== '') {
-                $constraints[] = $queryBuilder->expr()->orX(
+                $constraints[] = $queryBuilder->expr()->or(
                     $queryBuilder->expr()->in(
                         'uid',
                         $queryBuilder->createNamedParameter(
@@ -580,7 +580,7 @@ class WorkspaceService implements SingletonInterface
         if ($pageList) {
             $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
             if ($table === 'pages') {
-                $constraints[] = $queryBuilder->expr()->orX(
+                $constraints[] = $queryBuilder->expr()->or(
                     $queryBuilder->expr()->in(
                         'B.uid',
                         $queryBuilder->createNamedParameter(
@@ -1012,7 +1012,7 @@ class WorkspaceService implements SingletonInterface
                 ->select('pid')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq(
                             't3ver_state',
                             $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER, \PDO::PARAM_INT)

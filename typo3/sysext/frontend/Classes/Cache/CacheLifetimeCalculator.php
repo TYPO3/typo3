@@ -164,7 +164,7 @@ class CacheLifetimeCalculator
             ->removeByType(StartTimeRestriction::class)
             ->removeByType(EndTimeRestriction::class);
         $timeFields = [];
-        $timeConditions = $queryBuilder->expr()->orX();
+        $timeConditions = $queryBuilder->expr()->or();
         foreach (['starttime', 'endtime'] as $field) {
             if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
                 $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];

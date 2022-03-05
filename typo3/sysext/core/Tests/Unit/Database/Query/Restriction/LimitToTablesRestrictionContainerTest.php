@@ -80,7 +80,7 @@ class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject = new LimitToTablesRestrictionContainer();
         $containerProphecy = $this->prophesize(QueryRestrictionContainerInterface::class);
         $containerProphecy->removeByType(DeletedRestriction::class)->shouldBeCalled();
-        $containerProphecy->buildExpression(['bt' => 'bTable'], $this->expressionBuilder)->willReturn($this->expressionBuilder->andX(...[]))->shouldBeCalled();
+        $containerProphecy->buildExpression(['bt' => 'bTable'], $this->expressionBuilder)->willReturn($this->expressionBuilder->and(...[]))->shouldBeCalled();
         $subject->addForTables($containerProphecy->reveal(), ['bt']);
         $subject->removeByType(DeletedRestriction::class);
         $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);

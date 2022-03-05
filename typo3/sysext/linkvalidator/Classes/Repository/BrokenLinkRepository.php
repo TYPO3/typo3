@@ -102,15 +102,15 @@ class BrokenLinkRepository
                     $queryBuilder->expr()->eq('record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
                 )
                 ->where(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->in(
                                 'record_uid',
                                 $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                         ),
-                        $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->in(
                                 'record_pid',
                                 $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
@@ -192,15 +192,15 @@ class BrokenLinkRepository
 
             $queryBuilder->delete(static::TABLE)
                 ->where(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->in(
                                 'record_uid',
                                 $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                             ),
                             $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                         ),
-                        $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->in(
                                 'record_pid',
                                 $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
@@ -257,15 +257,15 @@ class BrokenLinkRepository
             }
 
             $constraints = [
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->in(
                             'record_uid',
                             $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)
                         ),
                         $queryBuilder->expr()->eq('table_name', $queryBuilder->quote('pages'))
                     ),
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->in(
                             'record_pid',
                             $queryBuilder->quoteArrayBasedValueListToIntegerList($pageIdsChunk)

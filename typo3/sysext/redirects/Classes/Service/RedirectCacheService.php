@@ -72,7 +72,7 @@ class RedirectCacheService
 
         if ($sourceHost === '' || $sourceHost === '*') {
             $queryBuilder->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('source_host', $queryBuilder->createNamedParameter('')),
                     $queryBuilder->expr()->eq('source_host', $queryBuilder->createNamedParameter('*')),
                 )

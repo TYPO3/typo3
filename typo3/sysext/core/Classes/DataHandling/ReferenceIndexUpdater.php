@@ -177,12 +177,12 @@ class ReferenceIndexUpdater
                     $queryBuilder->delete('sys_refindex')
                         ->where(
                             $queryBuilder->expr()->eq('workspace', $queryBuilder->createNamedParameter($workspace, \PDO::PARAM_INT)),
-                            $queryBuilder->expr()->orX(
-                                $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->or(
+                                $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter($table)),
                                     $queryBuilder->expr()->eq('recuid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                                 ),
-                                $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
                                     $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                                 )

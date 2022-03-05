@@ -54,14 +54,14 @@ final class PresetRepository
         $queryBuilder->select('*')
             ->from(self::PRESET_TABLE)
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->gt('public', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT))
                 )
             );
         if ($pageId) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('item_uid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
                 )

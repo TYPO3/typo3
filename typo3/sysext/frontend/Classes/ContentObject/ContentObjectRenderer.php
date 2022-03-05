@@ -5251,7 +5251,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         $prefixTableName = $searchTable ? $searchTable . '.' : '';
 
-        $where = $queryBuilder->expr()->andX();
+        $where = $queryBuilder->expr()->and();
         $searchFields = explode(',', $searchFieldList);
         $searchWords = preg_split('/[ ,]/', $searchWords);
         foreach ($searchWords as $searchWord) {
@@ -5259,7 +5259,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if (strlen($searchWord) < 3) {
                 continue;
             }
-            $searchWordConstraint = $queryBuilder->expr()->orX();
+            $searchWordConstraint = $queryBuilder->expr()->or();
             $searchWord = $queryBuilder->escapeLikeWildcards($searchWord);
             foreach ($searchFields as $field) {
                 $searchWordConstraint->add(
@@ -5642,9 +5642,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
             // If moved records shall be considered, select via t3ver_oid
             if ($considerMovePointers) {
-                $constraints[] = (string)$expressionBuilder->orX(
+                $constraints[] = (string)$expressionBuilder->or(
                     $expressionBuilder->in($table . '.uid', $listArr),
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->eq(
                             $table . '.t3ver_state',
                             (int)(string)VersionState::cast(VersionState::MOVE_POINTER)
@@ -5710,7 +5710,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // MAKE WHERE:
         if (count($constraints) !== 0) {
-            $queryParts['where'] = $expressionBuilder->andX(...$constraints);
+            $queryParts['where'] = $expressionBuilder->and(...$constraints);
         }
         // GROUP BY
         $groupBy = trim((string)$this->stdWrapValue('groupBy', $conf ?? []));
@@ -5790,9 +5790,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $includeRecordsWithoutDefaultTranslation = $languageAspect->getOverlayType() === $languageAspect::OVERLAYS_ON_WITH_FLOATING;
             }
             if ($includeRecordsWithoutDefaultTranslation) {
-                $languageQuery = $expressionBuilder->orX(
+                $languageQuery = $expressionBuilder->or(
                     $languageQuery,
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->eq($table . '.' . $localizationParentField, 0),
                         $expressionBuilder->eq($languageField, $languageAspect->getContentId())
                     )

@@ -340,7 +340,7 @@ class LiveSearch
                 $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
-                $searchConstraint = $queryBuilder->expr()->andX(
+                $searchConstraint = $queryBuilder->expr()->and(
                     $queryBuilder->expr()->comparison(
                         'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
                         'LIKE',
@@ -351,7 +351,7 @@ class LiveSearch
                 if (is_array($fieldConfig['search'] ?? false)) {
                     if (in_array('case', $fieldConfig['search'], true)) {
                         // Replace case insensitive default constraint
-                        $searchConstraint = $queryBuilder->expr()->andX(
+                        $searchConstraint = $queryBuilder->expr()->and(
                             $queryBuilder->expr()->like(
                                 $fieldName,
                                 $queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
@@ -384,7 +384,7 @@ class LiveSearch
             return '0=1';
         }
 
-        return $queryBuilder->expr()->orX(...$constraints);
+        return $queryBuilder->expr()->or(...$constraints);
     }
 
     /**

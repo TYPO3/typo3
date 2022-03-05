@@ -50,6 +50,6 @@ class FolderHashesRestriction implements QueryRestrictionInterface
             $constraints[] = $expressionBuilder->in($tableAlias . '.folder_hash', $quotedHashes);
         }
 
-        return $expressionBuilder->orX(...$constraints);
+        return $expressionBuilder->or(...$constraints);
     }
 }

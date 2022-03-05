@@ -136,9 +136,9 @@ class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCol
                     $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField']
                 );
 
-                $languageConstraint = $queryBuilder->expr()->orX(
+                $languageConstraint = $queryBuilder->expr()->or(
                     $languageConstraint,
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq(
                             $languageField,
                             $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)

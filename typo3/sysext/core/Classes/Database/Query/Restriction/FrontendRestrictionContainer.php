@@ -89,6 +89,6 @@ class FrontendRestrictionContainer extends AbstractRestrictionContainer
                 }
             }
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

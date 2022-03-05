@@ -177,7 +177,7 @@ class SettingsController extends AbstractController
             ->select('uid', 'username', 'disable', 'starttime', 'endtime')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->neq('username', $queryBuilder->createNamedParameter('_cli_', \PDO::PARAM_STR))
@@ -235,7 +235,7 @@ class SettingsController extends AbstractController
             ->select('uid')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq('deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($newUserList, Connection::PARAM_INT_ARRAY))

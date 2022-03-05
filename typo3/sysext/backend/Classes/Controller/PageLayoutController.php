@@ -695,7 +695,7 @@ class PageLayoutController
             );
         }
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['starttime'])) {
-            $andWhere[] = $queryBuilder->expr()->andX(
+            $andWhere[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->neq(
                     'starttime',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -707,7 +707,7 @@ class PageLayoutController
             );
         }
         if (!empty($GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['endtime'])) {
-            $andWhere[] = $queryBuilder->expr()->andX(
+            $andWhere[] = $queryBuilder->expr()->and(
                 $queryBuilder->expr()->neq(
                     'endtime',
                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -720,7 +720,7 @@ class PageLayoutController
         }
         if (!empty($andWhere)) {
             $queryBuilder->andWhere(
-                $queryBuilder->expr()->orX(...$andWhere)
+                $queryBuilder->expr()->or(...$andWhere)
             );
         }
         $count = $queryBuilder

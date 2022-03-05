@@ -94,7 +94,7 @@ class LimitToTablesRestrictionContainer implements QueryRestrictionContainerInte
                 $expressionBuilder
             );
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 
     private function filterApplicableTableAliases(array $queriedTables, string $name): array

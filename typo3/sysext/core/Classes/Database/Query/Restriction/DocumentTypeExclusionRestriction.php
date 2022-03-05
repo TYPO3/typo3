@@ -61,6 +61,6 @@ class DocumentTypeExclusionRestriction implements QueryRestrictionInterface
             $constraints[] = $expressionBuilder->notIn($tableAlias . '.doktype', $this->doktypes);
         }
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

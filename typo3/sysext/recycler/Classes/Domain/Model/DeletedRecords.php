@@ -278,7 +278,7 @@ class DeletedRecords
                 )
             );
             if (MathUtility::canBeInterpretedAsInteger($filter)) {
-                $filterConstraint = $queryBuilder->expr()->orX(
+                $filterConstraint = $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         'uid',
                         $queryBuilder->createNamedParameter($filter, \PDO::PARAM_INT)
@@ -301,9 +301,9 @@ class DeletedRecords
             );
         }
         $queryBuilder->where(
-            $queryBuilder->expr()->andX(
+            $queryBuilder->expr()->and(
                 $filterConstraint,
-                $queryBuilder->expr()->orX(...$pidConstraints)
+                $queryBuilder->expr()->or(...$pidConstraints)
             )
         );
 

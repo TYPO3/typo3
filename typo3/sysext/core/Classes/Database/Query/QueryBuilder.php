@@ -708,7 +708,7 @@ class QueryBuilder
      */
     public function leftJoin(string $fromAlias, string $join, string $alias, string $condition = null): QueryBuilder
     {
-        $condition = $this->expr()->andX(
+        $condition = $this->expr()->and(
             $condition,
             $this->restrictionContainer->buildExpression([$alias ?? $join => $join], $this->expr())
         );
@@ -745,7 +745,7 @@ class QueryBuilder
             }
         }
 
-        $condition = $this->expr()->andX(
+        $condition = $this->expr()->and(
             $condition,
             $this->restrictionContainer->buildExpression([$fromAlias => $fromTable], $this->expr())
         );

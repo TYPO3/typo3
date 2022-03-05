@@ -77,9 +77,9 @@ class WorkspaceRestriction implements QueryRestrictionInterface
             }
             // Always filter out versioned records that have an "offline" record
             // But include moved records AND newly created records (t3ver_oid=0)
-            $constraints[] = $expressionBuilder->andX(
+            $constraints[] = $expressionBuilder->and(
                 $workspaceIdExpression,
-                $expressionBuilder->orX(
+                $expressionBuilder->or(
                     $expressionBuilder->eq(
                         $tableAlias . '.t3ver_oid',
                         0
@@ -91,6 +91,6 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                 )
             );
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

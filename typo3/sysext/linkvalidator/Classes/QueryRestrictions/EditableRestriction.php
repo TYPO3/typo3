@@ -169,9 +169,9 @@ class EditableRestriction implements QueryRestrictionInterface
 
         if ($this->allowedFields) {
             $constraints = [
-                $expressionBuilder->orX(
+                $expressionBuilder->or(
                 // broken link is in page and page is editable
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',
                             $this->queryBuilder->quote('pages')
@@ -179,7 +179,7 @@ class EditableRestriction implements QueryRestrictionInterface
                         QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_EDIT))
                     ),
                     // OR broken link is in content and content is editable
-                    $expressionBuilder->andX(
+                    $expressionBuilder->and(
                         $expressionBuilder->neq(
                             'tx_linkvalidator_link.table_name',
                             $this->queryBuilder->quote('pages')
@@ -193,7 +193,7 @@ class EditableRestriction implements QueryRestrictionInterface
             $additionalWhere = [];
             foreach ($this->allowedFields as $table => $fields) {
                 foreach ($fields as $field => $value) {
-                    $additionalWhere[] = $expressionBuilder->andX(
+                    $additionalWhere[] = $expressionBuilder->and(
                         $expressionBuilder->eq(
                             'tx_linkvalidator_link.table_name',
                             $this->queryBuilder->quote($table)
@@ -206,7 +206,7 @@ class EditableRestriction implements QueryRestrictionInterface
                 }
             }
             if ($additionalWhere) {
-                $constraints[] = $expressionBuilder->orX(...$additionalWhere);
+                $constraints[] = $expressionBuilder->or(...$additionalWhere);
             }
         } else {
             // add a constraint that will always return zero records because there are NO allowed fields
@@ -215,7 +215,7 @@ class EditableRestriction implements QueryRestrictionInterface
 
         foreach ($this->explicitAllowFields as $table => $field) {
             $additionalWhere = [];
-            $additionalWhere[] = $expressionBuilder->andX(
+            $additionalWhere[] = $expressionBuilder->and(
                 $expressionBuilder->eq(
                     'tx_linkvalidator_link.table_name',
                     $this->queryBuilder->quote($table)
@@ -230,14 +230,14 @@ class EditableRestriction implements QueryRestrictionInterface
                 $this->queryBuilder->quote($table)
             );
             if ($additionalWhere) {
-                $constraints[] = $expressionBuilder->orX(...$additionalWhere);
+                $constraints[] = $expressionBuilder->or(...$additionalWhere);
             }
         }
 
         if ($this->allowedLanguages) {
             $additionalWhere = [];
             foreach ($this->allowedLanguages as $langId) {
-                $additionalWhere[] = $expressionBuilder->orX(
+                $additionalWhere[] = $expressionBuilder->or(
                     $expressionBuilder->eq(
                         'tx_linkvalidator_link.language',
                         $this->queryBuilder->quote($langId, \PDO::PARAM_INT)
@@ -248,10 +248,10 @@ class EditableRestriction implements QueryRestrictionInterface
                     )
                 );
             }
-            $constraints[] = $expressionBuilder->orX(...$additionalWhere);
+            $constraints[] = $expressionBuilder->or(...$additionalWhere);
         }
         // If allowed languages is empty: all languages are allowed, so no constraint in this case
 
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

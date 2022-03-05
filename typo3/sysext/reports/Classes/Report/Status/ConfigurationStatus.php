@@ -256,7 +256,7 @@ class ConfigurationStatus implements StatusProviderInterface
             $nonUtf8TableCollationsFound = $queryBuilder->select('table_collation')
                 ->from('information_schema.tables')
                 ->where(
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
                         $queryBuilder->expr()->notLike('table_collation', $queryBuilder->quote('utf8%'))
                     )
@@ -291,7 +291,7 @@ class ConfigurationStatus implements StatusProviderInterface
                 $wrongCollationTablesFound = $queryBuilder->select('table_collation')
                     ->from('information_schema.tables')
                     ->where(
-                        $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->and(
                             $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
                             $collationConstraint
                         )
@@ -314,7 +314,7 @@ class ConfigurationStatus implements StatusProviderInterface
                     $wrongCollationColumnsFound = $queryBuilder->select('collation_name')
                         ->from('information_schema.columns')
                         ->where(
-                            $queryBuilder->expr()->andX(
+                            $queryBuilder->expr()->and(
                                 $queryBuilder->expr()->eq('table_schema', $queryBuilder->quote($connection->getDatabase())),
                                 $collationConstraint
                             )

@@ -214,13 +214,13 @@ class Typo3DbQueryParser
     protected function parseConstraint(ConstraintInterface $constraint, SourceInterface $source)
     {
         if ($constraint instanceof AndInterface) {
-            return $this->queryBuilder->expr()->andX(
+            return $this->queryBuilder->expr()->and(
                 $this->parseConstraint($constraint->getConstraint1(), $source),
                 $this->parseConstraint($constraint->getConstraint2(), $source)
             );
         }
         if ($constraint instanceof OrInterface) {
-            return $this->queryBuilder->expr()->orX(
+            return $this->queryBuilder->expr()->or(
                 $this->parseConstraint($constraint->getConstraint1(), $source),
                 $this->parseConstraint($constraint->getConstraint2(), $source)
             );
@@ -292,8 +292,8 @@ class Typo3DbQueryParser
             if (!empty($additionalWhereClauses)) {
                 if (in_array($tableAlias, $this->unionTableAliasCache, true)) {
                     $this->queryBuilder->andWhere(
-                        $this->queryBuilder->expr()->orX(
-                            $this->queryBuilder->expr()->andX(...$additionalWhereClauses),
+                        $this->queryBuilder->expr()->or(
+                            $this->queryBuilder->expr()->and(...$additionalWhereClauses),
                             $this->queryBuilder->expr()->isNull($tableAlias . '.uid')
                         )
                     );
@@ -593,7 +593,7 @@ class Typo3DbQueryParser
                         );
                     }
                     $this->queryBuilder->andWhere(
-                        $this->queryBuilder->expr()->orX(...$recordTypeStatements)
+                        $this->queryBuilder->expr()->or(...$recordTypeStatements)
                     );
                 }
             }
@@ -628,7 +628,7 @@ class Typo3DbQueryParser
         }
 
         if (!empty($additionalWhereForMatchFields)) {
-            return $exprBuilder->andX(...$additionalWhereForMatchFields);
+            return $exprBuilder->and(...$additionalWhereForMatchFields);
         }
         return '';
     }
@@ -790,7 +790,7 @@ class Typo3DbQueryParser
             ->select($defLangTableAlias . '.uid')
             ->from($tableName, $defLangTableAlias)
             ->where(
-                $defaultLanguageRecordsSubSelect->expr()->andX(
+                $defaultLanguageRecordsSubSelect->expr()->and(
                     $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $transOrigPointerField, 0),
                     $defaultLanguageRecordsSubSelect->expr()->eq($defLangTableAlias . '.' . $languageField, 0)
                 )
@@ -800,7 +800,7 @@ class Typo3DbQueryParser
         // records in language 'all'
         $andConditions[] = $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1);
         // translated records where a default language exists
-        $andConditions[] = $this->queryBuilder->expr()->andX(
+        $andConditions[] = $this->queryBuilder->expr()->and(
             $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid()),
             $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $transOrigPointerField,
@@ -817,13 +817,13 @@ class Typo3DbQueryParser
                 ->select($translatedOnlyTableAlias . '.' . $transOrigPointerField)
                 ->from($tableName, $translatedOnlyTableAlias)
                 ->where(
-                    $queryBuilderForSubselect->expr()->andX(
+                    $queryBuilderForSubselect->expr()->and(
                         $queryBuilderForSubselect->expr()->gt($translatedOnlyTableAlias . '.' . $transOrigPointerField, 0),
                         $queryBuilderForSubselect->expr()->eq($translatedOnlyTableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid())
                     )
                 );
             // records in default language, which do not have a translation
-            $andConditions[] = $this->queryBuilder->expr()->andX(
+            $andConditions[] = $this->queryBuilder->expr()->and(
                 $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, 0),
                 $this->queryBuilder->expr()->notIn(
                     $tableAlias . '.uid',
@@ -832,7 +832,7 @@ class Typo3DbQueryParser
             );
         }
 
-        return $this->queryBuilder->expr()->orX(...$andConditions);
+        return $this->queryBuilder->expr()->or(...$andConditions);
     }
 
     /**
@@ -1036,7 +1036,7 @@ class Typo3DbQueryParser
             $relationTableName = (string)$columnMap->getRelationTableName();
             $relationTableAlias = $this->getUniqueAlias($relationTableName, $fullPropertyPath . '_mm');
 
-            $joinConditionExpression = $this->queryBuilder->expr()->andX(
+            $joinConditionExpression = $this->queryBuilder->expr()->and(
                 $this->queryBuilder->expr()->eq(
                     $tableName . '.uid',
                     $this->queryBuilder->quoteIdentifier(

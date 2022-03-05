@@ -156,8 +156,8 @@ class DefaultDataProvider implements DataProviderInterface
             ->select('*')
             ->from($this->tableName)
             ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->comparison(
                             $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
                             ExpressionBuilder::EQ,
@@ -169,7 +169,7 @@ class DefaultDataProvider implements DataProviderInterface
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         )
                     ),
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq(
                             'backend_layout.pid',
                             $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT)
@@ -179,7 +179,7 @@ class DefaultDataProvider implements DataProviderInterface
                             $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT)
                         )
                     ),
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->comparison(
                             $queryBuilder->createNamedParameter($pageTsConfigId[$fieldName], \PDO::PARAM_INT),
                             ExpressionBuilder::EQ,

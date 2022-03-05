@@ -50,7 +50,7 @@ abstract class AbstractRestrictionContainer implements QueryRestrictionContainer
         foreach ($this->restrictions as $restriction) {
             $constraints[] = $restriction->buildExpression($queriedTables, $expressionBuilder);
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 
     /**

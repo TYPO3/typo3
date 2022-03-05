@@ -1424,7 +1424,7 @@ class Indexer
                     'phash',
                     $queryBuilder->createNamedParameter($hash, \PDO::PARAM_INT)
                 ),
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         'hash_gr_list',
                         $queryBuilder->createNamedParameter(

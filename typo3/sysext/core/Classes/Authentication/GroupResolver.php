@@ -164,7 +164,7 @@ class GroupResolver
 
         $users = $queryBuilder
             ->where(
-                $queryBuilder->expr()->orX(...$constraints)
+                $queryBuilder->expr()->or(...$constraints)
             )
             ->executeQuery()
             ->fetchAllAssociative();
@@ -220,7 +220,7 @@ class GroupResolver
 
         $result = $queryBuilder
             ->where(
-                $queryBuilder->expr()->orX(...$constraints)
+                $queryBuilder->expr()->or(...$constraints)
             )
             ->executeQuery();
 

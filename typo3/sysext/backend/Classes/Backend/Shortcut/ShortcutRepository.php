@@ -351,7 +351,7 @@ class ShortcutRepository
         $result = $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
             ->where(
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq(
                         'userid',
                         $queryBuilder->createNamedParameter($backendUser->user['uid'], \PDO::PARAM_INT)

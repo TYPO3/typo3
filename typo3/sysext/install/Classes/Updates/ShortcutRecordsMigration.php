@@ -140,12 +140,12 @@ class ShortcutRecordsMigration implements UpgradeWizardInterface
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->neq('module_name', $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->neq('url', $queryBuilder->createNamedParameter('')),
                     $queryBuilder->expr()->isNotNull('url')
                 ),
                 $queryBuilder->expr()->eq('route', $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('arguments', $queryBuilder->createNamedParameter('')),
                     $queryBuilder->expr()->isNull('arguments')
                 )

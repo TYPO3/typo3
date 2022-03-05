@@ -418,7 +418,7 @@ class DatabaseIntegrityCheck
                     [Types::BIGINT, Types::INTEGER, Types::SMALLINT, Types::DECIMAL, Types::FLOAT],
                     true
                 )) {
-                    $whereClause[] = $queryBuilder->expr()->andX(
+                    $whereClause[] = $queryBuilder->expr()->and(
                         $queryBuilder->expr()->isNotNull($fieldName),
                         $queryBuilder->expr()->neq(
                             $fieldName,
@@ -426,7 +426,7 @@ class DatabaseIntegrityCheck
                         )
                     );
                 } elseif (in_array($fieldType, [Types::STRING, Types::TEXT], true)) {
-                    $whereClause[] = $queryBuilder->expr()->andX(
+                    $whereClause[] = $queryBuilder->expr()->and(
                         $queryBuilder->expr()->isNotNull($fieldName),
                         $queryBuilder->expr()->neq(
                             $fieldName,
@@ -434,7 +434,7 @@ class DatabaseIntegrityCheck
                         )
                     );
                 } elseif ($fieldType === Types::BLOB) {
-                    $whereClause[] = $queryBuilder->expr()->andX(
+                    $whereClause[] = $queryBuilder->expr()->and(
                         $queryBuilder->expr()->isNotNull($fieldName),
                         $queryBuilder->expr()
                             ->comparison(

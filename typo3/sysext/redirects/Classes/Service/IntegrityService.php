@@ -116,7 +116,7 @@ class IntegrityService
             ->from('pages');
 
         $queryBuilder->where(
-            $queryBuilder->expr()->orX(
+            $queryBuilder->expr()->or(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq($this->getPagesLanguageParentFieldName(), $queryBuilder->createNamedParameter($site->getRootPageId(), \PDO::PARAM_INT)),
             )

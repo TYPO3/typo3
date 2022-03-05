@@ -60,7 +60,7 @@ class DatabaseService
             ->from('sys_refindex')
             ->where(
                 $queryBuilder->expr()->eq('softref_key', $queryBuilder->createNamedParameter('formPersistenceIdentifier', \PDO::PARAM_STR)),
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq('ref_string', $queryBuilder->createNamedParameter($persistenceIdentifier, \PDO::PARAM_STR)),
                     $queryBuilder->expr()->eq('ref_uid', $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT))
                 )

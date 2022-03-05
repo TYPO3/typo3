@@ -70,7 +70,7 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
                     (int)$this->workspaceId
                 );
                 if ($this->includeRowsForWorkspaceOverlay) {
-                    $constraints[] = $expressionBuilder->orX(
+                    $constraints[] = $expressionBuilder->or(
                         $workspaceIdExpression,
                         $expressionBuilder->lte(
                             $tableAlias . '.t3ver_state',
@@ -88,6 +88,6 @@ class BackendWorkspaceRestriction implements QueryRestrictionInterface
                 }
             }
         }
-        return $expressionBuilder->andX(...$constraints);
+        return $expressionBuilder->and(...$constraints);
     }
 }

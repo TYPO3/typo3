@@ -222,7 +222,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
         $compositeExpressionProphecy->__toString()->willReturn('heinz AND heinz');
         $compositeExpressionRevelation = $compositeExpressionProphecy->reveal();
-        $expressionProphecy->andX('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
+        $expressionProphecy->and('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
         $queryBuilderProphecy->andWhere($compositeExpressionRevelation)->shouldBeCalled();
 
         $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());
@@ -263,7 +263,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $compositeExpressionProphecy = $this->prophesize(CompositeExpression::class);
         $compositeExpressionProphecy->__toString()->willReturn('heinz OR heinz');
         $compositeExpressionRevelation = $compositeExpressionProphecy->reveal();
-        $expressionProphecy->orX('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
+        $expressionProphecy->or('heinz', 'heinz')->shouldBeCalled()->willReturn($compositeExpressionRevelation);
         $queryBuilderProphecy->andWhere($compositeExpressionRevelation)->shouldBeCalled();
 
         $subject->convertQueryToDoctrineQueryBuilder($queryProphecy->reveal());

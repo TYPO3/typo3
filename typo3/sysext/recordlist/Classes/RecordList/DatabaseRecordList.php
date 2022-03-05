@@ -2263,7 +2263,7 @@ class DatabaseRecordList
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages')
             ->expr();
-        $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        $permsClause = $expressionBuilder->and($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         // This will hide records from display - it has nothing to do with user rights!!
         $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
         if (!empty($pidList)) {
@@ -2409,7 +2409,7 @@ class DatabaseRecordList
             // And if only translations should be shown
             if ($this->searchString === '' && !$this->showOnlyTranslatedRecords) {
                 $queryBuilder->andWhere(
-                    $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->or(
                         $queryBuilder->expr()->lte($GLOBALS['TCA'][$table]['ctrl']['languageField'], 0),
                         $queryBuilder->expr()->eq($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], 0)
                     )
@@ -2542,7 +2542,7 @@ class DatabaseRecordList
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
                     ) {
-                        $constraints[] = $expressionBuilder->andX(
+                        $constraints[] = $expressionBuilder->and(
                             $expressionBuilder->eq($fieldName, (int)$this->searchString),
                             $expressionBuilder->eq($tablePidField, (int)$currentPid)
                         );
@@ -2568,7 +2568,7 @@ class DatabaseRecordList
                 $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
                 $evalRules = ($fieldConfig['eval'] ?? false) ?: '';
-                $searchConstraint = $expressionBuilder->andX(
+                $searchConstraint = $expressionBuilder->and(
                     $expressionBuilder->comparison(
                         'LOWER(' . $queryBuilder->castFieldToTextType($fieldName) . ')',
                         'LIKE',
@@ -2579,7 +2579,7 @@ class DatabaseRecordList
                     $searchConfig = $fieldConfig['search'];
                     if ($searchConfig['case'] ?? false) {
                         // Replace case insensitive default constraint
-                        $searchConstraint = $expressionBuilder->andX($expressionBuilder->like($fieldName, $like));
+                        $searchConstraint = $expressionBuilder->and($expressionBuilder->like($fieldName, $like));
                     }
                     if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
                         $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
@@ -2620,7 +2620,7 @@ class DatabaseRecordList
             return '0=1';
         }
 
-        return $expressionBuilder->orX(...$constraints);
+        return $expressionBuilder->or(...$constraints);
     }
 
     /**
@@ -3056,7 +3056,7 @@ class DatabaseRecordList
             ->select('*')
             ->from('pages')
             ->where(
-                $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->and(
                     $queryBuilder->expr()->eq($localizationParentField, $queryBuilder->createNamedParameter($pageUid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->in($languageField, $queryBuilder->createNamedParameter($availableSystemLanguageUids, Connection::PARAM_INT_ARRAY)),
                     $queryBuilder->expr()->gt(

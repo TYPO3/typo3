@@ -54,6 +54,6 @@ class FolderIdentifierRestriction implements QueryRestrictionInterface
             );
         }
 
-        return $expressionBuilder->orX(...$constraints);
+        return $expressionBuilder->or(...$constraints);
     }
 }

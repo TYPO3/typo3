@@ -514,7 +514,7 @@ class RelationHandler
                 // Be backwards compatible! When allowing more than one table after
                 // having previously allowed only one table, this case applies.
                 if ($this->currentTable == $this->MM_isMultiTableRelationship) {
-                    $expression = $queryBuilder->expr()->orX(
+                    $expression = $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq(
                             'tablenames',
                             $queryBuilder->createNamedParameter($this->currentTable, \PDO::PARAM_STR)
@@ -613,7 +613,7 @@ class RelationHandler
                     $expressionBuilder->literal($this->currentTable)
                 );
             }
-            $additionalWhere = $expressionBuilder->andX();
+            $additionalWhere = $expressionBuilder->and();
             // Add WHERE clause if configured
             if ($this->MM_table_where) {
                 $additionalWhere->add(
@@ -747,7 +747,7 @@ class RelationHandler
             // Delete all not-used relations:
             if (is_array($oldMMs) && !empty($oldMMs)) {
                 $queryBuilder = $connection->createQueryBuilder();
-                $removeClauses = $queryBuilder->expr()->orX();
+                $removeClauses = $queryBuilder->expr()->or();
                 $updateRefIndex_records = [];
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
@@ -759,7 +759,7 @@ class RelationHandler
                     } else {
                         if (is_array($mmItem)) {
                             $removeClauses->add(
-                                $queryBuilder->expr()->andX(
+                                $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq(
                                         'tablenames',
                                         $queryBuilder->createNamedParameter($mmItem[0], \PDO::PARAM_STR)
@@ -858,7 +858,7 @@ class RelationHandler
         // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
         if (!empty($conf['symmetric_field'])) {
             $queryBuilder->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         $conf['foreign_field'],
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
