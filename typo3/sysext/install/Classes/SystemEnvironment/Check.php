@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Check system environment status
@@ -143,7 +144,7 @@ class Check implements CheckInterface
     {
         $includePath = (string)ini_get('include_path');
         $delimiter = $this->isWindowsOs() ? ';' : ':';
-        $pathArray = $this->trimExplode($delimiter, $includePath);
+        $pathArray = GeneralUtility::trimExplode($delimiter, $includePath, true);
         if (!in_array('.', $pathArray)) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'include_path = ' . implode(' ', $pathArray) . LF
@@ -375,7 +376,7 @@ class Check implements CheckInterface
         $disabledFunctions = trim((string)ini_get('disable_functions'));
 
         // Filter "disable_functions"
-        $disabledFunctionsArray = $this->trimExplode(',', $disabledFunctions);
+        $disabledFunctionsArray = GeneralUtility::trimExplode(',', $disabledFunctions, true);
 
         // Array with strings to find
         $findStrings = [
@@ -806,28 +807,6 @@ class Check implements CheckInterface
             $windowsOs = true;
         }
         return $windowsOs;
-    }
-
-    /**
-     * Helper method to explode a string by delimiter and throw away empty values.
-     * Removes empty values from result array.
-     *
-     * @param string $delimiter Delimiter string to explode with
-     * @param string $string The string to explode
-     * @return array Exploded values
-     */
-    protected function trimExplode($delimiter, $string)
-    {
-        $explodedValues = explode($delimiter, $string);
-        $explodedValues = is_array($explodedValues) ? $explodedValues : [];
-        $resultWithPossibleEmptyValues = array_map('trim', $explodedValues);
-        $result = [];
-        foreach ($resultWithPossibleEmptyValues as $value) {
-            if ($value !== '') {
-                $result[] = $value;
-            }
-        }
-        return $result;
     }
 
     /**

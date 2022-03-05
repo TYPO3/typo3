@@ -4911,16 +4911,6 @@ parameters:
 			path: ../../typo3/sysext/install/Classes/Service/LanguagePackService.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/SystemEnvironment/Check.php
-
-		-
-			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/install/Classes/SystemEnvironment/Check.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/SystemEnvironment/ServerResponse/FileDeclaration.php
