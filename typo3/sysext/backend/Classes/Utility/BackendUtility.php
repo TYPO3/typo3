@@ -1347,16 +1347,15 @@ class BackendUtility
     }
 
     /**
-     * Returns the label-value for fieldname $col in table, $table
-     * If $printAllWrap is set (to a "wrap") then it's wrapped around the $col value IF THE COLUMN $col DID NOT EXIST in TCA!, eg. $printAllWrap = '<strong>|</strong>' and the fieldname was 'not_found_field' then the return value would be '<strong>not_found_field</strong>'
+     * Returns the label-value for fieldname $column in table $table.
      *
-     * @param string $table Table name, present in $GLOBALS['TCA']
-     * @param string $col Field name
-     * @return string or NULL if $col is not found in the TCA table
+     * @param string $table Table name present in $GLOBALS['TCA']
+     * @param string $column Field name in $GLOBALS['TCA']['columns']
+     * @return string|null Value of $GLOBALS['TCA']['columns']['label'] or null if not set
      */
-    public static function getItemLabel($table, $col)
+    public static function getItemLabel(string $table, string $column): ?string
     {
-        return $GLOBALS['TCA'][$table]['columns'][$col]['label'] ?? null;
+        return $GLOBALS['TCA'][$table]['columns'][$column]['label'] ?? null;
     }
 
     /**

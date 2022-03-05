@@ -3391,11 +3391,6 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/FileList.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/filelist/Classes/FileList.php
@@ -5052,16 +5047,6 @@ parameters:
 
 		-
 			message: "#^Cannot assign offset 'currentValue' to string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
-
-		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
-
-		-
-			message: "#^Elseif branch is unreachable because previous condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/recordlist/Classes/RecordList/DatabaseRecordList.php
 

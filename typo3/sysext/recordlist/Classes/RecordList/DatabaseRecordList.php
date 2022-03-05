@@ -1255,8 +1255,7 @@ class DatabaseRecordList
                     // Regular fields header:
                     $theData[$fCol] = '';
 
-                    // Check if $fCol is really a field and get the label and remove the colons
-                    // at the end
+                    // Check if $fCol is really a field and get the label and remove the colons at the end
                     $sortLabel = BackendUtility::getItemLabel($table, $fCol);
                     if ($sortLabel !== null) {
                         $sortLabel = rtrim(trim($lang->sL($sortLabel)), ':');
