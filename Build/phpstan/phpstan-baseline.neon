@@ -3166,16 +3166,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationTest.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/DateTimeConverterTest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverter/DateTimeConverterTest.php
-
-		-
 			message: "#^Constructor of an anonymous class has an unused parameter \\$copy\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ClassSchemaTest.php

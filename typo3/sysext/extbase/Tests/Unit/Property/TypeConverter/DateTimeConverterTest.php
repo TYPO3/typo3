@@ -107,12 +107,12 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @param string $source the string to be converted
-     * @param string $dateFormat the expected date format
+     * @param string|null $dateFormat the expected date format
      * @param bool $isValid TRUE if the conversion is expected to be successful, otherwise FALSE
      * @test
      * @dataProvider convertFromStringDataProvider
      */
-    public function convertFromStringTests($source, $dateFormat, $isValid): void
+    public function convertFromStringTests(string $source, ?string $dateFormat, bool $isValid): void
     {
         if ($dateFormat !== null) {
             $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
