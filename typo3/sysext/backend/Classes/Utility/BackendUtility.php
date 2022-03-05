@@ -2200,23 +2200,20 @@ class BackendUtility
         $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
-        if (!empty($options)) {
-            // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-            $attributes = GeneralUtility::implodeAttributes([
-                'name' => $elementName,
-                'class' => 'form-select mb-3',
-                'data-menu-identifier' => $dataMenuIdentifier,
-                'data-global-event' => 'change',
-                'data-action-navigate' => '$data=~s/$value/',
-                'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
-            ], true);
-            return sprintf(
-                '<select %s>%s</select>',
-                $attributes,
-                implode('', $options)
-            );
-        }
-        return '';
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $attributes = GeneralUtility::implodeAttributes([
+            'name' => $elementName,
+            'class' => 'form-select mb-3',
+            'data-menu-identifier' => $dataMenuIdentifier,
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
+        ], true);
+        return sprintf(
+            '<select %s>%s</select>',
+            $attributes,
+            implode('', $options)
+        );
     }
 
     /**
@@ -2254,25 +2251,21 @@ class BackendUtility
         $dataMenuIdentifier = str_replace(['SET[', ']'], '', $elementName);
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
-        if (!empty($options)) {
-            // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-            $attributes = GeneralUtility::implodeAttributes([
-                'name' => $elementName,
-                'data-menu-identifier' => $dataMenuIdentifier,
-                'data-global-event' => 'change',
-                'data-action-navigate' => '$data=~s/$value/',
-                'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
-            ], true);
-            return '
-			<div class="input-group">
-				<!-- Function Menu of module -->
-				<select class="form-select" ' . $attributes . '>
-					' . implode(LF, $options) . '
-				</select>
-			</div>
-						';
-        }
-        return '';
+        // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
+        $attributes = GeneralUtility::implodeAttributes([
+            'name' => $elementName,
+            'data-menu-identifier' => $dataMenuIdentifier,
+            'data-global-event' => 'change',
+            'data-action-navigate' => '$data=~s/$value/',
+            'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
+        ], true);
+        return '
+        <div class="input-group">
+            <!-- Function Menu of module -->
+            <select class="form-select" ' . $attributes . '>
+                ' . implode(LF, $options) . '
+            </select>
+        </div>';
     }
 
     /**

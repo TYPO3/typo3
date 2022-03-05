@@ -301,16 +301,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
-			message: "#^Variable \\$options in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
 			message: "#^Variable \\$value in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
