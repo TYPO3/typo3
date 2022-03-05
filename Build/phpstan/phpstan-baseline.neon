@@ -116,11 +116,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\AbstractFormElement\\:\\:formMaxWidth\\(\\) should return int but returns float\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
-
-		-
 			message: "#^Offset 'arguments' on array\\{arguments\\: string\\|false\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php

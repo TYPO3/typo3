@@ -144,7 +144,7 @@ class MfaInfoElement extends AbstractFormElement
         $fieldId = 't3js-form-field-mfa-id' . StringUtility::getUniqueId('-');
 
         $html[] = '<div class="formengine-field-item t3js-formengine-field-item" id="' . htmlspecialchars($fieldId) . '">';
-        $html[] =   '<div class="form-control-wrap" style="max-width: ' . (int)$this->formMaxWidth($this->defaultInputWidth) . 'px">';
+        $html[] =   '<div class="form-control-wrap" style="max-width: ' . $this->formMaxWidth($this->defaultInputWidth) . 'px">';
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';
         $html[] =               implode(PHP_EOL, $childHtml);
