@@ -114,31 +114,6 @@ class WorkspaceServiceTest extends FunctionalTestCase
     }
 
     /**
-     * The only change which we could find here actually moved away from this
-     * branch of the tree - therefore we're not supposed to find anything here
-     *
-     * @test
-     */
-    public function movedElementsCanNotBeFoundAtTheirOrigin(): void
-    {
-        self::markTestSkipped('This test need a review. It is green even if all fixtures are commented out');
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        // Test if the placeholder can be found when we ask using recursion (same result)
-        $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(91, -99, 2, 99);
-        self::assertCount(
-            0,
-            $result['pages'],
-            'Changes should not show up in this branch of the tree within workspace 91'
-        );
-        self::assertCount(
-            0,
-            $result['tt_content'],
-            'Changes should not show up in this branch of the tree within workspace 91'
-        );
-    }
-
-    /**
      * @test
      */
     public function movedElementsCanBeFoundAtTheirDestination(): void

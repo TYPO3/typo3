@@ -5230,8 +5230,3 @@ parameters:
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Service/GridDataService.php
 
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
