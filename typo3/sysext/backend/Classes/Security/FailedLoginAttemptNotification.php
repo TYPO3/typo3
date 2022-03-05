@@ -126,12 +126,11 @@ class FailedLoginAttemptNotification
             $earliestTimeToCheckForFailures = (int)$lastTimeANotificationWasSent;
         }
         $queryBuilder = $this->createPreparedQueryBuilder($earliestTimeToCheckForFailures, SystemLogLoginAction::ATTEMPT);
-        $previousFailures = $queryBuilder
+        return $queryBuilder
             ->select('*')
             ->orderBy('tstamp')
             ->executeQuery()
             ->fetchAllAssociative();
-        return is_array($previousFailures) ? $previousFailures : [];
     }
 
     /**

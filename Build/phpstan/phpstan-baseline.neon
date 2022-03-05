@@ -256,11 +256,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/FailedLoginAttemptNotification.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Resource\\\\FolderInterface\\:\\:getReadablePath\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
