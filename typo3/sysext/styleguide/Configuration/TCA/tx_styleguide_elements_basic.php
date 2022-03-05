@@ -1332,28 +1332,19 @@ backend_layout {
         'none_1' => [
             'exclude' => 1,
             'label' => 'none_1',
-            'description' => 'pass_content=1',
+            'description' => 'pass_content=true',
             'config' => [
                 'type' => 'none',
-                'pass_content' => 1,
+                'pass_content' => true,
             ],
         ],
         'none_2' => [
             'exclude' => 1,
             'label' => 'none_2',
-            'description' => 'pass_content=0',
+            'description' => 'pass_content=false',
             'config' => [
                 'type' => 'none',
-                'pass_content' => 0,
-            ],
-        ],
-        'none_3' => [
-            'exclude' => 1,
-            'label' => 'none_3',
-            'description' => 'cols=2',
-            'config' => [
-                'type' => 'none',
-                'cols' => 2,
+                'pass_content' => false,
             ],
         ],
         'none_4' => [
@@ -1366,7 +1357,7 @@ backend_layout {
             ],
         ],
         'none_5' => [
-            'exculde' => 1,
+            'exclude' => 1,
             'label' => 'none_5',
             'description' => 'format=datetime',
             'config' => [
@@ -1715,7 +1706,7 @@ backend_layout {
                 --div--;radio,
                     radio_1, radio_2, radio_3, radio_4, radio_5, radio_6,
                 --div--;none,
-                    none_1, none_2, none_3, none_4, none_5,
+                    none_1, none_2, none_4, none_5,
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,
