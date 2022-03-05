@@ -389,7 +389,7 @@ class TranslationStatusController extends InfoModuleController
      *
      * @param int $pageId Page ID to look up for.
      * @param int $langId Language UID to select for.
-     * @return array translated pages record
+     * @return array|null translated pages record
      */
     protected function getLangStatus($pageId, $langId)
     {

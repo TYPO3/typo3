@@ -4706,16 +4706,6 @@ parameters:
 			path: ../../typo3/sysext/indexed_search/Classes/Utility/DoubleMetaPhoneUtility.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Info\\\\Controller\\\\TranslationStatusController\\:\\:getLangStatus\\(\\) should return array but returns mixed\\.$#"
-			count: 1
-			path: ../../typo3/sysext/info/Classes/Controller/TranslationStatusController.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Install\\\\Command\\\\UpgradeWizardListCommand\\:\\:\\$input is never read, only written\\.$#"
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Command/UpgradeWizardListCommand.php
