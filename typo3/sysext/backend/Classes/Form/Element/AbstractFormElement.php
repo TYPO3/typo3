@@ -310,8 +310,8 @@ abstract class AbstractFormElement extends AbstractNode
         $compensationForLargeDocuments = 1.33;
         $compensationForFormFields = 12;
 
-        $size = round($size * $compensationForLargeDocuments);
-        return ceil($size * $compensationForFormFields);
+        $compensatedSize = round($size * $compensationForLargeDocuments);
+        return (int)ceil($compensatedSize * $compensationForFormFields);
     }
 
     /**

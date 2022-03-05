@@ -101,7 +101,7 @@ class InputDateTimeElement extends AbstractFormElement
         }
 
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = (int)$this->formMaxWidth($size);
+        $width = $this->formMaxWidth($size);
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];

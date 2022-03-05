@@ -111,11 +111,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\Element\\\\AbstractFormElement\\:\\:formMaxWidth\\(\\) should return int but returns float\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
-
-		-
 			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php

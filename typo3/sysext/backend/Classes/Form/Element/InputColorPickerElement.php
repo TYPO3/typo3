@@ -78,7 +78,7 @@ class InputColorPickerElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
         $size = MathUtility::forceIntegerInRange(($config['size'] ?? false) ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
-        $width = (int)$this->formMaxWidth($size);
+        $width = $this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
         $fieldInformationResult = $this->renderFieldInformation();

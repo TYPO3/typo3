@@ -84,7 +84,7 @@ class InputTextElement extends AbstractFormElement
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = (int)$this->formMaxWidth($size);
+        $width = $this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
 
         $fieldInformationResult = $this->renderFieldInformation();
