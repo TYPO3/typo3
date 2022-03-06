@@ -531,11 +531,6 @@ export default (function() {
       $parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TYPO3.lang['FormEngine.remainingCharacters'].replace('{0}', maxlengthProperties.remainingCharacters))
     });
     $maxlengthElements.addClass('t3js-charcounter-initialized');
-    $(':password').on('focus', function(event: JQueryEventObject) {
-      $(event.currentTarget).attr({'type':'text', 'data-active-password':'true'}).trigger('select');
-    }).on('blur', function(event: JQueryEventObject) {
-      $(event.currentTarget).attr('type', 'password').removeAttr('data-active-password');
-    });
   };
 
   /**
@@ -1213,16 +1208,8 @@ export default (function() {
    * Sets some options and registers the DOMready handler to initialize further things
    *
    * @param {String} browserUrl
-   * @param {Number} mode
    */
   FormEngine.initialize = function(browserUrl: string): void {
-    DocumentSaveActions.getInstance().addPreSubmitCallback(function() {
-      $('[data-active-password]:not([type="password"])').each(function(index: number, element: HTMLElement) {
-        element.setAttribute('type', 'password');
-        element.blur();
-      });
-    });
-
     FormEngine.browserUrl = browserUrl;
 
     $(function() {

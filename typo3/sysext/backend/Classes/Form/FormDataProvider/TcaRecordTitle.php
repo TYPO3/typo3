@@ -182,6 +182,9 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'link':
                 $recordTitle = $this->getRecordTitleForStandardTextField($rawValue);
                 break;
+            case 'password':
+                $recordTitle = $this->getRecordTitleForPasswordType($rawValue);
+                break;
             case 'flex':
                 // @todo: Check if and how a label could be generated from flex field data
             default:
@@ -397,6 +400,17 @@ class TcaRecordTitle implements FormDataProviderInterface
         }
 
         return trim(strip_tags($value));
+    }
+
+    /**
+     * Returns the record title for password fields
+     *
+     * @param mixed $value Current database value of this field
+     * @return string
+     */
+    protected function getRecordTitleForPasswordType(mixed $value): string
+    {
+        return $value ? '********' : '';
     }
 
     protected function getLanguageService(): LanguageService

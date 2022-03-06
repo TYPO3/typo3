@@ -77,6 +77,7 @@ class NodeFactory
         'input' => Element\InputTextElement::class,
         'inputDateTime' => Element\InputDateTimeElement::class,
         'link' => Element\LinkElement::class,
+        'password' => Element\PasswordElement::class,
         'hidden' => Element\InputHiddenElement::class,
         'imageManipulation' => Element\ImageManipulationElement::class,
         'none' => Element\NoneElement::class,

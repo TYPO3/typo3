@@ -53,20 +53,17 @@ return [
         'password' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
             'config' => [
-                'type' => 'input',
+                'type' => 'password',
                 'size' => 20,
-                'max' => 100,
                 'required' => true,
-                'eval' => 'trim,password,saltedPassword',
-                'autocomplete' => false,
             ],
         ],
         'mfa' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.mfa',
             'config' => [
+                // @todo Use a new internal TCA type to prevent raw data being displayed in the backend
                 'type' => 'none',
                 'renderType' => 'mfaInfo',
-                'eval' => 'password', // Fallback to prevent raw data being displayed in the backend
             ],
         ],
         'usergroup' => [

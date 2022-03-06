@@ -1528,6 +1528,7 @@ class DataHandler implements LoggerAwareInterface
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
             'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id),
+            'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table),
             'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
             'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
@@ -1791,6 +1792,57 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Evaluate "password" type values.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForPassword(
+        string $value,
+        array $tcaFieldConf,
+        string $table,
+    ): array {
+        // Always trim the value
+        $value = trim($value);
+
+        // Early return if required validation fails
+        // Note: The "required" check is evaluated but does not yet lead to an error, see
+        // the comment in the DataHandler::validateValueForRequired() for more information.
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            return [];
+        }
+
+        // Early return, if password hashing is disabled and the table is not fe_users or be_users
+        if (!($tcaFieldConf['hashed'] ?? true) && !in_array($table, ['fe_users', 'be_users'], true)) {
+            return [
+                'value' => $value,
+            ];
+        }
+
+        // An incoming value is either the salted password if the user did not change existing password
+        // when submitting the form, or a plaintext new password that needs to be turned into a salted password now.
+        // The strategy is to see if a salt instance can be created from the incoming value. If so,
+        // no new password was submitted and we keep the value. If no salting instance can be created,
+        // incoming value must be a new plain text value that needs to be hashed.
+        $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
+        $mode = $table === 'fe_users' ? 'FE' : 'BE';
+        try {
+            $hashFactory->get($value, $mode);
+        } catch (InvalidPasswordHashException $e) {
+            // We got no salted password instance, incoming value must be a new plaintext password
+            // Get an instance of the current configured salted password strategy and hash the value
+            $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
+            $value = $newHashInstance->getHashedPassword($value);
+        }
+
+        return [
+            'value' => $value,
+        ];
     }
 
     /**
@@ -2753,23 +2805,6 @@ class DataHandler implements LoggerAwareInterface
                 case 'domainname':
                     if (!preg_match('/^[a-z0-9.\\-]*$/i', $value)) {
                         $value = (string)idn_to_ascii($value);
-                    }
-                    break;
-                case 'saltedPassword':
-                    // An incoming value is either the salted password if the user did not change existing password
-                    // when submitting the form, or a plaintext new password that needs to be turned into a salted password now.
-                    // The strategy is to see if a salt instance can be created from the incoming value. If so,
-                    // no new password was submitted and we keep the value. If no salting instance can be created,
-                    // incoming value must be a new plain text value that needs to be hashed.
-                    $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-                    $mode = $table === 'fe_users' ? 'FE' : 'BE';
-                    try {
-                        $hashFactory->get($value, $mode);
-                    } catch (InvalidPasswordHashException $e) {
-                        // We got no salted password instance, incoming value must be a new plaintext password
-                        // Get an instance of the current configured salted password strategy and hash the value
-                        $newHashInstance = $hashFactory->getDefaultHashInstance($mode);
-                        $value = $newHashInstance->getHashedPassword($value);
                     }
                     break;
                 default:

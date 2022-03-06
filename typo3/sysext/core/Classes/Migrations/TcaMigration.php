@@ -71,6 +71,7 @@ class TcaMigration
         $tca = $this->migrateEmailFlagToEmailType($tca);
         $tca = $this->migrateTypeNoneColsToSize($tca);
         $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
+        $tca = $this->migratePasswordAndSaltedpasswordToPasswordType($tca);
 
         return $tca;
     }
@@ -792,6 +793,62 @@ class TcaMigration
                     . 'renderType="inputLink". The field has therefore been migrated to the TCA type \'link\'. '
                     . 'This includes corresponding configuration of the "linkPopup", as well as obsolete field '
                     . 'configurations, such as "max" and "softref". Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][eval] = 'password' and [config][eval] = 'saltedPassword' to [config][type] = 'password'
+     * Sets option "hashed" to FALSE if "saltedPassword" is not set for "password"
+     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][max], if set.
+     * Removes option [config][search], if set.
+     */
+    protected function migratePasswordAndSaltedPasswordToPasswordType(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || (!GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'password')
+                        && !GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'saltedPassword'))
+                ) {
+                    // Early return in case column is not of type=input or does not define eval=passowrd
+                    continue;
+                }
+
+                // Set the TCA type to "password"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'password';
+
+                // Unset "renderType" and "max"
+                unset(
+                    $tca[$table]['columns'][$fieldName]['config']['max'],
+                    $tca[$table]['columns'][$fieldName]['config']['search']
+                );
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+
+                // Disable password hashing, if eval=password is used standalone
+                if (in_array('password', $evalList, true) && !in_array('saltedPassword', $evalList, true)) {
+                    $tca[$table]['columns'][$fieldName]['config']['hashed'] = false;
+                }
+
+                if (in_array('null', $evalList, true)) {
+                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=password
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
+                } else {
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . '"password" or "saltedPassword" in its "eval" list. The field has therefore been migrated to '
+                    . 'the TCA type \'password\'. This also includes the removal of obsolete field configurations,'
+                    . 'such as "max" and "search". Please adjust your TCA accordingly.';
             }
         }
 

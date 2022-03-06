@@ -37,12 +37,9 @@ return [
         'password' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
             'config' => [
-                'type' => 'input',
+                'type' => 'password',
                 'size' => 20,
-                'max' => 100,
                 'required' => true,
-                'eval' => 'trim,password,saltedPassword',
-                'autocomplete' => false,
             ],
         ],
         'usergroup' => [

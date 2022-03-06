@@ -2036,4 +2036,124 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    private function evalPasswordSaltedpasswordMigratedToTypeDataProvider(): iterable
+    {
+        yield 'eval=password and eval=saltedPassword migrated to type=password' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,password,saltedPassword',
+                                'required' => true,
+                            ],
+                        ],
+                        'aColumnWithPassword' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,password',
+                                'required' => true,
+                            ],
+                        ],
+                        'aColumnWithSaltedpassword' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,saltedPassword',
+                                'required' => true,
+                            ],
+                        ],
+                        'fullMigration' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,password,saltedPassword,null,int',
+                                'required' => true,
+                                'max' => 1234,
+                                'search' => [
+                                    'andWhere' => '{#CType}=\'text\' OR {#CType}=\'textpic\' OR {#CType}=\'textmedia\'',
+                                ],
+                            ],
+                        ],
+                        'differentColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,unique',
+                            ],
+                        ],
+                        'wrongTypeColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'eval' => 'trim,password,saltedPassword',
+                            ],
+                        ],
+                        'alreadyMigratedColumn' => [
+                            'config' => [
+                                'type' => 'password',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'password',
+                                'required' => true,
+                            ],
+                        ],
+                        'aColumnWithPassword' => [
+                            'config' => [
+                                'type' => 'password',
+                                'required' => true,
+                                'hashed' => false,
+                            ],
+                        ],
+                        'aColumnWithSaltedpassword' => [
+                            'config' => [
+                                'type' => 'password',
+                                'required' => true,
+                            ],
+                        ],
+                        'fullMigration' => [
+                            'config' => [
+                                'type' => 'password',
+                                'eval' => 'null',
+                                'required' => true,
+                            ],
+                        ],
+                        'differentColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,unique',
+                            ],
+                        ],
+                        'wrongTypeColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'eval' => 'trim,password,saltedPassword',
+                            ],
+                        ],
+                        'alreadyMigratedColumn' => [
+                            'config' => [
+                                'type' => 'password',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider evalPasswordSaltedpasswordMigratedToTypeDataProvider
+     * @test
+     */
+    public function evalPasswordSaltedpasswordMigratedToType(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

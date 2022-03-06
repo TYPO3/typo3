@@ -114,8 +114,7 @@ export default (function() {
       for (let i = 0; i < evalList.length; i++) {
         value = FormEngineValidation.formatValue(evalList[i], value, config);
       }
-      // Prevent password fields to be overwritten with original value
-      if (value.length && $humanReadableField.attr('type') !== 'password') {
+      if (value.length) {
         $humanReadableField.val(value);
       }
     }

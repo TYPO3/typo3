@@ -1677,6 +1677,12 @@ class BackendUtility
                     }
                 }
                 break;
+            case 'password':
+                // Hide the password by changing it to asterisk (*) - if anything is set at all
+                if ($value) {
+                    $l = '********';
+                }
+                break;
             case 'flex':
                 $l = strip_tags($value);
                 break;
@@ -1699,14 +1705,6 @@ class BackendUtility
                 } elseif ($value) {
                     $l = GeneralUtility::fixed_lgd_cs(strip_tags($value), 200);
                 }
-        }
-        // If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
-        if (!empty($theColConf['eval']) && stripos($theColConf['eval'], 'password') !== false) {
-            $l = '';
-            $randomNumber = random_int(5, 12);
-            for ($i = 0; $i < $randomNumber; $i++) {
-                $l .= '*';
-            }
         }
         /*****************
          *HOOK: post-processing the human readable output from a record

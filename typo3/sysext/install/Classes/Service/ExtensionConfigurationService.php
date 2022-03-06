@@ -74,7 +74,7 @@ class ExtensionConfigurationService
                 $details['value'] = $valueFromLocalConfiguration;
             } catch (ExtensionConfigurationPathDoesNotExistException $e) {
                 // Deliberately empty - it can happen at runtime that a written config does not return
-                // back all values (eg. saltedpassword with its userFuncs), which then miss in the written
+                // back all values (eg. saltedPassword with its userFuncs), which then miss in the written
                 // configuration and are only synced after next install tool run. This edge case is
                 // taken care of here.
             }

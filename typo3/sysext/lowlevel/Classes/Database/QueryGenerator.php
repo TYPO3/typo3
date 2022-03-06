@@ -1021,6 +1021,7 @@ class QueryGenerator
                     case 'text':
                     case 'email':
                     case 'link':
+                    case 'password':
                     default:
                         $fields['type'] = 'text';
                 }
@@ -1473,6 +1474,7 @@ class QueryGenerator
                         case 'text':
                         case 'email':
                         case 'link':
+                        case 'password':
                         default:
                             $this->fields[$fieldName]['type'] = 'text';
                     }

@@ -89,11 +89,6 @@ class InputTextElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         if ($config['readOnly'] ?? false) {
-            // Early return for read only fields
-            if (in_array('password', $evalList, true)) {
-                $itemValue = $itemValue ? '*********' : '';
-            }
-
             $disabledFieldAttributes = [
                 'class' => 'form-control',
                 'data-formengine-input-name' => $parameterArray['itemFormElName'],

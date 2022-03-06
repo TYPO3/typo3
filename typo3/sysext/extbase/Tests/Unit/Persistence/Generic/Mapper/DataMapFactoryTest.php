@@ -469,6 +469,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'slug'], TableColumnType::SLUG],
             [['type' => 'email'], TableColumnType::EMAIL],
             [['type' => 'link'], TableColumnType::LINK],
+            [['type' => 'password'], TableColumnType::PASSWORD],
         ];
     }
 

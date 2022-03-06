@@ -208,24 +208,22 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkValueInputEvalWithSaltedPasswordKeepsExistingHash(): void
+    public function checkValuePasswordWithSaltedPasswordKeepsExistingHash(): void
     {
         // Note the involved salted passwords are NOT mocked since the factory is static
-        $subject = new DataHandler();
         $inputValue = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
+        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users');
         self::assertSame($inputValue, $result['value']);
     }
 
     /**
      * @test
      */
-    public function checkValueInputEvalWithSaltedPasswordReturnsHashForSaltedPassword(): void
+    public function checkValuePasswordWithSaltedPasswordReturnsHashForSaltedPassword(): void
     {
         // Note the involved salted passwords are NOT mocked since the factory is static
         $inputValue = 'myPassword';
-        $subject = new DataHandler();
-        $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
+        $result = $this->subject->_call('checkValueForPassword', $inputValue, [], 'be_users');
         self::assertNotSame($inputValue, $result['value']);
     }
 
