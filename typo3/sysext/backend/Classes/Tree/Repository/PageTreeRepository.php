@@ -528,7 +528,7 @@ class PageTreeRepository
 
         $searchParts = $expressionBuilder->or();
         if (is_numeric($searchFilter) && $searchFilter > 0) {
-            $searchParts->add(
+            $searchParts = $searchParts->with(
                 $expressionBuilder->eq('uid', $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_INT))
             );
         }
@@ -544,7 +544,7 @@ class PageTreeRepository
                 $queryBuilder->createNamedParameter($searchFilter, \PDO::PARAM_STR)
             )
         );
-        $searchParts->add($searchWhereAlias);
+        $searchParts = $searchParts->with($searchWhereAlias);
 
         $queryBuilder->andWhere($searchParts);
         $pageRecords = $queryBuilder

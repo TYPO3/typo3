@@ -505,7 +505,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
             // Group (if any is set)
             if (!empty($this->userGroupsUID)) {
-                $constraint->add(
+                $constraint = $constraint->with(
                     $expressionBuilder->and(
                         $expressionBuilder->in(
                             'pages.perms_groupid',

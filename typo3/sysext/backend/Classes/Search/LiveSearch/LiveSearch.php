@@ -360,7 +360,7 @@ class LiveSearch
                     }
                     // Apply additional condition, if any
                     if ($fieldConfig['search']['andWhere'] ?? false) {
-                        $searchConstraint->add(
+                        $searchConstraint = $searchConstraint->with(
                             QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
                         );
                     }

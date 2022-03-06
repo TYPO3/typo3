@@ -2267,7 +2267,7 @@ class DatabaseRecordList
         // This will hide records from display - it has nothing to do with user rights!!
         $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
         if (!empty($pidList)) {
-            $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
+            $permsClause = $permsClause->with($expressionBuilder->notIn('pages.uid', $pidList));
         }
         $this->perms_clause = (string)$permsClause;
 
@@ -2582,10 +2582,10 @@ class DatabaseRecordList
                         $searchConstraint = $expressionBuilder->and($expressionBuilder->like($fieldName, $like));
                     }
                     if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
-                        $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
+                        $searchConstraint = $searchConstraint->with($expressionBuilder->eq($tablePidField, (int)$currentPid));
                     }
                     if ($searchConfig['andWhere'] ?? false) {
-                        $searchConstraint->add(
+                        $searchConstraint = $searchConstraint->with(
                             QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere']))
                         );
                     }

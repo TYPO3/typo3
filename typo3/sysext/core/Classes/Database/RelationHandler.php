@@ -616,7 +616,7 @@ class RelationHandler
             $additionalWhere = $expressionBuilder->and();
             // Add WHERE clause if configured
             if ($this->MM_table_where) {
-                $additionalWhere->add(
+                $additionalWhere = $additionalWhere->with(
                     QueryHelper::stripLogicalOperatorPrefix(
                         str_replace('###THIS_UID###', (string)$uid, $this->MM_table_where)
                     )
@@ -624,7 +624,7 @@ class RelationHandler
             }
             // Select, update or delete only those relations that match the configured fields
             foreach ($this->MM_match_fields as $field => $value) {
-                $additionalWhere->add($expressionBuilder->eq($field, $expressionBuilder->literal($value)));
+                $additionalWhere = $additionalWhere->with($expressionBuilder->eq($field, $expressionBuilder->literal($value)));
             }
 
             $queryBuilder = $connection->createQueryBuilder();
@@ -752,13 +752,13 @@ class RelationHandler
                 foreach ($oldMMs as $oldMM_key => $mmItem) {
                     // If UID field is present, of course we need only use that for deleting.
                     if ($this->MM_hasUidField) {
-                        $removeClauses->add($queryBuilder->expr()->eq(
+                        $removeClauses = $removeClauses->with($queryBuilder->expr()->eq(
                             'uid',
                             $queryBuilder->createNamedParameter($oldMMs_inclUid[$oldMM_key], \PDO::PARAM_INT)
                         ));
                     } else {
                         if (is_array($mmItem)) {
-                            $removeClauses->add(
+                            $removeClauses = $removeClauses->with(
                                 $queryBuilder->expr()->and(
                                     $queryBuilder->expr()->eq(
                                         'tablenames',
@@ -771,7 +771,7 @@ class RelationHandler
                                 )
                             );
                         } else {
-                            $removeClauses->add(
+                            $removeClauses = $removeClauses->with(
                                 $queryBuilder->expr()->eq(
                                     $uidForeign_field,
                                     $queryBuilder->createNamedParameter($mmItem, \PDO::PARAM_INT)

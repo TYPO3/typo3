@@ -241,13 +241,13 @@ class BackendUtility
         if (is_array($ctrl)) {
             if ($ctrl['enablecolumns']['disabled'] ?? false) {
                 $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
-                $query->add($expressionBuilder->eq($field, 0));
-                $invQuery->add($expressionBuilder->neq($field, 0));
+                $query = $query->with($expressionBuilder->eq($field, 0));
+                $invQuery = $invQuery->with($expressionBuilder->neq($field, 0));
             }
             if ($ctrl['enablecolumns']['starttime'] ?? false) {
                 $field = $table . '.' . $ctrl['enablecolumns']['starttime'];
-                $query->add($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
-                $invQuery->add(
+                $query = $query->with($expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME']));
+                $invQuery = $invQuery->with(
                     $expressionBuilder->and(
                         $expressionBuilder->neq($field, 0),
                         $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
@@ -256,13 +256,13 @@ class BackendUtility
             }
             if ($ctrl['enablecolumns']['endtime'] ?? false) {
                 $field = $table . '.' . $ctrl['enablecolumns']['endtime'];
-                $query->add(
+                $query = $query->with(
                     $expressionBuilder->or(
                         $expressionBuilder->eq($field, 0),
                         $expressionBuilder->gt($field, (int)$GLOBALS['SIM_ACCESS_TIME'])
                     )
                 );
-                $invQuery->add(
+                $invQuery = $invQuery->with(
                     $expressionBuilder->and(
                         $expressionBuilder->neq($field, 0),
                         $expressionBuilder->lte($field, (int)$GLOBALS['SIM_ACCESS_TIME'])

@@ -256,7 +256,7 @@ class SuggestWizardDefaultReceiver
         $expressionBuilder = $this->queryBuilder->expr();
         $selectParts = $expressionBuilder->or();
         if (MathUtility::canBeInterpretedAsInteger($searchString) && (int)$searchString > 0) {
-            $selectParts->add($expressionBuilder->eq('uid', (int)$searchString));
+            $selectParts = $selectParts->with($expressionBuilder->eq('uid', (int)$searchString));
         }
         $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
         $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
@@ -265,7 +265,7 @@ class SuggestWizardDefaultReceiver
         $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
         $selectFields = array_unique($selectFields);
         foreach ($selectFields as $field) {
-            $selectParts->add($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
+            $selectParts = $selectParts->with($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
         }
 
         return $selectParts;

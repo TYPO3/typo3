@@ -178,7 +178,7 @@ class CacheLifetimeCalculator
                     . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
                     . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
                 );
-                $timeConditions->add(
+                $timeConditions = $timeConditions->with(
                     $queryBuilder->expr()->gt(
                         $timeFields[$field],
                         $queryBuilder->createNamedParameter($currentTimestamp, \PDO::PARAM_INT)

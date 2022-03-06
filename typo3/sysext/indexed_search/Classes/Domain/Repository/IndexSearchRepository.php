@@ -761,17 +761,17 @@ class IndexSearchRepository
         $whereClause = $expressionBuilder->and();
         $match = false;
         if (!($this->searchRootPageIdList < 0)) {
-            $whereClause->add(
+            $whereClause = $whereClause->with(
                 $expressionBuilder->in('ISEC.rl0', GeneralUtility::intExplode(',', $this->searchRootPageIdList, true))
             );
         }
         if (strpos($this->sections, 'rl1_') === 0) {
-            $whereClause->add(
+            $whereClause = $whereClause->with(
                 $expressionBuilder->in('ISEC.rl1', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
             $match = true;
         } elseif (strpos($this->sections, 'rl2_') === 0) {
-            $whereClause->add(
+            $whereClause = $whereClause->with(
                 $expressionBuilder->in('ISEC.rl2', GeneralUtility::intExplode(',', substr($this->sections, 4)))
             );
             $match = true;
@@ -779,7 +779,7 @@ class IndexSearchRepository
             // Traversing user configured fields to see if any of those are used to limit search to a section:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] ?? [] as $fieldName => $rootLineLevel) {
                 if (strpos($this->sections, $fieldName . '_') === 0) {
-                    $whereClause->add(
+                    $whereClause = $whereClause->with(
                         $expressionBuilder->in(
                             'ISEC.' . $fieldName,
                             GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1))
@@ -794,15 +794,15 @@ class IndexSearchRepository
         if (!$match) {
             switch ((string)$this->sections) {
                 case '-1':
-                    $whereClause->add(
+                    $whereClause = $whereClause->with(
                         $expressionBuilder->eq('ISEC.page_id', $this->getTypoScriptFrontendController()->id)
                     );
                     break;
                 case '-2':
-                    $whereClause->add($expressionBuilder->eq('ISEC.rl2', 0));
+                    $whereClause = $whereClause->with($expressionBuilder->eq('ISEC.rl2', 0));
                     break;
                 case '-3':
-                    $whereClause->add($expressionBuilder->gt('ISEC.rl2', 0));
+                    $whereClause = $whereClause->with($expressionBuilder->gt('ISEC.rl2', 0));
                     break;
             }
         }
@@ -1088,7 +1088,7 @@ class IndexSearchRepository
                 // (no "sentence search" should be done here - may deselect results)
                 $wordSel = $queryBuilder->expr()->or();
                 foreach ($this->wSelClauses as $wSelClause) {
-                    $wordSel->add(QueryHelper::stripLogicalOperatorPrefix($wSelClause));
+                    $wordSel = $wordSel->with(QueryHelper::stripLogicalOperatorPrefix($wSelClause));
                 }
                 $queryBuilder->andWhere($wordSel);
             }

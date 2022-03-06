@@ -5262,13 +5262,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $searchWordConstraint = $queryBuilder->expr()->or();
             $searchWord = $queryBuilder->escapeLikeWildcards($searchWord);
             foreach ($searchFields as $field) {
-                $searchWordConstraint->add(
+                $searchWordConstraint = $searchWordConstraint->with(
                     $queryBuilder->expr()->like($prefixTableName . $field, $queryBuilder->quote('%' . $searchWord . '%'))
                 );
             }
 
             if ($searchWordConstraint->count()) {
-                $where->add($searchWordConstraint);
+                $where = $where->with($searchWordConstraint);
             }
         }
 
