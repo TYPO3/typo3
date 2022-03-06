@@ -96,6 +96,7 @@ class ResourceCompressorTest extends BaseTestCase
      */
     public function cssFixStatementsMovesStatementsToTopIfNeeded(string $input, string $expected): void
     {
+        $this->subject->_call('initialize');
         $result = $this->subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
         self::assertEquals($expected, $resultWithReadableLinefeed);
@@ -479,6 +480,7 @@ class ResourceCompressorTest extends BaseTestCase
      */
     public function calcFunctionMustRetainWhitespaces(string $input, string $expected): void
     {
+        $this->subject->_call('initialize');
         $result = $this->subject->_call('compressCssString', $input);
         self::assertSame($expected, trim($result));
     }
@@ -529,6 +531,7 @@ class ResourceCompressorTest extends BaseTestCase
     public function compressCssFileContent(string $cssFile, string $expected): void
     {
         $cssContent = file_get_contents($cssFile);
+        $this->subject->_call('initialize');
         $compressedCss = $this->subject->_call('compressCssString', $cssContent);
         // we have to fix relative paths, if we aren't working on a file in our target directory
         $relativeFilename = str_replace(Environment::getPublicPath() . '/', '', $cssFile);
@@ -599,6 +602,7 @@ class ResourceCompressorTest extends BaseTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->_call('initialize');
         $subject->setRootPath($bePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
@@ -650,6 +654,7 @@ class ResourceCompressorTest extends BaseTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->_call('initialize');
         $subject->setRootPath($bePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
@@ -702,6 +707,7 @@ class ResourceCompressorTest extends BaseTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
+        $subject->_call('initialize');
         $subject->setRootPath($fePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
