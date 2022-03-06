@@ -282,7 +282,7 @@ class RecordFinder
 
             if (!empty($doktype)) {
                 $queryBuilder->orWhere(
-                    $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->and(
                         $queryBuilder->expr()->eq(
                             'tx_styleguide_containsdemo',
                             $queryBuilder->createNamedParameter((string)$type),
@@ -334,11 +334,11 @@ class RecordFinder
             );
 
         if (!empty($types)) {
-            $orX = $queryBuilder->expr()->orX();
+            $orExpression = $queryBuilder->expr()->or();
             foreach ($types as $type) {
-                $orX->add($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($type)));
+                $orExpression = $orExpression->with($queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($type)));
             }
-            $queryBuilder->andWhere((string)$orX);
+            $queryBuilder->andWhere((string)$orExpression);
         }
 
         return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
