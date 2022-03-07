@@ -65,9 +65,7 @@ class FlexFormToolsTest extends UnitTestCase
     {
         $dataStruct = [
             'dummy_field' => [
-                'TCEforms' => [
-                    'config' => [],
-                ],
+                'config' => [],
             ],
         ];
         $pA = [

@@ -78,7 +78,7 @@ class SuggestWizardController
                 // @todo: See if a path in pageTsConfig like "TCEForm.tableName.theContainerFieldName =" is useful and works with other pageTs, too.
                 $fieldNameInPageTsConfig = $flexFormFieldName;
                 if (!isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                    ['el'][$flexFormFieldName]['TCEforms']['config'])
+                    ['el'][$flexFormFieldName]['config'])
                 ) {
                     throw new \RuntimeException(
                         'Specified path ' . $flexFormFieldName . ' not found in flex form data structure',
@@ -86,13 +86,13 @@ class SuggestWizardController
                     );
                 }
                 $fieldConfig = $dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                    ['el'][$flexFormFieldName]['TCEforms']['config'];
+                    ['el'][$flexFormFieldName]['config'];
             } else {
                 $fieldNameInPageTsConfig = $flexFormContainerFieldName;
                 if (!isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
                         ['el'][$flexFormFieldName]
                         ['el'][$flexFormContainerName]
-                        ['el'][$flexFormContainerFieldName]['TCEforms']['config'])
+                        ['el'][$flexFormContainerFieldName]['config'])
                 ) {
                     throw new \RuntimeException(
                         'Specified path ' . $flexFormContainerName . ' not found in flex form section container data structure',
@@ -102,7 +102,7 @@ class SuggestWizardController
                 $fieldConfig = $dataStructure['sheets'][$flexFormSheetName]['ROOT']
                     ['el'][$flexFormFieldName]
                     ['el'][$flexFormContainerName]
-                    ['el'][$flexFormContainerFieldName]['TCEforms']['config'];
+                    ['el'][$flexFormContainerFieldName]['config'];
             }
         }
 

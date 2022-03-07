@@ -129,7 +129,7 @@ class FormFrontendController extends ActionController
                         GeneralUtility::makeInstance(
                             ArrayProcessing::class,
                             'modifyFinisherOptionsFromFlexFormOverrides',
-                            '^(.*)(?:(?<!\.TCEforms)\.config\.type|\.section)$',
+                            '^(.*)(?:\.config\.type|\.section)$',
                             GeneralUtility::makeInstance(FinisherOptionsFlexFormOverridesConverter::class, $converterDto)
                         )
                     );

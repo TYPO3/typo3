@@ -48,16 +48,14 @@ class ActionTest extends AbstractDataHandlerActionTestCase
         <type>array</type>
         <el type="array">
             <settings.bodytext>
-                <TCEforms type="array">
-                    <label>Random Bodytext</label>
-                    <config type="array">
-                        <type>text</type>
-                        <cols>48</cols>
-                        <rows>5</rows>
-                        <enableRichtext>1</enableRichtext>
-                        <richtextConfiguration>default</richtextConfiguration>
-                    </config>
-                </TCEforms>
+                <label>Random Bodytext</label>
+                <config type="array">
+                    <type>text</type>
+                    <cols>48</cols>
+                    <rows>5</rows>
+                    <enableRichtext>1</enableRichtext>
+                    <richtextConfiguration>default</richtextConfiguration>
+                </config>
             </settings.bodytext>
         </el>
     </ROOT>
@@ -123,9 +121,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
     <sheets>
         <sheet1>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>Text Example with an RTE field</sheetTitle>
-                </TCEforms>
+                <sheetTitle>Text Example with an RTE field</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.bodytext>

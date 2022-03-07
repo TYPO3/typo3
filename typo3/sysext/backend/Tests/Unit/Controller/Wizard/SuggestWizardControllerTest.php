@@ -57,10 +57,8 @@ class SuggestWizardControllerTest extends UnitTestCase
                     'ROOT' => [
                         'el' => [
                             'differentField' => [
-                                'TCEforms' => [
-                                    'config' => [
-                                        'Sublevel field configuration',
-                                    ],
+                                'config' => [
+                                    'Sublevel field configuration',
                                 ],
                             ],
                         ],
@@ -103,10 +101,8 @@ class SuggestWizardControllerTest extends UnitTestCase
                     'ROOT' => [
                         'el' => [
                             'notTheFieldYouAreLookingFor' => [
-                                'TCEforms' => [
-                                    'config' => [
-                                        'Sublevel field configuration',
-                                    ],
+                                'config' => [
+                                    'Sublevel field configuration',
                                 ],
                             ],
                         ],

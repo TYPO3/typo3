@@ -526,7 +526,7 @@ class ReferenceIndex implements LoggerAwareInterface
     {
         // Removing "data/" in the beginning of path (which points to location in data array)
         $structurePath = substr($structurePath, 5) . '/';
-        $dsConf = $dsArr['TCEforms']['config'];
+        $dsConf = $dsArr['config'];
         // Implode parameter values:
         [$table, $uid, $field] = [
             $PA['table'],

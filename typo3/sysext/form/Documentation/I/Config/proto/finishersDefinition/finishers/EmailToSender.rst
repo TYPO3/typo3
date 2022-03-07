@@ -676,16 +676,14 @@ FormEngine.elements
                      title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
                      el:
                        email:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                           config:
-                             type: email
-                             required: true
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                         config:
+                           type: email
+                           required: true
                        name:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                           config:
-                             type: input
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                         config:
+                           type: input
                senderAddress:
                  label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
                  config:
@@ -707,16 +705,14 @@ FormEngine.elements
                      title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
                      el:
                        email:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                           config:
-                             type: email
-                             required: true
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                         config:
+                           type: email
+                           required: true
                        name:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                           config:
-                             type: input
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                         config:
+                           type: input
                carbonCopyRecipients:
                  title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.label
                  type: array
@@ -729,16 +725,14 @@ FormEngine.elements
                      title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
                      el:
                        email:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                           config:
-                             type: email
-                             required: true
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                         config:
+                           type: email
+                           required: true
                        name:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                           config:
-                             type: input
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                         config:
+                           type: input
                blindCarbonCopyRecipients:
                  title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.label
                  type: array
@@ -751,16 +745,14 @@ FormEngine.elements
                      title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
                      el:
                        email:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
-                           config:
-                             type: email
-                             required: true
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                         config:
+                           type: email
+                           required: true
                        name:
-                         TCEforms:
-                           label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
-                           config:
-                             type: input
+                         label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                         config:
+                           type: input
                addHtmlPart:
                  label: tt_content.finishersDefinition.EmailToSender.addHtmlPart.label
                  config:

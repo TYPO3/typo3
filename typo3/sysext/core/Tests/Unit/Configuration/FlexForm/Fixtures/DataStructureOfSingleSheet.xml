@@ -1,17 +1,13 @@
 <T3DataStructure>
     <ROOT>
-        <TCEforms>
-            <sheetTitle>aTitle</sheetTitle>
-        </TCEforms>
+        <sheetTitle>aTitle</sheetTitle>
         <type>array</type>
         <el>
             <aFlexField>
-                <TCEforms>
-                    <label>aFlexFieldLabel</label>
-                    <config>
-                        <type>input</type>
-                    </config>
-                </TCEforms>
+                <label>aFlexFieldLabel</label>
+                <config>
+                    <type>input</type>
+                </config>
             </aFlexField>
         </el>
     </ROOT>

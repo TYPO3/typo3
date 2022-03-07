@@ -77,16 +77,14 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
         <type>array</type>
         <el>
             <flexFormRelation>
-                <TCEforms>
-                    <label>FlexForm relation</label>
-                    <config>
-                        <type>group</type>
-                        <allowed>pages</allowed>
-                        <size>1</size>
-                        <maxitems>1</maxitems>
-                        <minitems>0</minitems>
-                    </config>
-                </TCEforms>
+                <label>FlexForm relation</label>
+                <config>
+                    <type>group</type>
+                    <allowed>pages</allowed>
+                    <size>1</size>
+                    <maxitems>1</maxitems>
+                    <minitems>0</minitems>
+                </config>
             </flexFormRelation>
         </el>
     </ROOT>
@@ -124,16 +122,14 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
         <type>array</type>
         <el>
             <softrefLink>
-                <TCEforms>
-                    <label>Soft reference link</label>
-                    <config>
-                        <type>link</type>
-                        <allowedTypes>page,file,url,record,telephone</allowedTypes>
-                        <appearance>
-                            <browserTitle>Link</browserTitle>
-                        </appearance>
-                    </config>
-                </TCEforms>
+                <label>Soft reference link</label>
+                <config>
+                    <type>link</type>
+                    <allowedTypes>page,file,url,record,telephone</allowedTypes>
+                    <appearance>
+                        <browserTitle>Link</browserTitle>
+                    </appearance>
+                </config>
             </softrefLink>
         </el>
     </ROOT>
@@ -170,27 +166,23 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.sheet_general</sheetTitle>
-                </TCEforms>
+                <sheetTitle>LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.sheet_general</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.persistenceIdentifier>
-                        <TCEforms>
-                            <label>LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.persistenceIdentifier</label>
-                            <onChange>reload</onChange>
-                            <config>
-                                <type>select</type>
-                                <renderType>selectSingle</renderType>
-                                <items>
-                                    <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.selectPersistenceIdentifier</numIndex>
-                                        <numIndex index="1"></numIndex>
-                                    </numIndex>
-                                </items>
-                                <softref>formPersistenceIdentifier</softref>
-                            </config>
-                        </TCEforms>
+                        <label>LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.persistenceIdentifier</label>
+                        <onChange>reload</onChange>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0" type="array">
+                                    <numIndex index="0">LLL:EXT:form/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.formframework.selectPersistenceIdentifier</numIndex>
+                                    <numIndex index="1"></numIndex>
+                                </numIndex>
+                            </items>
+                            <softref>formPersistenceIdentifier</softref>
+                        </config>
                     </settings.persistenceIdentifier>
                 </el>
             </ROOT>

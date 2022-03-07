@@ -574,6 +574,7 @@ class FlexFormTools
 
         $dataStructure = $this->convertDataStructureToArray($dataStructure);
         $dataStructure = $this->ensureDefaultSheet($dataStructure);
+        $dataStructure = $this->removeElementTceFormsRecursive($dataStructure);
         $dataStructure = $this->resolveFileDirectives($dataStructure);
 
         return $this->eventDispatcher
@@ -712,6 +713,7 @@ class FlexFormTools
                     }
                 }
                 $dataStructure['sheets'][$sheetName] = $sheetStructure;
+                $dataStructure = $this->removeElementTceFormsRecursive($dataStructure);
 
                 if (is_array($dataStructure['sheets'][$sheetName])) {
                     $dataStructure['sheets'][$sheetName] = $this->prepareCategoryFields($dataStructure['sheets'][$sheetName]);
@@ -819,7 +821,7 @@ class FlexFormTools
                             $this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
                         }
                     }
-                } elseif (isset($value['TCEforms']['config']) && is_array($value['TCEforms']['config'])) {
+                } elseif (isset($value['config']) && is_array($value['config'])) {
                     // Processing a field value:
                     foreach ($PA['vKeys'] as $vKey) {
                         $vKey = 'v' . $vKey;
@@ -932,29 +934,29 @@ class FlexFormTools
                 continue;
             }
             foreach ($structure['el'] as $fieldName => &$fieldConfig) {
-                if (($fieldConfig['TCEforms']['config']['type'] ?? '') !== 'category') {
+                if (($fieldConfig['config']['type'] ?? '') !== 'category') {
                     // Skip if type is not "category"
                     continue;
                 }
 
                 // Add a default label if none is defined
-                if (!isset($fieldConfig['TCEforms']['label'])) {
-                    $fieldConfig['TCEforms']['label'] = 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
+                if (!isset($fieldConfig['label'])) {
+                    $fieldConfig['label'] = 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories';
                 }
 
                 // Initialize default column configuration and merge it with already defined
-                $fieldConfig['TCEforms']['config']['size'] ??= 20;
+                $fieldConfig['config']['size'] ??= 20;
 
                 // Force foreign_table_* fields for type category
-                $fieldConfig['TCEforms']['config']['foreign_table'] = 'sys_category';
-                $fieldConfig['TCEforms']['config']['foreign_table_where'] = ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
+                $fieldConfig['config']['foreign_table'] = 'sys_category';
+                $fieldConfig['config']['foreign_table_where'] = ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)';
 
-                if (empty($fieldConfig['TCEforms']['config']['relationship'])) {
+                if (empty($fieldConfig['config']['relationship'])) {
                     // Fall back to "oneToMany" when no relationship is given
-                    $fieldConfig['TCEforms']['config']['relationship'] = 'oneToMany';
+                    $fieldConfig['config']['relationship'] = 'oneToMany';
                 }
 
-                if (!in_array($fieldConfig['TCEforms']['config']['relationship'], ['oneToOne', 'oneToMany'], true)) {
+                if (!in_array($fieldConfig['config']['relationship'], ['oneToOne', 'oneToMany'], true)) {
                     throw new \UnexpectedValueException(
                         '"relationship" must be one of "oneToOne" or "oneToMany", "manyToMany" is not supported as "relationship"' .
                         ' for field ' . $fieldName . ' of type "category" in flexform.',
@@ -963,21 +965,21 @@ class FlexFormTools
                 }
 
                 // Set the maxitems value (necessary for DataHandling and FormEngine)
-                if ($fieldConfig['TCEforms']['config']['relationship'] === 'oneToOne') {
+                if ($fieldConfig['config']['relationship'] === 'oneToOne') {
                     // In case relationship is set to "oneToOne", maxitems must be 1.
-                    if ((int)($fieldConfig['TCEforms']['config']['maxitems'] ?? 0) > 1) {
+                    if ((int)($fieldConfig['config']['maxitems'] ?? 0) > 1) {
                         throw new \UnexpectedValueException(
                             $fieldName . ' is defined as type category with an "oneToOne" relationship. ' .
                             'Therefore maxitems must be 1. Otherwise, use oneToMany as relationship instead.',
                             1627640209
                         );
                     }
-                    $fieldConfig['TCEforms']['config']['maxitems'] = 1;
-                } elseif ($fieldConfig['TCEforms']['config']['relationship'] === 'oneToMany') {
+                    $fieldConfig['config']['maxitems'] = 1;
+                } elseif ($fieldConfig['config']['relationship'] === 'oneToMany') {
                     // In case maxitems is not set or set to 0, set the default value "99999"
-                    if (!($fieldConfig['TCEforms']['config']['maxitems'] ?? false)) {
-                        $fieldConfig['TCEforms']['config']['maxitems'] = 99999;
-                    } elseif ((int)($fieldConfig['TCEforms']['config']['maxitems'] ?? 0) === 1) {
+                    if (!($fieldConfig['config']['maxitems'] ?? false)) {
+                        $fieldConfig['config']['maxitems'] = 99999;
+                    } elseif ((int)($fieldConfig['config']['maxitems'] ?? 0) === 1) {
                         throw new \UnexpectedValueException(
                             'Can not use maxitems=1 for field ' . $fieldName . ' with "relationship" set to "oneToMany". Use "oneToOne" instead.',
                             1627640210
@@ -986,14 +988,63 @@ class FlexFormTools
                 }
 
                 // Add the default value if not set
-                if (!isset($fieldConfig['TCEforms']['config']['default'])
-                    && $fieldConfig['TCEforms']['config']['relationship'] !== 'oneToMany'
+                if (!isset($fieldConfig['config']['default'])
+                    && $fieldConfig['config']['relationship'] !== 'oneToMany'
                 ) {
-                    $fieldConfig['TCEforms']['config']['default'] = 0;
+                    $fieldConfig['config']['default'] = 0;
                 }
             }
         }
 
         return $dataStructurSheets;
+    }
+
+    /**
+     * Remove "TCEforms" key from all elements in data structure to simplify further parsing.
+     *
+     * Example config:
+     * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['TCEforms']['label'] becomes
+     * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['label']
+     *
+     * and
+     *
+     * ['ROOT']['TCEforms']['sheetTitle'] becomes
+     * ['ROOT']['sheetTitle']
+     *
+     * @internal This method serves as a compatibility layer and will be removed in TYPO3 v13.
+     */
+    public function removeElementTceFormsRecursive(array $structure): array
+    {
+        $newStructure = [];
+        foreach ($structure as $key => $value) {
+            if ($key === 'ROOT' && is_array($value) && isset($value['TCEforms'])) {
+                trigger_error(
+                    'The tag "<TCEforms>" should not be set under the FlexForm definition "<ROOT>" anymore. It should be omitted while the underlying configuration ascends one level up. This compatibility layer will be removed in TYPO3 v13.',
+                    E_USER_DEPRECATED
+                );
+                $value = array_merge($value, $value['TCEforms']);
+                unset($value['TCEforms']);
+            }
+            if ($key === 'el' && is_array($value)) {
+                $newSubStructure = [];
+                foreach ($value as $subKey => $subValue) {
+                    if (is_array($subValue) && count($subValue) === 1 && isset($subValue['TCEforms'])) {
+                        trigger_error(
+                            'The tag "<TCEforms>" was found in a FlexForm definition for the field "<' . $subKey . '>". It should be omitted while the underlying configuration ascends one level up. This compatibility layer will be removed in TYPO3 v13.',
+                            E_USER_DEPRECATED
+                        );
+                        $newSubStructure[$subKey] = $subValue['TCEforms'];
+                    } else {
+                        $newSubStructure[$subKey] = $subValue;
+                    }
+                }
+                $value = $newSubStructure;
+            }
+            if (is_array($value)) {
+                $value = $this->removeElementTceFormsRecursive($value);
+            }
+            $newStructure[$key] = $value;
+        }
+        return $newStructure;
     }
 }

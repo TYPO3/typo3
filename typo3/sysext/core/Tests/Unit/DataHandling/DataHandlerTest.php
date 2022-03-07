@@ -668,31 +668,7 @@ class DataHandlerTest extends UnitTestCase
 
     public function checkValue_flex_procInData_travDSDataProvider(): iterable
     {
-        yield 'Flat structure with TCEForms' => [
-            'dataValues' => [
-                'field1' => [
-                    'vDEF' => 'wrong input',
-                ],
-            ],
-            'DSelements' => [
-                'field1' => [
-                    'TCEforms' => [
-                        'label' => 'A field',
-                        'config' => [
-                            'type' => 'number',
-                            'required' => true,
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'field1' => [
-                    'vDEF' => 0,
-                ],
-            ],
-        ];
-
-        yield 'Flat structure without TCEForms' => [
+        yield 'Flat structure' => [
             'dataValues' => [
                 'field1' => [
                     'vDEF' => 'wrong input',
@@ -714,7 +690,7 @@ class DataHandlerTest extends UnitTestCase
             ],
         ];
 
-        yield 'Array structure with TCEforms key' => [
+        yield 'Array structure' => [
             'dataValues' => [
                 'section' => [
                     'el' => [
@@ -739,61 +715,6 @@ class DataHandlerTest extends UnitTestCase
                             'type' => 'array',
                             'el' => [
                                 'field1' => [
-                                    'TCEforms' => [
-                                        'label' => 'A field',
-                                        'config' => [
-                                            'type' => 'number',
-                                            'required' => true,
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'section' => [
-                    'el' => [
-                        '1' => [
-                            'container1' => [
-                                'el' => [
-                                    'field1' => [
-                                        'vDEF' => 0,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        yield 'Array structure without TCEforms key' => [
-            'dataValues' => [
-                'section' => [
-                    'el' => [
-                        '1' => [
-                            'container_1' => [
-                                'el' => [
-                                    'field1' => [
-                                        'vDEF' => 'wrong input',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'DSelements' => [
-                'section' => [
-                    'type' => 'array',
-                    'section' => true,
-                    'el' => [
-                        'container_1' => [
-                            'type' => 'array',
-                            'el' => [
-                                'field1' => [
                                     'label' => 'A field',
                                     'config' => [
                                         'type' => 'number',
@@ -809,7 +730,7 @@ class DataHandlerTest extends UnitTestCase
                 'section' => [
                     'el' => [
                         '1' => [
-                            'container_1' => [
+                            'container1' => [
                                 'el' => [
                                     'field1' => [
                                         'vDEF' => 0,

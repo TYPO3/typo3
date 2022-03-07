@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Form\Tests\Unit\EventListener;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
@@ -28,18 +29,11 @@ use TYPO3\CMS\Form\EventListener\DataStructureIdentifierListener;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Test case
- */
 class DataStructureIdentifierListenerTest extends UnitTestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
-
+    use ProphecyTrait;
     protected bool $resetSingletonInstances = true;
 
-    /**
-     * Set up
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -214,13 +208,11 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                     'ROOT' => [
                         'el' => [
                             'settings.persistenceIdentifier' => [
-                                'TCEforms' => [
-                                    'config' => [
-                                        'items' => [
-                                            0 => [
-                                                0 => 'default, no value',
-                                                1 => '',
-                                            ],
+                                'config' => [
+                                    'items' => [
+                                        0 => [
+                                            0 => 'default, no value',
+                                            1 => '',
                                         ],
                                     ],
                                 ],
@@ -237,15 +229,13 @@ class DataStructureIdentifierListenerTest extends UnitTestCase
                     'ROOT' => [
                         'el' => [
                             'settings.persistenceIdentifier' => [
-                                'TCEforms' => [
-                                    'config' => [
-                                        'items' => [
-                                            0 => [
-                                                0 => 'default, no value',
-                                                1 => '',
-                                            ],
-                                            1 => $expectedItem,
+                                'config' => [
+                                    'items' => [
+                                        0 => [
+                                            0 => 'default, no value',
+                                            1 => '',
                                         ],
+                                        1 => $expectedItem,
                                     ],
                                 ],
                             ],

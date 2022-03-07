@@ -71,22 +71,18 @@ return [
                                 <sMultiplesidebyside>
                                     <ROOT>
                                         <type>array</type>
-                                        <TCEforms>
-                                            <sheetTitle>selectMultipleSideBySide</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>selectMultipleSideBySide</sheetTitle>
                                         <el>
                                             <select_multiplesidebyside_1>
-                                                <TCEforms>
-                                                    <label>select_multiplesidebyside_1</label>
-                                                    <config>
-                                                        <type>select</type>
-                                                        <renderType>selectMultipleSideBySide</renderType>
-                                                        <foreign_table>tx_testselectflexmm_foreign</foreign_table>
-                                                        <MM>tx_testselectflexmm_flex_1_multiplesidebyside_1_mm</MM>
-                                                        <size>5</size>
-                                                        <autoSizeMax>5</autoSizeMax>
-                                                    </config>
-                                                </TCEforms>
+                                                <label>select_multiplesidebyside_1</label>
+                                                <config>
+                                                    <type>select</type>
+                                                    <renderType>selectMultipleSideBySide</renderType>
+                                                    <foreign_table>tx_testselectflexmm_foreign</foreign_table>
+                                                    <MM>tx_testselectflexmm_flex_1_multiplesidebyside_1_mm</MM>
+                                                    <size>5</size>
+                                                    <autoSizeMax>5</autoSizeMax>
+                                                </config>
                                             </select_multiplesidebyside_1>
                                         </el>
                                     </ROOT>

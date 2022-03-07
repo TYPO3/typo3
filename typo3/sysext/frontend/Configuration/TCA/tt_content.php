@@ -1073,13 +1073,11 @@ return [
                             <el>
                                 <!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
                               <xmlTitle>
-                                <TCEforms>
-                                    <label>The Title:</label>
-                                    <config>
-                                        <type>input</type>
-                                        <size>48</size>
-                                    </config>
-                                </TCEforms>
+                                <label>The Title:</label>
+                                <config>
+                                    <type>input</type>
+                                    <size>48</size>
+                                </config>
                               </xmlTitle>
                             </el>
                           </ROOT>

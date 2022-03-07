@@ -117,13 +117,13 @@ class DataStructureIdentifierListener
                 }
 
                 if ($invalidFormDefinition) {
-                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                         $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                         $form['persistenceIdentifier'],
                         'overlay-missing',
                     ];
                 } else {
-                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                    $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                         $form['name'] . ' (' . $form['persistenceIdentifier'] . ')',
                         $form['persistenceIdentifier'],
                         'content-form',
@@ -132,7 +132,7 @@ class DataStructureIdentifierListener
             }
 
             if (!empty($identifier['ext-form-persistenceIdentifier']) && !$formIsAccessible) {
-                $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+                $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                     sprintf(
                         $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                         $identifier['ext-form-persistenceIdentifier']
@@ -148,14 +148,12 @@ class DataStructureIdentifierListener
 
                 $translationFile = 'LLL:EXT:form/Resources/Private/Language/Database.xlf';
                 $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'] = [
-                    'TCEforms' => [
-                        'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
+                    'label' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers',
                         'onChange' => 'reload',
                         'config' => [
                             'type' => 'check',
                         ],
-                    ],
-                ];
+                    ];
 
                 $newSheets = [];
 
@@ -167,13 +165,11 @@ class DataStructureIdentifierListener
                     ArrayUtility::mergeRecursiveWithOverrule(
                         $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.overrideFinishers'],
                         [
-                            'TCEforms' => [
-                                'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
+                            'description' => $translationFile . ':tt_content.pi_flexform.formframework.overrideFinishers.empty',
                                 'config' => [
                                     'readOnly' => true,
                                 ],
-                            ],
-                        ]
+                            ]
                     );
                 }
 
@@ -253,7 +249,7 @@ class DataStructureIdentifierListener
                     ArrayProcessing::class,
                     'convertToFlexFormSheets',
                     // Either process leaf form field configuration not within a FlexForm section or FlexForm section
-                    '^(.*)(?:(?<!\.TCEforms)\.config\.type|\.section)$',
+                    '^(.*)(?:\.config\.type|\.section)$',
                     GeneralUtility::makeInstance(FinisherOptionGenerator::class, $converterDto)
                 )
             );
@@ -285,9 +281,7 @@ class DataStructureIdentifierListener
         return [
             $sheetIdentifier => [
                 'ROOT' => [
-                    'TCEforms' => [
-                        'sheetTitle' => $finisherName,
-                    ],
+                    'sheetTitle' => $finisherName,
                     'type' => 'array',
                     'el' => [],
                 ],
@@ -303,7 +297,7 @@ class DataStructureIdentifierListener
     protected function addSelectedPersistenceIdentifier(string $persistenceIdentifier, array $dataStructure): array
     {
         if (!empty($persistenceIdentifier)) {
-            $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['TCEforms']['config']['items'][] = [
+            $dataStructure['sheets']['sDEF']['ROOT']['el']['settings.persistenceIdentifier']['config']['items'][] = [
                 sprintf(
                     $this->getLanguageService()->sL(self::L10N_PREFIX . 'tt_content.preview.inaccessiblePersistenceIdentifier'),
                     $persistenceIdentifier

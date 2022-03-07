@@ -128,12 +128,10 @@ class TcaFlexPrepareTest extends UnitTestCase
                                             <type>array</type>
                                             <el>
                                                 <aFlexField>
-                                                    <TCEforms>
-                                                        <label>aFlexFieldLabel</label>
-                                                        <config>
-                                                            <type>input</type>
-                                                        </config>
-                                                    </TCEforms>
+                                                    <label>aFlexFieldLabel</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                    </config>
                                                 </aFlexField>
                                             </el>
                                         </ROOT>
@@ -198,18 +196,14 @@ class TcaFlexPrepareTest extends UnitTestCase
                                         <sheets>
                                             <sDEF>
                                                 <ROOT>
-                                                    <TCEforms>
-                                                        <sheetTitle>aTitle</sheetTitle>
-                                                    </TCEforms>
+                                                    <sheetTitle>aTitle</sheetTitle>
                                                     <type>array</type>
                                                     <el>
                                                         <aFlexField>
-                                                            <TCEforms>
-                                                                <label>aFlexFieldLabel</label>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </TCEforms>
+                                                            <label>aFlexFieldLabel</label>
+                                                            <config>
+                                                                <type>input</type>
+                                                            </config>
                                                         </aFlexField>
                                                     </el>
                                                 </ROOT>
@@ -322,19 +316,15 @@ class TcaFlexPrepareTest extends UnitTestCase
                                             <sTree>
                                                 <ROOT>
                                                     <type>array</type>
-                                                    <TCEforms>
-                                                        <sheetTitle>selectTree</sheetTitle>
-                                                    </TCEforms>
+                                                    <sheetTitle>selectTree</sheetTitle>
                                                     <el>
                                                         <select_tree_1>
-                                                            <TCEforms>
-                                                                <label>select_tree_1</label>
-                                                                <description>select_tree_1 description</description>
-                                                                <config>
-                                                                    <type>select</type>
-                                                                    <renderType>selectTree</renderType>
-                                                                </config>
-                                                            </TCEforms>
+                                                            <label>select_tree_1</label>
+                                                            <description>select_tree_1 description</description>
+                                                            <config>
+                                                                <type>select</type>
+                                                                <renderType>selectTree</renderType>
+                                                            </config>
                                                         </select_tree_1>
                                                     </el>
                                                 </ROOT>
@@ -342,9 +332,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                                             <sSection>
                                                 <ROOT>
                                                     <type>array</type>
-                                                    <TCEforms>
-                                                        <sheetTitle>section</sheetTitle>
-                                                    </TCEforms>
+                                                    <sheetTitle>section</sheetTitle>
                                                     <el>
                                                         <section_1>
                                                             <title>section_1</title>
@@ -356,14 +344,12 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                                     <title>container_1</title>
                                                                     <el>
                                                                         <select_tree_2>
-                                                                            <TCEforms>
-                                                                                <label>select_tree_2</label>
-                                                                                <description>select_tree_2 description</description>
-                                                                                <config>
-                                                                                    <type>select</type>
-                                                                                    <renderType>selectTree</renderType>
-                                                                                </config>
-                                                                            </TCEforms>
+                                                                            <label>select_tree_2</label>
+                                                                            <description>select_tree_2 description</description>
+                                                                            <config>
+                                                                                <type>select</type>
+                                                                                <renderType>selectTree</renderType>
+                                                                            </config>
                                                                         </select_tree_2>
                                                                     </el>
                                                                 </container_1>
@@ -486,9 +472,7 @@ class TcaFlexPrepareTest extends UnitTestCase
                                                         'container_1' => [
                                                             'type' => 'array',
                                                             'el' => [
-                                                                'select_section_1' => [
-                                                                    'TCEforms' => $columnConfig,
-                                                                ],
+                                                                'select_section_1' => $columnConfig,
                                                             ],
                                                         ],
                                                     ],

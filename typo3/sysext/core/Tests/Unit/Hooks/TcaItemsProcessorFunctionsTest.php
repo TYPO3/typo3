@@ -355,14 +355,12 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
 											<type>array</type>
 											<el>
 												<input1>
-													<TCEforms>
-														<label>flexInputLabel</label>
-														<exclude>1</exclude>
-														<config>
-															<type>input</type>
-															<size>23</size>
-														</config>
-													</TCEforms>
+													<label>flexInputLabel</label>
+													<exclude>1</exclude>
+													<config>
+														<type>input</type>
+														<size>23</size>
+													</config>
 												</input1>
 											</el>
 										</ROOT>

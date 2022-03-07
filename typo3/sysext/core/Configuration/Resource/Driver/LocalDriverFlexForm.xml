@@ -4,53 +4,45 @@
 		<type>array</type>
 		<el>
 			<basePath>
-				<TCEforms>
-					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
-					<config>
-						<type>input</type>
-						<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</placeholder>
-						<required>1</required>
-						<size>30</size>
-					</config>
-				</TCEforms>
+				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath</label>
+				<config>
+					<type>input</type>
+					<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_basePath_placeholder</placeholder>
+					<required>1</required>
+					<size>30</size>
+				</config>
 			</basePath>
 			<pathType>
-				<TCEforms>
-					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType</label>
-					<config>
-						<type>radio</type>
-						<items type="array">
-							<numIndex index="0" type="array">
-								<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</numIndex>
-								<numIndex index="1">relative</numIndex>
-							</numIndex>
-							<numIndex index="1" type="array">
-								<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</numIndex>
-								<numIndex index="1">absolute</numIndex>
-							</numIndex>
-						</items>
-						<default>relative</default>
-					</config>
-				</TCEforms>
+				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType</label>
+				<config>
+					<type>radio</type>
+					<items type="array">
+						<numIndex index="0" type="array">
+							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_relative</numIndex>
+							<numIndex index="1">relative</numIndex>
+						</numIndex>
+						<numIndex index="1" type="array">
+							<numIndex index="0">LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_pathType_absolute</numIndex>
+							<numIndex index="1">absolute</numIndex>
+						</numIndex>
+					</items>
+					<default>relative</default>
+				</config>
 			</pathType>
 			<baseUri>
-				<TCEforms>
-					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
-					<config>
-						<type>input</type>
-						<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</placeholder>
-						<size>30</size>
-					</config>
-				</TCEforms>
+				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri</label>
+				<config>
+					<type>input</type>
+					<placeholder>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_baseUri_placeholder</placeholder>
+					<size>30</size>
+				</config>
 			</baseUri>
 			<caseSensitive>
-				<TCEforms>
-					<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>
-					<config>
-						<type>check</type>
-						<default>1</default>
-					</config>
-				</TCEforms>
+				<label>LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf:sys_file_storage.localDriverFlexform_caseSensitive</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
 			</caseSensitive>
 		</el>
 	</ROOT>

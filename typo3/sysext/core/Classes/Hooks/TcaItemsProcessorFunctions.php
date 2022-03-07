@@ -303,10 +303,10 @@ class TcaItemsProcessorFunctions
                         }
                         foreach ($sheet['ROOT']['el'] as $pluginFieldName => $field) {
                             // Use only fields that have exclude flag set
-                            if (empty($field['TCEforms']['exclude'])) {
+                            if (empty($field['exclude'])) {
                                 continue;
                             }
-                            $fieldLabel = !empty($field['TCEforms']['label']) ? $languageService->sL($field['TCEforms']['label']) : $pluginFieldName;
+                            $fieldLabel = !empty($field['label']) ? $languageService->sL($field['label']) : $pluginFieldName;
                             $excludeFieldGroup[] = [
                                 'labels' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ': ') . ':' . $fieldLabel,
                                 'sectionHeader' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ':'),

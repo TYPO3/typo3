@@ -3151,8 +3151,7 @@ class DataHandler implements LoggerAwareInterface
                     $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
                 }
             } else {
-                // When having no specific sheets, it's "TCEforms.config", when having a sheet, it's just "config"
-                $fieldConfiguration = $dsConf['TCEforms']['config'] ?? $dsConf['config'] ?? null;
+                $fieldConfiguration = $dsConf['config'] ?? null;
                 // init with value from config for passthrough fields
                 if (!empty($fieldConfiguration['type']) && $fieldConfiguration['type'] === 'passthrough') {
                     if (!empty($dataValues_current[$key]['vDEF'])) {
@@ -6216,7 +6215,7 @@ class DataHandler implements LoggerAwareInterface
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
-                            $toDeleteRegistry[] = $flexFieldDefinition['TCEforms']['config'];
+                            $toDeleteRegistry[] = $flexFieldDefinition['config'];
                         }
                     }
                 }
@@ -6226,7 +6225,7 @@ class DataHandler implements LoggerAwareInterface
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
-                            $toUpdateRegistry[] = $flexFieldDefinition['TCEforms']['config'];
+                            $toUpdateRegistry[] = $flexFieldDefinition['config'];
                         }
                     }
                 }
@@ -6292,9 +6291,9 @@ class DataHandler implements LoggerAwareInterface
     private function flexFieldDefinitionIsMmRelation(array $flexFieldDefinition): bool
     {
         return ($flexFieldDefinition['type'] ?? '') !== 'array' // is a field, not a section
-            && is_array($flexFieldDefinition['TCEforms']['config'] ?? false) // config array exists
-            && $this->isReferenceField($flexFieldDefinition['TCEforms']['config']) // select, group, category
-            && !empty($flexFieldDefinition['TCEforms']['config']['MM']); // MM exists
+            && is_array($flexFieldDefinition['config'] ?? false) // config array exists
+            && $this->isReferenceField($flexFieldDefinition['config']) // select, group, category
+            && !empty($flexFieldDefinition['config']['MM']); // MM exists
     }
 
     /**

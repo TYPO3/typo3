@@ -1226,17 +1226,13 @@ class FlexFormToolsTest extends FunctionalTestCase
                         'type' => 'array',
                         'el' => [
                             'aFlexField' => [
-                                'TCEforms' => [
-                                    'label' => 'aFlexFieldLabel',
-                                    'config' => [
-                                        'type' => 'input',
-                                    ],
+                                'label' => 'aFlexFieldLabel',
+                                'config' => [
+                                    'type' => 'input',
                                 ],
                             ],
                         ],
-                        'TCEforms' => [
-                            'sheetTitle' => 'aTitle',
-                        ],
+                        'sheetTitle' => 'aTitle',
                     ],
                 ],
             ],
@@ -1287,18 +1283,14 @@ class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
                 <ROOT>
-                    <TCEforms>
-                        <sheetTitle>aTitle</sheetTitle>
-                    </TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
                     <type>array</type>
                     <el>
                         <aFlexField>
-                            <TCEforms>
-                                <label>aFlexFieldLabel</label>
-                                <config>
-                                    <type>input</type>
-                                </config>
-                            </TCEforms>
+                            <label>aFlexFieldLabel</label>
+                            <config>
+                                <type>input</type>
+                            </config>
                         </aFlexField>
                     </el>
                 </ROOT>
@@ -1312,17 +1304,13 @@ class FlexFormToolsTest extends FunctionalTestCase
                         'type' => 'array',
                         'el' => [
                             'aFlexField' => [
-                                'TCEforms' => [
-                                    'label' => 'aFlexFieldLabel',
-                                    'config' => [
-                                        'type' => 'input',
-                                    ],
+                                'label' => 'aFlexFieldLabel',
+                                'config' => [
+                                    'type' => 'input',
                                 ],
                             ],
                         ],
-                        'TCEforms' => [
-                            'sheetTitle' => 'aTitle',
-                        ],
+                        'sheetTitle' => 'aTitle',
                     ],
                 ],
             ],
@@ -1352,17 +1340,13 @@ class FlexFormToolsTest extends FunctionalTestCase
                         'type' => 'array',
                         'el' => [
                             'aFlexField' => [
-                                'TCEforms' => [
-                                    'label' => 'aFlexFieldLabel',
-                                    'config' => [
-                                        'type' => 'input',
-                                    ],
+                                'label' => 'aFlexFieldLabel',
+                                'config' => [
+                                    'type' => 'input',
                                 ],
                             ],
                         ],
-                        'TCEforms' => [
-                            'sheetTitle' => 'aTitle',
-                        ],
+                        'sheetTitle' => 'aTitle',
                     ],
                 ],
             ],
@@ -1392,17 +1376,13 @@ class FlexFormToolsTest extends FunctionalTestCase
                         'type' => 'array',
                         'el' => [
                             'aFlexField' => [
-                                'TCEforms' => [
-                                    'label' => 'aFlexFieldLabel',
-                                    'config' => [
-                                        'type' => 'input',
-                                    ],
+                                'label' => 'aFlexFieldLabel',
+                                'config' => [
+                                    'type' => 'input',
                                 ],
                             ],
                         ],
-                        'TCEforms' => [
-                            'sheetTitle' => 'aTitle',
-                        ],
+                        'sheetTitle' => 'aTitle',
                     ],
                 ],
             ],
@@ -1455,26 +1435,20 @@ class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
                 <ROOT>
-                    <TCEforms>
-                        <sheetTitle>aTitle</sheetTitle>
-                    </TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
                     <type>array</type>
                     <el>
                         <category>
-                            <TCEforms>
-                                <label>Single category</label>
-                                <config>
-                                    <type>category</type>
-                                    <relationship>oneToOne</relationship>
-                                </config>
-                            </TCEforms>
+                            <label>Single category</label>
+                            <config>
+                                <type>category</type>
+                                <relationship>oneToOne</relationship>
+                            </config>
                         </category>
                         <categories>
-                            <TCEforms>
-                                <config>
-                                    <type>category</type>
-                                </config>
-                            </TCEforms>
+                            <config>
+                                <type>category</type>
+                            </config>
                         </categories>
                     </el>
                 </ROOT>
@@ -1488,36 +1462,30 @@ class FlexFormToolsTest extends FunctionalTestCase
                         'type' => 'array',
                         'el' => [
                             'category' => [
-                                'TCEforms' => [
-                                    'label' => 'Single category',
-                                    'config' => [
-                                        'type' => 'category',
-                                        'relationship' => 'oneToOne',
-                                        'foreign_table' => 'sys_category',
-                                        'foreign_table_where' =>  ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
-                                        'maxitems' => 1,
-                                        'size' => 20,
-                                        'default' => 0,
-                                    ],
+                                'label' => 'Single category',
+                                'config' => [
+                                    'type' => 'category',
+                                    'relationship' => 'oneToOne',
+                                    'foreign_table' => 'sys_category',
+                                    'foreign_table_where' =>  ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
+                                    'maxitems' => 1,
+                                    'size' => 20,
+                                    'default' => 0,
                                 ],
                             ],
                             'categories' => [
-                                'TCEforms' => [
-                                    'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
-                                    'config' => [
-                                        'type' => 'category',
-                                        'relationship' => 'oneToMany',
-                                        'foreign_table' => 'sys_category',
-                                        'foreign_table_where' =>  ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
-                                        'maxitems' => 99999,
-                                        'size' => 20,
-                                    ],
+                                'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.categories',
+                                'config' => [
+                                    'type' => 'category',
+                                    'relationship' => 'oneToMany',
+                                    'foreign_table' => 'sys_category',
+                                    'foreign_table_where' => ' AND {#sys_category}.{#sys_language_uid} IN (-1, 0)',
+                                    'maxitems' => 99999,
+                                    'size' => 20,
                                 ],
                             ],
                         ],
-                        'TCEforms' => [
-                            'sheetTitle' => 'aTitle',
-                        ],
+                        'sheetTitle' => 'aTitle',
                     ],
                 ],
             ],
@@ -1533,18 +1501,14 @@ class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
                 <ROOT>
-                    <TCEforms>
-                        <sheetTitle>aTitle</sheetTitle>
-                    </TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
                     <type>array</type>
                     <el>
                         <categories>
-                            <TCEforms>
-                                <config>
-                                    <type>category</type>
-                                    <relationship>manyToMany</relationship>
-                                </config>
-                            </TCEforms>
+                            <config>
+                                <type>category</type>
+                                <relationship>manyToMany</relationship>
+                            </config>
                         </categories>
                     </el>
                 </ROOT>
@@ -1566,19 +1530,15 @@ class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
                 <ROOT>
-                    <TCEforms>
-                        <sheetTitle>aTitle</sheetTitle>
-                    </TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
                     <type>array</type>
                     <el>
                         <categories>
-                            <TCEforms>
-                                <config>
-                                    <type>category</type>
-                                    <relationship>oneToOne</relationship>
-                                    <maxitems>12</maxitems>
-                                </config>
-                            </TCEforms>
+                            <config>
+                                <type>category</type>
+                                <relationship>oneToOne</relationship>
+                                <maxitems>12</maxitems>
+                            </config>
                         </categories>
                     </el>
                 </ROOT>
@@ -1600,18 +1560,14 @@ class FlexFormToolsTest extends FunctionalTestCase
         $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
             <T3DataStructure>
                 <ROOT>
-                    <TCEforms>
-                        <sheetTitle>aTitle</sheetTitle>
-                    </TCEforms>
+                    <sheetTitle>aTitle</sheetTitle>
                     <type>array</type>
                     <el>
                         <categories>
-                            <TCEforms>
-                                <config>
-                                    <type>category</type>
-                                    <maxitems>1</maxitems>
-                                </config>
-                            </TCEforms>
+                            <config>
+                                <type>category</type>
+                                <maxitems>1</maxitems>
+                            </config>
                         </categories>
                     </el>
                 </ROOT>

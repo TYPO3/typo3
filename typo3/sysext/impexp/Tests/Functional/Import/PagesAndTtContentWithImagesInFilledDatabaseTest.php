@@ -278,16 +278,14 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
         <type>array</type>
         <el>
             <flexFormRelation>
-                <TCEforms>
-                    <label>FlexForm relation</label>
-                    <config>
-                        <type>group</type>
-                        <allowed>pages</allowed>
-                        <size>1</size>
-                        <maxitems>1</maxitems>
-                        <minitems>0</minitems>
-                    </config>
-                </TCEforms>
+                <label>FlexForm relation</label>
+                <config>
+                    <type>group</type>
+                    <allowed>pages</allowed>
+                    <size>1</size>
+                    <maxitems>1</maxitems>
+                    <minitems>0</minitems>
+                </config>
             </flexFormRelation>
         </el>
     </ROOT>
@@ -409,14 +407,12 @@ class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImportExpo
                 <type>array</type>
                 <el>
                     <settings.persistenceIdentifier>
-                        <TCEforms>
-                            <label>FlexForm soft reference</label>
-                            <config>
-                                <type>select</type>
-                                <renderType>selectSingle</renderType>
-                                <softref>formPersistenceIdentifier</softref>
-                            </config>
-                        </TCEforms>
+                        <label>FlexForm soft reference</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <softref>formPersistenceIdentifier</softref>
+                        </config>
                     </settings.persistenceIdentifier>
                 </el>
             </ROOT>

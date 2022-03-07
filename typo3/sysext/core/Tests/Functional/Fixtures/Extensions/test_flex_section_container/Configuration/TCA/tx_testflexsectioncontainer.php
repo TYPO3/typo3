@@ -70,9 +70,7 @@ return [
                             <sheets>
                                 <sSection>
                                     <ROOT>
-                                        <TCEforms>
-                                            <sheetTitle>section</sheetTitle>
-                                        </TCEforms>
+                                        <sheetTitle>section</sheetTitle>
                                         <type>array</type>
                                         <el>
                                             <section_1>
@@ -85,13 +83,11 @@ return [
                                                         <title>container_1</title>
                                                         <el>
                                                             <input_1>
-                                                                <TCEforms>
-                                                                    <label>input_1 description</label>
-                                                                    <description>field description</description>
-                                                                    <config>
-                                                                        <type>input</type>
-                                                                    </config>
-                                                                </TCEforms>
+                                                                <label>input_1 description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>input</type>
+                                                                </config>
                                                             </input_1>
                                                         </el>
                                                     </container_1>
