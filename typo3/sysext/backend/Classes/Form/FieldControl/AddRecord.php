@@ -66,7 +66,6 @@ class AddRecord extends AbstractNode
             return [];
         }
 
-        $pid = $this->resolvePid($options, $table);
         $prefixOfFormElName = 'data[' . $this->data['tableName'] . '][' . $this->data['databaseRow']['uid'] . '][' . $this->data['fieldName'] . ']';
         $flexFormPath = '';
         if (str_starts_with($itemName, $prefixOfFormElName)) {
@@ -77,7 +76,7 @@ class AddRecord extends AbstractNode
             'P' => [
                 'params' => [
                     'table' => $table,
-                    'pid' => $pid,
+                    'pid' => $this->resolvePid($options, $table),
                     'setValue' => $setValue,
                 ],
                 'table' => $this->data['tableName'],
@@ -105,7 +104,7 @@ class AddRecord extends AbstractNode
         ];
     }
 
-    protected function resolvePid(array $options, string $table): int
+    protected function resolvePid(array $options, string $table): string
     {
         // Target pid of new records is current pid by default
         $pid = $this->data['effectivePid'];
@@ -115,6 +114,7 @@ class AddRecord extends AbstractNode
                 // Substitute marker with pid from site object
                 $pid = $this->data['site']->getRootPageId();
             } else {
+                // This might be a static pid or a marker such as ###PAGE_TSCONFIG_ID###
                 $pid = $options['pid'];
             }
         } elseif (
@@ -124,6 +124,6 @@ class AddRecord extends AbstractNode
             // Target table can only exist on root level - set 0 as pid
             $pid = 0;
         }
-        return (int)$pid;
+        return (string)$pid;
     }
 }
