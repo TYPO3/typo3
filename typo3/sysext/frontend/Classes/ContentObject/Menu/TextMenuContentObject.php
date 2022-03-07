@@ -17,40 +17,29 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Extension class creating text based menus
  */
 class TextMenuContentObject extends AbstractMenuContentObject
 {
+    protected ?ContentObjectRenderer $cObjectForCurrentMenu = null;
+
+    protected string $menuContent = '';
+    protected int $totalMenuItems = 0;
+
     /**
-     * Calls processItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
-     * Sets the result for the new "normal state" in $this->result
-     *
-     * @see AbstractMenuContentObject::processItemStates()
+     * @var array[]
      */
-    public function generate()
-    {
-        $itemConfiguration = [];
-        $splitCount = count($this->menuArr);
-        if ($splitCount) {
-            $itemConfiguration = $this->processItemStates($splitCount);
-        }
-        if (!empty($this->mconf['debugItemConf'])) {
-            echo '<h3>$itemConfiguration:</h3>';
-            debug($itemConfiguration);
-        }
-        $this->result = $itemConfiguration;
-    }
+    protected array $subMenuObjSuffixes = [];
 
     /**
      * Traverses the ->result array of menu items configuration (made by ->generate()) and renders each item.
-     * During the execution of this function many internal methods prefixed "extProc_" from this class is called and
-     * many of these are for now dummy functions.
      * An instance of ContentObjectRenderer is also made and for each menu item rendered it is loaded with
      * the record for that page so that any stdWrap properties that applies will have the current menu items record available.
      *
-     * @return string The HTML for the menu (returns result through $this->extProc_finish(); )
+     * @return string The HTML for the menu including submenus
      */
     public function writeMenu()
     {
@@ -58,39 +47,40 @@ class TextMenuContentObject extends AbstractMenuContentObject
             return '';
         }
 
-        $this->WMresult = '';
-        $this->WMmenuItems = count($this->result);
+        $this->cObjectForCurrentMenu = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->menuContent = '';
+        $this->totalMenuItems = count($this->result);
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $this->WMsubmenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], $this->WMmenuItems);
+        $this->subMenuObjSuffixes = $typoScriptService->explodeConfigurationForOptionSplit(['sOSuffix' => $this->mconf['submenuObjSuffixes'] ?? null], $this->totalMenuItems);
         foreach ($this->result as $key => $val) {
             $GLOBALS['TSFE']->register['count_HMENU_MENUOBJ']++;
             $GLOBALS['TSFE']->register['count_MENUOBJ']++;
             // Initialize the cObj with the page record of the menu item
-            $this->WMcObj->start($this->menuArr[$key], 'pages', $this->request);
+            $this->cObjectForCurrentMenu->start($this->menuArr[$key], 'pages', $this->request);
             $this->I = [];
             $this->I['key'] = $key;
             $this->I['val'] = $val;
-            $this->I['title'] = $this->getPageTitle(($this->menuArr[$key]['title'] ?? ''), ($this->menuArr[$key]['nav_title'] ?? ''));
+            $this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'] ?? '', $this->menuArr[$key]['nav_title'] ?? '');
             $this->I['title.'] = $this->I['val']['stdWrap.'] ?? [];
-            $this->I['title'] = $this->WMcObj->stdWrapValue('title', $this->I ?? []);
+            $this->I['title'] = $this->cObjectForCurrentMenu->stdWrapValue('title', $this->I ?? []);
             $this->I['uid'] = $this->menuArr[$key]['uid'] ?? 0;
             $this->I['mount_pid'] = $this->menuArr[$key]['mount_pid'] ?? 0;
             $this->I['pid'] = $this->menuArr[$key]['pid'] ?? 0;
             $this->I['spacer'] = $this->menuArr[$key]['isSpacer'] ?? false;
             // Make link tag
-            $this->I['val']['additionalParams'] = $this->WMcObj->stdWrapValue('additionalParams', $this->I['val']);
+            $this->I['val']['additionalParams'] = $this->cObjectForCurrentMenu->stdWrapValue('additionalParams', $this->I['val']);
             $this->I['linkHREF'] = $this->link((int)$key, (string)($this->I['val']['altTarget'] ?? ''), ($this->mconf['forceTypeValue'] ?? ''));
             if (empty($this->I['linkHREF'])) {
                 $this->I['val']['doNotLinkIt'] = 1;
             }
             // Title attribute of links:
-            $titleAttrValue = $this->WMcObj->stdWrapValue('ATagTitle', $this->I['val']);
+            $titleAttrValue = $this->cObjectForCurrentMenu->stdWrapValue('ATagTitle', $this->I['val']);
             if ($titleAttrValue !== '') {
                 $this->I['linkHREF']['title'] = $titleAttrValue;
             }
 
             // stdWrap for doNotLinkIt
-            $this->I['val']['doNotLinkIt'] = $this->WMcObj->stdWrapValue('doNotLinkIt', $this->I['val']);
+            $this->I['val']['doNotLinkIt'] = $this->cObjectForCurrentMenu->stdWrapValue('doNotLinkIt', $this->I['val']);
             // Compile link tag
             if (!$this->I['val']['doNotLinkIt']) {
                 $this->I['val']['doNotLinkIt'] = 0;
@@ -110,7 +100,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
                 $wrapPartsAfter = explode('|', $this->I['val']['linkWrap'] ?? '');
             }
             if (($this->I['val']['stdWrap2'] ?? false) || isset($this->I['val']['stdWrap2.'])) {
-                $stdWrap2 = (string)(isset($this->I['val']['stdWrap2.']) ? $this->WMcObj->stdWrap('|', $this->I['val']['stdWrap2.']) : '|');
+                $stdWrap2 = (string)(isset($this->I['val']['stdWrap2.']) ? $this->cObjectForCurrentMenu->stdWrap('|', $this->I['val']['stdWrap2.']) : '|');
                 $wrapPartsStdWrap = explode($this->I['val']['stdWrap2'] ?: '|', $stdWrap2);
             } else {
                 $wrapPartsStdWrap = ['', ''];
@@ -120,7 +110,7 @@ class TextMenuContentObject extends AbstractMenuContentObject
             $this->I['parts']['before'] = $this->getBeforeAfter('before');
             $this->I['parts']['stdWrap2_begin'] = $wrapPartsStdWrap[0];
             // stdWrap for doNotShowLink
-            $this->I['val']['doNotShowLink'] = $this->WMcObj->stdWrapValue('doNotShowLink', $this->I['val']);
+            $this->I['val']['doNotShowLink'] = $this->cObjectForCurrentMenu->stdWrapValue('doNotShowLink', $this->I['val']);
             if (!$this->I['val']['doNotShowLink']) {
                 $this->I['parts']['notATagBeforeWrap_begin'] = $wrapPartsAfter[0] ?? '';
                 $this->I['parts']['ATag_begin'] = $this->I['A1'];
@@ -139,19 +129,29 @@ class TextMenuContentObject extends AbstractMenuContentObject
             // Merge parts + beforeAllWrap
             $this->I['theItem'] = implode('', $this->I['parts']);
             // allWrap:
-            $allWrap = $this->WMcObj->stdWrapValue('allWrap', $this->I['val']);
-            $this->I['theItem'] = $this->WMcObj->wrap($this->I['theItem'], $allWrap);
+            $allWrap = $this->cObjectForCurrentMenu->stdWrapValue('allWrap', $this->I['val']);
+            $this->I['theItem'] = $this->cObjectForCurrentMenu->wrap($this->I['theItem'], $allWrap);
             if ($this->I['val']['subst_elementUid'] ?? false) {
                 $this->I['theItem'] = str_replace('{elementUid}', (string)$this->I['uid'], $this->I['theItem']);
             }
             // allStdWrap:
             if (is_array($this->I['val']['allStdWrap.'] ?? null)) {
-                $this->I['theItem'] = $this->WMcObj->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
+                $this->I['theItem'] = $this->cObjectForCurrentMenu->stdWrap($this->I['theItem'], $this->I['val']['allStdWrap.']);
             }
-            // Calling extra processing function
-            $this->extProc_afterLinking((int)$key);
+            $explicitSpacerRenderingEnabled = ($this->mconf['SPC'] ?? false);
+            $isSpacerPage = $this->I['spacer'] ?? false;
+            // If rendering of SPACERs is enabled, also allow rendering submenus with Spacers
+            if (!$isSpacerPage || $explicitSpacerRenderingEnabled) {
+                // Add part to the accumulated result + fetch submenus
+                $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->subMenuObjSuffixes[$key]['sOSuffix'] ?? '', $key);
+            }
+            $part = $this->cObjectForCurrentMenu->stdWrapValue('wrapItemAndSub', $this->I['val']);
+            $this->menuContent .= $part ? $this->cObjectForCurrentMenu->wrap($this->I['theItem'], $part) : $this->I['theItem'];
         }
-        return $this->extProc_finish();
+        if (is_array($this->mconf['stdWrap.'] ?? null)) {
+            $this->menuContent = (string)$this->cObjectForCurrentMenu->stdWrap($this->menuContent, $this->mconf['stdWrap.']);
+        }
+        return $this->cObjectForCurrentMenu->wrap($this->menuContent, $this->mconf['wrap'] ?? '');
     }
 
     /**
@@ -165,46 +165,12 @@ class TextMenuContentObject extends AbstractMenuContentObject
      * @param string $pref Can be "before" or "after" and determines which kind of stdWrap to process (basically this is the prefix of the TypoScript properties that are read from the ->I['val'] array
      * @return string The resulting HTML
      */
-    protected function getBeforeAfter($pref)
+    protected function getBeforeAfter(string $pref): string
     {
-        $processedPref = $this->WMcObj->stdWrapValue($pref, $this->I['val']);
+        $processedPref = $this->cObjectForCurrentMenu->stdWrapValue($pref, $this->I['val']);
         if (isset($this->I['val'][$pref . 'Wrap'])) {
-            return $this->WMcObj->wrap($processedPref, $this->I['val'][$pref . 'Wrap']);
+            return $this->cObjectForCurrentMenu->wrap($processedPref, $this->I['val'][$pref . 'Wrap']);
         }
         return $processedPref;
-    }
-
-    /**
-     * Called right after the creation of links for the menu item. This is also the last function call before the while-loop traversing menu items goes to the next item.
-     * This function MUST set $this->WMresult.=[HTML for menu item] to add the generated menu item to the internal accumulation of items.
-     *
-     * @param int $key Pointer to $this->menuArr[$key] where the current menu element record is found
-     * @see writeMenu()
-     */
-    protected function extProc_afterLinking($key)
-    {
-        $explicitSpacerRenderingEnabled = ($this->mconf['SPC'] ?? false);
-        $isSpacerPage = $this->I['spacer'] ?? false;
-        // If rendering of SPACERs is enabled, also allow rendering submenus with Spacers
-        if (!$isSpacerPage || $explicitSpacerRenderingEnabled) {
-            // Add part to the accumulated result + fetch submenus
-            $this->I['theItem'] .= $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix'] ?? '');
-        }
-        $part = $this->WMcObj->stdWrapValue('wrapItemAndSub', $this->I['val']);
-        $this->WMresult .= $part ? $this->WMcObj->wrap($this->I['theItem'], $part) : $this->I['theItem'];
-    }
-
-    /**
-     * Called before the writeMenu() function returns (only if a menu was generated)
-     *
-     * @return string The total menu content should be returned by this function
-     * @see writeMenu()
-     */
-    protected function extProc_finish()
-    {
-        if (is_array($this->mconf['stdWrap.'] ?? null)) {
-            $this->WMresult = (string)$this->WMcObj->stdWrap($this->WMresult, $this->mconf['stdWrap.']);
-        }
-        return $this->WMcObj->wrap($this->WMresult, $this->mconf['wrap'] ?? '');
     }
 }

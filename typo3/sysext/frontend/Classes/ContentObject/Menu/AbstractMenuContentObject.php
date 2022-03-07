@@ -47,10 +47,8 @@ abstract class AbstractMenuContentObject
 {
     /**
      * tells you which menu number this is. This is important when getting data from the setup
-     *
-     * @var int
      */
-    protected $menuNumber = 1;
+    protected int $menuNumber = 1;
 
     /**
      * 0 = rootFolder
@@ -154,34 +152,12 @@ abstract class AbstractMenuContentObject
      */
     protected $I;
 
-    /**
-     * @var string
-     */
-    protected $WMresult;
-
-    /**
-     * @var int
-     */
-    protected $WMmenuItems;
-
-    /**
-     * @var array[]
-     */
-    protected $WMsubmenuObjSuffixes;
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $WMcObj;
-
     protected ?ServerRequestInterface $request = null;
 
     /**
      * Can be set to contain menu item arrays for sub-levels.
-     *
-     * @var array
      */
-    protected $alternativeMenuTempArray = [];
+    protected array $alternativeMenuTempArray = [];
 
     /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
@@ -224,14 +200,13 @@ abstract class AbstractMenuContentObject
      * @return bool Returns TRUE on success
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::HMENU()
      */
-    public function start($tmpl, $sys_page, $id, $conf, $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
+    public function start($tmpl, $sys_page, $id, $conf, int $menuNumber, $objSuffix = '', ?ServerRequestInterface $request = null)
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $this->conf = $conf;
         $this->menuNumber = $menuNumber;
         $this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
         $this->request = $request;
-        $this->WMcObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         // Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the PageRepository object
         if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {
             $this->tmpl = $tmpl;
@@ -452,12 +427,19 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Generates the the menu data.
+     * Calls processItemStates() so that the common configuration for the menu items are resolved into individual configuration per item.
+     * Sets the result for the new "normal state" in $this->result
      *
-     * Subclasses should overwrite this method.
+     * @see AbstractMenuContentObject::processItemStates()
      */
     public function generate()
     {
+        $itemConfiguration = [];
+        $splitCount = count($this->menuArr);
+        if ($splitCount) {
+            $itemConfiguration = $this->processItemStates($splitCount);
+        }
+        $this->result = $itemConfiguration;
     }
 
     /**
@@ -1273,20 +1255,21 @@ abstract class AbstractMenuContentObject
      *
      * @param int $uid Page id of the current page for which a submenu MAY be produced (if conditions are met)
      * @param string $objSuffix Object prefix, see ->start()
+     * @param int $menuItemKey
      * @return string HTML content of the submenu
      */
-    protected function subMenu(int $uid, string $objSuffix)
+    protected function subMenu(int $uid, string $objSuffix, int $menuItemKey)
     {
         // Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
         $altArray = '';
-        if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU'] ?? null) && !empty($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
-            $altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
+        if (is_array($this->menuArr[$menuItemKey]['_SUB_MENU'] ?? null) && !empty($this->menuArr[$menuItemKey]['_SUB_MENU'])) {
+            $altArray = $this->menuArr[$menuItemKey]['_SUB_MENU'];
         }
         // Make submenu if the page is the next active
         $menuType = $this->conf[($this->menuNumber + 1) . $objSuffix] ?? '';
         // stdWrap for expAll
         $this->mconf['expAll'] = $this->parent_cObj->stdWrapValue('expAll', $this->mconf ?? []);
-        if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !($this->mconf['sectionIndex'] ?? false)) {
+        if (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($menuItemKey)) || is_array($altArray)) && !($this->mconf['sectionIndex'] ?? false)) {
             try {
                 $menuObjectFactory = GeneralUtility::makeInstance(MenuContentObjectFactory::class);
                 /** @var AbstractMenuContentObject $submenu */
@@ -1294,12 +1277,12 @@ abstract class AbstractMenuContentObject
                 $submenu->entryLevel = $this->entryLevel + 1;
                 $submenu->rL_uidRegister = $this->rL_uidRegister;
                 $submenu->MP_array = $this->MP_array;
-                if ($this->menuArr[$this->I['key']]['_MP_PARAM'] ?? false) {
-                    $submenu->MP_array[] = $this->menuArr[$this->I['key']]['_MP_PARAM'];
+                if ($this->menuArr[$menuItemKey]['_MP_PARAM'] ?? false) {
+                    $submenu->MP_array[] = $this->menuArr[$menuItemKey]['_MP_PARAM'];
                 }
                 // Especially scripts that build the submenu needs the parent data
                 $submenu->parent_cObj = $this->parent_cObj;
-                $submenu->setParentMenu($this->menuArr, $this->I['key']);
+                $submenu->setParentMenu($this->menuArr, $menuItemKey);
                 // Setting alternativeMenuTempArray (will be effective only if an array and not empty)
                 if (is_array($altArray) && !empty($altArray)) {
                     $submenu->alternativeMenuTempArray = $altArray;

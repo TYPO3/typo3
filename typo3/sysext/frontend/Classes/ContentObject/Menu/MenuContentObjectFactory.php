@@ -29,10 +29,8 @@ class MenuContentObjectFactory implements SingletonInterface
 {
     /**
      * Register of TypoScript keys to according render class
-     *
-     * @var array
      */
-    protected $menuTypeToClassMapping = [
+    protected array $menuTypeToClassMapping = [
         'TMENU' => TextMenuContentObject::class,
     ];
 
@@ -43,19 +41,18 @@ class MenuContentObjectFactory implements SingletonInterface
      * @return AbstractMenuContentObject Menu object
      * @throws Exception\NoSuchMenuTypeException
      */
-    public function getMenuObjectByType($type = '')
+    public function getMenuObjectByType($type = ''): AbstractMenuContentObject
     {
         $upperCasedClassName = strtoupper($type);
         if (array_key_exists($upperCasedClassName, $this->menuTypeToClassMapping)) {
             /** @var AbstractMenuContentObject $object */
             $object = GeneralUtility::makeInstance($this->menuTypeToClassMapping[$upperCasedClassName]);
-        } else {
-            throw new NoSuchMenuTypeException(
-                'Menu type ' . (string)$type . ' has no implementing class.',
-                1363278130
-            );
+            return $object;
         }
-        return $object;
+        throw new NoSuchMenuTypeException(
+            'Menu type ' . (string)$type . ' has no implementing class.',
+            1363278130
+        );
     }
 
     /**
