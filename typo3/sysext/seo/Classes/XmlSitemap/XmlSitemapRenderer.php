@@ -72,11 +72,6 @@ class XmlSitemapRenderer
         return $this->renderIndex($request, $sitemapType);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param string $sitemapType
-     * @return string
-     */
     protected function renderIndex(ServerRequestInterface $request, string $sitemapType): string
     {
         $sitemaps = [];
@@ -111,13 +106,6 @@ class XmlSitemapRenderer
         return $this->view->render('Index');
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param string $sitemap
-     * @param string $sitemapType
-     * @return string
-     * @throws InvalidConfigurationException
-     */
     protected function renderSitemap(ServerRequestInterface $request, string $sitemap, string $sitemapType): string
     {
         if (!empty($sitemapConfig = $this->configuration['config'][$sitemapType]['sitemaps'][$sitemap])) {
@@ -146,11 +134,6 @@ class XmlSitemapRenderer
         throw new InvalidConfigurationException('No valid configuration found for sitemap ' . $sitemap, 1535578569);
     }
 
-    /**
-     * @param string|null $sitemapType
-     * @param string|null $sitemap
-     * @return string
-     */
     protected function getXslFilePath(string $sitemapType = null, string $sitemap = null): string
     {
         $path = $this->configuration['config']['xslFile'] ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';

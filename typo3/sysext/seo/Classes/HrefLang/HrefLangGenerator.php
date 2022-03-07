@@ -36,22 +36,10 @@ use TYPO3\CMS\Frontend\Event\ModifyHrefLangTagsEvent;
  */
 class HrefLangGenerator
 {
-    /**
-     * The content object renderer
-     *
-     * @var ContentObjectRenderer
-     */
-    protected $cObj;
-
-    /**
-     * @var LanguageMenuProcessor
-     */
-    protected $languageMenuProcessor;
-
-    public function __construct(ContentObjectRenderer $cObj, LanguageMenuProcessor $languageMenuProcessor)
-    {
-        $this->cObj = $cObj;
-        $this->languageMenuProcessor = $languageMenuProcessor;
+    public function __construct(
+        protected ContentObjectRenderer $cObj,
+        protected LanguageMenuProcessor $languageMenuProcessor,
+    ) {
     }
 
     public function __invoke(ModifyHrefLangTagsEvent $event): void
@@ -93,11 +81,6 @@ class HrefLangGenerator
         $event->setHrefLangs($hrefLangs);
     }
 
-    /**
-     * @param string $url
-     * @param SiteLanguage $siteLanguage
-     * @return string
-     */
     protected function getAbsoluteUrl(string $url, SiteLanguage $siteLanguage): string
     {
         $uri = new Uri($url);
@@ -112,9 +95,6 @@ class HrefLangGenerator
         return (string)$url;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];

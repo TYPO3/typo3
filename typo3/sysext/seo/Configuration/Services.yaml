@@ -12,6 +12,10 @@ services:
       - name: event.listener
         identifier: 'typo3-seo/hreflangGenerator'
 
+  TYPO3\CMS\Seo\MetaTag\MetaTagGenerator:
+    public: true
+
   TYPO3\CMS\Seo\XmlSitemap\XmlSitemapRenderer:
     shared: false
     public: true
+

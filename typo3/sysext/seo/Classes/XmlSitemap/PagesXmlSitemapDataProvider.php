@@ -58,9 +58,6 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
     }
 
-    /**
-     * @return array
-     */
     protected function getPages(): array
     {
         if (!empty($this->config['rootPage'])) {
@@ -103,18 +100,11 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $pages;
     }
 
-    /**
-     * @return LanguageAspect
-     */
     protected function getCurrentLanguageAspect(): LanguageAspect
     {
         return GeneralUtility::makeInstance(Context::class)->getAspect('language');
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
     protected function defineUrl(array $data): array
     {
         $typoLinkConfig = [

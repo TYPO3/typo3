@@ -32,6 +32,12 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
  */
 class MetaTagGenerator
 {
+    public function __construct(
+        protected MetaTagManagerRegistry $metaTagManagerRegistry,
+        protected ImageService $imageService
+    ) {
+    }
+
     /**
      * Generate the meta tags that can be set in backend and add them to frontend by using the MetaTag API
      *
@@ -39,27 +45,25 @@ class MetaTagGenerator
      */
     public function generate(array $params)
     {
-        $metaTagManagerRegistry = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
-
         if (!empty($params['page']['description'])) {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('description');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('description');
             $manager->addProperty('description', $params['page']['description']);
         }
 
         if (!empty($params['page']['og_title'])) {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('og:title');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('og:title');
             $manager->addProperty('og:title', $params['page']['og_title']);
         }
 
         if (!empty($params['page']['og_description'])) {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('og:description');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('og:description');
             $manager->addProperty('og:description', $params['page']['og_description']);
         }
 
         if (!empty($params['page']['og_image'])) {
             $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
             $fileCollector->addFilesFromRelation('pages', 'og_image', $params['page']);
-            $manager = $metaTagManagerRegistry->getManagerForProperty('og:image');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('og:image');
 
             $ogImages = $this->generateSocialImages($fileCollector->getFiles());
             foreach ($ogImages as $ogImage) {
@@ -80,23 +84,23 @@ class MetaTagGenerator
             }
         }
 
-        $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:card');
+        $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:card');
         $manager->addProperty('twitter:card', $params['page']['twitter_card'] ?: 'summary');
 
         if (!empty($params['page']['twitter_title'])) {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:title');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:title');
             $manager->addProperty('twitter:title', $params['page']['twitter_title']);
         }
 
         if (!empty($params['page']['twitter_description'])) {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:description');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:description');
             $manager->addProperty('twitter:description', $params['page']['twitter_description']);
         }
 
         if (!empty($params['page']['twitter_image'])) {
             $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
             $fileCollector->addFilesFromRelation('pages', 'twitter_image', $params['page']);
-            $manager = $metaTagManagerRegistry->getManagerForProperty('twitter:image');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('twitter:image');
 
             $twitterImages = $this->generateSocialImages($fileCollector->getFiles());
             foreach ($twitterImages as $twitterImage) {
@@ -118,7 +122,7 @@ class MetaTagGenerator
         $noFollow = ((bool)$params['page']['no_follow']) ? 'nofollow' : 'follow';
 
         if ($noIndex === 'noindex' || $noFollow === 'nofollow') {
-            $manager = $metaTagManagerRegistry->getManagerForProperty('robots');
+            $manager = $this->metaTagManagerRegistry->getManagerForProperty('robots');
             $manager->addProperty('robots', implode(',', [$noIndex, $noFollow]));
         }
     }
@@ -129,8 +133,6 @@ class MetaTagGenerator
      */
     protected function generateSocialImages(array $fileReferences): array
     {
-        $imageService = GeneralUtility::makeInstance(ImageService::class);
-
         $socialImages = [];
 
         /** @var FileReference $file */
@@ -151,7 +153,7 @@ class MetaTagGenerator
                 $processingConfiguration
             );
 
-            $imageUri = $imageService->getImageUri($processedImage, true);
+            $imageUri = $this->imageService->getImageUri($processedImage, true);
 
             $socialImages[] = [
                 'url' => $imageUri,

@@ -32,20 +32,9 @@ use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
  */
 class CanonicalGenerator
 {
-    /**
-     * @var TypoScriptFrontendController
-     */
-    protected $typoScriptFrontendController;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected TypoScriptFrontendController $typoScriptFrontendController;
+    protected PageRepository $pageRepository;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, EventDispatcherInterface $eventDispatcher = null)
     {
@@ -91,9 +80,6 @@ class CanonicalGenerator
         return '';
     }
 
-    /**
-     * @return string
-     */
     protected function checkForCanonicalLink(): string
     {
         if (!empty($this->typoScriptFrontendController->page['canonical_link'])) {
@@ -105,13 +91,10 @@ class CanonicalGenerator
         return '';
     }
 
-    /**
-     * @return string
-     */
     protected function checkContentFromPid(): string
     {
-        if (!empty($this->typoScriptFrontendController->page['content_from_pid'])) {
-            $parameter = (int)$this->typoScriptFrontendController->page['content_from_pid'];
+        if ($this->typoScriptFrontendController->contentPid !== $this->typoScriptFrontendController->id) {
+            $parameter = $this->typoScriptFrontendController->contentPid;
             if ($parameter > 0) {
                 $targetPage = $this->pageRepository->getPage($parameter, true);
                 if (!empty($targetPage['canonical_link'])) {
@@ -126,9 +109,6 @@ class CanonicalGenerator
         return '';
     }
 
-    /**
-     * @return string
-     */
     protected function checkDefaultCanonical(): string
     {
         // We should only create a canonical link to the target, if the target is within a valid site root
@@ -172,9 +152,6 @@ class CanonicalGenerator
         return false;
     }
 
-    /**
-     * @return TypoScriptFrontendController
-     */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         return $GLOBALS['TSFE'];

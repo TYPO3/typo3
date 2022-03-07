@@ -26,80 +26,31 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $key;
+    protected string $key;
+    protected array $items = [];
+    protected array $config = [];
+    protected ContentObjectRenderer $cObj;
+    protected int $numberOfItemsPerPage = 1000;
+    protected ServerRequestInterface $request;
 
-    /**
-     * @var int
-     */
-    protected $lastModified;
-
-    /**
-     * @var array
-     */
-    protected $items = [];
-
-    /**
-     * @var array
-     */
-    protected $config = [];
-
-    /**
-     * @var ContentObjectRenderer
-     */
-    protected $cObj;
-
-    /**
-     * @var int
-     */
-    protected $numberOfItemsPerPage = 1000;
-
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
-     * AbstractXmlSitemapDataProvider constructor
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string $key
-     * @param array $config
-     * @param ContentObjectRenderer $cObj
-     */
     public function __construct(ServerRequestInterface $request, string $key, array $config = [], ContentObjectRenderer $cObj = null)
     {
         $this->key = $key;
         $this->config = $config;
         $this->request = $request;
-
-        if ($cObj === null) {
-            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        }
-        $this->cObj = $cObj;
+        $this->cObj = $cObj ?? GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfPages(): int
     {
         return (int)ceil(count($this->items) / $this->numberOfItemsPerPage);
     }
 
-    /**
-     * @return int
-     */
     public function getLastModified(): int
     {
         $lastMod = 0;
@@ -112,18 +63,11 @@ abstract class AbstractXmlSitemapDataProvider implements XmlSitemapDataProviderI
         return $lastMod;
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
     protected function defineUrl(array $data): array
     {
         return $data;
     }
 
-    /**
-     * @return array
-     */
     public function getItems(): array
     {
         $pageNumber = (int)($this->request->getQueryParams()['page'] ?? 0);

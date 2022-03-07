@@ -34,17 +34,9 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
  */
 class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {
-    /**
-     * @param ServerRequestInterface $request
-     * @param string $key
-     * @param array $config
-     * @param ContentObjectRenderer|null $cObj
-     * @throws MissingConfigurationException
-     */
     public function __construct(ServerRequestInterface $request, string $key, array $config = [], ContentObjectRenderer $cObj = null)
     {
         parent::__construct($request, $key, $config, $cObj);
-
         $this->generateItems();
     }
 
@@ -123,10 +115,6 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
     protected function defineUrl(array $data): array
     {
         $pageId = $this->config['url']['pageId'] ?? $GLOBALS['TSFE']->id;
@@ -153,11 +141,6 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $data;
     }
 
-    /**
-     * @param array $additionalParams
-     * @param array $data
-     * @return array
-     */
     protected function getUrlFieldParameterMap(array $additionalParams, array $data): array
     {
         if (!empty($this->config['url']['fieldToParameterMap']) &&
@@ -170,10 +153,6 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $additionalParams;
     }
 
-    /**
-     * @param array $additionalParams
-     * @return array
-     */
     protected function getUrlAdditionalParams(array $additionalParams): array
     {
         if (!empty($this->config['url']['additionalGetParameters']) &&
@@ -188,19 +167,12 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         return $additionalParams;
     }
 
-    /**
-     * @return int
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
-     */
     protected function getLanguageId(): int
     {
         $context = GeneralUtility::makeInstance(Context::class);
         return (int)$context->getPropertyFromAspect('language', 'id');
     }
 
-    /**
-     * @return WorkspaceAspect
-     */
     protected function getCurrentWorkspaceAspect(): WorkspaceAspect
     {
         return GeneralUtility::makeInstance(Context::class)->getAspect('workspace');
