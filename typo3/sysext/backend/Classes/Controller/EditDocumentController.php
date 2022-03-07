@@ -336,7 +336,7 @@ class EditDocumentController
     /**
      * True if a record has been saved
      */
-    protected bool $isSavedRecord;
+    protected bool $isSavedRecord = false;
 
     protected bool $isPageInFreeTranslationMode = false;
 
@@ -946,7 +946,7 @@ class EditDocumentController
         }
 
         if ($this->firstEl === null) {
-            // In case firstEl is null, no edit form could not be created. Therefore, add an
+            // In case firstEl is null, no edit form could be created. Therefore, add an
             // info box and remove the spinner, since it will never be resolved by FormEngine.
             $view->setUiBlock(false);
             $body .= $this->getInfobox(
