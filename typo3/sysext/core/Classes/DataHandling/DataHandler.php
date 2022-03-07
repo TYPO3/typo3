@@ -8913,7 +8913,7 @@ class DataHandler implements LoggerAwareInterface
      * GeneralUtility::callUserFunction()).
      *
      *
-     * @param string $cacheCmd The cache command, see above description
+     * @param int|string $cacheCmd The cache command, see above description
      */
     public function clear_cacheCmd($cacheCmd)
     {
