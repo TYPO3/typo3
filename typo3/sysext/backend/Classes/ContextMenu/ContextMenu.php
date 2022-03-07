@@ -80,6 +80,7 @@ class ContextMenu
     {
         $canRender = false;
         $prevItemWasDivider = false;
+
         foreach ($items as $key => $item) {
             if ($item['type'] === 'item') {
                 $canRender = true;
@@ -106,19 +107,21 @@ class ContextMenu
                 continue;
             }
         }
-        //Remove first and last divider
-        $fistItem = reset($items);
-        if ($fistItem['type'] === 'divider') {
-            $key = key($items);
-            unset($items[$key]);
-        }
-        $lastItem = end($items);
-        if ($lastItem['type'] === 'divider') {
-            $key = key($items);
-            unset($items[$key]);
-        }
-        //no menu when there are no item or submenu
-        if (!$canRender) {
+
+        if ($canRender) {
+            //Remove first and last divider
+            $fistItem = reset($items);
+            if ($fistItem['type'] === 'divider') {
+                $key = key($items);
+                unset($items[$key]);
+            }
+            $lastItem = end($items);
+            if ($lastItem['type'] === 'divider') {
+                $key = key($items);
+                unset($items[$key]);
+            }
+        } else {
+            //no menu when there are no item or submenu
             $items = [];
         }
         return $items;
