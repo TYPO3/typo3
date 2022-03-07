@@ -15,8 +15,8 @@
 
 namespace TYPO3\CMS\Install\Configuration\Context;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Install\Configuration\AbstractPreset;
 

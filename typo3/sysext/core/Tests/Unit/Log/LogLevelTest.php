@@ -83,7 +83,7 @@ class LogLevelTest extends UnitTestCase
     {
         return [
             'debug and up' => [
-                LogLevel::DEBUG,
+                \Psr\Log\LogLevel::DEBUG,
                 [
                     'emergency',
                     'alert',
@@ -96,7 +96,7 @@ class LogLevelTest extends UnitTestCase
                 ],
             ],
             'error and up' => [
-                LogLevel::ERROR,
+                \Psr\Log\LogLevel::ERROR,
                 [
                     'emergency',
                     'alert',
@@ -105,7 +105,7 @@ class LogLevelTest extends UnitTestCase
                 ],
             ],
             'emergency only' => [
-                LogLevel::EMERGENCY,
+                \Psr\Log\LogLevel::EMERGENCY,
                 [
                     'emergency',
                 ],

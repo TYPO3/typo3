@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Log;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Adminpanel\Utility\MemoryUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\AbstractWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

@@ -37,13 +37,13 @@ class DatabaseWriterTest extends FunctionalTestCase
             'request_id' => '5862c0e7838ac',
             'time_micro' => 1469740000.0,
             'component' => 'aComponent',
-            'level' => LogLevel::normalizeLevel(LogLevel::DEBUG),
+            'level' => LogLevel::normalizeLevel(\Psr\Log\LogLevel::DEBUG),
             'message' => 'aMessage',
             'data' => '',
         ];
         $logRecord = new LogRecord(
             $logRecordData['component'],
-            LogLevel::DEBUG,
+            \Psr\Log\LogLevel::DEBUG,
             $logRecordData['message'],
             [],
             $logRecordData['request_id']

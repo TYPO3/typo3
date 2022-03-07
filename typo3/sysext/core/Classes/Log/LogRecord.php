@@ -22,52 +22,38 @@ class LogRecord implements \ArrayAccess
 {
     /**
      * Unique ID of the request
-     *
-     * @var string
      */
-    protected $requestId = '';
+    protected string $requestId = '';
 
     /**
      * Creation timestamp with microseconds
-     *
-     * @var float
      */
-    protected $created = 0.0;
+    protected float $created = 0.0;
 
     /**
      * The component where the record was created
-     *
-     * @var string
      */
-    protected $component = '';
+    protected string $component = '';
 
     /**
      * Severity level
-     *
-     * @var string
      */
-    protected $level = LogLevel::INFO;
+    protected string $level = \Psr\Log\LogLevel::INFO;
 
     /**
      * Log message one-liner
-     *
-     * @var string
      */
-    protected $message = '';
+    protected string $message = '';
 
     /**
      * Additional log data
-     *
-     * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Gettable properties for ArrayAccess
-     *
-     * @var array
      */
-    private $gettableProperties = [
+    private array $gettableProperties = [
         'requestId',
         'created',
         'component',
@@ -78,10 +64,8 @@ class LogRecord implements \ArrayAccess
 
     /**
      * Settable properties for ArrayAccess
-     *
-     * @var array
      */
-    private $settableProperties = [
+    private array $settableProperties = [
         'level',
         'message',
         'data',

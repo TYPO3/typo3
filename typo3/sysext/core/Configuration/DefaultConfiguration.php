@@ -1428,7 +1428,7 @@ return [
     ],
     'LOG' => [
         'writerConfiguration' => [
-            \TYPO3\CMS\Core\Log\LogLevel::WARNING => [
+            \Psr\Log\LogLevel::WARNING => [
                 \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
             ],
         ],
@@ -1438,7 +1438,7 @@ return [
                     'Resource' => [
                         'ResourceStorage' => [
                             'writerConfiguration' => [
-                                \TYPO3\CMS\Core\Log\LogLevel::ERROR => [
+                                \Psr\Log\LogLevel::ERROR => [
                                     \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [],
                                     \TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [],
                                 ],
@@ -1448,7 +1448,7 @@ return [
                 ],
                 'deprecations' => [
                     'writerConfiguration' => [
-                        \TYPO3\CMS\Core\Log\LogLevel::NOTICE => [
+                        \Psr\Log\LogLevel::NOTICE => [
                             \TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
                                 'logFileInfix' => 'deprecations',
                                 'disabled' => true,

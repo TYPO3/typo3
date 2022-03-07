@@ -166,7 +166,7 @@ class Logger extends AbstractLogger
         LogLevel::validateLevel($minLevelAsNumber);
         // Cycle through all the log levels which are as severe as or higher
         // than $minimumLevel and add $processor to each severity level
-        for ($logLevelWhichTriggersProcessor = LogLevel::normalizeLevel(LogLevel::EMERGENCY); $logLevelWhichTriggersProcessor <= $minLevelAsNumber; $logLevelWhichTriggersProcessor++) {
+        for ($logLevelWhichTriggersProcessor = LogLevel::normalizeLevel(\Psr\Log\LogLevel::EMERGENCY); $logLevelWhichTriggersProcessor <= $minLevelAsNumber; $logLevelWhichTriggersProcessor++) {
             $logLevelName = LogLevel::getInternalName($logLevelWhichTriggersProcessor);
             $this->processors[$logLevelName] ??= [];
             $this->processors[$logLevelName][] = $processor;

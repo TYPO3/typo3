@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Adminpanel\Controller\AjaxController;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\Modules\CacheModule;
@@ -18,7 +19,6 @@ use TYPO3\CMS\Adminpanel\Modules\InfoModule;
 use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Modules\TsDebug\TypoScriptWaterfall;
 use TYPO3\CMS\Adminpanel\Modules\TsDebugModule;
-use TYPO3\CMS\Core\Log\LogLevel;
 
 defined('TYPO3') or die();
 
