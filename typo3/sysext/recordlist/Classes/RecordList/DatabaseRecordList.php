@@ -1854,9 +1854,6 @@ class DatabaseRecordList
 
         // Add the clipboard actions to the cell group
         foreach ($clipboardCells as $key => $value) {
-            if ($key === 'primary' || $key === 'secondary') {
-                continue;
-            }
             $this->addActionToCellGroup($cells, $value, $key);
         }
     }

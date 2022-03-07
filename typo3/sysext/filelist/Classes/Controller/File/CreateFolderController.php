@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
@@ -62,7 +63,7 @@ class CreateFolderController
     /**
      * The folder object which is  the target directory
      *
-     * @var \TYPO3\CMS\Core\Resource\Folder $folderObject
+     * @var Folder|null $folderObject
      */
     protected $folderObject;
 
@@ -116,7 +117,7 @@ class CreateFolderController
             $this->folderObject = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
         }
         // Cleaning and checking target directory
-        if (!$this->folderObject) {
+        if (!$this->folderObject instanceof Folder) {
             $title = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
             $message = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586845);

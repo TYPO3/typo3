@@ -52,7 +52,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     protected $mode = 'file';
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $expandFolder;
 
@@ -101,7 +101,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $this->view->assign('treeActions', ($this->mode === 'folder') ? ['link'] : []);
 
         $this->expandFolder = $request->getQueryParams()['expandFolder'] ?? null;
-        if (!isset($this->expandFolder)) {
+        if ($this->expandFolder === null) {
             if (!empty($this->linkParts)) {
                 $fileOrFolder = $this->linkParts['url'][$this->mode];
                 if ($fileOrFolder instanceof File) {

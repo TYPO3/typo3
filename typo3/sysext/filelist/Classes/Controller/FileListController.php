@@ -119,7 +119,7 @@ class FileListController implements LoggerAwareInterface
                         );
                     }
                     // Disallow the rendering of the processing folder (e.g. could be called manually)
-                    if ($this->folderObject && $storage->isProcessingFolder($this->folderObject)) {
+                    if ($this->folderObject instanceof Folder && $storage->isProcessingFolder($this->folderObject)) {
                         $this->folderObject = $storage->getRootLevelFolder();
                     }
                 }

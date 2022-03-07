@@ -1019,10 +1019,8 @@ class FileList
             $attributes = [
                 'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.info'),
             ];
-            if ($fileOrFolderObject instanceof Folder || $fileOrFolderObject instanceof File) {
-                $attributes['data-filelist-show-item-type'] = $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER';
-                $attributes['data-filelist-show-item-identifier'] = $fullIdentifier;
-            }
+            $attributes['data-filelist-show-item-type'] = $fileOrFolderObject instanceof File ? '_FILE' : '_FOLDER';
+            $attributes['data-filelist-show-item-identifier'] = $fullIdentifier;
             $cells['info'] = '<a href="#" class="btn btn-default" ' . GeneralUtility::implodeAttributes($attributes, true) . '>'
                 . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
         } else {

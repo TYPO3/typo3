@@ -51,7 +51,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected $expandFolder;
 
     /**
-     * @var FolderInterface
+     * @var FolderInterface|null
      */
     protected $selectedFolder;
 
@@ -155,10 +155,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             }
         }
         // Or get the user's default upload folder
-        if (!$this->selectedFolder) {
+        if (!$this->selectedFolder instanceof Folder) {
             try {
                 [, $pid, $table,, $field] = explode('-', explode('|', $this->bparams)[4]);
-                if (($defaultUploadFolder = $backendUser->getDefaultUploadFolder($pid, $table, $field)) instanceof FolderInterface) {
+                if (($defaultUploadFolder = $backendUser->getDefaultUploadFolder((int)$pid, $table, $field)) instanceof FolderInterface) {
                     $this->selectedFolder = $defaultUploadFolder;
                 }
             } catch (\Exception $e) {
@@ -168,7 +168,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         // Build the file upload and folder creation form
         $uploadForm = '';
         $createFolder = '';
-        if ($this->selectedFolder) {
+        if ($this->selectedFolder instanceof Folder) {
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             $uploadForm = $folderUtilityRenderer->uploadForm($this->selectedFolder, $allowedFileExtensions);
             $createFolder = $folderUtilityRenderer->createFolder($this->selectedFolder);
@@ -185,7 +185,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
         $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? true;
         $noThumbs = $noThumbs ?: !$displayThumbs;
-        if ($this->selectedFolder) {
+        if ($this->selectedFolder instanceof Folder) {
             $files = $this->renderFilesInFolder($this->selectedFolder, $allowedFileExtensions, $noThumbs);
         } else {
             $files = '';
@@ -213,12 +213,12 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * For TYPO3 Element Browser: Expand folder of files.
      *
-     * @param FolderInterface $folder The folder path to expand
+     * @param Folder $folder The folder path to expand
      * @param array $extensionList List of fileextensions to show
      * @param bool $noThumbs Whether to show thumbnails or not. If set, no thumbnails are shown.
      * @return string HTML output
      */
-    public function renderFilesInFolder(FolderInterface $folder, array $extensionList = [], $noThumbs = false)
+    public function renderFilesInFolder(Folder $folder, array $extensionList = [], $noThumbs = false)
     {
         if (!$folder->checkActionPermission('read')) {
             return '';
@@ -371,11 +371,11 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     /**
      * Get a list of Files in a folder filtered by extension
      *
-     * @param FolderInterface $folder
+     * @param Folder $folder
      * @param array $extensionList
      * @return File[]
      */
-    protected function getFilesInFolder(FolderInterface $folder, array $extensionList)
+    protected function getFilesInFolder(Folder $folder, array $extensionList)
     {
         if (!empty($extensionList)) {
             /** @var FileExtensionFilter $filter */
@@ -394,7 +394,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
     protected function getThumbnailSelector(): string
     {
         // Getting flag for showing/not showing thumbnails:
-        if (!$this->selectedFolder || ($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
+        if (!$this->selectedFolder instanceof Folder || ($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
             return '';
         }
 
