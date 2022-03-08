@@ -390,7 +390,7 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface, Repe
 
     protected function unserializeToArray(string $serialized): array
     {
-        $unserialized = unserialize($serialized, ['allowed_classes' => false]);
+        $unserialized = @unserialize($serialized, ['allowed_classes' => false]);
         return is_array($unserialized) ? $unserialized : [];
     }
 }
