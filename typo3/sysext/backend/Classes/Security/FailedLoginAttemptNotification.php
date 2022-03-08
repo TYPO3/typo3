@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -41,6 +42,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FailedLoginAttemptNotification
 {
+    use LogDataTrait;
+
     /**
      * The receiver of the notification
      * @var string
@@ -143,8 +146,7 @@ class FailedLoginAttemptNotification
     {
         $emailData = [];
         foreach ($previousFailures as $row) {
-            $theData = unserialize($row['log_data'], ['allowed_classes' => false]);
-            $text = @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
+            $text = $this->formatLogDetails($row['details'] ?? '', $row['log_data'] ?? '');
             if ((int)$row['type'] === SystemLogType::LOGIN) {
                 $text = str_replace('###IP###', $row['IP'], $text);
             }

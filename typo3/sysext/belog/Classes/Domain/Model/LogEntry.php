@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Belog\Domain\Model;
 
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -25,6 +26,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class LogEntry extends AbstractEntity
 {
+    use LogDataTrait;
+
     /**
      * Storage page ID of the log entry
      *
@@ -417,11 +420,8 @@ class LogEntry extends AbstractEntity
         if ($this->logData === '') {
             return [];
         }
-        $logData = @unserialize($this->logData);
-        if (!is_array($logData)) {
-            $logData = [];
-        }
-        return $logData;
+        $logData = $this->unserializeLogData($this->logData);
+        return $logData ?? [];
     }
 
     /**

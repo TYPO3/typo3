@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ListSysLogCommand extends Command
 {
+    use LogDataTrait;
 
     /**
      * Configure the command by defining the name, options and arguments
@@ -79,7 +81,8 @@ class ListSysLogCommand extends Command
             ->executeQuery();
 
         while ($row = $rowIterator->fetchAssociative()) {
-            $logData = unserialize($row['log_data'], ['allowed_classes' => false]) ?: [];
+            $logData = $this->unserializeLogData($row['log_data'] ?? '');
+            $text = $this->formatLogDetails($row['details'] ?? '', $logData);
             $userInformation = $row['userid'];
             if (!empty($logData['originalUser'] ?? null)) {
                 $userInformation .= ' via ' . $logData['originalUser'];
@@ -89,7 +92,7 @@ class ListSysLogCommand extends Command
                 $row['uid'],
                 BackendUtility::datetime($row['tstamp']),
                 $userInformation,
-                sprintf($row['details'], ($logData[0] ?? ''), ($logData[1] ?? ''), ($logData[2] ?? ''), ($logData[3] ?? ''), ($logData[4] ?? ''), ($logData[5] ?? '')),
+                $text,
             ];
 
             if ($showDetails) {

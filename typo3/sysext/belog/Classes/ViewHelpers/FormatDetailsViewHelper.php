@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Belog\ViewHelpers;
 
 use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -28,6 +29,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 class FormatDetailsViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
+    use LogDataTrait;
 
     /**
      * Initializes the arguments
@@ -62,13 +64,7 @@ class FormatDetailsViewHelper extends AbstractViewHelper
         if ($logEntry->getType() === 2) {
             $substitutes = self::stripPathFromFilenames($substitutes);
         }
-        // Substitute
-        if (!empty($substitutes)) {
-            $detailString = vsprintf($detailString, $substitutes);
-        }
-        // Remove possible pending other %s
-        $detailString = str_replace('%s', '', $detailString);
-        return $detailString;
+        return self::formatLogDetailsStatic($detailString, $substitutes);
     }
 
     /**

@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
@@ -45,6 +46,8 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  */
 class RemoteServer
 {
+    use LogDataTrait;
+
     /**
      * @var GridDataService
      */
@@ -433,7 +436,7 @@ class RemoteServer
 
         while ($sysLogRow = $result->fetchAssociative()) {
             $sysLogEntry = [];
-            $data = unserialize($sysLogRow['log_data'], ['allowed_classes' => false]);
+            $data = $this->unserializeLogData($sysLogRow['log_data'] ?? '');
             $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
             $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
             $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
