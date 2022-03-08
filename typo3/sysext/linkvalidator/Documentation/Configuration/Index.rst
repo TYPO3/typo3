@@ -122,8 +122,8 @@ linktypes
 
          external: Check links to external files.
 
-         This list may be extended by other extensions providing a linktype
-         checker.
+         This list may be extended by other extensions providing a
+         :ref:`custom linktype implementation <linktype-implementation>`.
 
    Default
          db,file,external

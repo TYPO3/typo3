@@ -1,0 +1,8 @@
+
+.. code-block:: typoscript
+    :caption: EXT:examples/Configuration/TsConfig/Page/Extension/Linkvalidator.typoscript
+
+    mod.linkvalidator {
+       linktypes = db,file,external,example
+    }
+

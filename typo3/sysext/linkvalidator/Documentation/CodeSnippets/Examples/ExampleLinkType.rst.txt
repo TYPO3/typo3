@@ -1,0 +1,30 @@
+.. code-block:: php
+    :caption: EXT:examples/Classes/LinkValidator/LinkType/ExampleLinkType.php
+
+    use TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype;
+
+    class ExampleLinkType extends AbstractLinktype
+    {
+        protected string $identifier = 'example';
+
+        public function checkLink($url, $softRefEntry, $reference)
+        {
+            $isValidUrl = false;
+            // TODO: Implement checkLink() method.
+            return $isValidUrl;
+        }
+
+        public function getErrorMessage($errorParams)
+        {
+            $lang = $this->getLanguageService();
+            switch ($errorParams['errno'] ?? 0) {
+                case 404:
+                    $message = $lang->getLL('list.report.pagenotfound404');
+                    break;
+                default:
+                    // fall back to generic error message
+                    $message = sprintf($lang->getLL('list.report.externalerror'), $errorParams['errno']);
+            }
+            return $message;
+        }
+    }
