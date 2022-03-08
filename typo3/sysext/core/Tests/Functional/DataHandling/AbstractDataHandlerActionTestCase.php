@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\DoesNotHaveRecordConstraint;
 use TYPO3\TestingFramework\Core\Functional\Framework\Constraint\RequestSection\HasRecordConstraint;
@@ -38,6 +39,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 {
+    use LogDataTrait;
     protected const VALUE_BackendUserId = 1;
     protected const VALUE_WorkspaceId = 0;
 
@@ -209,8 +211,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 
         $entryMessages = array_map(
             static function (array $entry) {
-                $entryData = (array)unserialize($entry['log_data'], ['allowed_classes' => false]);
-                return vsprintf($entry['details'], $entryData);
+                return self::formatLogDetails($entry['details'] ?? '', $entry['log_data'] ?? '');
             },
             $statement->fetchAllAssociative()
         );

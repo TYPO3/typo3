@@ -869,6 +869,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->errorLog = [];
         $logDetailsUnique = StringUtility::getUniqueId('details');
         $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetailsUnique);
+        self::assertArrayHasKey(0, $this->subject->errorLog);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
 
@@ -884,6 +885,22 @@ class DataHandlerTest extends UnitTestCase
         $logDetails = StringUtility::getUniqueId('details');
         $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
+        self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function logFormatsDetailMessageWithPlaceholders(): void
+    {
+        $backendUser = $this->createMock(BackendUserAuthentication::class);
+        $this->subject->BE_USER = $backendUser;
+        $this->subject->enableLogging = true;
+        $this->subject->errorLog = [];
+        $logDetails = 'An error occurred on {table}:{uid} when localizing';
+        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
+        // UID is kept as non-replaced, and other properties are not replaced.
+        $expected = 'An error occurred on tx_sometable:{uid} when localizing';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
 
