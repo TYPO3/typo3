@@ -14,3 +14,5 @@ services:
 
   TYPO3\CMS\Recycler\Controller\RecyclerAjaxController:
     tags: [ 'backend.controller' ]
+    arguments:
+      $runtimeCache: '@cache.runtime'

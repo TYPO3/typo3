@@ -22,10 +22,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -35,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
-use TYPO3\CMS\Recycler\Domain\Model\Tables;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
@@ -46,33 +43,19 @@ class RecyclerAjaxController
 {
     /**
      * The local configuration array
-     *
-     * @var array
      */
-    protected $conf = [];
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $runtimeCache;
-
-    /**
-     * @var DataHandler
-     */
-    protected $tce;
+    protected array $conf = [];
 
     public function __construct(
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly FrontendInterface $runtimeCache,
+        protected readonly IconFactory $iconFactory,
+        protected readonly ConnectionPool $connectionPool
     ) {
-        $this->runtimeCache = $this->getMemoryCache();
-        $this->tce = GeneralUtility::makeInstance(DataHandler::class);
     }
 
     /**
      * The main dispatcher function. Collect data and prepare HTML output.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
@@ -98,8 +81,7 @@ class RecyclerAjaxController
             case 'getTables':
                 $this->setDataInSession(['depthSelection' => $this->conf['depth']]);
 
-                $model = GeneralUtility::makeInstance(Tables::class);
-                $content = $model->getTables($this->conf['startUid'], $this->conf['depth']);
+                $content = $this->getTables($this->conf['startUid'], $this->conf['depth']);
                 break;
             case 'getDeletedRecords':
                 $this->setDataInSession([
@@ -177,7 +159,6 @@ class RecyclerAjaxController
     {
         $groupedRecords = [];
         $lang = $this->getLanguageService();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         foreach ($deletedRowsArray as $table => $rows) {
             $groupedRecords[$table]['information'] = [
@@ -192,17 +173,17 @@ class RecyclerAjaxController
                 $groupedRecords[$table]['records'][] = [
                     'uid' => $row['uid'],
                     'pid' => $row['pid'],
-                    'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
                     'pageTitle' => $pageTitle,
                     'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
                     'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
                     'owner' => htmlspecialchars($backendUserName),
                     'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
                     'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
-                    'path' => RecyclerUtility::getRecordPath($row['pid']),
+                    'path' => $this->getRecordPath((int)$row['pid']),
                     'delete_user_uid' => $userIdWhoDeleted,
                     'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
-                    'isParentDeleted' => $table === 'pages' ? RecyclerUtility::isParentPageDeleted($row['pid']) : false,
+                    'isParentDeleted' => $table === 'pages' ? $this->isParentPageDeleted((int)$row['pid']) : false,
                 ];
             }
         }
@@ -221,8 +202,8 @@ class RecyclerAjaxController
             if ($pageId === 0) {
                 $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
             } else {
-                $recordInfo = $this->tce->recordInfo('pages', $pageId, 'title');
-                $pageTitle = $recordInfo['title'];
+                $recordInfo = BackendUtility::getRecord('pages', (string)$pageId, '*', '', false);
+                $pageTitle = $recordInfo['title'] ?? '';
             }
             $this->runtimeCache->set($cacheId, $pageTitle);
         }
@@ -259,7 +240,7 @@ class RecyclerAjaxController
      */
     protected function getUserWhoDeleted(string $table, int $uid): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_history');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_history');
         $queryBuilder->select('userid')
             ->from('sys_history')
             ->where(
@@ -300,14 +281,124 @@ class RecyclerAjaxController
         }
     }
 
-    protected function getMemoryCache(): FrontendInterface
+    /**
+     * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
+     * Each part of the path will be limited to $titleLimit characters
+     * Deleted pages are filtered out.
+     *
+     * @param int $uid Page uid for which to create record path
+     * @return string Path of record (string) OR array with short/long title if $fullTitleLimit is set.
+     */
+    protected function getRecordPath(int $uid): string
     {
-        return $this->getCacheManager()->getCache('runtime');
+        $output = '/';
+        if ($uid === 0) {
+            return $output;
+        }
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $loopCheck = 100;
+        while ($loopCheck > 0) {
+            $loopCheck--;
+
+            $queryBuilder
+                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
+                ->from('pages')
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
+            $row = $queryBuilder->executeQuery()->fetchAssociative();
+            if ($row !== false) {
+                BackendUtility::workspaceOL('pages', $row);
+                if (is_array($row)) {
+                    $uid = (int)$row['pid'];
+                    $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 1000)) . $output;
+                    if ($row['deleted']) {
+                        $output = '<span class="text-danger">' . $output . '</span>';
+                    }
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        return $output;
     }
 
-    protected function getCacheManager(): CacheManager
+    /**
+     * Check if parent record is deleted
+     */
+    protected function isParentPageDeleted(int $pid): bool
     {
-        return GeneralUtility::makeInstance(CacheManager::class);
+        if ($pid === 0) {
+            return false;
+        }
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $deleted = $queryBuilder
+            ->select('deleted')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
+            ->executeQuery()
+            ->fetchOne();
+
+        return (bool)$deleted;
+    }
+
+    /**
+     * @param int $startUid UID from selected page
+     * @param int $depth How many levels recursive
+     * @return array The tables to be displayed
+     */
+    protected function getTables(int $startUid, int $depth): array
+    {
+        $deletedRecordsTotal = 0;
+        $lang = $this->getLanguageService();
+        $tables = [];
+
+        foreach (RecyclerUtility::getModifyableTables() as $tableName) {
+            $deletedField = RecyclerUtility::getDeletedField($tableName);
+            if ($deletedField) {
+                // Determine whether the table has deleted records:
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+                $queryBuilder->getRestrictions()->removeAll();
+
+                $deletedCount = $queryBuilder->count('uid')
+                    ->from($tableName)
+                    ->where(
+                        $queryBuilder->expr()->neq(
+                            $deletedField,
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+                        )
+                    )
+                    ->executeQuery()
+                    ->fetchOne();
+
+                if ($deletedCount) {
+                    /* @var DeletedRecords $deletedDataObject */
+                    $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
+                    $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
+                    if (isset($deletedData[$tableName])) {
+                        if ($deletedRecordsInTable = count($deletedData[$tableName])) {
+                            $deletedRecordsTotal += $deletedRecordsInTable;
+                            $tables[] = [
+                                $tableName,
+                                $deletedRecordsInTable,
+                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? $tableName),
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        $jsonArray = $tables;
+        array_unshift($jsonArray, [
+            '',
+            $deletedRecordsTotal,
+            $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes'),
+        ]);
+        return $jsonArray;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

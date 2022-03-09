@@ -76,87 +76,18 @@ class RecyclerUtility
     }
 
     /**
-     * Returns the path (visually) of a page $uid, fx. "/First page/Second page/Another subpage"
-     * Each part of the path will be limited to $titleLimit characters
-     * Deleted pages are filtered out.
-     *
-     * @param int $uid Page uid for which to create record path
-     * @return string Path of record (string) OR array with short/long title if $fullTitleLimit is set.
-     */
-    public static function getRecordPath($uid)
-    {
-        $uid = (int)$uid;
-        $output = '/';
-        if ($uid === 0) {
-            return $output;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $loopCheck = 100;
-        while ($loopCheck > 0) {
-            $loopCheck--;
-
-            $queryBuilder
-                ->select('uid', 'pid', 'title', 'deleted', 't3ver_oid', 't3ver_wsid', 't3ver_state')
-                ->from('pages')
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)));
-            $row = $queryBuilder->executeQuery()->fetchAssociative();
-            if ($row !== false) {
-                BackendUtility::workspaceOL('pages', $row);
-                if (is_array($row)) {
-                    $uid = (int)$row['pid'];
-                    $output = '/' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], 1000)) . $output;
-                    if ($row['deleted']) {
-                        $output = '<span class="text-danger">' . $output . '</span>';
-                    }
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-        return $output;
-    }
-
-    /**
      * Gets the name of the field with the information whether a record is deleted.
      *
      * @param string $tableName Name of the table to get the deleted field for
      * @return string Name of the field with the information whether a record is deleted
      */
-    public static function getDeletedField($tableName)
+    public static function getDeletedField($tableName): string
     {
-        $TCA = self::getTableTCA($tableName);
-        if ($TCA && isset($TCA['ctrl']['delete']) && $TCA['ctrl']['delete']) {
-            return $TCA['ctrl']['delete'];
+        $tcaForTable = self::getTableTCA((string)$tableName);
+        if ($tcaForTable && isset($tcaForTable['ctrl']['delete']) && !empty($tcaForTable['ctrl']['delete'])) {
+            return $tcaForTable['ctrl']['delete'];
         }
         return '';
-    }
-
-    /**
-     * Check if parent record is deleted
-     *
-     * @param int $pid
-     * @return bool
-     */
-    public static function isParentPageDeleted($pid)
-    {
-        if ((int)$pid === 0) {
-            return false;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $deleted = $queryBuilder
-            ->select('deleted')
-            ->from('pages')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
-            ->executeQuery()
-            ->fetchOne();
-
-        return (bool)$deleted;
     }
 
     /**
@@ -187,7 +118,7 @@ class RecyclerUtility
      * @param string $tableName Name of the table to get TCA for
      * @return array|false TCA of the table used in the current context
      */
-    public static function getTableTCA($tableName)
+    protected static function getTableTCA(string $tableName): array|false
     {
         $TCA = false;
         if (isset($GLOBALS['TCA'][$tableName])) {
@@ -209,9 +140,9 @@ class RecyclerUtility
     /**
      * Returns the modifiable tables of the current user
      */
-    public static function getModifyableTables()
+    public static function getModifyableTables(): array
     {
-        if ($GLOBALS['BE_USER']->isAdmin()) {
+        if (self::getBackendUser()->isAdmin()) {
             $tables = array_keys($GLOBALS['TCA']);
         } else {
             $tables = explode(',', $GLOBALS['BE_USER']->groupData['tables_modify']);
