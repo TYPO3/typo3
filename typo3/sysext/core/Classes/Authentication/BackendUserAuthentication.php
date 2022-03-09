@@ -1949,7 +1949,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 ['workspace_id' => $this->user['workspace_id']],
                 ['uid' => (int)$this->user['uid']]
             );
-            $this->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'User changed workspace to "' . $this->workspace . '"', []);
+            $this->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'User changed workspace to "{workspace}"', ['workspace' => $this->workspace]);
         }
     }
 

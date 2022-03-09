@@ -185,7 +185,7 @@ class DataHandlerHook
                 [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);
                 $propertyArray = $dataHandler->getRecordProperties($elementTable, $elementUid);
                 $pid = $propertyArray['pid'];
-                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "' . implode('", "', array_column($emails, 'email')) . '"', -1, [], $dataHandler->eventPid($elementTable, $elementUid, $pid));
+                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', -1, ['recipients' => implode('", "', array_column($emails, 'email'))], $dataHandler->eventPid($elementTable, $elementUid, $pid));
             }
         }
     }
@@ -387,7 +387,7 @@ class DataHandlerHook
                 $this->moveRecord_moveVersionedRecord($table, (int)$uid, (int)$destPid, $versionedRecordUid, $dataHandler);
             }
         } else {
-            $dataHandler->log($table, $versionedRecord['uid'] ?: $uid, DatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked));
+            $dataHandler->log($table, $versionedRecord['uid'] ?: $uid, DatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Move attempt failed due to workspace restrictions: {reason}', -1, ['reason' => implode(' // ', $workspaceAccessBlocked)]);
         }
     }
 
@@ -484,7 +484,7 @@ class DataHandlerHook
         if (!is_array($record)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: No Record');
         } elseif ($errorCode = $dataHandler->workspaceCannotEditOfflineVersion($table, $record)) {
-            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: ' . $errorCode);
+            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: {reason}', -1, ['reason' => $errorCode]);
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
             $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
             // check if the user is allowed to the current stage, so it's also allowed to send to next stage
@@ -503,17 +503,17 @@ class DataHandlerHook
                 if ($dataHandler->enableLogging) {
                     $propertyArray = $dataHandler->getRecordProperties($table, $id);
                     $pid = $propertyArray['pid'];
-                    $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                    $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $pid));
                 }
                 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
-                $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Stage raised...', 30, ['comment' => $comment, 'stage' => $stageId]);
+                $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Stage raised to {stage}', 30, ['comment' => $comment, 'stage' => $stageId]);
                 if ((int)$workspaceInfo['stagechg_notification'] > 0) {
                     $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
                     $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
                     $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['recipients'] = $notificationAlternativeRecipients;
                 }
             } else {
-                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'The member user tried to set a stage value "' . $stageId . '" that was not allowed');
+                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'The member user tried to set a stage value "{stage}" that was not allowed', -1, ['stage' => $stageId]);
             }
         } else {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed because you do not have edit access');
@@ -588,12 +588,12 @@ class DataHandlerHook
         }
         $workspaceId = (int)$swapVersion['t3ver_wsid'];
         if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
-            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #' . $workspaceId);
+            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #{workspace}', -1, ['workspace' => $workspaceId]);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
         if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
-            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #' . $workspaceId . ' can only be published when in "Publish" stage.');
+            $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage.', -1, ['workspace' => $workspaceId]);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $swapWith, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
@@ -719,7 +719,7 @@ class DataHandlerHook
         }
 
         if (!empty($sqlErrors)) {
-            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors));
+            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Swapping: SQL errors happened: {reason}', -1, ['reason' => implode('; ', $sqlErrors)]);
         } else {
             // Update localized elements to use the live l10n_parent now
             $this->updateL10nOverlayRecordsOnPublish($table, $id, $swapWith, $workspaceId, $dataHandler);
@@ -735,7 +735,7 @@ class DataHandlerHook
                 $dataHandler->deleteEl($table, $id, true);
                 $dataHandler->BE_USER->workspace = $currentUserWorkspace;
             }
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', -1, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
 
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
@@ -932,12 +932,12 @@ class DataHandlerHook
         $id = (int)$newRecordInWorkspace['uid'];
         $workspaceId = (int)$newRecordInWorkspace['t3ver_wsid'];
         if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #' . $workspaceId);
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #{workspace}', -1, ['workspace' => $workspaceId]);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
         if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$newRecordInWorkspace['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #' . $workspaceId . ' can only be published when in "Publish" stage.');
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage.', -1, ['workspace' => $workspaceId]);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $id, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $id))) {
@@ -970,11 +970,11 @@ class DataHandlerHook
                 ]
             );
         } catch (DBALException $e) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: ' . $e->getPrevious()->getMessage());
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: {reason}', -1, ['reason' => $e->getPrevious()->getMessage()]);
         }
 
         if ($dataHandler->enableLogging) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "' . $table . '" uid ' . $id . ' (new record)', -1, [], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {uid} (new record)', -1, ['table' => $table, 'uid' => $id], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
         }
 
         // Set log entry for record
@@ -989,7 +989,7 @@ class DataHandlerHook
         $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
         // Write to log with stageId -20 (STAGE_PUBLISH_EXECUTE_ID)
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' => (int)$stageId, 'comment' => substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
         $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
 
         // Clear cache
