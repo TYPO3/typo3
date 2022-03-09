@@ -86,7 +86,7 @@ class ContentContentObject extends AbstractContentObject
                         $_procObj = GeneralUtility::makeInstance($className);
                         $_procObj->modifyDBRow($row, $conf['table']);
                     }
-                    $registerField = $conf['table'] . ':' . $row['uid'];
+                    $registerField = $conf['table'] . ':' . ($row['uid'] ?? 0);
                     if (!($frontendController->recordRegister[$registerField] ?? false)) {
                         $this->cObj->currentRecordNumber++;
                         $cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
