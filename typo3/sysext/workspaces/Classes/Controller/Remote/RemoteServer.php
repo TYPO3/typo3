@@ -280,10 +280,12 @@ class RemoteServer
                 $hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $diffUtility);
             }
         }
-        $commentsForRecord = $this->getCommentsForRecord($parameter->uid, $parameter->table);
 
         $historyService = GeneralUtility::makeInstance(HistoryService::class);
         $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
+        $stageChanges = $historyService->getStageChanges($parameter->table, (int)$parameter->t3ver_oid);
+        $stageChangesFromSysLog = $this->getStageChangesFromSysLog($parameter->table, (int)$parameter->t3ver_oid);
+        $commentsForRecord = $this->getCommentsForRecord($stageChanges, $stageChangesFromSysLog);
 
         if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
             $prevStage = $this->stagesService->getPrevStage($parameter->stage);
@@ -398,18 +400,59 @@ class RemoteServer
     }
 
     /**
-     * Gets an array with all sys_log entries and their comments for the given record uid and table
+     * Prepares all comments of the stage change history entries for returning the JSON structure
      *
-     * @param int $uid uid of changed element to search for in log
-     * @param string $table Name of the record's table
+     * @param array $historyEntries
+     * @param array $additionalChangesFromLog this is not in use since 2022 anymore, and can be removed in TYPO3 v13.0 the latest.
      * @return array
      */
-    public function getCommentsForRecord($uid, $table)
+    protected function getCommentsForRecord(array $historyEntries, array $additionalChangesFromLog): array
     {
-        $sysLogReturnArray = [];
+        $allStageChanges = [];
+        /** @var Avatar $avatar */
+        $avatar = GeneralUtility::makeInstance(Avatar::class);
+
+        foreach ($historyEntries as $entry) {
+            $preparedEntry = [];
+            $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
+            $preparedEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($entry['history_data']['next']));
+            $preparedEntry['previous_stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($entry['history_data']['current']));
+            $preparedEntry['user_uid'] = (int)$entry['userid'];
+            $preparedEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
+            $preparedEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
+            $preparedEntry['user_comment'] = nl2br(htmlspecialchars($entry['history_data']['comment']));
+            $preparedEntry['user_avatar'] = $beUserRecord ? $avatar->render($beUserRecord) : '';
+            $allStageChanges[] = $preparedEntry;
+        }
+
+        // see if there are more
+        foreach ($additionalChangesFromLog as $sysLogRow) {
+            $sysLogEntry = [];
+            $data = $this->unserializeLogData($sysLogRow['log_data'] ?? '');
+            $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
+            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
+            $sysLogEntry['previous_stage_title'] = '';
+            $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
+            $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
+            $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
+            $sysLogEntry['user_comment'] = nl2br(htmlspecialchars($data['comment']));
+            $sysLogEntry['user_avatar'] = $avatar->render($beUserRecord);
+            $allStageChanges[] = $sysLogEntry;
+        }
+
+        // There might be "old" sys_log entries, so they need to be checked as well
+        return $allStageChanges;
+    }
+
+    /**
+     * Find all stage changes from sys_log that do not have a historyId. Can safely be removed in future TYPO3
+     * versions as this fallback layer only makes sense in TYPO3 v11 when old records want to have a history.
+     */
+    protected function getStageChangesFromSysLog(string $table, int $uid): array
+    {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select('log_data', 'tstamp', 'userid')
             ->from('sys_log')
             ->where(
@@ -431,24 +474,8 @@ class RemoteServer
                 )
             )
             ->orderBy('tstamp', 'DESC')
-            ->executeQuery();
-
-        /** @var Avatar $avatar */
-        $avatar = GeneralUtility::makeInstance(Avatar::class);
-
-        while ($sysLogRow = $result->fetchAssociative()) {
-            $sysLogEntry = [];
-            $data = $this->unserializeLogData($sysLogRow['log_data'] ?? '');
-            $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
-            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle($data['stage']));
-            $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
-            $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
-            $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
-            $sysLogEntry['user_comment'] = nl2br(htmlspecialchars($data['comment']));
-            $sysLogEntry['user_avatar'] = $avatar->render($beUserRecord);
-            $sysLogReturnArray[] = $sysLogEntry;
-        }
-        return $sysLogReturnArray;
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     protected function getBackendUser(): BackendUserAuthentication
