@@ -1761,7 +1761,7 @@ class DataHandler implements LoggerAwareInterface
 
         if ($value !== '' && !GeneralUtility::validEmail($value)) {
             // A non-empty value is given, which however is no valid email. Log this and unset the value afterwards.
-            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"' . $value . '" is not a valid e-mail address.', -1, [$this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.invalidEmail'), $value]);
+            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{email}" is not a valid e-mail address.', -1, ['email' => $value]);
             $value = '';
         }
 
@@ -3398,7 +3398,7 @@ class DataHandler implements LoggerAwareInterface
                 }
             }
         } else {
-            $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy page without permission to this table');
+            $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy page {uid} without permission to this table', -1, ['uid' => $uid]);
         }
     }
 
@@ -3556,7 +3556,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                     } catch (DBALException $e) {
                         $databaseErrorMessage = $e->getPrevious()->getMessage();
-                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: ' . $databaseErrorMessage);
+                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', -1, ['reason' => $databaseErrorMessage]);
                     }
                 }
             }
@@ -5602,20 +5602,20 @@ class DataHandler implements LoggerAwareInterface
 
         // User access checks
         if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: Different workspace');
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: Different workspace', -1, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
         if ($errorCode = $this->workspaceCannotEditOfflineVersion($table, $versionRecord)) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: ' . $errorCode);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: {reason}', -1, ['table' => $table, 'uid' => (int)$versionRecord['uid'], 'reason' => $errorCode]);
             return;
         }
         if (!$this->checkRecordUpdateAccess($table, $versionRecord['uid'])) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no edit access');
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no edit access', -1, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
         $fullLanguageAccessCheck = !($table === 'pages' && (int)$versionRecord[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] !== 0);
         if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, true, $fullLanguageAccessCheck)) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record ' . $table . ':' . $versionRecord['uid'] . ' failed: User has no delete access');
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no delete access', -1, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
 
@@ -5640,9 +5640,9 @@ class DataHandler implements LoggerAwareInterface
             SystemLogDatabaseAction::DELETE,
             0,
             SystemLogErrorClassification::MESSAGE,
-            'Record ' . $table . ':' . $versionRecord['uid'] . ' was deleted unrecoverable from page ' . $versionRecord['pid'],
+            'Record {table}:{uid} was deleted unrecoverable from page {pageId}',
             0,
-            [],
+            ['table' => $table, 'uid' => $versionRecord['uid'], 'pageId' => $versionRecord['pid']],
             (int)$versionRecord['pid']
         );
     }
@@ -7500,13 +7500,7 @@ class DataHandler implements LoggerAwareInterface
                 }
                 // Set log message if there were fields with unmatching values:
                 if (!empty($errors)) {
-                    $message = sprintf(
-                        'These fields of record %d in table "%s" have not been saved correctly: %s! The values might have changed due to type casting of the database.',
-                        $id,
-                        $table,
-                        implode(', ', $errors)
-                    );
-                    $this->log($table, $id, $action, 0, SystemLogErrorClassification::USER_ERROR, $message);
+                    $this->log($table, $id, $action, 0, SystemLogErrorClassification::USER_ERROR, 'These fields of record {id} in table "{table}" have not been saved correctly: {fields}! The values might have changed due to type casting of the database.', -1, ['id' => $id, 'table' => $table, 'fields' => implode(', ', $errors)]);
                 }
                 // Return selected rows:
                 return $row;
