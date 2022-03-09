@@ -34,6 +34,7 @@ class RecordHistoryStore
     public const ACTION_MOVE = 3;
     public const ACTION_DELETE = 4;
     public const ACTION_UNDELETE = 5;
+    public const ACTION_STAGECHANGE = 6;
 
     public const USER_BACKEND = 'BE';
     public const USER_FRONTEND = 'FE';
@@ -67,8 +68,8 @@ class RecordHistoryStore
     /**
      * @param string $userType
      * @param int|null $userId
-     * @param int $originalUserId
-     * @param int $tstamp
+     * @param int|null $originalUserId
+     * @param int|null $tstamp
      * @param int $workspaceId
      */
     public function __construct(string $userType = self::USER_BACKEND, int $userId = null, int $originalUserId = null, int $tstamp = null, int $workspaceId = 0)
@@ -187,6 +188,24 @@ class RecordHistoryStore
     {
         $data = [
             'actiontype' => self::ACTION_MOVE,
+            'usertype' => $this->userType,
+            'userid' => $this->userId,
+            'originaluserid' => $this->originalUserId,
+            'tablename' => $table,
+            'recuid' => $uid,
+            'tstamp' => $this->tstamp,
+            'history_data' => json_encode($payload),
+            'workspace' => $this->workspaceId,
+            'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
+        ];
+        $this->getDatabaseConnection()->insert('sys_history', $data);
+        return $this->getDatabaseConnection()->lastInsertId('sys_history');
+    }
+
+    public function changeStageForRecord(string $table, int $uid, array $payload, CorrelationId $correlationId = null): string
+    {
+        $data = [
+            'actiontype' => self::ACTION_STAGECHANGE,
             'usertype' => $this->userType,
             'userid' => $this->userId,
             'originaluserid' => $this->originalUserId,

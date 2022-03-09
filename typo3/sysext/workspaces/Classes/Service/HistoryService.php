@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Workspaces\Service;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -62,13 +63,29 @@ class HistoryService implements SingletonInterface
     {
         $history = [];
         $i = 0;
-        foreach ((array)$this->getHistoryEntries($table, $id) as $entry) {
+        foreach ($this->getHistoryEntries($table, $id) as $entry) {
+            if ((int)($entry['actiontype'] ?? 0) === RecordHistoryStore::ACTION_STAGECHANGE) {
+                continue;
+            }
             if ($i++ > 20) {
                 break;
             }
             $history[] = $this->getHistoryEntry($entry);
         }
         return $history;
+    }
+
+    public function getStageChanges(string $table, int $id): array
+    {
+        $stageChanges = [];
+        foreach ($this->getHistoryEntries($table, $id) as $entry) {
+            if ((int)($entry['actiontype'] ?? 0) !== RecordHistoryStore::ACTION_STAGECHANGE) {
+                continue;
+            }
+            $stageChanges[] = $entry;
+        }
+
+        return $stageChanges;
     }
 
     /**

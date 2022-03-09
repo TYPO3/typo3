@@ -117,7 +117,7 @@ class Backend extends Workspaces {
 
       $panel.append(
         $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'label label-success'}).text(comment.stage_title),
+          $('<span />', {class: 'label label-success me-2'}).text(comment.previous_stage_title + ' > ' + comment.stage_title),
           $('<span />', {class: 'label label-info'}).text(comment.tstamp),
         ),
       );

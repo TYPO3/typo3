@@ -19,6 +19,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\PostgreSQL94Platform as PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLServer2012Platform as SQLServerPlatform;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -487,8 +489,10 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: {reason}', -1, ['reason' => $errorCode]);
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
             $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
+            $workspaceId = (int)$workspaceInfo['uid'];
+            $currentStage = (int)$record['t3ver_stage'];
             // check if the user is allowed to the current stage, so it's also allowed to send to next stage
-            if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
+            if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($currentStage)) {
                 // Set stage of record:
                 GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionForTable($table)
@@ -505,8 +509,9 @@ class DataHandlerHook
                     $pid = $propertyArray['pid'];
                     $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $pid));
                 }
-                // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
-                $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Stage raised to {stage}', 30, ['comment' => $comment, 'stage' => $stageId]);
+                // Write the stage change to history
+                $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
+                $historyStore->changeStageForRecord($table, (int)$id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment]);
                 if ((int)$workspaceInfo['stagechg_notification'] > 0) {
                     $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
                     $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
@@ -587,12 +592,13 @@ class DataHandlerHook
             return;
         }
         $workspaceId = (int)$swapVersion['t3ver_wsid'];
+        $currentStage = (int)$swapVersion['t3ver_stage'];
         if (!$dataHandler->BE_USER->workspacePublishAccess($workspaceId)) {
             $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'User could not publish records from workspace #{workspace}', -1, ['workspace' => $workspaceId]);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($workspaceId);
-        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === StagesService::STAGE_PUBLISH_ID)) {
+        if (!($workspaceId <= 0 || !($wsAccess['publish_access'] & 1) || $currentStage === StagesService::STAGE_PUBLISH_ID)) {
             $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage.', -1, ['workspace' => $workspaceId]);
             return;
         }
@@ -767,7 +773,9 @@ class DataHandlerHook
                 $pid = $propArr['pid'];
                 $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
             }
-            $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
+            // Write the stage change to the history
+            $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
+            $historyStore->changeStageForRecord($table, (int)$id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
 
             // Clear cache:
             $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -989,8 +997,10 @@ class DataHandlerHook
         $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
         // Write to log with stageId -20 (STAGE_PUBLISH_EXECUTE_ID)
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' => (int)$stageId, 'comment' => substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
-        $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+        // Write the stage change to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
+        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
+        $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
 
         // Clear cache
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -1539,6 +1549,25 @@ class DataHandlerHook
                     ['uid' => $uid]
                 );
         }
+    }
+
+    /**
+     * Makes an instance for RecordHistoryStore. This is needed as DataHandler would usually trigger the setHistory()
+     * but has no support for tracking "stage change" information.
+     *
+     * So we have to do this manually. Usually a $dataHandler->updateDB() could do this, but we use raw update statements
+     * here in workspaces for the time being, mostly because we also want to add "comment"
+     */
+    protected function getRecordHistoryStore(int $workspaceId, BackendUserAuthentication $user): RecordHistoryStore
+    {
+        return GeneralUtility::makeInstance(
+            RecordHistoryStore::class,
+            RecordHistoryStore::USER_BACKEND,
+            (int)$user->user['uid'],
+            $user->getOriginalUserIdWhenInSwitchUserMode(),
+            $GLOBALS['EXEC_TIME'],
+            $workspaceId
+        );
     }
 
     /**
