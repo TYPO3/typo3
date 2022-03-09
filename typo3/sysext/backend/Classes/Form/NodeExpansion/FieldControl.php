@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * They are restricted to only allow an icon as output.
  *
- * The "link popup" button next to the input field of a renderType "inputLink"
+ * The "edit popup" button next to a select field of a renderType "selectMultipleSideBySide"
  * is an example of such an additional control.
  *
  * The element itself must position any field controls at an appropriate place.

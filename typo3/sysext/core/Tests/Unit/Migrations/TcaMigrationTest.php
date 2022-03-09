@@ -1797,4 +1797,243 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($tca));
     }
+
+    private function renderTypeInputLinkMigratedToTypeLinkDataProvider(): iterable
+    {
+        yield 'Full example of renderType=inputLink migrated to type=link' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'required' => true,
+                                'size' => 21,
+                                'max' => 1234,
+                                'eval' => 'trim,null',
+                                'fieldControl' => [
+                                    'linkPopup' => [
+                                        'disabled' => true,
+                                        'options' => [
+                                            'title' => 'Browser label',
+                                            'allowedExtensions' => 'jpg,png',
+                                            'blindLinkFields' => 'class,target,title',
+                                            'blindLinkOptions' => 'mail,folder,file,telephone',
+                                        ],
+                                    ],
+                                ],
+                                'softref' => 'typolink',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                                'required' => true,
+                                'size' => 21,
+                                'eval' => 'null',
+                                'allowedTypes' => ['page', 'url', 'record'], // Ensures mail=>email str_replace works
+                                'appearance' => [
+                                    'enableBrowser' => false,
+                                    'browserTitle' => 'Browser label',
+                                    'allowedOptions' => ['params', 'rel'],
+                                    'allowedFileExtensions' => ['jpg', 'png'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Migrate type and remove eval' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'full blind options' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'fieldControl' => [
+                                    'linkPopup' => [
+                                        'options' => [
+                                            'blindLinkOptions' => 'page,file,folder,url,mail,record,telephone',
+                                            'blindLinkFields' => 'class,target,title,params,rel',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                                'allowedTypes' => [], // This is migrated correctly but will lead to an exception in the element
+                                'appearance' => [
+                                    'allowedOptions' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'empty blind options' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'fieldControl' => [
+                                    'linkPopup' => [
+                                        'disabled' => false,
+                                        'options' => [
+                                            'title' => '',
+                                            'blindLinkOptions' => '',
+                                            'blindLinkFields' => '',
+                                            'allowedExtensions' => '',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Non empty FieldControl is kept' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'eval' => 'trim',
+                                'fieldControl' => [
+                                    'linkPopup' => [
+                                        'disabled' => true,
+                                    ],
+                                    'editPopup' => [
+                                        'disabled' => false,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                                'fieldControl' => [
+                                    'editPopup' => [
+                                        'disabled' => false,
+                                    ],
+                                ],
+                                'appearance' => [
+                                    'enableBrowser' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Ensure "email" is used as term' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputLink',
+                                'fieldControl' => [
+                                    'linkPopup' => [
+                                        'options' => [
+                                            'blindLinkOptions' => 'page,file,folder,url,telephone',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'link',
+                                'allowedTypes' => ['email', 'record'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider renderTypeInputLinkMigratedToTypeLinkDataProvider
+     * @test
+     */
+    public function renderTypeInputLinkMigratedToTypeLink(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

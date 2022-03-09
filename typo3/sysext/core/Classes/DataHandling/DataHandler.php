@@ -48,6 +48,8 @@ use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
+use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
+use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1524,6 +1526,7 @@ class DataHandler implements LoggerAwareInterface
             'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
+            'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id),
             'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
             'text' => $this->checkValueForText($value, $tcaFieldConf, $table, $realPid, $field),
@@ -1736,7 +1739,7 @@ class DataHandler implements LoggerAwareInterface
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
-     * @param int|string $id UID of record - mit be a NEW.. string for new records
+     * @param int|string $id UID of record - might be a NEW.. string for new records
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $field Field name
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
@@ -1749,15 +1752,15 @@ class DataHandler implements LoggerAwareInterface
         int $realPid,
         string $field
     ): array {
+        // Always trim the value
+        $value = trim($value);
+
         // Early return if required validation fails
         // Note: The "required" check is evaluated but does not yet lead to an error, see
         // the comment in the DataHandler::validateValueForRequired() for more information.
         if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
             return [];
         }
-
-        // Always trim the value
-        $value = trim($value);
 
         if ($value !== '' && !GeneralUtility::validEmail($value)) {
             // A non-empty value is given, which however is no valid email. Log this and unset the value afterwards.
@@ -1860,6 +1863,65 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // @todo Should we also check if the language is allowed for the current site - if record has site context?
+
+        return ['value' => $value];
+    }
+
+    /**
+     * Evaluate "link" type values.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @param string $table Table name
+     * @param int|string $id UID of record - might be a NEW.. string for new records
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForLink(string $value, array $tcaFieldConf, string $table, int|string $id): array
+    {
+        // Always trim the value
+        $value = trim($value);
+
+        // Early return if required validation fails
+        // Note: The "required" check is evaluated but does not yet lead to an error, see
+        // the comment in the DataHandler::validateValueForRequired() for more information.
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            return [];
+        }
+
+        // Early return if an empty allow list is defined for the link types
+        if (is_array($tcaFieldConf['allowedTypes'] ?? false) && $tcaFieldConf['allowedTypes'] === []) {
+            return [];
+        }
+
+        if ($value !== '') {
+            // Extract the actual link from the link definition for further evaluation
+            $linkPart = trim(str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($value, ' '))[0] ?? '');
+            if ($linkPart === '') {
+                $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition.', -1, ['link' => $value]);
+                $value = '';
+            } else {
+                // Try to resolve the actual link type and compare with the allow list
+                try {
+                    $linkData = GeneralUtility::makeInstance(LinkService::class)->resolve($linkPart);
+                    $linkType = $linkData['type'] ?? '';
+                    $linkIdentifier = $linkData['identifier'] ?? '';
+                    if (is_array($tcaFieldConf['allowedTypes'] ?? false)
+                        && ($tcaFieldConf['allowedTypes'][0] ?? '') !== '*'
+                        && !in_array($linkType, $tcaFieldConf['allowedTypes'], true)
+                        && ($linkType !== 'record' || !in_array($linkIdentifier, $tcaFieldConf['allowedTypes'], true))
+                    ) {
+                        $message = $linkIdentifier !== ''
+                            ? 'Link type "record" with identifier "{type}" is not allowed.'
+                            : 'Link type "{type}" is not allowed.';
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, $message, -1, ['type' => $linkIdentifier ?: $linkType]);
+                        $value = '';
+                    }
+                } catch (UnknownLinkHandlerException $e) {
+                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link.', -1, ['link' => $value]);
+                    $value = '';
+                }
+            }
+        }
 
         return ['value' => $value];
     }
@@ -4547,6 +4609,7 @@ class DataHandler implements LoggerAwareInterface
                     $fCfg['config']['type'] === 'text'
                     || $fCfg['config']['type'] === 'input'
                     || $fCfg['config']['type'] === 'email'
+                    || $fCfg['config']['type'] === 'link'
                 )
                 && (string)$row[$fN] !== ''
             ) {

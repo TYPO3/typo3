@@ -264,10 +264,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
     {
         $allowedItems = parent::getAllowedItems();
 
-        $blindLinkOptions = isset($this->thisConfig['blindLinkOptions'])
-            ? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], true)
-            : [];
-        $allowedItems = array_diff($allowedItems, $blindLinkOptions);
+        if (isset($this->thisConfig['allowedTypes'])) {
+            $allowedItems = array_intersect($allowedItems, GeneralUtility::trimExplode(',', $this->thisConfig['allowedTypes'], true));
+        } elseif (isset($this->thisConfig['blindLinkOptions'])) {
+            // @todo Deprecate this option
+            $allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], true));
+        }
 
         if (is_array($this->buttonConfig['options'] ?? null) && !empty($this->buttonConfig['options']['removeItems'])) {
             $allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options']['removeItems'], true));
@@ -283,10 +285,12 @@ class BrowseLinksController extends AbstractLinkBrowserController
     {
         $allowedLinkAttributes = parent::getAllowedLinkAttributes();
 
-        $blindLinkFields = isset($this->thisConfig['blindLinkFields'])
-            ? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], true)
-            : [];
-        $allowedLinkAttributes = array_diff($allowedLinkAttributes, $blindLinkFields);
+        if (isset($this->thisConfig['allowedOptions'])) {
+            $allowedLinkAttributes = array_intersect($allowedLinkAttributes, GeneralUtility::trimExplode(',', $this->thisConfig['allowedOptions'], true));
+        } elseif (isset($this->thisConfig['blindLinkFields'])) {
+            // @todo Deprecate this option
+            $allowedLinkAttributes = array_diff($allowedLinkAttributes, GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], true));
+        }
 
         return $allowedLinkAttributes;
     }

@@ -130,18 +130,11 @@ class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImportExport
                 <TCEforms>
                     <label>Soft reference link</label>
                     <config>
-                        <type>input</type>
-                        <renderType>inputLink</renderType>
-                        <softref>typolink</softref>
-                        <fieldControl>
-                            <linkPopup>
-                                <options>
-                                    <title>Link</title>
-                                    <blindLinkOptions>mail,folder,spec</blindLinkOptions>
-                                    <windowOpenParameters>height=300,width=500,status=0,menubar=0,scrollbars=1</windowOpenParameters>
-                                </options>
-                            </linkPopup>
-                        </fieldControl>
+                        <type>link</type>
+                        <allowedTypes>page,file,url,record,telephone</allowedTypes>
+                        <appearance>
+                            <browserTitle>Link</browserTitle>
+                        </appearance>
                     </config>
                 </TCEforms>
             </softrefLink>

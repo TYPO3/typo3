@@ -143,19 +143,12 @@ return [
         'target' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.target',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'required' => true,
-                'renderType' => 'inputLink',
-                'softref' => 'typolink',
-                'fieldControl' => [
-                    'linkPopup' => [
-                        'options' => [
-                            'blindLinkOptions' => 'mail,folder,telephone',
-                            'blindLinkFields' => 'class, target, title',
-                        ],
-                    ],
+                'allowedTypes' => ['page', 'file', 'url', 'record'],
+                'appearance' => [
+                    'allowedOptions' => ['params', 'rel'],
                 ],
-                'max' => 2048,
             ],
         ],
         'target_statuscode' => [

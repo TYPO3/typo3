@@ -399,11 +399,12 @@ abstract class AbstractLinkBrowserController
             }
         }
 
-        // Initializing the action value, possibly removing blinded values etc:
-        $blindLinkOptions = isset($this->parameters['params']['blindLinkOptions'])
-            ? GeneralUtility::trimExplode(',', $this->parameters['params']['blindLinkOptions'])
-            : [];
-        $allowedItems = array_diff($allowedItems, $blindLinkOptions);
+        if (isset($this->parameters['params']['allowedTypes'])) {
+            $allowedItems = array_intersect($allowedItems, GeneralUtility::trimExplode(',', $this->parameters['params']['allowedTypes'], true));
+        } elseif (isset($this->parameters['params']['blindLinkOptions'])) {
+            // @todo Deprecate this option
+            $allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->parameters['params']['blindLinkOptions'], true));
+        }
 
         return $allowedItems;
     }
@@ -415,11 +416,12 @@ abstract class AbstractLinkBrowserController
     {
         $allowedLinkAttributes = $this->displayedLinkHandler->getLinkAttributes();
 
-        // Removing link fields if configured
-        $blindLinkFields = isset($this->parameters['params']['blindLinkFields'])
-            ? GeneralUtility::trimExplode(',', $this->parameters['params']['blindLinkFields'], true)
-            : [];
-        $allowedLinkAttributes = array_diff($allowedLinkAttributes, $blindLinkFields);
+        if (isset($this->parameters['params']['allowedOptions'])) {
+            $allowedLinkAttributes = array_intersect($allowedLinkAttributes, GeneralUtility::trimExplode(',', $this->parameters['params']['allowedOptions'], true));
+        } elseif (isset($this->parameters['params']['blindLinkFields'])) {
+            // @todo Deprecate this option
+            $allowedLinkAttributes = array_diff($allowedLinkAttributes, GeneralUtility::trimExplode(',', $this->parameters['params']['blindLinkFields'], true));
+        }
 
         return $allowedLinkAttributes;
     }

@@ -254,6 +254,7 @@ class SiteConfigurationController
                 switch ($type) {
                     case 'input':
                     case 'email':
+                    case 'link':
                     case 'text':
                         $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
                         $newSysSiteData[$fieldName] = $fieldValue;
@@ -286,6 +287,7 @@ class SiteConfigurationController
                                 switch ($type) {
                                     case 'input':
                                     case 'email':
+                                    case 'link':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;
@@ -343,6 +345,7 @@ class SiteConfigurationController
                                 switch ($type) {
                                     case 'input':
                                     case 'email':
+                                    case 'link':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;

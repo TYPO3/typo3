@@ -317,6 +317,11 @@ class LinkAnalyzer
             $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
             $valueField = $record[$field];
 
+            // Add a softref definition for link fields if the TCA does not specify one already
+            if (($conf['type'] ?? '') === 'link' && empty($conf['softref'])) {
+                $conf['softref'] = 'typolink';
+            }
+
             // Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
             if (!($conf['softref'] ?? false) || (string)$valueField === '') {
                 continue;

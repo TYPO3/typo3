@@ -22,7 +22,7 @@ TCEMAIN.linkHandler {
     displayAfter = page,file,folder
     scanAfter = telephone
   }
-  mail {
+  email {
     handler = TYPO3\CMS\Recordlist\LinkHandler\MailLinkHandler
     label = LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:email
     displayAfter = page,file,folder,url

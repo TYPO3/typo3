@@ -23,7 +23,7 @@ The TCA type :php:`email` features the following column configuration:
 - :php:`autocomplete`
 - :php:`behaviour`: :php:`allowLanguageSynchronization`
 - :php:`default`
-- :php:`eval`: :php:`unique` and :php:`uniqueInPid`
+- :php:`eval`: :php:`null`, :php:`unique` and :php:`uniqueInPid`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
@@ -34,8 +34,10 @@ The TCA type :php:`email` features the following column configuration:
 - :php:`search`
 - :php:`size`
 
-The softref definition :php:`softref=>email[subst]` is automatically applied
-to all :php:`email` fields.
+.. note::
+
+    The softref definition :php:`softref=>email[subst]` is automatically applied
+    to all :php:`email` fields.
 
 The following column configuration can be overwritten by Page TSconfig:
 

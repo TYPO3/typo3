@@ -2547,6 +2547,7 @@ class DatabaseRecordList
                 } elseif ($fieldType === 'text'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
+                    || $fieldType === 'link'
                     || $fieldType === 'slug'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
@@ -2590,6 +2591,7 @@ class DatabaseRecordList
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
+                    || $fieldType === 'link'
                     || $fieldType === 'slug'
                     || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {

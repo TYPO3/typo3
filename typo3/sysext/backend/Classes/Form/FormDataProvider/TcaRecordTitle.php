@@ -178,10 +178,9 @@ class TcaRecordTitle implements FormDataProviderInterface
                 $recordTitle = $this->getRecordTitleForInputType($rawValue, $fieldConfig);
                 break;
             case 'text':
-                $recordTitle = $this->getRecordTitleForTextType($rawValue);
-                break;
             case 'email':
-                $recordTitle = $this->getRecordTitleForEmailType($rawValue);
+            case 'link':
+                $recordTitle = $this->getRecordTitleForStandardTextField($rawValue);
                 break;
             case 'flex':
                 // @todo: Check if and how a label could be generated from flex field data
@@ -386,23 +385,12 @@ class TcaRecordTitle implements FormDataProviderInterface
     }
 
     /**
-     * Returns the record title for text fields
+     * Returns the record title for a not to transformed text fields
      *
      * @param mixed $value Current database value of this field
      * @return string
      */
-    protected function getRecordTitleForTextType($value)
-    {
-        return trim(strip_tags($value));
-    }
-
-    /**
-     * Returns the record title for email fields
-     *
-     * @param mixed $value Current database value of this field
-     * @return string
-     */
-    protected function getRecordTitleForEmailType(mixed $value): string
+    protected function getRecordTitleForStandardTextField(mixed $value): string
     {
         if (!is_string($value)) {
             return '';

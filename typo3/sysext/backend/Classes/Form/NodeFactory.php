@@ -76,7 +76,7 @@ class NodeFactory
         'folder' => Element\FolderElement::class,
         'input' => Element\InputTextElement::class,
         'inputDateTime' => Element\InputDateTimeElement::class,
-        'inputLink' => Element\InputLinkElement::class,
+        'link' => Element\LinkElement::class,
         'hidden' => Element\InputHiddenElement::class,
         'imageManipulation' => Element\ImageManipulationElement::class,
         'none' => Element\NoneElement::class,

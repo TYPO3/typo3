@@ -14,29 +14,46 @@
 import DocumentService from '@typo3/core/document-service';
 
 enum Selectors {
-  toggleSelector = '.t3js-form-field-inputlink-explanation-toggle',
-  inputFieldSelector = '.t3js-form-field-inputlink-input',
-  explanationSelector = '.t3js-form-field-inputlink-explanation',
-  iconSelector = '.t3js-form-field-inputlink-icon',
+  toggleSelector = '.t3js-form-field-link-explanation-toggle',
+  inputFieldSelector = '.t3js-form-field-link-input',
+  explanationSelector = '.t3js-form-field-link-explanation',
+  iconSelector = '.t3js-form-field-link-icon',
 }
 
-class InputLinkElement {
+
+/**
+ * Module: @typo3/backend/form-engine/element/link-element
+ *
+ * Functionality for the link element
+ *
+ * @example
+ * <typo3-formengine-element-link recordFieldId="some-id">
+ *   ...
+ * </typo3-formengine-element-link>
+ *
+ * This is based on W3C custom elements ("web components") specification, see
+ * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+ */
+class LinkElement extends HTMLElement {
   private element: HTMLSelectElement = null;
   private container: HTMLElement = null;
   private toggleSelector: HTMLButtonElement = null;
   private explanationField: HTMLInputElement = null;
   private icon: HTMLSpanElement = null;
 
-  constructor(elementId: string) {
-    DocumentService.ready().then((document: Document): void => {
-      this.element = <HTMLSelectElement>document.getElementById(elementId);
-      this.container = <HTMLElement>this.element.closest('.t3js-form-field-inputlink');
-      this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);
-      this.explanationField = <HTMLInputElement>this.container.querySelector(Selectors.explanationSelector);
-      this.icon = <HTMLSpanElement>this.container.querySelector(Selectors.iconSelector);
-      this.toggleVisibility(this.explanationField.value === '');
-      this.registerEventHandler();
-    });
+  public connectedCallback(): void {
+    this.element = <HTMLSelectElement>this.querySelector('#' + (this.getAttribute('recordFieldId') || '' as string));
+
+    if (!this.element) {
+      return;
+    }
+
+    this.container = <HTMLElement>this.element.closest('.t3js-form-field-link');
+    this.toggleSelector = <HTMLButtonElement>this.container.querySelector(Selectors.toggleSelector);
+    this.explanationField = <HTMLInputElement>this.container.querySelector(Selectors.explanationSelector);
+    this.icon = <HTMLSpanElement>this.container.querySelector(Selectors.iconSelector);
+    this.toggleVisibility(this.explanationField.value === '');
+    this.registerEventHandler();
   }
 
   /**
@@ -75,4 +92,4 @@ class InputLinkElement {
   }
 }
 
-export default InputLinkElement;
+window.customElements.define('typo3-formengine-element-link', LinkElement);

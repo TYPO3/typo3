@@ -1445,7 +1445,7 @@ class DataMapProcessor
             $type = $configuration['config']['type'] ?? null;
             if (
                 ($configuration['l10n_mode'] ?? null) === 'prefixLangTitle'
-                && ($type === 'input' || $type === 'text' || $type === 'email')
+                && ($type === 'input' || $type === 'text' || $type === 'email' || $type === 'link')
             ) {
                 $prefixLanguageTitleFieldNames[] = $fieldName;
             }

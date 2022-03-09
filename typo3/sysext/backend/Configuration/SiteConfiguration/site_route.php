@@ -59,16 +59,9 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
         'source' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.source',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
                 'required' => true,
-                'fieldControl' => [
-                    'linkPopup' => [
-                        'options' => [
-                            'blindLinkOptions' => 'mail,telephone,spec,folder',
-                        ],
-                    ],
-                ],
+                'allowedTypes' => ['page', 'url', 'record'],
             ],
         ],
     ],

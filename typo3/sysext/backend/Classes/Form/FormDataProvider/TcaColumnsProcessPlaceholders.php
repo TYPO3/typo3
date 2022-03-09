@@ -40,6 +40,7 @@ class TcaColumnsProcessPlaceholders implements FormDataProviderInterface
                     $fieldConfig['config']['type'] !== 'input'
                     && $fieldConfig['config']['type'] !== 'text'
                     && $fieldConfig['config']['type'] !== 'email'
+                    && $fieldConfig['config']['type'] !== 'link'
                 )
             ) {
                 continue;

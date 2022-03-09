@@ -70,6 +70,7 @@ class TcaMigration
         $tca = $this->migrateRequiredFlag($tca);
         $tca = $this->migrateEmailFlagToEmailType($tca);
         $tca = $this->migrateTypeNoneColsToSize($tca);
+        $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
 
         return $tca;
     }
@@ -625,6 +626,7 @@ class TcaMigration
 
         return $tca;
     }
+
     /**
      * Migrates [config][eval] = 'email' to [config][type] = 'email' and removes 'email' from [config][eval].
      * If [config][eval] contains 'trim', it will also be removed. If [config][eval] becomes empty, the option
@@ -691,6 +693,105 @@ class TcaMigration
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . '"cols" in its config. This value has been migrated to the option "size". Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][renderType] = 'inputLink' to [config][type] = 'link'.
+     * Migrates the [config][fieldConfig][linkPopup] to type specific configuration.
+     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][max], if set.
+     * Removes option [config][softref], if set to "typolink".
+     */
+    protected function migrateRenderTypeInputLinkToTypeLink(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || ($fieldConfig['config']['renderType'] ?? '') !== 'inputLink'
+                ) {
+                    // Early return in case column is not of type=input with renderType=inputLink
+                    continue;
+                }
+
+                // Set the TCA type to "link"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'link';
+
+                // Unset "renderType" and "max"
+                unset(
+                    $tca[$table]['columns'][$fieldName]['config']['max'],
+                    $tca[$table]['columns'][$fieldName]['config']['renderType']
+                );
+
+                // Unset "softref" if set to "typolink"
+                if (($fieldConfig['config']['softref'] ?? '') === 'typolink') {
+                    unset($tca[$table]['columns'][$fieldName]['config']['softref']);
+                }
+
+                // Migrate the linkPopup configuration
+                if (is_array($fieldConfig['config']['fieldControl']['linkPopup'] ?? false)) {
+                    $linkPopupConfig = $fieldConfig['config']['fieldControl']['linkPopup'];
+                    if ($linkPopupConfig['options']['blindLinkOptions'] ?? false) {
+                        $availaleTypes = $GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] ?? [];
+                        if ($availaleTypes !== []) {
+                            $availaleTypes = array_keys($availaleTypes);
+                        } else {
+                            // Fallback to a static list, in case linkHandler configuration is not available at this point
+                            $availaleTypes = ['page', 'file', 'folder', 'url', 'email', 'record', 'telephone'];
+                        }
+                        $tca[$table]['columns'][$fieldName]['config']['allowedTypes'] = array_values(array_diff(
+                            $availaleTypes,
+                            GeneralUtility::trimExplode(',', str_replace('mail', 'email', (string)$linkPopupConfig['options']['blindLinkOptions']), true)
+                        ));
+                    }
+                    if ($linkPopupConfig['disabled'] ?? false) {
+                        $tca[$table]['columns'][$fieldName]['config']['appearance']['enableBrowser'] = false;
+                    }
+                    if ($linkPopupConfig['options']['title'] ?? false) {
+                        $tca[$table]['columns'][$fieldName]['config']['appearance']['browserTitle'] = (string)$linkPopupConfig['options']['title'];
+                    }
+                    if ($linkPopupConfig['options']['blindLinkFields'] ?? false) {
+                        $tca[$table]['columns'][$fieldName]['config']['appearance']['allowedOptions'] = array_values(array_diff(
+                            ['target', 'title', 'class', 'params', 'rel'],
+                            GeneralUtility::trimExplode(',', (string)$linkPopupConfig['options']['blindLinkFields'], true)
+                        ));
+                    }
+                    if ($linkPopupConfig['options']['allowedExtensions'] ?? false) {
+                        $tca[$table]['columns'][$fieldName]['config']['appearance']['allowedFileExtensions'] = GeneralUtility::trimExplode(
+                            ',',
+                            (string)$linkPopupConfig['options']['allowedExtensions'],
+                            true
+                        );
+                    }
+                }
+
+                // Unset ['fieldControl']['linkPopup'] - Note: We do this here to ensure
+                // also an invalid (e.g. not an array) field control configuration is removed.
+                unset($tca[$table]['columns'][$fieldName]['config']['fieldControl']['linkPopup']);
+
+                // In case "linkPopup" has been the only configured fieldControl, unset ['fieldControl'], too.
+                if (empty($tca[$table]['columns'][$fieldName]['config']['fieldControl'])) {
+                    unset($tca[$table]['columns'][$fieldName]['config']['fieldControl']);
+                }
+
+                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
+                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
+                } else {
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'renderType="inputLink". The field has therefore been migrated to the TCA type \'link\'. '
+                    . 'This includes corresponding configuration of the "linkPopup", as well as obsolete field '
+                    . 'configurations, such as "max" and "softref". Please adjust your TCA accordingly.';
             }
         }
 

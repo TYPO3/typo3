@@ -44,6 +44,7 @@ final class TableColumnType extends Enumeration
     const SLUG = 'SLUG';
     const CATEGORY = 'CATEGORY';
     const EMAIL = 'EMAIL';
+    const LINK = 'LINK';
 
     /**
      * @param mixed $type

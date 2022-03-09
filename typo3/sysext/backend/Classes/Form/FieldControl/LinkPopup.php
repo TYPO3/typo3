@@ -47,13 +47,22 @@ class LinkPopup extends AbstractNode
         $itemName = $parameterArray['itemFormElName'];
 
         $linkBrowserArguments = [];
-        if (isset($options['blindLinkOptions'])) {
+        if (is_array($options['allowedTypes'] ?? false)) {
+            $linkBrowserArguments['allowedTypes'] = implode(',', $options['allowedTypes']);
+        } elseif (isset($options['blindLinkOptions'])) {
+            // @todo Deprecate this option
             $linkBrowserArguments['blindLinkOptions'] = $options['blindLinkOptions'];
         }
-        if (isset($options['blindLinkFields'])) {
+        if (is_array($options['allowedOptions'] ?? false)) {
+            $linkBrowserArguments['allowedOptions'] = implode(',', $options['allowedOptions']);
+        } elseif (isset($options['blindLinkFields'])) {
+            // @todo Deprecate this option
             $linkBrowserArguments['blindLinkFields'] = $options['blindLinkFields'];
         }
-        if (isset($options['allowedExtensions'])) {
+        if (is_array($options['allowedFileExtensions'] ?? false)) {
+            $linkBrowserArguments['allowedFileExtensions'] = implode(',', $options['allowedFileExtensions']);
+        } elseif (isset($options['allowedExtensions'])) {
+            // @todo Deprecate this option
             $linkBrowserArguments['allowedExtensions'] = $options['allowedExtensions'];
         }
         $urlParameters = array_merge(

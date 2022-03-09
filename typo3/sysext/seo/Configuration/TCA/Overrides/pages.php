@@ -148,21 +148,13 @@ $tca = [
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
             'displayCond' => 'FIELD:no_index:=:0',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
+                'allowedTypes' => ['page', 'url', 'record'],
                 'size' => 50,
-                'max' => 1024,
-                'eval' => 'trim',
-                'fieldControl' => [
-                    'linkPopup' => [
-                        'options' => [
-                            'title' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
-                            'blindLinkFields' => 'class,target,title',
-                            'blindLinkOptions' => 'mail,folder,file,telephone',
-                        ],
-                    ],
+                'appearance' => [
+                    'browserTitle' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
+                    'allowedOptions' => ['params', 'rel'],
                 ],
-                'softref' => 'typolink',
             ],
         ],
         'og_title' => [

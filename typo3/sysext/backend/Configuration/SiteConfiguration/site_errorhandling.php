@@ -88,16 +88,9 @@ return [
         'errorContentSource' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorContentSource',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
                 'required' => true,
-                'fieldControl' => [
-                    'linkPopup' => [
-                        'options' => [
-                            'blindLinkOptions' => 'file,telephone,mail,spec,folder',
-                        ],
-                    ],
-                ],
+                'allowedTypes' => ['page', 'url', 'record'],
             ],
         ],
         'errorPhpClassFQCN' => [
