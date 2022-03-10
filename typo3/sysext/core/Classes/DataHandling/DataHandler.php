@@ -5385,7 +5385,7 @@ class DataHandler implements LoggerAwareInterface
                     continue;
                 }
             }
-            $this->deleteAction($table, (int)$record['t3ver_oid'] > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
+            $this->deleteAction($table, (int)($record['t3ver_oid'] ?? 0) > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
         }
     }
 
