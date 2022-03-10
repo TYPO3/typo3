@@ -18,10 +18,9 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
@@ -32,6 +31,7 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * Builds a web request.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class RequestBuilder implements SingletonInterface
@@ -191,12 +191,21 @@ class RequestBuilder implements SingletonInterface
             $parameters = array_replace_recursive($parameters, $postParameters);
         }
 
-        $files = $this->untangleFilesArray($_FILES);
-        if ($useArgumentsWithoutNamespace) {
-            $parameters = array_replace_recursive($parameters, $files);
-        } elseif (is_array($files[$pluginNamespace] ?? null)) {
-            $parameters = array_replace_recursive($parameters, $files[$pluginNamespace]);
+        $files = $mainRequest->getUploadedFiles();
+        if (!$useArgumentsWithoutNamespace) {
+            $files = $files[$pluginNamespace] ?? [];
         }
+        if ($files instanceof UploadedFile) {
+            // ensure it's always an array
+            $files = [$files];
+        }
+
+        // backwards compatibility
+        $fileParameters = $this->mapUploadedFilesToParameters($files, []);
+        if (count($fileParameters) === 1) {
+            $fileParameters = reset($fileParameters);
+        }
+        $parameters = array_replace_recursive($parameters, $fileParameters);
 
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
@@ -207,6 +216,7 @@ class RequestBuilder implements SingletonInterface
         $extbaseAttribute->setControllerAliasToClassNameMapping($this->controllerAliasToClassMapping);
         $extbaseAttribute->setControllerName($this->controllerClassToAliasMapping[$controllerClassName]);
         $extbaseAttribute->setControllerActionName($actionName);
+        $extbaseAttribute->setUploadedFiles($files);
 
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $extbaseAttribute->setFormat(preg_replace('/[^a-zA-Z0-9]+/', '', $parameters['format']));
@@ -217,6 +227,40 @@ class RequestBuilder implements SingletonInterface
             $extbaseAttribute->setArgument($argumentName, $argumentValue);
         }
         return new Request($mainRequest->withAttribute('extbase', $extbaseAttribute));
+    }
+
+    protected function mapUploadedFilesToParameters(array|UploadedFile $files, array $parameters)
+    {
+        if (is_array($files)) {
+            foreach ($files as $key => $file) {
+                if (is_array($file)) {
+                    $parameters[$key] = $this->mapUploadedFilesToParameters($file, $parameters[$key] ?? []);
+                } else {
+                    $parameters[$key] = $this->mapUploadedFileToParameters($file);
+                }
+            }
+        } else {
+            $parameters = $this->mapUploadedFileToParameters($files);
+        }
+        return $parameters;
+    }
+
+    /**
+     * Backwards Compatibility File Mapping to Parameters
+     *
+     * @deprecated Use $request->getUploadedFiles() instead
+     */
+    protected function mapUploadedFileToParameters(UploadedFile $uploadedFile): array
+    {
+        $parameters = [];
+        $parameters['name'] = $uploadedFile->getClientFilename();
+        $parameters['type'] = $uploadedFile->getClientMediaType();
+        $parameters['error'] = $uploadedFile->getError();
+        if ($uploadedFile->getSize() > 0) {
+            $parameters['size'] = $uploadedFile->getSize();
+        }
+        $parameters['tmp_name'] = $uploadedFile->getTemporaryFileName();
+        return $parameters;
     }
 
     /**
@@ -289,69 +333,5 @@ class RequestBuilder implements SingletonInterface
             throw new InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerClassName . '") is not allowed by this plugin / module. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php / TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configureModule() in your ext_tables.php.', 1313855175);
         }
         return preg_replace('/[^a-zA-Z0-9]+/', '', $actionName);
-    }
-
-    /**
-     * Transforms the convoluted _FILES superglobal into a manageable form.
-     *
-     * @param array $convolutedFiles The _FILES superglobal
-     * @return array Untangled files
-     */
-    protected function untangleFilesArray(array $convolutedFiles)
-    {
-        $untangledFiles = [];
-        $fieldPaths = [];
-        foreach ($convolutedFiles as $firstLevelFieldName => $fieldInformation) {
-            if (!is_array($fieldInformation['error'])) {
-                $fieldPaths[] = [$firstLevelFieldName];
-            } else {
-                $newFieldPaths = $this->calculateFieldPaths($fieldInformation['error'], $firstLevelFieldName);
-                array_walk($newFieldPaths, static function (&$value, $key) {
-                    $value = explode('/', $value);
-                });
-                $fieldPaths = array_merge($fieldPaths, $newFieldPaths);
-            }
-        }
-        foreach ($fieldPaths as $fieldPath) {
-            if (count($fieldPath) === 1) {
-                $fileInformation = $convolutedFiles[$fieldPath[0]];
-            } else {
-                $fileInformation = [];
-                foreach ($convolutedFiles[$fieldPath[0]] as $key => $subStructure) {
-                    try {
-                        $fileInformation[$key] = ArrayUtility::getValueByPath($subStructure, array_slice($fieldPath, 1));
-                    } catch (MissingArrayPathException $e) {
-                        // do nothing if the path is invalid
-                    }
-                }
-            }
-            $untangledFiles = ArrayUtility::setValueByPath($untangledFiles, $fieldPath, $fileInformation);
-        }
-        return $untangledFiles;
-    }
-
-    /**
-     * Returns an array of all possibles "field paths" for the given array.
-     *
-     * @param array $structure The array to walk through
-     * @param string $firstLevelFieldName
-     * @return array An array of paths (as strings) in the format "key1/key2/key3" ...
-     */
-    protected function calculateFieldPaths(array $structure, $firstLevelFieldName = null)
-    {
-        $fieldPaths = [];
-        if (is_array($structure)) {
-            foreach ($structure as $key => $subStructure) {
-                $fieldPath = ($firstLevelFieldName !== null ? $firstLevelFieldName . '/' : '') . $key;
-                if (is_array($subStructure)) {
-                    foreach ($this->calculateFieldPaths($subStructure) as $subFieldPath) {
-                        $fieldPaths[] = $fieldPath . '/' . $subFieldPath;
-                    }
-                } else {
-                    $fieldPaths[] = $fieldPath;
-                }
-            }
-        }
-        return $fieldPaths;
     }
 }

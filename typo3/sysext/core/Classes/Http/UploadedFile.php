@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Http;
 
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use TYPO3\CMS\Core\Resource\Exception\UploadSizeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -185,6 +186,13 @@ class UploadedFile implements UploadedFileInterface
             throw new \RuntimeException('Cannot move uploaded file, as it was already moved.', 1436717309);
         }
 
+        // Max upload size (kb) for files.
+        $maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+        if ($this->size > 0 && $maxUploadFileSize > 0 && $this->size >= $maxUploadFileSize) {
+            unlink($this->file);
+            throw new UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1647338094);
+        }
+
         if (!empty($this->file) && is_uploaded_file($this->file)) {
             if (GeneralUtility::upload_copy_move($this->file, $targetPath) === false) {
                 throw new \RuntimeException('An error occurred while moving uploaded file', 1436717310);
@@ -251,6 +259,21 @@ class UploadedFile implements UploadedFileInterface
     public function getClientFilename()
     {
         return $this->clientFilename;
+    }
+
+    /**
+     * Retrieve the temporary file name (for example /tmp/tmp_foo_filexyz
+     * If the file has been moved (by moveTo) an exception is thrown.
+     *
+     * @internal Not part of the PSR interface - used for legacy code in the core
+     * @return string|null
+     */
+    public function getTemporaryFileName(): ?string
+    {
+        if ($this->moved) {
+            throw new \RuntimeException('Cannot return temporary file name, as it was already moved.', 1436717337);
+        }
+        return $this->file;
     }
 
     /**

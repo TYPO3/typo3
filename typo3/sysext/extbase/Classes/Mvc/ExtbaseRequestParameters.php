@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Mvc;
 
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -100,6 +101,12 @@ class ExtbaseRequestParameters
      * If the request is a forward because of an error, these mapping results get filled here.
      */
     protected ?Result $originalRequestMappingResults = null;
+
+    /**
+     * If files were uploaded, this array holds the files
+     * prefixed for this extension/controller/plugin combination.
+     */
+    protected array $uploadedFiles = [];
 
     public function __construct(string $controllerClassName = '')
     {
@@ -321,5 +328,36 @@ class ExtbaseRequestParameters
             return null;
         }
         return $this->internalArguments[$argumentName];
+    }
+
+    public function getUploadedFiles(): array
+    {
+        return $this->uploadedFiles;
+    }
+
+    public function setUploadedFiles(array $files): ExtbaseRequestParameters
+    {
+        $this->validateUploadedFiles($files);
+        $this->uploadedFiles = $files;
+        return $this;
+    }
+
+    /**
+     * Recursively validate the structure in an uploaded files array.
+     *
+     * @param array $uploadedFiles
+     * @throws \InvalidArgumentException if any leaf is not an UploadedFileInterface instance.
+     */
+    protected function validateUploadedFiles(array $uploadedFiles): void
+    {
+        foreach ($uploadedFiles as $file) {
+            if (is_array($file)) {
+                $this->validateUploadedFiles($file);
+                continue;
+            }
+            if (!$file instanceof UploadedFileInterface) {
+                throw new \InvalidArgumentException('Invalid file in uploaded files structure.', 1647338470);
+            }
+        }
     }
 }

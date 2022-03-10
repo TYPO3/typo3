@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Http\FalDumpFileContentsDecoratorStream;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
@@ -2110,25 +2111,35 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Adds an uploaded file into the Storage. Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::file_upload()
      *
-     * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-     * @param Folder $targetFolder the target folder
-     * @param string $targetFileName the file name to be written
+     * @param array|UploadedFile $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
+     * @param Folder|null $targetFolder the target folder
+     * @param string|null $targetFileName the file name to be written
      * @param string $conflictMode a value of the DuplicationBehavior enumeration
      * @return FileInterface The file object
      */
-    public function addUploadedFile(array $uploadedFileData, Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
+    public function addUploadedFile(array|UploadedFile $uploadedFileData, Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
         $conflictMode = DuplicationBehavior::cast($conflictMode);
-        $localFilePath = $uploadedFileData['tmp_name'];
+        if ($uploadedFileData instanceof UploadedFile) {
+            $localFilePath = $uploadedFileData->getTemporaryFileName();
+            if ($targetFileName === null) {
+                $targetFileName = $uploadedFileData->getClientFilename();
+            }
+            $size = $uploadedFileData->getSize();
+        } else {
+            $localFilePath = $uploadedFileData['tmp_name'];
+            if ($targetFileName === null) {
+                $targetFileName = $uploadedFileData['name'];
+            }
+            $size = $uploadedFileData['size'];
+        }
         if ($targetFolder === null) {
             $targetFolder = $this->getDefaultFolder();
         }
-        if ($targetFileName === null) {
-            $targetFileName = $uploadedFileData['name'];
-        }
+
         $targetFileName = $this->driver->sanitizeFileName($targetFileName);
 
-        $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
+        $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode->equals(DuplicationBehavior::REPLACE)) {
             $file = $this->getFileInFolder($targetFileName, $targetFolder);
             $resultObject = $this->replaceFile($file, $localFilePath);

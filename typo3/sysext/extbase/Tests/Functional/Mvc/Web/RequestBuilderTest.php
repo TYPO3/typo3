@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Mvc\Exception;
@@ -31,10 +32,37 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder;
+use TYPO3\TestingFramework\Core\Functional\Framework\FrameworkState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RequestBuilderTest extends FunctionalTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Some tests need GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
+        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController. To manipulate/set it
+        // before creating request from globals, the global must be set. Thus the framework state has to be
+        // saved/reset and later restored. Similar requirement is needed when emitting frontend requests with
+        // the testing-framework. This is done globally for the testcase, so reset can be cleanly done even if
+        // a test has failed.
+        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
+        // @todo: Get rid of getIndpEnv var usage in TSFE
+        FrameworkState::push();
+        FrameworkState::reset();
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore previously saved framework state.
+        // This is to clean-up manipulated framework state for testing
+        // purposes even on failures, thus done globally for the testcase.
+        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
+        // @todo: Get rid of getIndpEnv var usage in TSFE
+        FrameworkState::pop();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -170,9 +198,9 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsASingleUploadedFile(): void
+    public function untangleFilesArrayDetectsASingleUploadedFileInBackend(): void
     {
-        $_FILES['tx_blog_example_blog'] = [
+        $_FILES['dummy'] = [
             'name' => 'name.pdf',
             'type' => 'application/pdf',
             'tmp_name' => '/tmp/php/php1h4j1o',
@@ -195,13 +223,24 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
-        $configuration['features']['enableNamespacedArgumentsForBackend'] = 1;
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
-        $mainRequest = $mainRequest->withAttribute('module', $module);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = 'https://example.com/';
+        // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
+        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
+        // and other places.
+        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
+        // @todo: Get rid of getIndpEnv var usage in TSFE
+        $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 
@@ -216,9 +255,9 @@ class RequestBuilderTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function untangleFilesArrayDetectsMultipleUploadedFile(): void
+    public function untangleFilesArrayDetectsMultipleUploadedFileInBackend(): void
     {
-        $_FILES['tx_blog_example_blog'] = [
+        $_FILES['dummy'] = [
             'error' => [
                 'pdf' => UPLOAD_ERR_OK,
                 'jpg' => UPLOAD_ERR_OK,
@@ -255,13 +294,24 @@ class RequestBuilderTest extends FunctionalTestCase
         $configuration = [];
         $configuration['extensionName'] = $extensionName;
         $configuration['pluginName'] = $pluginName;
-        $configuration['features']['enableNamespacedArgumentsForBackend'] = 1;
 
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
 
-        $mainRequest = $this->prepareServerRequest('https://example.com/', 'POST');
-        $mainRequest = $mainRequest->withAttribute('module', $module);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = 'https://example.com/';
+        // Needed for GeneralUtility::getIndpEnv('SCRIPT_NAME') to return correct value instead of
+        // 'vendor/phpunit/phpunit/phpunit', used eg. in TypoScriptFrontendController absRefPrefix='auto
+        // and other places.
+        // @see FunctionalTestCase::retrieveFrontendSubRequestResult()
+        // @todo: Get rid of getIndpEnv var usage in TSFE
+        $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
+
+        $mainRequest = ServerRequestFactory::fromGlobals()
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $normalizedParams = NormalizedParams::createFromRequest($mainRequest);
+        $mainRequest = $mainRequest->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('module', $module);
         $requestBuilder = $this->get(RequestBuilder::class);
         $request = $requestBuilder->build($mainRequest);
 

@@ -412,13 +412,14 @@ class Request implements ServerRequestInterface, RequestInterface
 
     public function getUploadedFiles(): array
     {
-        return $this->request->getUploadedFiles();
+        return $this->getExtbaseAttribute()->getUploadedFiles();
     }
 
     public function withUploadedFiles(array $uploadedFiles): self
     {
-        $request = $this->request->withUploadedFiles($uploadedFiles);
-        return new static($request);
+        $attribute = clone $this->getExtbaseAttribute();
+        $attribute->setUploadedFiles($uploadedFiles);
+        return $this->withAttribute('extbase', $attribute);
     }
 
     public function getParsedBody()

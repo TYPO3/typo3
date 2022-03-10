@@ -172,11 +172,13 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             foreach (array_keys($value['tmp_name']) as $key) {
                 $data = [
                     'tmp_name' => $value['tmp_name'][$key],
-                    'size'     => $value['size'][$key],
                     'error'    => $value['error'][$key],
                     'name'     => $value['name'][$key],
                     'type'     => $value['type'][$key],
                 ];
+                if (isset($value['size'][$key])) {
+                    $data['size'] = $value['size'][$key];
+                }
                 $result = self::createUploadedFile($data);
                 if ($result) {
                     $files[$key] = $result;
@@ -185,7 +187,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             return $files;
         }
         if (!empty($value['tmp_name'])) {
-            return new UploadedFile($value['tmp_name'], $value['size'], $value['error'], $value['name'], $value['type']);
+            return new UploadedFile($value['tmp_name'], $value['size'] ?? 0, $value['error'], $value['name'], $value['type']);
         }
         return null;
     }

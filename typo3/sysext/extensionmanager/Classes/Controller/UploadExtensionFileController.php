@@ -89,20 +89,23 @@ class UploadExtensionFileController extends AbstractController
                 1444725853
             );
         }
-        // @todo: this is ugly!
-        $file = $_FILES;
-        $fileName = pathinfo($file['name']['extensionFile'], PATHINFO_BASENAME);
+
         try {
-            // If the file name isn't valid an error will be thrown
-            $this->checkFileName($fileName);
-            if (!empty($file['tmp_name']['extensionFile'])) {
-                $tempFile = GeneralUtility::upload_to_tempfile($file['tmp_name']['extensionFile']);
-            } else {
+            $fileName = null;
+            $file = $this->request->getUploadedFiles()['extensionFile'] ?? null;
+            if ($file === null) {
                 throw new ExtensionManagerException(
-                    'Creating temporary file failed. Check your upload_max_filesize and post_max_size limits.',
+                    'Uploading file failed. Check your upload_max_filesize and post_max_size limits.',
                     1342864339
                 );
             }
+            $fileName = pathinfo($file->getClientFilename(), PATHINFO_BASENAME);
+            // If the file name isn't valid an error will be thrown
+            $this->checkFileName($fileName);
+
+            $tempFile = GeneralUtility::tempnam('upload_temp_');
+            $file->moveTo($tempFile);
+
             // Remove version and extension from filename to determine the extension key
             $extensionKey = $this->getExtensionKeyFromFileName($fileName);
             if (empty($extensionKey)) {
@@ -120,6 +123,7 @@ class UploadExtensionFileController extends AbstractController
                     FlashMessage::OK
                 );
             } else {
+                // @todo This cannot work without reloading the package information
                 if ($this->activateExtension($extensionKey)) {
                     $this->addFlashMessage(
                         $this->translate('extensionList.installedFlashMessage.message', [$extensionKey]),
@@ -141,7 +145,9 @@ class UploadExtensionFileController extends AbstractController
         } catch (InvalidFileException $exception) {
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         } catch (\Exception $exception) {
-            $this->removeExtensionAndRestoreFromBackup($fileName);
+            if ($fileName !== null) {
+                $this->removeExtensionAndRestoreFromBackup($fileName);
+            }
             $this->addFlashMessage($exception->getMessage(), '', FlashMessage::ERROR);
         }
         return $this->redirect('index', 'List', null, [
@@ -184,8 +190,8 @@ class UploadExtensionFileController extends AbstractController
      * @param string $uploadedFile Path to uploaded file
      * @param string $extensionKey
      * @param bool $overwrite Overwrite existing extension if TRUE
-     * @return string
      * @throws ExtensionManagerException
+     * @return string
      */
     protected function extractExtensionFromZipFile(string $uploadedFile, string $extensionKey, bool $overwrite = false): string
     {
@@ -205,7 +211,6 @@ class UploadExtensionFileController extends AbstractController
      * As there is no information about the extension key in the zip
      * we have to use the file name to get that information
      * filename format is expected to be extensionkey_version.zip.
-     *
      * Removes version and file extension from filename to determine extension key
      *
      * @param string $fileName
