@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Linkvalidator\Linktype;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -194,7 +195,8 @@ class InternalLinktype extends AbstractLinktype
             // (The element might have been moved to another page)
             if ($correctPageID !== $page) {
                 $this->errorParams['errorType']['content'] = self::MOVED;
-                $this->errorParams['content']['uid'] = (int)$anchor;
+                $this->errorParams['content']['title'] = BackendUtility::getRecordTitle('tt_content', $row);
+                $this->errorParams['content']['uid'] = $row['uid'];
                 $this->errorParams['content']['wrongPage'] = $page;
                 $this->errorParams['content']['rightPage'] = $correctPageID;
                 $this->responseContent = false;
@@ -202,12 +204,12 @@ class InternalLinktype extends AbstractLinktype
                 // The element is located on the page to which the link is pointing
                 if ($row['deleted'] == '1') {
                     $this->errorParams['errorType']['content'] = self::DELETED;
-                    $this->errorParams['content']['title'] = $row['header'];
+                    $this->errorParams['content']['title'] = BackendUtility::getRecordTitle('tt_content', $row);
                     $this->errorParams['content']['uid'] = $row['uid'];
                     $this->responseContent = false;
                 } elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < (int)$row['starttime'] || $row['endtime'] && (int)$row['endtime'] < $GLOBALS['EXEC_TIME']) {
                     $this->errorParams['errorType']['content'] = self::HIDDEN;
-                    $this->errorParams['content']['title'] = $row['header'];
+                    $this->errorParams['content']['title'] = BackendUtility::getRecordTitle('tt_content', $row);
                     $this->errorParams['content']['uid'] = $row['uid'];
                     $this->responseContent = false;
                 }
