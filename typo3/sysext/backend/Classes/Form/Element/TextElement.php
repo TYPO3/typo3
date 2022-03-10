@@ -261,10 +261,8 @@ class TextElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         } elseif ($this->hasNullCheckboxWithPlaceholder()) {
             $checked = $itemValue !== null ? ' checked="checked"' : '';
-            $placeholder = $shortenedPlaceholder = $config['placeholder'] ?? '';
-            $disabled = '';
-            $fallbackValue = 0;
-            if (strlen($placeholder) > 0) {
+            $placeholder = $shortenedPlaceholder = (string)($config['placeholder'] ?? '');
+            if ($placeholder !== '') {
                 $shortenedPlaceholder = GeneralUtility::fixed_lgd_cs($placeholder, 20);
                 if ($placeholder !== $shortenedPlaceholder) {
                     $overrideLabel = sprintf(
@@ -284,8 +282,8 @@ class TextElement extends AbstractFormElement
             }
             $fullElement = [];
             $fullElement[] = '<div class="form-check t3js-form-field-eval-null-placeholder-checkbox">';
-            $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="' . $fallbackValue . '" />';
-            $fullElement[] =     '<input type="checkbox" class="form-check-input" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . $disabled . ' />';
+            $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
+            $fullElement[] =     '<input type="checkbox" class="form-check-input" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . ' />';
             $fullElement[] =     '<label class="form-check-label" for="' . $nullControlNameEscaped . '">';
             $fullElement[] =         $overrideLabel;
             $fullElement[] =     '</label>';
