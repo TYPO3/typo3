@@ -49,7 +49,7 @@ section if you use the defaults.
 
 The `httpStatusCode` does not affect the default status code for manually created
 redirects. This can be adjusted via TCA
-:php:`$GLOBALS['TCA']['sys_redirect']['columms']['config']['target_statuscode']['default']`.
+:php:`$GLOBALS['TCA']['sys_redirect']['columns']['target_statuscode']['config']['default']`.
 
 .. seealso::
 
