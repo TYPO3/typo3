@@ -71,7 +71,10 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         }
 
         $dispatchAction = 'TYPO3.ModuleMenu.showModule';
-        $dispatchArgs = [http_build_query($queryParameters)];
+        $dispatchArgs = [
+            'tools_ExtensionmanagerExtensionmanager',
+            '&' . http_build_query($queryParameters),
+        ];
 
         foreach ($deficits as $key => $deficit) {
             $message = '';
