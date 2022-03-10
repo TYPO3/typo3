@@ -2416,11 +2416,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/ExtensionManagementUtilityTest.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNotSame\\(\\) with object and object will always evaluate to false\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertNull\\(\\) with string will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
