@@ -303,7 +303,7 @@ class SuggestWizardController
      */
     protected function getWhereClause(array $fieldConfig)
     {
-        if (!isset($fieldConfig['foreign_table'])) {
+        if (!isset($fieldConfig['foreign_table'], $fieldConfig['foreign_table_where'])) {
             return '';
         }
 

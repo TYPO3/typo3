@@ -148,4 +148,44 @@ class SuggestWizardControllerTest extends UnitTestCase
           'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider whereClauseIsProperlyRetrievedDataProvider
+     */
+    public function whereClauseIsProperlyRetrieved(string $expected, array $array): void
+    {
+        $subject = $this->getAccessibleMock(SuggestWizardController::class, ['dummy'], [], '', false);
+        self::assertEquals($expected, $subject->_call('getWhereClause', $array));
+    }
+
+    public function whereClauseIsProperlyRetrievedDataProvider(): array
+    {
+        return [
+            'no foreign_table' => [
+                '',
+                [],
+            ],
+            'no foreign_table_where' => [
+                '',
+                [
+                    'foreign_table' => 'aTable',
+                ],
+            ],
+            'empty where clause' => [
+                '',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => '',
+                ],
+            ],
+            'where clause' => [
+                'aTable.pid = 123',
+                [
+                    'foreign_table' => 'aTable',
+                    'foreign_table_where' => ' aTable.pid = 123 ORDER BY aTable.uid',
+                ],
+            ],
+        ];
+    }
 }
