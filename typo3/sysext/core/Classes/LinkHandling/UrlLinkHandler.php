@@ -44,7 +44,7 @@ class UrlLinkHandler implements LinkHandlingInterface
     }
 
     /**
-     * Ensures that a scheme is always added, if www.typo3.org was added previously
+     * Ensures that a scheme is always added, if www.typo3.org was added previously.
      *
      * @param string $url the URL
      * @return string
@@ -57,13 +57,23 @@ class UrlLinkHandler implements LinkHandlingInterface
             }
             $scheme = parse_url($url, PHP_URL_SCHEME);
             if (empty($scheme)) {
-                $url = 'http://' . $url;
-            // 'java{TAB}script:' is parsed as empty URL scheme, thus not ending up here
+                $url = self::getDefaultScheme() . '://' . $url;
             } elseif (in_array(strtolower($scheme), ['javascript', 'data'], true)) {
                 // deny using insecure scheme's like `javascript:` or `data:` as URL scheme
                 $url = '';
             }
         }
         return $url;
+    }
+
+    /**
+     * Returns the scheme (e.g. `http`) to be used for links with URLs without a scheme, e.g., for `www.example.com`.
+     *
+     * @return non-empty-string
+     */
+    public static function getDefaultScheme(): string
+    {
+        return ($GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme'] ?? '')
+            ?: LinkHandlingInterface::DEFAULT_SCHEME;
     }
 }

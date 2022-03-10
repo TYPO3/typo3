@@ -379,6 +379,7 @@ return [
                 ],
             ],
         ],
+        'defaultScheme' => \TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface::DEFAULT_SCHEME,
         'linkHandler' => [ // Array: Available link types, class which implement the LinkHandling interface
             'page'   => \TYPO3\CMS\Core\LinkHandling\PageLinkHandler::class,
             'file'   => \TYPO3\CMS\Core\LinkHandling\FileLinkHandler::class,

@@ -135,7 +135,7 @@ class LegacyLinkNotationConverter
             // url (external): If doubleSlash or if a '.' comes before a '/'.
             if (!$isIdOrAlias && $isLocalFile !== 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
                 $result['type'] = LinkService::TYPE_URL;
-                $result['url'] = 'http://' . $linkParameter;
+                $result['url'] = UrlLinkHandler::getDefaultScheme() . '://' . $linkParameter;
             // file (internal) or folder
             } elseif ($containsSlash || $isLocalFile) {
                 $result = $this->getFileOrFolderObjectFromMixedIdentifier($linkParameter);

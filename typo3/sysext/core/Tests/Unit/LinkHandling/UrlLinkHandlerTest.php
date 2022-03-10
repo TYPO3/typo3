@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
+use TYPO3\CMS\Core\LinkHandling\LinkHandlingInterface;
 use TYPO3\CMS\Core\LinkHandling\UrlLinkHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -115,14 +116,9 @@ class UrlLinkHandlerTest extends UnitTestCase
     /**
      * @test
      *
-     * @param string $input
-     * @param array  $expected
-     * @param string $finalString
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
-     * @todo Defining the method parameter types results in test bench errors
      */
-    public function resolveReturnsSplitParameters($input, $expected, $finalString): void
+    public function resolveReturnsSplitParameters(array $input, array $expected, string $finalString): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->resolveHandlerData($input));
@@ -131,16 +127,48 @@ class UrlLinkHandlerTest extends UnitTestCase
     /**
      * @test
      *
-     * @param string $input
-     * @param array  $parameters
-     * @param string $expected
-     *
      * @dataProvider resolveParametersForNonFilesDataProvider
-     * @todo Defining the method parameter types results in test bench errors
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
+    public function splitParametersToUnifiedIdentifier(array $input, array $parameters, string $expected): void
     {
         $subject = new UrlLinkHandler();
         self::assertEquals($expected, $subject->asString($parameters));
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultSchemeForNoSchemeInConfigurationReturnsFallbackScheme(): void
+    {
+        unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme']);
+
+        $result = UrlLinkHandler::getDefaultScheme();
+
+        self::assertSame(LinkHandlingInterface::DEFAULT_SCHEME, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultSchemeForEmptySchemeInConfigurationReturnsFallbackScheme(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme'] = '';
+
+        $result = UrlLinkHandler::getDefaultScheme();
+
+        self::assertSame(LinkHandlingInterface::DEFAULT_SCHEME, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getDefaultSchemeForSchemeInConfigurationReturnsSchemeFromConfiguration(): void
+    {
+        $scheme = 'https';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultScheme'] = $scheme;
+
+        $result = UrlLinkHandler::getDefaultScheme();
+
+        self::assertSame($scheme, $result);
     }
 }
