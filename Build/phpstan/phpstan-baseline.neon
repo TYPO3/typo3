@@ -1716,11 +1716,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/FolderLinkHandlerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of method TYPO3\\\\CMS\\\\Core\\\\LinkHandling\\\\UrlLinkHandler\\:\\:resolveHandlerData\\(\\) expects array, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/LinkHandling/UrlLinkHandlerTest.php
-
-		-
 			message: "#^Parameter \\#2 \\$locale of function setlocale expects array\\|string\\|null, int given\\.$#"
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Localization/LocalesTest.php

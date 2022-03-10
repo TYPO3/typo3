@@ -24,6 +24,13 @@ namespace TYPO3\CMS\Core\LinkHandling;
  */
 interface LinkHandlingInterface
 {
+    /**
+     * @var non-empty-string will be used for links without a scheme if no default scheme is configured
+     *
+     * @internal Do not use directly; please use `UrlLinkHandler::getDefaultScheme()` instead to also take the
+     *           configured default scheme into account.
+     */
+    public const DEFAULT_SCHEME = 'http';
 
     /**
      * Returns a string interpretation of the link href query from objects, something like

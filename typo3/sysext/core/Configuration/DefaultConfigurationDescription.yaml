@@ -93,6 +93,12 @@ SYS:
         hhmm:
             type: text
             description: 'Format of Hours-Minutes - see PHP-function <a href="https://php.net/date" target="_blank" rel="noreferrer">date()</a>'
+        defaultScheme:
+            type: text
+            allowedValues:
+              'http': 'http'
+              'https': 'https'
+            description: 'Default URI scheme to be used in case none was given, e.g. "www.typo3.org" becomes "http://www.typo3.org"'
         loginCopyrightWarrantyProvider:
             type: text
             description: 'If you provide warranty for TYPO3 to your customers insert you (company) name here. It will appear in the login-dialog as the warranty provider. (You must also set URL below).'
