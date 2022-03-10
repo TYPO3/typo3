@@ -38,22 +38,18 @@ use TYPO3\CMS\Core\SingletonInterface;
 class Router implements SingletonInterface
 {
     /**
-     * All routes used in the Backend
-     * @var SymfonyRouteCollection
+     * All routes used in the TYPO3 Backend
      */
-    protected $routeCollection;
+    protected SymfonyRouteCollection $routeCollection;
 
     public function __construct()
     {
         $this->routeCollection = new SymfonyRouteCollection();
     }
     /**
-     * Adds a new route with the identifiers
-     *
-     * @param string $routeIdentifier
-     * @param Route $route
+     * Adds a new route with a given identifier
      */
-    public function addRoute($routeIdentifier, $route)
+    public function addRoute(string $routeIdentifier, Route $route)
     {
         $symfonyRoute = new SymfonyRoute($route->getPath(), [], [], $route->getOptions());
         $symfonyRoute->setMethods($route->getMethods());
@@ -68,6 +64,21 @@ class Router implements SingletonInterface
     public function getRoutes(): iterable
     {
         return $this->routeCollection->getIterator();
+    }
+
+    public function hasRoute(string $routeName): bool
+    {
+        return $this->routeCollection->get($routeName) !== null;
+    }
+
+    /**
+     * Returns a route by its identifier, or null if nothing found.
+     *
+     * @return SymfonyRoute|Route|null
+     */
+    public function getRoute(string $routeName)
+    {
+        return $this->routeCollection->get($routeName);
     }
 
     /**

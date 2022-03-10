@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Backend\Shortcut;
 
 use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -39,7 +40,8 @@ class ShortcutRepositoryTest extends FunctionalTestCase
         $this->subject = new ShortcutRepository(
             $this->get(ConnectionPool::class),
             $this->get(IconFactory::class),
-            $this->get(ModuleProvider::class)
+            $this->get(ModuleProvider::class),
+            $this->get(Router::class)
         );
     }
 

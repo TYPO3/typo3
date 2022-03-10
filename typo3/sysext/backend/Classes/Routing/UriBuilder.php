@@ -139,7 +139,7 @@ class UriBuilder implements SingletonInterface
             return $this->generated[$cacheIdentifier];
         }
 
-        $route = $this->router->getRouteCollection()->get((string)$name);
+        $route = $this->router->getRoute((string)$name);
         if ($route === null) {
             throw new RouteNotFoundException('Unable to generate a URL for the named route "' . $name . '" because this route was not found.', 1476050190);
         }

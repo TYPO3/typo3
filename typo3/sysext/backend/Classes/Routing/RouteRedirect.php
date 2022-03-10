@@ -110,7 +110,7 @@ class RouteRedirect
      */
     public function resolve(Router $router): void
     {
-        $route = $router->getRouteCollection()->get($this->name);
+        $route = $router->getRoute($this->name);
         if ($route === null) {
             throw new RouteNotFoundException(
                 sprintf('Route "%s" was not found', $this->name),

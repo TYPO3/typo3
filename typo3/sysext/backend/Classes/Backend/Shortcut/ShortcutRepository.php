@@ -56,6 +56,7 @@ class ShortcutRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleProvider $moduleProvider,
+        protected readonly Router $router
     ) {
         $this->shortcutGroups = $this->initShortcutGroups();
         $this->shortcuts = $this->initShortcuts();
@@ -173,7 +174,7 @@ class ShortcutRepository
     public function addShortcut(string $routeIdentifier, string $arguments = '', string $title = ''): bool
     {
         // Do not add shortcuts for routes which do not exist
-        if (!$this->routeExists($routeIdentifier)) {
+        if (!$this->router->hasRoute($routeIdentifier)) {
             return false;
         }
 
@@ -555,9 +556,6 @@ class ShortcutRepository
 
     /**
      * Get the module name from the resolved route or by static mapping for some special cases.
-     *
-     * @param string $routeIdentifier
-     * @return string
      */
     protected function getModuleNameFromRouteIdentifier(string $routeIdentifier): string
     {
@@ -565,36 +563,11 @@ class ShortcutRepository
             return $routeIdentifier;
         }
 
-        return (string)($this->getRoute($routeIdentifier)?->getOption('module')?->getIdentifier() ?? '');
-    }
-
-    /**
-     * Get the route for a given route identifier
-     *
-     * @param string $routeIdentifier
-     * @return Route|null
-     */
-    protected function getRoute(string $routeIdentifier): ?Route
-    {
-        return GeneralUtility::makeInstance(Router::class)->getRoutes()[$routeIdentifier] ?? null;
-    }
-
-    /**
-     * Check if a route for the given identifier exists
-     *
-     * @param string $routeIdentifier
-     * @return bool
-     */
-    protected function routeExists(string $routeIdentifier): bool
-    {
-        return $this->getRoute($routeIdentifier) !== null;
+        return (string)($this->router->getRoute($routeIdentifier)?->getOption('module')?->getIdentifier() ?? '');
     }
 
     /**
      * Check if given route identifier is a special "no module" route
-     *
-     * @param string $routeIdentifier
-     * @return bool
      */
     protected function isSpecialRoute(string $routeIdentifier): bool
     {

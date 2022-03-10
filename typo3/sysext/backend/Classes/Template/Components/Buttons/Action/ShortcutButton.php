@@ -299,12 +299,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
 
     protected function routeExists(string $routeIdentifier): bool
     {
-        return (bool)($this->getRoutes()[$routeIdentifier] ?? false);
-    }
-
-    protected function getRoutes(): iterable
-    {
-        return GeneralUtility::makeInstance(Router::class)->getRoutes();
+        return GeneralUtility::makeInstance(Router::class)->hasRoute($routeIdentifier);
     }
 
     protected function getBackendUser(): BackendUserAuthentication
