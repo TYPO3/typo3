@@ -254,15 +254,6 @@ class PageInformationController extends InfoModuleController
                 </div>';
         }
 
-        // Additional footer content
-        // @todo Replace with an event
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
-            $params = [
-                'request' => $request,
-            ];
-            $out .= GeneralUtility::callUserFunction($hook, $params, $this);
-        }
-
         return $out;
     }
 

@@ -639,4 +639,9 @@ return [
             'Breaking-97135-RemovedSupportForModuleHandlingBasedOnTBE_MODULES_EXT.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms/web_info/class.tx_cms_webinfo.php\'][\'drawFooterHook\']' => [
+        'restFiles' => [
+            'Breaking-97174-RemovedHookForModifyingInfoModuleFooterContent.rst',
+        ],
+    ],
 ];

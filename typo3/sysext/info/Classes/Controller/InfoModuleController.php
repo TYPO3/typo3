@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Info\Controller;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Info\Controller\Event\ModifyInfoModuleContentEvent;
 
 /**
  * Script Class for the Web > Info module
@@ -58,6 +60,7 @@ class InfoModuleController
         protected readonly ModuleProvider $moduleProvider,
         protected readonly PageRenderer $pageRenderer,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -93,7 +96,14 @@ class InfoModuleController
             $this->getButtons();
             $this->view->makeDocHeaderModuleMenu(['id' => $this->id]);
         }
-        $this->view->assign('accessContent', $accessContent);
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyInfoModuleContentEvent($accessContent, $request, $this->currentModule, $this->view)
+        );
+        $this->view->assignMultiple([
+            'accessContent' => $accessContent,
+            'headerContent' => $event->getHeaderContent(),
+            'footerContent' => $event->getFooterContent(),
+        ]);
     }
 
     /**
