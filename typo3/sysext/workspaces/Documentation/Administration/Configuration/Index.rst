@@ -89,6 +89,12 @@ Description
      # Using the pid field of each record for previewing (for table tx_myext_table)
      options.workspaces.previewPageId.tx_myext_table = field:pid
 
+  .. note::
+
+     When used in conjunction with the :ref:`backend's preview mechanism <t3tsconfig:pagetcemain-preview>`,
+     this setting takes precedence over the :code:`previewPageId` defined in
+     :code:`TCEMAIN.preview`.
+
 
 .. _pagetsconfig-txversion-workspaces:
 

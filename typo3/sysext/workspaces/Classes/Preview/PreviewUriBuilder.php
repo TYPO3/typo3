@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Workspaces\Event\RetrievedPreviewUrlEvent;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -172,12 +173,14 @@ class PreviewUriBuilder
 
         // Directly use pid value and consider move placeholders
         $previewPageId = (int)(empty($versionRecord['pid']) ? $liveRecord['pid'] : $versionRecord['pid']);
-        $additionalParameters = '&previewWS=' . $versionRecord['t3ver_wsid'];
+        $linkParameters = [
+            'previewWS' => $versionRecord['t3ver_wsid'],
+        ];
         // Add language parameter if record is a localization
         if (BackendUtility::isTableLocalizable($table)) {
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
             if ($versionRecord[$languageField] > 0) {
-                $additionalParameters .= '&_language=' . $versionRecord[$languageField];
+                $linkParameters['_language'] = $versionRecord[$languageField];
             }
         }
 
@@ -185,7 +188,9 @@ class PreviewUriBuilder
         // Directly use determined direct page id
         if ($table === 'tt_content') {
             return BackendPreviewUriBuilder::create($previewPageId)
-                ->withAdditionalQueryParameters($additionalParameters)
+                ->withAdditionalQueryParameters(
+                    HttpUtility::buildQueryString($linkParameters, '&')
+                )
                 ->buildUri();
         }
         if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
@@ -202,8 +207,29 @@ class PreviewUriBuilder
             } else {
                 $previewPageId = (int)$previewConfiguration;
             }
+
+            // Add preview parameters from standard backend preview mechanism
+            // map record data to GET parameters
+            $backendPreviewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
+            if (isset($backendPreviewConfiguration['fieldToParameterMap.'])) {
+                foreach ($backendPreviewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
+                    $value = $versionRecord[$field] ?? '';
+                    if ($field === 'uid') {
+                        $value = $versionRecord['t3ver_oid'] === 0 ? $versionRecord['uid'] : $versionRecord['t3ver_oid'];
+                    }
+                    $linkParameters[$parameterName] = $value;
+                }
+            }
+            // add/override parameters by configuration
+            if (isset($backendPreviewConfiguration['additionalGetParameters.'])) {
+                $additionalGetParameters = GeneralUtility::removeDotsFromTS($backendPreviewConfiguration['additionalGetParameters.']);
+                $linkParameters = array_replace($linkParameters, $additionalGetParameters);
+            }
+
             return BackendPreviewUriBuilder::create($previewPageId)
-                ->withAdditionalQueryParameters($additionalParameters)
+                ->withAdditionalQueryParameters(
+                    HttpUtility::buildQueryString($linkParameters, '&')
+                )
                 ->buildUri();
         }
         return null;
