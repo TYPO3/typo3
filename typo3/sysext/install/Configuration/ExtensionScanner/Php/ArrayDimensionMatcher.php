@@ -601,7 +601,7 @@ return [
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'Backend\Template\Components\ButtonBar\'][\'getButtonsHook\']' => [
         'restFiles' => [
-            'Breaking-96806-RemovedHookForForModifyingButtonBar.rst',
+            'Breaking-96806-RemovedHookForModifyingButtonBar.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_fe.php\'][\'get_cache_timeout\']' => [
