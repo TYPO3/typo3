@@ -1190,11 +1190,18 @@ class TemplateService
             if ($this->getTypoScriptFrontendController() instanceof TypoScriptFrontendController) {
                 $site = $this->getTypoScriptFrontendController()->getSite();
             } else {
-                $currentPage = end($this->absoluteRootLine);
-                try {
-                    $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)($currentPage['uid'] ?? 0));
-                } catch (SiteNotFoundException $exception) {
-                    $site = null;
+                $possibleRoots = array_filter($this->absoluteRootLine, static function (array $page) {
+                    return $page['is_siteroot'] === 1;
+                });
+                $possibleRoots[] = end($this->absoluteRootLine);
+                $site = null;
+                foreach ($possibleRoots as $possibleRoot) {
+                    try {
+                        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)($possibleRoot['uid'] ?? 0));
+                        break;
+                    } catch (SiteNotFoundException $exception) {
+                        // continue
+                    }
                 }
             }
             if ($site instanceof Site) {
