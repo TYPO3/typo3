@@ -200,9 +200,9 @@ class PreviewUriBuilder
                 $previewConfiguration = $pageTsConfig['options.']['workspaces.']['previewPageId'];
             }
             // Extract possible settings (e.g. "field:pid")
-            [$previewKey, $previewValue] = explode(':', $previewConfiguration, 2);
-            if ($previewKey === 'field') {
-                $previewPageId = (int)$liveRecord[$previewValue];
+            $previewValueParts = explode(':', $previewConfiguration, 2);
+            if (count($previewValueParts) === 2 && $previewValueParts[0] === 'field') {
+                $previewPageId = (int)($liveRecord[$previewValueParts[1]] ?? 0);
             } else {
                 $previewPageId = (int)$previewConfiguration;
             }
