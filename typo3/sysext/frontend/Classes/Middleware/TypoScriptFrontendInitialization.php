@@ -24,6 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
@@ -93,8 +94,22 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
         if ($request->getAttribute('noCache', false)) {
             $controller->no_cache = true;
         }
-
+        // If the frontend is showing a preview, caching MUST be disabled.
+        if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
+            $controller->set_no_cache('Preview active', true);
+        }
         $controller->determineId($request);
+        // Check if backend user has read access to this page.
+        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
+            && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
+            && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)
+        ) {
+            return GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
+                $request,
+                'ID was not an accessible page',
+                $controller->getPageAccessFailureReasons(PageAccessFailureReasons::ACCESS_DENIED_PAGE_NOT_RESOLVED)
+            );
+        }
 
         $request = $request->withAttribute('frontend.controller', $controller);
         // Make TSFE globally available

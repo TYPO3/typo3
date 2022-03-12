@@ -524,8 +524,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function initUserGroups()
     {
-        $userAspect = $this->fe_user->createUserAspect();
-        $this->context->setAspect('frontend.user', $userAspect);
+        $this->context->setAspect('frontend.user', $this->fe_user->createUserAspect());
     }
 
     /**
@@ -551,65 +550,25 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Determines the id and evaluates any preview settings
-     * Basically this function is about determining whether a backend user is logged in,
-     * if he has read access to the page and if he's previewing the page.
-     * That all determines which id to show and how to initialize the id.
-     *
-     * @param ServerRequestInterface $request
-     */
-    public function determineId(ServerRequestInterface $request): void
-    {
-        // Call pre processing function for id determination
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
-            $parameters = ['parentObject' => $this];
-            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
-        }
-
-        // If the front-end is showing a preview, caching MUST be disabled.
-        if ($this->isInPreviewMode()) {
-            $this->disableCache();
-        }
-        // Now, get the id, validate access etc:
-        $this->fetch_the_id($request);
-
-        // Setting language and fetch translated page
-        $this->settingLanguage($request);
-        // Check the "content_from_pid" field of the resolved page
-        $this->contentPid = $this->resolveContentPid($request);
-
-        // Update SYS_LASTCHANGED at the time, when $this->page might be changed by settingLanguage() and the $this->page was finally resolved
-        $this->setRegisterValueForSysLastChanged($this->page);
-
-        // Call post processing function for id determination:
-        $_params = ['pObj' => &$this];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-        }
-    }
-
-    /**
      * Resolves the page id and sets up several related properties.
      *
-     * If $this->id is not set at all or is not a plain integer, the method
-     * does it's best to set the value to an integer. Resolving is based on
-     * this options:
+     * At this point, the Context object already contains relevant preview
+     * settings (if a backend user is logged in etc).
      *
-     * - Splitting $this->id if it contains an additional type parameter.
+     * If $this->id is not set at all, the method does its best to set the
+     * value to an integer. Resolving is based on this options:
+     *
      * - Finding the domain record start page
      * - First visible page
-     * - Relocating the id below the domain record if outside
+     * - Relocating the id below the site if outside the site / domain
      *
      * The following properties may be set up or updated:
      *
      * - id
-     * - requestedId
-     * - type
      * - sys_page
      * - sys_page->where_groupAccess
      * - sys_page->where_hid_del
      * - Context: FrontendUser Aspect
-     * - no_cache
      * - register['SYS_LASTCHANGED']
      * - pageNotFound
      *
@@ -625,39 +584,38 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @todo:
      *
-     * On the first impression the method does to much. This is increased by
-     * the fact, that is is called repeated times by the method determineId.
+     * On the first impression the method does to much.
      * The reasons are manifold.
      *
-     * 1.) The first part, the creation of sys_page and the type
-     * resolution don't need to be repeated. They could be separated to be
-     * called only once.
+     * 1.) The user group setup could be done once on a higher level.
      *
-     * 2.) The user group setup could be done once on a higher level.
-     *
-     * 3.) The workflow of the resolution could be elaborated to be less
+     * 2.) The workflow of the resolution could be elaborated to be less
      * tangled. Maybe the check of the page id to be below the domain via the
      * root line doesn't need to be done each time, but for the final result
      * only.
      *
-     * 4.) The root line does not need to be directly addressed by this class.
+     * 3.) The root line does not need to be directly addressed by this class.
      * A root line is always related to one page. The rootline could be handled
      * indirectly by page objects. Page objects still don't exist.
      *
-     * @internal
      * @param ServerRequestInterface $request
      */
-    protected function fetch_the_id(ServerRequestInterface $request): void
+    public function determineId(ServerRequestInterface $request): void
     {
+        // Call pre processing function for id determination
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] ?? [] as $functionReference) {
+            $parameters = ['parentObject' => $this];
+            GeneralUtility::callUserFunction($functionReference, $parameters, $this);
+        }
         $timeTracker = $this->getTimeTracker();
-        $timeTracker->push('fetch_the_id initialize/');
+
+        // Now, get the id, validate access etc:
         // Set the valid usergroups for FE
         $this->initUserGroups();
         // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
         // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        $timeTracker->pull();
-        $timeTracker->push('fetch_the_id rootLine/');
+        $timeTracker->push('determineId rootLine/');
         try {
             // Sets ->page and ->rootline information based on ->id. ->id may change during this operation.
             // If the found Page ID is not within the site, then pageNotFound is set.
@@ -684,11 +642,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->getPageAndRootline($request);
             }
         } catch (ShortcutTargetPageNotFoundException $e) {
-            $this->pageNotFound = 1;
-        }
-        // Check if backend user has read access to this page.
-        // @todo move to TypoScriptFrontendInitialization middleware
-        if ($this->isBackendUserLoggedIn() && $this->isInPreviewMode() && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             $this->pageNotFound = 1;
         }
         $timeTracker->pull();
@@ -728,6 +681,20 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] ?? [] as $functionReference) {
             $parameters = ['parentObject' => $this];
             GeneralUtility::callUserFunction($functionReference, $parameters, $this);
+        }
+
+        // Setting language and fetch translated page
+        $this->settingLanguage($request);
+        // Check the "content_from_pid" field of the resolved page
+        $this->contentPid = $this->resolveContentPid($request);
+
+        // Update SYS_LASTCHANGED at the time, when $this->page might be changed by settingLanguage() and the $this->page was finally resolved
+        $this->setRegisterValueForSysLastChanged($this->page);
+
+        // Call post processing function for id determination:
+        $_params = ['pObj' => &$this];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
     }
 
@@ -2500,7 +2467,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $warning .= ' Caching is disabled!';
             $this->disableCache();
         }
-        if ($internal && ($this->isBackendUserLoggedIn() || $this->isInPreviewMode())) {
+        if ($internal) {
             $this->logger->notice($warning, $context);
         } else {
             $this->logger->warning($warning, $context);
@@ -2701,14 +2668,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ];
         }
         return $additionalHeaders;
-    }
-
-    protected function isInPreviewMode(): bool
-    {
-        return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
-            || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
-            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
-            || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false);
     }
 
     /**

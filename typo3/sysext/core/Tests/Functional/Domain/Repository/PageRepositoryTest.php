@@ -475,7 +475,7 @@ class PageRepositoryTest extends FunctionalTestCase
     {
         // initialization
         $wsid = 987654321;
-        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
         $subject = new PageRepository(new Context([
             'workspace' => new WorkspaceAspect($wsid),
         ]));
@@ -496,7 +496,7 @@ class PageRepositoryTest extends FunctionalTestCase
         // initialization
         $wsid = 987654321;
 
-        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fetch_the_id()
+        // simulate calls from \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->determineId()
         $subject = new PageRepository(new Context([
             'workspace' => new WorkspaceAspect($wsid),
         ]));
