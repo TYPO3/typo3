@@ -79,8 +79,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
         $frontendUser->fetchGroupData($request);
 
         // Register the frontend user as aspect and within the request
-        $userAspect = $frontendUser->createUserAspect();
-        $this->context->setAspect('frontend.user', $userAspect);
+        $this->context->setAspect('frontend.user', $frontendUser->createUserAspect());
         $request = $request->withAttribute('frontend.user', $frontendUser);
 
         if ($this->context->getAspect('frontend.user')->isLoggedIn() && $rateLimiter) {

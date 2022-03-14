@@ -180,13 +180,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $fe_user;
 
     /**
-     * Value that contains the simulated usergroup if any
-     * @var int
-     * @internal only to be used in AdminPanel, and within TYPO3 Core
-     */
-    public $simUserGroup = 0;
-
-    /**
      * "CONFIG" object from TypoScript. Array generated based on the TypoScript
      * configuration of the current page. Saved with the cached pages.
      * @var array
@@ -522,9 +515,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Initializes the front-end user groups.
      * Sets frontend.user aspect based on front-end user status.
+     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
      */
     public function initUserGroups()
     {
+        trigger_error('TSFE->initUserGroups() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
         $this->context->setAspect('frontend.user', $this->fe_user->createUserAspect());
     }
 
@@ -532,9 +527,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Checking if a user is logged in or a group constellation different from "0,-1"
      *
      * @return bool TRUE if either a login user is found (array fe_user->user) OR if the gr_list is set to something else than '0,-1' (could be done even without a user being logged in!)
+     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
      */
     public function isUserOrGroupSet()
     {
+        trigger_error('TSFE->isUserOrGroupSet() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
         /** @var UserAspect $userAspect */
         $userAspect = $this->context->getAspect('frontend.user');
         return $userAspect->isUserOrGroupSet();
@@ -544,9 +541,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Checks if a backend user is logged in
      *
      * @return bool whether a backend user is logged in
+     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
      */
     public function isBackendUserLoggedIn()
     {
+        trigger_error('TSFE->isBackendUserLoggedIn() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
         return (bool)$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
     }
 
@@ -569,11 +568,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * - sys_page
      * - sys_page->where_groupAccess
      * - sys_page->where_hid_del
-     * - Context: FrontendUser Aspect
      * - register['SYS_LASTCHANGED']
      * - pageNotFound
      *
-     * Via getPageAndRootlineWithDomain()
+     * Via getPageAndRootline()
      *
      * - rootLine
      * - page
@@ -585,17 +583,15 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      * @todo:
      *
-     * On the first impression the method does to much.
+     * On the first impression the method does too much.
      * The reasons are manifold.
      *
-     * 1.) The user group setup could be done once on a higher level.
-     *
-     * 2.) The workflow of the resolution could be elaborated to be less
+     * 1.) The workflow of the resolution could be elaborated to be less
      * tangled. Maybe the check of the page id to be below the domain via the
      * root line doesn't need to be done each time, but for the final result
      * only.
      *
-     * 3.) The root line does not need to be directly addressed by this class.
+     * 2.) The root line does not need to be directly addressed by this class.
      * A root line is always related to one page. The rootline could be handled
      * indirectly by page objects. Page objects still don't exist.
      *
@@ -610,11 +606,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $timeTracker = $this->getTimeTracker();
 
-        // Now, get the id, validate access etc:
-        // Set the valid usergroups for FE
-        $this->initUserGroups();
-        // Initialize the PageRepository has to be done after the frontend usergroups are initialized / resolved, as
-        // frontend group aspect is modified before
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
         $timeTracker->push('determineId rootLine/');
         try {
@@ -755,7 +746,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $requestedPageIsHidden = false;
             try {
                 $hiddenField = $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled'] ?? '';
-                $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->isBackendUserLoggedIn();
+                $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
                 if (!empty($hiddenField) && !$includeHiddenPages) {
                     // Page is "hidden" => 404 (deliberately done in default language, as this cascades to language overlays)
                     $rawPageRecord = $this->sys_page->getPage_noCheck($this->id);
@@ -830,7 +821,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // Is the ID a link to another page??
         if ($this->page['doktype'] == PageRepository::DOKTYPE_SHORTCUT) {
-            // We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
+            // We need to clear MP if the page is a shortcut. Reason is if the shortcut goes to another page, then we LEAVE the rootline which the MP expects.
             $this->MP = '';
             // saving the page so that we can check later - when we know
             // about languages - whether we took the correct shortcut or
@@ -967,7 +958,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
             if ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION) {
                 // If there is a backend user logged in, check if they have read access to the page:
-                if ($this->isBackendUserLoggedIn()) {
+                if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
                     // If there was no page selected, the user apparently did not have read access to the
                     // current page (not position in rootline) and we set the remove-flag...
                     if (!$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
@@ -1750,7 +1741,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function setSysLastChanged()
     {
         // We only update the info if browsing the live workspace
-        if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED'] && !$this->doWorkspacePreview()) {
+        $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
+        if ($isInWorkspace) {
+            return;
+        }
+        if ($this->page['SYS_LASTCHANGED'] < (int)$this->register['SYS_LASTCHANGED']) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionForTable('pages');
             $pageId = $this->page['_PAGES_OVERLAY_UID'] ?? $this->id;
@@ -2236,8 +2231,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         // Getting status whether we can send cache control headers for proxy caching:
         $doCache = $this->isStaticCacheble();
+        $isBackendUserLoggedIn = $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
+        $isInWorkspace = $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
         // Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
-        $isClientCachable = $doCache && !$this->isBackendUserLoggedIn() && !$this->doWorkspacePreview();
+        $isClientCachable = $doCache && !$isBackendUserLoggedIn && !$isInWorkspace;
         if ($isClientCachable) {
             $headers = [
                 'Expires' => gmdate('D, d M Y H:i:s T', $this->cacheExpires),
@@ -2252,7 +2249,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 'Cache-Control' => 'private, no-store',
             ];
             // Now, if a backend user is logged in, tell him in the Admin Panel log what the caching status would have been:
-            if ($this->isBackendUserLoggedIn()) {
+            if ($isBackendUserLoggedIn) {
                 if ($doCache) {
                     $this->getTimeTracker()->setTSlogMessage('Cache-headers with max-age "' . ($this->cacheExpires - $GLOBALS['EXEC_TIME']) . '" would have been sent');
                 } else {
@@ -2263,7 +2260,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if ($this->isINTincScript()) {
                         $reasonMsg[] = '*_INT object(s) on page.';
                     }
-                    if (is_array($this->fe_user->user)) {
+                    if ($this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
                         $reasonMsg[] = 'Frontend user logged in.';
                     }
                     $this->getTimeTracker()->setTSlogMessage('Cache-headers would disable proxy caching! Reason(s): "' . implode(' ', $reasonMsg) . '"', LogLevel::NOTICE);
@@ -2285,7 +2282,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function isStaticCacheble()
     {
-        return !$this->no_cache && !$this->isINTincScript() && !$this->isUserOrGroupSet();
+        return !$this->no_cache && !$this->isINTincScript() && !$this->context->getAspect('frontend.user')->isUserOrGroupSet();
     }
 
     /********************************************
@@ -2383,9 +2380,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Returns TRUE if workspace preview is enabled
      *
      * @return bool Returns TRUE if workspace preview is enabled
+     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
      */
     public function doWorkspacePreview()
     {
+        trigger_error('TSFE->doWorkspacePreview() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
         return $this->context->getPropertyFromAspect('workspace', 'isOffline', false);
     }
 
@@ -2393,9 +2392,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Returns the uid of the current workspace
      *
      * @return int returns workspace integer for which workspace is being preview. 0 if none (= live workspace).
+     * @deprecated will be removed in TYPO3 v13.0. Use the Context API directly.
      */
     public function whichWorkspace(): int
     {
+        trigger_error('TSFE->whichWorkspace() will be removed in TYPO3 v13.0. Use the Context API directly.', E_USER_DEPRECATED);
         return $this->context->getPropertyFromAspect('workspace', 'id', 0);
     }
 

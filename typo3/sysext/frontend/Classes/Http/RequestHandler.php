@@ -965,9 +965,11 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function displayPreviewInfoMessage(TypoScriptFrontendController $controller)
     {
-        $isInPreviewMode = $controller->getContext()->hasAspect('frontend.preview')
-            && $controller->getContext()->getPropertyFromAspect('frontend.preview', 'isPreview');
-        if (!$isInPreviewMode || $controller->doWorkspacePreview() || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
+        $context = $controller->getContext();
+        $isInWorkspace = $context->getPropertyFromAspect('workspace', 'isOffline', false);
+        $isInPreviewMode = $context->hasAspect('frontend.preview')
+            && $context->getPropertyFromAspect('frontend.preview', 'isPreview');
+        if (!$isInPreviewMode || $isInWorkspace || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
             return;
         }
         if ($controller->config['config']['message_preview'] ?? '') {

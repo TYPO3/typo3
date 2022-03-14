@@ -321,7 +321,7 @@ class WorkspacePreview implements MiddlewareInterface
         $content = '';
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace
-            $currentWorkspaceId = $tsfe->whichWorkspace();
+            $currentWorkspaceId = $tsfe->getContext()->getPropertyFromAspect('workspace', 'id', 0);
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
             if ($tsfe->config['config']['message_preview_workspace'] ?? false) {

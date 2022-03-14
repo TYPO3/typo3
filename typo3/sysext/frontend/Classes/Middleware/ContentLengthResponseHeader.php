@@ -46,9 +46,10 @@ class ContentLengthResponseHeader implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            $context = $GLOBALS['TSFE']->getContext();
             if (
                     (!isset($GLOBALS['TSFE']->config['config']['enableContentLengthHeader']) || $GLOBALS['TSFE']->config['config']['enableContentLengthHeader'])
-                    && !$GLOBALS['TSFE']->isBackendUserLoggedIn() && !$GLOBALS['TSFE']->doWorkspacePreview()
+                    && !$context->getPropertyFromAspect('backend.user', 'isLoggedIn', false) && !$context->getPropertyFromAspect('workspace', 'isOffline', false)
                 ) {
                 $response = $response->withHeader('Content-Length', (string)$response->getBody()->getSize());
             }
