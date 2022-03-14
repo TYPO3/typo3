@@ -3598,7 +3598,7 @@ class DataHandler implements LoggerAwareInterface
             $this->log(
                 $table,
                 $uid,
-                SystemLogDatabaseAction::DELETE,
+                SystemLogDatabaseAction::INSERT,
                 0,
                 SystemLogErrorClassification::USER_ERROR,
                 'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read'
