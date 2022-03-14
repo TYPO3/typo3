@@ -115,13 +115,6 @@ class ExtendedFileUtility extends BasicFileUtility
     public $internalUploadMap = [];
 
     /**
-     * All error messages from the file operations of this script instance
-     *
-     * @var array
-     */
-    protected $errorMessages = [];
-
-    /**
      * Container for FlashMessages so they can be localized
      *
      * @var array
@@ -293,16 +286,6 @@ class ExtendedFileUtility extends BasicFileUtility
     }
 
     /**
-     * Return all error messages from the file operations of this script instance
-     *
-     * @return array all errorMessages as a numerical array
-     */
-    public function getErrorMessages()
-    {
-        return $this->errorMessages;
-    }
-
-    /**
      * @param int $action The action number. See the functions in the class for a hint. Eg. edit is '9', upload is '1' ...
      * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin)
      * @param int $details_nr This number is unique for every combination of $type and $action. This is the error-message number, which can later be used to translate error messages.
@@ -313,9 +296,6 @@ class ExtendedFileUtility extends BasicFileUtility
     {
         if (is_object($this->getBackendUser())) {
             $this->getBackendUser()->writelog(SystemLogType::FILE, $action, $error, $details_nr, $details, $data);
-        }
-        if ($error > 0) {
-            $this->errorMessages[] = vsprintf($details, $data);
         }
     }
 

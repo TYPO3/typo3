@@ -82,17 +82,13 @@ class FileController
      */
     protected $fileData;
 
-    protected ExtendedFileUtility $fileProcessor;
-    protected ResourceFactory $fileFactory;
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-
-    public function __construct(ResourceFactory $resourceFactory, ExtendedFileUtility $fileProcessor, IconFactory $iconFactory, UriBuilder $uriBuilder)
-    {
-        $this->fileFactory = $resourceFactory;
-        $this->fileProcessor = $fileProcessor;
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
+    public function __construct(
+        protected readonly ResourceFactory $fileFactory,
+        protected readonly ExtendedFileUtility $fileProcessor,
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly FlashMessageService $flashMessageService
+    ) {
     }
 
     /**
@@ -139,12 +135,9 @@ class FileController
     {
         $this->init($request);
         $this->main();
-        $includeMessages = (bool)($request->getQueryParams()['includeMessages'] ?? false);
-        $errors = $this->fileProcessor->getErrorMessages();
-        if (!$includeMessages && !empty($errors)) {
-            return (new HtmlResponse('<t3err>' . implode(',', $errors) . '</t3err>'))->withStatus(500, '(AJAX)');
-        }
-        $flatResult = [];
+        $flatResult = [
+            'hasErrors' => false,
+        ];
         foreach ($this->fileData as $action => $results) {
             foreach ($results as $result) {
                 if (is_array($result)) {
@@ -157,24 +150,21 @@ class FileController
             }
         }
 
-        // Used in the FileStorageTree when moving / copying folders
-        if ($includeMessages) {
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $messages = $flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
-            if (!empty($messages)) {
-                foreach ($messages as $message) {
-                    $flatResult['messages'][] = [
-                        'title'    => $message->getTitle(),
-                        'message'  => $message->getMessage(),
-                        'severity' => $message->getSeverity(),
-                    ];
-                    if ($message->getSeverity() === AbstractMessage::ERROR) {
-                        $flatResult['hasErrors'] = true;
-                    }
+        // Used in the FileStorageTree when moving / copying folders, or in the DragUploader
+        $messages = $this->flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+        if (!empty($messages)) {
+            foreach ($messages as $message) {
+                $flatResult['messages'][] = [
+                    'title'    => $message->getTitle(),
+                    'message'  => $message->getMessage(),
+                    'severity' => $message->getSeverity(),
+                ];
+                if ($message->getSeverity() === AbstractMessage::ERROR) {
+                    $flatResult['hasErrors'] = true;
                 }
             }
         }
-        return new JsonResponse($flatResult);
+        return new JsonResponse($flatResult, $flatResult['hasErrors'] ? 500 : 200);
     }
 
     /**

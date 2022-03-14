@@ -20,12 +20,17 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Controller\File\FileController;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -41,17 +46,9 @@ class FileControllerTest extends UnitTestCase
      */
     protected MockObject $fileResourceMock;
 
-    /**
-     * @var Folder|MockObject
-     */
-    protected MockObject $folderResourceMock;
-
-    /**
-     * @var ExtendedFileUtility|MockObject
-     */
-    protected MockObject $mockFileProcessor;
-
     protected ServerRequestInterface $request;
+
+    protected ObjectProphecy $flashMessageService;
 
     /**
      * Sets up this test case.
@@ -62,14 +59,8 @@ class FileControllerTest extends UnitTestCase
             ->onlyMethods(['toArray', 'getModificationTime', 'getExtension', 'getParentFolder'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->folderResourceMock = $this->getMockBuilder(Folder::class)
-            ->onlyMethods(['getIdentifier'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->mockFileProcessor = $this->getMockBuilder(ExtendedFileUtility::class)
-            ->onlyMethods(['getErrorMessages'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->flashMessageService = $this->prophesize(FlashMessageService::class);
+        $this->flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($this->prophesize(FlashMessageQueue::class)->reveal());
 
         $this->fileResourceMock->method('toArray')->willReturn(['id' => 'foo']);
         $this->fileResourceMock->method('getModificationTime')->willReturn(123456789);
@@ -95,12 +86,21 @@ class FileControllerTest extends UnitTestCase
      */
     public function flattenResultDataValueFlattensFile(): void
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
         $iconFactoryProphecy = $this->prophesize(IconFactory::class);
         $iconProphecy = $this->prophesize(Icon::class);
         $iconProphecy->render()->shouldBeCalled()->willReturn('');
         $iconFactoryProphecy->getIconForFileExtension(Argument::cetera())->willReturn($iconProphecy->reveal());
-        $subject->_set('iconFactory', $iconFactoryProphecy->reveal());
+        $subject = $this->getAccessibleMock(
+            FileController::class,
+            ['init', 'main'],
+            [
+                $this->prophesize(ResourceFactory::class)->reveal(),
+                $this->prophesize(ExtendedFileUtility::class)->reveal(),
+                $iconFactoryProphecy->reveal(),
+                $this->prophesize(UriBuilder::class)->reveal(),
+                $this->flashMessageService->reveal(),
+            ],
+        );
 
         $result = $subject->_call('flattenResultDataValue', $this->fileResourceMock);
         self::assertSame(
@@ -120,10 +120,18 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData(): void
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
-        $fileData = ['delete' => [true]];
-        $subject->_set('fileProcessor', $this->mockFileProcessor);
-        $subject->_set('fileData', $fileData);
+        $subject = $this->getAccessibleMock(
+            FileController::class,
+            ['init', 'main'],
+            [
+                $this->prophesize(ResourceFactory::class)->reveal(),
+                $this->prophesize(ExtendedFileUtility::class)->reveal(),
+                $this->prophesize(IconFactory::class)->reveal(),
+                $this->prophesize(UriBuilder::class)->reveal(),
+                $this->flashMessageService->reveal(),
+            ],
+        );
+        $subject->_set('fileData', ['delete' => [true]]);
         $subject->_set('redirect', false);
         $subject->expects(self::once())->method('main');
         $subject->processAjaxRequest($this->request);
@@ -134,10 +142,18 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData(): void
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
-        $fileData = ['editfile' => [true]];
-        $subject->_set('fileProcessor', $this->mockFileProcessor);
-        $subject->_set('fileData', $fileData);
+        $subject = $this->getAccessibleMock(
+            FileController::class,
+            ['init', 'main'],
+            [
+                $this->prophesize(ResourceFactory::class)->reveal(),
+                $this->prophesize(ExtendedFileUtility::class)->reveal(),
+                $this->prophesize(IconFactory::class)->reveal(),
+                $this->prophesize(UriBuilder::class)->reveal(),
+                $this->flashMessageService->reveal(),
+            ],
+        );
+        $subject->_set('fileData', ['editfile' => [true]]);
         $subject->_set('redirect', false);
         $subject->expects(self::once())->method('main');
         $subject->processAjaxRequest($this->request);
@@ -148,10 +164,18 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestReturnsStatus200IfNoErrorOccurs(): void
     {
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
-        $fileData = ['editfile' => [true]];
-        $subject->_set('fileProcessor', $this->mockFileProcessor);
-        $subject->_set('fileData', $fileData);
+        $subject = $this->getAccessibleMock(
+            FileController::class,
+            ['init', 'main'],
+            [
+                $this->prophesize(ResourceFactory::class)->reveal(),
+                $this->prophesize(ExtendedFileUtility::class)->reveal(),
+                $this->prophesize(IconFactory::class)->reveal(),
+                $this->prophesize(UriBuilder::class)->reveal(),
+                $this->flashMessageService->reveal(),
+            ],
+        );
+        $subject->_set('fileData', ['editfile' => [true]]);
         $subject->_set('redirect', false);
         $response = $subject->processAjaxRequest($this->request);
         self::assertEquals(200, $response->getStatusCode());
@@ -162,9 +186,21 @@ class FileControllerTest extends UnitTestCase
      */
     public function processAjaxRequestReturnsStatus500IfErrorOccurs(): void
     {
-        $this->mockFileProcessor->method('getErrorMessages')->willReturn(['error occurred']);
-        $subject = $this->getAccessibleMock(FileController::class, ['init', 'main'], [], '', false);
-        $subject->_set('fileProcessor', $this->mockFileProcessor);
+        $messageQueue = new FlashMessageQueue('test');
+        $messageQueue->addMessage(new FlashMessage('Error occurred', 'Error occurred', FlashMessage::ERROR));
+        $this->flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($messageQueue);
+        $subject = $this->getAccessibleMock(
+            FileController::class,
+            ['init', 'main'],
+            [
+                $this->prophesize(ResourceFactory::class)->reveal(),
+                $this->prophesize(ExtendedFileUtility::class)->reveal(),
+                $this->prophesize(IconFactory::class)->reveal(),
+                $this->prophesize(UriBuilder::class)->reveal(),
+                $this->flashMessageService->reveal(),
+            ],
+        );
+        $subject->_set('fileData', []);
         $response = $subject->processAjaxRequest($this->request);
         self::assertEquals(500, $response->getStatusCode());
     }

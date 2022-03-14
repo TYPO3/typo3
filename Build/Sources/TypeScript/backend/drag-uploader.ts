@@ -76,6 +76,12 @@ interface FileConflict {
   action: Action;
 }
 
+interface FlashMessage {
+  title: string,
+  message: string,
+  severity: number
+}
+
 class DragUploaderPlugin {
   public irreObjectUid: number;
   public $fileList: JQuery;
@@ -354,37 +360,37 @@ class DragUploaderPlugin {
   /**
    * Decrements the queue and renders a flash message if queue is empty
    */
-  public decrementQueueLength(): void {
+  public decrementQueueLength(messages?: FlashMessage[]): void {
     if (this.queueLength > 0) {
       this.queueLength--;
       if (this.queueLength === 0) {
-        new AjaxRequest(TYPO3.settings.ajaxUrls.flashmessages_render).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<void> => {
-          const data = await response.resolve();
-          for (let flashMessage of data) {
+        const timeout: number = messages && messages.length ? 5000 : 0;
+        if (timeout) {
+          for (let flashMessage of messages) {
             Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
           }
-          if (this.reloadUrl && !this.manualTable) {
-            // After 5 seconds (when flash messages have disappeared), provide the user the option to reload the module
-            setTimeout(() => {
-              Notification.info(
-                TYPO3.lang['file_upload.reload.filelist'],
-                TYPO3.lang['file_upload.reload.filelist.message'],
-                10,
-                [
-                  {
-                    label: TYPO3.lang['file_upload.reload.filelist.actions.dismiss'],
-                  },
-                  {
-                    label: TYPO3.lang['file_upload.reload.filelist.actions.reload'],
-                    action: new ImmediateAction( (): void => {
-                      top.list_frame.document.location.href = this.reloadUrl
-                    })
-                  }
-                ]
-              );
-            }, 5000)
-          }
-        });
+        }
+        if (this.reloadUrl && !this.manualTable) {
+          // After 5 seconds (when flash messages have disappeared), provide the user the option to reload the module
+          setTimeout(() => {
+            Notification.info(
+              TYPO3.lang['file_upload.reload.filelist'],
+              TYPO3.lang['file_upload.reload.filelist.message'],
+              10,
+              [
+                {
+                  label: TYPO3.lang['file_upload.reload.filelist.actions.dismiss'],
+                },
+                {
+                  label: TYPO3.lang['file_upload.reload.filelist.actions.reload'],
+                  action: new ImmediateAction( (): void => {
+                    top.list_frame.document.location.href = this.reloadUrl
+                  })
+                }
+              ]
+            );
+          }, timeout)
+        }
       }
     }
   }
@@ -611,8 +617,14 @@ class FileQueueItem {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           if (xhr.status === 200) {
             try {
-              this.uploadSuccess(JSON.parse(xhr.responseText));
-            } catch (e) {
+              const response = JSON.parse(xhr.responseText);
+              if (!response.hasErrors) {
+                this.uploadSuccess(response);
+              } else {
+                this.uploadError(xhr);
+              }
+            }
+            catch (e) {
               // In case JSON can not be parsed, the upload failed due to server errors,
               // e.g. "POST Content-Length exceeds limit". Just handle as upload error.
               this.uploadError(xhr);
@@ -654,15 +666,21 @@ class FileQueueItem {
    * @param {XMLHttpRequest} response
    */
   public uploadError(response: XMLHttpRequest): void {
-    this.updateMessage(TYPO3.lang['file_upload.uploadFailed'].replace(/\{0\}/g, this.file.name));
-    const error = $(response.responseText);
-    if (error.is('t3err')) {
-      this.$progressPercentage.text(error.text());
-    } else if (response.statusText) {
-      this.$progressPercentage.text('(' + response.statusText + ') ');
-    } else {
+    const errorText = TYPO3.lang['file_upload.uploadFailed'].replace(/\{0\}/g, this.file.name);
+    this.updateMessage(errorText);
+    try {
+      const jsonResponse = JSON.parse(response.responseText) as any;
+      const messages = jsonResponse.messages as FlashMessage[];
       this.$progressPercentage.text('');
+      if (messages && messages.length) {
+        for (let flashMessage of messages) {
+          Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity, 10);
+        }
+      }
+    } catch (e) {
+      // do nothing in case JSON could not be parsed
     }
+
     this.$row.addClass('error');
     this.dragUploader.decrementQueueLength();
     this.dragUploader.$trigger.trigger('uploadError', [this, response]);
@@ -681,9 +699,9 @@ class FileQueueItem {
   /**
    * @param {{upload?: UploadedFile[]}} data
    */
-  public uploadSuccess(data: { upload?: UploadedFile[] }): void {
+  public uploadSuccess(data: { upload?: UploadedFile[], messages?: FlashMessage[] }): void {
     if (data.upload) {
-      this.dragUploader.decrementQueueLength();
+      this.dragUploader.decrementQueueLength(data.messages);
       this.$row.removeClass('uploading');
       this.$row.prop('data-type', 'file');
       this.$row.prop('data-file-uid', data.upload[0].uid);

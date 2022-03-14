@@ -446,7 +446,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
 
     this.tree.nodesAddPlaceholder();
 
-    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process + '&includeMessages=1'))
+    (new AjaxRequest(top.TYPO3.settings.ajaxUrls.file_process))
       .post(params)
       .then((response) => {
         return response.resolve();
