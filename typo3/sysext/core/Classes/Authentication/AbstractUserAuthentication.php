@@ -624,6 +624,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->regenerateSessionId();
             }
 
+            // Since the user is not fully authenticated we need to unpack UC here to be
+            // able to retrieve a possible defined default (preferred) provider.
+            $this->unpack_uc();
+
             // Check if multi-factor authentication is required
             $this->evaluateMfaRequirements();
 

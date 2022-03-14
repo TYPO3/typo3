@@ -105,6 +105,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
         if (empty($this->user['uid'])) {
             throw new \RuntimeException('No backend user named "_cli_" could be created.', 1476107195);
         }
+        $this->unpack_uc();
         // The groups are fetched and ready for permission checking in this initialization.
         $this->fetchGroupData();
         $this->backendSetUC();

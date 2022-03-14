@@ -93,10 +93,6 @@ class MfaProviderRegistry
      */
     public function getFirstAuthenticationAwareProvider(AbstractUserAuthentication $user): ?MfaProviderManifestInterface
     {
-        // Since the user is not fully authenticated we need to unpack UC here to be
-        // able to retrieve a possible defined default (preferred) provider.
-        $user->unpack_uc();
-
         $activeProviders = $this->getActiveProviders($user);
         // If the user did not activate any provider yet, authentication is not possible
         if ($activeProviders === []) {

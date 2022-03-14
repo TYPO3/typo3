@@ -102,7 +102,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             // passed required multi-factor authentication - via the backend.
             return null;
         }
-        $backendUserObject->unpack_uc();
         if (!empty($backendUserObject->user['uid'])) {
             $this->setBackendUserAspect($backendUserObject, (int)$backendUserObject->user['workspace_id']);
             $backendUserObject->fetchGroupData();

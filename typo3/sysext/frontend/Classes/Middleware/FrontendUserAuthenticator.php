@@ -74,7 +74,6 @@ class FrontendUserAuthenticator implements MiddlewareInterface, LoggerAwareInter
 
         // Authenticate now
         $frontendUser->start($request);
-        $frontendUser->unpack_uc();
         // no matter if we have an active user we try to fetch matching groups which can
         // be set without an user (simulation for instance!)
         $frontendUser->fetchGroupData($request);

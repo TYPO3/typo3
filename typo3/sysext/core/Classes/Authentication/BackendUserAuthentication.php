@@ -2147,16 +2147,14 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     }
 
     /**
-     * Initialize the internal ->uc array for the backend user
-     * Will make the overrides if necessary, and write the UC back to the be_users record if changes has happened
+     * Initialize the internal ->uc array for the backend user (UC - user configuration
+     * is a serialized array inside the user object). Will make the overrides if necessary,
+     * and write the UC back to the be_users record if changes has happened.
      *
      * @internal
      */
     public function backendSetUC()
     {
-        // UC - user configuration is a serialized array inside the user object
-        // If there is a saved uc we implement that instead of the default one.
-        $this->unpack_uc();
         // Setting defaults if uc is empty
         $updated = false;
         if (empty($this->uc)) {
@@ -2171,11 +2169,6 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         // If TSconfig is updated, update the defaultUC.
         if ($this->userTSUpdated) {
             $this->overrideUC();
-            $updated = true;
-        }
-        // Setting the time of the first login:
-        if (!isset($this->uc['firstLoginTimeStamp'])) {
-            $this->uc['firstLoginTimeStamp'] = $GLOBALS['EXEC_TIME'];
             $updated = true;
         }
         // Saving if updated.
