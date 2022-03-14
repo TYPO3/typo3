@@ -99,7 +99,7 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
      */
     public function getJavaScriptFiles(): array
     {
-        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Cache.js'];
+        return ['EXT:adminpanel/Resources/Public/JavaScript/modules/cache.js'];
     }
 
     /**

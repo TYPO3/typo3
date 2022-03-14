@@ -208,7 +208,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      */
     public function getJavaScriptFiles(): array
     {
-        return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Preview.js'];
+        return ['EXT:adminpanel/Resources/Public/JavaScript/modules/preview.js'];
     }
 
     /**
