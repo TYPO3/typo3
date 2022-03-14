@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -68,10 +69,10 @@ class ImageContentObject extends AbstractContentObject
         }
         // $info['originalFile'] will be set, when the file is processed by FAL.
         // In that case the URL is final and we must not add a prefix
-        if (!isset($info['originalFile']) && is_file(Environment::getPublicPath() . '/' . $info['3'])) {
-            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode($info['3']));
+        if (!isset($info['originalFile']) && is_file($info['3'])) {
+            $source = $tsfe->absRefPrefix . str_replace('%2F', '/', rawurlencode(PathUtility::stripPathSitePrefix($info['3'])));
         } else {
-            $source = $info[3];
+            $source = PathUtility::stripPathSitePrefix($info[3]);
         }
         // Remove file objects for AssetCollector, as it only allows to store scalar values
         $infoOriginalFile = $info['originalFile'] ?? null;

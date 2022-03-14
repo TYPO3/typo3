@@ -329,27 +329,28 @@ class GifBuilder extends GraphicalFunctions
      * Gets filename from fileName() and if file exists in typo3temp/assets/images/ dir it will - of course - not be rendered again.
      * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
      *
-     * @return string The filename for the created GIF/PNG file. The filename will be prefixed "GB_
+     * @return string The filename for the created GIF/PNG file.
      * @see make()
      * @see fileName()
      */
     public function gifBuild()
     {
-        if ($this->setup) {
-            // Relative to Environment::getPublicPath()
-            $gifFileName = $this->fileName('assets/images/');
-            // File exists
-            if (!file_exists($gifFileName)) {
-                // Create temporary directory if not done:
-                GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
-                // Create file:
-                $this->make();
-                $this->output($gifFileName);
-                $this->destroy();
-            }
-            return $gifFileName;
+        if (!$this->setup) {
+            return '';
         }
-        return '';
+
+        // Relative to Environment::getPublicPath()
+        $gifFileName = $this->fileName('assets/images/');
+
+        if (!file_exists(Environment::getPublicPath() . '/' . $gifFileName)) {
+            // Create temporary directory if not done
+            GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/typo3temp/assets/images/');
+            // Create file
+            $this->make();
+            $this->output(Environment::getPublicPath() . '/' . $gifFileName);
+            $this->destroy();
+        }
+        return $gifFileName;
     }
 
     /**

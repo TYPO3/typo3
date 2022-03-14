@@ -3819,13 +3819,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $imageResource = null;
         if ($file === 'GIFBUILDER') {
             $gifCreator = GeneralUtility::makeInstance(GifBuilder::class);
-            $theImage = '';
             if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
                 $gifCreator->start($fileArray, $this->data);
                 $theImage = $gifCreator->gifBuild();
+                if ($theImage !== '') {
+                    $imageResource = $gifCreator->getImageDimensions(Environment::getPublicPath() . '/' . $theImage);
+                    $imageResource['origFile'] = $theImage;
+                }
             }
-            $imageResource = $gifCreator->getImageDimensions($theImage);
-            $imageResource['origFile'] = $theImage;
         } else {
             if ($file instanceof File) {
                 $fileObject = $file;
@@ -3909,7 +3910,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             0 => (int)$processedFileObject->getProperty('width'),
                             1 => (int)$processedFileObject->getProperty('height'),
                             2 => $processedFileObject->getExtension(),
-                            3 => $processedFileObject->getPublicUrl(),
+                            3 => Environment::getPublicPath() . '/' . $processedFileObject->getPublicUrl(),
                             'origFile' => $fileObject->getPublicUrl(),
                             'origFile_mtime' => $fileObject->getModificationTime(),
                             // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
@@ -3929,7 +3930,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $info = GeneralUtility::makeInstance(GifBuilder::class)->imageMagickConvert($theImage, 'WEB');
                 $info['origFile'] = $theImage;
                 // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder, ln 100ff in order for the setup-array to create a unique filename hash.
-                $info['origFile_mtime'] = @filemtime($theImage);
+                $info['origFile_mtime'] = @filemtime(Environment::getPublicPath() . '/' . $theImage);
                 $imageResource = $info;
             } catch (Exception $e) {
                 // do nothing in case the file path is invalid

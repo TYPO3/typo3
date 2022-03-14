@@ -15,6 +15,8 @@
 
 namespace TYPO3\CMS\Frontend\ContentObject;
 
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Contains IMG_RESOURCE class object.
  */
@@ -31,7 +33,7 @@ class ImageResourceContentObject extends AbstractContentObject
     {
         $GLOBALS['TSFE']->lastImgResourceInfo = $this->cObj->getImgResource($conf['file'] ?? '', $conf['file.'] ?? []);
         if ($GLOBALS['TSFE']->lastImgResourceInfo) {
-            $imageResource = $GLOBALS['TSFE']->lastImgResourceInfo[3];
+            $imageResource = PathUtility::stripPathSitePrefix($GLOBALS['TSFE']->lastImgResourceInfo[3]);
             $theValue = isset($conf['stdWrap.']) ? $this->cObj->stdWrap($imageResource, $conf['stdWrap.']) : $imageResource;
         } else {
             $theValue = '';

@@ -2069,7 +2069,7 @@ class GraphicalFunctions
     /**
      * Converts $imagefile to another file in temp-dir of type $newExt (extension).
      *
-     * @param string $imagefile The image filepath
+     * @param string $imagefile The absolute image filepath
      * @param string $newExt New extension, eg. "gif", "png", "jpg", "tif". If $newExt is NOT set, the new imagefile will be of the original format. If newExt = 'WEB' then one of the web-formats is applied.
      * @param string $w Width. $w / $h is optional. If only one is given the image is scaled proportionally. If an 'm' exists in the $w or $h and if both are present the $w and $h is regarded as the Maximum w/h and the proportions will be kept
      * @param string $h Height. See $w
@@ -2189,8 +2189,8 @@ class GraphicalFunctions
     /**
      * Gets the input image dimensions.
      *
-     * @param string $imageFile The image filepath
-     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the filename.
+     * @param string $imageFile The absolute image filepath
+     * @return array|null Returns an array where [0]/[1] is w/h, [2] is extension and [3] is the absolute filepath.
      * @see imageMagickConvert()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
      */
@@ -2243,7 +2243,7 @@ class GraphicalFunctions
     /**
      * Fetches the cached image dimensions from the cache. Does not check if the image file exists.
      *
-     * @param string $filePath Image file path, relative to public web path
+     * @param string $filePath The absolute image file path
      *
      * @return array|bool an array where [0]/[1] is w/h, [2] is extension and [3] is the file name,
      *                    or FALSE for a cache miss
@@ -2280,19 +2280,19 @@ class GraphicalFunctions
      *
      * This method does not check if the image file actually exists.
      *
-     * @param string $filePath Image file path, relative to public web path
+     * @param string $filePath Absolute image file path
      *
      * @return string the hash key (an SHA1 hash), will not be empty
      */
     protected function generateCacheKeyForImageFile($filePath)
     {
-        return sha1($filePath);
+        return sha1(PathUtility::stripPathSitePrefix($filePath));
     }
 
     /**
      * Creates the status hash to check whether a file has been changed.
      *
-     * @param string $filePath Image file path, relative to public web path
+     * @param string $filePath Absolute image file path
      *
      * @return string the status hash (an SHA1 hash)
      */
@@ -2681,7 +2681,7 @@ class GraphicalFunctions
      * Used in GIFBUILDER
      * Uses $this->setup['reduceColors'] for gif/png images and $this->setup['quality'] for jpg images to reduce size/quality if needed.
      *
-     * @param string $file The filename to write to.
+     * @param string $file The absolute filename to write to
      * @return string Returns input filename
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::gifBuild()
      */
@@ -2747,7 +2747,7 @@ class GraphicalFunctions
      * Writes the input GDlib image pointer to file
      *
      * @param resource $destImg The GDlib image resource pointer
-     * @param string $theImage The filename to write to
+     * @param string $theImage The absolute file path to write to
      * @param int $quality The image quality (for JPEGs)
      * @return bool The output of either imageGif, imagePng or imageJpeg based on the filename to write
      * @see maskImageOntoImage()
