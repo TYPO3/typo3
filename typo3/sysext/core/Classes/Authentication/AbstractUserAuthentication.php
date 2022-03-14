@@ -461,13 +461,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // However, if the user data is not valid, or the session has timed out we'll recreate a new anonymous session
             if ($this->userSession->getUserId() > 0) {
                 $authInfo['user'] = $this->fetchValidUserFromSessionOrDestroySession($skipSessionUpdate);
-                if (is_array($authInfo['user'])) {
-                    $authInfo['userSession'] = $authInfo['user'];
-                } else {
-                    $authInfo['userSession'] = false;
-                }
             }
-            $authInfo['session'] = $this->userSession;
             $haveSession = !$this->userSession->isNew();
             $anonymousSession = $haveSession && $this->userSession->isAnonymous();
         }
