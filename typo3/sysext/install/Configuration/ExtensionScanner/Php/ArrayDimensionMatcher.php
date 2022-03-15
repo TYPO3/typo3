@@ -650,4 +650,9 @@ return [
             'Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'formEngine\'][\'linkHandler\']' => [
+        'restFiles' => [
+            'Breaking-97187-RemovedHookForModifyingLinkExplanation.rst',
+        ],
+    ],
 ];

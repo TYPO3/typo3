@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Form\Event\ModifyLinkExplanationEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -408,26 +410,24 @@ class LinkElement extends AbstractFormElement
                     ];
                 }
                 break;
+            case LinkService::TYPE_UNKNOWN:
+                $data = [
+                    'text' => $linkData['file'],
+                    'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render(),
+                ];
+                break;
             default:
-                // @todo Replace with PSR-14 event
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']])) {
-                    $linkBuilder = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']]);
-                    $data = $linkBuilder->getFormData($linkData, $linkParts, $this->data, $this);
-                } elseif ($linkData['type'] === LinkService::TYPE_UNKNOWN) {
-                    $data = [
-                        'text' => $linkData['file'],
-                        'icon' => $this->iconFactory->getIcon('actions-link', Icon::SIZE_SMALL)->render(),
-                    ];
-                } else {
-                    $data = [
-                        'text' => 'not implemented type ' . $linkData['type'],
-                        'icon' => '',
-                    ];
-                }
+                $data = [
+                    'text' => 'not implemented type ' . $linkData['type'],
+                    'icon' => '',
+                ];
         }
 
         $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
-        return $data;
+
+        return GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+            new ModifyLinkExplanationEvent($data, $linkData, $linkParts, $this->data)
+        )->getLinkExplanation();
     }
 
     /**
