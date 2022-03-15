@@ -29,6 +29,8 @@ use TYPO3\CMS\Recordlist\View\FolderUtilityRenderer;
  */
 class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
 {
+    protected string $identifier = 'folder';
+
     /**
      * When you click a folder name/expand icon to see the content of a certain file folder,
      * this value will contain the path of the expanded file folder.

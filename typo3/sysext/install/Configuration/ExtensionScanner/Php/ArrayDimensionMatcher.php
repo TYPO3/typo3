@@ -655,4 +655,9 @@ return [
             'Breaking-97187-RemovedHookForModifyingLinkExplanation.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'ElementBrowsers\']' => [
+        'restFiles' => [
+            'Breaking-97188-RegisterElementBrowsersViaServiceConfiguration.rst',
+        ],
+    ],
 ];

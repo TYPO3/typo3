@@ -38,6 +38,11 @@ abstract class AbstractElementBrowser
     use PageRendererBackendSetupTrait;
 
     /**
+     * The element browsers unique identifier
+     */
+    protected string $identifier = '';
+
+    /**
      * URL of current request
      *
      * @var string
@@ -90,6 +95,14 @@ abstract class AbstractElementBrowser
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->determineScriptUrl();
         $this->initVariables();
+    }
+
+    /**
+     * Returns the identifier for the browser
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 
     /**

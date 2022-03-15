@@ -22,8 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowserInterface;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowserRegistry;
 
 /**
  * Script class for the Element Browser window.
@@ -43,6 +42,10 @@ class ElementBrowserController
      * @var string
      */
     protected string $mode = '';
+
+    public function __construct(protected readonly ElementBrowserRegistry $elementBrowserRegistry)
+    {
+    }
 
     /**
      * Injects the request object for the current request or sub-request
@@ -65,7 +68,7 @@ class ElementBrowserController
      */
     protected function main(ServerRequestInterface $request)
     {
-        $browser = $this->getElementBrowserInstance();
+        $browser = $this->elementBrowserRegistry->getElementBrowser($this->mode);
         if (is_callable([$browser, 'setRequest'])) {
             $browser->setRequest($request);
         }
@@ -76,22 +79,6 @@ class ElementBrowserController
         $backendUser->pushModuleData('browse_links.php', $modData);
 
         return $browser->render();
-    }
-
-    /**
-     * Get instance of the actual element browser
-     *
-     * @return ElementBrowserInterface
-     * @throws \UnexpectedValueException
-     */
-    protected function getElementBrowserInstance()
-    {
-        $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers'][$this->mode];
-        $browser = GeneralUtility::makeInstance($className);
-        if (!$browser instanceof ElementBrowserInterface) {
-            throw new \UnexpectedValueException('The specified element browser "' . $className . '" does not implement the required ElementBrowserInterface', 1442763890);
-        }
-        return $browser;
     }
 
     protected function getLanguageService(): LanguageService

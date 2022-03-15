@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -17,6 +19,11 @@ namespace TYPO3\CMS\Recordlist\Browser;
 
 interface ElementBrowserInterface
 {
+    /**
+     * Returns the unique identifier of the element browser
+     */
+    public function getIdentifier(): string;
+
     /**
      * @return string HTML content
      */

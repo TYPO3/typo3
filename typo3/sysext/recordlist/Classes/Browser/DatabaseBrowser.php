@@ -34,6 +34,8 @@ use TYPO3\CMS\Recordlist\View\RecordSearchBoxComponent;
  */
 class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserInterface, LinkParameterProviderInterface
 {
+    protected string $identifier = 'db';
+
     /**
      * When you click a page title/expand icon to see the content of a certain page, this
      * value will contain the ID of the expanded page.

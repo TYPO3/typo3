@@ -29,6 +29,10 @@ namespace TYPO3\CMS\Recordlist\Browser;
  */
 class RecordBrowser extends DatabaseBrowser
 {
+    // @todo: Prevent RecordBrowser from overwriting the DatabaseBrowser registration.
+    //        Remove as soon as the misuse of extending DatabaseBrowser has been resolved.
+    protected string $identifier = 'record';
+
     protected array $urlParameters = [];
 
     /**
