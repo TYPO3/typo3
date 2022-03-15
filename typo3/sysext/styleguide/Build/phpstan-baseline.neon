@@ -426,16 +426,6 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardColorPicker.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardLink\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardLink.php
-
-		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardLink\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardLink.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardSelect\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardSelect.php
@@ -444,6 +434,16 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardSelect\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardSelect.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeLink\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeLink.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeLink\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeLink.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeNone\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"

@@ -19,18 +19,17 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=link fields
  */
-class TypeInputWizardLink extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeLink extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * @var array General match if type=link
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
             ],
         ],
     ];
@@ -43,6 +42,6 @@ class TypeInputWizardLink extends AbstractFieldGenerator implements FieldGenerat
      */
     public function generate(array $data): string
     {
-        return (string)$this->kauderwelschService->getLink();
+        return $this->kauderwelschService->getLink();
     }
 }

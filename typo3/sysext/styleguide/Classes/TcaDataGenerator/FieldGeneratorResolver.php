@@ -55,12 +55,14 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputEvalUpper::class,
         FieldGenerator\TypeInputEvalYear::class,
         FieldGenerator\TypeInputWizardColorPicker::class,
-        FieldGenerator\TypeInputWizardLink::class,
         FieldGenerator\TypeInputWizardSelect::class,
         FieldGenerator\TypeInputDynamicTextWithRecordUid::class,
         FieldGenerator\TypeInputForceL10nParent::class,
         // General type=input generator
         FieldGenerator\TypeInput::class,
+
+        // General type=link generator
+        FieldGenerator\TypeLink::class,
 
         FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,
