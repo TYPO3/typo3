@@ -104,14 +104,12 @@ return [
                 'required' => true,
             ],
         ],
-        'input_3' => [
+        'link_1' => [
             'exclude' => 1,
-            'label' => 'input_3 eval=required, renderType inputLink',
+            'label' => 'link_1 eval=required, type=link',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
                 'size' => 60,
-                'eval' => 'trim',
                 'required' => true,
             ],
         ],
@@ -434,7 +432,9 @@ return [
                 --div--;not required,
                     notrequired_1,
                 --div--;Input,
-                    input_1, input_2, input_3,
+                    input_1, input_2,
+                --div--;Link,
+                    link_1,
                 --div--;Text,
                     text_1,
                 --div--;Rte,

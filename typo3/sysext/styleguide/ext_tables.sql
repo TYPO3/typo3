@@ -94,7 +94,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_26 text,
     input_27 text,
     input_28 text,
-    input_29 text,
     input_30 text,
     input_31 text,
     input_32 text,
@@ -103,11 +102,15 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_35 text,
     input_36 text,
     input_37 text,
-    input_38 text,
     input_39 text,
     input_40 text,
-    input_41 text,
     input_42 text,
+
+    link_1 text,
+    link_2 text,
+    link_3 text,
+    link_4 text,
+    link_5 text,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
@@ -674,7 +677,8 @@ CREATE TABLE tx_styleguide_required (
 
     input_1 text,
     input_2 text,
-    input_3 text,
+
+    link_1 text,
 
     text_1 text,
 
@@ -787,7 +791,7 @@ CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
     input_colorpicker text,
     input_datetime text,
-    input_link text,
+    link text,
     slug text,
     checkbox int(11) DEFAULT '0' NOT NULL,
     checkbox_toggle int(11) DEFAULT '0' NOT NULL,

@@ -309,15 +309,6 @@ return [
                 'mode' => 'useOrOverridePlaceholder',
             ],
         ],
-        'input_29' => [
-            'exclude' => 1,
-            'label' => 'input_29',
-            'description' => 'renderType=inputLink',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
-            ],
-        ],
         'input_30' => [
             'exclude' => 1,
             'label' => 'input_30',
@@ -458,22 +449,6 @@ return [
                 ],
             ],
         ],
-        'input_38' => [
-            'exclude' => 1,
-            'label' => 'input_38',
-            'description' => 'inputLink allowedExtensions=png',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
-                'fieldControl' => [
-                    'linkPopup' => [
-                        'options' => [
-                            'allowedExtensions' => 'png',
-                        ],
-                    ],
-                ],
-            ],
-        ],
         'input_39' => [
             'exclude' => 1,
             'label' => 'input_39',
@@ -488,16 +463,6 @@ return [
             'description' => 'readOnly',
             'config' => [
                 'type' => 'input',
-                'readOnly' => true,
-            ],
-        ],
-        'input_41' => [
-            'exclude' => 1,
-            'label' => 'input_41',
-            'description' => 'renderType=inputLink readOnly',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
                 'readOnly' => true,
             ],
         ],
@@ -631,6 +596,59 @@ return [
                 'default' => 0,
                 'range' => [
                     'lower' => 1627208536,
+                ],
+            ],
+        ],
+
+        'link_1' => [
+            'exclude' => 1,
+            'label' => 'link_1',
+            'description' => 'type=link',
+            'config' => [
+                'type' => 'link',
+            ],
+        ],
+        'link_2' => [
+            'exclude' => 1,
+            'label' => 'link_2',
+            'description' => 'type=link allowedTypes=file allowedOptions=allowedFileExtensions=png',
+            'config' => [
+                'type' => 'link',
+                'allowedTypes' => ['file'],
+                'appearance' => [
+                    'allowedFileExtensions' => ['png'],
+                ],
+            ],
+        ],
+        'link_3' => [
+            'exclude' => 1,
+            'label' => 'link_3',
+            'description' => 'type=link readOnly',
+            'config' => [
+                'type' => 'link',
+                'readOnly' => true,
+            ],
+        ],
+        'link_4' => [
+            'exclude' => 1,
+            'label' => 'link_2',
+            'description' => 'type=link linkBrowser disabled',
+            'config' => [
+                'type' => 'link',
+                'appearance' => [
+                    'enableBrowser' => false,
+                ],
+            ],
+        ],
+        'link_5' => [
+            'exclude' => 1,
+            'label' => 'link_5',
+            'description' => 'type=link allowedOptions=target,title custom browser title',
+            'config' => [
+                'type' => 'link',
+                'appearance' => [
+                    'browserTitle' => 'Custom title',
+                    'allowedOptions' => ['title', 'target'],
                 ],
             ],
         ],
@@ -1416,21 +1434,11 @@ backend_layout {
                                         <el>
                                             <input_1>
                                                 <TCEforms>
-                                                    <label>input_1 renderType inputLink description</label>
+                                                    <label>input_1</label>
                                                     <description>field description</description>
                                                     <config>
                                                         <type>input</type>
-                                                        <renderType>inputLink</renderType>
                                                         <eval>trim</eval>
-                                                        <softref>typolink</softref>
-                                                        <fieldControl>
-                                                            <linkPopup>
-                                                                <options>
-                                                                    <title>Link</title>
-                                                                    <blindLinkOptions>mail,folder,spec</blindLinkOptions>
-                                                                </options>
-                                                            </linkPopup>
-                                                        </fieldControl>
                                                     </config>
                                                 </TCEforms>
                                             </input_1>
@@ -1568,6 +1576,36 @@ backend_layout {
                                     </ROOT>
                                 </sText>
 
+                                <sLink>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <TCEforms>
+                                            <sheetTitle>link</sheetTitle>
+                                        </TCEforms>
+                                        <el>
+                                            <link_1>
+                                                <TCEforms>
+                                                    <label>link_1</label>
+                                                    <description>field description</description>
+                                                    <config>
+                                                        <type>link</type>
+                                                        <allowedTypes>
+                                                            <numIndex index="0">page</numIndex>
+                                                            <numIndex index="1">file</numIndex>
+                                                            <numIndex index="2">url</numIndex>
+                                                            <numIndex index="3">record</numIndex>
+                                                            <numIndex index="4">telephone</numIndex>
+                                                        </allowedTypes>
+                                                        <appearance>
+                                                            <browserTitle>Link</browserTitle>
+                                                        </appearance>
+                                                    </config>
+                                                </TCEforms>
+                                            </link_1>
+                                        </el>
+                                    </ROOT>
+                                </sLink>
+
                                 <sCheck>
                                     <ROOT>
                                         <type>array</type>
@@ -1688,13 +1726,15 @@ backend_layout {
                 --div--;input,
                     input_1, input_40, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
-                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28, input_29,
-                    input_41, input_38, input_30, input_31, input_32, input_33, input_35, input_36, input_34, input_42,
+                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28,
+                    input_30, input_31, input_32, input_33, input_35, input_36, input_34, input_42,
                     input_37,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
                     inputdatetime_11,
+                --div--;link,
+                    link_1,link_2,link_3,link_4,link_5,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,

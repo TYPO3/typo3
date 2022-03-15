@@ -108,13 +108,14 @@ return [
                 'eval' => 'date',
             ],
         ],
-        'input_link' => [
-            'label' => 'input_link',
+
+        // type=link
+        'link' => [
+            'label' => 'link',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
+                'type' => 'link',
             ],
         ],
 
@@ -584,6 +585,7 @@ return [
             'showitem' => '
                 --div--;General,
                     --palette--;;input,
+                    --palette--;;link,
                     --palette--;;slug,
                     --palette--;;check,
                     --palette--;;radio,
@@ -610,8 +612,12 @@ return [
 
     'palettes' => [
         'input' => [
-            'showitem' => 'input,input_colorpicker,--linebreak--,input_datetime,input_link',
+            'showitem' => 'input,input_colorpicker,--linebreak--,input_datetime',
             'label' => 'type=input',
+        ],
+        'link' => [
+            'showitem' => 'link',
+            'label' => 'type=link',
         ],
         'slug' => [
             'showitem' => 'slug',
