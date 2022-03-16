@@ -243,4 +243,20 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     {
         return $this->current() !== false;
     }
+
+    public function __serialize(): array
+    {
+        $properties = get_object_vars($this);
+        unset($properties['dataMapper']);
+        return $properties;
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $propertyName => $propertyValue) {
+            $this->{$propertyName} = $propertyValue;
+        }
+
+        $this->dataMapper = GeneralUtility::getContainer()->get(DataMapper::class);
+    }
 }
