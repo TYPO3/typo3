@@ -81,9 +81,7 @@ class FinisherOptionsFlexFormOverridesConverter
                 $processedOptionValue[$key] = $value;
             }
 
-            if (empty($processedOptionValue)) {
-                $value = $optionValue;
-            } else {
+            if (!empty($processedOptionValue)) {
                 $value = $processedOptionValue;
             }
         }
