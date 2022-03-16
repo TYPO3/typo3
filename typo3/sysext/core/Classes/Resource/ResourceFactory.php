@@ -282,7 +282,7 @@ class ResourceFactory implements SingletonInterface
     {
         // Remove Environment::getPublicPath() because absolute paths under Windows systems contain ':'
         // This is done in all considered sub functions anyway
-        $input = str_replace(Environment::getPublicPath() . '/', '', $input);
+        $input = str_replace(Environment::getPublicPath() . '/', '', (string)$input);
 
         if (str_starts_with($input, 'file:')) {
             $input = substr($input, 5);
