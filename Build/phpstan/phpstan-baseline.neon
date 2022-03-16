@@ -331,11 +331,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Tree/View/BrowseTreeView.php
 
 		-
-			message: "#^Binary operation \"&\" between string and \\(float\\|int\\) results in an error\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php

@@ -1645,7 +1645,7 @@ class BackendUtility
                 } else {
                     $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
-                        if ($value & 2 ** $key) {
+                        if ((int)$value & 2 ** $key) {
                             $lA[] = $lang->sL($val[0]);
                         }
                     }
