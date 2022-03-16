@@ -4356,11 +4356,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Configuration/ConfigurationService.php
 
 		-
-			message: "#^Undefined variable\\: \\$optionValue$#"
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Configuration/FormDefinition/Converters/FinisherOptionsFlexFormOverridesConverter.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Finishers\\\\AbstractFinisher\\:\\:parseOption\\(\\) should return array\\|string\\|null but returns mixed\\.$#"
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Domain/Finishers/AbstractFinisher.php
