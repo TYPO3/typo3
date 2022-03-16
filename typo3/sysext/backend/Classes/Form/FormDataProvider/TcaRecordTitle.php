@@ -298,13 +298,13 @@ class TcaRecordTitle implements FormDataProviderInterface
     {
         $languageService = $this->getLanguageService();
         if (empty($fieldConfig['items']) || !is_array($fieldConfig['items'])) {
-            $title = (bool)$value
+            $title = $value
                 ? $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')
                 : $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no');
         } else {
             $labelParts = [];
             foreach ($fieldConfig['items'] as $key => $val) {
-                if ($value & 2 ** $key) {
+                if ((int)$value & 2 ** $key) {
                     $labelParts[] = $val[0];
                 }
             }
