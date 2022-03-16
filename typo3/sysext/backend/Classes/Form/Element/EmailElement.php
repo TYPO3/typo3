@@ -80,7 +80,13 @@ class EmailElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
+
+        // Get filtered eval list, while always adding "trim"
+        $evalList = array_merge(array_filter(
+            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
+            static fn ($value) => in_array($value, ['unique', 'uniqueInPid', 'null'], true)
+        ), ['trim']);
+
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = $this->formMaxWidth($size);
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
