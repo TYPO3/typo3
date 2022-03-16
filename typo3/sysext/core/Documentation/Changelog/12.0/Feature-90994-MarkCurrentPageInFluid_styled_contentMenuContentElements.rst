@@ -17,7 +17,7 @@ The resulting HTML of these page link lists is then:
 .. code-block:: html
 
    <li>
-       <a aria-current="page" ...>
+       <a aria-current="page" > ...
    </li>
 
 Impact

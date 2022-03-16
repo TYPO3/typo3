@@ -131,7 +131,7 @@ without manual :php:`GeneralUtility::makeInstance()` calls for their dependencie
 if TYPO3 v11 should be supported, these validators must set :yaml:`public: true` and
 :yaml:`shared: false` in :file:`Services.yaml`:
 
-..code-block:: yaml
+.. code-block:: yaml
 
     # This is obsolete when the extension does not support TYPO3 v11 anymore.
     # @todo: Remove this when v11 compatibility is dropped.

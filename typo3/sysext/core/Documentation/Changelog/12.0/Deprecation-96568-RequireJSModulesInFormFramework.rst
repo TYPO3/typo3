@@ -54,6 +54,7 @@ And configure a corresponding importmap in
 :file:`Configuration/JavaScriptModules.php`:
 
 .. code-block:: php
+
    # Configuration/JavaScriptModules.php
    <?php
 

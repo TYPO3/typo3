@@ -28,14 +28,14 @@ Affected Installations
 ======================
 
 All 3rd party extension either using :php:`'eval' => 'required'` or
-:xml:`<eval>required</eval>` are affected.
+`<eval>required</eval>` are affected.
 
 
 Migration
 =========
 
-Migrate to `'required' => true` to avoid automatic migration and hence a
-deprecation log entry.
+Migrate to :php:`'required' => true` and `<required>1</required>` to avoid
+automatic migration and hence a deprecation log entry.
 
 Example before migration:
 

@@ -41,7 +41,7 @@ Affected Installations
 All TYPO3 installations using the old registration.
 
 All TYPO3 installations with custom `linktypes`, not implementing
-:php:`public function getIdentifier()`.
+:php:`public function getIdentifier(): string`.
 
 Migration
 =========

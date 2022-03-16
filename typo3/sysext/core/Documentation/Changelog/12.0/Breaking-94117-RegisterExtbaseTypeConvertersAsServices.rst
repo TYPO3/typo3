@@ -49,8 +49,8 @@ from your :file:`ext_localconf.php` file and register the type converters
 in your :php:`Services.yaml` instead. See :doc:`changelog <../12.0/Feature-94117-ImproveExtbaseTypeConverterRegistration>`
 for an example.
 
-Remove any call to the configuration related methods, see
-:doc:`changelog <../12.0/Depecation-94117-RegisterExtbaseTypeConvertersAsServices>`
+Remove any call to the configuration related methods, see the
+:doc:`deprecation changelog <../12.0/Deprecation-94117-RegisterExtbaseTypeConvertersAsServices>`
 for more information.
 
 .. index:: PHP-API, NotScanned, ext:extbase

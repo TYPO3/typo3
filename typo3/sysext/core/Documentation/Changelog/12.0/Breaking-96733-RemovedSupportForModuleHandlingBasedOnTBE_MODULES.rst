@@ -105,7 +105,7 @@ components.
 
 The registration has to be moved from :file:`ext_tables.php` to the
 :file:`Configuration/Backend/Modules.php` file. See the
-:doc:`changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`
+:doc:`feature changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`
 for more information regarding the new registration.
 
 Instead of :typoscript:`options.hideModules.web = layout`, use

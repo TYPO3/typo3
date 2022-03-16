@@ -46,7 +46,7 @@ as inline JavaScript in `FormEngine`.
 Migration
 =========
 
-:ref:`Previous deprecation ChangeLog documentation <Deprecation-95200-DeprecateRequireJSCallbacksAsInlineJavaScript>`
+:doc:`Previous deprecation ChangeLog documentation <../11.5/Deprecation-95200-DeprecateRequireJSCallbacksAsInlineJavaScript>`
 provided migration details already.
 
 The following snippet shows the migrated source code of shown above - using

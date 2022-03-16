@@ -32,6 +32,7 @@ framework. Furthermore, the new key has been reserved.
 Current configuration in TYPO3 v12 (simplified):
 
 .. code-block:: yaml
+
     TYPO3:
       CMS:
         Form:
@@ -60,6 +61,7 @@ Current configuration in TYPO3 v12 (simplified):
 New configuration in TYPO3 v13 (simplified):
 
 .. code-block:: yaml
+
     TYPO3:
       CMS:
         Form:

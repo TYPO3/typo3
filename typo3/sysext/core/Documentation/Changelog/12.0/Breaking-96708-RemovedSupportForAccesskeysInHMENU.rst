@@ -13,6 +13,7 @@ TYPO3's built-in support for menu generation, adding :html:`accesskey`
 HTML attributes to menu items has been removed.
 
 As stated by various sources such as
+
 * https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey#accessibility_concerns
 * https://webaim.org/standards/wcag/checklist#:~:text=accesskey%20should%20typically%20be%20avoided
 

@@ -10,7 +10,7 @@ Description
 ===========
 
 Due to the removal of global array :php:`$TBE_MODULES`
-(see :doc:`changelog <../12.0/Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES>`),
+(see :doc:`breaking changelog <../12.0/Breaking-96733-RemovedSupportForModuleHandlingBasedOnTBE_MODULES>`),
 the following related methods have been deprecated:
 
 - :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->modAccess()`
@@ -33,7 +33,7 @@ All installations calling mentioned methods in custom extension code.
 Migration
 =========
 
-Use the new :php:`ModuleProvider` API (see :doc:`changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`) instead.
+Use the new :php:`ModuleProvider` API (see :doc:`feature changelog <../12.0/Feature-96733-NewBackendModuleRegistrationAPI>`) instead.
 
 Replace :php:`BackendUserAuthentication->modAccess()` with :php:`ModuleProvider->accessGranted()`.
 

@@ -92,7 +92,7 @@ looks like the following:
 
     // Before
 
-    'a_link_field => [
+    'a_link_field' => [
         'label' => 'Link',
         'config' => [
             'type' => 'input',
@@ -118,7 +118,7 @@ looks like the following:
 
    // After
 
-    'a_link_field => [
+    'a_link_field' => [
         'label' => 'Link',
         'config' => [
             'type' => 'link',

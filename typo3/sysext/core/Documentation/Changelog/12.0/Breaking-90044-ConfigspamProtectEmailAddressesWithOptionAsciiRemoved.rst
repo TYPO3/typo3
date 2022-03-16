@@ -37,7 +37,7 @@ Migration
 
 In case you still want to keep a email SPAM protection around, it is recommended
 to set the option `config.spamProtectEmailAddresses` to a numeric value between
--10 and 10.
+`-10` and `10`.
 
 Alternatively, there is an extension called `emailobfuscator` available in the
 TYPO3 Extension Repository, which also aims to achieve a similar behaviour.

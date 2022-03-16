@@ -53,7 +53,7 @@ Registration is now done in your :file:`Services.yaml` like the following:
 
     Since the configuration (priority, target and sources) are now done at
     this place, respective type converter properties are now superfluous and
-    will also no longer be evaluated. See :doc:`changelog <../12.0/Depecation-94117-RegisterExtbaseTypeConvertersAsServices>`
+    will also no longer be evaluated. See the :doc:`deprecation changelog <../12.0/Deprecation-94117-RegisterExtbaseTypeConvertersAsServices>`
     for more information.
 
 .. index:: PHP-API, ext:extbase

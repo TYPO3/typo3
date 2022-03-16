@@ -23,12 +23,7 @@ None since TYPO3 v11.0 release.
 Features
 ^^^^^^^^
 
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
-
-   Feature-*
+None since TYPO3 v11.5 release.
 
 Deprecation
 ^^^^^^^^^^^

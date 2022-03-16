@@ -35,7 +35,7 @@ Rename the option `cols` to `size`.
 
 Before:
 
-.. code-block::
+.. code-block:: php
 
     'columns' => [
         'aColumn' => [
@@ -48,7 +48,7 @@ Before:
 
 After:
 
-.. code-block::
+.. code-block:: php
 
     'columns' => [
         'aColumn' => [

@@ -12,7 +12,7 @@ Description
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typolinkProcessing']['typolinkModifyParameterForPageLinks']`
 required hook implementations to implement :php:`TypolinkModifyLinkConfigForPageLinksHookInterface`.
 
-Since the mentioned hook is :doc:`removed <../12.0/Breaking-87616-RemovedHookForAlteringPageLinks.rst>`,
+Since the mentioned hook is :doc:`removed <../12.0/Breaking-87616-RemovedHookForAlteringPageLinks>`,
 the interface is not in use anymore and has been marked as deprecated.
 
 

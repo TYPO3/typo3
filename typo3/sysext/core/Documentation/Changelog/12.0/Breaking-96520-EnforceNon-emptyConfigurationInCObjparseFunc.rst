@@ -51,7 +51,7 @@ PHP
 TypoScript
 ----------
 
-.. code-block:: ts
+.. code-block:: typoscript
 
    # `1` is considered a TypoScript reference which
    # most probably does not exist

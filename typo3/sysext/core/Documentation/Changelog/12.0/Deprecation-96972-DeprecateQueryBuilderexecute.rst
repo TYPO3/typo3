@@ -39,7 +39,7 @@ Extensions should use the proper methods :php:`QueryBuilder->executeQuery()` and
 instead of the generic :php:`QueryBuilder->execute()`. Through the backport to TYPO3 v11 extensions can change to deprecation
 less code but keep supporting two major core version at the same time.
 
-- :php:`QueryBuilder::executeStatement()`: use this for INSERT, DELETE or UPDATE queries (expecting `int`as return value).
+- :php:`QueryBuilder::executeStatement()`: use this for INSERT, DELETE or UPDATE queries (expecting `int` as return value).
 - :php:`QueryBuilder::executeQuery()`: use this for SELECT and COUNT queries (expecting ResultSet as return value).
 
 As a thumb rule you can say that queries which expects a result set should use :php:`QueryBuilder::executeQuery()`.

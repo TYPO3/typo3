@@ -9,7 +9,7 @@ See :issue:`96517`
 Description
 ===========
 
-The "collapse" TypoScript property of HMENU is removed without
+The :typoscript:`collapse` TypoScript property of HMENU is removed without
 substitution.
 
 When set, active HMENU items previously linked to their parent page,
@@ -33,6 +33,7 @@ set which is highly unlikely.
 Migration
 =========
 
-Use a custom user function or PSR-14 event `FilterMenuItemsEvent` to modify the menu items.
+Use a custom user function or the PSR-14 :php:`FilterMenuItemsEvent` to modify
+the menu items.
 
 .. index:: Frontend, TypoScript, NotScanned, ext:frontend

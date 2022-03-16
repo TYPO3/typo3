@@ -45,9 +45,9 @@ elements.
 *   consider replacing simple :html:`<a ... onclick="window.location.href=[URI]"`
     with plain HTML links like :html:`<a href="[URI]">`
 *   replacing :php:`BackendUtility::viewOnClick`,
-    :doc:`see documentation & examples <Important: #91123 - Avoid using BackendUtility::viewOnClick>`
+    :doc:`see documentation & examples <../11.0/Important-91123-AvoidUsingBackendUtilityViewOnClick>`
 *   using :html:`data-` attributes for :js:`GlobalEventHandler` and :js:`ActionDispatcher`,
-    :doc:`see documentation & examples <Important-91117-UseGlobalEventHandlerAndActionDispatcherInsteadOfInlineJS>`
+    :doc:`see documentation & examples <../10.4.x/Important-91117-UseGlobalEventHandlerAndActionDispatcherInsteadOfInlineJS>`
 
 
 Example #1: open a new window/tab

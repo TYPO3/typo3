@@ -26,6 +26,6 @@ The TYPO3 core encourages to use :php:`BackendViewFactory` instead of
 :php:`RequestAwareToolbarItemInterface` should be implemented
 to receive the current request from TYPO3 EXT:backend.
 
-Doing so enables the :doc:`template overrides by TsConfig feature <Feature-96812-OverrideBackendTemplatesWithTSconfig.rst>`.
+Doing so enables the :doc:`template overrides by TsConfig feature <../12.0/Feature-96812-OverrideBackendTemplatesWithTSconfig>`.
 
 .. index:: Backend, PHP-API, ext:backend

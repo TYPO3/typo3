@@ -92,7 +92,7 @@ Usage
 
 A module can be added to the current page response either via
 :php:`PageRenderer` or as :php:`JavaScriptModuleInstruction` via
-:php:`JavaScriptRenderer:
+:php:`JavaScriptRenderer`:
 
 .. code-block:: php
 

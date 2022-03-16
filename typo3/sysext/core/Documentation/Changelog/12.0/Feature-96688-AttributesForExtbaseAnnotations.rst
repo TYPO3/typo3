@@ -19,13 +19,13 @@ Impact
 
 In addition to their usage as annotations, the following extbase annotations have been enriched for usage as attributes:
 
-.. code-block::
+.. code-block:: php
 
-   @Extbase\ORM\Transient
-   @Extbase\ORM\Cascade
-   @Extbase\ORM\Lazy
-   @Extbase\IgnoreValidation
-   @Extbase\Validate
+    @Extbase\ORM\Transient
+    @Extbase\ORM\Cascade
+    @Extbase\ORM\Lazy
+    @Extbase\IgnoreValidation
+    @Extbase\Validate
 
 Examples
 --------

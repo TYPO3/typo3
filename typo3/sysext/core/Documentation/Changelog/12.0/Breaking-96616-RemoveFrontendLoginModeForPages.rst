@@ -52,7 +52,7 @@ Remove any usage of the mentioned methods.
 
 In case you currently rely on the functionality, use the upgrade wizard
 provided by the install tool to fetch and load the public `fe_login_mode`
-extension from TER. This extension provides the same functionality using
-a PSR-15 middleware.
+extension from `TER <https://extensions.typo3.org/extension/fe_login_mode>`_.
+This extension provides the same functionality using a PSR-15 middleware.
 
 .. index:: Frontend, TCA, FullyScanned, ext:frontend

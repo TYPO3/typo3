@@ -133,9 +133,9 @@ Module configuration options
 +----------------------------------------------------------+------------------------------------------------------------------+
 | position (:php:`array`)                                  | The module position. Allowed values are `before => <identifier>` |
 |                                                          | and `after => <identifier>`. To define modules on top or at the  |
-|                                                          | the bottom, `before => *` and `after => *` can be used. Using    |
-|                                                          | the `top` and `bottom` values (without key) is deprecated and    |
-|                                                          | will be removed in upcoming versions.                            |
+|                                                          | bottom, `before => *` and `after => *` can be used. Using the    |
+|                                                          | `top` and `bottom` values (without key) is deprecated and will   |
+|                                                          | be removed in upcoming versions.                                 |
 +----------------------------------------------------------+------------------------------------------------------------------+
 | appearance (:php:`array`)                                | Allows to define additional appearance options:                  |
 |                                                          |   - `renderInModuleMenu` (:php:`bool`)                           |

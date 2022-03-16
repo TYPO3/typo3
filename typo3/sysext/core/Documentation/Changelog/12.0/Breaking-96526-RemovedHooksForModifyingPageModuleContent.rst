@@ -40,6 +40,6 @@ Migration
 =========
 
 Replace the hooks with the new PSR-14
-:doc:`ModifyPageLayoutContentEvent <../12.0/Feature-96526-PSR-14EventForModifyingPageModuleContent.rst>`.
+:doc:`ModifyPageLayoutContentEvent <../12.0/Feature-96526-PSR-14EventForModifyingPageModuleContent>`.
 
 .. index:: Backend, PHP-API, FullyScanned, ext:backend
