@@ -159,7 +159,7 @@ class TemplateAnalyzerModuleFunctionController
         }
         $thisLineOffset = $nextLineOffset = 0;
         foreach ($templates as $templateNumber => $templateContent) {
-            $templateId = $this->templateService->hierarchyInfo[$templateNumber]['templateID'];
+            $templateId = $this->templateService->hierarchyInfo[$templateNumber]['templateID'] ?? null;
             $templateTitle = $this->templateService->hierarchyInfo[$templateNumber]['title'] ?? 'Template';
             // Prefix content with '[GLOBAL]' even for empty strings, the TemplateService does that, too.
             // Not replicating this leads to shifted line numbers when parser errors are reported in FE and object browser.
