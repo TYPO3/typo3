@@ -2496,11 +2496,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\LazyObjectStorage\\:\\:\\$warning is never read, only written\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyObjectStorage.php
-
-		-
 			message: "#^Property TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Mapper\\\\ColumnMap\\:\\:\\$relationTableWhereStatement is unused\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/ColumnMap.php
