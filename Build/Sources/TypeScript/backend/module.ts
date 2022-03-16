@@ -31,17 +31,16 @@ export interface Module {
   link: string;
 }
 
-
 /**
- * Gets the module properties from module menu markup (data attributes)
+ * Gets the module properties from module information data attribute
  *
  * @param {string} name
  * @returns {Module}
  * @internal
  */
 export function getRecordFromName(name: string): Module {
-  const moduleElement = document.getElementById(name);
-  if (!moduleElement) {
+  const parsedRecord = getParsedRecordFromName(name);
+  if (parsedRecord === null) {
     return {
       name: name,
       component: '',
@@ -51,8 +50,35 @@ export function getRecordFromName(name: string): Module {
   }
   return {
     name: name,
-    component: moduleElement.dataset.component,
-    navigationComponentId: moduleElement.dataset.navigationcomponentid,
-    link: moduleElement.getAttribute('href')
+    component: parsedRecord.component || '',
+    navigationComponentId: parsedRecord.navigationComponentId || '',
+    link: parsedRecord.link || '',
   };
+}
+
+interface ParsedInformation {
+  [index: string]: Partial<Module>;
+}
+
+/**
+ * Runtime cache of json serialized module information
+ */
+let parsedInformation: ParsedInformation = null;
+
+function getParsedRecordFromName(name: string): Partial<Module>|null {
+  if (parsedInformation === null) {
+    const modulesInformation: string = String((document.querySelector('.t3js-scaffold-modulemenu') as HTMLElement)?.dataset.modulesInformation || '');
+    if (modulesInformation !== '') {
+      try {
+        parsedInformation = JSON.parse(modulesInformation);
+      } catch (e) {
+        console.error('Invalid modules information provided.');
+        parsedInformation = null;
+      }
+    }
+  }
+  if (parsedInformation !== null && name in parsedInformation) {
+    return parsedInformation[name];
+  }
+  return null;
 }

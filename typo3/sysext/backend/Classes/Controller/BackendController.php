@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\MenuModule;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Router;
@@ -141,6 +142,7 @@ class BackendController
         $this->assignTopbarDetailsToView($request, $view);
         $view->assignMultiple([
             'modules' => $this->modules,
+            'modulesInformation' => GeneralUtility::jsonEncodeForHtmlAttribute($this->getModulesInformation(), false),
             'startupModule' => $this->getStartupModule($request),
             'stateTracker' => (string)$this->uriBuilder->buildUriFromRoute('state-tracker'),
             'sitename' => $title,
@@ -343,6 +345,25 @@ class BackendController
             return [$startModule, (string)$deepLink];
         }
         return [null, null];
+    }
+
+    /**
+     * Returns information for each registered and allowed module. Used by various JS components.
+     */
+    protected function getModulesInformation(): array
+    {
+        $modules = [];
+        foreach ($this->moduleProvider->getModules(user: $this->getBackendUser(), grouped: false) as $identifier => $module) {
+            $menuModule = new MenuModule(clone $module);
+            $modules[$identifier] = [
+                'name' => $identifier,
+                'component' => $menuModule->getComponent(),
+                'navigationComponentId' => $menuModule->getNavigationComponent(),
+                'link' => $menuModule->getShouldBeLinked() ? (string)$this->uriBuilder->buildUriFromRoute($module->getIdentifier()) : '',
+            ];
+        }
+
+        return $modules;
     }
 
     /**

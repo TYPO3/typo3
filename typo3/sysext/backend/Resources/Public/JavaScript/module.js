@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export function getRecordFromName(n){const t=document.getElementById(n);return t?{name:n,component:t.dataset.component,navigationComponentId:t.dataset.navigationcomponentid,link:t.getAttribute("href")}:{name:n,component:"",navigationComponentId:"",link:""}}
+export function getRecordFromName(n){const o=getParsedRecordFromName(n);return null===o?{name:n,component:"",navigationComponentId:"",link:""}:{name:n,component:o.component||"",navigationComponentId:o.navigationComponentId||"",link:o.link||""}}let parsedInformation=null;function getParsedRecordFromName(n){if(null===parsedInformation){const n=String(document.querySelector(".t3js-scaffold-modulemenu")?.dataset.modulesInformation||"");if(""!==n)try{parsedInformation=JSON.parse(n)}catch(n){console.error("Invalid modules information provided."),parsedInformation=null}}return null!==parsedInformation&&n in parsedInformation?parsedInformation[n]:null}

@@ -31,7 +31,7 @@
 </div>
 
 <f:if condition="{hasModules}">
-    <div class="scaffold-modulemenu t3js-scaffold-modulemenu">
+    <div class="scaffold-modulemenu t3js-scaffold-modulemenu" data-modules-information="{modulesInformation}">
         <f:render partial="Backend/ModuleMenu" arguments="{modules: modules}" />
     </div>
 </f:if>
