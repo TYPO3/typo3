@@ -69,7 +69,7 @@ class BackendController extends ActionController
         $arguments = $this->request->getArguments();
         $shortcutArguments = [];
         if (!empty($arguments['controller']) && !empty($arguments['action'])) {
-            $shortcutArguments['tx_styleguide_help_styleguidestyleguide'] = [
+            $shortcutArguments = [
                 'controller' => $arguments['controller'],
                 'action' => $arguments['action'],
             ];
