@@ -1811,11 +1811,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/MailUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:calculateWithParentheses\\(\\) should return int but returns string\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Utility/MathUtility.php
-
-		-
 			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/View/FluidViewAdapter.php
@@ -2429,11 +2424,6 @@ parameters:
 			message: "#^Static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:callUserFunction\\(\\) invoked with 4 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$theInt of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\MathUtility\\:\\:forceIntegerInRange\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/MathUtilityTest.php
 
 		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Tests\\\\UnitDeprecated\\\\Compatibility\\\\Fixtures\\\\PublicMethodDeprecationTraitTextFixture\\:\\:doesNotExist\\(\\)\\.$#"
@@ -3907,11 +3897,6 @@ parameters:
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:stdWrap_numRows\\(\\) should return string but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:stdWrap_prioriCalc\\(\\) should return string but returns int\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 

@@ -14,6 +14,7 @@ signatures. The types are consistent with existing docblock-documented type
 expectations and existing behavior.
 
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
+- :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 
 
 Impact

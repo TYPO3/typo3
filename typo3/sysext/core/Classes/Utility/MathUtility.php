@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,13 +25,13 @@ class MathUtility
     /**
      * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
      *
-     * @param int $theInt Input value
+     * @param mixed $theInt Input value - will be cast to int if non-integer value is passed.
      * @param int $min Lower limit
      * @param int $max Higher limit
      * @param int $defaultValue Default value if input is FALSE.
      * @return int The input value forced into the boundaries of $min and $max
      */
-    public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0)
+    public static function forceIntegerInRange(mixed $theInt, int $min, int $max = 2000000000, int $defaultValue = 0): int
     {
         // Returns $theInt as an integer in the integerspace from $min to $max
         $theInt = (int)$theInt;
@@ -49,17 +51,10 @@ class MathUtility
 
     /**
      * Returns $theInt if it is greater than zero, otherwise returns zero.
-     *
-     * @param int $theInt Integer string to process
-     * @return int
      */
-    public static function convertToPositiveInteger($theInt)
+    public static function convertToPositiveInteger(mixed $theInt): int
     {
-        $theInt = (int)$theInt;
-        if ($theInt < 0) {
-            $theInt = 0;
-        }
-        return $theInt;
+        return self::forceIntegerInRange($theInt, 0, PHP_INT_MAX);
     }
 
     /**
@@ -71,7 +66,7 @@ class MathUtility
      * @param mixed $var Any input variable to test
      * @return bool Returns TRUE if string is an integer
      */
-    public static function canBeInterpretedAsInteger($var)
+    public static function canBeInterpretedAsInteger(mixed $var): bool
     {
         if ($var === '' || is_object($var) || is_array($var)) {
             return false;
@@ -88,7 +83,7 @@ class MathUtility
      * @param mixed $var Any input variable to test
      * @return bool Returns TRUE if string is a float
      */
-    public static function canBeInterpretedAsFloat($var)
+    public static function canBeInterpretedAsFloat(mixed $var): bool
     {
         $pattern_lnum = '[0-9]+';
         $pattern_dnum = '([0-9]*[\.]' . $pattern_lnum . ')|(' . $pattern_lnum . '[\.][0-9]*)';
@@ -106,10 +101,10 @@ class MathUtility
      * Calculates the input by +,-,*,/,%,^ with priority to + and -
      *
      * @param string $string Input string, eg "123 + 456 / 789 - 4
-     * @return int Calculated value. Or error string.
+     * @return float|string Calculated value. Or error string.
      * @see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses()
      */
-    public static function calculateWithPriorityToAdditionAndSubtraction($string)
+    public static function calculateWithPriorityToAdditionAndSubtraction(string $string): float|string
     {
         // Removing all whitespace
         $string = preg_replace('/[[:space:]]*/', '', $string);
@@ -165,11 +160,11 @@ class MathUtility
      * Calculates the input with parenthesis levels
      *
      * @param string $string Input string, eg "(123 + 456) / 789 - 4
-     * @return int Calculated value. Or error string.
+     * @return string Calculated value. Or error string.
      * @see calculateWithPriorityToAdditionAndSubtraction()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap()
      */
-    public static function calculateWithParentheses($string)
+    public static function calculateWithParentheses(string $string): string
     {
         $securC = 100;
         do {
@@ -194,12 +189,12 @@ class MathUtility
     /**
      * Checks whether the given number $value is an integer in the range [$minimum;$maximum]
      *
-     * @param int $value Integer value to check
+     * @param mixed $value Integer value to check. If not an integer this method always returns false.
      * @param int $minimum Lower boundary of the range
      * @param int $maximum Upper boundary of the range
      * @return bool
      */
-    public static function isIntegerInRange($value, $minimum, $maximum)
+    public static function isIntegerInRange(mixed $value, int $minimum, int $maximum): bool
     {
         $value = filter_var($value, FILTER_VALIDATE_INT, [
             'options' => [
@@ -207,7 +202,6 @@ class MathUtility
                 'max_range' => $maximum,
             ],
         ]);
-        $isInRange = is_int($value);
-        return $isInRange;
+        return is_int($value);
     }
 }
