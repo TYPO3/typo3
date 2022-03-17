@@ -75,7 +75,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      */
     public function initializeObject()
     {
-        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
+        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER'] ?? null);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
