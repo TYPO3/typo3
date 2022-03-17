@@ -221,16 +221,6 @@ class ArrayUtilityTest extends UnitTestCase
     ///////////////////////
     // Tests concerning getValueByPath
     ///////////////////////
-    /**
-     * @test
-     */
-    public function getValueByPathThrowsExceptionIfPathIsNotString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1476557628);
-
-        ArrayUtility::getValueByPath([], 123);
-    }
 
     /**
      * @test
@@ -511,17 +501,6 @@ class ArrayUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function setValueByPathThrowsExceptionIfPathIsNotAString(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1478781081);
-
-        ArrayUtility::setValueByPath([], 123, null);
-    }
-
-    /**
-     * @test
-     */
     public function setValueByPathThrowsExceptionIfPathSegmentIsEmpty(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -786,17 +765,6 @@ class ArrayUtilityTest extends UnitTestCase
         $this->expectExceptionCode(1371757718);
 
         ArrayUtility::removeByPath([], '');
-    }
-
-    /**
-     * @test
-     */
-    public function removeByPathThrowsExceptionIfPathIsNotAString(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1371757719);
-
-        ArrayUtility::removeByPath([], ['foo']);
     }
 
     /**

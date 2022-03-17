@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,12 +27,10 @@ class ArrayUtility
     /**
      * Validates the given $arrayToTest by checking if an element is not in $allowedArrayKeys.
      *
-     * @param array $arrayToTest
-     * @param array $allowedArrayKeys
      * @throws \InvalidArgumentException if an element in $arrayToTest is not in $allowedArrayKeys
      * @internal
      */
-    public static function assertAllArrayKeysAreValid(array $arrayToTest, array $allowedArrayKeys)
+    public static function assertAllArrayKeysAreValid(array $arrayToTest, array $allowedArrayKeys): void
     {
         $notAllowedArrayKeys = array_keys(array_diff_key($arrayToTest, array_flip($allowedArrayKeys)));
         if (count($notAllowedArrayKeys) !== 0) {
@@ -47,9 +47,6 @@ class ArrayUtility
 
     /**
      * Recursively convert 'true' and 'false' strings to boolean values.
-     *
-     * @param array $array
-     * @return array the modified array
      */
     public static function convertBooleanStringsToBooleanRecursive(array $array): array
     {
@@ -101,7 +98,7 @@ class ArrayUtility
      * @param array $haystack The array in which to search
      * @return array $haystack array reduced matching $needle values
      */
-    public static function filterByValueRecursive($needle = '', array $haystack = [])
+    public static function filterByValueRecursive(mixed $needle = '', array $haystack = []): array
     {
         $resultArray = [];
         // Define a lambda function to be applied to all members of this array dimension
@@ -141,12 +138,12 @@ class ArrayUtility
      * @param string $delimiter Delimiter for path, default /
      * @return bool TRUE if path exists in array
      */
-    public static function isValidPath(array $array, $path, $delimiter = '/')
+    public static function isValidPath(array $array, string $path, string $delimiter = '/'): bool
     {
         $isValid = true;
         try {
             static::getValueByPath($array, $path, $delimiter);
-        } catch (MissingArrayPathException $e) {
+        } catch (MissingArrayPathException) {
             $isValid = false;
         }
         return $isValid;
@@ -177,18 +174,15 @@ class ArrayUtility
      * @throws \RuntimeException if the path is empty, or if the path does not exist
      * @throws \InvalidArgumentException if the path is neither array nor string
      */
-    public static function getValueByPath(array $array, $path, $delimiter = '/')
+    public static function getValueByPath(array $array, array|string $path, string $delimiter = '/'): mixed
     {
-        // Extract parts of the path
+        // Upcast a string to an array if necessary
         if (is_string($path)) {
             if ($path === '') {
                 // Programming error has to be sanitized before calling the method -> global exception
                 throw new \RuntimeException('Path must not be empty', 1341397767);
             }
             $path = str_getcsv($path, $delimiter);
-        } elseif (!is_array($path)) {
-            // Programming error has to be sanitized before calling the method -> global exception
-            throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1476557628);
         }
         // Loop through each part and extract its value
         $value = $array;
@@ -207,13 +201,12 @@ class ArrayUtility
     /**
      * Reindex keys from the current nesting level if all keys within
      * the current nesting level are integers.
-     *
-     * @param array $array
-     * @return array
      */
     public static function reIndexNumericArrayKeysRecursive(array $array): array
     {
-        if (count(array_filter(array_keys($array), 'is_string')) === 0) {
+        // Can't use array_is_list() because an all-integers but non-sequential
+        // array is not a list, but should be reindexed.
+        if (count(array_filter(array_keys($array), is_string(...))) === 0) {
             $array = array_values($array);
         }
         foreach ($array as $key => $value) {
@@ -226,9 +219,6 @@ class ArrayUtility
 
     /**
      * Recursively remove keys if their value are NULL.
-     *
-     * @param array $array
-     * @return array the modified array
      */
     public static function removeNullValuesRecursive(array $array): array
     {
@@ -269,7 +259,7 @@ class ArrayUtility
      * @return array Modified array
      * @throws \RuntimeException
      */
-    public static function setValueByPath(array $array, $path, $value, $delimiter = '/')
+    public static function setValueByPath(array $array, string|array|\ArrayAccess $path, mixed $value, string $delimiter = '/'): array
     {
         if (is_string($path)) {
             if ($path === '') {
@@ -277,8 +267,6 @@ class ArrayUtility
             }
             // Extract parts of the path
             $path = str_getcsv($path, $delimiter);
-        } elseif (!is_array($path) && !$path instanceof \ArrayAccess) {
-            throw new \InvalidArgumentException('setValueByPath() expects $path to be string, array or an object implementing \\ArrayAccess, "' . get_debug_type($path) . '" given.', 1478781081);
         }
         // Point to the root of the array
         $pointer = &$array;
@@ -313,28 +301,25 @@ class ArrayUtility
      * @return array Modified array
      * @throws \RuntimeException
      */
-    public static function removeByPath(array $array, $path, $delimiter = '/')
+    public static function removeByPath(array $array, string $path, string $delimiter = '/'): array
     {
-        if (!is_string($path)) {
-            throw new \RuntimeException('Path must be a string', 1371757719);
-        }
         if ($path === '') {
             throw new \RuntimeException('Path must not be empty', 1371757718);
         }
         // Extract parts of the path
-        $path = str_getcsv($path, $delimiter);
-        $pathDepth = count($path);
+        $pathSegments = str_getcsv($path, $delimiter);
+        $pathDepth = count($pathSegments);
         $currentDepth = 0;
         $pointer = &$array;
         // Find path in given array
-        foreach ($path as $segment) {
+        foreach ($pathSegments as $segment) {
             $currentDepth++;
             // Fail if the part is empty
             if ($segment === '') {
                 throw new \RuntimeException('Invalid path segment specified', 1371757720);
             }
             if (!array_key_exists($segment, $pointer)) {
-                throw new MissingArrayPathException('Segment ' . $segment . ' of path ' . implode($delimiter, $path) . ' does not exist in array', 1371758436);
+                throw new MissingArrayPathException('Segment ' . $segment . ' of path ' . implode($delimiter, $pathSegments) . ' does not exist in array', 1371758436);
             }
             if ($currentDepth === $pathDepth) {
                 unset($pointer[$segment]);
@@ -351,7 +336,7 @@ class ArrayUtility
      * @param array $array Array to sort recursively by key
      * @return array Sorted array
      */
-    public static function sortByKeyRecursive(array $array)
+    public static function sortByKeyRecursive(array $array): array
     {
         ksort($array);
         foreach ($array as $key => $value) {
@@ -371,7 +356,7 @@ class ArrayUtility
      * @return array Array of sorted arrays
      * @throws \RuntimeException
      */
-    public static function sortArraysByKey(array $arrays, $key, $ascending = true)
+    public static function sortArraysByKey(array $arrays, string $key, bool $ascending = true): array
     {
         if (empty($arrays)) {
             return $arrays;
@@ -399,7 +384,7 @@ class ArrayUtility
      * @return string String representation of array
      * @throws \RuntimeException
      */
-    public static function arrayExport(array $array = [], $level = 0)
+    public static function arrayExport(array $array = [], int $level = 0): string
     {
         $lines = "[\n";
         $level++;
@@ -409,7 +394,7 @@ class ArrayUtility
             if ($key === $expectedKeyIndex) {
                 $expectedKeyIndex++;
             } else {
-                // Found a non integer or non consecutive key, so we can break here
+                // Found a non-integer or non-consecutive key, so we can break here
                 $writeKeyIndex = true;
                 break;
             }
@@ -483,7 +468,7 @@ class ArrayUtility
      * @param bool $keepDots
      * @return array
      */
-    public static function flatten(array $array, $prefix = '', bool $keepDots = false)
+    public static function flatten(array $array, string $prefix = '', bool $keepDots = false): array
     {
         $flatArray = [];
         foreach ($array as $key => $value) {
@@ -508,8 +493,6 @@ class ArrayUtility
      * Just like flatten, but not tailored for TypoScript but for plain simple arrays
      * It is internal for now, as it needs to be decided how to deprecate/ rename flatten
      *
-     * @param array $array
-     * @return array
      * @internal
      */
     public static function flattenPlain(array $array): array
@@ -566,7 +549,7 @@ class ArrayUtility
      * @param array $mask Array that has the keys which should be kept in the source array
      * @return array Keys which are present in both arrays with values of the source array
      */
-    public static function intersectRecursive(array $source, array $mask = [])
+    public static function intersectRecursive(array $source, array $mask = []): array
     {
         $intersection = [];
         foreach ($source as $key => $_) {
@@ -610,7 +593,7 @@ class ArrayUtility
      * @param int $level Internal level used for recursion, do *not* set from outside!
      * @return array
      */
-    public static function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = [], $level = 0)
+    public static function renumberKeysToAvoidLeapsIfKeysAreAllNumeric(array $array = [], int $level = 0): array
     {
         $level++;
         $allKeysAreNumeric = true;
@@ -651,7 +634,7 @@ class ArrayUtility
      * @param bool $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
      * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
      */
-    public static function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = true, $includeEmptyValues = true, $enableUnsetFeature = true)
+    public static function mergeRecursiveWithOverrule(array &$original, array $overrule, bool $addKeys = true, bool $includeEmptyValues = true, bool $enableUnsetFeature = true): void
     {
         foreach ($overrule as $key => $_) {
             if ($enableUnsetFeature && $overrule[$key] === '__UNSET') {
@@ -680,12 +663,12 @@ class ArrayUtility
      * @param string $cmpValue Value to search for and if found remove array entry where found.
      * @return array Output array with entries removed if search string is found
      */
-    public static function removeArrayEntryByValue(array $array, $cmpValue)
+    public static function removeArrayEntryByValue(array $array, string $cmpValue): array
     {
         foreach ($array as $k => $v) {
             if (is_array($v)) {
                 $array[$k] = self::removeArrayEntryByValue($v, $cmpValue);
-            } elseif ((string)$v === (string)$cmpValue) {
+            } elseif ((string)$v === $cmpValue) {
                 unset($array[$k]);
             }
         }
@@ -710,44 +693,52 @@ class ArrayUtility
      * array('bb' => array('third', 'fourth'),
      * )
      *
-     * @param array $array The initial array to be filtered/reduced
-     * @param mixed $keepItems The items which are allowed/kept in the array - accepts array or csv string
+     * @param array $array $array The initial array to be filtered/reduced
+     * @param array|string|null $keepItems The items which are allowed/kept in the array - accepts array or csv string
      * @param callable|null $getValueFunc (optional) Callback function used to get the value to keep
      * @return array The filtered/reduced array with the kept items
      */
-    public static function keepItemsInArray(array $array, $keepItems, $getValueFunc = null)
+    public static function keepItemsInArray(array $array, array|string|null $keepItems, ?callable $getValueFunc = null): array
     {
-        if ($array) {
-            // Convert strings to arrays:
-            if (is_string($keepItems)) {
-                $keepItems = GeneralUtility::trimExplode(',', $keepItems);
-            }
-            // Check if valueFunc can be executed:
-            if (!is_callable($getValueFunc)) {
-                $getValueFunc = null;
-            }
-            // Do the filtering:
-            if (is_array($keepItems) && !empty($keepItems)) {
-                $keepItems = array_flip($keepItems);
-                foreach ($array as $key => $value) {
-                    // Get the value to compare by using the callback function:
-                    $keepValue = isset($getValueFunc) ? $getValueFunc($value) : $value;
-                    if (!isset($keepItems[$keepValue])) {
-                        unset($array[$key]);
-                    }
+        if (empty($array)) {
+            return $array;
+        }
+
+        // Convert strings to arrays:
+        if (is_string($keepItems)) {
+            $keepItems = GeneralUtility::trimExplode(',', $keepItems);
+        }
+
+        if (empty($keepItems)) {
+            return $array;
+        }
+
+        // Check if valueFunc can be executed:
+        if (!is_callable($getValueFunc)) {
+            $getValueFunc = null;
+        }
+        // Do the filtering:
+        if (is_array($keepItems)) {
+            $keepItems = array_flip($keepItems);
+            foreach ($array as $key => $value) {
+                // Get the value to compare by using the callback function:
+                $keepValue = isset($getValueFunc) ? $getValueFunc($value) : $value;
+                if (!isset($keepItems[$keepValue])) {
+                    unset($array[$key]);
                 }
             }
         }
+
         return $array;
     }
 
     /**
      * Rename Array keys with a given mapping table
      *
-     * @param array	$array Array by reference which should be remapped
-     * @param array	$mappingTable Array with remap information, array/$oldKey => $newKey)
+     * @param array $array Array by reference which should be remapped
+     * @param array $mappingTable Array with remap information, array/$oldKey => $newKey)
      */
-    public static function remapArrayKeys(array &$array, array $mappingTable)
+    public static function remapArrayKeys(array &$array, array $mappingTable): void
     {
         foreach ($mappingTable as $old => $new) {
             if ($new && isset($array[$old])) {
@@ -815,7 +806,7 @@ class ArrayUtility
      * @param array $array array to be sorted recursively, passed by reference
      * @return bool always TRUE
      */
-    public static function naturalKeySortRecursive(array &$array)
+    public static function naturalKeySortRecursive(array &$array): bool
     {
         uksort($array, 'strnatcasecmp');
         foreach ($array as $key => &$value) {
@@ -836,7 +827,7 @@ class ArrayUtility
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet()
      * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
-    public static function filterAndSortByNumericKeys($setupArr, $acceptAnyKeys = false)
+    public static function filterAndSortByNumericKeys(array $setupArr, bool $acceptAnyKeys = false): array
     {
         $filteredKeys = [];
         $keys = array_keys($setupArr);
@@ -852,14 +843,12 @@ class ArrayUtility
 
     /**
      * If the array contains numerical keys only, sort it in ascending order
-     *
-     * @param array $array
-     *
-     * @return array
      */
-    public static function sortArrayWithIntegerKeys(array $array)
+    public static function sortArrayWithIntegerKeys(array $array): array
     {
-        if (count(array_filter(array_keys($array), 'is_string')) === 0) {
+        // Can't use array_is_list() because an all-integers but non-sequential
+        // array is not a list, but can still be numerically sorted.
+        if (count(array_filter(array_keys($array), is_string(...))) === 0) {
             ksort($array);
         }
         return $array;
@@ -868,9 +857,6 @@ class ArrayUtility
     /**
      * Sort keys from the current nesting level if all keys within the
      * current nesting level are integers.
-     *
-     * @param array $array
-     * @return array
      */
     public static function sortArrayWithIntegerKeysRecursive(array $array): array
     {
@@ -885,9 +871,6 @@ class ArrayUtility
 
     /**
      * Recursively translate values.
-     *
-     * @param array $array
-     * @return array the modified array
      */
     public static function stripTagsFromValuesRecursive(array $array): array
     {
@@ -905,16 +888,11 @@ class ArrayUtility
     /**
      * Recursively filter an array
      *
-     * @param array $array
-     * @param callable|null $callback
-     * @return array the filtered array
      * @see https://secure.php.net/manual/en/function.array-filter.php
      */
     public static function filterRecursive(array $array, callable $callback = null): array
     {
-        $callback = $callback ?: static function ($value) {
-            return (bool)$value;
-        };
+        $callback ??= static fn ($value) => (bool)$value;
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
@@ -939,22 +917,19 @@ class ArrayUtility
      */
     public static function isAssociative(array $array): bool
     {
-        return count(array_filter(array_keys($array), 'is_string')) > 0;
+        return !array_is_list($array);
     }
 
     /**
      * Same as array_replace_recursive except that when in simple arrays (= YAML lists), the entries are
      * appended (array_merge). The second array takes precedence in case of equal sub arrays.
      *
-     * @param array $array1
-     * @param array $array2
-     * @return array
      * @internal
      */
     public static function replaceAndAppendScalarValuesRecursive(array $array1, array $array2): array
     {
         // Simple lists get merged / added up
-        if (!self::isAssociative($array1)) {
+        if (array_is_list($array1)) {
             return array_merge($array1, $array2);
         }
         foreach ($array1 as $k => $v) {

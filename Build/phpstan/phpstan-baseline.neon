@@ -1641,11 +1641,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
 
 		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
@@ -2359,21 +2354,6 @@ parameters:
 			message: "#^PHPDoc tag @param references unknown parameter\\: \\$modifierName$#"
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/TypoScript/Parser/TypoScriptParserTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$path of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ArrayUtility\\:\\:getValueByPath\\(\\) expects array\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ArrayUtilityTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$path of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ArrayUtility\\:\\:removeByPath\\(\\) expects string, array\\<int, string\\> given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ArrayUtilityTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$path of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ArrayUtility\\:\\:setValueByPath\\(\\) expects array\\|ArrayAccess\\|string, int given\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Utility/ArrayUtilityTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$itemArray of static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\ExtensionManagementUtility\\:\\:addPlugin\\(\\) expects array, string given\\.$#"
