@@ -74,6 +74,7 @@ class ImageContentObject extends AbstractContentObject
             $source = $info[3];
         }
         // Remove file objects for AssetCollector, as it only allows to store scalar values
+        $infoOriginalFile = $info['originalFile'];
         unset($info['originalFile'], $info['processedFile']);
         GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
             $source,
@@ -107,7 +108,7 @@ class ImageContentObject extends AbstractContentObject
         if ($linkWrap !== '') {
             $theValue = $this->linkWrap((string)$theValue, $linkWrap);
         } elseif ($conf['imageLinkWrap'] ?? false) {
-            $originalFile = !empty($info['originalFile']) ? $info['originalFile'] : $info['origFile'];
+            $originalFile = !empty($infoOriginalFile) ? $infoOriginalFile : urldecode($info['origFile']);
             $theValue = $this->cObj->imageLinkWrap($theValue, $originalFile, $conf['imageLinkWrap.']);
         }
         $wrap = $this->cObj->stdWrapValue('wrap', $conf ?? []);
