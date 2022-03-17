@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,7 +18,7 @@
 // Short-hand debug function
 // If you wish to use the debug()-function, and it does not output something,
 // please edit the IP mask in TYPO3_CONF_VARS
-function debug($variable = '', $title = null, $group = null)
+function debug(mixed $variable = '', ?string $title = null, ?string $group = null): void
 {
     if (!\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP(
         \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
@@ -25,5 +27,5 @@ function debug($variable = '', $title = null, $group = null)
     ) {
         return;
     }
-    \TYPO3\CMS\Core\Utility\DebugUtility::debug($variable, $title, $group);
+    \TYPO3\CMS\Core\Utility\DebugUtility::debug($variable, $title ?? '', $group ?? '');
 }

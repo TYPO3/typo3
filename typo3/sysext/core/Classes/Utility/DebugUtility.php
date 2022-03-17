@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -25,26 +27,16 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
  */
 class DebugUtility
 {
-    /**
-     * @var bool
-     */
-    protected static $plainTextOutput = true;
+    protected static bool $plainTextOutput = true;
 
-    /**
-     * @var bool
-     */
-    protected static $ansiColorUsage = true;
+    protected static bool $ansiColorUsage = true;
 
     /**
      * Debug
      *
      * Directly echos out debug information as HTML (or plain in CLI context)
-     *
-     * @param string $var
-     * @param string $header
-     * @param string $group
      */
-    public static function debug($var = '', $header = 'Debug', $group = 'Debug')
+    public static function debug(mixed $var = '', string $header = 'Debug', string $group = 'Debug'): void
     {
         // buffer the output of debug if no buffering started before
         if (ob_get_level() === 0) {
@@ -83,9 +75,9 @@ class DebugUtility
      * Converts a variable to a string
      *
      * @param mixed $variable
-     * @return string plain, not HTML encoded string
+     * @return string Plain, not HTML encoded string
      */
-    public static function convertVariableToString($variable)
+    public static function convertVariableToString(mixed $variable): string
     {
         $string = self::renderDump($variable, '', true, false);
         return $string === '' ? '| debug |' : $string;
@@ -93,12 +85,8 @@ class DebugUtility
 
     /**
      * Opens a debug message inside a popup window
-     *
-     * @param mixed $debugVariable
-     * @param string $header
-     * @param string $group
      */
-    public static function debugInPopUpWindow($debugVariable, $header = 'Debug', $group = 'Debug')
+    public static function debugInPopUpWindow(mixed $debugVariable, string $header = 'Debug', string $group = 'Debug'): void
     {
         $debugString = self::renderDump($debugVariable, sprintf('%s (%s)', $header, $group));
         $script = '
@@ -142,9 +130,9 @@ class DebugUtility
      * Displays the "path" of the function call stack in a string, using debug_backtrace
      *
      * @param bool $prependFileNames If set to true file names are added to the output
-     * @return string plain, not HTML encoded string
+     * @return string Plain, not HTML encoded string
      */
-    public static function debugTrail($prependFileNames = false)
+    public static function debugTrail(bool $prependFileNames = false): string
     {
         $trail = debug_backtrace(0);
         $trail = array_reverse($trail);
@@ -169,10 +157,10 @@ class DebugUtility
     /**
      * Displays an array as rows in a table. Useful to debug output like an array of database records.
      *
-     * @param mixed $rows Array of arrays with similar keys
+     * @param array $rows Array of arrays with similar keys
      * @param string $header Table header
      */
-    public static function debugRows($rows, $header = '')
+    public static function debugRows(array $rows, string $header = ''): void
     {
         self::debug($rows, $header);
     }
@@ -184,14 +172,14 @@ class DebugUtility
      * @param int $characters Number of characters to show
      * @return string The string with ASCII values in separated by a space char.
      */
-    public static function ordinalValue($string, $characters = 100)
+    public static function ordinalValue(string $string, int $characters = 100): string
     {
         if (strlen($string) < $characters) {
             $characters = strlen($string);
         }
         $valuestring = '';
         for ($i = 0; $i < $characters; $i++) {
-            $valuestring .= ' ' . ord(substr($string, $i, 1));
+            $valuestring .= ' ' . ord($string[$i]);
         }
         return trim($valuestring);
     }
@@ -204,7 +192,7 @@ class DebugUtility
      * @param mixed $array_in Array to view
      * @return string HTML output
      */
-    public static function viewArray($array_in)
+    public static function viewArray(mixed $array_in): string
     {
         return self::renderDump($array_in);
     }
@@ -215,7 +203,7 @@ class DebugUtility
      * @param mixed $array_in Array to print visually (in a table).
      * @see viewArray()
      */
-    public static function printArray($array_in)
+    public static function printArray(mixed $array_in): void
     {
         echo self::renderDump($array_in);
     }
@@ -225,11 +213,11 @@ class DebugUtility
      *
      * @param mixed $variable
      * @param string $title
-     * @param bool|null $plainText
-     * @param bool|null $ansiColors
+     * @param bool|null $plainText Omit or pass null to use the current default.
+     * @param bool|null $ansiColors Omit or pass null to use the current default.
      * @return string
      */
-    protected static function renderDump($variable, $title = '', $plainText = null, $ansiColors = null)
+    protected static function renderDump(mixed $variable, string $title = '', ?bool $plainText = null, ?bool $ansiColors = null): string
     {
         $plainText = $plainText ?? Environment::isCli() && self::$plainTextOutput;
         $ansiColors = $ansiColors ?? Environment::isCli() && self::$ansiColorUsage;
@@ -244,9 +232,8 @@ class DebugUtility
      * This method is usually only used in tests to preset the output behaviour
      *
      * @internal
-     * @param bool $plainTextOutput
      */
-    public static function usePlainTextOutput($plainTextOutput)
+    public static function usePlainTextOutput(bool $plainTextOutput): void
     {
         static::$plainTextOutput = $plainTextOutput;
     }
@@ -259,9 +246,8 @@ class DebugUtility
      * This method is usually only used in tests to preset the ansi color usage
      *
      * @internal
-     * @param bool $ansiColorUsage
      */
-    public static function useAnsiColor($ansiColorUsage)
+    public static function useAnsiColor(bool $ansiColorUsage): void
     {
         static::$ansiColorUsage = $ansiColorUsage;
     }

@@ -16,6 +16,7 @@ expectations and existing behavior.
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
 - :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
 - :php:`\TYPO3\CMS\Core\Utility\CommandUtility`
+- :php:`\TYPO3\CMS\Core\Utility\DebugUtility`
 - :php:`\TYPO3\CMS\Core\Utility\DiffUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 - :php:`\TYPO3\CMS\Core\Utility\PathUtility`
