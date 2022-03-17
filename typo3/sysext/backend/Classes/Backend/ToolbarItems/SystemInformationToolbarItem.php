@@ -291,8 +291,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             return;
         }
         // check if git exists
+        $returnCode = 0;
         CommandUtility::exec('git --version', $_, $returnCode);
-        if ((int)$returnCode !== 0) {
+        if ($returnCode !== 0) {
             // git is not available
             return;
         }

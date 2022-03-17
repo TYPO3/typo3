@@ -1631,11 +1631,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\CommandUtility\\:\\:checkCommand\\(\\) should return bool but returns int\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Utility/CommandUtility.php
-
-		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/CsvUtility.php

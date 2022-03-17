@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -49,10 +51,8 @@ class CommandUtility
 {
     /**
      * Tells if object is already initialized
-     *
-     * @var bool
      */
-    protected static $initialized = false;
+    protected static bool $initialized = false;
 
     /**
      * Contains application list. This is an array with the following structure:
@@ -61,27 +61,25 @@ class CommandUtility
      * - valid => TRUE or FALSE
      * Array key is identical to 'app'.
      *
-     * @var array
+     * @var array<string, array{app: string, path: string, valid: bool}>
      */
-    protected static $applications = [];
+    protected static array $applications = [];
 
     /**
      * Paths where to search for applications
      *
-     * @var array
+     * The key is a path. The value is either the same path, or false if the path is not valid.
+     *
+     * @var array<string, string|false>
      */
-    protected static $paths;
+    protected static array $paths;
 
     /**
      * Wrapper function for php exec function
-     * Needs to be central to have better control and possible fix for issues
      *
-     * @param string $command
-     * @param array|null $output
-     * @param int $returnValue
-     * @return string
+     * Needs to be central to have better control and possible fix for issues
      */
-    public static function exec($command, &$output = null, &$returnValue = 0)
+    public static function exec(string $command, ?array &$output = null, int &$returnValue = 0): string
     {
         return exec($command, $output, $returnValue);
     }
@@ -94,7 +92,7 @@ class CommandUtility
      * @param string $path Override the default path (e.g. used by the install tool)
      * @return string Compiled command that deals with ImageMagick & GraphicsMagick
      */
-    public static function imageMagickCommand($command, $parameters, $path = '')
+    public static function imageMagickCommand(string $command, string $parameters, string $path = ''): string
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
         $isExt = Environment::isWindows() ? '.exe' : '';
@@ -121,8 +119,8 @@ class CommandUtility
             // Determine whether the strip profile action has be disabled by TypoScript:
             if ($gfxConf['processor_stripColorProfileByDefault']
                 && $gfxConf['processor_stripColorProfileCommand'] !== ''
-                && !str_contains($parameters, $gfxConf['processor_stripColorProfileCommand'])
                 && $parameters !== '-version'
+                && !str_contains($parameters, $gfxConf['processor_stripColorProfileCommand'])
                 && !str_contains($parameters, '###SkipStripProfile###')
             ) {
                 $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
@@ -157,16 +155,16 @@ class CommandUtility
      * Checks if a command is valid or not, updates global variables
      *
      * @param string $cmd The command that should be executed. eg: "convert"
-     * @param string $handler Executer for the command. eg: "perl"
-     * @return bool FALSE if cmd is not found, or -1 if the handler is not found
+     * @param string $handler Executor for the command. eg: "perl"
+     * @return bool|int True if the command is valid; False if cmd is not found; -1 if the handler is not found
      */
-    public static function checkCommand($cmd, $handler = '')
+    public static function checkCommand(string $cmd, string $handler = ''): bool|int
     {
         if (!self::init()) {
             return false;
         }
 
-        if ($handler && !self::checkCommand($handler)) {
+        if ($handler !== '' && !self::checkCommand($handler)) {
             return -1;
         }
         // Already checked and valid
@@ -230,9 +228,9 @@ class CommandUtility
      * @param string $cmd The command that should be executed. eg: "convert"
      * @param string $handler Handler (executor) for the command. eg: "perl"
      * @param string $handlerOpt Options for the handler, like '-w' for "perl"
-     * @return mixed Returns command string, or FALSE if cmd is not found, or -1 if the handler is not found
+     * @return string|bool|int Returns command string, or FALSE if cmd is not found, or -1 if the handler is not found
      */
-    public static function getCommand($cmd, $handler = '', $handlerOpt = '')
+    public static function getCommand(string $cmd, string $handler = '', string $handlerOpt = ''): string|bool|int
     {
         if (!self::init()) {
             return false;
@@ -262,7 +260,7 @@ class CommandUtility
      *
      * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with public web path
      */
-    public static function addPaths($paths)
+    public static function addPaths(string $paths): void
     {
         self::initPaths($paths);
     }
@@ -271,32 +269,23 @@ class CommandUtility
      * Returns an array of search paths
      *
      * @param bool $addInvalid If set the array contains invalid path too. Then the key is the path and the value is empty
-     * @return array Array of search paths (empty if exec is disabled)
+     * @return array<string, string|false> Array of search paths (empty if exec is disabled)
      */
-    public static function getPaths($addInvalid = false)
+    public static function getPaths(bool $addInvalid = false): array
     {
         if (!self::init()) {
             return [];
         }
 
-        $paths = self::$paths;
-
-        if (!$addInvalid) {
-            foreach ($paths as $path => $validPath) {
-                if (!$validPath) {
-                    unset($paths[$path]);
-                }
-            }
-        }
-        return $paths;
+        return $addInvalid
+            ? self::$paths
+            : array_filter(self::$paths);
     }
 
     /**
      * Initializes this class
-     *
-     * @return bool
      */
-    protected static function init()
+    protected static function init(): bool
     {
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {
             return false;
@@ -314,7 +303,7 @@ class CommandUtility
      *
      * @param string $paths Comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with public web path
      */
-    protected static function initPaths($paths = '')
+    protected static function initPaths(string $paths = ''): void
     {
         $doCheck = false;
 
@@ -326,18 +315,16 @@ class CommandUtility
         // Merge the submitted paths array to the global
         if ($paths) {
             $paths = GeneralUtility::trimExplode(',', $paths, true);
-            if (is_array($paths)) {
-                foreach ($paths as $path) {
-                    // Make absolute path of relative
-                    if (!preg_match('#^/#', $path)) {
-                        $path = Environment::getPublicPath() . '/' . $path;
-                    }
-                    if (!isset(self::$paths[$path])) {
-                        if (@is_dir($path)) {
-                            self::$paths[$path] = $path;
-                        } else {
-                            self::$paths[$path] = false;
-                        }
+            foreach ($paths as $path) {
+                // Make absolute path of relative
+                if (!str_starts_with($path, '/')) {
+                    $path = Environment::getPublicPath() . '/' . $path;
+                }
+                if (!isset(self::$paths[$path])) {
+                    if (@is_dir($path)) {
+                        self::$paths[$path] = $path;
+                    } else {
+                        self::$paths[$path] = false;
                     }
                 }
             }
@@ -356,9 +343,9 @@ class CommandUtility
     /**
      * Processes and returns the paths from $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']
      *
-     * @return array Array of commands and path
+     * @return array<string, array{app: string, path: string, valid: bool}> Array of commands and path
      */
-    protected static function getConfiguredApps()
+    protected static function getConfiguredApps(): array
     {
         $cmdArr = [];
 
@@ -382,9 +369,9 @@ class CommandUtility
     /**
      * Sets the search paths from different sources, internal
      *
-     * @return array Array of absolute paths (keys and values are equal)
+     * @return array<string, string> Array of absolute paths (keys and values are equal)
      */
-    protected static function getPathsInternal()
+    protected static function getPathsInternal(): array
     {
         $pathsArr = [];
         $sysPathArr = [];
@@ -424,9 +411,7 @@ class CommandUtility
             ]);
         }
 
-        $pathsArr = array_merge($pathsArr, $sysPathArr);
-
-        return $pathsArr;
+        return array_merge($pathsArr, $sysPathArr);
     }
 
     /**
@@ -435,7 +420,7 @@ class CommandUtility
      * @param string $path Input path
      * @return string Output path
      */
-    protected static function fixPath($path)
+    protected static function fixPath(string $path): string
     {
         return str_replace('//', '/', $path . '/');
     }
@@ -448,7 +433,7 @@ class CommandUtility
      * @param string[] $input Input arguments to be escaped
      * @return string[] Escaped shell arguments
      */
-    public static function escapeShellArguments(array $input)
+    public static function escapeShellArguments(array $input): array
     {
         $isUTF8Filesystem = !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']);
         $currentLocale = false;
@@ -504,7 +489,7 @@ class CommandUtility
      * @param string $input Input-argument to be escaped
      * @return string Escaped shell argument
      */
-    public static function escapeShellArgument($input)
+    public static function escapeShellArgument(string $input): string
     {
         return self::escapeShellArguments([$input])[0];
     }

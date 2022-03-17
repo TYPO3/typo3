@@ -76,7 +76,7 @@ class GraphicsMagickPreset extends AbstractImagePreset
             }
             if (@is_file($path . $executable)) {
                 $command = escapeshellarg($path . $executable) . ' -version';
-                $executingResult = false;
+                $executingResult = [];
                 CommandUtility::exec($command, $executingResult);
                 // First line of exec command should contain string GraphicsMagick
                 $firstResultLine = array_shift($executingResult);
