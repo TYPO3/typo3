@@ -755,13 +755,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 continue;
             }
 
-            [$key, $value] = explode(':', $line, 2);
-            $key = trim($key);
-            if (
-                empty($key)
-                || empty($value)
-                || !in_array($key, $metaDataProperties, true)
-            ) {
+            $parts = explode(':', $line, 2);
+            $key = trim($parts[0]);
+            if (!($parts[1] ?? null) || !in_array($key, $metaDataProperties, true)) {
                 continue;
             }
 
@@ -773,7 +769,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     $value = '';
                 }
             } else {
-                $value = trim($value, " '\"\r");
+                $value = trim($parts[1], " '\"\r");
             }
 
             $metaData[$key] = $value;
