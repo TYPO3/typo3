@@ -33,6 +33,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'POST parsedBody(_POST) as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',
             'method' => 'POST',
+            'queryParams' => [],
             'parsedBody' => ['param1' => 'value1'],
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -42,12 +43,12 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                 'method' => 'POST',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => [],
-                'body' => '',
+                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -56,6 +57,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'PATCH body as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',
             'method' => 'PATCH',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -70,7 +72,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -79,6 +81,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'PUT body as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',
             'method' => 'PUT',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -93,7 +96,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -102,6 +105,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'DELETE body as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',
             'method' => 'DELETE',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -116,7 +120,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -125,6 +129,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'POST parsedBody(_POST) as parsedBody and queryParams' => [
             'uri' => 'https://acme.com/request-mirror?queryParam1=queryValue1',
             'method' => 'POST',
+            'queryParams' => [],
             'parsedBody' => ['param1' => 'value1'],
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -134,12 +139,12 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                 'method' => 'POST',
                 'parsedBody' => ['param1' => 'value1'],
                 'queryParams' => ['queryParam1' => 'queryValue1'],
-                'body' => '',
+                'body' => \GuzzleHttp\Psr7\Query::build(['param1' => 'value1']),
                 'headers' => [
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -148,6 +153,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'PATCH body as parsedBody and queryParams' => [
             'uri' => 'https://acme.com/request-mirror?queryParam1=queryValue1',
             'method' => 'PATCH',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -162,7 +168,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -171,6 +177,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'PUT body as parsedBody and queryParams' => [
             'uri' => 'https://acme.com/request-mirror?queryParam1=queryValue1',
             'method' => 'PUT',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -185,7 +192,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -194,6 +201,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         yield 'DELETE body as parsedBody and queryParams' => [
             'uri' => 'https://acme.com/request-mirror?queryParam1=queryValue1',
             'method' => 'DELETE',
+            'queryParams' => [],
             'parsedBody' => null,
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -208,7 +216,67 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
                     'Content-type' => [
                         'application/x-www-form-urlencoded',
                     ],
-                    'host' => [
+                    'Host' => [
+                        'acme.com',
+                    ],
+                ],
+            ],
+        ];
+        yield 'GET missing parsedParams filled from request query' => [
+            'uri' => 'https://acme.com/request-mirror?queryParam1=value1',
+            'method' => 'GET',
+            'queryParams' => [],
+            'parsedBody' => null,
+            [],
+            'body' => null,
+            'expectedJsonKeyValues' => [
+                'method' => 'GET',
+                'uri' => 'https://acme.com/request-mirror?queryParam1=value1',
+                'queryParams' => ['queryParam1' => 'value1'],
+                'body' => '',
+                'headers' => [
+                    'Host' => [
+                        'acme.com',
+                    ],
+                ],
+            ],
+        ];
+        yield 'GET added missing request uri query arguments from queryParams' => [
+            'uri' => 'https://acme.com/request-mirror',
+            'method' => 'GET',
+            'queryParams' => ['queryParam1' => 'value1'],
+            'parsedBody' => null,
+            [],
+            'body' => null,
+            'expectedJsonKeyValues' => [
+                'method' => 'GET',
+                'uri' => 'https://acme.com/request-mirror?queryParam1=value1',
+                'queryParams' => ['queryParam1' => 'value1'],
+                'body' => '',
+                'headers' => [
+                    'Host' => [
+                        'acme.com',
+                    ],
+                ],
+            ],
+        ];
+        yield 'GET request uri queryParams and queryParams are merged' => [
+            'uri' => 'https://acme.com/request-mirror?queryParam2=value2',
+            'method' => 'GET',
+            'queryParams' => ['queryParam1' => 'value1'],
+            'parsedBody' => null,
+            [],
+            'body' => null,
+            'expectedJsonKeyValues' => [
+                'method' => 'GET',
+                'uri' => 'https://acme.com/request-mirror?queryParam1=value1&queryParam2=value2',
+                'queryParams' => [
+                    'queryParam1' => 'value1',
+                    'queryParam2' => 'value2',
+                ],
+                'body' => '',
+                'headers' => [
+                    'Host' => [
                         'acme.com',
                     ],
                 ],
@@ -223,10 +291,18 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
      * @test
      * @dataProvider ensureRequestMappingWorksDataProvider
      */
-    public function ensureRequestMappingWorks(string $uri, string $method, ?array $parsedBody, array $headers, ?string $body, array $expectedJsonKeyValues): void
-    {
+    public function ensureRequestMappingWorks(
+        string $uri,
+        string $method,
+        array $queryParams,
+        ?array $parsedBody,
+        array $headers,
+        ?string $body,
+        array $expectedJsonKeyValues
+    ): void {
         $request = (new InternalRequest($uri))
             ->withMethod($method)
+            ->withQueryParams($queryParams)
             ->withParsedBody($parsedBody);
         foreach ($headers as $headerName => $headerValue) {
             $request = $request->withAddedHeader($headerName, $headerValue);
@@ -241,7 +317,7 @@ class InternalRequestDataMappingTest extends FunctionalTestCase
         self::assertSame(200, $response->getStatusCode());
         $json = json_decode((string)$response->getBody(), null, 512, JSON_THROW_ON_ERROR | JSON_OBJECT_AS_ARRAY);
         foreach ($expectedJsonKeyValues as $expectedKey => $expectedValue) {
-            self::assertSame($expectedValue, $json[$expectedKey] ?? null);
+            self::assertSame($expectedValue, $json[$expectedKey] ?? null, 'Field "' . $expectedKey . '" must match value');
         }
     }
 }

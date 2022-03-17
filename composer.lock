@@ -8315,20 +8315,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "e515477b848bd6fb10e0f5244909aae6b5b88a56"
+                "reference": "85eb4fbccacdf04c26d78828b2b93d0b61db280b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/e515477b848bd6fb10e0f5244909aae6b5b88a56",
-                "reference": "e515477b848bd6fb10e0f5244909aae6b5b88a56",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/85eb4fbccacdf04c26d78828b2b93d0b61db280b",
+                "reference": "85eb4fbccacdf04c26d78828b2b93d0b61db280b",
                 "shasum": ""
             },
             "require": {
+                "ext-pdo": "*",
                 "guzzlehttp/psr7": "^1.7 || ^2.0",
                 "mikey179/vfsstream": "~1.6.10",
                 "php": "^8.1",
                 "phpunit/phpunit": "^9.5.10",
-                "psr/container": "^1.0",
+                "psr/container": "^1.1.0 || ^2.0.0",
                 "typo3/cms-backend": "12.*.*@dev",
                 "typo3/cms-core": "12.*.*@dev",
                 "typo3/cms-extbase": "12.*.*@dev",
@@ -8342,7 +8343,8 @@
                 "doctrine/dbal": "2.13.0 || 2.13.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.4.6",
+                "phpstan/phpstan": "^1.6.7",
+                "phpstan/phpstan-phpunit": "^1.1.1",
                 "typo3/cms-workspaces": "12.*.*@dev",
                 "typo3/coding-standards": "^0.5.0"
             },
@@ -8382,7 +8384,7 @@
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
                 "source": "https://github.com/TYPO3/testing-framework/tree/main"
             },
-            "time": "2022-03-04T16:38:27+00:00"
+            "time": "2022-05-09T22:35:11+00:00"
         }
     ],
     "aliases": [],
