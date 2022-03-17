@@ -26,11 +26,8 @@ class ClassNamingUtility
      * Translates a model name to an appropriate repository name
      * e.g. Tx_Extbase_Domain_Model_Foo to Tx_Extbase_Domain_Repository_FooRepository
      * or \TYPO3\CMS\Extbase\Domain\Model\Foo to \TYPO3\CMS\Extbase\Domain\Repository\FooRepository
-     *
-     * @param string $modelName Name of the model to translate
-     * @return string Name of the repository
      */
-    public static function translateModelNameToRepositoryName($modelName)
+    public static function translateModelNameToRepositoryName(string $modelName): string
     {
         return str_replace(
             '\\Domain\\Model',
@@ -43,11 +40,8 @@ class ClassNamingUtility
      * Translates a repository name to an appropriate model name
      * e.g. Tx_Extbase_Domain_Repository_FooRepository to Tx_Extbase_Domain_Model_Foo
      * or \TYPO3\CMS\Extbase\Domain\Repository\FooRepository to \TYPO3\CMS\Extbase\Domain\Model\Foo
-     *
-     * @param string $repositoryName Name of the repository to translate
-     * @return string Name of the model
      */
-    public static function translateRepositoryNameToModelName($repositoryName)
+    public static function translateRepositoryNameToModelName(string $repositoryName): string
     {
         return preg_replace(
             ['/\\\\Domain\\\\Repository/', '/Repository$/'],
@@ -61,24 +55,19 @@ class ClassNamingUtility
      * into several pieces like vendorName, extensionName, subpackageKey and controllerName
      *
      * @param string $controllerObjectName The controller name to be exploded
-     * @return array An array of controllerObjectName pieces
+     * @return array<string> An array of controllerObjectName pieces
      */
-    public static function explodeObjectControllerName($controllerObjectName)
+    public static function explodeObjectControllerName(string $controllerObjectName): array
     {
         $matches = [];
-
-        if (strpos($controllerObjectName, 'TYPO3\\CMS') === 0) {
-            $extensionName = '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)';
-        } else {
-            $extensionName = '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';
-        }
-
+        $extensionName = str_starts_with($controllerObjectName, 'TYPO3\\CMS')
+            ? '^(?P<vendorName>[^\\\\]+\\\[^\\\\]+)\\\(?P<extensionName>[^\\\\]+)'
+            : '^(?P<vendorName>[^\\\\]+)\\\\(?P<extensionName>[^\\\\]+)';
         preg_match(
             '/' . $extensionName . '\\\\(Controller|Command|(?P<subpackageKey>.+)\\\\Controller)\\\\(?P<controllerName>[a-z\\\\]+)Controller$/ix',
             $controllerObjectName,
             $matches
         );
-
-        return array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+        return array_filter($matches, is_string(...), ARRAY_FILTER_USE_KEY);
     }
 }

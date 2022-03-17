@@ -14,6 +14,7 @@ signatures. The types are consistent with existing docblock-documented type
 expectations and existing behavior.
 
 - :php:`\TYPO3\CMS\Core\Utility\ArrayUtility`
+- :php:`\TYPO3\CMS\Core\Utility\ClassNamingUtility`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility`
 
 
@@ -28,7 +29,7 @@ Before the result of such method calls was undefined or inconsistent.
 Affected Installations
 ======================
 
-Code that are passing an invalid type will need to ensure they pass a correct type.
+Code routines that are passing an invalid type will need to ensure they pass a correct type.
 
 If a code file is running with :php:`declare(strict_types=1);`, that includes, for instance,
 passing a numeric string to a method that expects an int or float. Those will need to be
