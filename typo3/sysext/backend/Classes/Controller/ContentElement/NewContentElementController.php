@@ -17,13 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -45,48 +45,23 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class NewContentElementController
 {
-    /**
-     * Page id
-     *
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * Sys language
-     *
-     * @var int
-     */
-    protected $sys_language = 0;
-
-    /**
-     * Return URL.
-     *
-     * @var string
-     */
-    protected $R_URI = '';
+    protected int $id = 0;
+    protected int $uid_pid = 0;
+    protected array $pageInfo = [];
+    protected int $sys_language = 0;
+    protected string $returnUrl = '';
 
     /**
      * If set, the content is destined for a specific column.
-     *
-     * @var int|null
      */
-    protected $colPos;
-
-    /**
-     * @var int
-     */
-    protected $uid_pid;
-
-    /**
-     * @var array
-     */
-    protected $pageInfo;
+    protected int|null $colPos = null;
 
     public function __construct(
         protected readonly IconFactory $iconFactory,
         protected readonly UriBuilder $uriBuilder,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly DependencyOrderingService $dependencyOrderingService,
     ) {
     }
 
@@ -106,7 +81,7 @@ class NewContentElementController
         // Setting internal vars:
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $this->sys_language = (int)($parsedBody['sys_language_uid'] ?? $queryParams['sys_language_uid'] ?? 0);
-        $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         $colPos = $parsedBody['colPos'] ?? $queryParams['colPos'] ?? null;
         $this->colPos = $colPos === null ? null : (int)$colPos;
         $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
@@ -128,46 +103,41 @@ class NewContentElementController
             return new HtmlResponse('No Access');
         }
         // Whether position selection must be performed (no colPos was yet defined)
-        $positionSelection = !isset($this->colPos);
-        // Get processed wizard items from configuration
-        $wizardItems = $this->getWizards();
+        $positionSelection = $this->colPos === null;
 
-        // Call hooks for manipulating the wizard items
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] ?? [] as $className) {
-            $hookObject = GeneralUtility::makeInstance($className);
-            if (!$hookObject instanceof NewContentElementWizardHookInterface) {
-                throw new \UnexpectedValueException(
-                    $className . ' must implement interface ' . NewContentElementWizardHookInterface::class,
-                    1227834741
-                );
-            }
-            $hookObject->manipulateWizardItems($wizardItems, $this);
-        }
+        // Get processed and modified wizard items
+        $wizardItems = $this->eventDispatcher->dispatch(
+            new ModifyNewContentElementWizardItemsEvent(
+                $this->getWizards(),
+                $this->pageInfo,
+                $this->colPos,
+                $this->sys_language,
+                $this->uid_pid,
+            )
+        )->getWizardItems();
 
         $key = 0;
         $menuItems = [];
-        foreach ($wizardItems as $wizardKey => $wInfo) {
+        foreach ($wizardItems as $wizardKey => $wizardItem) {
             // An item is either a header or an item rendered with title/description and icon:
-            if (isset($wInfo['header'])) {
+            if (isset($wizardItem['header'])) {
                 $menuItems[] = [
-                    'label' => $wInfo['header'] ?: '-',
+                    'label' => $wizardItem['header'] ?: '-',
                     'contentItems' => [],
                 ];
                 $key = count($menuItems) - 1;
             } else {
                 // Initialize the view variables for the item
                 $viewVariables = [
-                    'wizardInformation' => $wInfo,
+                    'wizardInformation' => $wizardItem,
                     'wizardKey' => $wizardKey,
-                    'icon' => $this->iconFactory->getIcon(($wInfo['iconIdentifier'] ?? ''), Icon::SIZE_DEFAULT, ($wInfo['iconOverlay'] ?? ''))->render(),
+                    'icon' => $this->iconFactory->getIcon(($wizardItem['iconIdentifier'] ?? ''), Icon::SIZE_DEFAULT, ($wizardItem['iconOverlay'] ?? ''))->render(),
                 ];
-                // Check wizardItem for defVals
-                $itemParams = [];
-                parse_str($wInfo['params'] ?? '', $itemParams);
-                $defVals = $itemParams['defVals']['tt_content'] ?? [];
+                // Get default values for the wizard item
+                $defVals = (array)($wizardItem['tt_content_defValues'] ?? []);
                 if (!$positionSelection) {
                     // In case no position has to be selected, we can just add the target
-                    if (($wInfo['saveAndClose'] ?? false)) {
+                    if (($wizardItem['saveAndClose'] ?? false)) {
                         // Go to DataHandler directly instead of FormEngine
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                             'data' => [
@@ -179,7 +149,7 @@ class NewContentElementController
                                     ]),
                                 ],
                             ],
-                            'redirect' => $this->R_URI,
+                            'redirect' => $this->returnUrl,
                         ]);
                     } else {
                         $viewVariables['target'] = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
@@ -188,7 +158,7 @@ class NewContentElementController
                                     $this->uid_pid => 'new',
                                 ],
                             ],
-                            'returnUrl' => $this->R_URI,
+                            'returnUrl' => $this->returnUrl,
                             'defVals' => [
                                 'tt_content' => array_replace($defVals, [
                                     'colPos' => $this->colPos,
@@ -203,10 +173,10 @@ class NewContentElementController
                             'action' => 'positionMap',
                             'id' => $this->id,
                             'sys_language_uid' => $this->sys_language,
-                            'returnUrl' => $this->R_URI,
+                            'returnUrl' => $this->returnUrl,
                         ]),
                         'defVals' => $defVals,
-                        'saveAndClose' => (bool)($wInfo['saveAndClose'] ?? false),
+                        'saveAndClose' => (bool)($wizardItem['saveAndClose'] ?? false),
                     ], true);
                 }
                 $menuItems[$key]['contentItems'][] = $viewVariables;
@@ -231,7 +201,7 @@ class NewContentElementController
         $posMap->cur_sys_language = $this->sys_language;
         $posMap->defVals = (array)($request->getParsedBody()['defVals'] ?? []);
         $posMap->saveAndClose = (bool)($request->getParsedBody()['saveAndClose'] ?? false);
-        $posMap->R_URI =  $this->R_URI;
+        $posMap->R_URI = $this->returnUrl;
         $view = $this->backendViewFactory->create($request);
         $view->assign('posMap', $posMap->printContentElementColumns($this->id));
         return new HtmlResponse($view->render('NewContentElement/PositionMap'));
@@ -243,47 +213,43 @@ class NewContentElementController
      */
     protected function getWizards(): array
     {
-        $wizardItems = [];
         $wizards = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
-        $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
-        if (is_array($wizards)) {
-            foreach ($wizards as $groupKey => $wizardGroup) {
-                $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
-                $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
+        if (!is_array($wizards) || $wizards === []) {
+            return [];
+        }
+        $wizardItems = [];
+        $appendWizards = $this->getAppendWizards((array)($wizards['elements.'] ?? []));
+        foreach ($wizards as $groupKey => $wizardGroup) {
+            $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
+            $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
+        }
+        foreach ($this->dependencyOrderingService->orderByDependencies($wizards) as $groupKey => $wizardGroup) {
+            $groupKey = rtrim($groupKey, '.');
+            $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'] ?? '', true);
+            $showAll = in_array('*', $showItems, true);
+            $groupItems = [];
+            $appendWizardElements = $appendWizards[$groupKey . '.']['elements.'] ?? null;
+            if (is_array($appendWizardElements)) {
+                $wizardElements = array_merge((array)($wizardGroup['elements.'] ?? []), $appendWizardElements);
+            } else {
+                $wizardElements = $wizardGroup['elements.'] ?? [];
             }
-            $wizards = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizards);
-
-            foreach ($wizards as $groupKey => $wizardGroup) {
-                $groupKey = rtrim($groupKey, '.');
-                $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'] ?? '', true);
-                $showAll = in_array('*', $showItems, true);
-                $groupItems = [];
-                $appendWizardElements = $appendWizards[$groupKey . '.']['elements.'] ?? null;
-                if (is_array($appendWizardElements)) {
-                    $wizardElements = array_merge((array)($wizardGroup['elements.'] ?? []), $appendWizardElements);
-                } else {
-                    $wizardElements = $wizardGroup['elements.'] ?? [];
-                }
-                if (is_array($wizardElements)) {
-                    foreach ($wizardElements as $itemKey => $itemConf) {
-                        $itemKey = rtrim($itemKey, '.');
-                        if ($showAll || in_array($itemKey, $showItems)) {
-                            $tmpItem = $this->getWizardItem($itemConf);
-                            if ($tmpItem) {
-                                $groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
-                            }
-                        }
+            if (is_array($wizardElements)) {
+                foreach ($wizardElements as $itemKey => $itemConf) {
+                    $itemKey = rtrim($itemKey, '.');
+                    if ($itemConf !== [] && ($showAll || in_array($itemKey, $showItems))) {
+                        $groupItems[$groupKey . '_' . $itemKey] = $this->getWizardItem($itemConf);
                     }
                 }
-                if (!empty($groupItems)) {
-                    $wizardItems[$groupKey] = $this->getWizardGroupHeader($wizardGroup);
-                    $wizardItems = array_merge($wizardItems, $groupItems);
-                }
+            }
+            if (!empty($groupItems)) {
+                $wizardItems[$groupKey]['header'] = $this->getLanguageService()->sL($wizardGroup['header'] ?? '');
+                $wizardItems = array_merge($wizardItems, $groupItems);
             }
         }
+
         // Remove elements where preset values are not allowed:
-        $this->removeInvalidWizardItems($wizardItems);
-        return $wizardItems;
+        return $this->removeInvalidWizardItems($wizardItems);
     }
 
     protected function getAppendWizards(array $wizardElements): array
@@ -302,27 +268,17 @@ class NewContentElementController
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
         $itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
         $itemConf['saveAndClose'] = (bool)($itemConf['saveAndClose'] ?? false);
-        $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
+        $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'] ?? [];
         unset($itemConf['tt_content_defValues.']);
         return $itemConf;
     }
 
-    protected function getWizardGroupHeader(array $wizardGroup): array
-    {
-        return [
-            'header' => $this->getLanguageService()->sL($wizardGroup['header'] ?? ''),
-        ];
-    }
-
     /**
-     * Checks the array for elements which might contain unallowed default values and will unset them!
-     * Looks for the "tt_content_defValues" key in each element and if found it will traverse that array as fieldname /
-     * value pairs and check.
-     * The values will be added to the "params" key of the array (which should probably be unset or empty by default).
-     *
-     * @param array $wizardItems Wizard items, passed by reference
+     * Checks the array for elements which might contain invalid default values and will unset them!
+     * Looks for the "tt_content_defValues" key in each element and if found it will traverse that
+     * array as fieldname / value pairs and check.
      */
-    protected function removeInvalidWizardItems(array &$wizardItems): void
+    protected function removeInvalidWizardItems(array $wizardItems): array
     {
         $removeItems = [];
         $keepItems = [];
@@ -331,86 +287,66 @@ class NewContentElementController
         $headersUsed = [];
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
-            // Exploding parameter string, if any (old style)
-            if ($wizardItems[$key]['params'] ?? false) {
-                // Explode GET vars recursively
-                $tempGetVars = [];
-                parse_str($wizardItems[$key]['params'], $tempGetVars);
-                // If tt_content values are set, merge them into the tt_content_defValues array,
-                // unset them from $tempGetVars and re-implode $tempGetVars into the param string
-                // (in case remaining parameters are around).
-                if (is_array($tempGetVars['defVals']['tt_content'])) {
-                    $wizardItems[$key]['tt_content_defValues'] = array_merge(
-                        is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : [],
-                        $tempGetVars['defVals']['tt_content']
-                    );
-                    unset($tempGetVars['defVals']['tt_content']);
-                    $wizardItems[$key]['params'] = HttpUtility::buildQueryString($tempGetVars, '&');
-                }
+            if (!is_array($cfg['tt_content_defValues'] ?? false)) {
+                continue;
             }
-            // If tt_content_defValues are defined...:
-            if (is_array($wizardItems[$key]['tt_content_defValues'] ?? false)) {
-                $backendUser = $this->getBackendUser();
-                // Traverse field values:
-                $wizardItems[$key]['params'] ??= '';
-                foreach ($wizardItems[$key]['tt_content_defValues'] as $fN => $fV) {
-                    if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
-                        // Get information about if the field value is OK:
-                        $config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
-                        $authModeDeny = $config['type'] === 'select' && ($config['authMode'] ?? false)
-                            && !$backendUser->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
-                        // explode TSconfig keys only as needed
-                        if (!isset($removeItems[$fN]) && isset($TCEFORM_TSconfig[$fN]['removeItems']) && $TCEFORM_TSconfig[$fN]['removeItems'] !== '') {
-                            $removeItems[$fN] = array_flip(GeneralUtility::trimExplode(
-                                ',',
-                                $TCEFORM_TSconfig[$fN]['removeItems'],
-                                true
-                            ));
-                        }
-                        if (!isset($keepItems[$fN]) && isset($TCEFORM_TSconfig[$fN]['keepItems']) && $TCEFORM_TSconfig[$fN]['keepItems'] !== '') {
-                            $keepItems[$fN] = array_flip(GeneralUtility::trimExplode(
-                                ',',
-                                $TCEFORM_TSconfig[$fN]['keepItems'],
-                                true
-                            ));
-                        }
-                        $isNotInKeepItems = !empty($keepItems[$fN]) && !isset($keepItems[$fN][$fV]);
-                        if ($authModeDeny || ($fN === 'CType' && (isset($removeItems[$fN][$fV]) || $isNotInKeepItems))) {
-                            // Remove element all together:
-                            unset($wizardItems[$key]);
-                            break;
-                        }
-                        // Add the parameter:
-                        $wizardItems[$key]['params'] .= '&defVals[tt_content][' . $fN . ']=' . rawurlencode($this->getLanguageService()->sL($fV));
-                        $tmp = explode('_', $key);
-                        $headersUsed[$tmp[0]] = $tmp[0];
-                    }
+            // If tt_content_defValues are defined, check access by traversing all fields with default values:
+            $backendUser = $this->getBackendUser();
+            foreach ($cfg['tt_content_defValues'] as $fieldName => $value) {
+                if (!is_array($GLOBALS['TCA']['tt_content']['columns'][$fieldName])) {
+                    continue;
                 }
+                // Get information about if the field value is OK:
+                $config = $GLOBALS['TCA']['tt_content']['columns'][$fieldName]['config'] ?? [];
+                $authModeDeny = ($config['type'] ?? '') === 'select' && ($config['authMode'] ?? false)
+                    && !$backendUser->checkAuthMode('tt_content', $fieldName, $value, $config['authMode']);
+                // Check removeItems
+                if (!isset($removeItems[$fieldName]) && ($TCEFORM_TSconfig[$fieldName]['removeItems'] ?? false)) {
+                    $removeItems[$fieldName] = array_flip(GeneralUtility::trimExplode(
+                        ',',
+                        $TCEFORM_TSconfig[$fieldName]['removeItems'],
+                        true
+                    ));
+                }
+                // Check keepItems
+                if (!isset($keepItems[$fieldName]) && ($TCEFORM_TSconfig[$fieldName]['keepItems'] ?? false)) {
+                    $keepItems[$fieldName] = array_flip(GeneralUtility::trimExplode(
+                        ',',
+                        $TCEFORM_TSconfig[$fieldName]['keepItems'],
+                        true
+                    ));
+                }
+                $isNotInKeepItems = !empty($keepItems[$fieldName]) && !isset($keepItems[$fieldName][$value]);
+                if ($authModeDeny || ($fieldName === 'CType' && (isset($removeItems[$fieldName][$value]) || $isNotInKeepItems))) {
+                    // Remove element all together:
+                    unset($wizardItems[$key]);
+                    break;
+                }
+                // Add the parameter:
+                $tmp = explode('_', $key);
+                $headersUsed[$tmp[0]] = $tmp[0];
             }
         }
         // remove headers without elements
         foreach ($wizardItems as $key => $cfg) {
             $tmp = explode('_', $key);
-            if (($tmp[0] ?? null) && !($tmp[1] ?? null) && !in_array($tmp[0], $headersUsed)) {
+            if (($tmp[0] ?? null) && !($tmp[1] ?? null) && !in_array($tmp[0], $headersUsed, true)) {
                 unset($wizardItems[$key]);
             }
         }
+        return $wizardItems;
     }
 
     /**
      * Prepare a wizard tab configuration for sorting.
-     *
-     * @param array  $wizardGroup TypoScript wizard tab configuration
-     * @param string $key         Which array key should be prepared
      */
-    protected function prepareDependencyOrdering(&$wizardGroup, $key)
+    protected function prepareDependencyOrdering(array $wizardGroup, string $key): array
     {
         if (isset($wizardGroup[$key])) {
             $wizardGroup[$key] = GeneralUtility::trimExplode(',', $wizardGroup[$key]);
-            $wizardGroup[$key] = array_map(static function ($s) {
-                return $s . '.';
-            }, $wizardGroup[$key]);
+            $wizardGroup[$key] = array_map(static fn ($s) => $s . '.', $wizardGroup[$key]);
         }
+        return $wizardGroup;
     }
 
     protected function getLanguageService(): LanguageService
@@ -421,37 +357,5 @@ class NewContentElementController
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
-    }
-
-    /**
-     * Provide information about the current page making use of the wizard.
-     */
-    public function getPageInfo(): array
-    {
-        return $this->pageInfo;
-    }
-
-    /**
-     * Provide information about the column position of the button that triggered the wizard.
-     */
-    public function getColPos(): ?int
-    {
-        return $this->colPos;
-    }
-
-    /**
-     * Provide information about the language used while triggering the wizard.
-     */
-    public function getSysLanguage(): int
-    {
-        return $this->sys_language;
-    }
-
-    /**
-     * Provide information about the element to position the new element after (uid) or into (pid).
-     */
-    public function getUidPid(): int
-    {
-        return $this->uid_pid;
     }
 }

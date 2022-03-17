@@ -1929,4 +1929,11 @@ return [
             'Breaking-96983-TableColumnSubType.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface' => [
+        'restFiles' => [
+            'Deprecation-97201-UnusedInterfaceForNewContentElementWizardHook.rst',
+            'Breaking-97201-RemovedHookForNewContentElementWizard.rst',
+            'Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst',
+        ],
+    ],
 ];

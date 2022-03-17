@@ -644,4 +644,10 @@ return [
             'Breaking-97174-RemovedHookForModifyingInfoModuleFooterContent.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'cms\'][\'db_new_content_el\'][\'wizardItemsHook\']' => [
+        'restFiles' => [
+            'Breaking-97201-RemovedHookForNewContentElementWizard.rst',
+            'Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst',
+        ],
+    ],
 ];
