@@ -13,7 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Service;
+namespace TYPO3\CMS\Core\LinkHandling;
 
 /**
  * This class provides basic functionality to encode and decode typolink strings

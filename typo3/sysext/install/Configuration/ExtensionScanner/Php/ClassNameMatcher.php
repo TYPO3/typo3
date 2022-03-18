@@ -1941,4 +1941,9 @@ return [
             'Feature-97159-NewTCATypeLink.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Service\TypoLinkCodecService' => [
+        'restFiles' => [
+            'Deprecation-97217-MovedTypoLinkCodecServiceToEXTcore.rst',
+        ],
+    ],
 ];

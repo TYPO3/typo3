@@ -15,9 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Frontend\Tests\Unit\Service;
+namespace TYPO3\CMS\Core\Tests\Unit\LinkHandling;
 
-use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**

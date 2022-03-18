@@ -50,6 +50,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -1895,14 +1896,14 @@ class DataHandler implements LoggerAwareInterface
 
         if ($value !== '') {
             // Extract the actual link from the link definition for further evaluation
-            $linkPart = trim(str_replace(['\\\\', '\\"'], ['\\', '"'], str_getcsv($value, ' '))[0] ?? '');
-            if ($linkPart === '') {
+            $linkParameter = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($value)['url'] ?? '';
+            if ($linkParameter === '') {
                 $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition.', -1, ['link' => $value]);
                 $value = '';
             } else {
                 // Try to resolve the actual link type and compare with the allow list
                 try {
-                    $linkData = GeneralUtility::makeInstance(LinkService::class)->resolve($linkPart);
+                    $linkData = GeneralUtility::makeInstance(LinkService::class)->resolve($linkParameter);
                     $linkType = $linkData['type'] ?? '';
                     $linkIdentifier = $linkData['identifier'] ?? '';
                     if (is_array($tcaFieldConf['allowedTypes'] ?? false)
