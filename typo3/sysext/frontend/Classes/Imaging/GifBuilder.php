@@ -122,7 +122,7 @@ class GifBuilder extends GraphicalFunctions
             // Hook preprocess gifbuilder conf
             // Added by Julle for 3.8.0
             //
-            // Let's you pre-process the gifbuilder configuration. for
+            // Lets you pre-process the gifbuilder configuration. for
             // example you can split a string up into lines and render each
             // line as TEXT obj, see extension julle_gifbconf
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] ?? [] as $_funcRef) {
@@ -164,7 +164,7 @@ class GifBuilder extends GraphicalFunctions
             // The Bounding Box for the objects is stored in an array
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
-                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
+                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'] ?? [])) {
                     // Swipes through TEXT and IMAGE-objects
                     switch ($theValue) {
                         case 'TEXT':
@@ -398,7 +398,7 @@ class GifBuilder extends GraphicalFunctions
             $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             foreach ($sKeyArray as $theKey) {
                 $theValue = $this->setup[$theKey];
-                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'])) {
+                if ((int)$theKey && ($conf = $this->setup[$theKey . '.'] ?? [])) {
                     // apply stdWrap to all properties, except for TEXT objects
                     // all properties of the TEXT sub-object have already been stdWrap-ped
                     // before in ->checkTextObj()
