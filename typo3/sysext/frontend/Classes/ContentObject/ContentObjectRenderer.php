@@ -814,7 +814,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if ($cacheConfiguration !== null && !$this->getTypoScriptFrontendController()->no_cache) {
             $key = $this->calculateCacheKey($cacheConfiguration);
             if (!empty($key)) {
-                /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
                 $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
                 $tags = $this->calculateCacheTags($cacheConfiguration);
                 $lifetime = $this->calculateCacheLifetime($cacheConfiguration);
@@ -2620,7 +2619,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (empty($key)) {
             return $content;
         }
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
         $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
         $tags = $this->calculateCacheTags($conf['cache.']);
         $lifetime = $this->calculateCacheLifetime($conf['cache.']);
@@ -6717,9 +6715,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         }
         $cacheKey = $this->calculateCacheKey($configuration);
         if (!empty($cacheKey)) {
-            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cacheFrontend */
-            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)
-                ->getCache('hash');
+            $cacheFrontend = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
             $content = $cacheFrontend->get($cacheKey);
         }
         return $content;

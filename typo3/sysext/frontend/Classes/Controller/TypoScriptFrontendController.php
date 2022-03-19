@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
 use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
@@ -548,7 +549,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The page cache object, use this to save pages to the cache and to
      * retrieve them again
      *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
     protected $pageCache;
 

@@ -490,7 +490,6 @@ class TemplateService
             if (!$isCached && !$this->simulationHiddenOrTime && !$this->getTypoScriptFrontendController()->no_cache) {
                 // Only save the data if we're not simulating by hidden/starttime/endtime
                 $mpvarHash = GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP);
-                /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $pageSectionCache */
                 $pageSectionCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection');
                 $pageSectionCache->set((int)$this->getTypoScriptFrontendController()->id . '_' . $mpvarHash, $cc, [
                     'pageId_' . (int)$this->getTypoScriptFrontendController()->id,

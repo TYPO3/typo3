@@ -678,7 +678,6 @@ class GifBuilder extends GraphicalFunctions
             if (!in_array($fileArray['ext'] ?? '', $this->imageFileExt, true)) {
                 $fileArray['ext'] = $this->gifExtension;
             }
-            /** @var ContentObjectRenderer $cObj */
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $cObj->start($this->data);
             return $cObj->getImgResource($file, $fileArray);

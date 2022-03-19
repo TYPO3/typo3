@@ -30,10 +30,11 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
 
     const DATETIME_EXPIRYTIME_UNLIMITED = '9999-12-31T23:59:59+0000';
     const UNLIMITED_LIFETIME = 0;
+
     /**
      * Reference to the cache which uses this backend
      *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
     protected $cache;
 
@@ -88,7 +89,7 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
     /**
      * Sets a reference to the cache frontend which uses this backend
      *
-     * @param \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache The frontend for this backend
+     * @param FrontendInterface $cache The frontend for this backend
      */
     public function setCache(FrontendInterface $cache)
     {
