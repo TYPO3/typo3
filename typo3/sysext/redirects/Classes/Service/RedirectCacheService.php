@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Service;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -32,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RedirectCacheService
 {
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
     protected $cache;
 

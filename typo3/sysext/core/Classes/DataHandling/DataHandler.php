@@ -588,7 +588,7 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Runtime Cache to store and retrieve data computed for a single request
      *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
     protected $runtimeCache;
 

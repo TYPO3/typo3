@@ -1593,7 +1593,6 @@ tt_content.' . $key . $suffix . ' {
         if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
             self::$extTablesWasReadFromCacheOnce = true;
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
-            /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
             $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
             $hasCache = $codeCache->require($cacheIdentifier) !== false;
             if (!$hasCache) {

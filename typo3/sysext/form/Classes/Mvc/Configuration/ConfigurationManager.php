@@ -34,9 +34,8 @@ use TYPO3\CMS\Form\Mvc\Configuration\Exception\ExtensionNameRequiredException;
  */
 class ConfigurationManager extends ExtbaseConfigurationManager implements ConfigurationManagerInterface
 {
-
     /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
     protected $cache;
 
@@ -149,9 +148,6 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
         return $yamlSettings;
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
     protected function getCacheFrontend(): FrontendInterface
     {
         if ($this->cache === null) {
