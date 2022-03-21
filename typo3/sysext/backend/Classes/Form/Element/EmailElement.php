@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -27,8 +26,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class EmailElement extends AbstractFormElement
 {
-    use OnFieldChangeTrait;
-
     /**
      * Default field information enabled for this element.
      *

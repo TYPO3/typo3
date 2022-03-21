@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -30,8 +29,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectCheckBoxElement extends AbstractFormElement
 {
-    use OnFieldChangeTrait;
-
     /**
      * Default field information enabled for this element.
      *

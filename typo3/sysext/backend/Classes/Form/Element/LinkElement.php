@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -41,8 +40,6 @@ use TYPO3\CMS\Recordlist\LinkHandler\RecordLinkHandler;
  */
 class LinkElement extends AbstractFormElement
 {
-    use OnFieldChangeTrait;
-
     /**
      * Default field information enabled for this element.
      *

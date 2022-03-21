@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
@@ -31,8 +30,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class SelectMultipleSideBySideElement extends AbstractFormElement
 {
-    use OnFieldChangeTrait;
-
     /**
      * Default field information enabled for this element.
      *

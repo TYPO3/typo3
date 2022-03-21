@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
-use TYPO3\CMS\Backend\Form\Behavior\OnFieldChangeTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -23,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RadioElement extends AbstractFormElement
 {
-    use OnFieldChangeTrait;
-
     /**
      * Default field information enabled for this element.
      *
