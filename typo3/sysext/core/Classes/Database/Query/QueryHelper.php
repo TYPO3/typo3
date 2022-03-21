@@ -186,14 +186,17 @@ class QueryHelper
             'date' => [
                 'empty' => '0000-00-00',
                 'format' => 'Y-m-d',
+                'reset' => null,
             ],
             'datetime' => [
                 'empty' => '0000-00-00 00:00:00',
                 'format' => 'Y-m-d H:i:s',
+                'reset' => null,
             ],
             'time' => [
                 'empty' => '00:00:00',
                 'format' => 'H:i:s',
+                'reset' => 0,
             ],
         ];
     }

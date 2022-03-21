@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -179,5 +180,33 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = date('Y-m-d') . 'T15:25:32+00:00';
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
+    }
+
+    /**
+     * @test
+     */
+    public function addDataAppliesResetValueForEmptyValue(): void
+    {
+        foreach (QueryHelper::getDateTimeTypes() as $dbType) {
+            $input = [
+                'tableName' => 'aTable',
+                'processedTca' => [
+                    'columns' => [
+                        'aField' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'dbType' => $dbType,
+                            ],
+                        ],
+                    ],
+                ],
+                'databaseRow' => [
+                    'aField' => QueryHelper::getDateTimeFormats()[$dbType]['empty'],
+                ],
+            ];
+            $expected = $input;
+            $expected['databaseRow']['aField'] = QueryHelper::getDateTimeFormats()[$dbType]['reset'];
+            self::assertSame($expected, (new DatabaseRowDateTimeFields())->addData($input));
+        }
     }
 }
