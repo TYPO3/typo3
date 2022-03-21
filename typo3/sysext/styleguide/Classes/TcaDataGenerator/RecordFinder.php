@@ -303,7 +303,7 @@ class RecordFinder
             }
         }
 
-        $rows = $queryBuilder->orderBy('pid', 'DESC')->execute()->fetchAllAssociative();
+        $rows = $queryBuilder->orderBy('pid', 'DESC')->executeQuery()->fetchAllAssociative();
         $result = [];
         if (is_array($rows)) {
             $result = array_column($rows, 'uid');
@@ -341,7 +341,7 @@ class RecordFinder
             $queryBuilder->andWhere((string)$orExpression);
         }
 
-        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
+        return $queryBuilder->orderBy('uid', 'DESC')->executeQuery()->fetchAllAssociative();
     }
 
     public function findFeUserGroups(): array
@@ -357,7 +357,7 @@ class RecordFinder
                 )
             );
 
-        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
+        return $queryBuilder->orderBy('uid', 'DESC')->executeQuery()->fetchAllAssociative();
     }
 
     public function findFeUsers(): array
@@ -373,6 +373,6 @@ class RecordFinder
                 )
             );
 
-        return $queryBuilder->orderBy('uid', 'DESC')->execute()->fetchAllAssociative();
+        return $queryBuilder->orderBy('uid', 'DESC')->executeQuery()->fetchAllAssociative();
     }
 }
