@@ -38,15 +38,16 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
             if (isset($columnConfig['config']['dbType'])
                 && in_array($columnConfig['config']['dbType'], $dateTimeTypes, true)
             ) {
+                $format = $dateTimeFormats[$columnConfig['config']['dbType']] ?? [];
                 if (!empty($result['databaseRow'][$column])
-                    && $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
+                    && $result['databaseRow'][$column] !== ($format['empty'] ?? null)
                 ) {
                     // Create an ISO-8601 date from current field data; the database always contains UTC
                     // The field value is something like "2016-01-01" or "2016-01-01 10:11:12", so appending "UTC"
                     // makes date() treat it as a UTC date (which is what we store in the database).
                     $result['databaseRow'][$column] = date('c', (int)strtotime($result['databaseRow'][$column] . ' UTC'));
                 } else {
-                    $result['databaseRow'][$column] = null;
+                    $result['databaseRow'][$column] = $format['reset'] ?? null;
                 }
             }
             // its a UNIX timestamp! We do not modify this here, as it will only be treated as a datetime because
