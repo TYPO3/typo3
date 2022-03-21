@@ -1936,4 +1936,9 @@ return [
             'Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Element\InputLinkElement' => [
+        'restFiles' => [
+            'Feature-97159-NewTCATypeLink.rst',
+        ],
+    ],
 ];

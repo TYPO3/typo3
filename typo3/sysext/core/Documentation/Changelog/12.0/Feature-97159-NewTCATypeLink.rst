@@ -139,6 +139,15 @@ An automatic TCA migration is performed on the fly, migrating all occurrences
 to the new TCA type and triggering a PHP :php:`E_USER_DEPRECATED` error
 where code adoption has to take place.
 
+
+.. note::
+
+    The corresponding FormEngine class has been renamed from :php:`InputLinkElement`
+    to :php:`LinkElement`. An entry in the "ClassAliasMap" has been added for
+    extensions calling this class directly, which is rather unlikely. The
+    extension scanner will report any usage, which should then be migrated.
+
+
 Allowed type "record"
 =====================
 
