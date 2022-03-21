@@ -37,6 +37,12 @@ final class ModifyInfoModuleContentEvent
     ) {
     }
 
+    /**
+     * Whether the current user has access to the main content of the info module.
+     * IMPORTANT: This is only for informational purposes. Listeners can therefore
+     * decide on their own if their content should be added to the module even if
+     * the user does not have access to the main module content.
+     */
     public function hasAccess(): bool
     {
         return $this->access;
