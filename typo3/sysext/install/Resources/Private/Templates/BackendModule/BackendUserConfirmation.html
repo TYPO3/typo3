@@ -35,9 +35,10 @@
                                     <label for="confirmationPassword">
                                         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.password" />
                                     </label>
+                                    <f:variable name="autocomplete" value="{f:if(condition: flagInstallToolPassword, then: 'section-install current-password', else: 'current-password')}" />
                                     <f:form.password name="confirmationPassword" id="confirmationPassword" class="form-control"
                                                     data="{f:if(condition:flagInstallToolPassword, else:'{rsa-encryption: \'confirmationPasswordInternal\'}')}"
-                                                    additionalAttributes="{required: 'required'}" />
+                                                    additionalAttributes="{required: 'required', autocomplete: autocomplete}" />
                                     <!-- Internal password field, e.g. used for ext:rsaauth -->
                                     <f:if condition="{flagInstallToolPassword}">
                                         <f:else>
