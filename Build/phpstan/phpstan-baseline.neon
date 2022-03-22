@@ -926,7 +926,7 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Connection.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between int and false will always evaluate to false\\.$#"
+			message: "#^Strict comparison using \\=\\=\\= between int\\|string and false will always evaluate to false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Connection.php
 
