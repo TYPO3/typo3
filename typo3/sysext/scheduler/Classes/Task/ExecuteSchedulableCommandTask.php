@@ -99,6 +99,8 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         }
 
         $input = new ArrayInput($this->getParameters(false));
+        $input->setInteractive(false);
+
         $output = new NullOutput();
 
         return $schedulableCommand->run($input, $output) === 0;
