@@ -40,7 +40,7 @@ CREATE TABLE be_sessions (
 CREATE TABLE be_users (
 	username varchar(50) DEFAULT '' NOT NULL,
 	avatar int(11) unsigned NOT NULL default '0',
-	password varchar(100) DEFAULT '' NOT NULL,
+	password varchar(255) DEFAULT '' NOT NULL,
 	admin tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	usergroup text,
 	lang varchar(10) DEFAULT 'default' NOT NULL,

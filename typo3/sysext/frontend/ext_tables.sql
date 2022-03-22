@@ -41,7 +41,7 @@ CREATE TABLE fe_sessions (
 #
 CREATE TABLE fe_users (
 	username varchar(255) DEFAULT '' NOT NULL,
-	password varchar(100) DEFAULT '' NOT NULL,
+	password varchar(255) DEFAULT '' NOT NULL,
 	usergroup text,
 	name varchar(160) DEFAULT '' NOT NULL,
 	first_name varchar(50) DEFAULT '' NOT NULL,
