@@ -85,6 +85,32 @@ abstract class AbstractEnhancer implements EnhancerInterface
     }
 
     /**
+     * Applies variables that are considered static (not having `&cHash=...` applied),
+     * without having the demand to define a custom `StaticMappableAspectInterface`
+     * to fake the behavior.
+     *
+     * However:
+     * + in case there's an aspect defined for a variable, it will be skipped (aspects take precedence)
+     * + in case not requirement is defined for a variable, it will be skipped (avoiding weak definitions)
+     *
+     * @param array<non-empty-string, bool> $staticVariables option values
+     */
+    protected function applyStaticVariables(Route $route, array $staticVariables, ?string $namespace = null): void
+    {
+        // skip definitions that are not explicitly set to `true`
+        $staticVariables = array_filter($staticVariables, static fn($definition) => $definition === true);
+        $staticVariables = $this->getVariableProcessor()
+            ->deflateKeys($staticVariables, $namespace, $route->getArguments());
+        // only keep static variables that are actually part of the current route path
+        $staticVariables = $this->filterValuesByPathVariables($route, $staticVariables);
+        // skip definitions that already have an aspect defined (aspects take precedence)
+        $staticVariables = array_diff_key($staticVariables, $route->getAspects());
+        // skip definitions that not have any requirement defined (avoiding weak definitions)
+        $staticVariables = array_intersect_key($staticVariables, $route->getRequirements());
+        $route->setOption('_static', $staticVariables);
+    }
+
+    /**
      * Only keeps values that actually have been used as variables in route path.
      *
      * + routePath: '/list/{page}' ('page' used as variable in route path)

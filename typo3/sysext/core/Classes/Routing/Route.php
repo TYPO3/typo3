@@ -31,13 +31,12 @@ use TYPO3\CMS\Core\Routing\Enhancer\EnhancerInterface;
 class Route extends SymfonyRoute
 {
     /**
-     * @return array
      * @var CompiledRoute|null
      */
     protected $compiled;
 
     /**
-     * @var AspectInterface[]
+     * @var array<string, AspectInterface>
      */
     protected $aspects = [];
 
@@ -70,9 +69,7 @@ class Route extends SymfonyRoute
     }
 
     /**
-     * Returns all aspects.
-     *
-     * @return array The aspects
+     * @return array<string, AspectInterface>
      */
     public function getAspects(): array
     {
@@ -84,7 +81,7 @@ class Route extends SymfonyRoute
      *
      * This method implements a fluent interface.
      *
-     * @param array $aspects The aspects
+     * @param array<string, AspectInterface> $aspects
      * @return $this
      */
     public function setAspects(array $aspects): self
@@ -98,7 +95,7 @@ class Route extends SymfonyRoute
      *
      * This method implements a fluent interface.
      *
-     * @param array $aspects The aspects
+     * @param array<string, AspectInterface> $aspects
      * @return $this
      */
     public function addAspects(array $aspects): self

@@ -73,7 +73,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $matchedVariableNames = array_keys($parameters);
 
         $staticMappers = $route->filterAspects([StaticMappableAspectInterface::class], $matchedVariableNames);
-        $dynamicCandidates = array_diff_key($parameters, $staticMappers);
+        $dynamicCandidates = array_diff_key($parameters, $staticMappers, $route->getOption('_static') ?? []);
 
         // all route arguments
         $routeArguments = $this->inflateParameters($parameters, $internals);
@@ -124,6 +124,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $variant->setDefaults($this->filterValuesByPathVariables($variant, $defaults));
         $this->applyRouteAspects($variant, $this->aspects ?? [], $this->namespace);
         $this->applyRequirements($variant, $this->configuration['requirements'] ?? [], $this->namespace);
+        $this->applyStaticVariables($variant, $this->configuration['static'] ?? [], $this->namespace);
         return $variant;
     }
 

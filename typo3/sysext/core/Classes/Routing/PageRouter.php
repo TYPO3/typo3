@@ -568,6 +568,7 @@ class PageRouter implements RouterInterface
      * brute-force scenarios and the risk of cache-flooding.
      *
      * @throws \OverflowException
+     * @todo with having `static` route variables, this restriction should be configurable & optional
      */
     protected function assertMaximumStaticMappableAmount(Route $route, array $variableNames = [])
     {
