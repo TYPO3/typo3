@@ -272,8 +272,12 @@ class SystemEnvironmentBuilder
      */
     protected static function getPathThisScriptNonCli()
     {
+        $isCgi = Environment::isRunningOnCgiServer();
+        if ($isCgi && Environment::usesCgiFixPathInfo()) {
+            return $_SERVER['SCRIPT_FILENAME'];
+        }
         $cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'] ?? $_SERVER['PATH_TRANSLATED'] ?? '';
-        if ($cgiPath && Environment::isRunningOnCgiServer()) {
+        if ($cgiPath && $isCgi) {
             return $cgiPath;
         }
         return $_SERVER['ORIG_SCRIPT_FILENAME'] ?? $_SERVER['SCRIPT_FILENAME'];
