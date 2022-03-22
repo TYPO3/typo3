@@ -349,6 +349,11 @@ class Environment
         return in_array(PHP_SAPI, self::$supportedCgiServerApis, true);
     }
 
+    public static function usesCgiFixPathInfo(): bool
+    {
+        return !empty(ini_get('cgi.fix_pathinfo'));
+    }
+
     /**
      * Returns the currently configured Environment information as array.
      *
