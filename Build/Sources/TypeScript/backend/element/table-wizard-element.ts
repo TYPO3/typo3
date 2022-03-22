@@ -90,6 +90,7 @@ export class TableWizardElement extends LitElement {
       text += row.join('|') + '\n';
     });
     textarea.value = text;
+    textarea.dispatchEvent(new CustomEvent('change', {bubbles: true}));
   }
 
   private modifyTable(evt: Event, rowIndex: number, colIndex: number): void {
