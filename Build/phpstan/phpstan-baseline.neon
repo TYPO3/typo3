@@ -2386,11 +2386,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Schema/Parser/TableBuilderTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$exception of method PHPUnit\\\\Framework\\\\TestCase\\:\\:expectException\\(\\) expects class\\-string\\<Throwable\\>, string given\\.$#"
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Unit/DependencyInjection/FailsafeContainerTest.php
-
-		-
 			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Log\\\\Logger\\:\\:\\$records\\.$#"
 			count: 2
 			path: ../../typo3/sysext/core/Tests/Unit/Error/ErrorHandlerTest.php
