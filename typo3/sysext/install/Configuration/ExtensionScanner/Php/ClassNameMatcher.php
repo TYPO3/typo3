@@ -1946,4 +1946,11 @@ return [
             'Deprecation-97217-MovedTypoLinkCodecServiceToEXTcore.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface' => [
+        'restFiles' => [
+            'Deprecation-97231-UnusedInterfaceForInlineElementHook.rst',
+            'Breaking-97231-RemovedHookForManipulatingInlineElementControls.rst',
+            'Feature-97231-PSR-14EventsForModifyingInlineElementControls.rst',
+        ],
+    ],
 ];

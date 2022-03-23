@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 /**
  * Interface for classes which hook into inline element handling
+ *
+ * @deprecated not in use anymore since TYPO3 v12, will be removed in TYPO3 13. Only stays to allow extensions to be compatible with TYPO3 v11+v12
  */
 interface InlineElementHookInterface
 {

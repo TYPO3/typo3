@@ -660,4 +660,10 @@ return [
             'Breaking-97188-RegisterElementBrowsersViaServiceConfiguration.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'t3lib/class.t3lib_tceforms_inline.php\'][\'tceformsInlineHook\']' => [
+        'restFiles' => [
+            'Breaking-97231-RemovedHookForManipulatingInlineElementControls.rst',
+            'Feature-97231-PSR-14EventsForModifyingInlineElementControls.rst',
+        ],
+    ],
 ];

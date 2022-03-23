@@ -15,7 +15,9 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
-use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementControlsEvent;
+use TYPO3\CMS\Backend\Form\Event\ModifyInlineElementEnabledControlsEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -58,16 +60,11 @@ class InlineRecordContainer extends AbstractContainer
     protected $inlineStackProcessor;
 
     /**
-     * Array containing instances of hook classes called once for IRRE objects
-     *
-     * @var array
-     */
-    protected $hookObjects = [];
-
-    /**
      * @var IconFactory
      */
     protected $iconFactory;
+
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * Default constructor
@@ -80,7 +77,7 @@ class InlineRecordContainer extends AbstractContainer
         parent::__construct($nodeFactory, $data);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $this->initHookObjects();
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     /**
@@ -471,13 +468,8 @@ class InlineRecordContainer extends AbstractContainer
         }
         // This expresses the edit permissions for this particular element:
         $permsEdit = ($isPagesTable && $localCalcPerms->editPagePermissionIsGranted()) || (!$isPagesTable && $calcPerms->editContentPermissionIsGranted());
-        // Controls: Defines which controls should be shown
-        $enabledControls = $inlineConfig['appearance']['enabledControls'];
-        // Hook: Can disable/enable single controls for specific child records:
-        foreach ($this->hookObjects as $hookObj) {
-            /** @var InlineElementHookInterface $hookObj */
-            $hookObj->renderForeignRecordHeaderControl_preProcess($data['inlineParentUid'], $foreignTable, $rec, $inlineConfig, $data['isInlineDefaultLanguageRecordInLocalizedParentContext'], $enabledControls);
-        }
+        // The event contains all controls and their state (enabled / disabled), which might got modified by listeners
+        $event = $this->eventDispatcher->dispatch(new ModifyInlineElementEnabledControlsEvent($data, $rec));
         if ($data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             $cells['localize'] = '<span title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize.isLocalizable')) . '">
                     ' . $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render() . '
@@ -492,7 +484,7 @@ class InlineRecordContainer extends AbstractContainer
             $uid = $rec['uid'];
             $table = $foreignTable;
         }
-        if ($enabledControls['info']) {
+        if ($event->isControlEnabled('info')) {
             if ($isNewItem) {
                 $cells['info'] = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
             } else {
@@ -505,7 +497,7 @@ class InlineRecordContainer extends AbstractContainer
         // If the table is NOT a read-only table, then show these links:
         if (!$isParentReadOnly && !($tcaTableCtrl['readOnly'] ?? false) && !($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
-            if (($enabledControls['new'] ?? false) && ($enableManualSorting || ($tcaTableCtrl['useColumnsForDefaultValues'] ?? false))) {
+            if ($event->isControlEnabled('new') && ($enableManualSorting || ($tcaTableCtrl['useColumnsForDefaultValues'] ?? false))) {
                 if ((!$isPagesTable && $calcPerms->editContentPermissionIsGranted()) || ($isPagesTable && $calcPerms->createPagePermissionIsGranted())) {
                     $style = '';
                     if ($inlineConfig['inline']['inlineNewButtonStyle'] ?? false) {
@@ -518,7 +510,7 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // "Up/Down" links
-            if ($enabledControls['sort'] && $permsEdit && $enableManualSorting) {
+            if ($event->isControlEnabled('sort') && $permsEdit && $enableManualSorting) {
                 // Up
                 $icon = 'actions-move-up';
                 $class = '';
@@ -584,7 +576,7 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // "Delete" link:
-            if ($enabledControls['delete'] && (($isPagesTable && $localCalcPerms->deletePagePermissionIsGranted())
+            if ($event->isControlEnabled('delete') && (($isPagesTable && $localCalcPerms->deletePagePermissionIsGranted())
                     || (!$isPagesTable && $calcPerms->editContentPermissionIsGranted())
                     || ($isSysFileReferenceTable && $calcPerms->editPagePermissionIsGranted()))
             ) {
@@ -595,7 +587,7 @@ class InlineRecordContainer extends AbstractContainer
 
             // "Hide/Unhide" links:
             $hiddenField = $tcaTableCtrl['enablecolumns']['disabled'] ?? '';
-            if (($enabledControls['hide'] ?? false)
+            if ($event->isControlEnabled('hide')
                 && $permsEdit
                 && $hiddenField
                 && ($tcaTableCols[$hiddenField] ?? false)
@@ -616,14 +608,14 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // Drag&Drop Sorting: Sortable handler for script.aculo.us
-            if (($enabledControls['dragdrop'] ?? false) && $permsEdit && $enableManualSorting && ($inlineConfig['appearance']['useSortable'] ?? false)) {
+            if ($event->isControlEnabled('dragdrop') && $permsEdit && $enableManualSorting && ($inlineConfig['appearance']['useSortable'] ?? false)) {
                 $cells['dragdrop'] = '
                     <span class="btn btn-default sortableHandle" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.move')) . '">
                         ' . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '
                     </span>';
             }
         } elseif (($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false) && $isParentExisting) {
-            if (($enabledControls['localize'] ?? false) && ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
+            if ($event->isControlEnabled('localize') && ($data['isInlineDefaultLanguageRecordInLocalizedParentContext'] ?? false)) {
                 $cells['localize'] = '
                     <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="' . htmlspecialchars($rec['uid']) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localize')) . '">
                         ' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
@@ -637,10 +629,9 @@ class InlineRecordContainer extends AbstractContainer
 					' . $this->iconFactory->getIcon('warning-in-use', Icon::SIZE_SMALL)->render() . '
 				</button>';
         }
-        // Hook: Post-processing of single controls for specific child records:
-        foreach ($this->hookObjects as $hookObj) {
-            $hookObj->renderForeignRecordHeaderControl_postProcess($data['inlineParentUid'], $foreignTable, $rec, $inlineConfig, $data['isInlineDefaultLanguageRecordInLocalizedParentContext'], $cells);
-        }
+
+        // Get modified controls. This means their markup was modified, new controls were added or controls got removed.
+        $cells = $this->eventDispatcher->dispatch(new ModifyInlineElementControlsEvent($cells, $data, $rec))->getControls();
 
         $out = '';
         if (!empty($cells['edit']) || !empty($cells['hide']) || !empty($cells['delete'])) {
@@ -659,25 +650,6 @@ class InlineRecordContainer extends AbstractContainer
             $out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $cells) . '</div>';
         }
         return $out;
-    }
-
-    /**
-     * Initialized the hook objects for this class.
-     * Each hook object has to implement the interface
-     * \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface
-     *
-     * @throws \UnexpectedValueException
-     */
-    protected function initHookObjects()
-    {
-        $this->hookObjects = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'] ?? [] as $className) {
-            $processObject = GeneralUtility::makeInstance($className);
-            if (!$processObject instanceof InlineElementHookInterface) {
-                throw new \UnexpectedValueException($className . ' must implement interface ' . InlineElementHookInterface::class, 1202072000);
-            }
-            $this->hookObjects[] = $processObject;
-        }
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

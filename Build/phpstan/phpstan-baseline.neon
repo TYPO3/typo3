@@ -106,11 +106,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Behavior/UpdateValueOnFieldChange.php
 
 		-
-			message: "#^Variable \\$cells in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Container/InlineRecordContainer.php
-
-		-
 			message: "#^Method TYPO3Fluid\\\\Fluid\\\\View\\\\ViewInterface\\:\\:render\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Element/ImageManipulationElement.php
