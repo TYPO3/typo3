@@ -666,4 +666,10 @@ return [
             'Feature-97231-PSR-14EventsForModifyingInlineElementControls.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'Backend/Form/Element/ImageManipulationElement\'][\'previewUrl\']' => [
+        'restFiles' => [
+            'Breaking-97230-RemovedHookForModifyingImageManipulationPreviewUrl.rst',
+            'Feature-97230-PSR-14EventForModifyingImageManipulationPreviewUrl.rst',
+        ],
+    ],
 ];

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Form\Event\ModifyImageManipulationPreviewUrlEvent;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\Area;
@@ -195,7 +197,9 @@ class ImageManipulationElement extends AbstractFormElement
             'config' => $config,
             'wizardUri' => $this->getWizardUri(),
             'wizardPayload' => json_encode($this->getWizardPayload($config['cropVariants'], $file)),
-            'previewUrl' => $this->getPreviewUrl($this->data['databaseRow'], $file),
+            'previewUrl' => GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
+                new ModifyImageManipulationPreviewUrlEvent($this->data['databaseRow'], $config, $file)
+            )->getPreviewUrl(),
         ];
 
         if ($arguments['isAllowedFileExtension']) {
@@ -234,26 +238,6 @@ class ImageManipulationElement extends AbstractFormElement
             }
         }
         return $file;
-    }
-
-    /**
-     * @param array $databaseRow
-     * @param File $file
-     * @return string
-     */
-    protected function getPreviewUrl(array $databaseRow, File $file): string
-    {
-        $previewUrl = '';
-        // Hook to generate a preview URL
-        $hookParameters = [
-            'databaseRow' => $databaseRow,
-            'file' => $file,
-            'previewUrl' => $previewUrl,
-        ];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['Backend/Form/Element/ImageManipulationElement']['previewUrl'] ?? [] as $listener) {
-            $previewUrl = GeneralUtility::callUserFunction($listener, $hookParameters, $this);
-        }
-        return $previewUrl;
     }
 
     /**
