@@ -3201,11 +3201,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Utility/ExtensionUtilityTest.php
 
 		-
-			message: "#^Offset 'message' does not exist on string\\.$#"
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Classes/Controller/DownloadController.php
-
-		-
 			message: "#^Parameter \\#2 \\$lowestVersion of method TYPO3\\\\CMS\\\\Extensionmanager\\\\Domain\\\\Repository\\\\ExtensionRepository\\:\\:findByVersionRangeAndExtensionKeyOrderedByVersion\\(\\) expects int, array\\|string given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Classes/Controller/DownloadController.php

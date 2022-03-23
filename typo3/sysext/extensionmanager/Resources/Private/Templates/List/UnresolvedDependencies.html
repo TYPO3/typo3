@@ -21,8 +21,8 @@
     <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">
         <f:render partial="List/UnresolvedDependenciesMessage" />
     </f:be.infobox>
-    <f:link.action action="index" class="btn btn-default onClickMaskExtensionManager">
-        Go back
+    <f:link.action action="{returnAction.action}" controller="{returnAction.controller}" class="btn btn-default onClickMaskExtensionManager">
+        <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack" />
     </f:link.action>
     <f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-danger t3js-dependencies disabled onClickMaskExtensionManager">
         <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />

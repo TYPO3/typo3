@@ -71,7 +71,15 @@ class ActionController extends AbstractController
                     $this->installUtility->enrichExtensionWithDetails($extensionKey, false)
                 );
                 if ($this->managementService->installExtension($extension) === false) {
-                    return $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
+                    return $this->redirect(
+                        'unresolvedDependencies',
+                        'List',
+                        null,
+                        [
+                            'extensionKey' => $extensionKey,
+                            'returnAction' => ['controller' => 'List', 'action' => 'index'],
+                        ]
+                    );
                 }
             }
         } catch (ExtensionManagerException|PackageStatesFileNotWritableException $e) {

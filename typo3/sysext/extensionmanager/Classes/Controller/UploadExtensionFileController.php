@@ -127,7 +127,15 @@ class UploadExtensionFileController extends AbstractController
                         FlashMessage::OK
                     );
                 } else {
-                    return $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
+                    return $this->redirect(
+                        'unresolvedDependencies',
+                        'List',
+                        null,
+                        [
+                            'extensionKey' => $extensionKey,
+                            'returnAction' => ['controller' => 'List', 'action' => 'index'],
+                        ]
+                    );
                 }
             }
         } catch (InvalidFileException $exception) {

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -157,7 +156,7 @@ class DownloadController extends AbstractController
      * @param string $downloadPath
      * @return ResponseInterface
      */
-    public function installFromTerAction(Extension $extension, $downloadPath = 'Local'): ResponseInterface
+    public function installFromTerAction(Extension $extension, string $downloadPath = 'Local'): ResponseInterface
     {
         [$result, $errorMessages] = $this->installFromTer($extension, $downloadPath);
         $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
@@ -194,27 +193,16 @@ class DownloadController extends AbstractController
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return (new ForwardResponse('distributions'))->withControllerName('List');
         }
-        $errorMessages = $this->installFromTer($extension)[1];
-        if ($errorMessages) {
-            foreach ($errorMessages as $extensionKey => $messages) {
-                foreach ($messages as $message) {
-                    /** @var string $message */
-                    $this->addFlashMessage(
-                        $message['message'],
-                        LocalizationUtility::translate(
-                            'distribution.error.headline',
-                            'extensionmanager',
-                            [$extensionKey]
-                        ) ?? '',
-                        AbstractMessage::ERROR
-                    );
-                }
-            }
-
-            // Redirect back to distributions list action
+        [$result, ] = $this->installFromTer($extension);
+        if (!$result) {
             return $this->redirect(
-                'distributions',
-                'List'
+                'unresolvedDependencies',
+                'List',
+                null,
+                [
+                    'extensionKey' => $extension->getExtensionKey(),
+                    'returnAction' => ['controller' => 'List', 'action' => 'distributions'],
+                ]
             );
         }
         // FlashMessage that extension is installed
@@ -315,9 +303,9 @@ class DownloadController extends AbstractController
      *
      * @param Extension $extension
      * @param string $downloadPath
-     * @return array
+     * @return array{0: bool, 1: array<string, array<int, array{code: int, message: string}>>}
      */
-    protected function installFromTer(Extension $extension, $downloadPath = 'Local')
+    protected function installFromTer(Extension $extension, string $downloadPath = 'Local'): array
     {
         $result = false;
         $errorMessages = [];

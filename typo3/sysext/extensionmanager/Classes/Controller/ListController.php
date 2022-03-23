@@ -106,7 +106,7 @@ class ListController extends AbstractController
     /**
      * List unresolved dependency errors with the possibility to bypass the dependency check.
      */
-    protected function unresolvedDependenciesAction(string $extensionKey): ResponseInterface
+    protected function unresolvedDependenciesAction(string $extensionKey, array $returnAction): ResponseInterface
     {
         $availableExtensions = $this->listUtility->getAvailableExtensions();
         if (isset($availableExtensions[$extensionKey])) {
@@ -123,6 +123,7 @@ class ListController extends AbstractController
         $view = $this->initializeModuleTemplate($this->request);
         $view->assignMultiple([
             'extension' => $extension,
+            'returnAction' => $returnAction,
             'unresolvedDependencies' => $this->dependencyUtility->getDependencyErrors(),
         ]);
         return $view->renderResponse('List/UnresolvedDependencies');
