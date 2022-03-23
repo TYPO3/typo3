@@ -285,10 +285,10 @@ class ElementHistoryController
 
             // Get user names
             $singleLine['backendUserUid'] = $entry['userid'];
-            $singleLine['backendUserName'] = $entry['userid'] ? $beUserArray[$entry['userid']]['username'] : '';
+            $singleLine['backendUserName'] = $beUserArray[$entry['userid']]['username'] ?? '';
             // Executed by switch user
             if (!empty($entry['originaluserid'])) {
-                $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'];
+                $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'] ?? '';
             }
 
             // Is a change in a workspace?
