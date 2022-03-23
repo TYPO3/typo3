@@ -617,7 +617,7 @@ class SearchController extends ActionController
             case 'rank_first':
                 return ceil(MathUtility::forceIntegerInRange(255 - $row['order_val'], 1, 255) / 255 * 100) . '%';
             case 'rank_flag':
-                if ($this->firstRow['order_val2']) {
+                if ($this->firstRow['order_val2'] ?? 0) {
                     // (3 MSB bit, 224 is highest value of order_val1 currently)
                     $base = $row['order_val1'] * 256;
                     // 15-3 MSB = 12
