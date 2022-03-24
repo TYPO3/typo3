@@ -906,7 +906,7 @@ class ImageManipulation {
   private openPreview(data: object): void {
     const cropVariants: string = ImageManipulation.serializeCropVariants(data);
     let previewUrl: string = this.trigger.attr('data-preview-url');
-    previewUrl = previewUrl + '&cropVariants=' + encodeURIComponent(cropVariants);
+    previewUrl = previewUrl + (previewUrl.includes('?') ? '&' : '?') + 'cropVariants=' + encodeURIComponent(cropVariants);
     window.open(previewUrl, 'TYPO3ImageManipulationPreview');
   }
 
