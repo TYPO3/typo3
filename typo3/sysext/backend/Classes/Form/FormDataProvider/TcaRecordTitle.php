@@ -175,12 +175,15 @@ class TcaRecordTitle implements FormDataProviderInterface
                 $recordTitle = $this->getRecordTitleForCheckboxType($rawValue, $fieldConfig);
                 break;
             case 'input':
-                $recordTitle = $this->getRecordTitleForInputType($rawValue, $fieldConfig);
+                $recordTitle = $rawValue ?? '';
                 break;
             case 'text':
             case 'email':
             case 'link':
                 $recordTitle = $this->getRecordTitleForStandardTextField($rawValue);
+                break;
+            case 'datetime':
+                $recordTitle = $this->getRecordTitleForDatetimeType($rawValue, $fieldConfig);
                 break;
             case 'password':
                 $recordTitle = $this->getRecordTitleForPasswordType($rawValue);
@@ -317,78 +320,7 @@ class TcaRecordTitle implements FormDataProviderInterface
     }
 
     /**
-     * Returns the record title for input fields
-     *
-     * @param mixed $value Current database value of this field
-     * @param array $fieldConfig TCA field configuration
-     * @return string
-     */
-    protected function getRecordTitleForInputType($value, $fieldConfig)
-    {
-        if (!isset($value)) {
-            return '';
-        }
-        if (!isset($fieldConfig['eval'])) {
-            return $value;
-        }
-        $title = $value;
-        $dateTimeFormats = QueryHelper::getDateTimeFormats();
-        if (GeneralUtility::inList($fieldConfig['eval'], 'date')) {
-            // Handle native date field
-            if (isset($fieldConfig['dbType']) && $fieldConfig['dbType'] === 'date') {
-                $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $ageSuffix = '';
-                // Generate age suffix as long as not explicitly suppressed
-                if (!isset($fieldConfig['disableAgeDisplay']) || (bool)$fieldConfig['disableAgeDisplay'] === false) {
-                    $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
-                    $calculatedAge = BackendUtility::calcAge(
-                        (int)abs($ageDelta),
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                    );
-                    $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
-                }
-                $title = BackendUtility::date($value) . $ageSuffix;
-            }
-        } elseif (GeneralUtility::inList($fieldConfig['eval'], 'time')) {
-            // Handle native time field
-            if (isset($fieldConfig['dbType']) && $fieldConfig['dbType'] === 'time') {
-                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = gmdate('H:i', (int)$value);
-            }
-        } elseif (GeneralUtility::inList($fieldConfig['eval'], 'timesec')) {
-            // Handle native time field
-            if (isset($fieldConfig['dbType']) && $fieldConfig['dbType'] === 'time') {
-                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = gmdate('H:i:s', (int)$value);
-            }
-        } elseif (GeneralUtility::inList($fieldConfig['eval'], 'datetime')) {
-            // Handle native datetime field
-            if (isset($fieldConfig['dbType']) && $fieldConfig['dbType'] === 'datetime') {
-                $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = BackendUtility::datetime($value);
-            }
-        }
-        return $title;
-    }
-
-    /**
-     * Returns the record title for a not to transformed text fields
+     * Returns the record title for not transformed text fields
      *
      * @param mixed $value Current database value of this field
      * @return string
@@ -400,6 +332,68 @@ class TcaRecordTitle implements FormDataProviderInterface
         }
 
         return trim(strip_tags($value));
+    }
+
+    protected function getRecordTitleForDatetimeType(mixed $value, array $fieldConfig): string
+    {
+        if (!isset($value)) {
+            return '';
+        }
+        $title = $value;
+        $format = (string)($fieldConfig['format'] ?? 'datetime');
+        $dateTimeFormats = QueryHelper::getDateTimeFormats();
+        if ($format === 'date') {
+            // Handle native date field
+            if (($fieldConfig['dbType'] ?? '') === 'date') {
+                $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
+            } else {
+                $value = (int)$value;
+            }
+            if (!empty($value)) {
+                $ageSuffix = '';
+                // Generate age suffix as long as not explicitly suppressed
+                if (!($fieldConfig['disableAgeDisplay'] ?? false)) {
+                    $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
+                    $calculatedAge = BackendUtility::calcAge(
+                        (int)abs($ageDelta),
+                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                    );
+                    $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
+                }
+                $title = BackendUtility::date($value) . $ageSuffix;
+            }
+        } elseif ($format === 'time') {
+            // Handle native time field
+            if (($fieldConfig['dbType'] ?? '') === 'time') {
+                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
+            } else {
+                $value = (int)$value;
+            }
+            if (!empty($value)) {
+                $title = gmdate('H:i', $value);
+            }
+        } elseif ($format === 'timesec') {
+            // Handle native time field
+            if (($fieldConfig['dbType'] ?? '') === 'time') {
+                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
+            } else {
+                $value = (int)$value;
+            }
+            if (!empty($value)) {
+                $title = gmdate('H:i:s', $value);
+            }
+        } elseif ($format === 'datetime') {
+            // Handle native datetime field
+            if (($fieldConfig['dbType'] ?? '') === 'datetime') {
+                $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
+            } else {
+                $value = (int)$value;
+            }
+            if (!empty($value)) {
+                $title = BackendUtility::datetime($value);
+            }
+        }
+        return $title;
     }
 
     /**

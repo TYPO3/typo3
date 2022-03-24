@@ -162,7 +162,7 @@ class DataMapFactory implements SingletonInterface
             }
             $columnMap = $this->setType($columnMap, $columnDefinition['config']);
             $columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $type, $elementType);
-            $columnMap = $this->setFieldEvaluations($columnMap, $columnDefinition['config']);
+            $columnMap = $this->setDateTimeStorageFormat($columnMap, $columnDefinition['config']);
             $dataMap->addColumnMap($columnMap);
         }
         return $dataMap;
@@ -329,24 +329,21 @@ class DataMapFactory implements SingletonInterface
     }
 
     /**
-     * Sets field evaluations based on $TCA column configuration.
+     * Sets datetime storage format based on $TCA column configuration.
      *
      * @param ColumnMap $columnMap The column map
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setFieldEvaluations(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
+    protected function setDateTimeStorageFormat(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
         // todo: this method should only be called with proper arguments which means that the TCA integrity check should
         // todo: take place outside this method.
 
-        if (!empty($columnConfiguration['eval'])) {
-            $fieldEvaluations = GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
-            $dateTimeTypes = QueryHelper::getDateTimeTypes();
-
-            if (!empty(array_intersect($dateTimeTypes, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
-                $columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);
-            }
+        if ((string)$columnMap->getType() === TableColumnType::DATETIME
+            && in_array($columnConfiguration['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)
+        ) {
+            $columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);
         }
 
         return $columnMap;

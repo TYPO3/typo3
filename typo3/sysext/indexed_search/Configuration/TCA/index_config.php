@@ -37,9 +37,9 @@ return [
         'starttime' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'date,int',
+                'type' => 'datetime',
+                'format' => 'date',
+                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -174,18 +174,17 @@ return [
         'timer_next_indexing' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_next_indexing',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'default' => 0,
             ],
         ],
         'timer_offset' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_offset',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'time,int',
+                'type' => 'datetime',
+                'format' => 'time',
+                'eval' => 'int',
                 'default' => 3600,
             ],
         ],

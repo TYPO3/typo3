@@ -983,12 +983,21 @@ class QueryGenerator
                     case 'input':
                         if (preg_match('/int|year/i', $fields['eval'] ?? '')) {
                             $fields['type'] = 'number';
-                        } elseif (preg_match('/time/i', $fields['eval'] ?? '')) {
-                            $fields['type'] = 'time';
-                        } elseif (preg_match('/date/i', $fields['eval'] ?? '')) {
-                            $fields['type'] = 'date';
                         } else {
                             $fields['type'] = 'text';
+                        }
+                        break;
+                    case 'datetime':
+                        if (!in_array($fields['dbType']  ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                            if (GeneralUtility::inList($fields['eval'] ?? '', 'int')) {
+                                $fields['type'] = 'number';
+                            } else {
+                                $fields['type'] = 'text';
+                            }
+                        } elseif ($fields['dbType'] === 'time') {
+                            $fields['type'] = 'time';
+                        } else {
+                            $fields['type'] = 'date';
                         }
                         break;
                     case 'check':
@@ -1436,12 +1445,21 @@ class QueryGenerator
                         case 'input':
                             if (preg_match('/int|year/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
                                 $this->fields[$fieldName]['type'] = 'number';
-                            } elseif (preg_match('/time/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
-                                $this->fields[$fieldName]['type'] = 'time';
-                            } elseif (preg_match('/date/i', ($this->fields[$fieldName]['eval'] ?? ''))) {
-                                $this->fields[$fieldName]['type'] = 'date';
                             } else {
                                 $this->fields[$fieldName]['type'] = 'text';
+                            }
+                            break;
+                        case 'datetime':
+                            if (!in_array($this->fields[$fieldName]['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                                if (GeneralUtility::inList($this->fields[$fieldName]['eval'] ?? '', 'int')) {
+                                    $this->fields[$fieldName]['type'] = 'number';
+                                } else {
+                                    $this->fields[$fieldName]['type'] = 'text';
+                                }
+                            } elseif ($this->fields[$fieldName]['dbType'] === 'time') {
+                                $this->fields[$fieldName]['type'] = 'time';
+                            } else {
+                                $this->fields[$fieldName]['type'] = 'date';
                             }
                             break;
                         case 'check':

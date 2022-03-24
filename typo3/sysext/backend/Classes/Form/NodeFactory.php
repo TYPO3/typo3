@@ -75,7 +75,7 @@ class NodeFactory
         'group' => Element\GroupElement::class,
         'folder' => Element\FolderElement::class,
         'input' => Element\InputTextElement::class,
-        'inputDateTime' => Element\InputDateTimeElement::class,
+        'datetime' => Element\DatetimeElement::class,
         'link' => Element\LinkElement::class,
         'password' => Element\PasswordElement::class,
         'hidden' => Element\InputHiddenElement::class,

@@ -49,6 +49,7 @@ class TcaInputPlaceholders implements FormDataProviderInterface
                     && $fieldConfig['config']['type'] !== 'email'
                     && $fieldConfig['config']['type'] !== 'link'
                     && $fieldConfig['config']['type'] !== 'password'
+                    && $fieldConfig['config']['type'] !== 'datetime'
                 )
             ) {
                 continue;

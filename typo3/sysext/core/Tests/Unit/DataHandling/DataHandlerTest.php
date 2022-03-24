@@ -175,7 +175,7 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function checkValueInputEvalWithEvalDatetimeDataProvider(): array
+    public function checkValueForDatetimeDataProvider(): array
     {
         // Three elements: input, timezone of input, expected output (UTC)
         return [
@@ -190,14 +190,14 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider checkValueInputEvalWithEvalDatetimeDataProvider
+     * @dataProvider checkValueForDatetimeDataProvider
      */
-    public function checkValueInputEvalWithEvalDatetime($input, $serverTimezone, $expectedOutput): void
+    public function checkValueForDatetime($input, $serverTimezone, $expectedOutput): void
     {
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set($serverTimezone);
 
-        $output = $this->subject->checkValue_input_Eval($input, ['datetime'], '');
+        $output =  $this->subject->_call('checkValueForDatetime', $input, ['type' => 'datetime']);
 
         // set before the assertion is performed, so it is restored even for failing tests
         date_default_timezone_set($oldTimezone);
@@ -361,7 +361,7 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function inputValuesDataTimeDataProvider(): array
+    public function datetimeValuesDataProvider(): array
     {
         return [
             'undershot date adjusted' => [
@@ -388,13 +388,13 @@ class DataHandlerTest extends UnitTestCase
      * @param int $expected
      *
      * @test
-     * @dataProvider inputValuesDataTimeDataProvider
+     * @dataProvider datetimeValuesDataProvider
      */
-    public function inputValueCheckRecognizesDateTimeValuesAsIntegerValuesCorrectly(string $value, int $expected): void
+    public function valueCheckRecognizesDatetimeValuesAsIntegerValuesCorrectly(string $value, int $expected): void
     {
         $tcaFieldConf = [
-            'type' => 'input',
-            'eval' => 'datetime',
+            'type' => 'datetime',
+            'eval' => 'int',
             'range' => [
                 // unix timestamp: 1519862400
                 'lower' => gmmktime(0, 0, 0, 3, 1, 2018),
@@ -407,7 +407,7 @@ class DataHandlerTest extends UnitTestCase
         $previousTimezone = date_default_timezone_get();
         date_default_timezone_set('UTC');
 
-        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
         date_default_timezone_set($previousTimezone);
 
@@ -439,11 +439,13 @@ class DataHandlerTest extends UnitTestCase
      * @dataProvider inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider
      * @test
      */
-    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(string|int $inputValue, string $expected, int $expectedEvalInt): void
-    {
+    public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(
+        string|int $inputValue,
+        string $expected,
+        int $expectedEvalInt
+    ): void {
         $tcaFieldConf = [
-            'type' => 'input',
-            'eval' => 'datetime',
+            'type' => 'datetime',
             'default' => 0,
             'range' => [
                 'lower' => 1627077600,
@@ -451,69 +453,39 @@ class DataHandlerTest extends UnitTestCase
         ];
 
         $tcaFieldConfEvalInt = [
-            'type' => 'input',
-            'eval' => 'datetime,int',
-            'default' => '0',
+            'type' => 'datetime',
+            'eval' => 'int',
+            'default' => 0,
             'range' => [
                 'lower' => 1627077600,
             ],
         ];
 
-        $returnValue = $this->subject->_call('checkValueForInput', $inputValue, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
         self::assertSame($expected, $returnValue['value']);
 
-        $returnValue = $this->subject->_call('checkValueForInput', $inputValue, $tcaFieldConfEvalInt, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConfEvalInt);
         self::assertSame($expectedEvalInt, $returnValue['value']);
-    }
-
-    /**
-     * @return array
-     */
-    public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider(): array
-    {
-        return [
-            'tca without dbType' => [
-                [
-                    'type' => 'input',
-                ],
-            ],
-            'tca with dbType != date/datetime/time' => [
-                [
-                    'type' => 'input',
-                    'dbType' => 'foo',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @param array $tcaFieldConf
-     * @dataProvider inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFieldsDataProvider
-     */
-    public function inputValueCheckDoesNotCallGetDateTimeFormatsForNonDatetimeFields(array $tcaFieldConf): void
-    {
-        $this->subject->_call('checkValueForInput', '', $tcaFieldConf, '', 0, 0, '');
     }
 
     /**
      * @returns array
      */
-    public function inputValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
+    public function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
     {
         return [
-            // Values of this kind are passed in from the inputDateTime control
-            'time from inputDateTime' => [
+            // Values of this kind are passed in from the DateTime control
+            'time from DateTime' => [
                 '1970-01-01T18:54:00Z',
                 'time',
                 '18:54:00',
             ],
-            'date from inputDateTime' => [
+            'date from DateTime' => [
                 '2020-11-25T00:00:00Z',
                 'date',
                 '2020-11-25',
             ],
-            'datetime from inputDateTime' => [
+            'datetime from DateTime' => [
                 '2020-11-25T18:54:00Z',
                 'datetime',
                 '2020-11-25 18:54:00',
@@ -538,21 +510,21 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * Tests whether native dbtype inputs are parsed independent from the server timezone.
+     * Tests whether native dbtype inputs are parsed independent of the server timezone.
      * @test
-     * @dataProvider inputValueCheckDbtypeIsIndependentFromTimezoneDataProvider
+     * @dataProvider datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider
      */
-    public function inputValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
+    public function datetimeValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
     {
         $tcaFieldConf = [
-            'type' => 'input',
+            'type' => 'datetime',
             'dbType' => $dbtype,
         ];
 
         $oldTimezone = date_default_timezone_get();
         date_default_timezone_set('Europe/Berlin');
 
-        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
         // set before the assertion is performed, so it is restored even for failing tests
         date_default_timezone_set($oldTimezone);

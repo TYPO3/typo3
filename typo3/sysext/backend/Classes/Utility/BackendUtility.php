@@ -1608,73 +1608,71 @@ class BackendUtility
                 }
                 break;
             case 'input':
-                // Hide value 0 for dates, but show it for everything else
                 // todo: phpstan states that $value always exists and is not nullable. At the moment, this is a false
                 //       positive as null can be passed into this method via $value. As soon as more strict types are
                 //       used, this isset check must be replaced with a more appropriate check.
                 if (isset($value)) {
-                    $dateTimeFormats = QueryHelper::getDateTimeFormats();
-
-                    if (GeneralUtility::inList($theColConf['eval'] ?? '', 'date')) {
-                        // Handle native date field
-                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
-                            $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
-                        } else {
-                            $value = (int)$value;
-                        }
-                        if (!empty($value)) {
-                            $ageSuffix = '';
-                            $dateColumnConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
-                            $ageDisplayKey = 'disableAgeDisplay';
-
-                            // generate age suffix as long as not explicitly suppressed
-                            if (!isset($dateColumnConfiguration[$ageDisplayKey])
-                                // non typesafe comparison on intention
-                                || $dateColumnConfiguration[$ageDisplayKey] == false
-                            ) {
-                                $ageSuffix = ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '')
-                                    . self::calcAge(
-                                        (int)abs($GLOBALS['EXEC_TIME'] - $value),
-                                        $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                                    )
-                                    . ')';
-                            }
-
-                            $l = self::date($value) . $ageSuffix;
-                        }
-                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'time')) {
-                        // Handle native time field
-                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
-                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-                        } else {
-                            $value = (int)$value;
-                        }
-                        if (!empty($value)) {
-                            $l = gmdate('H:i', (int)$value);
-                        }
-                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'timesec')) {
-                        // Handle native time field
-                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'time') {
-                            $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-                        } else {
-                            $value = (int)$value;
-                        }
-                        if (!empty($value)) {
-                            $l = gmdate('H:i:s', (int)$value);
-                        }
-                    } elseif (GeneralUtility::inList($theColConf['eval'] ?? '', 'datetime')) {
-                        // Handle native datetime field
-                        if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
-                            $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
-                        } else {
-                            $value = (int)$value;
-                        }
-                        if (!empty($value)) {
-                            $l = self::datetime($value);
-                        }
+                    $l = $value;
+                }
+                break;
+            case 'datetime':
+                $format = (string)($theColConf['format'] ?? 'datetime');
+                $dateTimeFormats = QueryHelper::getDateTimeFormats();
+                if ($format === 'date') {
+                    // Handle native date field
+                    if (($theColConf['dbType'] ?? '') === 'date') {
+                        $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
                     } else {
-                        $l = $value;
+                        $value = (int)$value;
                     }
+                    if (!empty($value)) {
+                        $ageSuffix = '';
+                        // Generate age suffix as long as not explicitly suppressed
+                        if (!($theColConf['disableAgeDisplay'] ?? false)) {
+                            $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
+                            $calculatedAge = self::calcAge(
+                                (int)abs($ageDelta),
+                                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                            );
+                            $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
+                        }
+                        $l = self::date($value) . $ageSuffix;
+                    }
+                } elseif ($format === 'time') {
+                    // Handle native time field
+                    if (($theColConf['dbType'] ?? '') === 'time') {
+                        $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
+                    } else {
+                        $value = (int)$value;
+                    }
+                    if (!empty($value)) {
+                        $l = gmdate('H:i', (int)$value);
+                    }
+                } elseif ($format === 'timesec') {
+                    // Handle native time field
+                    if (($theColConf['dbType'] ?? '') === 'time') {
+                        $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
+                    } else {
+                        $value = (int)$value;
+                    }
+                    if (!empty($value)) {
+                        $l = gmdate('H:i:s', (int)$value);
+                    }
+                } elseif ($format === 'datetime') {
+                    // Handle native datetime field
+                    if (($theColConf['dbType'] ?? '') === 'datetime') {
+                        $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime($value);
+                    } else {
+                        $value = (int)$value;
+                    }
+                    if (!empty($value)) {
+                        $l = self::datetime($value);
+                    }
+                } elseif (isset($value)) {
+                    // todo: phpstan states that $value always exists and is not nullable. At the moment, this is a false
+                    //       positive as null can be passed into this method via $value. As soon as more strict types are
+                    //       used, this isset check must be replaced with a more appropriate check.
+                    $l = $value;
                 }
                 break;
             case 'password':

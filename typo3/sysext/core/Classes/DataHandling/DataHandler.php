@@ -1522,6 +1522,7 @@ class DataHandler implements LoggerAwareInterface
         $res = (array)match ((string)$tcaFieldConf['type']) {
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
             'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
             'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
@@ -1650,30 +1651,6 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field)
     {
-        // Handle native date/time fields
-        $isDateOrDateTimeField = false;
-        $format = '';
-        $emptyValue = '';
-        $dateTimeTypes = QueryHelper::getDateTimeTypes();
-        // normal integer "date" fields (timestamps) are handled in checkValue_input_Eval
-        if (isset($tcaFieldConf['dbType']) && in_array($tcaFieldConf['dbType'], $dateTimeTypes, true)) {
-            if (empty($value)) {
-                $value = null;
-            } else {
-                $isDateOrDateTimeField = true;
-                $dateTimeFormats = QueryHelper::getDateTimeFormats();
-                $format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
-
-                // Convert the date/time into a timestamp for the sake of the checks
-                $emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
-                // We expect the ISO 8601 $value to contain a UTC timezone specifier.
-                // We explicitly fallback to UTC if no timezone specifier is given (e.g. for copy operations).
-                $dateTime = new \DateTime($value, new \DateTimeZone('UTC'));
-                // The timestamp (UTC) returned by getTimestamp() will be converted to
-                // a local time string by gmdate() later.
-                $value = $value === $emptyValue ? null : $dateTime->getTimestamp();
-            }
-        }
         // Secures the string-length to be less than max.
         if (isset($tcaFieldConf['max']) && (int)$tcaFieldConf['max'] > 0) {
             $value = mb_substr((string)$value, 0, (int)$tcaFieldConf['max'], 'utf-8');
@@ -1693,10 +1670,6 @@ class DataHandler implements LoggerAwareInterface
             }
 
             $res = $this->checkValue_input_Eval((string)$value, $evalCodesArray, $tcaFieldConf['is_in'] ?? '', $table, $id);
-            if (isset($tcaFieldConf['dbType']) && isset($res['value']) && !$res['value']) {
-                // set the value to null if we have an empty value for a native field
-                $res['value'] = null;
-            }
 
             // Process UNIQUE settings:
             // Field is NOT set for flexForms - which also means that uniqueInPid and unique is NOT available for flexForm fields! Also getUnique should not be done for versioning
@@ -1727,11 +1700,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        // Handle native date/time fields
-        if ($isDateOrDateTimeField) {
-            // Convert the timestamp back to a date/time
-            $res['value'] = $res['value'] ? gmdate($format, $res['value']) : $emptyValue;
-        }
         return $res;
     }
 
@@ -2033,6 +2001,109 @@ class DataHandler implements LoggerAwareInterface
             $result['value'] = $newVal !== '' ? $newVal : 0;
         }
         return $result;
+    }
+
+    /**
+     * Evaluate 'datetime' type values
+     *
+     * @param mixed $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @return array
+     */
+    protected function checkValueForDatetime(mixed $value, array $tcaFieldConf): array
+    {
+        $format = $tcaFieldConf['format'] ?? 'datetime';
+        if (!in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+            // Early return if format is not valid
+            return [];
+        }
+
+        // Handle native date/time fields
+        $isNativeDateTimeField = false;
+        $nativeDateTimeFieldFormat = '';
+        $nativeDateTimeFieldEmptyValue = '';
+        $nativeDateTimeType = $tcaFieldConf['dbType'] ?? '';
+        if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
+            $isNativeDateTimeField = true;
+            $dateTimeFormats = QueryHelper::getDateTimeFormats();
+            $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'];
+            $nativeDateTimeFieldEmptyValue = $dateTimeFormats[$nativeDateTimeType]['empty'];
+            if (empty($value)) {
+                $value = null;
+            } else {
+                // Convert the date/time into a timestamp for the sake of the checks
+                // We expect the ISO 8601 $value to contain a UTC timezone specifier.
+                // We explicitly fallback to UTC if no timezone specifier is given (e.g. for copy operations).
+                $dateTime = new \DateTime((string)$value, new \DateTimeZone('UTC'));
+                // The timestamp (UTC) returned by getTimestamp() will be converted to
+                // a local time string by gmdate() later.
+                $value = $value === $nativeDateTimeFieldEmptyValue ? null : $dateTime->getTimestamp();
+            }
+        }
+
+        if (!$this->validateValueForRequired($tcaFieldConf, (string)$value)) {
+            return [];
+        }
+
+        if ((string)$value !== '' && !MathUtility::canBeInterpretedAsInteger((string)$value)) {
+            if (($format === 'time' || $format === 'timesec')) {
+                $value = (new \DateTime((string)$value))->getTimestamp();
+            } else {
+                // The value we receive from JS is an ISO 8601 date, which is always in UTC. (the JS code works like that, on purpose!)
+                // For instance "1999-11-11T11:11:11Z"
+                // Since the user actually specifies the time in the server's local time, we need to mangle this
+                // to reflect the server TZ. So we make this 1999-11-11T11:11:11+0200 (assuming Europe/Vienna here)
+                // In the database we store the date in UTC (1999-11-11T09:11:11Z), hence we take the timestamp of this converted value.
+                // For achieving this we work with timestamps only (which are UTC) and simply adjust it for the
+                // TZ difference.
+                try {
+                    // Make the date from JS a timestamp
+                    $value = (new \DateTime((string)$value))->getTimestamp();
+                } catch (\Exception) {
+                    // set the default timezone value to achieve the value of 0 as a result
+                    $value = (int)date('Z', 0);
+                }
+
+                // @todo this hacky part is problematic when it comes to times around DST switch! Add test to prove that this is broken.
+                $value -= (int)date('Z', $value);
+            }
+        }
+
+        // @todo int should in the future always be used if no native type ("dbType") is specified
+        if (GeneralUtility::inList($tcaFieldConf['eval'] ?? '', 'int')) {
+            $value = (int)$value;
+        } else {
+            // @todo This should be deprecated!
+            $value = (string)$value;
+        }
+
+        // Set the value to null if we have an empty value for a native field
+        $res['value'] = $isNativeDateTimeField && !$value ? null : $value;
+
+        // Skip range validation, if the default value equals 0 and the input value is 0, "0" or an empty string.
+        // This is needed for timestamp date fields with ['range']['lower'] set.
+        $skipRangeValidation =
+            isset($tcaFieldConf['default'], $res['value'])
+            && (int)$tcaFieldConf['default'] === 0
+            && ($res['value'] === '' || $res['value'] === '0' || $res['value'] === 0);
+
+        // Checking range of value:
+        if (!$skipRangeValidation && isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
+            if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
+                $res['value'] = (int)$tcaFieldConf['range']['upper'];
+            }
+            if (isset($tcaFieldConf['range']['lower']) && floor($res['value']) < (int)$tcaFieldConf['range']['lower']) {
+                $res['value'] = (int)$tcaFieldConf['range']['lower'];
+            }
+        }
+
+        // Handle native date/time fields
+        if ($isNativeDateTimeField) {
+            // Convert the timestamp back to a date/time
+            $res['value'] = $res['value'] ? gmdate($nativeDateTimeFieldFormat, $res['value']) : $nativeDateTimeFieldEmptyValue;
+        }
+
+        return $res;
     }
 
     /**
@@ -2713,37 +2784,6 @@ class DataHandler implements LoggerAwareInterface
                 case 'int':
                 case 'year':
                     $value = (int)$value;
-                    break;
-                case 'time':
-                case 'timesec':
-                    // If $value is a pure integer we have the number of seconds, we can store that directly
-                    if ($value !== '' && !MathUtility::canBeInterpretedAsInteger($value)) {
-                        // $value is an ISO 8601 date
-                        $value = (new \DateTime($value))->getTimestamp();
-                    }
-                    break;
-                case 'date':
-                case 'datetime':
-                    // If $value is a pure integer we have the number of seconds, we can store that directly
-                    if ($value !== null && $value !== '' && !MathUtility::canBeInterpretedAsInteger($value)) {
-                        // The value we receive from JS is an ISO 8601 date, which is always in UTC. (the JS code works like that, on purpose!)
-                        // For instance "1999-11-11T11:11:11Z"
-                        // Since the user actually specifies the time in the server's local time, we need to mangle this
-                        // to reflect the server TZ. So we make this 1999-11-11T11:11:11+0200 (assuming Europe/Vienna here)
-                        // In the database we store the date in UTC (1999-11-11T09:11:11Z), hence we take the timestamp of this converted value.
-                        // For achieving this we work with timestamps only (which are UTC) and simply adjust it for the
-                        // TZ difference.
-                        try {
-                            // Make the date from JS a timestamp
-                            $value = (new \DateTime($value))->getTimestamp();
-                        } catch (\Exception $e) {
-                            // set the default timezone value to achieve the value of 0 as a result
-                            $value = (int)date('Z', 0);
-                        }
-
-                        // @todo this hacky part is problematic when it comes to times around DST switch! Add test to prove that this is broken.
-                        $value -= date('Z', $value);
-                    }
                     break;
                 case 'double2':
                     $value = preg_replace('/[^0-9,\\.-]/', '', $value);

@@ -1953,4 +1953,9 @@ return [
             'Feature-97231-PSR-14EventsForModifyingInlineElementControls.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Element\InputDateTimeElement' => [
+        'restFiles' => [
+            'Feature-97232-NewTCATypeDatetime.rst',
+        ],
+    ],
 ];

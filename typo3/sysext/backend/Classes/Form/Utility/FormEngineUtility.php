@@ -47,6 +47,7 @@ class FormEngineUtility
         'email' => ['size', 'readOnly'],
         'link' => ['size', 'readOnly'],
         'password' => ['size', 'readOnly'],
+        'datetime' => ['size', 'readOnly'],
         'text' => ['cols', 'rows', 'wrap', 'max', 'readOnly'],
         'check' => ['cols', 'readOnly'],
         'select' => ['size', 'autoSizeMax', 'maxitems', 'minitems', 'readOnly', 'treeConfig', 'fileFolderConfig'],

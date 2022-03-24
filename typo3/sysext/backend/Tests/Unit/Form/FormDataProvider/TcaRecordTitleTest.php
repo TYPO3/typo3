@@ -258,96 +258,94 @@ class TcaRecordTitleTest extends UnitTestCase
      *  - Database value for field
      *  - expected title to be generated
      */
-    public function addDataReturnsRecordTitleForInputTypeDataProvider(): array
+    public function addDataReturnsRecordTitleForDatetimeTypeDataProvider(): array
     {
         return [
             'new record' => [
                 [
-                    'type' => 'input',
+                    'type' => 'datetime',
                 ],
                 '',
                 '',
             ],
             'plain text input' => [
                 [
-                    'type' => 'input',
+                    'type' => 'datetime',
                 ],
                 'aValue',
                 'aValue',
             ],
-            'date input' => [
+            'date' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'date',
+                    'type' => 'datetime',
+                    'format' => 'date',
                 ],
                 '978307261',
                 '01-01-01 (-7 days)',
             ],
-            'date input (dbType: date)' => [
+            'date (dbType: date)' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'date',
+                    'type' => 'datetime',
+                    'format' => 'date',
                     'dbType' => 'date',
                 ],
                 '2001-01-01',
                 '01-01-01 (-7 days)',
             ],
-            'date input (disableAgeDisplay: TRUE)' => [
+            'date (disableAgeDisplay: TRUE)' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'date',
+                    'type' => 'datetime',
+                    'format' => 'date',
                     'disableAgeDisplay' => true,
                 ],
                 '978307261',
                 '01-01-01',
             ],
-            'time input' => [
+            'time' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'time',
+                    'type' => 'datetime',
+                    'format' => 'time',
                 ],
                 '44100',
                 '12:15',
             ],
-            'time input (dbType: time)' => [
+            'time (dbType: time)' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'time',
+                    'type' => 'datetime',
+                    'format' => 'time',
                     'dbType' => 'time',
                 ],
                 '23:59:00',
                 '23:59',
             ],
-            'timesec input' => [
+            'timesec' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'timesec',
+                    'type' => 'datetime',
+                    'format' => 'timesec',
                 ],
                 '44130',
                 '12:15:30',
             ],
-            'timesec input (dbType: time)' => [
+            'timesec (dbType: time)' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'timesec',
+                    'type' => 'datetime',
+                    'format' => 'timesec',
                     'dbType' => 'time',
                 ],
                 '23:59:59',
                 '23:59:59',
             ],
-            'datetime input' => [
+            'datetime' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'datetime',
+                    'type' => 'datetime',
                     'dbType' => 'date',
                 ],
                 '978307261',
                 '01-01-01 00:01',
             ],
-            'datetime input (dbType: datetime)' => [
+            'datetime (dbType: datetime)' => [
                 [
-                    'type' => 'input',
-                    'eval' => 'datetime',
+                    'type' => 'datetime',
                     'dbType' => 'datetime',
                 ],
                 '2014-12-31 23:59:59',
@@ -358,9 +356,9 @@ class TcaRecordTitleTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider addDataReturnsRecordTitleForInputTypeDataProvider
+     * @dataProvider addDataReturnsRecordTitleForDatetimeTypeDataProvider
      */
-    public function addDataReturnsRecordTitleForInputType(array $fieldConfig, string $fieldValue, string $expectedTitle): void
+    public function addDataReturnsRecordTitleForDatetimeType(array $fieldConfig, string $fieldValue, string $expectedTitle): void
     {
         $input = [
             'tableName' => 'aTable',

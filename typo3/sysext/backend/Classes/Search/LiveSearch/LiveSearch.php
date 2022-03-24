@@ -307,7 +307,8 @@ class LiveSearch
                 // Assemble the search condition only if the field is an integer, or is uid or pid
                 if ($fieldName === 'uid'
                     || $fieldName === 'pid'
-                    || ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int'))
+                    || (($fieldType === 'input' || $fieldType === 'datetime')
+                        && GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
@@ -318,7 +319,7 @@ class LiveSearch
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'slug'
-                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
+                    || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     // Otherwise and if the field makes sense to be searched, assemble a like condition
                     $constraints[] = $queryBuilder->expr()->like(
@@ -372,7 +373,7 @@ class LiveSearch
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'slug'
-                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
+                    || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     if ($searchConstraint->count() !== 0) {
                         $constraints[] = $searchConstraint;

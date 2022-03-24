@@ -18,30 +18,24 @@ return [
     'columns' => [
         'datetime_text' => [
             'exclude' => 1,
-            'label' => 'eval=datetime, db=text',
+            'label' => 'type=datetime, db=text',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
             ],
         ],
         'datetime_int' => [
             'exclude' => 1,
-            'label' => 'eval=datetime, db=int',
+            'label' => 'type=datetime, db=int',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
+                'type' => 'datetime',
             ],
         ],
         'datetime_datetime' => [
             'exclude' => 1,
-            'label' => 'eval=datetime, db=datetime',
+            'label' => 'type=datetime, db=datetime',
             'config' => [
+                'type' => 'datetime',
                 'dbType' => 'datetime',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime',
             ],
         ],
     ],

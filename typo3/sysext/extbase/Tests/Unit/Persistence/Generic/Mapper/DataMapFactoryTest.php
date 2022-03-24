@@ -363,15 +363,16 @@ class DataMapFactoryTest extends UnitTestCase
     public function columnMapIsInitializedWithFieldEvaluationsForDateTimeFields($type, $expectedValue): void
     {
         $columnDefinition = [
-            'type' => 'input',
+            'type' => 'datetime',
             'dbType' => $type,
-            'eval' => $type,
         ];
 
         $mockColumnMap = $this->getMockBuilder(ColumnMap::class)
             ->onlyMethods(['setDateTimeStorageFormat'])
             ->disableOriginalConstructor()
             ->getMock();
+
+        $mockColumnMap->setType(new TableColumnType('datetime'));
 
         if ($expectedValue !== null) {
             $mockColumnMap->expects(self::once())->method('setDateTimeStorageFormat')->with(self::equalTo($type));
@@ -386,7 +387,7 @@ class DataMapFactoryTest extends UnitTestCase
             '',
             false
         );
-        $accessibleDataMapFactory->_call('setFieldEvaluations', $mockColumnMap, $columnDefinition);
+        $accessibleDataMapFactory->_call('setDateTimeStorageFormat', $mockColumnMap, $columnDefinition);
     }
 
     /**
@@ -470,6 +471,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'email'], TableColumnType::EMAIL],
             [['type' => 'link'], TableColumnType::LINK],
             [['type' => 'password'], TableColumnType::PASSWORD],
+            [['type' => 'datetime'], TableColumnType::DATETIME],
         ];
     }
 

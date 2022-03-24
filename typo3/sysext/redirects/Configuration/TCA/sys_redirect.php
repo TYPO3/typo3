@@ -66,9 +66,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -76,9 +75,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -211,9 +209,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.lasthiton',
             'config' => [
-                'type' => 'input',
-                'eval' => 'datetime,int',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'readOnly' => true,
             ],
             'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',
@@ -222,9 +219,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.creationDate',
             'config' => [
-                'type' => 'input',
-                'eval' => 'datetime,int',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'readOnly' => true,
             ],
             'displayCond' => 'USER:TYPO3\CMS\Redirects\UserFunctions\HitCountDisplayCondition->isEnabled',

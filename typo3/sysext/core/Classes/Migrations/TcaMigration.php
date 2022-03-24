@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Migrations;
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -72,6 +73,7 @@ class TcaMigration
         $tca = $this->migrateTypeNoneColsToSize($tca);
         $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
         $tca = $this->migratePasswordAndSaltedPasswordToPasswordType($tca);
+        $tca = $this->migrateRenderTypeInputDateTimeToTypeDatetime($tca);
 
         return $tca;
     }
@@ -849,6 +851,86 @@ class TcaMigration
                     . '"password" or "saltedPassword" in its "eval" list. The field has therefore been migrated to '
                     . 'the TCA type \'password\'. This also includes the removal of obsolete field configurations,'
                     . 'such as "max" and "search". Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][renderType] = 'inputDateTime' to [config][type] = 'datetime'.
+     * Migrates "date", "time" and "timesec" from [config][eval] to [config][format].
+     * Removes anything except for "null" and "int" from [config][eval].
+     * Removes option [config][max], if set.
+     * Removes option [config][format], if set.
+     * Removes option [config][default], if the default is the native "empty" value
+     */
+    protected function migrateRenderTypeInputDateTimeToTypeDatetime(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || ($fieldConfig['config']['renderType'] ?? '') !== 'inputDateTime'
+                ) {
+                    // Early return in case column is not of type=input with renderType=inputDateTime
+                    continue;
+                }
+
+                // Set the TCA type to "datetime"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'datetime';
+
+                // Unset "renderType" and "max"
+                // Note: Also unset "format". This option had been documented but was actually
+                //       never used in the FormEngine element. This migration will set it according
+                //       to the corresponding "eval" value.
+                unset(
+                    $tca[$table]['columns'][$fieldName]['config']['max'],
+                    $tca[$table]['columns'][$fieldName]['config']['renderType'],
+                    $tca[$table]['columns'][$fieldName]['config']['format']
+                );
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+
+                // Set the "format" based on "eval". If set to "datetime",
+                // no migration is done since this is the default format.
+                if (in_array('date', $evalList, true)) {
+                    $tca[$table]['columns'][$fieldName]['config']['format'] = 'date';
+                } elseif (in_array('time', $evalList, true)) {
+                    $tca[$table]['columns'][$fieldName]['config']['format'] = 'time';
+                } elseif (in_array('timesec', $evalList, true)) {
+                    $tca[$table]['columns'][$fieldName]['config']['format'] = 'timesec';
+                }
+
+                // Filter eval list, only "null" and "int" is allowed
+                $evalList = array_filter(
+                    $evalList,
+                    static fn ($value) => $value === 'null' || $value === 'int'
+                );
+
+                if ($evalList !== []) {
+                    // Write back filtered eval list
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                } else {
+                    // Unset eval list if no allowed item is left
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                if (isset($fieldConfig['config']['default'])
+                    && in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)
+                    && $fieldConfig['config']['default'] === QueryHelper::getDateTimeFormats()[$fieldConfig['config']['dbType']]['empty']
+                ) {
+                    // Unset default for native datetime fields if the default is the native "empty" value
+                    unset($tca[$table]['columns'][$fieldName]['config']['default']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'renderType="inputDateTime". The field has therefore been migrated to the TCA type \'datetime\'. '
+                    . 'This includes corresponding migration of the "eval" list, as well as obsolete field '
+                    . 'configurations, such as "max". Please adjust your TCA accordingly.';
             }
         }
 

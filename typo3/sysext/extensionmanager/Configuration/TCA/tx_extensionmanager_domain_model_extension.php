@@ -75,9 +75,8 @@ return [
         'last_updated' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.lastupdated',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
             ],
         ],
         'update_comment' => [

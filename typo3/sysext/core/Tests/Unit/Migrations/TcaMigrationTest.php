@@ -2156,4 +2156,207 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    private function renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider(): iterable
+    {
+        yield 'Full example of renderType=inputDateTime migrated to type=datetime' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'format' => 'date',
+                                'required' => true,
+                                'readOnly' => true,
+                                'size' => 20,
+                                'max' => 1234,
+                                'eval' => 'trim,null,time,int',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'required' => true,
+                                'readOnly' => true,
+                                'size' => 20,
+                                'eval' => 'null,int',
+                                'format' => 'time',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'format, renderType and eval are unset' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'format' => 'date',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'trim,datetime',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'eval=datetime is kept when type=input or renderType=inputDateTime is missing' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'datetime',
+                            ],
+                        ],
+                    ],
+                ],
+                'bTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'datetime',
+                            ],
+                        ],
+                    ],
+                ],
+                'bTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'text',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Unset default for native type fields, if it\'s the types empty value' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'dbType' => 'date',
+                                'eval' => 'date',
+                                'default' => '0000-00-00',
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'dbType' => 'datetime',
+                                'eval' => 'datetime',
+                                'default' => '0000-00-00 00:00:00',
+                            ],
+                        ],
+                        'cColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'dbType' => 'time',
+                                'eval' => 'time',
+                                'default' => '00:00:00',
+                            ],
+                        ],
+                        'dColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'dbType' => 'time',
+                                'eval' => 'time',
+                                'default' => '20:20:20',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'dbType' => 'date',
+                                'format' => 'date',
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'dbType' => 'datetime',
+                            ],
+                        ],
+                        'cColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'dbType' => 'time',
+                                'format' => 'time',
+                            ],
+                        ],
+                        'dColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'dbType' => 'time',
+                                'default' => '20:20:20',
+                                'format' => 'time',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider
+     * @test
+     */
+    public function renderTypeInputDateTimeMigratedToTypeDatetime(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

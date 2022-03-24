@@ -17,4 +17,5 @@ declare(strict_types=1);
 
 return [
     'TYPO3\\CMS\\Backend\\Form\\Element\\InputLinkElement' => \TYPO3\CMS\Backend\Form\Element\LinkElement::class,
+    'TYPO3\\CMS\\Backend\\Form\\Element\\InputDateTimeElement' => \TYPO3\CMS\Backend\Form\Element\DatetimeElement::class,
 ];

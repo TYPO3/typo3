@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\Element;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Form\Element\InputDateTimeElement;
+use TYPO3\CMS\Backend\Form\Element\DatetimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class InputDateTimeElementTest extends UnitTestCase
+class DatetimeElementTest extends UnitTestCase
 {
     use ProphecyTrait;
 
@@ -100,10 +100,8 @@ class InputDateTimeElementTest extends UnitTestCase
                 'fieldName' => 'field_bar',
                 'fieldConf' => [
                     'config' => [
-                        'type' => 'input',
+                        'type' => 'datetime',
                         'dbType' => 'datetime',
-                        'eval' => 'datetime',
-                        'default' => '0000-00-00 00:00:00',
                     ],
                 ],
                 'itemFormElName' => 'myItemFormElName',
@@ -128,7 +126,7 @@ class InputDateTimeElementTest extends UnitTestCase
         $nodeFactoryProphecy->create(Argument::cetera())->willReturn($fieldInformationProphecy->reveal());
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $subject = new InputDateTimeElement($nodeFactoryProphecy->reveal(), $data);
+        $subject = new DatetimeElement($nodeFactoryProphecy->reveal(), $data);
         $result = $subject->render();
         self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }

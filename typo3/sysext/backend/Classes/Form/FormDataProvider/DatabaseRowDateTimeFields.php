@@ -35,9 +35,10 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
 
         foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
-            if (isset($columnConfig['config']['dbType'])
-                && in_array($columnConfig['config']['dbType'], $dateTimeTypes, true)
-            ) {
+            if (($columnConfig['config']['type'] ?? '') !== 'datetime') {
+                continue;
+            }
+            if (in_array($columnConfig['config']['dbType'] ?? '', $dateTimeTypes, true)) {
                 if (!empty($result['databaseRow'][$column])
                     && $result['databaseRow'][$column] !== $dateTimeFormats[$columnConfig['config']['dbType']]['empty']
                 ) {

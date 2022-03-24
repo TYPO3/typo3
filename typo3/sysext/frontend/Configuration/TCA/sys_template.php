@@ -57,9 +57,8 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'exclude' => true,
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -67,9 +66,8 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'exclude' => true,
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'eval' => 'datetime,int',
+                'type' => 'datetime',
+                'eval' => 'int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),

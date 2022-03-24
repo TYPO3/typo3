@@ -23,8 +23,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * General type=input element.
  *
- * This one kicks in if no specific renderType like "inputDateTime"
- * or "inputColorPicker" is set.
+ * This one kicks in if no specific renderType like "inputColorPicker" is set.
  */
 class InputTextElement extends AbstractFormElement
 {

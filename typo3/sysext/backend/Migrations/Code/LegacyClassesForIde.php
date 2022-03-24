@@ -24,3 +24,9 @@ namespace TYPO3\CMS\Backend\Form\Element {
     {
     }
 }
+
+namespace TYPO3\CMS\Backend\Form\Element {
+    class InputDateTimeElement extends \TYPO3\CMS\Backend\Form\Element\DatetimeElement
+    {
+    }
+}

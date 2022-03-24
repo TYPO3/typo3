@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -22,9 +24,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "input type=text"
+ * Generation of form elements with TCA type "datetime"
  */
-class InputDateTimeElement extends AbstractFormElement
+class DatetimeElement extends AbstractFormElement
 {
     /**
      * Default field information enabled for this element.
@@ -61,57 +63,43 @@ class InputDateTimeElement extends AbstractFormElement
     ];
 
     /**
-     * This will render a single-line input form field, possibly with various control/validation features
+     * This will render a single-line datetime form field, possibly with various control/validation features
      *
      * @return array As defined in initializeResultArray() of AbstractNode
-     * @throws \RuntimeException with invalid configuration
      */
-    public function render()
+    public function render(): array
     {
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
         $config = $parameterArray['fieldConf']['config'];
 
-        $itemValue = $parameterArray['itemFormElValue'];
-        $defaultInputWidth = 10;
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
-        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
-
-        if (in_array('date', $evalList, true)) {
-            $format = 'date';
-            $defaultInputWidth = 13;
-        } elseif (in_array('datetime', $evalList, true)) {
-            $format = 'datetime';
-            $defaultInputWidth = 13;
-        } elseif (in_array('time', $evalList, true)) {
-            $format = 'time';
-        } elseif (in_array('timesec', $evalList, true)) {
-            $format = 'timesec';
-        } else {
-            throw new \RuntimeException(
-                'Field "' . $fieldName . '" in table "' . $table . '" with renderType "inputDateTime" needs '
-                . '"eval" set to either "date", "datetime", "time" or "timesec"',
-                1483823746
+        $format = $config['format'] ?? 'datetime';
+        if (!in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+            throw new \UnexpectedValueException(
+                'Format "' . $format . '" for field "' . $fieldName . '" in table "' . $table . '" is '
+                . 'not valid. Must be either empty or set to one of: "date", "datetime", "time", "timesec".',
+                1647947686
             );
         }
 
-        $size = MathUtility::forceIntegerInRange($config['size'] ?? $defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = $this->formMaxWidth($size);
+        $itemValue = $parameterArray['itemFormElValue'];
+        $width = $this->formMaxWidth(MathUtility::forceIntegerInRange(
+            $config['size'] ?? ($format === 'date' || $format === 'datetime' ? 13 : 10),
+            $this->minimumInputWidth,
+            $this->maxInputWidth
+        ));
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         // Early return for read only fields
-        if (isset($config['readOnly']) && $config['readOnly']) {
+        if ($config['readOnly'] ?? false) {
             // Ensure dbType values (see DatabaseRowDateTimeFields) are converted to a UNIX timestamp before rendering read-only
             if (!empty($itemValue) && !MathUtility::canBeInterpretedAsInteger($itemValue)) {
-                $itemValue = (new \DateTime($itemValue))->getTimestamp();
+                $itemValue = (new \DateTime((string)$itemValue))->getTimestamp();
             }
             // Format the unix-timestamp to the defined format (date/year etc)
             $itemValue = $this->formatValue($format, $itemValue);
@@ -130,7 +118,16 @@ class InputDateTimeElement extends AbstractFormElement
             return $resultArray;
         }
 
+        $languageService = $this->getLanguageService();
         $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $itemName = (string)$parameterArray['itemFormElName'];
+
+        // Get filtered eval list, while always adding the format
+        $evalList = array_merge([$format], array_filter(
+            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
+            static fn ($value) => $value === 'null' || $value === 'int'
+        ));
+
         $attributes = [
             'value' => '',
             'id' => $fieldId,
@@ -143,16 +140,12 @@ class InputDateTimeElement extends AbstractFormElement
             'data-date-type' => $format,
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
-                'field' => $parameterArray['itemFormElName'],
+                'field' => $itemName,
                 'evalList' => implode(',', $evalList),
             ]),
-            'data-formengine-input-name' => $parameterArray['itemFormElName'],
+            'data-formengine-input-name' => $itemName,
         ];
 
-        $maxLength = $config['max'] ?? 0;
-        if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (string)(int)$maxLength;
-        }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
         }
@@ -160,13 +153,13 @@ class InputDateTimeElement extends AbstractFormElement
         if ($format === 'datetime' || $format === 'date') {
             // This only handles integer timestamps; if the field is a SQL native date(time), it was already converted
             // to an ISO-8601 date by the DatabaseRowDateTimeFields class. (those dates are stored as server local time)
-            if (MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {
+            if (MathUtility::canBeInterpretedAsInteger($itemValue) && (int)$itemValue !== 0) {
                 // We store UTC timestamps in the database.
                 // Convert the timestamp to a proper ISO-8601 date so we get rid of timezone issues on the client.
                 // Details: As the JS side is not capable of handling dates in the server's timezone
                 // (moment.js can only handle UTC or browser's local timezone), we need to offset the value
                 // to eliminate the timezone. JS will receive all dates as if they were UTC, which we undo on save in DataHandler
-                $adjustedValue = $itemValue + date('Z', (int)$itemValue);
+                $adjustedValue = (int)$itemValue + (int)date('Z', (int)$itemValue);
                 // output date as an ISO-8601 date
                 $itemValue = gmdate('c', $adjustedValue);
             }
@@ -177,7 +170,7 @@ class InputDateTimeElement extends AbstractFormElement
                 $attributes['data-date-max-date'] = (string)((int)$config['range']['upper'] * 1000);
             }
         }
-        if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && $itemValue != 0) {
+        if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue) && (int)$itemValue !== 0) {
             // time(sec) is stored as elapsed seconds in DB, hence we interpret it as UTC time on 1970-01-01
             // and pass on the ISO format to JS.
             $itemValue = gmdate('c', (int)$itemValue);
@@ -197,7 +190,7 @@ class InputDateTimeElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group">';
         $expansionHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $expansionHtml[] =              '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
+        $expansionHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $expansionHtml[] =              '<span class="input-group-btn">';
         $expansionHtml[] =                  '<label class="btn btn-default" for="' . $attributes['id'] . '">';
         $expansionHtml[] =                      $this->iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render();
@@ -220,6 +213,8 @@ class InputDateTimeElement extends AbstractFormElement
         $expansionHtml[] =  '</div>';
         $expansionHtml[] = '</div>';
         $expansionHtml = implode(LF, $expansionHtml);
+
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $expansionHtml;
         if ($this->hasNullCheckboxButNoPlaceholder()) {
@@ -275,10 +270,15 @@ class InputDateTimeElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            '@typo3/backend/form-engine/element/input-date-time-element.js'
-        )->instance($fieldId);
-        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '
+            <typo3-formengine-element-datetime recordFieldId="' . htmlspecialchars($fieldId) . '">
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    ' . $fieldInformationHtml . $fullElement . '
+                </div>
+            </typo3-formengine-element-datetime>';
+
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/datetime-element.js');
+
         return $resultArray;
     }
 }

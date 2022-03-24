@@ -11,15 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import DocumentService from '@typo3/core/document-service';
-
 enum Selectors {
   toggleSelector = '.t3js-form-field-link-explanation-toggle',
   inputFieldSelector = '.t3js-form-field-link-input',
   explanationSelector = '.t3js-form-field-link-explanation',
   iconSelector = '.t3js-form-field-link-icon',
 }
-
 
 /**
  * Module: @typo3/backend/form-engine/element/link-element

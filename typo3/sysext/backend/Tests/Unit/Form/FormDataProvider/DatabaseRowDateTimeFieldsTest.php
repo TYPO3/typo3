@@ -36,6 +36,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'date',
                         ],
                     ],
@@ -58,6 +59,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'datetime',
                         ],
                     ],
@@ -80,6 +82,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'time',
                         ],
                     ],
@@ -104,6 +107,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'date',
                         ],
                     ],
@@ -132,6 +136,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'datetime',
                         ],
                     ],
@@ -160,6 +165,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase
                 'columns' => [
                     'aField' => [
                         'config' => [
+                            'type' => 'datetime',
                             'dbType' => 'time',
                         ],
                     ],

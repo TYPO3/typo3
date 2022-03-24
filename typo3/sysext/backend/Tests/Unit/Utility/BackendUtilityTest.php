@@ -423,8 +423,8 @@ class BackendUtilityTest extends UnitTestCase
                 'columns' => [
                     'date' => [
                         'config' => [
-                            'type' => 'input',
-                            'eval' => 'date',
+                            'type' => 'datetime',
+                            'format' => 'date',
                         ],
                     ],
                 ],
@@ -475,8 +475,8 @@ class BackendUtilityTest extends UnitTestCase
                 'columns' => [
                     'date' => [
                         'config' => [
-                            'type' => 'input',
-                            'eval' => 'date',
+                            'type' => 'datetime',
+                            'format' => 'date',
                             'disableAgeDisplay' => $input,
                         ],
                     ],
