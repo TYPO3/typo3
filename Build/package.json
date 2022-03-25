@@ -89,7 +89,7 @@
     "chart.js": "^2.9.3",
     "chosen-js": "^1.8.7",
     "ckeditor-wordcount-plugin": "^1.17.6",
-    "ckeditor4": "^4.17.1",
+    "ckeditor4": "^4.18.0",
     "codemirror": "^5.58.1",
     "cropperjs": "^1.5.9",
     "d3-dispatch": "^2.0.0",
