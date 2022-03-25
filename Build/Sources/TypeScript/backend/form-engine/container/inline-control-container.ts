@@ -462,7 +462,7 @@ class InlineControlContainer {
 
       const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
       const content = (TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete the record \'%s\'?').replace('%s', this.dataset.recordInfo);
-      const $modal = Modal.confirm(title, content, Severity.warning, [
+      const modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
           active: true,
@@ -475,13 +475,13 @@ class InlineControlContainer {
           name: 'yes',
         },
       ]);
-      $modal.on('button.clicked', (modalEvent: Event): void => {
+      modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         if ((<HTMLAnchorElement>modalEvent.target).name === 'yes') {
           const objectId = (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId;
           me.deleteRecord(objectId);
         }
 
-        Modal.dismiss();
+        modal.hideModal();
       });
     }).delegateTo(this.container, Selectors.deleteRecordButtonSelector);
   }

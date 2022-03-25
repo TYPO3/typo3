@@ -75,6 +75,8 @@ $modal-sidebar-md: 300px;
     flex: 1 1 auto;
     overflow-y: auto;
     padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
 
     &:after {
         content: "";
@@ -93,14 +95,12 @@ $modal-sidebar-md: 300px;
         margin-right: 0;
         padding-left: 1em;
         padding-right: 1em;
+        display: inline-flex;
+        align-items: center;
 
-        .icon {
+        typo3-backend-icon {
             margin-left: -2px;
             margin-right: 4px;
-        }
-
-        span {
-            vertical-align: middle;
         }
     }
 
@@ -121,10 +121,8 @@ $modal-sidebar-md: 300px;
     border: none;
 
     .modal-loading {
-        position: absolute;
         display: flex;
-        height: 100%;
-        width: 100%;
+        flex: 1 0 auto;
         justify-content: center;
         align-items: center;
     }
@@ -136,7 +134,10 @@ $modal-sidebar-md: 300px;
 .modal-image-manipulation {
     .modal-body {
         padding: 0;
-        display: flex;
+
+        @media (min-width: $screen-sm-min) {
+            flex-direction: row;
+        }
     }
 
     .modal-panel-main {

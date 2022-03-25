@@ -14,7 +14,7 @@
 import {SeverityEnum} from './enum/severity';
 import 'bootstrap';
 import $ from 'jquery';
-import Modal from './modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import SecurityUtility from '@typo3/core/security-utility';
 import Icons from './icons';
 
@@ -128,22 +128,23 @@ export class GridEditor {
    */
   protected modalButtonClickHandler = (e: Event) => {
     const button: any = e.target;
+    const modal: ModalElement = e.currentTarget as ModalElement;
     if (button.name === 'cancel') {
-      Modal.currentModal.trigger('modal-dismiss');
+      modal.hideModal();
     } else if (button.name === 'ok') {
       this.setName(
-        Modal.currentModal.find('.t3js-grideditor-field-name').val(),
-        Modal.currentModal.data('col'),
-        Modal.currentModal.data('row'),
+        (modal.querySelector('.t3js-grideditor-field-name') as HTMLInputElement).value,
+        modal.userData.col,
+        modal.userData.row,
       );
       this.setColumn(
-        Modal.currentModal.find('.t3js-grideditor-field-colpos').val(),
-        Modal.currentModal.data('col'),
-        Modal.currentModal.data('row'),
+        parseInt((modal.querySelector('.t3js-grideditor-field-colpos') as HTMLInputElement).value, 10),
+        modal.userData.col,
+        modal.userData.row,
       );
       this.drawTable();
       this.writeConfig(this.export2LayoutRecord());
-      Modal.currentModal.trigger('modal-dismiss');
+      modal.hideModal();
     }
   }
 
@@ -678,7 +679,7 @@ export class GridEditor {
         ]),
     ]);
 
-    const $modal = Modal.show(TYPO3.lang.grid_windowTitle, $markup, SeverityEnum.notice, [
+    const modal = Modal.show(TYPO3.lang.grid_windowTitle, $markup, SeverityEnum.notice, [
       {
         active: true,
         btnClass: 'btn-default',
@@ -691,9 +692,9 @@ export class GridEditor {
         text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
       },
     ]);
-    $modal.data('col', col);
-    $modal.data('row', row);
-    $modal.on('button.clicked', this.modalButtonClickHandler);
+    modal.userData.col = col;
+    modal.userData.row = row;
+    modal.addEventListener('button.clicked', this.modalButtonClickHandler);
     return true;
   }
 

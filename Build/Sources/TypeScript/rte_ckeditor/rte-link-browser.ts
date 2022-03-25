@@ -28,7 +28,7 @@ class RteLinkBrowser {
    * @param {String} editorId Id of CKEditor
    */
   public initialize(editorId: string): void {
-    this.CKEditor = Modal.currentModal.data('ckeditor');
+    this.CKEditor = Modal.currentModal.userData.ckeditor;
 
     window.addEventListener('beforeunload', (): void => {
       this.CKEditor.getSelection().selectRanges(this.ranges);

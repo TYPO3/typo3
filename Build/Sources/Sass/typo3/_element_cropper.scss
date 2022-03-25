@@ -1,13 +1,3 @@
-.modal-body {
-    &.cropper {
-        display: block;
-
-        @media (min-width: $screen-sm-min) {
-            display: flex;
-        }
-    }
-}
-
 .cropper {
     .cropper-line {
         background-color: transparent;

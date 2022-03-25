@@ -14,7 +14,7 @@
 import $ from 'jquery';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import Tooltip from '@typo3/backend/tooltip';
 import Severity from '@typo3/backend/severity';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -207,20 +207,18 @@ class ExtensionManager {
           text: TYPO3.lang['button.cancel'],
           active: true,
           btnClass: 'btn-default',
-          trigger: (): void => {
-            Modal.dismiss();
-          },
+          trigger: (e: Event, modal: ModalElement): void => modal.hideModal(),
         }, {
           text: TYPO3.lang['button.updateExtension'],
           btnClass: 'btn-warning',
-          trigger: (): void => {
+          trigger: (e: Event, modal: ModalElement): void => {
             NProgress.start();
             new AjaxRequest(data.url).withQueryArguments({
-              version: $('input:radio[name=version]:checked', Modal.currentModal).val(),
+              version: $('input:radio[name=version]:checked', modal).val(),
             }).get().finally((): void => {
               location.reload();
             });
-            Modal.dismiss();
+            modal.hideModal();
           },
         },
       ],

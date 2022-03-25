@@ -85,17 +85,19 @@ class RenameFile {
               name: 'replace',
               text: TYPO3.lang['file_rename.actions.override'],
             },
-          ]);
+          ]
+        );
 
-        modal.on('button.clicked', (event: any): void => {
-          if (event.target.name !== 'cancel') {
+        modal.addEventListener('button.clicked', (event: Event): void => {
+          const target = event.target as HTMLButtonElement;
+          if (target.name !== 'cancel') {
             // conflictMode is not set if we deal with a folder
             if (conflictModeField !== null) {
-              conflictModeField.value = event.target.name;
+              conflictModeField.value = target.name;
             }
             form.submit();
           }
-          Modal.dismiss();
+          modal.hideModal();
         });
       } else {
         form.submit();

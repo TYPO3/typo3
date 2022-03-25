@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{render}from"lit/html.js";export const renderNodes=e=>{const n=document.createElement("div");return render(e,n),n.childNodes};export const renderHTML=e=>{const n=document.createElement("div");return render(e,n),n.innerHTML};export const lll=e=>window.TYPO3&&window.TYPO3.lang&&"string"==typeof window.TYPO3.lang[e]?window.TYPO3.lang[e]:"";
+import{render}from"lit";export const renderNodes=e=>{const n=document.createElement("div");return render(e,n),n.childNodes};export const renderHTML=e=>{const n=document.createElement("div");return render(e,n),n.innerHTML};export const lll=e=>window.TYPO3&&window.TYPO3.lang&&"string"==typeof window.TYPO3.lang[e]?window.TYPO3.lang[e]:"";export const classesArrayToClassInfo=e=>e.reduce(((e,n)=>(e[n]=!0,e)),{});

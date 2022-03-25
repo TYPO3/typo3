@@ -25,7 +25,7 @@ import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
 import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 
@@ -197,14 +197,14 @@ class Filelist {
           text: TYPO3.lang['button.close'] || 'Close',
           active: true,
           btnClass: 'btn-default',
-          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
+          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
         },
         {
           text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-          trigger: (): void => {
+          trigger: (e: Event, modal: ModalElement) => {
             Filelist.submitClipboardFormWithCommand('delete', e.target as HTMLButtonElement)
-            Modal.currentModal.trigger('modal-dismiss');
+            modal.hideModal();
           }
         }
       ]

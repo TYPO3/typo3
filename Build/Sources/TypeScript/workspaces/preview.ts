@@ -139,7 +139,7 @@ class Preview extends Workspaces {
    * Renders the discard window
    */
   private renderDiscardWindow = (): void => {
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       TYPO3.lang['window.discardAll.title'],
       TYPO3.lang['window.discardAll.message'],
       SeverityEnum.warning,
@@ -150,7 +150,7 @@ class Preview extends Workspaces {
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (): void => {
-            $modal.modal('hide');
+            modal.hideModal();
           },
         },
         {
@@ -160,13 +160,13 @@ class Preview extends Workspaces {
         },
       ],
     );
-    $modal.on('button.clicked', (e: JQueryEventObject): void => {
+    modal.addEventListener('button.clicked', (e: Event): void => {
       if ((<HTMLAnchorElement>e.target).name === 'ok') {
         this.sendRemoteRequest([
           this.generateRemoteActionsPayload('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
           this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
         ], '#typo3-topbar').then(async (response: AjaxResponse): Promise<void> => {
-          $modal.modal('hide');
+          modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
           // Reloading live view IFRAME
           this.elements.$workspaceView.attr('src', this.elements.$workspaceView.attr('src'));
@@ -214,10 +214,11 @@ class Preview extends Workspaces {
       '#typo3-topbar'
     ).then(async (response: AjaxResponse): Promise<void> => {
       const resolvedResponse = await response.resolve();
-      const $modal = this.renderSendToStageWindow(resolvedResponse);
-      $modal.on('button.clicked', (modalEvent: JQueryEventObject): void => {
-        if ((<HTMLAnchorElement>modalEvent.target).name === 'ok') {
-          const serializedForm = Utility.convertFormToObject(modalEvent.currentTarget.querySelector('form'));
+      const modal = this.renderSendToStageWindow(resolvedResponse);
+      modal.addEventListener('button.clicked', (modalEvent: Event): void => {
+        const target = modalEvent.target as HTMLButtonElement;
+        if (target.name === 'ok') {
+          const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = resolvedResponse[0].result.affects;
           serializedForm.stageId = me.dataset.stageId;
 
@@ -225,7 +226,7 @@ class Preview extends Workspaces {
             this.generateRemoteActionsPayload('sentCollectionToStage', [serializedForm]),
             this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
           ], '#typo3-topbar').then(async (updateResponse: AjaxResponse): Promise<void> => {
-            $modal.modal('hide');
+            modal.hideModal();
 
             this.renderStageButtons((await updateResponse.resolve())[1].result);
           });

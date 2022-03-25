@@ -27,7 +27,7 @@ import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import DocumentSaveActions from '@typo3/backend/document-save-actions';
 import Icons from '@typo3/backend/icons';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
 import Severity from '@typo3/backend/severity';
 import * as BackendExceptionModule from '@typo3/backend/backend-exception';
@@ -72,13 +72,13 @@ export default (function() {
       FormEngine.saveDocument();
       return;
     }
-    Modal.confirm(TYPO3.lang['FormEngine.refreshRequiredTitle'], TYPO3.lang['FormEngine.refreshRequiredContent'])
-      .on('button.clicked', (evt) => {
-        if ((evt.target as HTMLButtonElement).name == 'ok') {
-          FormEngine.saveDocument();
-        }
-        Modal.dismiss();
-      });
+    const modal = Modal.confirm(TYPO3.lang['FormEngine.refreshRequiredTitle'], TYPO3.lang['FormEngine.refreshRequiredContent']);
+    modal.addEventListener('button.clicked', (evt: Event) => {
+      if ((evt.target as HTMLButtonElement).name == 'ok') {
+        FormEngine.saveDocument();
+      }
+      modal.hideModal();
+    });
   });
   // @see \TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange
   onFieldChangeHandlers.set('typo3-backend-form-update-bitmask', (data: {position: number, total: number, invert: boolean, elementName: string }, evt: Event) => {
@@ -113,7 +113,7 @@ export default (function() {
    * @param {string} params additional params for the browser window
    * @param {string} entryPoint the entry point, which should be expanded by default
    */
-  FormEngine.openPopupWindow = function(mode: string, params: string, entryPoint: string): JQuery {
+  FormEngine.openPopupWindow = function(mode: string, params: string, entryPoint: string): ModalElement {
     return Modal.advanced({
       type: Modal.types.iframe,
       content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params + (entryPoint ? ('&' + (mode === 'db' ? 'expandPage' : 'expandFolder') + '=' + entryPoint) : ''),
@@ -794,16 +794,16 @@ export default (function() {
         });
       }
 
-      const $modal = Modal.confirm(title, content, Severity.warning, buttons);
-      $modal.on('button.clicked', function(e: Event) {
+      const modal = Modal.confirm(title, content, Severity.warning, buttons);
+      modal.addEventListener('button.clicked', function(e: Event) {
         if ((e.target as HTMLButtonElement).name === 'no') {
-          Modal.dismiss();
+          modal.hideModal();
         } else if ((e.target as HTMLButtonElement).name === 'yes') {
-          Modal.dismiss();
+          modal.hideModal();
           callback.call(null, true);
         } else if ((e.target as HTMLButtonElement).name === 'save') {
           $('form[name=' + FormEngine.formName + ']').append($elem);
-          Modal.dismiss();
+          modal.hideModal();
           FormEngine.saveDocument();
         }
       });
@@ -819,16 +819,16 @@ export default (function() {
     if ($('.has-error').length > 0) {
       const title = TYPO3.lang['label.alert.save_with_error.title'] || 'You have errors in your form!';
       const content = TYPO3.lang['label.alert.save_with_error.content'] || 'Please check the form, there is at least one error in your form.';
-      const $modal = Modal.confirm(title, content, Severity.error, [
+      const modal = Modal.confirm(title, content, Severity.error, [
         {
           text: TYPO3.lang['buttons.alert.save_with_error.ok'] || 'OK',
           btnClass: 'btn-danger',
           name: 'ok'
         }
       ]);
-      $modal.on('button.clicked', function(e: Event) {
+      modal.addEventListener('button.clicked', function(e: Event) {
         if ((e.target as HTMLButtonElement).name === 'ok') {
-          Modal.dismiss();
+          modal.hideModal();
         }
       });
       return false;
@@ -838,17 +838,17 @@ export default (function() {
 
   FormEngine.requestFormEngineUpdate = function(showConfirmation: boolean): void {
     if (showConfirmation) {
-      const $modal = Modal.confirm(
+      const modal = Modal.confirm(
         TYPO3.lang['FormEngine.refreshRequiredTitle'],
         TYPO3.lang['FormEngine.refreshRequiredContent']
       );
 
-      $modal.on('button.clicked', function(e: Event) {
+      modal.addEventListener('button.clicked', function(e: Event) {
         if ((e.target as HTMLButtonElement).name === 'ok') {
           FormEngine.closeModalsRecursive();
           FormEngine.saveDocument();
         } else {
-          Modal.dismiss();
+          modal.hideModal();
         }
       });
     } else {
@@ -882,10 +882,10 @@ export default (function() {
 
   FormEngine.closeModalsRecursive = function() {
     if (typeof Modal.currentModal !== 'undefined' && Modal.currentModal !== null) {
-      Modal.currentModal.on('hidden.bs.modal', function () {
-        FormEngine.closeModalsRecursive(Modal.currentModal);
+      Modal.currentModal.addEventListener('typo3-modal-hidden', function () {
+        FormEngine.closeModalsRecursive();
       });
-      Modal.currentModal.trigger('modal-dismiss');
+      Modal.currentModal.hideModal();
     }
   }
 
@@ -919,9 +919,9 @@ export default (function() {
    *
    * @param {string} modalButtonName
    * @param {string} previewUrl
-   * @param {element} $actionElement
+   * @param {ModalElement} actionElement
    */
-  FormEngine.previewActionCallback = function(modalButtonName: string, previewUrl: string, $actionElement: JQuery): void {
+  FormEngine.previewActionCallback = function(modalButtonName: string, previewUrl: string, actionElement: ModalElement): void {
     Modal.dismiss();
     switch(modalButtonName) {
       case 'discard':
@@ -933,7 +933,7 @@ export default (function() {
         }
         break;
       case 'save':
-        $('form[name=' + FormEngine.formName + ']').append($actionElement);
+        $('form[name=' + FormEngine.formName + ']').append($(actionElement));
         window.open('', 'newTYPO3frontendWindow');
         FormEngine.saveDocument();
         break;
@@ -990,9 +990,9 @@ export default (function() {
         || 'You currently have unsaved changes. You can either discard these changes or save and view them.'
       )
     }
-    const $modal = Modal.confirm(title, content, Severity.info, modalButtons);
-    $modal.on('button.clicked', function (event: Event) {
-      callback((event.target as HTMLButtonElement).name, previewUrl, $actionElement, $modal);
+    const modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    modal.addEventListener('button.clicked', function (event: Event) {
+      callback((event.target as HTMLButtonElement).name, previewUrl, $actionElement, modal);
     });
   };
 
@@ -1084,8 +1084,8 @@ export default (function() {
         modalYesButtonConfiguration
       ];
     }
-    const $modal = Modal.confirm(title, content, Severity.info, modalButtons);
-    $modal.on('button.clicked', function (event: Event) {
+    const modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    modal.addEventListener('button.clicked', function (event: Event) {
       callback((event.target as HTMLButtonElement).name, $actionElement);
     });
   };
@@ -1178,8 +1178,8 @@ export default (function() {
         modalSaveDuplicateButtonConfiguration
       ];
     }
-    const $modal = Modal.confirm(title, content, Severity.info, modalButtons);
-    $modal.on('button.clicked', function (event: Event) {
+    const modal = Modal.confirm(title, content, Severity.info, modalButtons);
+    modal.addEventListener('button.clicked', function (event: Event) {
       callback((event.target as HTMLButtonElement).name, $actionElement);
     });
   };
@@ -1233,7 +1233,7 @@ export default (function() {
       content += '\n' + $anchorElement.data('translation-count-message');
     }
 
-    const $modal = Modal.confirm(title, content, Severity.warning, [
+    const modal = Modal.confirm(title, content, Severity.warning, [
       {
         text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
         btnClass: 'btn-default',
@@ -1246,7 +1246,7 @@ export default (function() {
         active: true
       }
     ]);
-    $modal.on('button.clicked', function (event: Event) {
+    modal.addEventListener('button.clicked', function (event: Event) {
       callback((event.target as HTMLButtonElement).name, $anchorElement);
     });
   };

@@ -980,7 +980,7 @@ export default (function() {
   FormEngineValidation.registerSubmitCallback = function () {
     DocumentSaveActions.getInstance().addPreSubmitCallback(function (e: Event) {
       if ($('.' + FormEngineValidation.errorClass).length > 0) {
-        Modal.confirm(
+        const modal = Modal.confirm(
           TYPO3.lang.alert || 'Alert',
           TYPO3.lang['FormEngine.fieldsMissing'],
           Severity.error,
@@ -992,9 +992,8 @@ export default (function() {
               name: 'ok',
             },
           ]
-        ).on('button.clicked', function () {
-          Modal.dismiss();
-        });
+        );
+        modal.addEventListener('button.clicked', () => modal.hideModal());
 
         e.stopImmediatePropagation();
       }

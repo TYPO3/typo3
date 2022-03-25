@@ -26,7 +26,7 @@ class DashboardDelete {
   public initialize(): void {
     new RegularEvent('click', function (this: HTMLElement, e: Event): void {
       e.preventDefault();
-      const $modal = Modal.confirm(
+      const modal = Modal.confirm(
         this.dataset.modalTitle,
         this.dataset.modalQuestion,
         SeverityEnum.warning, [
@@ -44,8 +44,9 @@ class DashboardDelete {
         ]
       );
 
-      $modal.on('button.clicked', (e: JQueryEventObject): void => {
-        if (e.target.getAttribute('name') === 'delete') {
+      modal.addEventListener('button.clicked', (e: Event): void => {
+        const target = e.target as HTMLButtonElement;
+        if (target.getAttribute('name') === 'delete') {
           window.location.href = this.getAttribute('href');
         }
         Modal.dismiss();

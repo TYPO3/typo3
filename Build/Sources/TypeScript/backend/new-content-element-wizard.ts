@@ -67,7 +67,7 @@ export class NewContentElementWizard {
   }
 
   private registerEvents(): void {
-    new RegularEvent('shown.bs.modal', (): void => {
+    new RegularEvent('typo3-modal-shown', (): void => {
       this.elementsFilter.focus();
     }).bindTo(this.modal);
 

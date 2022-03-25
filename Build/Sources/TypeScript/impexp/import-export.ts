@@ -35,17 +35,17 @@ class ImportExport {
   }
 
   private triggerConfirmation(this: HTMLButtonElement): void {
-    Modal.confirm(this.dataset.title, this.dataset.message)
-      .on('confirm.button.ok', (): void => {
-        const submitTrigger: HTMLInputElement = document.getElementById('t3js-submit-field') as HTMLInputElement;
-        submitTrigger.name = this.name;
-        submitTrigger.closest('form').submit();
+    const modal = Modal.confirm(this.dataset.title, this.dataset.message);
+    modal.addEventListener('confirm.button.ok', (): void => {
+      const submitTrigger: HTMLInputElement = document.getElementById('t3js-submit-field') as HTMLInputElement;
+      submitTrigger.name = this.name;
+      submitTrigger.closest('form').submit();
 
-        Modal.currentModal.trigger('modal-dismiss');
-      })
-      .on('confirm.button.cancel', (): void => {
-        Modal.currentModal.trigger('modal-dismiss');
-      });
+      modal.hideModal();
+    });
+    modal.addEventListener('confirm.button.cancel', (): void => {
+      modal.hideModal();
+    });
   }
 
   private toggleDisabled() {

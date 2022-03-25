@@ -392,7 +392,7 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
       let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
       modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 
-      Modal.confirm(
+      const modal = Modal.confirm(
         TYPO3.lang.move_folder,
         modalText,
         Severity.warning, [
@@ -412,16 +412,17 @@ class FileStorageTreeNodeDragHandler implements DragDropHandler {
             btnClass: 'btn-warning',
             name: 'move'
           }
-        ])
-        .on('button.clicked', (e: JQueryEventObject) => {
-          const target = e.target as HTMLInputElement;
-          if (target.name === 'move') {
-            this.sendChangeCommand('move', options);
-          } else if (target.name === 'copy') {
-            this.sendChangeCommand('copy', options);
-          }
-          Modal.dismiss();
-        });
+        ]
+      );
+      modal.addEventListener('button.clicked', (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        if (target.name === 'move') {
+          this.sendChangeCommand('move', options);
+        } else if (target.name === 'copy') {
+          this.sendChangeCommand('copy', options);
+        }
+        modal.hideModal();
+      });
     }
     return true;
   }

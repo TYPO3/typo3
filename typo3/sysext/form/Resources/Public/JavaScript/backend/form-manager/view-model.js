@@ -520,8 +520,8 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
-          trigger: function() {
-            Modal.currentModal.trigger('modal-dismiss');
+          trigger: function(e, modal) {
+            modal.hideModal();
           }
         });
 
@@ -530,9 +530,9 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           active: true,
           btnClass: 'btn-warning',
           name: 'createform',
-          trigger: function() {
+          trigger: function(e, modal) {
             document.location = _formManagerApp.getAjaxEndpoint('delete') + '&tx_form_web_formformbuilder[formPersistenceIdentifier]=' + that.data('formPersistenceIdentifier');
-            Modal.currentModal.trigger('modal-dismiss');
+            modal.hideModal();
           }
         });
 
@@ -779,8 +779,8 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
             active: true,
             btnClass: 'btn-default',
             name: 'cancel',
-            trigger: function() {
-              Modal.currentModal.trigger('modal-dismiss');
+            trigger: function(e, modal) {
+              modal.hideModal();
             }
           });
 
@@ -824,7 +824,7 @@ function factory($, Modal, Severity, MultiStepWizard, Icons, Notification, Secur
           html = $(html);
           $(getDomElementIdentifier('referenceLink'), html).on('click', function(e) {
             e.preventDefault();
-            Modal.currentModal.trigger('modal-dismiss');
+            Modal.currentModal.hideModal();
             document.location = $(this).prop('href');
           });
 

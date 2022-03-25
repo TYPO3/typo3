@@ -128,10 +128,11 @@
         size: Modal.sizes.large,
         callback: function(currentModal) {
           // Add the instance to the iframe itself
-          currentModal.data('ckeditor', editor);
-          currentModal.find('.t3js-modal-body')
-            .addClass('rte-ckeditor-window')
-            .attr('id', editor.id);
+          currentModal.userData.ckeditor = editor;
+
+          // @todo: is this used at all?
+          // should maybe be a regular modal attribute then
+          currentModal.querySelector('.t3js-modal-body')?.setAttribute('id', editor.id);
         }
       });
     });

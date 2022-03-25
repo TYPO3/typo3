@@ -200,8 +200,8 @@ function factory($, Helper, Modal, Severity, Icons) {
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonDefault'),
         name: 'cancel',
-        trigger: function() {
-          Modal.currentModal.trigger('modal-dismiss');
+        trigger: function(e, modal) {
+          modal.hideModal();
         }
       });
 
@@ -210,9 +210,9 @@ function factory($, Helper, Modal, Severity, Icons) {
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonWarning'),
         name: 'confirm',
-        trigger: function() {
+        trigger: function(e, modal) {
           getPublisherSubscriber().publish(publisherTopicName, publisherTopicArguments);
-          Modal.currentModal.trigger('modal-dismiss');
+          modal.hideModal();
         }
       });
 
@@ -288,7 +288,7 @@ function factory($, Helper, Modal, Severity, Icons) {
       $('a', modalContent).on("click", function(e) {
         getPublisherSubscriber().publish(publisherTopicName, [$(this).data(getHelper().getDomElementDataAttribute('elementType'))]);
         $('a', modalContent).off();
-        Modal.currentModal.trigger('modal-dismiss');
+        Modal.currentModal.hideModal();
       });
     };
 
@@ -349,7 +349,7 @@ function factory($, Helper, Modal, Severity, Icons) {
           $(this).attr(getHelper().getDomElementDataAttribute('elementIdentifier'))
         ]);
         $('a', modalContent).off();
-        Modal.currentModal.trigger('modal-dismiss');
+        Modal.currentModal.hideModal();
       });
     };
 
@@ -424,8 +424,8 @@ function factory($, Helper, Modal, Severity, Icons) {
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonDefault'),
         name: 'cancel',
-        trigger: function() {
-          Modal.currentModal.trigger('modal-dismiss');
+        trigger: function(e, modal) {
+          modal.hideModal();
         }
       });
 
@@ -434,9 +434,9 @@ function factory($, Helper, Modal, Severity, Icons) {
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonWarning'),
         name: 'confirm',
-        trigger: function() {
+        trigger: function(e, modal) {
           getPublisherSubscriber().publish('view/modal/close/perform', []);
-          Modal.currentModal.trigger('modal-dismiss');
+          modal.hideModal();
         }
       });
 
@@ -507,8 +507,8 @@ function factory($, Helper, Modal, Severity, Icons) {
         active: true,
         btnClass: getHelper().getDomElementClassName('buttonDefault'),
         name: 'confirm',
-        trigger: function() {
-          Modal.currentModal.trigger('modal-dismiss');
+        trigger: function(e, modal) {
+          modal.hideModal();
         }
       });
 

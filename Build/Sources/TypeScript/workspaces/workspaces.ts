@@ -16,7 +16,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import $ from 'jquery';
 import NProgress from 'nprogress';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 
 export default class Workspaces {
   private tid: number = 0;
@@ -26,7 +26,7 @@ export default class Workspaces {
    * @param {Object} response
    * @return {$}
    */
-  protected renderSendToStageWindow(response: Array<any>): JQuery {
+  protected renderSendToStageWindow(response: Array<any>): ModalElement {
     const result = response[0].result;
     const $form = $('<form />');
 
@@ -94,7 +94,7 @@ export default class Workspaces {
       ),
     );
 
-    const $modal = Modal.show(
+    const modal = Modal.show(
       TYPO3.lang.actionSendToStage,
       $form,
       SeverityEnum.info,
@@ -105,7 +105,7 @@ export default class Workspaces {
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (): void => {
-            $modal.modal('hide');
+            modal.hideModal();
           },
         },
         {
@@ -116,7 +116,7 @@ export default class Workspaces {
       ],
     );
 
-    return $modal;
+    return modal;
   }
 
   /**

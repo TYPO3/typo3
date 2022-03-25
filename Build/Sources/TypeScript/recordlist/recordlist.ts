@@ -18,7 +18,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Tooltip from '@typo3/backend/tooltip';
 import DocumentService from '@typo3/core/document-service';
 import {ActionConfiguration, ActionEventDetails} from '@typo3/backend/multi-record-selection-action';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 
@@ -291,13 +291,13 @@ class Recordlist {
           text: TYPO3.lang['button.close'] || 'Close',
           active: true,
           btnClass: 'btn-default',
-          trigger: (): JQuery => Modal.currentModal.trigger('modal-dismiss')
+          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
         },
         {
           text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
+          trigger: (e: Event, modal: ModalElement) => {
+            modal.hideModal();
             Recordlist.submitClipboardFormWithCommand('delete', event.target as HTMLButtonElement)
           }
         }

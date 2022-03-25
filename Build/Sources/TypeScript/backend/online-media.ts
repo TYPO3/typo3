@@ -71,7 +71,7 @@ class OnlineMedia {
         };
         MessageUtility.send(message);
       } else {
-        const $confirm = Modal.confirm(
+        const modal = Modal.confirm(
           'ERROR',
           data.error,
           Severity.error,
@@ -81,8 +81,9 @@ class OnlineMedia {
             name: 'ok',
             active: true,
           }],
-        ).on('confirm.button.ok', (): void => {
-          $confirm.modal('hide');
+        )
+        modal.addEventListener('confirm.button.ok', (): void => {
+          modal.hideModal();
         });
       }
       NProgress.done();
@@ -111,7 +112,7 @@ class OnlineMedia {
           .attr('class', 'help-block')
           .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
       ]);
-    const $modal = Modal.show(
+    const modal = Modal.show(
       $currentTarget.attr('title'),
       $markup,
       Severity.notice,
@@ -120,20 +121,20 @@ class OnlineMedia {
         btnClass: 'btn btn-primary',
         name: 'ok',
         trigger: (): void => {
-          const url = $modal.find('input.online-media-url').val();
+          const url = $(modal).find('input.online-media-url').val();
           if (url) {
-            $modal.modal('hide');
+            modal.hideModal();
             this.addOnlineMedia($currentTarget, url);
           }
         },
       }],
     );
 
-    $modal.on('shown.bs.modal', (e: JQueryEventObject): void => {
+    modal.addEventListener('typo3-modal-shown', (e: Event): void => {
       // focus the input field
       $(e.currentTarget).find('input.online-media-url').first().focus().on('keydown', (kdEvt: JQueryEventObject): void => {
         if (kdEvt.keyCode === KeyTypesEnum.ENTER) {
-          $modal.find('button[name="ok"]').trigger('click');
+          $(modal).find('button[name="ok"]').trigger('click');
         }
       });
     });

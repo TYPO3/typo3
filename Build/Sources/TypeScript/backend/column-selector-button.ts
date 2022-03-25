@@ -15,7 +15,7 @@ import {html, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {lll} from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
@@ -150,7 +150,7 @@ class ColumnSelectorButton extends LitElement {
       return;
     }
 
-    Modal.advanced({
+    const modal = Modal.advanced({
       content: this.url,
       title: this.title,
       severity: SeverityEnum.notice,
@@ -162,16 +162,16 @@ class ColumnSelectorButton extends LitElement {
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
-          trigger: (): void => Modal.dismiss(),
+          trigger: (e: Event, modal: ModalElement): void => modal.hideModal()
         },
         {
           text: this.ok,
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
           name: 'update',
-          trigger: (): void => this.proccessSelection(Modal.currentModal[0])
+          trigger: (e: Event, modal: ModalElement): void => this.proccessSelection(modal)
         }
       ],
-      ajaxCallback: (): void => this.handleModalContentLoaded(Modal.currentModal[0])
+      ajaxCallback: (): void => this.handleModalContentLoaded(modal)
     });
   }
 

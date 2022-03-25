@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render, html, TemplateResult, LitElement} from 'lit';
+import {html, TemplateResult, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators';
 import Modal from '@typo3/backend/modal';
 
@@ -41,7 +41,10 @@ class MfaTotpUrlButton extends LitElement {
   private showTotpAuthUrlModal(): void {
     Modal.advanced({
       title: this.title,
-      content: '', // Empty content, will be filled by the callback
+      content: html`
+        <p>${this.description}</p>
+        <pre>${this.url}</pre>
+      `,
       buttons: [
         {
           trigger: (): void => Modal.dismiss(),
@@ -50,16 +53,7 @@ class MfaTotpUrlButton extends LitElement {
           btnClass: 'btn-default',
           name: 'ok'
         }
-      ],
-      callback: (currentModal: HTMLCollection): void => {
-        render(
-          html`
-            <p>${this.description}</p>
-            <pre>${this.url}</pre>
-          `,
-          currentModal[0].querySelector(Selectors.modalBody) as HTMLElement
-        );
-      }
+      ]
     });
   }
 }

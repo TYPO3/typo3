@@ -131,7 +131,7 @@ class AjaxDataHandler {
       evt.preventDefault();
       const $anchorElement = $(evt.currentTarget);
       $anchorElement.tooltip('hide');
-      const $modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), SeverityEnum.warning, [
+      const modal = Modal.confirm($anchorElement.data('title'), $anchorElement.data('message'), SeverityEnum.warning, [
         {
           text: $anchorElement.data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
@@ -144,11 +144,11 @@ class AjaxDataHandler {
           name: 'delete',
         },
       ]);
-      $modal.on('button.clicked', (e: JQueryEventObject): void => {
-        if (e.target.getAttribute('name') === 'cancel') {
-          Modal.dismiss();
-        } else if (e.target.getAttribute('name') === 'delete') {
-          Modal.dismiss();
+      modal.addEventListener('button.clicked', (e: Event): void => {
+        if ((e.target as HTMLInputElement).getAttribute('name') === 'cancel') {
+          modal.hideModal();
+        } else if ((e.target as HTMLInputElement).getAttribute('name') === 'delete') {
+          modal.hideModal();
           this.deleteRecord($anchorElement);
         }
       });

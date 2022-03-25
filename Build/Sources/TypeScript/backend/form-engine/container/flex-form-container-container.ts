@@ -83,7 +83,7 @@ class FlexFormContainerContainer {
     new RegularEvent('click', (): void => {
       const title = TYPO3.lang['flexform.section.delete.title'] || 'Delete this container?';
       const content = TYPO3.lang['flexform.section.delete.message'] || 'Are you sure you want to delete this container?';
-      const $modal = Modal.confirm(title, content, Severity.warning, [
+      const modal = Modal.confirm(title, content, Severity.warning, [
         {
           text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
           active: true,
@@ -96,7 +96,7 @@ class FlexFormContainerContainer {
           name: 'yes',
         },
       ]);
-      $modal.on('button.clicked', (modalEvent: Event): void => {
+      modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         if ((modalEvent.target as HTMLAnchorElement).name === 'yes') {
           const actionField = this.container.querySelector(Selectors.actionFieldSelector) as HTMLInputElement;
           actionField.value = 'DELETE';
@@ -116,7 +116,7 @@ class FlexFormContainerContainer {
           }).bindTo(this.container);
         }
 
-        Modal.dismiss();
+        modal.hideModal();
       });
     }).bindTo(this.container.querySelector(Selectors.deleteContainerButtonSelector));
   }

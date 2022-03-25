@@ -44,11 +44,11 @@ class CreateFolder {
       window.location.href = url;
     } else {
       const modal = Modal.confirm(this.confirmTitle, this.confirmText);
-      modal.on('confirm.button.cancel', (): void => {
-        modal.trigger('modal-dismiss');
+      modal.addEventListener('confirm.button.cancel', (): void => {
+        modal.hideModal();
       });
-      modal.on('confirm.button.ok', (): void => {
-        modal.trigger('modal-dismiss');
+      modal.addEventListener('confirm.button.ok', (): void => {
+        modal.hideModal();
         window.location.href = url;
       });
     }

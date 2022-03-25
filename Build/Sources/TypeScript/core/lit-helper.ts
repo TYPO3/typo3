@@ -11,7 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {render, TemplateResult} from 'lit/html';
+import {render, TemplateResult} from 'lit';
+import {ClassInfo} from 'lit/directives/class-map';
 
 /**
  * @internal
@@ -40,3 +41,15 @@ export const lll = (key: string): string => {
   }
   return window.TYPO3.lang[key];
 };
+
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
+export const classesArrayToClassInfo = (classes: Array<string>): ClassInfo => {
+  return classes.reduce(
+    (classInfo: Writeable<ClassInfo>, name: string): Writeable<ClassInfo> => {
+      classInfo[name] = true;
+      return classInfo;
+    },
+    {} as Writeable<ClassInfo>
+  );
+}

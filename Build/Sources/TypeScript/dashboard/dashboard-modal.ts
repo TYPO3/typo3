@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -37,17 +37,16 @@ class DashboardModal {
         severity: SeverityEnum.notice,
         content: modalContent,
         additionalCssClasses: ['dashboard-modal'],
-        callback: (currentModal: any): void => {
-          currentModal.on('submit', '.dashboardModal-form', (e: JQueryEventObject): void => {
-            currentModal.trigger('modal-dismiss');
-          });
+        callback: (currentModal: ModalElement): void => {
+          new RegularEvent('submit', (): void => currentModal.hideModal()).delegateTo(currentModal, '.dashboardModal-form');
 
-          currentModal.on('button.clicked', (e: JQueryEventObject): void => {
-            if (e.target.getAttribute('name') === 'save') {
-              const formElement = currentModal.find('form');
-              formElement.trigger('submit');
+          currentModal.addEventListener('button.clicked', (e: Event): void => {
+            const button = e.target as HTMLButtonElement;
+            if (button.getAttribute('name') === 'save') {
+              const formElement = currentModal.querySelector('form') as HTMLFormElement;
+              formElement.requestSubmit();
             } else {
-              currentModal.trigger('modal-dismiss');
+              currentModal.hideModal();
             }
           });
         },

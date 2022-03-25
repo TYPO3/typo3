@@ -66,7 +66,8 @@ class ShortcutMenu {
     shortcutButton: HTMLElement,
   ): void {
     if (typeof confirmationText !== 'undefined') {
-      Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText).on('confirm.button.ok', (e: JQueryEventObject): void => {
+      const modal = Modal.confirm(TYPO3.lang['bookmark.create'], confirmationText);
+      modal.addEventListener('confirm.button.ok', (e: Event): void => {
         const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
         const $existingIcon = $toolbarItemIcon.clone();
 
@@ -94,11 +95,9 @@ class ShortcutMenu {
             $(shortcutButton).attr('title', TYPO3.lang['labels.alreadyBookmarked']);
           }
         });
-        $(e.currentTarget).trigger('modal-dismiss');
-      })
-        .on('confirm.button.cancel', (e: JQueryEventObject): void => {
-          $(e.currentTarget).trigger('modal-dismiss');
-        });
+        modal.hideModal();
+      });
+      modal.addEventListener('confirm.button.cancel', (): void => modal.hideModal());
     }
   }
 
@@ -145,21 +144,21 @@ class ShortcutMenu {
    * @param {JQuery} $shortcutRecord
    */
   private deleteShortcut($shortcutRecord: JQuery): void {
-    Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
-      .on('confirm.button.ok', (e: JQueryEventObject): void => {
-        (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
-          shortcutId: $shortcutRecord.data('shortcutid'),
-        }).then((): void => {
-          // a reload is used in order to restore the original behaviour
-          // e.g. remove groups that are now empty because the last one in the group
-          // was removed
-          this.refreshMenu();
-        });
-        $(e.currentTarget).trigger('modal-dismiss');
-      })
-      .on('confirm.button.cancel', (e: JQueryEventObject): void => {
-        $(e.currentTarget).trigger('modal-dismiss');
+    const modal = Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
+    modal.addEventListener('confirm.button.ok', (): void => {
+      (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
+        shortcutId: $shortcutRecord.data('shortcutid'),
+      }).then((): void => {
+        // a reload is used in order to restore the original behaviour
+        // e.g. remove groups that are now empty because the last one in the group
+        // was removed
+        this.refreshMenu();
       });
+      modal.hideModal();
+    });
+    modal.addEventListener('confirm.button.cancel', (): void => {
+      modal.hideModal();
+    });
   }
 
   /**

@@ -96,7 +96,7 @@ class Repository {
       // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
       const data = await response.raw().json();
       if (data.errorCount > 0) {
-        Modal.confirm(data.errorTitle, $(data.errorMessage), Severity.error, [
+        const modal = Modal.confirm(data.errorTitle, $(data.errorMessage), Severity.error, [
           {
             text: TYPO3.lang['button.cancel'],
             active: true,
@@ -115,10 +115,14 @@ class Repository {
             },
           },
         ]);
-        Modal.currentModal.on('shown.bs.modal', (): void => {
-          const $actionButton = Modal.currentModal.find('.t3js-dependencies');
-          $('input[name="unlockDependencyIgnoreButton"]', Modal.currentModal).on('change', (e: JQueryEventObject): void => {
-            $actionButton.toggleClass('disabled', !$(e.currentTarget).prop('checked'));
+        modal.addEventListener('typo3-modal-shown', (): void => {
+          const actionButton = modal.querySelector('.t3js-dependencies');
+          modal.querySelector('input[name="unlockDependencyIgnoreButton"]').addEventListener('change', (e: Event): void => {
+            if ((e.currentTarget as HTMLInputElement).checked) {
+              actionButton?.classList.remove('disabled');
+            } else {
+              actionButton?.classList.add('disabled');
+            }
           });
         });
       } else {

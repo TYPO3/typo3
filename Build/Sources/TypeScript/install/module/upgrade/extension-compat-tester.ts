@@ -52,11 +52,12 @@ class ExtensionCompatTester extends AbstractInteractableModule {
 
   private getLoadedExtensionList(): void {
     this.setModalButtonsState(false);
-    this.findInModal('.modal-loading').hide();
     const modalContent = this.getModalBody();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
-    const message = ProgressBar.render(Severity.loading, 'Loading...', '');
-    $outputContainer.append(message);
+    if ($outputContainer.length) {
+      const message = ProgressBar.render(Severity.loading, 'Loading...', '');
+      $outputContainer.append(message);
+    }
 
     (new AjaxRequest(Router.getUrl('extensionCompatTesterLoadedExtensionList')))
       .get({cache: 'no-cache'})

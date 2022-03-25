@@ -67,7 +67,7 @@ class ExtensionScanner extends AbstractInteractableModule {
         this.scanSingleExtension(extension);
         $me.data('scanned', true);
       }
-    }).on('hide.bs.modal', (): void => {
+    }).on('typo3-modal-hide', (): void => {
       AjaxQueue.flush();
     }).on('click', this.selectorScanSingleTrigger, (e: JQueryEventObject): void => {
       // Scan a single extension by clicking "Rescan"

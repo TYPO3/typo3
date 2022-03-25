@@ -78,7 +78,7 @@ class MfaInfoElement {
   }
 
   private prepareDeactivateRequest(button: HTMLButtonElement): void {
-    const $modal = Modal.show(
+    const modal = Modal.show(
       button.dataset.confirmationTitle || button.getAttribute('title') || 'Deactivate provider(s)',
       button.dataset.confirmationContent || 'Are you sure you want to continue? This action cannot be undone and will be applied immediately!',
       SeverityEnum.warning,
@@ -100,8 +100,8 @@ class MfaInfoElement {
       ]
     );
 
-    $modal.on('button.clicked', (): void => {
-      $modal.modal('hide');
+    modal.addEventListener('button.clicked', (): void => {
+      modal.hideModal();
     });
   }
 

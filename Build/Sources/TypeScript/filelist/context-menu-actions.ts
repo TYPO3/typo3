@@ -147,7 +147,7 @@ class ContextMenuActions {
       return;
     }
 
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       dataset.title,
       dataset.message,
       SeverityEnum.warning, [
@@ -164,12 +164,12 @@ class ContextMenuActions {
         },
       ]);
 
-    $modal.on('button.clicked', (e: JQueryEventObject): void => {
+    modal.addEventListener('button.clicked', (e: Event): void => {
       const element: HTMLInputElement = <HTMLInputElement>e.target;
       if (element.name === 'delete') {
         performDelete();
       }
-      Modal.dismiss();
+      modal.hideModal();
     });
   }
 
@@ -247,7 +247,7 @@ class ContextMenuActions {
       performPaste();
       return;
     }
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       dataset.title,
       dataset.message,
       SeverityEnum.warning, [
@@ -264,12 +264,12 @@ class ContextMenuActions {
         },
       ]);
 
-    $modal.on('button.clicked', (e: JQueryEventObject): void => {
+    modal.addEventListener('button.clicked', (e: Event): void => {
       const element: HTMLInputElement = <HTMLInputElement>e.target;
       if (element.name === 'ok') {
         performPaste();
       }
-      Modal.dismiss();
+      modal.hideModal();
     });
   }
 }

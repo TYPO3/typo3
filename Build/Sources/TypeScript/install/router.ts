@@ -12,15 +12,17 @@
  */
 
 import $ from 'jquery';
+import {html} from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {AbstractInteractableModule} from './module/abstract-interactable-module';
 import {AbstractInlineModule} from './module/abstract-inline-module';
-import Icons from '@typo3/backend/icons';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import InfoBox from './renderable/info-box';
 import ProgressBar from './renderable/progress-bar';
 import Severity from './renderable/severity';
+import {topLevelModuleImport} from '@typo3/backend/utility/top-level-module-import';
+import '@typo3/backend/element/spinner-element';
 
 class Router {
   private rootSelector: string = '.t3js-body';
@@ -77,20 +79,25 @@ class Router {
       } else {
         const modalTitle = $me.closest('.card').find('.card-title').html();
         const modalSize = $me.data('modalSize') || Modal.sizes.large;
-        const $modal = Modal.advanced({
+        const modal = Modal.advanced({
           type: Modal.types.default,
           title: modalTitle,
           size: modalSize,
-          content: $('<div class="modal-loading">'),
+          content: html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`,
           additionalCssClasses: ['install-tool-modal'],
-          callback: (currentModal: any): void => {
+          callback: (currentModal: ModalElement): void => {
             import(importModule).then(({default: aModule}: {default: AbstractInteractableModule}): void => {
-              aModule.initialize(currentModal);
+              const isInIframe = window.location !== window.parent.location;
+              // @todo: Rework AbstractInteractableModule to avoid JQuery usage and pass ModalElement
+              if (isInIframe) {
+                topLevelModuleImport('jquery').then(({default: topLevelJQuery}: {default: JQueryStatic}): void => {
+                  aModule.initialize(topLevelJQuery(currentModal));
+                });
+              } else {
+                aModule.initialize($(currentModal));
+              }
             });
           },
-        });
-        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: any): void => {
-          $modal.find('.modal-loading').append(icon);
         });
       }
     });

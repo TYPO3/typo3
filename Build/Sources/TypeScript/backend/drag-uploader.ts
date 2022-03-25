@@ -18,7 +18,7 @@ import {SeverityEnum} from './enum/severity';
 import {MessageUtility} from './utility/message-utility';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import Modal from './modal';
+import {default as Modal, ModalElement, Sizes as ModalSizes} from './modal';
 import Notification from './notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import Md5 from '@typo3/backend/hashing/md5';
@@ -453,9 +453,11 @@ class DragUploaderPlugin {
       $modalContent.find('table').append('<tbody />').append($record);
     }
 
-    const $modal = Modal.confirm(
-      TYPO3.lang['file_upload.existingfiles.title'], $modalContent, SeverityEnum.warning,
-      [
+    const modal = Modal.advanced({
+      title: TYPO3.lang['file_upload.existingfiles.title'],
+      content: $modalContent,
+      severity: SeverityEnum.warning,
+      buttons: [
         {
           text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
           active: true,
@@ -468,27 +470,29 @@ class DragUploaderPlugin {
           name: 'continue',
         },
       ],
-      ['modal-inner-scroll'],
-    );
-    $modal.find('.modal-dialog').addClass('modal-lg');
-
-    $modal.find('.modal-footer').prepend(
-      $('<span/>').addClass('form-inline').append(
-        $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
-        $('<select/>', {class: 'form-select t3js-actions-all'}).append(
-          $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
-          (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
-          $('<option/>', {'selected': this.defaultAction === Action.SKIP})
-            .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
-          $('<option/>', {'selected': this.defaultAction === Action.RENAME})
-            .val(Action.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
-          $('<option/>', {'selected': this.defaultAction === Action.OVERRIDE})
-            .val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override']),
-        ),
-      ),
-    );
+      additionalCssClasses: ['modal-inner-scroll'],
+      size: ModalSizes.large,
+      callback: (modal: ModalElement): void => {
+        $(modal).find('.modal-footer').prepend(
+          $('<span/>').addClass('form-inline').append(
+            $('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
+            $('<select/>', {class: 'form-select t3js-actions-all'}).append(
+              $('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
+              (this.irreObjectUid ? $('<option/>').val(Action.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
+              $('<option/>', {'selected': this.defaultAction === Action.SKIP})
+                .val(Action.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
+              $('<option/>', {'selected': this.defaultAction === Action.RENAME})
+                .val(Action.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
+              $('<option/>', {'selected': this.defaultAction === Action.OVERRIDE})
+                .val(Action.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override']),
+            ),
+          ),
+        );
+      }
+    });
 
     const uploader = this;
+    const $modal = $(modal);
     $modal.on('change', '.t3js-actions-all', function (this: HTMLInputElement): void {
       const $this = $(this),
         value = $this.val();
@@ -504,15 +508,20 @@ class DragUploaderPlugin {
       } else {
         $modal.find('.t3js-actions').removeProp('disabled');
       }
-    }).on('change', '.t3js-actions', function (this: HTMLInputElement): void {
+    });
+
+    $modal.on('change', '.t3js-actions', function (this: HTMLInputElement): void {
       const $this = $(this),
         index = parseInt($this.data('override'), 10);
       uploader.askForOverride[index].action = <Action>$this.val();
-    }).on('button.clicked', function (this: HTMLInputElement, e: Event): void {
-      if ((<HTMLInputElement>(e.target)).name === 'cancel') {
+    });
+
+    modal.addEventListener('button.clicked', function (e: Event): void {
+      const button = e.target as HTMLButtonElement;
+      if (button.name === 'cancel') {
         uploader.askForOverride = [];
         Modal.dismiss();
-      } else if ((<HTMLInputElement>(e.target)).name === 'continue') {
+      } else if (button.name === 'continue') {
         $.each(uploader.askForOverride, (key: number, fileInfo: FileConflict) => {
           if (fileInfo.action === Action.USE_EXISTING) {
             DragUploader.addFileToIrre(
@@ -524,9 +533,11 @@ class DragUploaderPlugin {
           }
         });
         uploader.askForOverride = [];
-        Modal.dismiss();
+        modal.hideModal();
       }
-    }).on('hidden.bs.modal', () => {
+    });
+
+    modal.addEventListener('typo3-modal-hidden', () => {
       this.askForOverride = [];
     });
   }

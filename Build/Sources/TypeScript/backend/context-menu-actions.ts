@@ -85,16 +85,15 @@ class ContextMenuActions {
     let wizardUrl = dataset.newWizardUrl;
     if (wizardUrl) {
       wizardUrl += '&returnUrl=' + ContextMenuActions.getReturnUrl();
-      Modal.advanced({
+      const modal = Modal.advanced({
         title: dataset.title,
         type: Modal.types.ajax,
         size: Modal.sizes.medium,
         content: wizardUrl,
         severity: SeverityEnum.notice,
         ajaxCallback: (): void => {
-          const currentModal: HTMLElement = Modal.currentModal.get(0);
-          if (currentModal && currentModal.querySelector('.t3-new-content-element-wizard-inner')) {
-            new NewContentElementWizard(currentModal);
+          if (modal.querySelector('.t3-new-content-element-wizard-inner')) {
+            new NewContentElementWizard(modal);
           }
         }
       });
@@ -170,7 +169,7 @@ class ContextMenuActions {
   }
 
   public static deleteRecord(table: string, uid: number, dataset: DOMStringMap): void {
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       dataset.title,
       dataset.message,
       SeverityEnum.warning, [
@@ -187,8 +186,8 @@ class ContextMenuActions {
         },
       ]);
 
-    $modal.on('button.clicked', (e: JQueryEventObject): void => {
-      if (e.target.getAttribute('name') === 'delete') {
+    modal.addEventListener('button.clicked', (e: Event): void => {
+      if ((e.target as HTMLInputElement).getAttribute('name') === 'delete') {
         const eventData = {component: 'contextmenu', action: 'delete', table, uid};
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages') {
@@ -202,7 +201,7 @@ class ContextMenuActions {
           }
         });
       }
-      Modal.dismiss();
+      modal.hideModal();
     });
   }
 
@@ -294,7 +293,7 @@ class ContextMenuActions {
       performPaste();
       return;
     }
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       dataset.title,
       dataset.message,
       SeverityEnum.warning, [
@@ -311,11 +310,11 @@ class ContextMenuActions {
         },
       ]);
 
-    $modal.on('button.clicked', (e: JQueryEventObject): void => {
-      if (e.target.getAttribute('name') === 'ok') {
+    modal.addEventListener('button.clicked', (e: Event): void => {
+      if ((e.target as HTMLInputElement).getAttribute('name') === 'ok') {
         performPaste();
       }
-      Modal.dismiss();
+      modal.hideModal();
     });
   }
 

@@ -17,7 +17,7 @@ import '@typo3/backend/element/icon-element';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import '@typo3/backend/input/clearable';
 import Workspaces from './workspaces';
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
 import Tooltip from '@typo3/backend/tooltip';
 import Utility from '@typo3/backend/utility';
@@ -542,10 +542,11 @@ class Backend extends Workspaces {
         $row.data('uid'), $row.data('table'), $row.data('t3ver_oid'),
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
-      const $modal = this.renderSendToStageWindow(await response.resolve());
-      $modal.on('button.clicked', (modalEvent: JQueryEventObject): void => {
-        if ((<HTMLAnchorElement>modalEvent.target).name === 'ok') {
-          const serializedForm = Utility.convertFormToObject(modalEvent.currentTarget.querySelector('form'));
+      const modal = this.renderSendToStageWindow(await response.resolve());
+      modal.addEventListener('button.clicked', (modalEvent: Event): void => {
+        const target = modalEvent.target as HTMLButtonElement;
+        if (target.name === 'ok') {
+          const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = {
             table: $row.data('table'),
             nextStage: nextStage,
@@ -559,7 +560,7 @@ class Backend extends Workspaces {
             this.generateRemotePayload('getWorkspaceInfos', this.settings),
           ]).then(async (response: AjaxResponse): Promise<void> => {
             const requestResponse = await response.resolve();
-            $modal.modal('hide');
+            modal.hideModal();
             this.renderWorkspaceInfos(requestResponse[1].result);
             Backend.refreshPageTree();
           });
@@ -904,8 +905,8 @@ class Backend extends Workspaces {
           active: true,
           btnClass: 'btn-default',
           name: 'prevstage',
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
+          trigger: (e: Event, modal: ModalElement) => {
+            modal.hideModal();
             this.sendToStage($tr, 'prev');
           },
         });
@@ -917,8 +918,8 @@ class Backend extends Workspaces {
           active: true,
           btnClass: 'btn-default',
           name: 'nextstage',
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
+          trigger: (e: Event, modal: ModalElement) => {
+            modal.hideModal();
             this.sendToStage($tr, 'next');
           },
         });
@@ -928,9 +929,7 @@ class Backend extends Workspaces {
         active: true,
         btnClass: 'btn-info',
         name: 'cancel',
-        trigger: (): void => {
-          Modal.currentModal.trigger('modal-dismiss');
-        },
+        trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
       });
 
       Modal.advanced({
@@ -969,7 +968,7 @@ class Backend extends Workspaces {
    */
   private confirmDeleteRecordFromWorkspace = (e: JQueryEventObject): void => {
     const $tr = $(e.target).closest('tr');
-    const $modal = Modal.confirm(
+    const modal = Modal.confirm(
       TYPO3.lang['window.discard.title'],
       TYPO3.lang['window.discard.message'],
       SeverityEnum.warning,
@@ -980,7 +979,7 @@ class Backend extends Workspaces {
           btnClass: 'btn-default',
           name: 'cancel',
           trigger: (): void => {
-            $modal.modal('hide');
+            modal.hideModal();
           },
         },
         {
@@ -990,7 +989,7 @@ class Backend extends Workspaces {
         },
       ],
     );
-    $modal.on('button.clicked', (modalEvent: JQueryEventObject): void => {
+    modal.addEventListener('button.clicked', (modalEvent: Event): void => {
       if ((<HTMLAnchorElement>modalEvent.target).name === 'ok') {
         this.sendRemoteRequest([
           this.generateRemoteActionsPayload('deleteSingleRecord', [
@@ -998,7 +997,7 @@ class Backend extends Workspaces {
             $tr.data('uid'),
           ]),
         ]).then((): void => {
-          $modal.modal('hide');
+          modal.hideModal();
           this.getWorkspaceInfos();
           Backend.refreshPageTree();
         });
@@ -1209,10 +1208,11 @@ class Backend extends Workspaces {
         stage, affectedRecords,
       ]),
     ).then(async (response: AjaxResponse): Promise<void> => {
-      const $modal = this.renderSendToStageWindow(await response.resolve());
-      $modal.on('button.clicked', (modalEvent: JQueryEventObject): void => {
-        if ((<HTMLAnchorElement>modalEvent.target).name === 'ok') {
-          const serializedForm = Utility.convertFormToObject(modalEvent.currentTarget.querySelector('form'));
+      const modal = this.renderSendToStageWindow(await response.resolve());
+      modal.addEventListener('button.clicked', (modalEvent: Event): void => {
+        const target = modalEvent.target as HTMLButtonElement;
+        if (target.name === 'ok') {
+          const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = {
             elements: affectedRecords,
             nextStage: stage,
@@ -1223,12 +1223,13 @@ class Backend extends Workspaces {
             this.generateRemotePayload('getWorkspaceInfos', this.settings),
           ]).then(async (response: AjaxResponse): Promise<void> => {
             const actionResponse = await response.resolve();
-            $modal.modal('hide');
+            modal.hideModal();
             this.renderWorkspaceInfos(actionResponse[1].result);
             Backend.refreshPageTree();
           });
         }
-      }).on('modal-destroyed', (): void => {
+      });
+      modal.addEventListener('typo3-modal-hide', (): void => {
         this.elements.$chooseStageAction.val('');
       });
     });
@@ -1283,9 +1284,7 @@ class Backend extends Workspaces {
           active: true,
           btnClass: 'btn-info',
           name: 'ok',
-          trigger: (): void => {
-            Modal.currentModal.trigger('modal-dismiss');
-          },
+          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
         }],
         ['modal-inner-scroll'],
       );

@@ -11,7 +11,7 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import Modal from '@typo3/backend/modal';
+import {default as Modal, ModalElement} from '@typo3/backend/modal';
 import {SeverityEnum} from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -37,10 +37,8 @@ class WidgetSelector {
         severity: SeverityEnum.notice,
         content: modalContent,
         additionalCssClasses: ['dashboard-modal'],
-        callback: (currentModal: JQuery): void => {
-          currentModal.on('click', 'a.dashboard-modal-item-block', (e: JQueryEventObject): void => {
-            currentModal.trigger('modal-dismiss');
-          });
+        callback: (modal: ModalElement): void => {
+          new RegularEvent('click', (): void => modal.hideModal()).delegateTo(modal, 'a.dashboard-modal-item-block');
         },
       };
       Modal.advanced(configuration);

@@ -20,17 +20,10 @@
 import $ from 'jquery';
 import ResponseInterface from '../ajax-data-handler/response-interface';
 import DataHandler from '../ajax-data-handler';
-import Modal from '../modal';
+import {default as Modal, ModalElement, Button} from '@typo3/backend/modal';
 import Severity from '../severity';
 import '@typo3/backend/element/icon-element';
 import {SeverityEnum} from '../enum/severity';
-
-interface Button {
-  text: string;
-  active?: boolean;
-  btnClass: string;
-  trigger: () => void;
-}
 
 class Paste {
   public itemOnClipboardUid: number = 0;
@@ -123,15 +116,13 @@ class Paste {
         text: TYPO3.lang['paste.modal.button.cancel'] || 'Cancel',
         active: true,
         btnClass: 'btn-default',
-        trigger: (): void => {
-          Modal.currentModal.trigger('modal-dismiss');
-        },
+        trigger: (e: Event, modal: ModalElement): void => modal.hideModal(),
       },
       {
         text: TYPO3.lang['paste.modal.button.paste'] || 'Paste',
         btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-        trigger: (): void => {
-          Modal.currentModal.trigger('modal-dismiss');
+        trigger: (e: Event, modal: ModalElement): void => {
+          modal.hideModal();
           this.execute($element);
         },
       },

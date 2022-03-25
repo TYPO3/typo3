@@ -56,13 +56,13 @@ export class NewContentElementWizardButton extends LitElement {
       return;
     }
 
-    Modal.advanced({
+    const modal = Modal.advanced({
       content: this.url,
       title: this.title,
       severity: SeverityEnum.notice,
       size: Modal.sizes.medium,
       type: Modal.types.ajax,
-      ajaxCallback: (): void => NewContentElementWizardButton.handleModalContentLoaded(Modal.currentModal[0])
+      ajaxCallback: (): void => NewContentElementWizardButton.handleModalContentLoaded(modal)
     });
   }
 }

@@ -963,7 +963,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
       let modalText = options.position === DraggablePositionEnum.INSIDE ? TYPO3.lang['mess.move_into'] : TYPO3.lang['mess.move_after'];
       modalText = modalText.replace('%s', options.node.name).replace('%s', options.target.name);
 
-      Modal.confirm(
+      const modal = Modal.confirm(
         TYPO3.lang.move_page,
         modalText,
         Severity.warning, [
@@ -984,24 +984,24 @@ class PageTreeNodeDragHandler implements DragDropHandler {
             name: 'move'
           }
         ])
-        .on('button.clicked', (e: JQueryEventObject) => {
-          const target = e.target as HTMLInputElement;
-          if (target.name === 'move') {
-            options.command = 'move';
-            this.tree.sendChangeCommand(options);
-          } else if (target.name === 'copy') {
-            options.command = 'copy';
-            this.tree.sendChangeCommand(options);
-          }
-          Modal.dismiss();
-        });
+      modal.addEventListener('button.clicked', (e: JQueryEventObject) => {
+        const target = e.target as HTMLInputElement;
+        if (target.name === 'move') {
+          options.command = 'move';
+          this.tree.sendChangeCommand(options);
+        } else if (target.name === 'copy') {
+          options.command = 'copy';
+          this.tree.sendChangeCommand(options);
+        }
+        modal.hideModal();
+      });
     } else if (this.nodeIsOverDelete) {
       const options = this.dragDrop.changeNodePosition(droppedNode, 'delete');
       if (options === null) {
         return false;
       }
       if (this.tree.settings.displayDeleteConfirmation) {
-        const $modal = Modal.confirm(
+        const modal = Modal.confirm(
           TYPO3.lang['mess.delete.title'],
           TYPO3.lang['mess.delete'].replace('%s', options.node.name),
           Severity.warning, [
@@ -1017,7 +1017,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
               name: 'delete'
             }
           ]);
-        $modal.on('button.clicked', (e: JQueryEventObject) => {
+        modal.addEventListener('button.clicked', (e: Event) => {
           const target = e.target as HTMLInputElement;
           if (target.name === 'delete') {
             this.tree.sendChangeCommand(options);

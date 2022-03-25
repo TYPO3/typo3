@@ -56,7 +56,7 @@ class RecordDownloadButton extends LitElement {
       return;
     }
 
-    Modal.advanced({
+    const modal = Modal.advanced({
       content: this.url,
       title: this.title || 'Download records',
       severity: SeverityEnum.notice,
@@ -68,22 +68,22 @@ class RecordDownloadButton extends LitElement {
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
-          trigger: (): void => Modal.dismiss(),
+          trigger: (): void => modal.hideModal(),
         },
         {
           text: this.ok || lll('button.ok') || 'Download',
           btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.info),
           name: 'download',
           trigger: (): void => {
-            const form: HTMLFormElement = Modal.currentModal[0].querySelector('form');
+            const form: HTMLFormElement = modal.querySelector('form');
             form && form.submit();
-            Modal.dismiss();
+            modal.hideModal();
           }
         }
       ],
       ajaxCallback: (): void => {
-        const formatSelect: HTMLSelectElement = Modal.currentModal[0].querySelector(Selectors.formatSelector);
-        const formatOptions: NodeListOf<HTMLDivElement> = Modal.currentModal[0].querySelectorAll(Selectors.formatOptions);
+        const formatSelect: HTMLSelectElement = modal.querySelector(Selectors.formatSelector);
+        const formatOptions: NodeListOf<HTMLDivElement> = modal.querySelectorAll(Selectors.formatOptions);
 
         if (formatSelect === null || !formatOptions.length) {
           // Return in case elements do not exist in the ajax loaded modal content

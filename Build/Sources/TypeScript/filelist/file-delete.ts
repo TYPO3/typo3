@@ -35,7 +35,7 @@ class FileDelete {
         const deleteUrl = eventTarget.dataset.deleteUrl + '&data[delete][0][data]=' + encodeURIComponent(identifier);
         const target = deleteUrl + '&data[delete][0][redirect]=' + redirectUrl;
         if (eventTarget.dataset.check) {
-          const $modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.bsContent, SeverityEnum.warning, [
+          const modal = Modal.confirm(eventTarget.dataset.title, eventTarget.dataset.bsContent, SeverityEnum.warning, [
             {
               text: TYPO3.lang['buttons.confirm.delete_file.no'] || 'Cancel',
               active: true,
@@ -48,13 +48,13 @@ class FileDelete {
               name: 'yes',
             },
           ]);
-          $modal.on('button.clicked', (evt: JQueryEventObject): void => {
-            const $element = evt.target as HTMLInputElement;
-            const name = $element.name;
+          modal.addEventListener('button.clicked', (evt: Event): void => {
+            const element = evt.target as HTMLButtonElement;
+            const name = element.name;
             if (name === 'no') {
-              Modal.dismiss();
+              modal.hideModal();
             } else if (name === 'yes') {
-              Modal.dismiss();
+              modal.hideModal();
               top.list_frame.location.href = target;
             }
           });

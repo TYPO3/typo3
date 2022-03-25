@@ -11,30 +11,33 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'bootstrap';
-import $ from 'jquery';
-import {html, render} from 'lit';
+import {Modal as BootstrapModal} from 'bootstrap';
+import {html, nothing, LitElement, TemplateResult} from 'lit';
+import {customElement, property, state} from 'lit/decorators';
+import {unsafeHTML} from 'lit/directives/unsafe-html';
+import {classMap, ClassInfo} from 'lit/directives/class-map';
+import {styleMap, StyleInfo} from 'lit/directives/style-map';
+import {ifDefined} from 'lit/directives/if-defined';
+import {classesArrayToClassInfo} from '@typo3/core/lit-helper';
+import RegularEvent from '@typo3/core/event/regular-event';
 import {AjaxResponse} from '@typo3/core/ajax/ajax-response';
 import {AbstractAction} from './action-button/abstract-action';
 import {ModalResponseEvent} from '@typo3/backend/modal-interface';
 import {SeverityEnum} from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import SecurityUtility from '@typo3/core/security-utility';
-import Icons from './icons';
 import Severity from './severity';
+import '@typo3/backend/element/icon-element';
+import '@typo3/backend/element/spinner-element';
 
 enum Identifiers {
   modal = '.t3js-modal',
   content = '.t3js-modal-content',
-  title = '.t3js-modal-title',
   close = '.t3js-modal-close',
   body = '.t3js-modal-body',
   footer = '.t3js-modal-footer',
-  iframe = '.t3js-modal-iframe',
-  iconPlaceholder = '.t3js-modal-icon-placeholder',
 }
 
-enum Sizes {
+export enum Sizes {
   small = 'small',
   default = 'default',
   medium = 'medium',
@@ -42,41 +45,211 @@ enum Sizes {
   full = 'full',
 }
 
-enum Styles {
+export enum Styles {
   default = 'default',
   light = 'light',
   dark = 'dark',
 }
 
-enum Types {
+export enum Types {
   default = 'default',
+  template = 'template',
   ajax = 'ajax',
   iframe = 'iframe',
 }
 
-interface Button {
+type ModalCallbackFunction = (modal: ModalElement) => void;
+
+export interface Button {
   text: string;
   active?: boolean;
   btnClass: string;
   name?: string;
-  trigger?: (e?: JQueryEventObject) => void;
-  dataAttributes?: { [key: string]: string };
+  trigger?: (e: Event, modal: ModalElement) => void;
   icon?: string;
   action?: AbstractAction;
 }
 
-interface Configuration {
+export interface Configuration {
   type: Types;
   title: string;
-  content: string | JQuery | Element | DocumentFragment;
+  // @todo remove support for JQuery based content
+  content: TemplateResult | string | JQuery | Element | DocumentFragment;
   severity: SeverityEnum;
   buttons: Array<Button>;
-  style: string;
-  size: string;
+  style: Styles;
+  size: Sizes;
   additionalCssClasses: Array<string>;
-  callback: Function;
-  ajaxCallback: Function;
-  ajaxTarget: string;
+  callback: ModalCallbackFunction | null;
+  ajaxCallback: ModalCallbackFunction | null;
+}
+
+type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>
+
+@customElement('typo3-backend-modal')
+export class ModalElement extends LitElement {
+  @property({type: String, reflect: true}) title: string = '';
+  @property({type: String, reflect: true}) content: string = '';
+  @property({type: String, reflect: true}) type: Types = Types.default;
+  @property({type: String, reflect: true}) severity: SeverityEnum = SeverityEnum.notice;
+  @property({type: String, reflect: true}) variant: Styles = Styles.default;
+  @property({type: String, reflect: true}) size: Sizes = Sizes.default;
+  @property({type: Number, reflect: true}) zindex: Number = 5000;
+  @property({type: Array}) additionalCssClasses: Array<string> = [];
+  @property({type: Array, attribute: false}) buttons: Array<Button> = [];
+
+  @state() templateResultContent: TemplateResult | JQuery | Element | DocumentFragment = null;
+  @state() activeButton: Button = null;
+
+  public bootstrapModal: BootstrapModal = null;
+  public callback: ModalCallbackFunction = null;
+  public ajaxCallback: ModalCallbackFunction = null;
+  public userData: { [key: string]: any } = {};
+
+  public hideModal(): void {
+    if (this.bootstrapModal) {
+      this.bootstrapModal.hide();
+    }
+  }
+
+  public createRenderRoot(): HTMLElement | ShadowRoot {
+    // Avoid shadow DOM for Bootstrap CSS to be applied
+    return this;
+  }
+
+  protected firstUpdated(): void {
+    this.bootstrapModal = new BootstrapModal(this.renderRoot.querySelector(Identifiers.modal), {});
+    this.bootstrapModal.show();
+    if (this.callback) {
+      this.callback(this);
+    }
+  }
+
+  protected render(): TemplateResult {
+    const styles: StyleInfo = {
+      zIndex: this.zindex.toString()
+    };
+    const classes: ClassInfo = classesArrayToClassInfo([
+      `modal-type-${this.type}`,
+      `modal-severity-${Severity.getCssClass(this.severity)}`,
+      `modal-style-${this.variant}`,
+      `modal-size-${this.size}`,
+      ...this.additionalCssClasses,
+    ]);
+    return html`
+      <div
+          tabindex="-1"
+          class="modal fade t3js-modal ${classMap(classes)}"
+          style=${styleMap(styles)}
+          @show.bs.modal=${() => this.trigger('typo3-modal-show')}
+          @shown.bs.modal=${() => this.trigger('typo3-modal-shown')}
+          @hide.bs.modal=${() => this.trigger('typo3-modal-hide')}
+          @hidden.bs.modal=${() => this.trigger('typo3-modal-hidden')}
+      >
+          <div class="modal-dialog">
+              <div class="t3js-modal-content modal-content">
+                  <div class="modal-header">
+                      <h4 class="t3js-modal-title modal-title">${this.title}</h4>
+                      <button class="t3js-modal-close close" @click=${() => this.bootstrapModal.hide()}>
+                          <span aria-hidden="true">
+                              <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
+                          </span>
+                          <span class="visually-hidden"></span>
+                      </button>
+                  </div>
+                  <div class="t3js-modal-body modal-body">${this.renderModalBody()}</div>
+                  ${this.buttons.length === 0 ? nothing : html`
+                    <div class="t3js-modal-footer modal-footer">
+                      ${this.buttons.map(button => this.renderModalButton(button))}
+                    </div>
+                  `}
+              </div>
+          </div>
+      </div>
+    `;
+  }
+
+  private _buttonClick(event: Event, button: Button): void {
+    const buttonElement = event.currentTarget as HTMLButtonElement;
+    if (button.action) {
+      this.activeButton = button;
+      button.action.execute(buttonElement).then((): void => this.bootstrapModal.hide());
+    } else if (button.trigger) {
+      button.trigger(event, this);
+    }
+    buttonElement.dispatchEvent(new CustomEvent('button.clicked', {bubbles: true}));
+  }
+
+  private renderAjaxBody(): TemplateResult {
+    if (this.templateResultContent === null) {
+      new AjaxRequest(this.content as string).get()
+        .then(async (response: AjaxResponse): Promise<void> => {
+          const htmlResponse = await response.raw().text();
+          this.templateResultContent = html`${unsafeHTML(htmlResponse)}`;
+          this.updateComplete.then(() => {
+            if (this.ajaxCallback) {
+              this.ajaxCallback(this);
+            }
+            this.dispatchEvent(new CustomEvent('modal-loaded'));
+          });
+        })
+        .catch(async (response: AjaxResponse): Promise<void> => {
+          const htmlResponse = await response.raw().text();
+          if (htmlResponse) {
+            this.templateResultContent = html`${unsafeHTML(htmlResponse)}`;
+          } else {
+            this.templateResultContent = html`<p><strong>Oops, received a ${response.response.status} response from </strong> <span class="text-break">${this.content}</span>.</p>`;
+          }
+        });
+      return html`<div class="modal-loading"><typo3-backend-spinner size="default"></typo3-backend-spinner></div>`;
+    }
+
+    return this.templateResultContent as TemplateResult;
+  }
+
+  private renderModalBody(): TemplateResult | JQuery | Element | DocumentFragment {
+    if (this.type === Types.ajax) {
+      return this.renderAjaxBody();
+    }
+
+    if (this.type === Types.iframe) {
+      return html`
+        <iframe src="${this.content}"
+                name="modal_frame"
+                class="modal-iframe t3js-modal-iframe"
+                @load=${(e: Event) => this.title = (e.currentTarget as HTMLIFrameElement).contentDocument.title}
+        ></iframe>
+      `;
+    }
+
+    if (this.type === Types.template) {
+      return this.templateResultContent;
+    }
+
+    return html`<p>${this.content}</p>`;
+  }
+
+  private renderModalButton(button: Button): TemplateResult {
+    const btnClass = button.btnClass || 'btn-default';
+    const classes: ClassInfo = {
+      ['btn']: true,
+      [btnClass]: true,
+      ['t3js-active']: button.active,
+      ['disabled']: this.activeButton && this.activeButton !== button,
+    };
+    return html`
+      <button class=${classMap(classes)}
+              name=${ifDefined(button.name || undefined)}
+              @click=${(e: Event) => this._buttonClick(e, button)}>
+          ${button.icon ? html`<typo3-backend-icon identifier="${button.icon}" size="small"></typo3-backend-icon>` : nothing}
+          ${button.text}
+      </button>
+    `;
+  }
+
+  private trigger(event: string): void {
+    this.dispatchEvent(new CustomEvent(event, {bubbles: true, composed: true}));
+  }
 }
 
 /**
@@ -84,30 +257,14 @@ interface Configuration {
  * API for modal windows powered by Twitter Bootstrap.
  */
 class Modal {
+  // @todo: drop? available as named exports
   public readonly sizes: any = Sizes;
   public readonly styles: any = Styles;
   public readonly types: any = Types;
-  public currentModal: JQuery = null;
-  private instances: Array<JQuery> = [];
-  private readonly $template: JQuery = $(`
-    <div class="t3js-modal modal fade">
-        <div class="modal-dialog">
-            <div class="t3js-modal-content modal-content">
-                <div class="modal-header">
-                    <h4 class="t3js-modal-title modal-title"></h4>
-                    <button class="t3js-modal-close close">
-                        <span aria-hidden="true">
-                            <span class="t3js-modal-icon-placeholder" data-icon="actions-close"></span>
-                        </span>
-                        <span class="visually-hidden"></span>
-                    </button>
-                </div>
-                <div class="t3js-modal-body modal-body"></div>
-                <div class="t3js-modal-footer modal-footer"></div>
-            </div>
-        </div>
-    </div>`
-  );
+
+  // @todo: currentModal could be a getter method for the last element in this.instances
+  public currentModal: ModalElement = null;
+  private instances: Array<ModalElement> = [];
 
   private defaultConfiguration: Configuration = {
     type: Types.default,
@@ -118,26 +275,12 @@ class Modal {
     style: Styles.default,
     size: Sizes.default,
     additionalCssClasses: [],
-    callback: $.noop(),
-    ajaxCallback: $.noop(),
-    ajaxTarget: null,
+    callback: null,
+    ajaxCallback: null,
   };
 
-  private readonly securityUtility: SecurityUtility;
-
-  private static resolveEventNameTargetElement(evt: Event): HTMLElement | null {
-    const target = evt.target as HTMLElement;
-    const currentTarget = evt.currentTarget as HTMLElement;
-    if (target.dataset && target.dataset.eventName) {
-      return target;
-    } else if (currentTarget.dataset && currentTarget.dataset.eventName) {
-      return currentTarget;
-    }
-    return null;
-  }
-
   private static createModalResponseEventFromElement(element: HTMLElement, result: boolean): ModalResponseEvent | null {
-    if (!element || !element.dataset.eventName) {
+    if (!element.dataset.eventName) {
       return null;
     }
     return new CustomEvent(
@@ -147,9 +290,7 @@ class Modal {
       });
   }
 
-  constructor(securityUtility: SecurityUtility) {
-    this.securityUtility = securityUtility;
-    $(document).on('modal-dismiss', this.dismiss);
+  constructor() {
     this.initializeMarkupTrigger(document);
   }
 
@@ -158,7 +299,7 @@ class Modal {
    */
   public dismiss(): void {
     if (this.currentModal) {
-      this.currentModal.modal('hide');
+      this.currentModal.hideModal();
     }
   }
 
@@ -170,51 +311,53 @@ class Modal {
    * - confirm.button.ok
    *
    * @param {string} title The title for the confirm modal
-   * @param {string | JQuery | Element | DocumentFragment} content The content for the conform modal, e.g. the main question
+   * @param {TemplateResult | string | JQuery | Element | DocumentFragment} content The content for the conform modal, e.g. the main question
    * @param {SeverityEnum} severity Default SeverityEnum.warning
    * @param {Array<Button>} buttons An array with buttons, default no buttons
    * @param {Array<string>} additionalCssClasses Additional css classes to add to the modal
-   * @returns {JQuery}
+   * @returns {ModalElement}
    */
   public confirm(
     title: string,
-    content: string | JQuery | Element | DocumentFragment,
+    content: TemplateResult | string | JQuery | Element | DocumentFragment,
     severity: SeverityEnum = SeverityEnum.warning,
     buttons: Array<Button> = [],
     additionalCssClasses?: Array<string>,
-  ): JQuery {
+  ): ModalElement {
     if (buttons.length === 0) {
       buttons.push(
-        <Button>{
-          text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+        {
+          text: TYPO3.lang['button.cancel'] || 'Cancel',
           active: true,
           btnClass: 'btn-default',
           name: 'cancel',
         },
-        <Button>{
-          text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+        {
+          text: TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(severity),
           name: 'ok',
         },
       );
     }
 
-    return this.advanced({
+    const modal = this.advanced({
       title,
       content,
       severity,
       buttons,
-      additionalCssClasses,
-      callback: (currentModal: JQuery): void => {
-        currentModal.on('button.clicked', (e: JQueryEventObject): void => {
-          if (e.target.getAttribute('name') === 'cancel') {
-            $(e.currentTarget).trigger('confirm.button.cancel');
-          } else if (e.target.getAttribute('name') === 'ok') {
-            $(e.currentTarget).trigger('confirm.button.ok');
-          }
-        });
-      },
+      additionalCssClasses
     });
+
+    modal.addEventListener('button.clicked', (e: Event): void => {
+      const button = e.target as HTMLButtonElement;
+      if (button.getAttribute('name') === 'cancel') {
+        button.dispatchEvent(new CustomEvent('confirm.button.cancel', {bubbles: true}));
+      } else if (button.getAttribute('name') === 'ok') {
+        button.dispatchEvent(new CustomEvent('confirm.button.ok', {bubbles: true}));
+      }
+    });
+
+    return modal;
   }
 
   /**
@@ -225,25 +368,23 @@ class Modal {
    * @param {SeverityEnum} severity
    * @param {Array<Button>} buttons
    * @param {string} url
-   * @param {Function} callback
+   * @param {ModalCallbackFunction} callback
    * @param {string} target
-   * @returns {JQuery}
+   * @returns {ModalElement}
    */
   public loadUrl(
     title: string,
     severity: SeverityEnum = SeverityEnum.info,
     buttons: Array<Button>,
     url: string,
-    callback?: Function,
-    target?: string,
-  ): JQuery {
+    callback?: ModalCallbackFunction
+  ): ModalElement {
     return this.advanced({
       type: Types.ajax,
       title,
       severity,
       buttons,
       ajaxCallback: callback,
-      ajaxTarget: target,
       content: url,
     });
   }
@@ -256,7 +397,7 @@ class Modal {
    * @param {number} severity
    * @param {Array<Button>} buttons
    * @param {Array<string>} additionalCssClasses
-   * @returns {JQuery}
+   * @returns {ModalElement}
    */
   public show(
     title: string,
@@ -264,7 +405,7 @@ class Modal {
     severity: SeverityEnum = SeverityEnum.info,
     buttons?: Array<Button>,
     additionalCssClasses?: Array<string>,
-  ): JQuery {
+  ): ModalElement {
     return this.advanced({
       type: Types.default,
       title,
@@ -278,7 +419,7 @@ class Modal {
   /**
    * Loads modal by configuration
    */
-  public advanced(configuration: Partial<Configuration>): JQuery {
+  public advanced(configuration: PartialConfiguration): ModalElement {
     // Validation of configuration
     configuration.type = typeof configuration.type === 'string' && configuration.type in Types
       ? configuration.type
@@ -304,67 +445,12 @@ class Modal {
     configuration.ajaxCallback = typeof configuration.ajaxCallback === 'function'
       ? configuration.ajaxCallback
       : this.defaultConfiguration.ajaxCallback;
-    configuration.ajaxTarget = typeof configuration.ajaxTarget === 'string'
-      ? configuration.ajaxTarget
-      : this.defaultConfiguration.ajaxTarget;
 
     return this.generate(configuration);
   }
 
-  /**
-   * Sets action buttons for the modal window or removed the footer, if no buttons are given.
-   *
-   * @param {Array<Button>} buttons
-   */
-  public setButtons(buttons: Array<Button>): JQuery {
-    const modalFooter = this.currentModal.find(Identifiers.footer);
-    if (buttons.length > 0) {
-      modalFooter.empty();
-
-      for (let i = 0; i < buttons.length; i++) {
-        const button = buttons[i];
-        const $button = $('<button />', {'class': 'btn'});
-        $button.html('<span>' + this.securityUtility.encodeHtml(button.text, false) + '</span>');
-        if (button.active) {
-          $button.addClass('t3js-active');
-        }
-        if (button.btnClass !== '') {
-          $button.addClass(button.btnClass);
-        }
-        if (button.name !== '') {
-          $button.attr('name', button.name);
-        }
-        if (button.action) {
-          $button.on('click', (): void => {
-            modalFooter.find('button').not($button).addClass('disabled');
-            button.action.execute($button.get(0)).then((): void => {
-              this.currentModal.modal('hide');
-            });
-          });
-        } else if (button.trigger) {
-          $button.on('click', button.trigger);
-        }
-        if (button.dataAttributes) {
-          if (Object.keys(button.dataAttributes).length > 0) {
-            Object.keys(button.dataAttributes).map((value: string): any => {
-              $button.attr('data-' + value, button.dataAttributes[value]);
-            });
-          }
-        }
-        if (button.icon) {
-          $button.prepend('<span class="t3js-modal-icon-placeholder" data-icon="' + button.icon + '"></span>');
-        }
-        modalFooter.append($button);
-      }
-      modalFooter.show();
-      modalFooter.find('button')
-        .on('click', (e: JQueryEventObject): void => {
-          $(e.currentTarget).trigger('button.clicked');
-        });
-    } else {
-      modalFooter.hide();
-    }
-
+  public setButtons(buttons: Array<Button>): ModalElement {
+    this.currentModal.buttons = buttons;
     return this.currentModal;
   }
 
@@ -374,172 +460,116 @@ class Modal {
    * @param {HTMLDocument} theDocument
    */
   private initializeMarkupTrigger(theDocument: HTMLDocument): void {
-    $(theDocument).on('click', '.t3js-modal-trigger', (evt: JQueryEventObject): void => {
+    const modalTrigger = (evt: Event, triggerElement: HTMLElement): void => {
       evt.preventDefault();
-      const $element = $(evt.currentTarget);
-      const content = $element.data('bs-content') || 'Are you sure?';
+      const content = triggerElement.dataset.bsContent || 'Are you sure?';
       let severity = SeverityEnum.info;
-      if ($element.data('severity') in SeverityEnum) {
-        const severityKey: keyof typeof SeverityEnum = $element.data('severity');
+      if (<any>triggerElement.dataset.severity in SeverityEnum) {
+        const severityKey: keyof typeof SeverityEnum = <any>triggerElement.dataset.severity;
         severity = SeverityEnum[severityKey];
       }
-      let url = $element.data('url') || null;
+      let url = triggerElement.dataset.url || null;
       if (url !== null) {
         const separator = url.includes('?') ? '&' : '?';
-        const params = $.param({data: $element.data()});
-        url = url + separator + params;
+        const params = new URLSearchParams(triggerElement.dataset).toString();
+        url = url + separator + params
       }
       this.advanced({
         type: url !== null ? Types.ajax : Types.default,
-        title: $element.data('title') || 'Alert',
+        title: triggerElement.dataset.title || 'Alert',
         content: url !== null ? url : content,
         severity,
         buttons: [
           {
-            text: $element.data('button-close-text') || TYPO3.lang['button.close'] || 'Close',
+            text: triggerElement.dataset.buttonCloseText || TYPO3.lang['button.close'] || 'Close',
             active: true,
             btnClass: 'btn-default',
-            trigger: (): void => {
-              this.currentModal.trigger('modal-dismiss');
-              const eventNameTarget = Modal.resolveEventNameTargetElement(evt);
-              const event = Modal.createModalResponseEventFromElement(eventNameTarget, false);
+            trigger: (e: Event, modal: ModalElement): void => {
+              modal.hideModal();
+              const event = Modal.createModalResponseEventFromElement(triggerElement, false);
               if (event !== null) {
-                // dispatch event at the element having `data-event-name` declared
-                eventNameTarget.dispatchEvent(event);
+                triggerElement.dispatchEvent(event);
               }
             },
           },
           {
-            text: $element.data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+            text: triggerElement.dataset.buttonOkText || TYPO3.lang['button.ok'] || 'OK',
             btnClass: 'btn-' + Severity.getCssClass(severity),
-            trigger: (): void => {
-              this.currentModal.trigger('modal-dismiss');
-              const eventNameTarget = Modal.resolveEventNameTargetElement(evt);
-              const event = Modal.createModalResponseEventFromElement(eventNameTarget, true);
+            trigger: (e: Event, modal: ModalElement): void => {
+              modal.hideModal();
+              const event = Modal.createModalResponseEventFromElement(triggerElement, true);
               if (event !== null) {
-                // dispatch event at the element having `data-event-name` declared
-                eventNameTarget.dispatchEvent(event);
+                triggerElement.dispatchEvent(event);
               }
-              let targetLocation = $element.attr('data-uri') || $element.data('href') || $element.attr('href');
+              let targetLocation = triggerElement.dataset.uri || triggerElement.dataset.href || triggerElement.getAttribute('href');
               if (targetLocation && targetLocation !== '#') {
-                evt.target.ownerDocument.location.href = targetLocation;
+                triggerElement.ownerDocument.location.href = targetLocation;
               }
-              if (evt.currentTarget.getAttribute('type') === 'submit') {
+              if (triggerElement.getAttribute('type') === 'submit') {
                 // Submit a possible form in case the trigger has type=submit and is child of a form
-                (evt.currentTarget.closest('form') as HTMLFormElement)?.submit();
-                if (evt.currentTarget.tagName === 'BUTTON' && evt.currentTarget.hasAttribute('form')) {
+                (triggerElement.closest('form') as HTMLFormElement)?.submit();
+                if (triggerElement.tagName === 'BUTTON' && triggerElement.hasAttribute('form')) {
                   // Submit a possible form in case the trigger is a BUTTON, having a
                   // form attribute set to a valid form identifier in the ownerDocument.
-                  (evt.target.ownerDocument.querySelector('form#' + evt.currentTarget.getAttribute('form')) as HTMLFormElement)?.submit();
+                  (triggerElement.ownerDocument.querySelector('form#' + triggerElement.getAttribute('form')) as HTMLFormElement)?.submit();
                 }
               }
-              if (evt.currentTarget.hasAttribute('data-target-form')) {
+              if (triggerElement.dataset.targetForm) {
                 // Submit a possible form in case the trigger has the data-target-form
                 // attribute set to a valid form identifier in the ownerDocument.
-                (evt.target.ownerDocument.querySelector('form#' + evt.currentTarget.getAttribute('data-target-form')) as HTMLFormElement)?.submit();
+                (triggerElement.ownerDocument.querySelector('form#' + triggerElement.dataset.targetForm) as HTMLFormElement)?.submit();
               }
             },
           },
         ],
       });
-    });
+    };
+    new RegularEvent('click', modalTrigger).delegateTo(theDocument, '.t3js-modal-trigger');
   }
 
-  private generate(configuration: Partial<Configuration>): JQuery {
-    const currentModal = this.$template.clone();
-    if (configuration.additionalCssClasses.length > 0) {
-      for (let additionalClass of configuration.additionalCssClasses) {
-        currentModal.addClass(additionalClass);
-      }
+  /**
+   * @param {Configuration} configuration
+   */
+  private generate(configuration: PartialConfiguration): ModalElement {
+    const currentModal = document.createElement('typo3-backend-modal') as ModalElement;
+
+    currentModal.type = configuration.type;
+    if (typeof configuration.content === 'string') {
+      currentModal.content = configuration.content;
+    } else if (configuration.type === Types.default) {
+      currentModal.type = Types.template;
+      currentModal.templateResultContent = configuration.content;
     }
-    currentModal.addClass('modal-type-' + configuration.type);
-    currentModal.addClass('modal-severity-' + Severity.getCssClass(configuration.severity));
-    currentModal.addClass('modal-style-' + configuration.style);
-    currentModal.addClass('modal-size-' + configuration.size);
-    currentModal.attr('tabindex', '-1');
-    currentModal.find(Identifiers.title).text(configuration.title);
-    currentModal.find(Identifiers.close).on('click', (): void => {
-      currentModal.modal('hide');
-    });
-
-    if (configuration.type === 'ajax') {
-      const contentTarget = configuration.ajaxTarget ? configuration.ajaxTarget : Identifiers.body;
-      const $loaderTarget = currentModal.find(contentTarget);
-      Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
-        $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
-        new AjaxRequest(configuration.content as string).get().finally(async (): Promise<void> => {
-          if (!this.currentModal.parent().length) {
-            // attach modal to DOM, otherwise embedded scripts are not executed by jquery append()
-            this.currentModal.appendTo('body');
-          }
-        }).then(async (response: AjaxResponse): Promise<void> => {
-          const htmlResponse = await response.raw().text();
-          this.currentModal.find(contentTarget)
-            .empty()
-            .append(htmlResponse);
-
-          if (configuration.ajaxCallback) {
-            configuration.ajaxCallback();
-          }
-          this.currentModal.trigger('modal-loaded');
-        }).catch(async (response: AjaxResponse): Promise<void> => {
-          const htmlResponse = await response.raw().text();
-          const $contentTarget = this.currentModal.find(contentTarget).empty();
-          if (htmlResponse) {
-            $contentTarget.append(htmlResponse);
-          } else {
-            render(
-              html`<p><strong>Oops, received a ${response.response.status} response from </strong> <span class="text-break">${configuration.content as string}</span>.</p>`,
-              $contentTarget[0]
-            );
-          }
-        });
-      });
-    } else if (configuration.type === 'iframe') {
-      currentModal.find(Identifiers.body).append(
-        $('<iframe />', {
-          src: configuration.content,
-          'name': 'modal_frame',
-          'class': 'modal-iframe t3js-modal-iframe',
-        }),
-      );
-      currentModal.find(Identifiers.iframe).on('load', (): void => {
-        currentModal.find(Identifiers.title).text(
-          (<HTMLIFrameElement>currentModal.find(Identifiers.iframe).get(0)).contentDocument.title,
-        );
-      });
-    } else {
-      if (typeof configuration.content === 'string') {
-        configuration.content = $('<p />').html(
-          this.securityUtility.encodeHtml(configuration.content),
-        );
-      }
-      currentModal.find(Identifiers.body).append(configuration.content);
+    currentModal.severity = configuration.severity;
+    currentModal.variant = configuration.style;
+    currentModal.size = configuration.size;
+    currentModal.title = configuration.title;
+    currentModal.additionalCssClasses = configuration.additionalCssClasses;
+    currentModal.buttons = <Array<Button>>configuration.buttons;
+    if (configuration.callback) {
+      currentModal.callback = configuration.callback;
+    }
+    if (configuration.ajaxCallback) {
+      currentModal.ajaxCallback = configuration.ajaxCallback;
     }
 
-    currentModal.on('shown.bs.modal', (e: JQueryEventObject): void => {
-      const $me = $(e.currentTarget);
-      const $backdrop = $me.prev('.modal-backdrop');
+    currentModal.addEventListener('typo3-modal-shown', (): void => {
+      const backdrop = currentModal.nextElementSibling as HTMLElement;
 
-      // We use 1000 as the overall base to circumvent a stuttering UI as Bootstrap uses a z-index of 1040 for backdrops
-      // on initial rendering - this will clash again when at least four modals are open, which is fine and should never happen
+      // Stack backdrop zIndexes to overlay existing (opened) modals
+      // We use 1000 as the overall base to circumvent a stuttering UI as Bootstrap uses a z-index of 1050 for backdrops
+      // on initial rendering - this will clash again when at least five modals are open, which is fine and should never happen
       const baseZIndex = 1000 + (10 * this.instances.length);
-      const backdropZIndex = baseZIndex - 10;
-      $me.css('z-index', baseZIndex);
-      $backdrop.css('z-index', backdropZIndex);
+      currentModal.zindex = baseZIndex;
+      const backdropZIndex = baseZIndex - 5;
+      backdrop.style.zIndex = backdropZIndex.toString();
 
       // focus the button which was configured as active button
-      $me.find(Identifiers.footer).find('.t3js-active').first().focus();
-      // Get Icons
-      $me.find(Identifiers.iconPlaceholder).each((index: number, elem: Element): void => {
-        Icons.getIcon($(elem).data('icon'), Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
-          this.currentModal.find(Identifiers.iconPlaceholder + '[data-icon=' + $(icon).data('identifier') + ']').replaceWith(icon);
-        });
-      });
+      (currentModal.querySelector(`${Identifiers.footer} .t3js-active`) as HTMLInputElement)?.focus();
     });
 
     // Remove modal from Modal.instances when hidden
-    currentModal.on('hide.bs.modal', (): void => {
+    currentModal.addEventListener('typo3-modal-hide', (): void => {
       if (this.instances.length > 0) {
         const lastIndex = this.instances.length - 1;
         this.instances.splice(lastIndex, 1);
@@ -547,32 +577,22 @@ class Modal {
       }
     });
 
-    currentModal.on('hidden.bs.modal', (e: JQueryEventObject): void => {
-      currentModal.trigger('modal-destroyed');
-      $(e.currentTarget).remove();
+    currentModal.addEventListener('typo3-modal-hidden', (e: Event): void => {
+      currentModal.remove();
       // Keep class modal-open on body tag as long as open modals exist
       if (this.instances.length > 0) {
-        $('body').addClass('modal-open');
+        document.body.classList.add('modal-open');
       }
     });
 
     // When modal is opened/shown add it to Modal.instances and make it Modal.currentModal
-    currentModal.on('show.bs.modal', (e: JQueryEventObject): void => {
-      this.currentModal = $(e.currentTarget);
-      // Add buttons
-      this.setButtons(configuration.buttons);
-      this.instances.push(this.currentModal);
-    });
-    currentModal.on('modal-dismiss', (e: JQueryEventObject): void => {
-      // Hide modal, the bs.modal events will clean up Modal.instances
-      $(e.currentTarget).modal('hide');
+    currentModal.addEventListener('typo3-modal-show', (): void => {
+      this.currentModal = currentModal;
+      this.instances.push(currentModal);
     });
 
-    if (configuration.callback) {
-      configuration.callback(currentModal);
-    }
+    document.body.appendChild(currentModal);
 
-    currentModal.modal('show');
     return currentModal;
   }
 }
@@ -598,7 +618,7 @@ try {
 }
 
 if (!modalObject) {
-  modalObject = new Modal(new SecurityUtility());
+  modalObject = new Modal();
 
   // expose as global object
   TYPO3.Modal = modalObject;
