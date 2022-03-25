@@ -15,7 +15,8 @@
 
 namespace TYPO3\CMS\Core\Log;
 
-use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerTrait;
 use TYPO3\CMS\Core\Log\Processor\ProcessorInterface;
 use TYPO3\CMS\Core\Log\Writer\WriterInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,8 +24,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Logger to log events and data for different components.
  */
-class Logger extends AbstractLogger
+class Logger implements LoggerInterface
 {
+    use LoggerTrait;
+
     /**
      * Logger name or component for which this logger is meant to be used for.
      *

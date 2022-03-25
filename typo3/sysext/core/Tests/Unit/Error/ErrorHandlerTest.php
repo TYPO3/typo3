@@ -53,7 +53,7 @@ class ErrorHandlerTest extends UnitTestCase
         $this->trackingLogger = new class() implements LoggerInterface {
             use LoggerTrait;
             public array $records = [];
-            public function log($level, $message, array $context = []): void
+            public function log($level, string|\Stringable $message, array $context = []): void
             {
                 $this->records[] = [
                     'level' => $level,
