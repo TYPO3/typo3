@@ -540,7 +540,7 @@ module.exports = function (grunt) {
           destPrefix: "<%= paths.core %>Public/JavaScript/Contrib",
           copyOptions: {
             process: (source, srcpath) => {
-              let imports = [], prefix = '', suffix = '';
+              let imports = [], prefix = '';
 
               if (srcpath === 'node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js') {
                 imports.push('jquery');
@@ -558,17 +558,7 @@ module.exports = function (grunt) {
                 prefix = 'import Tablesort from "tablesort";';
               }
 
-              if (srcpath === 'node_modules/jquery/dist/jquery.js') {
-                // Provide jQuery global "window.$" (and window.jQuery) for BC
-                // Still used by ./typo3/sysext/core/Tests/Acceptance/Application/FileList/FileStorageTreeFilterCest.php
-                // Also has been suggested to be used in #79221 and #82378
-                // @todo: deprecate $/jQuery global (note: PageRenderer->loadJQuery
-                // or maybe not and simply remove? Since PageRenderer->loadJQuery has long
-                // been deprecated with #86438
-                suffix = 'window.$ = window.jQuery = module.exports;';
-              }
-
-              return require('./util/cjs-to-esm.js').cjsToEsm(source, imports, prefix, suffix);
+              return require('./util/cjs-to-esm.js').cjsToEsm(source, imports, prefix);
             }
           }
         },

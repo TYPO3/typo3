@@ -37,10 +37,8 @@ abstract class AbstractCest
         }
     }
 
-    protected function waitForAjaxRequestToFinish(ApplicationTester $I): void
+    protected function timeoutForAjaxRequest(ApplicationTester $I): void
     {
-        $I->waitForJS('return $.active == 0;', 10);
-        // sometimes rendering is still slower that ajax being finished.
         $I->wait(0.5);
     }
 }

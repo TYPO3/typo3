@@ -85,7 +85,7 @@ class ImportCest extends AbstractCest
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
 
         $I->click($this->buttonPreview, $this->inTabImport);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
     }
 

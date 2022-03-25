@@ -87,9 +87,9 @@ class Inline1nCest
         $I->click('a[title="Close"]');
         $I->wait(3);
 
-        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-collapse\').click();');
+        $I->click('button[data-table="pages_translated"] .icon-actions-view-list-collapse');
         $I->wait(1);
-        $I->executeJS('$(\'a[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse\').click();');
+        $I->click('button[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse');
         $I->wait(1);
 
         $I->see('lipsum', '#recordlist-tx_styleguide_inline_1n_inline_1_child > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > a');
@@ -108,9 +108,9 @@ class Inline1nCest
         $I->click('a[title="Close"]');
         $I->wait(3);
 
-        $I->executeJS('$(\'a[data-table="pages"] .icon-actions-view-list-collapse\').click();');
+        $I->click('button[data-table="pages_translated"] .icon-actions-view-list-collapse');
         $I->wait(1);
-        $I->executeJS('$(\'a[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse\').click();');
+        $I->click('button[data-table="tx_styleguide_inline_1n"] .icon-actions-view-list-collapse');
         $I->wait(1);
 
         $I->wantTo('Check new sorting');

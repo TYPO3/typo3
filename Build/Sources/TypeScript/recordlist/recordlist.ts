@@ -93,7 +93,7 @@ class Recordlist {
   }
 
   constructor() {
-    $(document).on('click', this.identifier.toggle, this.toggleClick);
+    new RegularEvent('click', this.toggleClick).delegateTo(document, this.identifier.toggle);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
     $(document).on('click', this.identifier.localize, this.disableButton);
     $(document).on('click', this.identifier.searchboxToggle, this.toggleSearchbox);
@@ -114,10 +114,10 @@ class Recordlist {
     }).bindTo(document);
   }
 
-  public toggleClick = (e: JQueryEventObject): void => {
+  public toggleClick = (e: MouseEvent, targetEl: HTMLElement): void => {
     e.preventDefault();
 
-    const $me = $(e.currentTarget);
+    const $me = $(targetEl);
     const table = $me.data('table');
     const $target = $($me.data('bs-target'));
     const isExpanded = $target.data('state') === 'expanded';

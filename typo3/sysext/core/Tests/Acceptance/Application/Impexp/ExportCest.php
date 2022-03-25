@@ -76,7 +76,7 @@ class ExportCest extends AbstractCest
         $I->see($selectedPageTitle, $this->inModuleHeader);
 
         $I->click($buttonUpdate, $this->inTabConfiguration);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
         $I->see($selectedPageTitle, $this->inModuleHeader);
     }
 
@@ -106,7 +106,7 @@ class ExportCest extends AbstractCest
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
 
         $I->click($buttonUpdate, $this->inTabConfiguration);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($tablePageTitle, $this->inModuleHeader);
     }
@@ -134,7 +134,7 @@ class ExportCest extends AbstractCest
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
 
         $I->click($buttonUpdate, $this->inTabConfiguration);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
     }
@@ -170,7 +170,7 @@ class ExportCest extends AbstractCest
         $modalDialog->canSeeDialog();
         $I->click('OK', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         $I->switchToContentFrame();
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-info');
@@ -185,7 +185,7 @@ class ExportCest extends AbstractCest
         $modalDialog->canSeeDialog();
         $I->click('OK', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         $I->switchToContentFrame();
         $I->canSeeElement($this->inFlashMessages . ' .alert.alert-info');

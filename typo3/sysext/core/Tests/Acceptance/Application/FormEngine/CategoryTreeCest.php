@@ -54,10 +54,11 @@ class CategoryTreeCest
         $I->waitForElementVisible('#web + .modulemenu-group-container .modulemenu-action');
         $I->click('#web_list');
         $I->switchToContentFrame();
-        // Collapse all tables and expand category again - ensures category fits into window
-        $I->executeJS('$(\'.icon-actions-view-list-collapse\').click();');
+        // Collapse all tables to ensures sys_category table fits into window
+        $I->click('button[data-table="pages"] .icon-actions-view-list-collapse');
+        $I->click('button[data-table="be_groups"] .icon-actions-view-list-collapse');
+        $I->click('button[data-table="be_users"] .icon-actions-view-list-collapse');
         $I->wait(1);
-        $I->executeJS('$(\'button[data-table="sys_category"] .icon-actions-view-list-expand\').click();');
         $I->waitForElementVisible('#recordlist-sys_category tr[data-uid="7"] a[data-bs-original-title="Edit record"]');
         // Select category with id 7
         $I->click('#recordlist-sys_category tr[data-uid="7"] a[data-bs-original-title="Edit record"]');

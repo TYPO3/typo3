@@ -46,7 +46,7 @@ class FileStorageTreeFilterCest
     public function filterTreeForFolder(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'styleguide');
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         $I->amGoingTo('prove filter reset button is visible upon input');
 
@@ -54,7 +54,7 @@ class FileStorageTreeFilterCest
         $I->canSee('styleguide', $this->withinTree);
 
         $this->reloadTree($I);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         // filter must still apply after tree reload
         $I->amGoingTo('prove the filter applies after tree reload');
@@ -68,13 +68,13 @@ class FileStorageTreeFilterCest
     protected function clearFilterReloadsTreeWithoutFilterApplied(ApplicationTester $I): void
     {
         $I->fillField($this->filterInputField, 'styleguide');
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         $I->canSee('styleguide', $this->withinTree);
         $I->cantSee($this->newSubfolder, $this->withinTree);
 
         $I->click($this->filterInputFieldClearButton);
-        $this->waitForAjaxRequestToFinish($I);
+        $this->timeoutForAjaxRequest($I);
 
         $I->canSee('styleguide', $this->withinTree);
         $I->canSee($this->newSubfolder, $this->withinTree);
@@ -87,10 +87,8 @@ class FileStorageTreeFilterCest
         $I->cantSeeElement($this->filterInputFieldClearButton);
     }
 
-    protected function waitForAjaxRequestToFinish(ApplicationTester $I): void
+    protected function timeoutForAjaxRequest(ApplicationTester $I): void
     {
-        $I->waitForJS('return $.active == 0;', 10);
-        // sometimes rendering is still slower that ajax being finished.
         $I->wait(0.5);
     }
 

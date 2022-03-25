@@ -10882,5 +10882,5 @@ if ( typeof noGlobal === "undefined" ) {
 return jQuery;
 } );
 
-  this.__default_export = module.exports;window.$ = window.jQuery = module.exports;
+  this.__default_export = module.exports;
 }).__default_export;

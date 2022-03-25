@@ -20,10 +20,9 @@ const provideImports = (imports) => {
   return src.join('\n');
 }
 
-const cjsToEsm = (source, imports, prefix, suffix) => {
+const cjsToEsm = (source, imports, prefix) => {
   imports = imports || [];
   prefix = prefix || ''
-  suffix = suffix || ''
   source = source.replace(/\/\/# sourceMappingURL=[^ ]+/, '');
   // Using a user-defined object type to provide a `this` context
   // to prevent static analysis tools (like rollup) from complaining
@@ -34,7 +33,7 @@ const cjsToEsm = (source, imports, prefix, suffix) => {
     'export default (new function() {',
     '  const module = { exports: {} }, exports = module.exports, define = null;',
     source,
-    '  this.__default_export = module.exports;' + suffix,
+    '  this.__default_export = module.exports;',
     '}).__default_export;'
   ];
 
