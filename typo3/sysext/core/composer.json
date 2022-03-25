@@ -33,7 +33,7 @@
 		"egulias/email-validator": "^2.1",
 		"enshrined/svg-sanitize": "^0.15.4",
 		"guzzlehttp/guzzle": "^6.3.0",
-		"guzzlehttp/psr7": "^1.7.0",
+		"guzzlehttp/psr7": "^1.8.5",
 		"lolli42/finediff": "^1.0",
 		"nikic/php-parser": "^4.10.4",
 		"psr/container": "^1.0",
