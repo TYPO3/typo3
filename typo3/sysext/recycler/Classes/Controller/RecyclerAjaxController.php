@@ -177,13 +177,13 @@ class RecyclerAjaxController
                     'pageTitle' => $pageTitle,
                     'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),
                     'tstamp' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]),
-                    'owner' => htmlspecialchars($backendUserName),
+                    'owner' => $backendUserName,
                     'owner_uid' => $row[$GLOBALS['TCA'][$table]['ctrl']['cruser_id']],
-                    'title' => htmlspecialchars(BackendUtility::getRecordTitle($table, $row)),
+                    'title' => BackendUtility::getRecordTitle($table, $row),
                     'path' => $this->getRecordPath((int)$row['pid']),
                     'delete_user_uid' => $userIdWhoDeleted,
                     'delete_user' => $this->getBackendUserInformation($userIdWhoDeleted),
-                    'isParentDeleted' => $table === 'pages' ? $this->isParentPageDeleted((int)$row['pid']) : false,
+                    'isParentDeleted' => $table === 'pages' && $this->isParentPageDeleted((int)$row['pid']),
                 ];
             }
         }

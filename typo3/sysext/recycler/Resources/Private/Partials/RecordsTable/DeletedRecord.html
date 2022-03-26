@@ -1,15 +1,16 @@
 <html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-
 <tr data-uid="{record.uid}" data-table="{table}" data-recordtitle="{record.title}" data-parent-deleted="{record.isParentDeleted}">
     <td class="nowrap">
         <span class="form-check form-toggle">
             <input class="form-check-input t3js-multi-record-selection-check" type="checkbox">
         </span>
     </td>
-    <td class="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>
+    <td class="nowrap">{record.icon -> f:format.raw()} {record.title}</td>
     <td class="nowrap">{record.tstamp}</td>
     <td class="nowrap">{record.uid}</td>
     <td class="nowrap">{record.pageTitle} ({record.pid})</td>
@@ -45,9 +46,9 @@
             <tbody>
                 <tr>
                     <td>{record.crdate}</td>
-                    <td><be:avatar backendUser="{record.owner_uid}" showIcon="true" />{record.owner} ({record.owner_uid})</td>
-                    <td><f:if condition="{record.delete_user}"><be:avatar backendUser="{record.delete_user_uid}" showIcon="true" />{record.delete_user} ({record.delete_user_uid})</f:if></td>
-                    <td><f:format.raw>{record.path}</f:format.raw></td>
+                    <td><be:avatar backendUser="{record.owner_uid}" showIcon="true" /> {record.owner} ({record.owner_uid})</td>
+                    <td><f:if condition="{record.delete_user}"><be:avatar backendUser="{record.delete_user_uid}" showIcon="true" /> {record.delete_user} ({record.delete_user_uid})</f:if></td>
+                    <td>{record.path -> f:format.raw()}</td>
                 </tr>
             </tbody>
         </table>
