@@ -57,7 +57,7 @@ class DashboardModal {
           {
             text: this.dataset.buttonOkText,
             active: true,
-            btnClass: 'btn-warning',
+            btnClass: 'btn-info',
             name: 'save',
           }
         ]
