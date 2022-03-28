@@ -384,12 +384,17 @@ class Recycler {
     if (recoverPages) {
       $message = $('<div />').append(
         $('<p />').text(messageText),
-        $('<div />', {class: 'checkbox'}).append(
-          $('<label />').append(TYPO3.lang['modal.undo.recursive']).prepend($('<input />', {
-            id: 'undo-recursive',
+        $('<div />', {class: 'form-check'}).append(
+          $('<input />', {
             type: 'checkbox',
-          })),
-        ),
+            id: 'undo-recursive',
+            class: 'form-check-input'
+          }),
+          $('<label />', {
+            class: 'form-check-label',
+            for: 'undo-recursive'
+          }).text(TYPO3.lang['modal.undo.recursive'])
+        )
       );
     } else {
       $message = $('<p />').text(messageText);
