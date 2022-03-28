@@ -137,6 +137,10 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     public function __get($propertyName)
     {
         $realInstance = $this->_loadRealInstance();
+
+        if ($realInstance instanceof AbstractDomainObject) {
+            return $realInstance->_getProperty($propertyName);
+        }
         return $realInstance->{$propertyName};
     }
 
