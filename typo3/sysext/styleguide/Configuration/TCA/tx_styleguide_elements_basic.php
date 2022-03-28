@@ -202,15 +202,6 @@ return [
                 'eval' => 'num',
             ],
         ],
-        'input_16' => [
-            'exclude' => 1,
-            'label' => 'input_16',
-            'description' => 'eval=password',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'password',
-            ],
-        ],
         'input_19' => [
             'exclude' => 1,
             'label' => 'input_19',
@@ -650,6 +641,34 @@ return [
                     'browserTitle' => 'Custom title',
                     'allowedOptions' => ['title', 'target'],
                 ],
+            ],
+        ],
+
+        'password_1' => [
+            'exclude' => 1,
+            'label' => 'password_1',
+            'description' => 'type=password',
+            'config' => [
+                'type' => 'password',
+            ],
+        ],
+        'password_2' => [
+            'exclude' => 1,
+            'label' => 'password_2',
+            'description' => 'type=password hashed=false',
+            'config' => [
+                'type' => 'password',
+                'hashed' => false,
+            ],
+        ],
+        'password_3' => [
+            'exclude' => 1,
+            'label' => 'password_3',
+            'description' => 'type=password readOnly=true',
+            'config' => [
+                'type' => 'password',
+                'readOnly' => true,
+                'default' => 'somePassword1!',
             ],
         ],
 
@@ -1735,6 +1754,8 @@ backend_layout {
                     inputdatetime_11,
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,
+                --div--;password,
+                    password_1,password_2,password_3,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,

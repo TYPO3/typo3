@@ -52,6 +52,14 @@ class KauderwelschService
     }
 
     /**
+     * Get a single password
+     */
+    public function getPassword(): string
+    {
+        return 'somePassword1!';
+    }
+
+    /**
      * Get an integer
      *
      * @return int

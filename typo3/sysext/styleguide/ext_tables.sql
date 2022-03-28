@@ -83,7 +83,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_13 text,
     input_14 text,
     input_15 text,
-    input_16 text,
     input_19 text,
     input_20 text,
     input_21 text,
@@ -111,6 +110,10 @@ CREATE TABLE tx_styleguide_elements_basic (
     link_3 text,
     link_4 text,
     link_5 text,
+
+    password_1 text,
+    password_2 text,
+    password_3 text,
 
     inputdatetime_1 text,
     inputdatetime_2 date,

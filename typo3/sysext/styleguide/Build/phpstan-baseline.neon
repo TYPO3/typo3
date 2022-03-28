@@ -476,6 +476,26 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypePassthrough.php
 
 		-
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypePassword\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypePassword.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypePassword\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypePassword.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypePasswordHashedFalse\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypePasswordHashedFalse.php
+
+		-
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypePasswordHashedFalse\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypePasswordHashedFalse.php
+
+		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeRadio\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeRadio.php
