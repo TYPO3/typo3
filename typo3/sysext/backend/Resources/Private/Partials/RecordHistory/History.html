@@ -47,13 +47,15 @@
                     <be:avatar backendUser="{historyRow.backendUserUid}"/>
                     <f:if condition="{historyRow.backendUserUid}">
                         <f:then>
-                            {historyRow.backendUserName}
+                            {f:if(condition: historyRow.backendUserName, then: historyRow.backendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')}
                         </f:then>
                         <f:else>
                             {f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:externalChange')}
                         </f:else>
                     </f:if>
-                    <f:if condition="{historyRow.originalBackendUserName}"> ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {historyRow.originalBackendUserName})</f:if>
+                    <f:if condition="{historyRow.originalBackendUserUid}">
+                        ({f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:viaUser')} {f:if(condition: historyRow.originalBackendUserName, then: historyRow.originalBackendUserName, else: '{f:translate(key: \'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:userNotFound\')}')})
+                    </f:if>
                 </td>
                 <f:if condition="{isUserInWorkspace}">
                     <td>

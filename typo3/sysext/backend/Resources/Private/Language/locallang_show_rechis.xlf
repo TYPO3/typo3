@@ -45,6 +45,9 @@
 			<trans-unit id="revertField" resname="revertField">
 				<source>Rollback single field</source>
 			</trans-unit>
+			<trans-unit id="userNotFound" resname="userNotFound">
+				<source>[Not Found]</source>
+			</trans-unit>
 			<trans-unit id="externalChange" resname="externalChange">
 				<source>Intermediate external change!</source>
 			</trans-unit>

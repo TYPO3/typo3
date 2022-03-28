@@ -288,6 +288,7 @@ class ElementHistoryController
             $singleLine['backendUserName'] = $beUserArray[$entry['userid']]['username'] ?? '';
             // Executed by switch user
             if (!empty($entry['originaluserid'])) {
+                $singleLine['originalBackendUserUid'] = $entry['originaluserid'];
                 $singleLine['originalBackendUserName'] = $beUserArray[$entry['originaluserid']]['username'] ?? '';
             }
 
