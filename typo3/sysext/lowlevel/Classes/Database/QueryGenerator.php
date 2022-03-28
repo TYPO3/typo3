@@ -981,11 +981,15 @@ class QueryGenerator
                 $fields['label'] = preg_replace('/:$/', '', trim($this->getLanguageService()->sL($fC['label'])));
                 switch ($fields['type']) {
                     case 'input':
-                        if (preg_match('/int|year/i', $fields['eval'] ?? '')) {
+                        if (GeneralUtility::inList($fields['eval'] ?? '', 'year')) {
                             $fields['type'] = 'number';
                         } else {
                             $fields['type'] = 'text';
                         }
+                        break;
+                    case 'number':
+                        // Empty on purpose, we have to keep the type "number".
+                        // Falling back to the "default" case would set the type to "text"
                         break;
                     case 'datetime':
                         if (!in_array($fields['dbType']  ?? '', QueryHelper::getDateTimeTypes(), true)) {
@@ -1449,6 +1453,10 @@ class QueryGenerator
                             } else {
                                 $this->fields[$fieldName]['type'] = 'text';
                             }
+                            break;
+                        case 'number':
+                            // Empty on purpose, we have to keep the type "number".
+                            // Falling back to the "default" case would set the type to "text"
                             break;
                         case 'datetime':
                             if (!in_array($this->fields[$fieldName]['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {

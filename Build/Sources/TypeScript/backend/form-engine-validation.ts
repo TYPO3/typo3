@@ -473,11 +473,12 @@ export default (function() {
         returnValue = value.toLowerCase();
         break;
       case 'int':
+      case 'integer':
         if (value !== '') {
           returnValue = FormEngineValidation.parseInt(value);
         }
         break;
-      case 'double2':
+      case 'decimal':
         if (value !== '') {
           returnValue = FormEngineValidation.parseDouble(value);
         }
@@ -626,9 +627,10 @@ export default (function() {
    * Parse value to double
    *
    * @param {String} value
+   * @param {Number} precision
    * @returns {String}
    */
-  FormEngineValidation.parseDouble = function(value: number|string|boolean): string {
+  FormEngineValidation.parseDouble = function(value: number|string|boolean, precision: number = 2): string {
     let theVal = '' + value;
     theVal = theVal.replace(/[^0-9,\.-]/g, '');
     const negative = theVal.substring(0, 1) === '-';
@@ -643,7 +645,7 @@ export default (function() {
     if (negative) {
       theNumberVal *= -1;
     }
-    theVal = theNumberVal.toFixed(2);
+    theVal = theNumberVal.toFixed(precision);
 
     return theVal;
   };

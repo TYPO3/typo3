@@ -97,10 +97,8 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.size',
             'config' => [
                 'readOnly' => true,
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 8,
-                'max' => 30,
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],

@@ -44,6 +44,7 @@ class FormEngineUtility
      */
     protected static $allowOverrideMatrix = [
         'input' => ['size', 'max', 'readOnly'],
+        'number' => ['size', 'readOnly'],
         'email' => ['size', 'readOnly'],
         'link' => ['size', 'readOnly'],
         'password' => ['size', 'readOnly'],

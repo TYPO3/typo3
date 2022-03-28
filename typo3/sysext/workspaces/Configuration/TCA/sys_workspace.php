@@ -114,8 +114,7 @@ return [
         'previewlink_lifetime' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.previewlink_lifetime',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'size' => 10,
                 'default' => 48,
             ],

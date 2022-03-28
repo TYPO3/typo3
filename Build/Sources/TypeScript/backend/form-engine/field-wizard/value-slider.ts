@@ -13,17 +13,45 @@
 
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
-class ValueSlider {
-  private readonly controlElement: HTMLInputElement = null;
+enum Format {
+  integer = 'integer',
+  decimal = 'decimal'
+}
+
+/**
+ * Module @typo3/backend/form-engine/field-wizard/value-slider
+ *
+ * @example
+ * <typo3-formengine-valueslider linked-field="css-selector" format="integer" precision="2">
+ *   <input>
+ * </typo3-formengine-valueslider>
+ *
+ * This is based on W3C custom elements ("web components") specification, see
+ * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+ */
+export class ValueSlider extends HTMLElement {
+  private valueSlider: HTMLInputElement = null;
+
+  public connectedCallback(): void {
+    this.valueSlider = this.querySelector('input') as HTMLInputElement;
+    if (this.valueSlider !== null) {
+      new ThrottleEvent('input', this.handleRangeChange, 25).bindTo(this.valueSlider);
+    }
+  }
+
+  private handleRangeChange = (e: Event): void => {
+    const target = e.target as HTMLInputElement;
+    this.updateValue(target);
+    this.updateTooltipValue(target);
+  }
 
   /**
    * Update value of slider element
    *
    * @param {HTMLInputElement} element
    */
-  private static updateValue(element: HTMLInputElement): void {
-    const foreignField = document.querySelector(`[data-formengine-input-name="${element.dataset.sliderItemName}"]`) as HTMLInputElement;
-
+  private updateValue(element: HTMLInputElement): void {
+    const foreignField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement;
     foreignField.value = element.value;
     foreignField.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
   }
@@ -31,31 +59,21 @@ class ValueSlider {
   /**
    * @param {HTMLInputElement} element
    */
-  private static updateTooltipValue(element: HTMLInputElement): void {
+  private updateTooltipValue(element: HTMLInputElement): void {
     let renderedValue;
     const value = element.value;
-    switch (element.dataset.sliderValueType) {
-      case 'double':
-        renderedValue = parseFloat(value).toFixed(2);
+
+    switch (this.getAttribute('format')) {
+      case Format.decimal:
+        renderedValue = parseFloat(value).toFixed(Number(this.getAttribute('precision')) || 2);
         break;
-      case 'int':
+      case Format.integer:
       default:
         renderedValue = parseInt(value, 10);
     }
 
     element.title = renderedValue.toString();
   }
-
-  constructor(controlElementId: string) {
-    this.controlElement = document.getElementById(controlElementId) as HTMLInputElement;
-    new ThrottleEvent('input', this.handleRangeChange, 25).bindTo(this.controlElement);
-  }
-
-  private handleRangeChange = (e: Event): void => {
-    const target = e.target as HTMLInputElement;
-    ValueSlider.updateValue(target);
-    ValueSlider.updateTooltipValue(target);
-  }
 }
 
-export default ValueSlider;
+window.customElements.define('typo3-formengine-valueslider', ValueSlider);

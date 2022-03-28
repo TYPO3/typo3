@@ -79,9 +79,8 @@ return [
         'uid_foreign' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.uid_foreign',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 10,
-                'eval' => 'int',
             ],
         ],
         'tablenames' => [
@@ -102,10 +101,8 @@ return [
         'sorting_foreign' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.sorting_foreign',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'max' => 4,
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],

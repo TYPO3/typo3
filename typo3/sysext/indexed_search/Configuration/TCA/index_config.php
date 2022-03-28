@@ -205,10 +205,8 @@ return [
         'recordsbatch' => [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.recordsbatch',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 8,
-                'max' => 20,
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],

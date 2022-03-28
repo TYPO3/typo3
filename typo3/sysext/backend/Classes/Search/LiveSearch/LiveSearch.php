@@ -302,25 +302,24 @@ class LiveSearch
                 }
                 $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
                 $fieldType = $fieldConfig['type'] ?? '';
-                $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Assemble the search condition only if the field is an integer, or is uid or pid
                 if ($fieldName === 'uid'
                     || $fieldName === 'pid'
-                    || (($fieldType === 'input' || $fieldType === 'datetime')
-                        && GeneralUtility::inList($evalRules, 'int'))
+                    || ($fieldType === 'number' && ($fieldConfig['format'] ?? 'integer') === 'integer')
+                    || ($fieldType === 'datetime' && GeneralUtility::inList($fieldConfig['eval'] ?? '', 'int'))
                 ) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
                         $queryBuilder->createNamedParameter($this->queryString, \PDO::PARAM_INT)
                     );
-                } elseif ($fieldType === 'text'
+                } elseif ($fieldType === 'input'
+                    || $fieldType === 'text'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'color'
                     || $fieldType === 'slug'
-                    || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     // Otherwise and if the field makes sense to be searched, assemble a like condition
                     $constraints[] = $queryBuilder->expr()->like(
@@ -340,7 +339,6 @@ class LiveSearch
                 }
                 $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
                 $fieldType = $fieldConfig['type'] ?? '';
-                $evalRules = $fieldConfig['eval'] ?? '';
 
                 // Check whether search should be case-sensitive or not
                 $searchConstraint = $queryBuilder->expr()->and(
@@ -369,13 +367,13 @@ class LiveSearch
                     }
                 }
                 // Assemble the search condition only if the field makes sense to be searched
-                if ($fieldType === 'text'
+                if ($fieldType === 'input'
+                    || $fieldType === 'text'
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'color'
                     || $fieldType === 'slug'
-                    || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     if ($searchConstraint->count() !== 0) {
                         $constraints[] = $searchConstraint;

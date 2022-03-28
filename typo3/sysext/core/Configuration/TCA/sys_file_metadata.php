@@ -112,10 +112,8 @@ return [
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:file.width',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 10,
-                'max' => 20,
-                'eval' => 'int',
                 'default' => 0,
                 'readOnly' => true,
             ],
@@ -125,10 +123,8 @@ return [
             'l10n_display' => 'defaultAsReadonly',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:file.height',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 10,
-                'max' => 20,
-                'eval' => 'int',
                 'default' => 0,
                 'readOnly' => true,
             ],

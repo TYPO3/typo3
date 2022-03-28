@@ -1608,6 +1608,7 @@ class BackendUtility
                 }
                 break;
             case 'input':
+            case 'number':
                 // todo: phpstan states that $value always exists and is not nullable. At the moment, this is a false
                 //       positive as null can be passed into this method via $value. As soon as more strict types are
                 //       used, this isset check must be replaced with a more appropriate check.

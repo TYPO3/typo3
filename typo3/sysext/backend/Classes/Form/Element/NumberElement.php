@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,11 +23,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * General type=input element.
+ * type=number element.
  *
- * This one kicks in if no specific renderType is set.
+ * The NumberElement renders a html field with the type "number" attribute.
  */
-class InputTextElement extends AbstractFormElement
+class NumberElement extends AbstractFormElement
 {
     /**
      * Default field information enabled for this element.
@@ -66,43 +68,43 @@ class InputTextElement extends AbstractFormElement
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        $config = $parameterArray['fieldConf']['config'];
+
+        $format = $config['format'] ?? 'integer';
+        if ($format !== 'integer' && $format !== 'decimal') {
+            throw new \UnexpectedValueException(
+                'Format "' . $format . '" for field "' . $fieldName . '" in table "' . $table . '" is '
+                . 'not valid. Must be either empty or set to one of: "integer", "decimal".',
+                1649124682
+            );
+        }
+
+        // @todo This should be configurable (e.g. [config][precision])
+        $precision = 2;
 
         $itemValue = $parameterArray['itemFormElValue'];
-        $config = $parameterArray['fieldConf']['config'];
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
-        $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = $this->formMaxWidth($size);
-        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
+        $width = $this->formMaxWidth(
+            MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
+        );
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         if ($config['readOnly'] ?? false) {
-            $disabledFieldAttributes = [
-                'class' => 'form-control',
-                'data-formengine-input-name' => $parameterArray['itemFormElName'],
-                'type' => 'text',
-                'value' => $itemValue,
-                'placeholder' => trim($config['placeholder'] ?? ''),
-            ];
-
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
+            $html[] =               '<input class="form-control" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -111,26 +113,15 @@ class InputTextElement extends AbstractFormElement
             return $resultArray;
         }
 
-        // @todo: The whole eval handling is a mess and needs refactoring
-        foreach ($evalList as $func) {
-            // @todo: This is ugly: The code should find out on it's own whether an eval definition is a
-            // @todo: keyword like "date", or a class reference. The global registration could be dropped then
-            // Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
-                if (class_exists($func)) {
-                    $evalObj = GeneralUtility::makeInstance($func);
-                    if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                        $_params = [
-                            'value' => $itemValue,
-                        ];
-                        $itemValue = $evalObj->deevaluateFieldValue($_params);
-                    }
-                    $resultArray = $this->resolveJavaScriptEvaluation($resultArray, $func, $evalObj);
-                }
-            }
-        }
-
+        $languageService = $this->getLanguageService();
         $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $itemName = (string)$parameterArray['itemFormElName'];
+
+        // Get filtered eval list, while always adding the format
+        $evalList = array_merge([$format], array_filter(
+            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
+            static fn ($value) => $value === 'null'
+        ));
 
         $attributes = [
             'value' => '',
@@ -142,17 +133,12 @@ class InputTextElement extends AbstractFormElement
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
-                'field' => $parameterArray['itemFormElName'],
+                'field' => $itemName,
                 'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'] ?? ''),
-            ]),
-            'data-formengine-input-name' => (string)$parameterArray['itemFormElName'],
+            ], JSON_THROW_ON_ERROR),
+            'data-formengine-input-name' => $itemName,
         ];
 
-        $maxLength = $config['max'] ?? 0;
-        if ((int)$maxLength > 0) {
-            $attributes['maxlength'] = (string)(int)$maxLength;
-        }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
         }
@@ -161,10 +147,10 @@ class InputTextElement extends AbstractFormElement
         }
 
         $valuePickerHtml = [];
-        if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
+        if (is_array($config['valuePicker']['items'] ?? false)) {
             $valuePickerConfiguration = [
                 'mode' => $config['valuePicker']['mode'] ?? 'replace',
-                'linked-field' => '[data-formengine-input-name="' . $parameterArray['itemFormElName'] . '"]',
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
             ];
             $valuePickerAttributes = array_merge(
                 [
@@ -177,12 +163,44 @@ class InputTextElement extends AbstractFormElement
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
-                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
+                $valuePickerHtml[] = '<option value="' . htmlspecialchars((string)$item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
             }
             $valuePickerHtml[] = '</select>';
             $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
 
             $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-picker.js');
+        }
+
+        $valueSliderHtml = [];
+        if (is_array($config['slider'] ?? false)) {
+            if ($format === 'decimal') {
+                $itemValue = (double)$itemValue;
+            } else {
+                $itemValue = (int)$itemValue;
+            }
+            $valueSliderConfiguration = [
+                'precision' => (string)$precision,
+                'format' =>  $format,
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
+            ];
+            $rangeAttributes = [
+                'type' => 'range',
+                'class' => 'slider',
+                'min' => (string)(int)($config['range']['lower'] ?? 0),
+                'max' => (string)(int)($config['range']['upper'] ?? 10000),
+                'step' => (string)($config['slider']['step'] ?? 1),
+                'style' => 'width: ' . (int)($config['slider']['width'] ?? 400) . 'px',
+                'title' => (string)$itemValue,
+                'value' => (string)$itemValue,
+            ];
+
+            $valueSliderHtml[] = '<typo3-formengine-valueslider ' . GeneralUtility::implodeAttributes($valueSliderConfiguration, true) . '>';
+            $valueSliderHtml[] = '<div class="slider-wrapper">';
+            $valueSliderHtml[] = '<input ' . GeneralUtility::implodeAttributes($rangeAttributes, true) . '>';
+            $valueSliderHtml[] = '</div>';
+            $valueSliderHtml[] = '</typo3-formengine-valuepicker>';
+
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-slider.js');
         }
 
         $fieldControlResult = $this->renderFieldControl();
@@ -193,17 +211,29 @@ class InputTextElement extends AbstractFormElement
         $fieldWizardHtml = $fieldWizardResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
 
+        if (isset($config['range']['lower'])) {
+            $attributes['min'] = (string)(int)$config['range']['lower'];
+        }
+        if (isset($config['range']['upper'])) {
+            $attributes['max'] = (string)(int)$config['range']['upper'];
+        }
+
+        if ($format === 'decimal') {
+            $attributes['step'] = '0.' . str_repeat('0', $precision - 1) . '1';
+        }
+
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
-        $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="number" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
-        if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
+        if (!empty($valuePickerHtml) || !empty($valueSliderHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
             $mainFieldHtml[] =          '<div class="btn-group">';
             $mainFieldHtml[] =              implode(LF, $valuePickerHtml);
+            $mainFieldHtml[] =              implode(LF, $valueSliderHtml);
             $mainFieldHtml[] =              $fieldControlHtml;
             $mainFieldHtml[] =          '</div>';
             $mainFieldHtml[] =      '</div>';
@@ -216,6 +246,8 @@ class InputTextElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);
+
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $mainFieldHtml;
         if ($this->hasNullCheckboxButNoPlaceholder()) {

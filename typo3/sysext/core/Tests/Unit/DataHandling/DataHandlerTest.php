@@ -154,25 +154,6 @@ class DataHandlerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
-    public function checkValueInputEvalWithEvalDouble2(): void
-    {
-        $testData = [
-            '-0,5' => '-0.50',
-            '1000' => '1000.00',
-            '1000,10' => '1000.10',
-            '1000,0' => '1000.00',
-            '600.000.000,00' => '600000000.00',
-            '60aaa00' => '6000.00',
-        ];
-        foreach ($testData as $value => $expectedReturnValue) {
-            $returnValue = $this->subject->checkValue_input_Eval($value, ['double2'], '');
-            self::assertSame($expectedReturnValue, $returnValue['value']);
-        }
-    }
-
-    /**
      * @return array
      */
     public function checkValueForDatetimeDataProvider(): array
@@ -260,10 +241,8 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * Data provider for inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly
-     *
-     * @return array
      */
-    public function inputValuesStringsDataProvider(): array
+    public function numberValuesStringsDataProvider(): array
     {
         return [
             'Empty string returns zero as integer' => [
@@ -295,21 +274,70 @@ class DataHandlerTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider inputValuesStringsDataProvider
-     * @param string $value
-     * @param int $expectedReturnValue
+     * @dataProvider numberValuesStringsDataProvider
      */
-    public function inputValueCheckRecognizesStringValuesAsIntegerValuesCorrectly(string $value, int $expectedReturnValue): void
+    public function numberValueCheckRecognizesStringValuesAsIntegerValuesCorrectly(string $value, int $expectedReturnValue): void
     {
         $tcaFieldConf = [
-            'type' => 'input',
-            'eval' => 'int',
+            'type' => 'number',
             'range' => [
                 'lower' => '-2000000',
                 'upper' => '2000000',
             ],
         ];
-        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForNumber', $value, $tcaFieldConf, '', 0, 0, '');
+        self::assertSame($expectedReturnValue, $returnValue['value']);
+    }
+
+    private function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider(): iterable
+    {
+        yield 'simple negative decimal value with comma and one position' => [
+            'input' => '-0,5',
+            'expected' => '-0.50',
+        ];
+
+        yield 'simple integer' => [
+            'input' => '1000',
+            'expected' => '1000.00',
+        ];
+
+        yield 'positive decimal value with one position' => [
+            'input' => '1000,0',
+            'expected' => '1000.00',
+        ];
+
+        yield 'positive decimal value with 2 positions and trailing zero' => [
+            'input' => '1000,10',
+            'expected' => '1000.10',
+        ];
+
+        yield 'positive decimal value with 2 positions without trailing zero' => [
+            'input' => '1000,11',
+            'expected' => '1000.11',
+        ];
+
+        yield 'number separated with dots' => [
+            'input' => '600.000.000,00',
+            'expected' => '600000000.00',
+        ];
+
+        yield 'invalid input with characters between the number' => [
+            'input' => '60aaa00',
+            'expected' => '6000.00',
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectlyDataProvider
+     */
+    public function numberValueCheckRecognizesDecimalStringValuesAsFloatValuesCorrectly(string $value, string $expectedReturnValue): void
+    {
+        $tcaFieldConf = [
+            'type' => 'number',
+            'format' => 'decimal',
+        ];
+        $returnValue = $this->subject->_call('checkValueForNumber', $value, $tcaFieldConf);
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
@@ -351,41 +379,37 @@ class DataHandlerTest extends UnitTestCase
     /**
      * @test
      * @dataProvider inputValuesRangeDoubleDataProvider
-     * @param string $value
-     * @param int $expectedReturnValue
      */
-    public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble($value, $expectedReturnValue): void
+    public function inputValueCheckRespectsRightLowerAndUpperLimitForDouble(string $value, string|int $expectedReturnValue): void
     {
         $tcaFieldConf = [
-            'type' => 'input',
-            'eval' => 'double2',
+            'type' => 'number',
+            'format' => 'decimal',
             'range' => [
                 'lower' => '0',
                 'upper' => '42',
             ],
         ];
-        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForNumber', $value, $tcaFieldConf);
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
     /**
      * @test
      * @dataProvider inputValuesRangeDoubleDataProvider
-     * @param string $value
-     * @param int $expectedReturnValue
      */
-    public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble($value, $expectedReturnValue): void
+    public function inputValueCheckRespectsRightLowerAndUpperLimitWithDefaultValueForDouble(string $value, string|int $expectedReturnValue): void
     {
         $tcaFieldConf = [
-            'type' => 'input',
-            'eval' => 'double2',
+            'type' => 'number',
+            'format' => 'decimal',
             'range' => [
                 'lower' => '0',
                 'upper' => '42',
             ],
             'default' => 0,
         ];
-        $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
+        $returnValue = $this->subject->_call('checkValueForNumber', $value, $tcaFieldConf, '', 0, 0, '');
         self::assertSame($expectedReturnValue, $returnValue['value']);
     }
 
@@ -659,9 +683,8 @@ class DataHandlerTest extends UnitTestCase
                     'TCEforms' => [
                         'label' => 'A field',
                         'config' => [
-                            'type' => 'input',
+                            'type' => 'number',
                             'required' => true,
-                            'eval' => 'int',
                         ],
                     ],
                 ],
@@ -683,9 +706,8 @@ class DataHandlerTest extends UnitTestCase
                 'field1' => [
                     'label' => 'A field',
                     'config' => [
-                        'type' => 'input',
+                        'type' => 'number',
                         'required' => true,
-                        'eval' => 'int',
                     ],
                 ],
             ],
@@ -724,9 +746,8 @@ class DataHandlerTest extends UnitTestCase
                                     'TCEforms' => [
                                         'label' => 'A field',
                                         'config' => [
-                                            'type' => 'input',
+                                            'type' => 'number',
                                             'required' => true,
-                                            'eval' => 'int',
                                         ],
                                     ],
                                 ],
@@ -779,9 +800,8 @@ class DataHandlerTest extends UnitTestCase
                                 'field1' => [
                                     'label' => 'A field',
                                     'config' => [
-                                        'type' => 'input',
+                                        'type' => 'number',
                                         'required' => true,
-                                        'eval' => 'int',
                                     ],
                                 ],
                             ],

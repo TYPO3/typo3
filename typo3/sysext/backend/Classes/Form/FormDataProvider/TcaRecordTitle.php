@@ -175,6 +175,7 @@ class TcaRecordTitle implements FormDataProviderInterface
                 $recordTitle = $this->getRecordTitleForCheckboxType($rawValue, $fieldConfig);
                 break;
             case 'input':
+            case 'number':
                 $recordTitle = $rawValue ?? '';
                 break;
             case 'text':

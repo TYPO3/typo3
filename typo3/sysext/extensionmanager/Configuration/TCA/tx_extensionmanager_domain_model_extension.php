@@ -57,19 +57,17 @@ return [
         'state' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.state',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 30,
                 'range' => ['lower' => 0, 'upper' => 1000],
-                'eval' => 'int',
             ],
         ],
         'category' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.category',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 30,
                 'range' => ['lower' => 0, 'upper' => 1000],
-                'eval' => 'int',
             ],
         ],
         'last_updated' => [

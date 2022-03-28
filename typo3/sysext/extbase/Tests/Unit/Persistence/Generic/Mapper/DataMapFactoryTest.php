@@ -473,6 +473,7 @@ class DataMapFactoryTest extends UnitTestCase
             [['type' => 'password'], TableColumnType::PASSWORD],
             [['type' => 'datetime'], TableColumnType::DATETIME],
             [['type' => 'color'], TableColumnType::COLOR],
+            [['type' => 'number'], TableColumnType::NUMBER],
         ];
     }
 

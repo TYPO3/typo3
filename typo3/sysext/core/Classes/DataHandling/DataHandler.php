@@ -1530,6 +1530,7 @@ class DataHandler implements LoggerAwareInterface
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
             'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id),
+            'number' => $this->checkValueForNumber($value, $tcaFieldConf),
             'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table),
             'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'slug' => $this->checkValueForSlug((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field, $additionalData['incomingFieldArray'] ?? []),
@@ -1684,24 +1685,59 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        // Skip range validation, if the default value equals 0 and the input value is 0, "0" or an empty string.
-        // This is needed for timestamp date fields with ['range']['lower'] set.
-        $skipRangeValidation =
-            isset($tcaFieldConf['default'], $res['value'])
-            && (int)$tcaFieldConf['default'] === 0
-            && ($res['value'] === '' || $res['value'] === '0' || $res['value'] === 0);
+        return $res;
+    }
+
+    /**
+     * Evaluate 'number' type values
+     *
+     * @param mixed $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @return array
+     */
+    protected function checkValueForNumber(mixed $value, array $tcaFieldConf): array
+    {
+        $format = $tcaFieldConf['format'] ?? 'integer';
+        if ($format !== 'integer' && $format !== 'decimal') {
+            // Early return if format is not valid
+            return [];
+        }
+
+        if (!$this->validateValueForRequired($tcaFieldConf, (string)$value)) {
+            return [];
+        }
+
+        if ($format === 'decimal') {
+            // @todo Make precision configurable
+            $precision = 2;
+            $value = preg_replace('/[^0-9,\\.-]/', '', $value);
+            $negative = substr($value, 0, 1) === '-';
+            $value = strtr($value, [',' => '.', '-' => '']);
+            if (!str_contains($value, '.')) {
+                $value .= '.0';
+            }
+            $valueArray = explode('.', $value);
+            $dec = array_pop($valueArray);
+            $value = implode('', $valueArray) . '.' . $dec;
+            if ($negative) {
+                $value *= -1;
+            }
+            $result['value'] = number_format((float)$value, $precision, '.', '');
+        } else {
+            $result['value'] = (int)$value;
+        }
 
         // Checking range of value:
-        if (!$skipRangeValidation && isset($tcaFieldConf['range']) && is_array($tcaFieldConf['range'])) {
-            if (isset($tcaFieldConf['range']['upper']) && ceil($res['value']) > (int)$tcaFieldConf['range']['upper']) {
-                $res['value'] = (int)$tcaFieldConf['range']['upper'];
+        if (is_array($tcaFieldConf['range'] ?? false)) {
+            if (isset($tcaFieldConf['range']['upper']) && ceil($result['value']) > (int)$tcaFieldConf['range']['upper']) {
+                $result['value'] = (int)$tcaFieldConf['range']['upper'];
             }
-            if (isset($tcaFieldConf['range']['lower']) && floor($res['value']) < (int)$tcaFieldConf['range']['lower']) {
-                $res['value'] = (int)$tcaFieldConf['range']['lower'];
+            if (isset($tcaFieldConf['range']['lower']) && floor($result['value']) < (int)$tcaFieldConf['range']['lower']) {
+                $result['value'] = (int)$tcaFieldConf['range']['lower'];
             }
         }
 
-        return $res;
+        return $result;
     }
 
     /**
@@ -2810,21 +2846,6 @@ class DataHandler implements LoggerAwareInterface
                 case 'int':
                 case 'year':
                     $value = (int)$value;
-                    break;
-                case 'double2':
-                    $value = preg_replace('/[^0-9,\\.-]/', '', $value);
-                    $negative = substr($value, 0, 1) === '-';
-                    $value = strtr($value, [',' => '.', '-' => '']);
-                    if (!str_contains($value, '.')) {
-                        $value .= '.0';
-                    }
-                    $valueArray = explode('.', $value);
-                    $dec = array_pop($valueArray);
-                    $value = implode('', $valueArray) . '.' . $dec;
-                    if ($negative) {
-                        $value *= -1;
-                    }
-                    $value = number_format((float)$value, 2, '.', '');
                     break;
                 case 'md5':
                     if (strlen($value) !== 32) {

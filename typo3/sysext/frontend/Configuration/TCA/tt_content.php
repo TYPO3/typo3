@@ -695,9 +695,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagewidth',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
                 'range' => [
                     'lower' => 0,
                 ],
@@ -708,9 +707,8 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageheight',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'size' => 4,
-                'eval' => 'int',
                 'range' => [
                     'lower' => 0,
                 ],

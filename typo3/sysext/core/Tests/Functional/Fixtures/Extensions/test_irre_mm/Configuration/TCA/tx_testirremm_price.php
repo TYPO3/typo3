@@ -72,9 +72,9 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:test_irre_mm/Resources/Private/Language/locallang_db.xlf:tx_testirremm_price.price',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
+                'format' => 'decimal',
                 'size' => 30,
-                'eval' => 'double2',
             ],
         ],
         'offers' => [

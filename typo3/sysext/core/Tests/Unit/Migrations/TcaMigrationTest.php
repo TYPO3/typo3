@@ -2654,4 +2654,175 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    private function typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider(): iterable
+    {
+        yield 'Full example of eval=double2 migrated to type=number' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'size' => 10,
+                                'max' => 20,
+                                'required' => true,
+                                'default' => 40,
+                                'eval' => 'trim,double2,null',
+                                'range' => [
+                                    'lower' => 0,
+                                ],
+                                'slider' => [
+                                    'step' => 10,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'size' => 10,
+                                'required' => true,
+                                'default' => 40,
+                                'eval' => 'null',
+                                'range' => [
+                                    'lower' => 0,
+                                ],
+                                'slider' => [
+                                    'step' => 10,
+                                ],
+                                'format' => 'decimal',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'type input with eval int migrated to type number and eval removed' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,int',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'type input with eval double2 migrated to type="number" and format="decimal"' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,double2,uniqueInPid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'number',
+                                'format' => 'decimal',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'type input without eval int or double2 not migrated' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,uniqueInPid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'trim,uniqueInPid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'type input with a renderType defined not migrated to type number' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'someRenderType',
+                                'eval' => 'int,date',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'someRenderType',
+                                'eval' => 'int,date',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider
+     * @test
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $expected
+     */
+    public function typeTextWithEvalIntOrDouble2MigratedToTypeNumber(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

@@ -77,6 +77,7 @@ class TcaMigration
         $tca = $this->removeSelectAuthModeIndividualItemsKeyword($tca);
         $tca = $this->migrateAuthMode($tca);
         $tca = $this->migrateRenderTypeColorpickerToTypeColor($tca);
+        $tca = $this->migrateEvalIntAndDouble2ToTypeNumber($tca);
 
         return $tca;
     }
@@ -1027,6 +1028,67 @@ class TcaMigration
                         . ' backend group access rights, these should be reviewed and new access right for this field should'
                         . ' be set. An upgrade wizard partially migrates this and reports be_groups rows that need manual attention.';
                 }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][eval] = 'int' and [config][eval] = 'double2' to [config][type] = 'number'.
+     * The migration only applies to fields without a renderType defined.
+     * Adds [config][format] = "decimal" if [config][eval] = double2
+     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][max], if set.
+     */
+    protected function migrateEvalIntAndDouble2ToTypeNumber(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                // Return early, if not TCA type "input" or a renderType is set
+                // or neither eval=int nor eval=double2 are set.
+                if (
+                    ($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || ($fieldConfig['config']['renderType'] ?? '') !== ''
+                    || (
+                        !GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'int')
+                        && !GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'double2')
+                    )
+                ) {
+                    continue;
+                }
+
+                // Set the TCA type to "number"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'number';
+
+                // Unset "max"
+                unset($tca[$table]['columns'][$fieldName]['config']['max']);
+
+                $numberType = '';
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+
+                // Convert eval "double2" to format = "decimal" and store the "number type" for the deprecation log
+                if (in_array('double2', $evalList, true)) {
+                    $numberType = 'double2';
+                    $tca[$table]['columns'][$fieldName]['config']['format'] = 'decimal';
+                } elseif (in_array('int', $evalList, true)) {
+                    $numberType = 'int';
+                }
+
+                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
+                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
+                } else {
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' in table \'' . $table . '\'" defines '
+                    . 'eval="' . $numberType . '". The field has therefore been migrated to the TCA type \'number\'. '
+                    . 'This includes corresponding migration of the "eval" list, as well as obsolete field '
+                    . 'configurations, such as "max". Please adjust your TCA accordingly.';
             }
         }
         return $tca;

@@ -90,9 +90,9 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:test_irre_foreignfield/Resources/Private/Language/locallang_db.xlf:tx_testirreforeignfield_price.price',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
+                'format' => 'decimal',
                 'size' => 30,
-                'eval' => 'double2',
             ],
         ],
     ],

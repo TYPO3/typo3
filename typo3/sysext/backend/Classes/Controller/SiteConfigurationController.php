@@ -253,6 +253,7 @@ class SiteConfigurationController
                 $type = $siteTca['site']['columns'][$fieldName]['config']['type'];
                 switch ($type) {
                     case 'input':
+                    case 'number':
                     case 'email':
                     case 'link':
                     case 'datetime':
@@ -288,6 +289,7 @@ class SiteConfigurationController
                                 $type = $siteTca[$foreignTable]['columns'][$childFieldName]['config']['type'];
                                 switch ($type) {
                                     case 'input':
+                                    case 'number':
                                     case 'email':
                                     case 'link':
                                     case 'datetime':
@@ -348,6 +350,7 @@ class SiteConfigurationController
                                 $type = $siteTca['site_language']['columns'][$childFieldName]['config']['type'];
                                 switch ($type) {
                                     case 'input':
+                                    case 'number':
                                     case 'email':
                                     case 'link':
                                     case 'datetime':
