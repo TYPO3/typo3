@@ -23,7 +23,6 @@ return [
 
     'columns' => [
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -32,7 +31,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -53,7 +51,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -78,7 +75,6 @@ return [
 
         // Tab FIELD REQ start
         'select_1' => [
-            'exclude' => 1,
             'label' => 'select_1',
             'description' => 'Displays input_1 (true values) or input_2 (false values)',
             'onChange' => 'reload',
@@ -103,7 +99,6 @@ return [
             ],
         ],
         'input_1' => [
-            'exclude' => 1,
             'label' => 'input_1',
             'description' => 'displayCond=FIELD:select_1:REQ:true',
             'displayCond' => 'FIELD:select_1:REQ:true',
@@ -112,7 +107,6 @@ return [
             ],
         ],
         'input_2' => [
-            'exclude' => 1,
             'label' => 'input_2',
             'description' => 'displayCond=FIELD:select_1:REQ:false',
             'displayCond' => 'FIELD:select_1:REQ:false',
@@ -124,7 +118,6 @@ return [
 
         // Tab FIELD compare start
         'input_3' => [
-            'exclude' => 1,
             'label' => 'input_3',
             'description' => 'Try values between 0 and 6',
             // @todo onChange does not work for input fields. See: https://forge.typo3.org/issues/93613
@@ -135,7 +128,6 @@ return [
             ],
         ],
         'input_4' => [
-            'exclude' => 1,
             'label' => 'input_4',
             'description' => 'displayCond=FIELD:input_3:=:0',
             'displayCond' => 'FIELD:input_3:=:0',
@@ -144,7 +136,6 @@ return [
             ],
         ],
         'input_5' => [
-            'exclude' => 1,
             'label' => 'input_5',
             'description' => 'displayCond=FIELD:input_3:<:5',
             'displayCond' => 'FIELD:input_3:<:5',
@@ -153,7 +144,6 @@ return [
             ],
         ],
         'input_6' => [
-            'exclude' => 1,
             'label' => 'input_6',
             'description' => 'displayCond=FIELD:input_3:>=:5',
             'displayCond' => 'FIELD:input_3:>=:5',
@@ -162,7 +152,6 @@ return [
             ],
         ],
         'input_7' => [
-            'exclude' => 1,
             'label' => 'input_7',
             'description' => 'displayCond=FIELD:input_3:-:2-4',
             'displayCond' => 'FIELD:input_3:-:2-4',
@@ -171,7 +160,6 @@ return [
             ],
         ],
         'input_8' => [
-            'exclude' => 1,
             'label' => 'input_8',
             'description' => 'displayCond=FIELD:input_3:IN:1,3,5',
             'displayCond' => 'FIELD:input_3:IN:1,3,5',
@@ -180,7 +168,6 @@ return [
             ],
         ],
         'input_9' => [
-            'exclude' => 1,
             'label' => 'input_9',
             'description' => 'displayCond=FIELD:input_3:!IN:1,3,5',
             'displayCond' => 'FIELD:input_3:!IN:1,3,5',
@@ -192,7 +179,6 @@ return [
 
         // Tab FIELD AND OR start
         'select_2' => [
-            'exclude' => 1,
             'label' => 'select_2',
             'description' => 'To display input_19 choose foo1, for foo1 or foo42',
             'onChange' => 'reload',
@@ -210,7 +196,6 @@ return [
             ],
         ],
         'checkbox_1' => [
-            'exclude' => 1,
             'label' => 'checkbox_1',
             'onChange' => 'reload',
             'description' => 'To display input_19 choose one checkbox, for input_20 neither',
@@ -223,7 +208,6 @@ return [
             ],
         ],
         'input_19' => [
-            'exclude' => 1,
             'label' => 'input_19:',
             'description' => 'displayCond=FIELD:select_2:=:1 AND checkbox_1:BIT:1',
             'displayCond' => [
@@ -237,7 +221,6 @@ return [
             ],
         ],
         'input_20' => [
-            'exclude' => 1,
             'label' => 'input_20',
             'description' => 'FIELD:checkbox_1:=:0 AND (FIELD:select_2:=:1 OR FIELD:select_2:>:3)',
             'displayCond' => [
@@ -257,7 +240,6 @@ return [
 
         // Tab REC:NEW start
         'input_10' => [
-            'exclude' => 1,
             'label' => 'input_10',
             'description' => 'displayCond=REC:NEW:true',
             'displayCond' => 'REC:NEW:true',
@@ -266,7 +248,6 @@ return [
             ],
         ],
         'input_11' => [
-            'exclude' => 1,
             'label' => 'input_11',
             'description' => 'displayCond=REC:NEW:false',
             'displayCond' => 'REC:NEW:false',
@@ -278,7 +259,6 @@ return [
 
         // Tab HIDE_FOR_NON_ADMINS start
         'input_13' => [
-            'exclude' => 1,
             'label' => 'input_13',
             'description' => 'displayCond=HIDE_FOR_NON_ADMINS',
             'displayCond' => 'HIDE_FOR_NON_ADMINS',
@@ -290,7 +270,6 @@ return [
 
         // Tab USER start
         'input_14' => [
-            'exclude' => 1,
             'label' => 'input_14',
             'description' => 'Smaller value',
             'config' => [
@@ -299,7 +278,6 @@ return [
             ],
         ],
         'input_15' => [
-            'exclude' => 1,
             'label' => 'input_15',
             'description' => 'Larger value',
             'config' => [
@@ -308,7 +286,6 @@ return [
             ],
         ],
         'input_16' => [
-            'exclude' => 1,
             'label' => 'input_16',
             'description' => 'displayCond=USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:input_14:input_15',
             'displayCond' => 'USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:input_14:input_15',
@@ -320,7 +297,6 @@ return [
 
         // Tab VERSION:IS start
         'input_17' => [
-            'exclude' => 1,
             'label' => 'input_17',
             'description' => 'displayCond=VERSION:IS:true',
             'displayCond' => 'VERSION:IS:true',
@@ -329,7 +305,6 @@ return [
             ],
         ],
         'input_18' => [
-            'exclude' => 1,
             'label' => 'input_18',
             'description' => 'displayCond=VERSION:IS:false',
             'displayCond' => 'VERSION:IS:false',
@@ -341,7 +316,6 @@ return [
 
         // Tab Flexforms start
         'select_3' => [
-            'exclude' => 1,
             'label' => 'select_3',
             'description' => 'Show or hide a field in a flexform',
             'onChange' => 'reload',
@@ -358,7 +332,6 @@ return [
             ],
         ],
         'flex_1' => [
-            'exclude' => 1,
             'label' => 'flex_1',
             'description' => 'Diplay conditions within a Flexform',
             'config' => [
@@ -428,7 +401,6 @@ return [
             ],
         ],
         'flex_2' => [
-            'exclude' => 1,
             'label' => 'flex_2',
             'description' => 'Diplay conditions within a Flexform',
             'config' => [
@@ -554,7 +526,6 @@ return [
         ],
 
         'select_4' => [
-            'exclude' => 1,
             'label' => 'select_4',
             'onChange' => 'reload',
             'config' => [
@@ -574,7 +545,6 @@ return [
             ],
         ],
         'flex_3' => [
-            'exclude' => 1,
             'label' => 'flex3',
             'config' => [
                 'type' => 'flex',

@@ -21,7 +21,6 @@ return [
 
     'columns' => [
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -42,7 +41,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -84,7 +82,6 @@ return [
         ],
 
         'input_1' => [
-            'exclude' => 1,
             'label' => 'input 1',
             'config' => [
                 'type' => 'input',
@@ -168,7 +165,6 @@ return [
         ],
 
         'rte_1' => [
-            'exclude' => 1,
             'label' => 'rte_1',
             'config' => [
                 'type' => 'text',
@@ -177,7 +173,6 @@ return [
         ],
 
         'select_tree_1' => [
-            'exclude' => 1,
             'label' => 'select_tree_1',
             'config' => [
                 'type' => 'select',
@@ -195,7 +190,6 @@ return [
         ],
 
         't3editor_1' => [
-            'exclude' => 1,
             'label' => 't3editor_1',
             'config' => [
                 'type' => 'text',

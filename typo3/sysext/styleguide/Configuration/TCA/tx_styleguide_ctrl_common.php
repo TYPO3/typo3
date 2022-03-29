@@ -33,7 +33,6 @@ return [
    'columns' => [
 
        'sys_language_uid' => [
-           'exclude' => true,
            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
            'config' => [
                'type' => 'language',
@@ -60,7 +59,6 @@ return [
            ],
        ],
        'hidden' => [
-           'exclude' => true,
            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',
            'config' => [
                'type' => 'check',
@@ -74,7 +72,6 @@ return [
            ],
        ],
        'starttime' => [
-           'exclude' => true,
            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
            'config' => [
                'type' => 'input',
@@ -87,7 +84,6 @@ return [
            ],
        ],
        'endtime' => [
-           'exclude' => true,
            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
            'config' => [
                'type' => 'input',

@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -57,7 +55,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -82,7 +79,6 @@ return [
         ],
 
         'group_db_1' => [
-            'exclude' => 1,
             'label' => 'group_db_1 allowed=be_users,be_groups description',
             'description' => 'field description',
             'config' => [
@@ -102,7 +98,6 @@ return [
             ],
         ],
         'group_db_2' => [
-            'exclude' => 1,
             'label' => 'group_db_2 allowed=be_users,be_groups, recordsOverview disabled',
             'config' => [
                 'type' => 'group',
@@ -115,7 +110,6 @@ return [
             ],
         ],
         'group_db_9' => [
-            'exclude' => 1,
             'label' => 'group_db_9 allowed=be_users,be_groups, disable tableList',
             'config' => [
                 'type' => 'group',
@@ -128,7 +122,6 @@ return [
             ],
         ],
         'group_db_3' => [
-            'exclude' => 1,
             'label' => 'group_db_3 allowed=tx_styleguide_staticdata, disabled elementBrowser',
             'config' => [
                 'type' => 'group',
@@ -141,7 +134,6 @@ return [
             ],
         ],
         'group_db_8' => [
-            'exclude' => 1,
             'label' => 'group_db_8 allowed=tx_styleguide_staticdata, multiple',
             'config' => [
                 'type' => 'group',
@@ -151,7 +143,6 @@ return [
             ],
         ],
         'group_db_11' => [
-            'exclude' => 1,
             'label' => 'group_db_11 hideSuggest=true allowed=tx_styleguide_staticdata, multiple, autoSizeMax=10',
             'config' => [
                 'type' => 'group',
@@ -162,7 +153,6 @@ return [
             ],
         ],
         'group_db_4' => [
-            'exclude' => 1,
             'label' => 'group_db_4 allowed=tx_styleguide_staticdata, size=1',
             'config' => [
                 'type' => 'group',
@@ -172,7 +162,6 @@ return [
             ],
         ],
         'group_db_5' => [
-            'exclude' => 1,
             'label' => 'group_db_5 readOnly=1 description',
             'description' => 'field description',
             'config' => [
@@ -182,7 +171,6 @@ return [
             ],
         ],
         'group_db_7' => [
-            'exclude' => 1,
             'label' => 'group_db_7 allowed=be_users, prepend_tname=false',
             'config' => [
                 'type' => 'group',
@@ -190,7 +178,6 @@ return [
             ],
         ],
         'group_db_10' => [
-            'exclude' => 1,
             'label' => 'group_db_10 allowed=pages size=1',
             'config' => [
                 'type' => 'group',
@@ -208,7 +195,6 @@ return [
         ],
 
         'group_requestUpdate_1' => [
-            'exclude' => 1,
             'label' => 'group_requestUpdate_1',
             'onChange' => 'reload',
             'config' => [
@@ -218,7 +204,6 @@ return [
         ],
 
         'flex_1' => [
-            'exclude' => 1,
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',

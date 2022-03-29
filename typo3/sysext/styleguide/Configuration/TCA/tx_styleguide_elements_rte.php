@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -57,7 +55,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -82,7 +79,6 @@ return [
         ],
 
         'rte_1' => [
-            'exclude' => 1,
             'label' => 'rte_1 description',
             'description' => 'field description',
             'config' => [
@@ -91,7 +87,6 @@ return [
             ],
         ],
         'rte_2' => [
-            'exclude' => 1,
             'label' => 'rte_2 default value',
             'config' => [
                 'type' => 'text',
@@ -100,7 +95,6 @@ return [
             ],
         ],
         'rte_3' => [
-            'exclude' => 1,
             'label' => 'rte_3 eval=null',
             'config' => [
                 'type' => 'text',
@@ -109,7 +103,6 @@ return [
             ],
         ],
         'rte_4' => [
-            'exclude' => 1,
             'label' => 'rte_4 richtextConfiguration=minimal',
             'config' => [
                 'type' => 'text',
@@ -118,7 +111,6 @@ return [
             ],
         ],
         'rte_5' => [
-            'exclude' => 1,
             'label' => 'rte_5 richtextConfiguration=full',
             'config' => [
                 'type' => 'text',
@@ -128,7 +120,6 @@ return [
         ],
 
         'rte_inline_1' => [
-            'exclude' => 1,
             'label' => 'rte_inline_1',
             'config' => [
                 'type' => 'inline',
@@ -139,7 +130,6 @@ return [
         ],
 
         'rte_flex_1' => [
-            'exclude' => 1,
             'label' => 'rte_flex_1',
             'config' => [
                 'type' => 'flex',
@@ -236,7 +226,6 @@ return [
         ],
 
         'input_palette_1' => [
-            'exclude' => 1,
             'label' => 'input_palette_1',
             'config' => [
                 'type' => 'input',
@@ -244,7 +233,6 @@ return [
         ],
 
         'rte_palette_1' => [
-            'exclude' => 1,
             'label' => 'rte_palette_1',
             'config' => [
                 'type' => 'text',

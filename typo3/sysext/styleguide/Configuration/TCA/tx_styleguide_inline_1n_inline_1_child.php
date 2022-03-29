@@ -34,7 +34,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -58,7 +57,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -95,7 +93,6 @@ return [
             ],
         ],
         'input_2' => [
-            'exclude' => 1,
             'label' => 'input_2 renderType=colorpicker, valuePicker',
             'config' => [
                 'type' => 'input',
@@ -111,7 +108,6 @@ return [
             ],
         ],
         'input_3' => [
-            'exclude' => 1,
             'label' => 'input_3',
             'description' => 'placeholder=__row|input_1 mode=useOrOverridePlaceholder eval=null default=null',
             'config' => [
@@ -123,7 +119,6 @@ return [
             ],
         ],
         'group_db_1' => [
-            'exclude' => 1,
             'label' => 'group_db_1 allowed=tx_styleguide_staticdata',
             'config' => [
                 'type' => 'group',
@@ -131,7 +126,6 @@ return [
             ],
         ],
         'select_tree_1' => [
-            'exclude' => 1,
             'label' => 'select_tree_1 pages',
             'config' => [
                 'type' => 'select',

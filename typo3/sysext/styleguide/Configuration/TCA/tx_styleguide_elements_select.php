@@ -23,7 +23,6 @@ return [
 
     'columns' => [
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -32,7 +31,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -56,7 +54,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -81,7 +78,6 @@ return [
         ],
 
         'select_single_1' => [
-            'exclude' => 1,
             'label' => 'select_single_1 two items, long text description',
             'description' => 'field description',
             'config' => [
@@ -99,7 +95,6 @@ return [
             ],
         ],
         'select_single_2' => [
-            'exclude' => 1,
             'label' => 'select_single_2 itemsProcFunc',
             'config' => [
                 'type' => 'select',
@@ -112,7 +107,6 @@ return [
             ],
         ],
         'select_single_3' => [
-            'exclude' => 1,
             'label' => 'select_single_3 static values, dividers, foreign_table_where',
             'config' => [
                 'type' => 'select',
@@ -129,7 +123,6 @@ return [
             ],
         ],
         'select_single_4' => [
-            'exclude' => 1,
             'label' => 'select_single_4 items with icons',
             'config' => [
                 'type' => 'select',
@@ -141,7 +134,6 @@ return [
             ],
         ],
         'select_single_5' => [
-            'exclude' => 1,
             'label' => 'select_single_5 selectIcons, items with icons',
             'config' => [
                 'type' => 'select',
@@ -158,7 +150,6 @@ return [
             ],
         ],
         'select_single_7' => [
-            'exclude' => 1,
             'label' => 'select_single_7 fileFolder, dummy first entry, selectIcons',
             'config' => [
                 'type' => 'select',
@@ -179,7 +170,6 @@ return [
             ],
         ],
         'select_single_8' => [
-            'exclude' => 1,
             'label' => 'select_single_8 drop down with empty div',
             'config' => [
                 'type' => 'select',
@@ -196,7 +186,6 @@ return [
         ],
         // @todo: selectSingle with size > 1 overlaps with selectSingleBox, except that only one item can be selected
         'select_single_10' => [
-            'exclude' => 1,
             'label' => 'select_single_10 size=6, three options',
             'config' => [
                 'type' => 'select',
@@ -211,7 +200,6 @@ return [
             ],
         ],
         'select_single_11' => [
-            'exclude' => 1,
             'label' => 'select_single_11 size=2, two options',
             'config' => [
                 'type' => 'select',
@@ -224,7 +212,6 @@ return [
             ],
         ],
         'select_single_12' => [
-            'exclude' => 1,
             'label' => 'select_single_12 foreign_table selicon_field',
             'config' => [
                 'type' => 'select',
@@ -238,7 +225,6 @@ return [
             ],
         ],
         'select_single_13' => [
-            'exclude' => 1,
             'label' => 'select_single_13 l10n_display=defaultAsReadonly',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
@@ -252,7 +238,6 @@ return [
             ],
         ],
         'select_single_14' => [
-            'exclude' => 1,
             'label' => 'select_single_14 two items readOnly description',
             'description' => 'field description',
             'config' => [
@@ -265,7 +250,6 @@ return [
             ],
         ],
         'select_single_15' => [
-            'exclude' => 1,
             'label' => 'select_single_15 foreign_table',
             'config' => [
                 'type' => 'select',
@@ -275,7 +259,6 @@ return [
             ],
         ],
         'select_single_16' => [
-            'exclude' => 1,
             'label' => 'select_single_16',
             'description' => 'itemGroups',
             'config' => [
@@ -295,7 +278,6 @@ return [
             ],
         ],
         'select_single_17' => [
-            'exclude' => 1,
             'label' => 'select_single_16',
             'description' => 'itemGroups, size=6',
             'config' => [
@@ -316,7 +298,6 @@ return [
             ],
         ],
         'select_single_18' => [
-            'exclude' => 1,
             'label' => 'select_single_18',
             'description' => 'sortItems label asc',
             'config' => [
@@ -335,7 +316,6 @@ return [
             ],
         ],
         'select_single_19' => [
-            'exclude' => 1,
             'label' => 'select_single_19',
             'description' => 'sortItems value desc',
             'config' => [
@@ -354,7 +334,6 @@ return [
             ],
         ],
         'select_single_20' => [
-            'exclude' => 1,
             'label' => 'select_single_20',
             'description' => 'sortItems custom',
             'config' => [
@@ -373,7 +352,6 @@ return [
             ],
         ],
         'select_singlebox_1' => [
-            'exclude' => 1,
             'label' => 'select_singlebox_1 description',
             'description' => 'field description',
             'config' => [
@@ -389,7 +367,6 @@ return [
             ],
         ],
         'select_singlebox_2' => [
-            'exclude' => 1,
             'label' => 'select_singlebox_2 readOnly description',
             'description' => 'field description',
             'config' => [
@@ -406,7 +383,6 @@ return [
             ],
         ],
         'select_singlebox_3' => [
-            'exclude' => 1,
             'label' => 'select_singlebox_3',
             'description' => 'itemGroups',
             'config' => [
@@ -427,7 +403,6 @@ return [
         ],
 
         'select_checkbox_1' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_1 description',
             'description' => 'field description',
             'config' => [
@@ -441,7 +416,6 @@ return [
             ],
         ],
         'select_checkbox_2' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_2, maxitems=1',
             'config' => [
                 'type' => 'select',
@@ -455,7 +429,6 @@ return [
             ],
         ],
         'select_checkbox_3' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_3 icons, description',
             'config' => [
                 'type' => 'select',
@@ -469,7 +442,6 @@ return [
             ],
         ],
         'select_checkbox_4' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_4 readOnly description',
             'description' => 'field description',
             'config' => [
@@ -483,7 +455,6 @@ return [
             ],
         ],
         'select_checkbox_5' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_5 dividers, expandAll',
             'config' => [
                 'type' => 'select',
@@ -503,7 +474,6 @@ return [
             ],
         ],
         'select_checkbox_6' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_5 dividers',
             'config' => [
                 'type' => 'select',
@@ -520,7 +490,6 @@ return [
             ],
         ],
         'select_checkbox_7' => [
-            'exclude' => 1,
             'label' => 'select_checkbox_7',
             'description' => 'itemGroups',
             'config' => [
@@ -542,7 +511,6 @@ return [
         ],
 
         'select_multiplesidebyside_1' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_1 autoSizeMax=10, size=3 description',
             'description' => 'field description',
             'config' => [
@@ -563,7 +531,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_2' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_2 exclusiveKeys=1,2',
             'config' => [
                 'type' => 'select',
@@ -583,7 +550,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_3' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_3 itemListStyle, selectedListStyle',
             'config' => [
                 'type' => 'select',
@@ -599,7 +565,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_5' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_5 multiSelectFilterItems',
             'config' => [
                 'type' => 'select',
@@ -618,7 +583,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_6' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_6 fieldControl',
             'config' => [
                 'type' => 'select',
@@ -643,7 +607,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_7' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_7 readonly description',
             'description' => 'field description',
             'config' => [
@@ -665,7 +628,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_8' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_8 foreign_table mm',
             'config' => [
                 'type' => 'select',
@@ -677,7 +639,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_9' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_9 maxitems=1',
             'config' => [
                 'type' => 'select',
@@ -692,7 +653,6 @@ return [
             ],
         ],
         'select_multiplesidebyside_10' => [
-            'exclude' => 1,
             'label' => 'select_multiplesidebyside_1 autoSizeMax=10, size=3 description',
             'description' => 'field description',
             'config' => [
@@ -715,7 +675,6 @@ return [
             ],
         ],
         'select_tree_1' => [
-            'exclude' => 1,
             'label' => 'select_tree_1 pages, showHeader=true, expandAll=true, size=20, order by sorting, static items, description',
             'description' => 'field description',
             'config' => [
@@ -741,7 +700,6 @@ return [
             ],
         ],
         'select_tree_2' => [
-            'exclude' => 1,
             'label' => 'select_tree_2 pages, showHeader=false, nonSelectableLevels=0,1, maxitems=4, size=10',
             'config' => [
                 'type' => 'select',
@@ -760,7 +718,6 @@ return [
             ],
         ],
         'select_tree_3' => [
-            'exclude' => 1,
             'label' => 'select_tree_3 pages, maxLevels=1, minitems=1, maxitems=2',
             'config' => [
                 'type' => 'select',
@@ -780,7 +737,6 @@ return [
             ],
         ],
         'select_tree_4' => [
-            'exclude' => 1,
             'label' => 'select_tree_4 pages, maxLevels=2, requestUpdate, expandAll=false',
             'onChange' => 'reload',
             'config' => [
@@ -800,7 +756,6 @@ return [
             ],
         ],
         'select_tree_5' => [
-            'exclude' => 1,
             'label' => 'select_tree_5 pages, readOnly, showHeader=true description',
             'description' => 'field description',
             'config' => [
@@ -820,7 +775,6 @@ return [
             ],
         ],
         'select_tree_6' => [
-            'exclude' => 1,
             'label' => 'select_tree_6 categories',
             'config' => [
                 'type' => 'select',
@@ -839,7 +793,6 @@ return [
         ],
 
         'select_requestUpdate_1' => [
-            'exclude' => 1,
             'label' => 'select_requestUpdate_1',
             'onChange' => 'reload',
             'config' => [
@@ -857,7 +810,6 @@ return [
         ],
 
         'flex_1' => [
-            'exclude' => 1,
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',

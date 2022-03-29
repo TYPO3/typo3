@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -57,7 +55,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -82,7 +79,6 @@ return [
         ],
 
         'flex_file_1' => [
-            'exclude' => 1,
             'label' => 'flex_file_1 simple flexform in external file',
             'description' => 'field description',
             'config' => [
@@ -94,7 +90,6 @@ return [
         ],
 
         'flex_5' => [
-            'exclude' => 1,
             'label' => 'flex_5 no sheets description',
             'description' => 'field description',
             'config' => [
@@ -189,7 +184,6 @@ return [
         ],
 
         'flex_1' => [
-            'exclude' => 1,
             'label' => 'flex_1 sheet description',
             'description' => 'field description',
             'config' => [
@@ -267,7 +261,6 @@ return [
         ],
 
         'flex_2' => [
-            'exclude' => 1,
             'label' => 'flex_2 section container',
             'config' => [
                 'type' => 'flex',
@@ -340,7 +333,6 @@ return [
         ],
 
         'flex_3' => [
-            'exclude' => 1,
             'label' => 'flex_3 inline',
             'config' => [
                 'type' => 'flex',

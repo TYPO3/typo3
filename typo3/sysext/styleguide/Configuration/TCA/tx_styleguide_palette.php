@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -54,7 +52,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -78,7 +75,6 @@ return [
         ],
 
         'palette_1_1' => [
-            'exclude' => 1,
             'label' => 'palette_1_1',
             'description' => 'field description',
             'config' => [
@@ -87,7 +83,6 @@ return [
             ],
         ],
         'palette_1_3' => [
-            'exclude' => 1,
             'label' => 'palette_1_3',
             'config' => [
                 'type' => 'check',
@@ -95,77 +90,66 @@ return [
             ],
         ],
         'palette_2_1' => [
-            'exclude' => 1,
             'label' => 'palette_2_1',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_3_1' => [
-            'exclude' => 1,
             'label' => 'palette_3_1',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_3_2' => [
-            'exclude' => 1,
             'label' => 'palette_3_2',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_4_1' => [
-            'exclude' => 1,
             'label' => 'palette_4_1',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_4_2' => [
-            'exclude' => 1,
             'label' => 'palette_4_2 This is a really long label text. AndOneWordIsReallyEvenMuchLongerWhoWritesThoseLongWordsAnyways?',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_4_3' => [
-            'exclude' => 1,
             'label' => 'palette_4_3',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_4_4' => [
-            'exclude' => 1,
             'label' => 'palette_4_4',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_5_1' => [
-            'exclude' => 1,
             'label' => 'palette_5_1',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_5_2' => [
-            'exclude' => 1,
             'label' => 'palette_5_2',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_6_1' => [
-            'exclude' => 1,
             'label' => 'palette_6_1',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'palette_7_1' => [
-            'exclude' => 1,
             'label' => 'palette_7_1',
             'config' => [
                 'type' => 'input',

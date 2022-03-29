@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -57,7 +55,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -83,7 +80,6 @@ return [
 
         'input_1' => [
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
             'label' => 'input_1',
             'description' => 'field description',
             'config' => [
@@ -93,7 +89,6 @@ return [
 
         'input_2' => [
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
             'label' => 'input_2',
             'description' => 'field description',
             'config' => [
@@ -102,7 +97,6 @@ return [
         ],
 
         'slug_1' => [
-            'exclude' => 1,
             'label' => 'slug_1',
             'description' => 'field description',
             'config' => [
@@ -124,7 +118,6 @@ return [
             ],
         ],
         'slug_2' => [
-            'exclude' => 1,
             'label' => 'slug_2',
             'config' => [
                 'type' => 'slug',
@@ -140,7 +133,6 @@ return [
             ],
         ],
         'slug_4' => [
-            'exclude' => 1,
             'label' => 'slug_4',
             'config' => [
                 'type' => 'slug',
@@ -154,7 +146,6 @@ return [
             ],
         ],
         'slug_5' => [
-            'exclude' => 1,
             'label' => 'slug_5',
             'config' => [
                 'type' => 'slug',
@@ -170,7 +161,6 @@ return [
 
         'input_3' => [
             'l10n_mode' => 'prefixLangTitle',
-            'exclude' => 1,
             'label' => 'input_2',
             'description' => 'field description',
             'config' => [
@@ -179,7 +169,6 @@ return [
             ],
         ],
         'slug_3' => [
-            'exclude' => 1,
             'label' => 'slug_3',
             'description' => 'remove string (f/m)',
             'config' => [

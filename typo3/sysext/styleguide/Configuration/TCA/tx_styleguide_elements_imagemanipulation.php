@@ -24,7 +24,6 @@ return [
     'columns' => [
 
         'hidden' => [
-            'exclude' => 1,
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -33,7 +32,6 @@ return [
             ],
         ],
         'sys_language_uid' => [
-            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'language',
@@ -57,7 +55,6 @@ return [
             ],
         ],
         'l10n_source' => [
-            'exclude' => true,
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'Translation source',
             'config' => [
@@ -81,7 +78,6 @@ return [
             ],
         ],
         'group_db_1' => [
-            'exclude' => 1,
             'label' => 'group_db_1',
             'config' => [
                 'type' => 'group',
@@ -92,7 +88,6 @@ return [
             ],
         ],
         'group_db_2' => [
-            'exclude' => 1,
             'label' => 'group_db_2',
             'config' => [
                 'type' => 'group',
@@ -103,7 +98,6 @@ return [
             ],
         ],
         'group_db_3' => [
-            'exclude' => 1,
             'label' => 'group_db_3',
             'config' => [
                 'type' => 'group',
@@ -114,7 +108,6 @@ return [
             ],
         ],
         'crop_1' => [
-            'exclude' => 1,
             'label' => 'crop_1',
             'description' => 'standard configuration',
             'config' => [
@@ -123,7 +116,6 @@ return [
             ],
         ],
         'crop_2' => [
-            'exclude' => 1,
             'label' => 'crop_2',
             'description' => 'limit to png',
             'config' => [
@@ -133,7 +125,6 @@ return [
             ],
         ],
         'crop_4' => [
-            'exclude' => 1,
             'label' => 'crop_4',
             'description' => 'limit to jpg',
             'config' => [
@@ -143,7 +134,6 @@ return [
             ],
         ],
         'crop_3' => [
-            'exclude' => 1,
             'label' => 'crop_3',
             'description' => 'one crop variant',
             'config' => [
@@ -186,7 +176,6 @@ return [
             ],
         ],
         'crop_5' => [
-            'exclude' => 1,
             'label' => 'crop_5',
             'description' => 'several cropVariants',
             'config' => [
@@ -218,7 +207,6 @@ return [
             ],
         ],
         'crop_6' => [
-            'exclude' => 1,
             'label' => 'crop_6',
             'description' => 'initial crop area',
             'config' => [
@@ -245,7 +233,6 @@ return [
             ],
         ],
         'crop_7' => [
-            'exclude' => 1,
             'label' => 'crop_7',
             'description' => 'with focus area',
             'config' => [
@@ -272,7 +259,6 @@ return [
             ],
         ],
         'crop_8' => [
-            'exclude' => 1,
             'label' => 'crop_8',
             'description' => 'crop variant with cover areas',
             'config' => [
