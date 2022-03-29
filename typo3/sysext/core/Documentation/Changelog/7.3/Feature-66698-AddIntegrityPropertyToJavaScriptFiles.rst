@@ -17,7 +17,7 @@ Add a property `integrity="some-hash"` to JavaScript files via TypoScript
 This patch affects the TypoScript PAGE properties
 
 * includeJSLibs
-* includeJSFooterLibs
+* includeJSFooterlibs
 * includeJS
 * includeJSFooter
 
