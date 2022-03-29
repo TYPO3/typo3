@@ -344,19 +344,6 @@ CREATE TABLE tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm (
 );
 
 
-CREATE TABLE tx_styleguide_elements_special (
-    special_custom_1 text,
-    special_exclude_1 text,
-    special_explicitvalues_1 text,
-    special_modlistgroup_1 text,
-    special_pagetypes_1 text,
-    special_tables_1 text,
-    special_tables_2 text,
-    special_tables_3 text,
-    special_usermods_1 text
-);
-
-
 CREATE TABLE tx_styleguide_elements_t3editor (
     t3editor_1 text,
     t3editor_2 text,
