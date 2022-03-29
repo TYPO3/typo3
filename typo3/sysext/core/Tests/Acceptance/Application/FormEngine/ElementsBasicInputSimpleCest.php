@@ -137,14 +137,6 @@ class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'comment' => '',
             ],
             [
-                'label' => 'input_16',
-                'inputValue' => 'Kasper',
-                'expectedValue' => '********',
-                'expectedInternalValue' => 'Kasper',
-                'expectedValueAfterSave' => 'Kasper',
-                'comment' => '',
-            ],
-            [
                 'label' => 'input_19',
                 'inputValue' => ' Kasper ',
                 'expectedValue' => 'Kasper',
