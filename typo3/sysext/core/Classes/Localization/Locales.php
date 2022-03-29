@@ -67,6 +67,7 @@ class Locales implements SingletonInterface
         'kl' => 'Greenlandic',
         'km' => 'Khmer',
         'ko' => 'Korean',
+        'lb' => 'Luxembourgish',
         'lt' => 'Lithuanian',
         'lv' => 'Latvian',
         'mi' => 'Maori',
@@ -130,6 +131,7 @@ class Locales implements SingletonInterface
     protected $localeDependencies = [
         'pt_BR' => ['pt'],
         'fr_CA' => ['fr'],
+        'lb'    => ['de'],
     ];
 
     public function __construct()

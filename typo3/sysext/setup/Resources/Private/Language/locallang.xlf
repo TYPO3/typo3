@@ -141,6 +141,9 @@
 			<trans-unit id="lang_kr" resname="lang_kr">
 				<source>Korean</source>
 			</trans-unit>
+			<trans-unit id="lang_lb" resname="lang_lb">
+				<source>Luxembourgish</source>
+			</trans-unit>
 			<trans-unit id="lang_lt" resname="lang_lt">
 				<source>Lithuanian</source>
 			</trans-unit>
