@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -23,7 +25,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Render an input field with a color picker
  */
-class InputColorPickerElement extends AbstractFormElement
+class ColorElement extends AbstractFormElement
 {
     /**
      * Default field information enabled for this element.
@@ -64,22 +66,18 @@ class InputColorPickerElement extends AbstractFormElement
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
-    public function render()
+    public function render(): array
     {
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
+        $config = $parameterArray['fieldConf']['config'];
 
         $itemValue = $parameterArray['itemFormElValue'];
-        $config = $parameterArray['fieldConf']['config'];
-        $size = MathUtility::forceIntegerInRange(($config['size'] ?? false) ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $evalList = GeneralUtility::trimExplode(',', $config['eval'] ?? '', true);
-        $width = $this->formMaxWidth($size);
-        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
+        $width = $this->formMaxWidth(
+            MathUtility::forceIntegerInRange(($config['size'] ?? false) ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
+        );
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
@@ -101,67 +99,53 @@ class InputColorPickerElement extends AbstractFormElement
             return $resultArray;
         }
 
-        // @todo: The whole eval handling is a mess and needs refactoring
-        foreach ($evalList as $func) {
-            // @todo: This is ugly: The code should find out on it's own whether an eval definition is a
-            // @todo: keyword like "date", or a class reference. The global registration could be dropped then
-            // Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
-                if (class_exists($func)) {
-                    $evalObj = GeneralUtility::makeInstance($func);
-                    if (method_exists($evalObj, 'deevaluateFieldValue')) {
-                        $_params = [
-                            'value' => $itemValue,
-                        ];
-                        $itemValue = $evalObj->deevaluateFieldValue($_params);
-                    }
-                    $resultArray = $this->resolveJavaScriptEvaluation($resultArray, $func, $evalObj);
-                }
-            }
-        }
+        $languageService = $this->getLanguageService();
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $itemName = $parameterArray['itemFormElName'];
 
-        // Load needed js library
-        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create(
-            '@typo3/backend/color-picker.js'
-        )->invoke('initialize');
+        // Get filtered eval list, while always adding "trim"
+        $evalList = array_merge(array_filter(
+            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
+            static fn ($value) => $value === 'null'
+        ), ['trim']);
 
         $attributes = [
             'value' => $itemValue,
-            'id' => StringUtility::getUniqueId('formengine-input-'),
+            'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
-                'hasDefaultValue',
-                't3js-clearable',
                 't3js-color-picker',
-                'formengine-colorpickerelement',
+                'hasDefaultValue',
             ]),
+            'maxlength' => '7', // #XXXXXX (/#[0-9a-fA-F]{3,6}/)
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
-                'field' => $parameterArray['itemFormElName'],
+                'field' => $itemName,
                 'evalList' => implode(',', $evalList),
-                'is_in' => trim($config['is_in'] ?? ''),
             ]),
-            'data-formengine-input-name' => $parameterArray['itemFormElName'],
+            'data-formengine-input-name' => $itemName,
         ];
 
-        if (isset($config['max']) && (int)$config['max'] > 0) {
-            $attributes['maxlength'] = (string)(int)$config['max'];
-        }
         if (!empty($config['placeholder'])) {
             $attributes['placeholder'] = trim($config['placeholder']);
         }
-        if (isset($config['autocomplete'])) {
-            $attributes['autocomplete'] = empty($config['autocomplete']) ? 'new-' . $fieldName : 'on';
-        }
 
         $valuePickerHtml = [];
-        if (isset($config['valuePicker']['items']) && is_array($config['valuePicker']['items'])) {
-            $valuePickerHtml[] = '<select class="t3js-colorpicker-value-trigger form-select form-control-adapt">';
+        if (is_array($config['valuePicker']['items'] ?? false)) {
+            $valuePickerConfiguration = [
+                'mode' => 'replace',
+                'linked-field' => '[data-formengine-input-name="' . $itemName . '"]',
+            ];
+            $valuePickerHtml[] = '<typo3-formengine-valuepicker ' . GeneralUtility::implodeAttributes($valuePickerConfiguration, true) . '>';
+            $valuePickerHtml[] = '<select class="form-select form-control-adapt">';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
                 $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
             }
             $valuePickerHtml[] = '</select>';
+            $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
+
+            $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/field-wizard/value-picker.js');
         }
 
         $fieldWizardResult = $this->renderFieldWizard();
@@ -177,7 +161,7 @@ class InputColorPickerElement extends AbstractFormElement
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element form-wizards-element--overflow-visible">';
         $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
         $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
         $mainFieldHtml[] =          '<div class="btn-group">';
@@ -193,6 +177,8 @@ class InputColorPickerElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);
+
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $mainFieldHtml;
         if ($this->hasNullCheckboxButNoPlaceholder()) {
@@ -248,7 +234,15 @@ class InputColorPickerElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '
+            <typo3-formengine-element-color recordFieldId="' . htmlspecialchars($fieldId) . '">
+                <div class="formengine-field-item t3js-formengine-field-item">
+                    ' . $fieldInformationHtml . $fullElement . '
+                </div>
+            </typo3-formengine-element-datetime>';
+
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/color-element.js');
+
         return $resultArray;
     }
 }

@@ -97,11 +97,11 @@ class ExtensionConfiguration extends AbstractInteractableModule {
     const isInIframe = window.location !== window.parent.location;
     if (isInIframe) {
       topLevelModuleImport('@typo3/backend/color-picker.js').then(({default: ColorPicker}: typeof import('@typo3/backend/color-picker')): void => {
-        ColorPicker.initialize();
+        parent.document.querySelectorAll('.t3js-color-input').forEach((element: HTMLInputElement) => ColorPicker.initialize(element));
       });
     } else {
       import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
-        ColorPicker.initialize();
+        document.querySelectorAll('.t3js-color-input').forEach((element: HTMLInputElement) => ColorPicker.initialize(element));
       });
     }
   }

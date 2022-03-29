@@ -318,6 +318,7 @@ class LiveSearch
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
+                    || $fieldType === 'color'
                     || $fieldType === 'slug'
                     || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
@@ -372,6 +373,7 @@ class LiveSearch
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
+                    || $fieldType === 'color'
                     || $fieldType === 'slug'
                     || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {

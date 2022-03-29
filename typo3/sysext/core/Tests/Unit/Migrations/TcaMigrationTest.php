@@ -2572,4 +2572,86 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    private function renderTypeColorpickerToTypeColorDataProvider(): iterable
+    {
+        yield 'Full example of renderType=colorpicker migrated to type=color' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'colorpicker',
+                                'required' => true,
+                                'size' => 20,
+                                'max' => 1234,
+                                'eval' => 'trim,null',
+                                'valuePicker' => [
+                                    'items' => [
+                                        [ 'typo3 orange', '#FF8700'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'color',
+                                'required' => true,
+                                'size' => 20,
+                                'eval' => 'null',
+                                'valuePicker' => [
+                                    'items' => [
+                                        ['typo3 orange', '#FF8700'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'eval gets unset' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'colorpicker',
+                                'eval' => 'trim',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'color',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider renderTypeColorpickerToTypeColorDataProvider
+     * @test
+     */
+    public function renderTypeColorpickerToTypeColor(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

@@ -508,7 +508,7 @@ export default (function() {
    */
   FormEngine.initializeRemainingCharacterViews = function() {
     // all fields with a "maxlength" attribute
-    const $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker').not('.t3js-charcounter-initialized');
+    const $maxlengthElements = $('[maxlength]').not('.t3js-datetimepicker').not('.t3js-color-picker').not('.t3js-charcounter-initialized');
     $maxlengthElements.on('focus', (event: JQueryEventObject) => {
       const $field = $(event.currentTarget),
         $parent = $field.parents('.t3js-formengine-field-item:first'),
@@ -614,10 +614,7 @@ export default (function() {
    */
   FormEngine.reinitialize = function(): void {
     // Apply "close" button to all input / datetime fields
-    const clearables = Array.from(document.querySelectorAll('.t3js-clearable')).filter(inputElement => {
-      // Filter input fields being a color picker
-      return !inputElement.classList.contains('t3js-color-picker');
-    });
+    const clearables = Array.from(document.querySelectorAll('.t3js-clearable'));
     if (clearables.length > 0) {
       import('@typo3/backend/input/clearable').then(function() {
         clearables.forEach(clearableField => (clearableField as any).clearable());

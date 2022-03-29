@@ -205,6 +205,37 @@ class DataHandlerTest extends UnitTestCase
         self::assertEquals($expectedOutput, $output['value']);
     }
 
+    public function checkValueForColorDataProvider(): array
+    {
+        // Three elements: input, timezone of input, expected output (UTC)
+        return [
+            'trim is applied' => [
+                ' #FF8700 ', '#FF8700',
+            ],
+            'max string length is respected' => [
+                '#FF8700123', '#FF8700',
+            ],
+            'required is checked' => [
+                '', null, ['required' => true],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider checkValueForColorDataProvider
+     */
+    public function checkValueForColor(string $input, mixed $expected, array $addiitonalFieldConfig = []): void
+    {
+        $output = $this->subject->_call(
+            'checkValueForColor',
+            $input,
+            array_replace_recursive(['type' => 'datetime'], $addiitonalFieldConfig)
+        );
+
+        self::assertEquals($expected, $output['value'] ?? null);
+    }
+
     /**
      * @test
      */

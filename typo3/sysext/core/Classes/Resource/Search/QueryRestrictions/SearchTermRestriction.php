@@ -112,6 +112,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                     || $fieldType === 'flex'
                     || $fieldType === 'email'
                     || $fieldType === 'link'
+                    || $fieldType === 'color'
                     || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     $constraintsForParts[] = $searchConstraint;

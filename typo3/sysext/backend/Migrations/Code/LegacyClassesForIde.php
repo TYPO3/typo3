@@ -30,3 +30,9 @@ namespace TYPO3\CMS\Backend\Form\Element {
     {
     }
 }
+
+namespace TYPO3\CMS\Backend\Form\Element {
+    class InputColorPickerElement extends \TYPO3\CMS\Backend\Form\Element\ColorElement
+    {
+    }
+}

@@ -47,6 +47,7 @@ final class TableColumnType extends Enumeration
     const LINK = 'LINK';
     const PASSWORD = 'PASSWORD';
     const DATETIME = 'DATETIME';
+    const COLOR = 'COLOR';
 
     /**
      * @param mixed $type

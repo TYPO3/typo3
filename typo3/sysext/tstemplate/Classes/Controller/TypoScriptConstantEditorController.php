@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,11 +50,6 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
     protected array $constants = [];
 
     protected ConstantConfigurationParser $constantParser;
-
-    /**
-     * @var array<string, JavaScriptModuleInstruction>
-     */
-    protected array $javaScriptInstructions = [];
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -106,9 +100,6 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
                 $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'constant_editor_cat', $currentCategory, $availableCategories);
             }
             $assigns['editorFields'] = $this->printFields($this->constants, $currentCategory);
-            foreach ($this->javaScriptInstructions as $instruction) {
-                $this->pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($instruction);
-            }
 
             $this->view->assignMultiple($assigns);
             return $this->view->renderResponse('ConstantEditor');
@@ -214,11 +205,8 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
                             break;
                         case 'color':
                             $p_field = '
-                                <input class="form-control formengine-colorpickerelement t3js-color-picker" type="text" id="input-' . $idName . '" rel="' . $idName .
+                                <input class="form-control t3js-color-input" type="text" id="input-' . $idName . '" rel="' . $idName .
                                 '" name="' . $fN . '" value="' . $fV . '" data-form-update-fragment="' . $fragmentNameEscaped . '"/>';
-
-                            $this->javaScriptInstructions['color'] ??= JavaScriptModuleInstruction::create('@typo3/backend/color-picker.js')
-                                ->invoke('initialize');
                             break;
                         case 'wrap':
                             $wArr = explode('|', $fV);

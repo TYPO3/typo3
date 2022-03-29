@@ -1958,4 +1958,9 @@ return [
             'Feature-97232-NewTCATypeDatetime.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Form\Element\InputColorPickerElement' => [
+        'restFiles' => [
+            'Feature-97271-NewTCATypeColor.rst',
+        ],
+    ],
 ];

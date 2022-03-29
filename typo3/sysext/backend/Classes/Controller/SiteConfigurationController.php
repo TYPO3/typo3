@@ -256,6 +256,7 @@ class SiteConfigurationController
                     case 'email':
                     case 'link':
                     case 'datetime':
+                    case 'color':
                     case 'text':
                         $fieldValue = $this->validateAndProcessValue('site', $fieldName, $fieldValue);
                         $newSysSiteData[$fieldName] = $fieldValue;
@@ -290,6 +291,7 @@ class SiteConfigurationController
                                     case 'email':
                                     case 'link':
                                     case 'datetime':
+                                    case 'color':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;
@@ -349,6 +351,7 @@ class SiteConfigurationController
                                     case 'email':
                                     case 'link':
                                     case 'datetime':
+                                    case 'color':
                                     case 'select':
                                     case 'text':
                                         $childRowData[$childFieldName] = $childFieldValue;

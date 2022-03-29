@@ -76,6 +76,7 @@ class TcaMigration
         $tca = $this->removeAuthModeEnforce($tca);
         $tca = $this->removeSelectAuthModeIndividualItemsKeyword($tca);
         $tca = $this->migrateAuthMode($tca);
+        $tca = $this->migrateRenderTypeColorpickerToTypeColor($tca);
 
         return $tca;
     }
@@ -897,6 +898,52 @@ class TcaMigration
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
                     . 'renderType="inputDateTime". The field has therefore been migrated to the TCA type \'datetime\'. '
+                    . 'This includes corresponding migration of the "eval" list, as well as obsolete field '
+                    . 'configurations, such as "max". Please adjust your TCA accordingly.';
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Migrates [config][renderType] = 'colorpicker' to [config][type] = 'color'.
+     * Removes anything except for "null" from [config][eval].
+     * Removes option [config][max], if set.
+     */
+    protected function migrateRenderTypeColorpickerToTypeColor(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'input'
+                    || ($fieldConfig['config']['renderType'] ?? '') !== 'colorpicker'
+                ) {
+                    // Early return in case column is not of type=input with renderType=colorpicker
+                    continue;
+                }
+
+                // Set the TCA type to "link"
+                $tca[$table]['columns'][$fieldName]['config']['type'] = 'color';
+
+                // Unset "renderType" and "max"
+                unset(
+                    $tca[$table]['columns'][$fieldName]['config']['max'],
+                    $tca[$table]['columns'][$fieldName]['config']['renderType']
+                );
+
+                if (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'null')) {
+                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=link
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
+                } else {
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                    . 'renderType="colorpicker". The field has therefore been migrated to the TCA type \'color\'. '
                     . 'This includes corresponding migration of the "eval" list, as well as obsolete field '
                     . 'configurations, such as "max". Please adjust your TCA accordingly.';
             }

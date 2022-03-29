@@ -2551,6 +2551,7 @@ class DatabaseRecordList
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'slug'
+                    || $fieldType === 'color'
                     || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     $constraints[] = $expressionBuilder->like(
@@ -2595,6 +2596,7 @@ class DatabaseRecordList
                     || $fieldType === 'email'
                     || $fieldType === 'link'
                     || $fieldType === 'slug'
+                    || $fieldType === 'color'
                     || ($fieldType === 'input' && !GeneralUtility::inList($evalRules, 'int'))
                 ) {
                     if ($searchConstraint->count() !== 0) {

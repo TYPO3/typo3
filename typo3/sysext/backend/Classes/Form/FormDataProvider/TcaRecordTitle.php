@@ -180,6 +180,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'text':
             case 'email':
             case 'link':
+            case 'color':
                 $recordTitle = $this->getRecordTitleForStandardTextField($rawValue);
                 break;
             case 'datetime':

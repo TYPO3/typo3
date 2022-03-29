@@ -20,49 +20,55 @@ import 'jquery/minicolors';
  * @exports @typo3/backend/color-picker
  */
 class ColorPicker {
-  /**
-   * The selector for the color picker elements
-   */
-  private selector: string;
 
   /**
-   * The constructor, set the class properties default values
+   * Initialize the color picker for the given element
    */
-  constructor() {
-    this.selector = '.t3js-color-picker';
-  }
+  public initialize(element?: HTMLInputElement): void {
 
-  /**
-   * Initialize the color picker for the given selector
-   */
-  public initialize(): void {
-    ($(this.selector) as any).minicolors({
+    if (typeof element === 'undefined') {
+      // @deprecated since v12, will be removed in v13.
+      console.warn('Initializing all color pickers globally has been marked as deprecated. Please pass a specific element to ColorPicker.initialize().');
+      document.querySelectorAll('.t3js-color-picker').forEach((colorPicker: HTMLInputElement): void => {
+        this.initialize(colorPicker);
+      });
+      return;
+    }
+
+    if (!(element instanceof HTMLInputElement) || element.parentElement?.classList.contains('minicolors')) {
+      return;
+    }
+
+    // Initialize color picker
+    ($(element) as any).minicolors({
       format: 'hex',
       position: 'bottom left',
       theme: 'bootstrap',
     });
-    $(document).on('change', '.t3js-colorpicker-value-trigger', (event: Event): void => {
-      const $element = $(event.target);
-      if ($element.val() !== '') {
-        $element.closest('.t3js-formengine-field-item')
-          .find('.t3js-color-picker')
-          .val($element.val())
-          .trigger('paste');
-        $element.val('');
-      }
-    });
-    // On blur, use the formatted value from minicolors
-    $(document).on('blur', '.t3js-color-picker', (event: Event): void => {
-      const $element = $(event.target);
-      $element.closest('.t3js-formengine-field-item')
-        .find('input[type="hidden"]')
-        .val($element.val());
 
-      if ($element.val() === '') {
-        $element.trigger('paste');
+    const hiddenElement: HTMLInputElement = element.closest('.t3js-formengine-field-item')?.querySelector('input[type="hidden"]');
+    if (!hiddenElement) {
+      // Early return in case we do not deal with the usual visibile+hidden field combination
+      return;
+    }
+
+    // When hidden field is changed (e.g. through a value picker), trigger "paste" on the element
+    hiddenElement.addEventListener('change', (): JQuery => $(element).trigger('paste'));
+
+    // On element change, set the formatted value from minicolors
+    element.addEventListener('blur', (e: Event): void => {
+      e.stopImmediatePropagation();
+
+      const target = e.target as HTMLInputElement;
+
+      hiddenElement.value = target.value;
+      if (target.value === '') {
+        $(target).trigger('paste');
       }
+
+      target.dispatchEvent(new Event('formengine.cp.change'));
     });
   }
 }
-// create an instance and return it
+
 export default new ColorPicker();

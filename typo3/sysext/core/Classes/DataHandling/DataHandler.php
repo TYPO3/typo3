@@ -1522,6 +1522,7 @@ class DataHandler implements LoggerAwareInterface
         $res = (array)match ((string)$tcaFieldConf['type']) {
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
             'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
+            'color' => $this->checkValueForColor((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
@@ -1701,6 +1702,31 @@ class DataHandler implements LoggerAwareInterface
         }
 
         return $res;
+    }
+
+    /**
+     * Evaluate "color" type values.
+     *
+     * @param string $value The value to set.
+     * @param array $tcaFieldConf Field configuration from TCA
+     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     */
+    protected function checkValueForColor(string $value, array $tcaFieldConf): array
+    {
+        // Always trim the value
+        $value = trim($value);
+
+        // Secures the string-length to be <= 7.
+        $value = mb_substr($value, 0, 7, 'utf-8');
+
+        // Early return if required validation fails
+        if (!$this->validateValueForRequired($tcaFieldConf, $value)) {
+            return [];
+        }
+
+        return [
+            'value' => $value,
+        ];
     }
 
     /**

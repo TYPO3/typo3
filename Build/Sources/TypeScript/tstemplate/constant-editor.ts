@@ -27,13 +27,19 @@ enum Selectors {
  */
 class ConstantEditor {
   constructor() {
-    // no DOMready needed since only events for document are registered
     $(document)
       .on('click', Selectors.editIconSelector, this.changeProperty)
       .on('change', Selectors.colorSelectSelector, this.updateColorFromSelect)
       .on('blur', Selectors.colorInputSelector, this.updateColorFromInput)
       .on('change', Selectors.formFieldsSelector, this.updateFormFragment)
-    ;
+      .ready((): void => {
+        const $colorInputElements: JQuery = $(Selectors.colorInputSelector);
+        if ($colorInputElements.length) {
+          import('@typo3/backend/color-picker').then(({default: ColorPicker}): void => {
+            $colorInputElements.each((i: number, element: HTMLInputElement) => ColorPicker.initialize(element));
+          });
+        }
+      });
   }
 
   /**

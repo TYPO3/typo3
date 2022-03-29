@@ -87,7 +87,7 @@ class NodeFactory
         'selectTree' => Element\SelectTreeElement::class,
         'selectSingle' => Element\SelectSingleElement::class,
         'selectSingleBox' => Element\SelectSingleBoxElement::class,
-        'colorpicker' => Element\InputColorPickerElement::class,
+        'color' => Element\ColorElement::class,
         // t3editor is defined with a fallback so extensions can use it even if ext:t3editor is not loaded
         't3editor' => Element\TextElement::class,
         'text' => Element\TextElement::class,
