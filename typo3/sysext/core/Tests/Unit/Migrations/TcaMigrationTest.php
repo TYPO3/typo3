@@ -2037,7 +2037,7 @@ class TcaMigrationTest extends UnitTestCase
         self::assertSame($expected, $subject->migrate($input));
     }
 
-    private function evalPasswordSaltedpasswordMigratedToTypeDataProvider(): iterable
+    private function evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider(): iterable
     {
         yield 'eval=password and eval=saltedPassword migrated to type=password' => [
             'input' => [
@@ -2148,10 +2148,10 @@ class TcaMigrationTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider evalPasswordSaltedpasswordMigratedToTypeDataProvider
+     * @dataProvider evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider
      * @test
      */
-    public function evalPasswordSaltedpasswordMigratedToType(array $input, array $expected): void
+    public function evalPasswordSaltedPasswordMigratedToTypePassword(array $input, array $expected): void
     {
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));

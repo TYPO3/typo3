@@ -71,7 +71,7 @@ class TcaMigration
         $tca = $this->migrateEmailFlagToEmailType($tca);
         $tca = $this->migrateTypeNoneColsToSize($tca);
         $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
-        $tca = $this->migratePasswordAndSaltedpasswordToPasswordType($tca);
+        $tca = $this->migratePasswordAndSaltedPasswordToPasswordType($tca);
 
         return $tca;
     }
