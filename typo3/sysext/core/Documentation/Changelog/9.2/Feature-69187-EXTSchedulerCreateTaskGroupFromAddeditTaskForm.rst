@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Feature: #69187 - EXT:Scheduler: Create task group from add/edit task form

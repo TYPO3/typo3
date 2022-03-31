@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Breaking: #83284 - Removed EXT:backend/Resources/Private/Templates/Close.html

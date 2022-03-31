@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Feature: #67360 - Custom attribute name and multiple values for meta tags

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Important: #88655 - Changed loading order of RTE Configuration
@@ -21,7 +21,7 @@ The new order is:
 
 #. default
 
-This results in a change if you were used to using :ts:`RTE.default.preset` to overwrite _all_ RTE
+This results in a change if you were used to using :typoscript:`RTE.default.preset` to overwrite _all_ RTE
 configuration presets - as those with specific configuration in TCA now use their specific settings
 instead of falling back to the default. Please make sure, that this new behavior is fitting for your
 use cases.
@@ -39,6 +39,6 @@ For example:
 
 If the blog extension configures `'richtextConfiguration' => 'blog'` for the tag description and
 you want the tag description to use the default preset, set
-:ts:`RTE.config.tx_blog_domain_model_tag.content.types.text.preset = default`.
+:typoscript:`RTE.config.tx_blog_domain_model_tag.content.types.text.preset = default`.
 
 .. index:: RTE, TCA, TSConfig, ext:core

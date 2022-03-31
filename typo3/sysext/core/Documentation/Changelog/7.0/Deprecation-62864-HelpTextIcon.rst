@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Deprecation: #62864 - BackendUtility->helpTextIcon deprecated

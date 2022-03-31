@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Important: #85385 - Integrate Phar Stream Wrapper

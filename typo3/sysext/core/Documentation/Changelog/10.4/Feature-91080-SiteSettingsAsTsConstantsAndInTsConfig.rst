@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Feature: #91080 - Site settings as TypoScript constants and in TSconfig
@@ -11,7 +11,7 @@ Description
 ===========
 
 Prior to TYPO3 v10.0 it was possible to inject information from
-page TSconfig into TypoScript constants with :ts:`TSFE.constants.const1 = a`.
+page TSconfig into TypoScript constants with :typoscript:`TSFE.constants.const1 = a`.
 
 This could be used to centralize configuration of e.g. record storagePids,
 which could then be used in Backend for modules or for IRRE and for Frontend plugins.

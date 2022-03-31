@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Breaking: #67646 - PHP library inclusion in frontend removed

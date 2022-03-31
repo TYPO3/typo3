@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================================
 Deprecation: #84171 - Adding GeneralUtility::getUrl RequestHeaders as non-associative array are deprecated

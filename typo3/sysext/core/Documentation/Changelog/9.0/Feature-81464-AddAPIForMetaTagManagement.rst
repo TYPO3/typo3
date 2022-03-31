@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Feature: #81464 - Add API for meta tag management

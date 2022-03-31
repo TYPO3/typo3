@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Feature: #78347 - Add StdWrap properties to FilesProcessor

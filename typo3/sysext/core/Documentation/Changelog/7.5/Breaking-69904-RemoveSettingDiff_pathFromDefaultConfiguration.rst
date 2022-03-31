@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Breaking: #69904 - Remove Setting diff_path from DefaultConfiguration

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================
 Deprecation: #85285 - Deprecated path related constants

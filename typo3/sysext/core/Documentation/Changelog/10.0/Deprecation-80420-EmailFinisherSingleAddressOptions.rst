@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Deprecation: #80420 - EmailFinisher single address options

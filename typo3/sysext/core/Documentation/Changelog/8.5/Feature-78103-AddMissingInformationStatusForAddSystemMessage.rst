@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Feature: #78103 - Add missing information status for addSystemMessage

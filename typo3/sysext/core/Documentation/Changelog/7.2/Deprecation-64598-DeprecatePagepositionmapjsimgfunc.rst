@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Deprecation: #64598 - Deprecate PagePositionMap::JSimgFunc

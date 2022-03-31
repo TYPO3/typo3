@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================
 Breaking: #52705 - Default log configuration is changed

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Deprecation: #77987 - Deprecated record listing in page module

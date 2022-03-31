@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Important: #82794 - Added config.sys_language_mode = content_fallback;3,2,pageNotFound
@@ -10,7 +10,7 @@ Description
 ===========
 
 If a translation (language UID 5) has a TypoScript configuration to
-:ts:`config.sys_language_mode = content_fallback;3,2` the definition is that if this page is not
+:typoscript:`config.sys_language_mode = content_fallback;3,2` the definition is that if this page is not
 available in this translation (language = 5) then check if a translation for `3` and after that `2` is
 set.
 
@@ -26,7 +26,7 @@ On a set up like:
 You would not want to fall back to german AT ALL.
 
 It is now possible to define a special keyword called `pageNotFound` to not fall back to
-:ts:`sys_language_uid = 0` if any other fallbacks do not work - so a 404 error page is thrown.
-:ts:`config.sys_language_mode = content_fallback;3,2,pageNotFound`
+:typoscript:`sys_language_uid = 0` if any other fallbacks do not work - so a 404 error page is thrown.
+:typoscript:`config.sys_language_mode = content_fallback;3,2,pageNotFound`
 
 .. index:: TypoScript, Frontend

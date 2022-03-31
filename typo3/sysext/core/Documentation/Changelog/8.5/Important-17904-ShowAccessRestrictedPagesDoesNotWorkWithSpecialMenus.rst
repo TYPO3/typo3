@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Important: #17904 - showAccessRestrictedPages does not work with special menus

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Deprecation: #88433 - Deprecate top.openUrlInWindow

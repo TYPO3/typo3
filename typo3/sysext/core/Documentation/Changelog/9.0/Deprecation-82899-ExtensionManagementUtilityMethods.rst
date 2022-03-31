@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Deprecation: #82899 - ExtensionManagementUtility methods

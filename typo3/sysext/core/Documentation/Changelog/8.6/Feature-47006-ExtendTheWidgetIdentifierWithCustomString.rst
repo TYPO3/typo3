@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Feature: #47006 - Extend the widget identifier with custom string

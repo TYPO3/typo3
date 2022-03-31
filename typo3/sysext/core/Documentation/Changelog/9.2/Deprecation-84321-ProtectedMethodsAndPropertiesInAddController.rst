@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Deprecation: #84321 - Protected methods and properties in AddController

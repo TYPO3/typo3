@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Feature: #65996 - Show confirm message on closing an edit form with unsaved changes

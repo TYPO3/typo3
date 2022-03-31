@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Deprecation: #80468 - Command Line Interface: cliKeys and cli_dispatch.phpsh

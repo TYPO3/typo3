@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Deprecation: #65290 - Deprecate dummy entry point

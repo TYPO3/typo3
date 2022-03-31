@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Feature: #80542 - Support defer attribute for JavaScript includes in TypoScript

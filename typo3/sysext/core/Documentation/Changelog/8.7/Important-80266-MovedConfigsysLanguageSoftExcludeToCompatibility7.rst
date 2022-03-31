@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Important: #80266 - Moved config.sys_language_softExclude to compatibility7

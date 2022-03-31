@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Breaking: #69916 - Registered AJAX handlers replaced by routes

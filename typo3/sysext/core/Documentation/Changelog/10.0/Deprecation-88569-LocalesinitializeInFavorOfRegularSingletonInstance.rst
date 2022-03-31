@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Deprecation: #88569 - Locales::initialize() in favor of regular singleton instance

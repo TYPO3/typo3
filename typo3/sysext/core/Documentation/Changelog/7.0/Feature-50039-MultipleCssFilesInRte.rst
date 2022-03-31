@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Feature: #50039 - Multiple CSS Files in Rich Text Editor

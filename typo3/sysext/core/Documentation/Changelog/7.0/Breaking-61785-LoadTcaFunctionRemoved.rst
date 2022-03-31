@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Breaking: #61785 - loadTCA function in GeneralUtility removed

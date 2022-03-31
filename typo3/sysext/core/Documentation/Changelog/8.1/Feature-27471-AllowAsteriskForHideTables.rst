@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================
 Feature: #27471 - Allow asterisk for hideTables

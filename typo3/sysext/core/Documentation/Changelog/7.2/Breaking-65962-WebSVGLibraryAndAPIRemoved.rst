@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Breaking: #65962 - Third-party library "websvg" and the according API has been removed

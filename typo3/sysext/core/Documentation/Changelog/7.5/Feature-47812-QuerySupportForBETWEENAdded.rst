@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Feature: #47812 - Query support for BETWEEN added

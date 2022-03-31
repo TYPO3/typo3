@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================
 Breaking: #64070 - Removed global variable WEBMOUNTS

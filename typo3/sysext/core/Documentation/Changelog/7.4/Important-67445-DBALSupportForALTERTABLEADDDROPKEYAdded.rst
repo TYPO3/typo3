@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Important: #67445 - DBAL support for ALTER TABLE ADD/DROP KEY added

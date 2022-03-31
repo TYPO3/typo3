@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Feature: #88102 - Frontend Login Form Via Fluid And Extbase

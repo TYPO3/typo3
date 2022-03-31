@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Important: #87980 - "Page is being generated" message has been removed

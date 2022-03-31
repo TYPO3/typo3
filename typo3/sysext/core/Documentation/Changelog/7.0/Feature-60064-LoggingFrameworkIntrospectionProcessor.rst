@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Feature: #60064 - Logging Framework Introspection Processor

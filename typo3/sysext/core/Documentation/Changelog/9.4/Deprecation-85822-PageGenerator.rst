@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Deprecation: #85822 - Static class TYPO3\CMS\Frontend\Page\PageGenerator

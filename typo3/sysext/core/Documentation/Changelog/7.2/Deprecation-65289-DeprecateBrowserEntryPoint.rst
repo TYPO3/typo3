@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Deprecation: #65289 - Deprecate browser entry point

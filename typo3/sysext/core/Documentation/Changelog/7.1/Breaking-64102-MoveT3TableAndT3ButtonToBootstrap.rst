@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Breaking: #64102 - Move t3-table and t3-button to bootstrap

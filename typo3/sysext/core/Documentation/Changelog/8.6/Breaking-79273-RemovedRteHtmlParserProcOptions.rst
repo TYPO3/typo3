@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Breaking: #79273 - Removed RteHtmlParser proc options
@@ -11,9 +11,9 @@ Description
 
 The following TSconfig options for processing content of RTE fields have been removed:
 
-* :ts:`RTE.default.proc.dontConvBRtoParagraph`
-* :ts:`RTE.default.proc.dontProtectUnknownTags_rte`
-* :ts:`RTE.default.proc.dontConvAmpInNBSP_rte`
+* :typoscript:`RTE.default.proc.dontConvBRtoParagraph`
+* :typoscript:`RTE.default.proc.dontProtectUnknownTags_rte`
+* :typoscript:`RTE.default.proc.dontConvAmpInNBSP_rte`
 
 
 Impact
@@ -31,8 +31,8 @@ is common in modern Rich Text Editors.
 Affected Installations
 ======================
 
-Installations explicitly setting :ts:`RTE.default.proc.dontConvBRtoParagraph = 0`, :ts:`RTE.default.proc.dontProtectUnknownTags_rte = 1` or
-:ts:`RTE.default.proc.dontConvAmpInNBSP_rte = 1` might experience different results when editing and saving content via an RTE.
+Installations explicitly setting :typoscript:`RTE.default.proc.dontConvBRtoParagraph = 0`, :typoscript:`RTE.default.proc.dontProtectUnknownTags_rte = 1` or
+:typoscript:`RTE.default.proc.dontConvAmpInNBSP_rte = 1` might experience different results when editing and saving content via an RTE.
 
 
 Migration

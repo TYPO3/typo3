@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Breaking: #73793 - Removed AbstractPlugin->LOCAL_LANG_charset

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Breaking: #82430 - Replaced GeneralUtility::sysLog with Logging API

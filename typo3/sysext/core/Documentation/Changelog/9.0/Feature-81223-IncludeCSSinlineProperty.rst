@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Feature: #81223 - includeCSS.inline property

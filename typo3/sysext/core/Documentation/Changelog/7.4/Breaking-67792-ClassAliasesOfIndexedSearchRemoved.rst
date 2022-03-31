@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Breaking: #67792 - Class aliases of Indexed Search removed

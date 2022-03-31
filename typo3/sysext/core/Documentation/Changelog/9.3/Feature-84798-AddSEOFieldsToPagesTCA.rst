@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================
 Feature: #84798 - Add SEO fields to Pages TCA

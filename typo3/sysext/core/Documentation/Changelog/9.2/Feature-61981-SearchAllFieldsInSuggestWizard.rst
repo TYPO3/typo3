@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Feature: #61981 - Search all fields in Suggest Wizard

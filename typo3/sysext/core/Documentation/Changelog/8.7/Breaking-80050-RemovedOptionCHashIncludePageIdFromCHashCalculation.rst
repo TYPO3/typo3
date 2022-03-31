@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Breaking: #80050 - Remove option cHashIncludePageId from cHash calculation

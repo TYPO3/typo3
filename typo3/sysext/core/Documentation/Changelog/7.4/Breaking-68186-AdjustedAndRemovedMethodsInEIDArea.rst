@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Breaking: #68186 - Adjusted and removed methods in eID area

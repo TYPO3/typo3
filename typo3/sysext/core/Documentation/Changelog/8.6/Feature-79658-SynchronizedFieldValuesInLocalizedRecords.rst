@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Feature: #79658 - Synchronized field values in localized records

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Important: #18079 - pages.doktype restriction for frontend queries refined

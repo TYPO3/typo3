@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _workspaces:
@@ -84,4 +84,4 @@ mind. Although the ideal is complete transparency in backend and
 perfect previews in the frontend, this is almost impossible to obtain.
 Nevertheless a high level of consistency can be obtained by using the API
 provided by TYPO3 CMS. These functions and the challenges they are designed to
-address are discussed in :ref:`TYPO3 Core API <t3api:workspaces>`.
+address are discussed in :ref:`TYPO3 Core API <t3coreapi:workspaces>`.

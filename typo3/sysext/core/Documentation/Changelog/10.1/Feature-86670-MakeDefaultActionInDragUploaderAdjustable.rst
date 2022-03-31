@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Feature: #86670 - Make default action in DragUploader adjustable

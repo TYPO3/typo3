@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Breaking: #72666 - RTE: Remove relative path calculations

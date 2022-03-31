@@ -1,4 +1,4 @@
-.. include:: ../../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _concepts-frontendrendering:
@@ -398,7 +398,7 @@ Pure YAML is sufficient to add simple, static values:
 This will produce the label: `This is a useful feature`.
 
 Alternatively, translation arguments can be set via
-:ts:`formDefinitionOverrides` in TypoScript. A common usecase is a checkbox for
+:typoscript:`formDefinitionOverrides` in TypoScript. A common usecase is a checkbox for
 user confirmation linking to details of the topic. Here it makes sense to use
 YAML hashes instead of YAML lists to give sections named keys. This simplifies
 references in TypoScript a lot since named keys are way more readable and also

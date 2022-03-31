@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Important: #36166 - Move access right parameters from BE to SYS configuration

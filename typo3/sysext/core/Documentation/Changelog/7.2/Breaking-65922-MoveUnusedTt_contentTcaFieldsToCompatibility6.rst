@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Breaking: #65922 - Move unused tt_content TCA fields to compatibility6

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================
 Breaking: #62733 - RTE Javascript Files Moved

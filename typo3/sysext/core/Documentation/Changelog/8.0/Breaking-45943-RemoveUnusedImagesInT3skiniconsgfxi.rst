@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Breaking: #45943 - Remove unused Images in "t3skin/icons/gfx/i"

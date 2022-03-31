@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================
 Feature: #85313 - Add notes field to pages table

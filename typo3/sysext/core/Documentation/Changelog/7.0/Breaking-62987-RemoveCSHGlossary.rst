@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================
 Breaking: #62987 - Remove CSH Glossary

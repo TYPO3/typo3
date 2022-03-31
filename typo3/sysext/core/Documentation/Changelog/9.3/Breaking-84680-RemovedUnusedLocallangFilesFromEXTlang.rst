@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Breaking: #84680 - Removed unused locallang files from EXT:lang

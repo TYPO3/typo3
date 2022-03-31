@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================
 Breaking: #85761 - Authentication chain changes

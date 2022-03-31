@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Important: #83869 - Removed request type specific code in Bootstrap

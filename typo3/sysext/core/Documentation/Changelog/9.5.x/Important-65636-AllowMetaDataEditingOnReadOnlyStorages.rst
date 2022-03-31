@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Important: #65636 - File meta data can now be edited on read only storages

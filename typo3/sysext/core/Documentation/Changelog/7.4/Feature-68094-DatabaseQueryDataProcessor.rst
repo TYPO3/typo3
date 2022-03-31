@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================
 Feature: #68094 - Database Query DataProcessor

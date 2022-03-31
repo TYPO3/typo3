@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Breaking: #88583 - Database field sys_language.static_lang_isocode removed

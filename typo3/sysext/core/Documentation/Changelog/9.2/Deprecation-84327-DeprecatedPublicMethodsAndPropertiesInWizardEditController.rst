@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Deprecation: #84327 - Deprecated public methods and properties in Wizard/EditController

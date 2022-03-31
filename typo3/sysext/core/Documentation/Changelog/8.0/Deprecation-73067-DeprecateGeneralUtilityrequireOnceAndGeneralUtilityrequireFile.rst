@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================================
 Deprecation: #73067 - Deprecate GeneralUtility::requireOnce and  GeneralUtility::requireFile

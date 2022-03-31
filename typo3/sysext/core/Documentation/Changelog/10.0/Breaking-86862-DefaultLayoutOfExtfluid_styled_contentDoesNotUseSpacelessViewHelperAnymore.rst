@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================================
 Breaking: #86862 - Default Layout of ext:fluid_styled_content does not use spaceless viewHelper anymore

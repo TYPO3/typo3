@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Feature: #83016 - Listing of page translations in list module

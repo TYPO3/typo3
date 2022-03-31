@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Deprecation: #78244 - Deprecate TYPO3_DB and Prepared Statement class

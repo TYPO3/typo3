@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Deprecation: #62855 - "XHTML cleaning" functionality moved to legacy extension

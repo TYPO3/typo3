@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Feature: #58366 - Add "auto" Option for config.absRefPrefix

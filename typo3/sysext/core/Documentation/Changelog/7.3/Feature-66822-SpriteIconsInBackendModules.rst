@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Feature: #66822 - Allow Sprites For Backend Modules

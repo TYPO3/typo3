@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Important: #80506 - Dbal compatible field quoting in TypoScript

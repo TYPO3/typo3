@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================
 Deprecation: #68098 - Deprecate GeneralUtility methods

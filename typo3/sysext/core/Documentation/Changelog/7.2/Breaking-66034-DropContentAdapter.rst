@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================
 Breaking: #66034 - Drop Content Adapter

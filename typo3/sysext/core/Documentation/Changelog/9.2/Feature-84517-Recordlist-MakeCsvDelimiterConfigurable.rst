@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Feature: #84517 - Recordlist - Make csv delimiter configurable

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Feature: #69916 - PSR-7-based Routing for Backend AJAX Requests

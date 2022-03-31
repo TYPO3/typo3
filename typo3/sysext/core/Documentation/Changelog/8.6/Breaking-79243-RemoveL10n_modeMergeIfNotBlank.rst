@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Breaking: #79243 - Remove l10n_mode mergeIfNotBlank

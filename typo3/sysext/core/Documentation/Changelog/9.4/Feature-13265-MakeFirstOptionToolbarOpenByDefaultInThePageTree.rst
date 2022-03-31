@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Feature: #13265 - Select first element of PageTree toolbar on initialization

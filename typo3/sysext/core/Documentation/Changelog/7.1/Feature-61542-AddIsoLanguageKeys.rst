@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Feature: #61542 - Add two-letter ISO 639-1 keys to sys_language

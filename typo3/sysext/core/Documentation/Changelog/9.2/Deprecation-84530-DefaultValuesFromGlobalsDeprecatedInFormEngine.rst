@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Deprecation: #84530 - Default values from globals deprecated in FormEngine

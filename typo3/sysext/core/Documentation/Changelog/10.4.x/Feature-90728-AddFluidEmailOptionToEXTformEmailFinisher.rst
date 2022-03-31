@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Feature: #90728 - Add FluidEmail option to EXT:form EmailFinisher

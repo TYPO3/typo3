@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Feature: #84549 - Usage of new REST API on get.typo3.org

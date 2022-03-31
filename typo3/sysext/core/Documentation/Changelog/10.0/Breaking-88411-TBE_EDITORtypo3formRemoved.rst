@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================
 Breaking: #88411 - TBE_EDITOR.typo3form removed

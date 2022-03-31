@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Breaking: #78384 - Frontend ignores TCA in ext_tables.php

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Breaking: #68243 - Move not used FrontendDocumentTemplate

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================
 Deprecation: #81951 - Install Tool entry point moved

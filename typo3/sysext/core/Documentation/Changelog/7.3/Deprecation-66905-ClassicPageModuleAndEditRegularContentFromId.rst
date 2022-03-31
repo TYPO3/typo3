@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================================
 Deprecation: #66905 - Deprecate uc->classicPageEditMode and editRegularContentFromId option

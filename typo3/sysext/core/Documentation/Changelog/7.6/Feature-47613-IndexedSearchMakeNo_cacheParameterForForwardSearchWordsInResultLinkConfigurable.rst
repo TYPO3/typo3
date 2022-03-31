@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================================
 Feature: #47613 - Indexed Search: make no_cache parameter for forwardSearchWordsInResultLink configurable

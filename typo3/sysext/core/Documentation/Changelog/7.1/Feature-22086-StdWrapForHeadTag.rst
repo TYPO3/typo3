@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Feature: #22086 - Add .stdWrap to page.headTag option

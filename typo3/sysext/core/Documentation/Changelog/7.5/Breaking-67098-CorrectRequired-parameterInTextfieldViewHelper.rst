@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Breaking: #67098 - Correct required-parameter in TextfieldViewHelper

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Important: #67401 - Dependency Injection is now done before initializeObject()

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Feature: #76458 - Let DebuggerUtility render closures

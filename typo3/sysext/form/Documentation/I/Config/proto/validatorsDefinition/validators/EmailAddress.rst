@@ -1,4 +1,4 @@
-.. include:: ../../../../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _typo3.cms.form.prototypes.validatorsdefinition.emailaddress:
@@ -48,7 +48,7 @@ implementationClassName
            formEditor:
              iconIdentifier: t3-form-icon-validator
              label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
- 
+
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Feature: #90136 - Show application context in the Environment module

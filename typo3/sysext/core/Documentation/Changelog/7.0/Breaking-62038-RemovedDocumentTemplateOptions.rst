@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Breaking: #62038 - Deprecated DocumentTemplate functionality

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================
 Breaking: #77209 - Adapt default RECORDS tables
@@ -29,6 +29,6 @@ Installations which use shortcut to records of the tables tt_address, tt_news an
 Migration
 =========
 
-Adopt the TS and use :ts:`styles.content.shortcut.tables := addToList(tt_address,tt_news,tx_news_domain_model_news)`
+Adopt the TS and use :typoscript:`styles.content.shortcut.tables := addToList(tt_address,tt_news,tx_news_domain_model_news)`
 
 .. index:: TypoScript, Frontend

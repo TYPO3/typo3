@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Deprecation: #80027 - Remove TCA config 'max' on inputDateTime fields

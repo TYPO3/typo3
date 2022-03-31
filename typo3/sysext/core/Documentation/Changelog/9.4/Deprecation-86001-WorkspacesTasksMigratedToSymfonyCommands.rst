@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Deprecation: #86001 - Workspaces tasks migrated to symfony commands

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Feature: #90213 - Support 'bit and' in TypoScript stdWrap_if
@@ -9,7 +9,7 @@ See :issue:`90213`
 Description
 ===========
 
-It is now possible to use :ts:`bitAnd` within TypoScript :ts:`if`.
+It is now possible to use :typoscript:`bitAnd` within TypoScript :typoscript:`if`.
 
 TYPO3 uses bits to store radio and checkboxes via TCA.
 Without this feature one would need to check whether any possible bit value is in a

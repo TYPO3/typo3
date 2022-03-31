@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Important: #91132 - Avoid JavaScript in User Settings Configuration options

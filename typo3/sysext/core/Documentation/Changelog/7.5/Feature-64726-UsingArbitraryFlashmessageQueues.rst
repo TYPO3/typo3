@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Feature: #64726 - Added support for multiple FlashMessage queues

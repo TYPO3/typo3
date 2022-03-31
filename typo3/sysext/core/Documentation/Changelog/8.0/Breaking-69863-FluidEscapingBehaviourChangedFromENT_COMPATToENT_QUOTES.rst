@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Breaking: #69863 - Fluid escaping behaviour changed from ENT_COMPAT to ENT_QUOTES

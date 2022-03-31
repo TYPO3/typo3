@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Feature: #81464 - Add API for meta tag management
@@ -91,10 +91,10 @@ You can set your meta tags by TypoScript and PHP (for example from plugins). Fir
 will be handled. After that the meta tags defined in TypoScript will be handled.
 
 It is possible to override earlier set meta tags by TypoScript if you explicitly say this should happen. Therefore the
-:ts:`meta.*.replace` option was introduced. It is a boolean flag with these values:
+:typoscript:`meta.*.replace` option was introduced. It is a boolean flag with these values:
 
-* :ts:`1`: The meta tag set by TypoScript will replace earlier set meta tags
-* :ts:`0`: (default) If the meta tag is not set before, the meta tag will be created. If it is already set, it will ignore the meta tag set by TypoScript.
+* :typoscript:`1`: The meta tag set by TypoScript will replace earlier set meta tags
+* :typoscript:`0`: (default) If the meta tag is not set before, the meta tag will be created. If it is already set, it will ignore the meta tag set by TypoScript.
 
 .. code-block:: typoscript
 
@@ -104,7 +104,7 @@ It is possible to override earlier set meta tags by TypoScript if you explicitly
         og:site_name.replace = 1
     }
 
-When you set the property replace to :ts:`1` at the specific tag, the tag will replace tags that are set from plugins.
+When you set the property replace to :typoscript:`1` at the specific tag, the tag will replace tags that are set from plugins.
 
 Impact
 ======

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Important: #89269 - Introduce Upgrade Wizard for invalid Backend User configuration

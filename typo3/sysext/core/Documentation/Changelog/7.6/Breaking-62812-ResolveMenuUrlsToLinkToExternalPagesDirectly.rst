@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Breaking: #62812 - Resolve URLs to "Link to external URL"-pages directly

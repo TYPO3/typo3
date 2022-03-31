@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================================
 Breaking: #72837 - RTE transformations: Allow div sections by default and remove font-specific parsing

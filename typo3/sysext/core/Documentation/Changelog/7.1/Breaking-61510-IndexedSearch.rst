@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================
 Breaking: #61510 - Improvement of indexed_search

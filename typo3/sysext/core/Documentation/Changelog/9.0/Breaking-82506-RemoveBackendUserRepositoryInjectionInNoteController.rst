@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Breaking: #82506 - Remove BackendUserRepository injection in NoteController

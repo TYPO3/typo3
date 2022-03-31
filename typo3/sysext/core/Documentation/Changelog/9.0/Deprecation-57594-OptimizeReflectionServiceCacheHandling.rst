@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Deprecation: #57594 - Optimize extbase ReflectionService Cache handling

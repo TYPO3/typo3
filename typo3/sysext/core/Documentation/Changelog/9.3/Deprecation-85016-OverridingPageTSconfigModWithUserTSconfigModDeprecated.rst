@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Deprecation: #84982 - Overriding page TSconfig mod. with user TSconfig mod.

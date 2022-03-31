@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================
 Breaking: #66429 - Remove IdentityMap from persistence

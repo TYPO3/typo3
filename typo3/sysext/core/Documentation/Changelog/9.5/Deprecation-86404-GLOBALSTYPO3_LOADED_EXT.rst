@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================
 Deprecation: #86404 - $GLOBALS['TYPO3_LOADED_EXT']

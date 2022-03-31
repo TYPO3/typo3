@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Feature: #33071 - Add the http header "Content-Language" when rendering a page

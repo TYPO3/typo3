@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Breaking: #83244 - Fluid Widget Links do not add cacheHash parameter by default anymore

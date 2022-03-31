@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Feature: #79262 - Add possibility to create TRIM expression with Doctrine DBAL

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Breaking: #70578 - JumpURL functionality removed from the TYPO3 Core

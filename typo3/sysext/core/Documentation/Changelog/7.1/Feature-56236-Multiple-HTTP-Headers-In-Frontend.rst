@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Feature: #56236 - Multiple HTTP headers of the same type in Frontend Output

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Deprecation: #78225 - Legacy PreparedStatements within Extbase

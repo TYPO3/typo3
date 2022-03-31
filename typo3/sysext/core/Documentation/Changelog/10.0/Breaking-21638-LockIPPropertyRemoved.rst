@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Breaking: #21638 - AbstractUserAuthentication::lockIP property removed

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Breaking: #44879 - TypoScript inline styles from blockquote tag removed

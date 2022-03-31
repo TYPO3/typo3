@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Breaking: #82896 - System extension "version" migrated into "workspaces"

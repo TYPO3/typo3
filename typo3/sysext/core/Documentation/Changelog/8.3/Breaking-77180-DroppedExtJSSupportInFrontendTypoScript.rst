@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Breaking: #77180 - Dropped ExtJS support in Frontend TypoScript
@@ -37,6 +37,6 @@ Any installation using the shipped ExtJS bundle in the frontend.
 Migration
 =========
 
-Include ExtJS via :ts:`page.includeJS` manually if needed or migrate to another supported modern framework.
+Include ExtJS via :typoscript:`page.includeJS` manually if needed or migrate to another supported modern framework.
 
 .. index:: JavaScript, TypoScript

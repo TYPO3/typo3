@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Deprecation: #84338 - Protected methods and properties in TableController

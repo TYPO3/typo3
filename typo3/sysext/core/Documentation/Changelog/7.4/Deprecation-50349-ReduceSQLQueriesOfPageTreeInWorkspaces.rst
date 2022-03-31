@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Deprecation: #50349 - Reduce SQL queries of page tree in workspaces

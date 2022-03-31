@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Breaking: #77453 - Signature of AbstractPlugin::pi_list_makelist changed

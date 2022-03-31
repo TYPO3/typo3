@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Important: #69084 - Adding Extbase Objects with NOT NULL columns has changed

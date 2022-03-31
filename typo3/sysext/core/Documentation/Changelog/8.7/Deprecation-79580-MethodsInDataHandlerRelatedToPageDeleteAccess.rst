@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Deprecation: #79580 - Deprecate methods in DataHandler related to page delete access

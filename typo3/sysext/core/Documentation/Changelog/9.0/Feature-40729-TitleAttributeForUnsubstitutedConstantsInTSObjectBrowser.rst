@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Feature: #40729 - Title attribute for (un)substituted constants in TS object browser

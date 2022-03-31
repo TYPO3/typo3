@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Important: #67852 - Remove jsfunc.evalfield.js from FormEngine

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Feature: #85894 - Feature toggles in Admin Tools Settings

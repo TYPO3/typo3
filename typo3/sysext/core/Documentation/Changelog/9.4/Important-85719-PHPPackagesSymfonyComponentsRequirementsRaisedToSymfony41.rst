@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Important: #85719 - PHP Packages: Symfony Components requirements raised to Symfony 4.1

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Feature: #61361 - Template Path Fallback for Fluid StandaloneView and FLUIDTEMPLATE

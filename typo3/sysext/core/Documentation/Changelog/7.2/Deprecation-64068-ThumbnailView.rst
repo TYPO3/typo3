@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Deprecation: #64068 - Deprecate thumbs.php and ThumbnailView

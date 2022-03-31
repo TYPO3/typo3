@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Feature: #89229 - Cache Preset for Settings in Maintenance Area

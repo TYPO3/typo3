@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Deprecation: #85977 - Extbase CLI functionality, Command Controllers and @cli Annotation

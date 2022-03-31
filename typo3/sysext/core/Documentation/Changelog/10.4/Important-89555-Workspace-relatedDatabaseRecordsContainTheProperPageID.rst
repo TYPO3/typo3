@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Important: #89555 - Workspace-related database records contain the proper Page ID.

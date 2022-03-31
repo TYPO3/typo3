@@ -1,60 +1,56 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+.. include:: /Includes.rst.txt
 
-.. include:: Includes.txt
-
-
-.. _start:
-
-========
-Recycler
-========
+==============
+TYPO3 Recycler
+==============
 
 :Extension key:
-      recycler
+   recycler
+
+:Package name:
+   typo3/cms-recycler
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      Recycler module for deleted records
-
-:Keywords:
-      recycler, sysext
-
-:Copyright:
-      2000-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
+----
 
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
+This extension allows you to restore deleted records or permanently remove them
+from the database.
 
+These actions can be applied to a single record, multiple records, and
+recursively to child records, for example, restoring a page can restore all
+content items on that page. Filtering by page and table provides a quick
+overview of deleted records before taking further action.
 
+----
 
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
    :titlesonly:
-   :glob:
 
    Introduction/Index
    Configuration/Index
-   Targets
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

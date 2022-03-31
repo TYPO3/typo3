@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Important: #85689 - Replaced default value with placeholder in external url link handler

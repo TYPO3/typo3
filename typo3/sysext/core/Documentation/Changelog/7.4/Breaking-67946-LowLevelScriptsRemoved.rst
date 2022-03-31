@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Breaking: #67946 - LowLevel Cleaner Scripts Removed

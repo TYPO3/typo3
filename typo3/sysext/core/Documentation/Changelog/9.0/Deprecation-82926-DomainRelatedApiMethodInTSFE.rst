@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================
 Deprecation: #82926 - Domain-related API method in TSFE

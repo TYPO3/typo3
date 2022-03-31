@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================
 Important: #94484 - Introduce HTML Sanitizer
@@ -58,6 +58,7 @@ corresponding possibilities.
    }
 
 As a result a new tag :html:`my-element` is which is allowed to
+
 * have any safe global attribute (`id`, `class`, `data-*`, ...)
 * have attribute `href`, in case corresponding value either starting with `http://`,
   `http://` or `mailto:` - evaluated from the given regular expression

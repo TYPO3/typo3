@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================
 Breaking: #77693 - Move icons from t3skin

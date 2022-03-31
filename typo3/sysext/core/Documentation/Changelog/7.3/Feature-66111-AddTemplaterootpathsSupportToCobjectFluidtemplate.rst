@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Feature: #66111 - Add TemplateRootPaths support to cObject FLUIDTEMPLATE

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Breaking: #77547 - Behaviour of RecordCollectionRepository::findByUid changed

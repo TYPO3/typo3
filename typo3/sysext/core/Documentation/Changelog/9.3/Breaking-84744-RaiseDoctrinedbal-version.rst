@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================
 Breaking: #84744 - Raise doctrine/dbal-version

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Breaking: #82505 - Merged EXT:info_pagetsconfig to EXT:info

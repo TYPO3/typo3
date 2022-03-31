@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Deprecation: #82254 - Deprecate $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']

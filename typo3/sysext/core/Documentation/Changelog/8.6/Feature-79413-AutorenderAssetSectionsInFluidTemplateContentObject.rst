@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Feature: #79413 - Auto-render Assets sections in FLUIDTEMPLATE content object

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Important: #81899 - Backend AJAX routes use "&route=/ajax/" instead of "ajaxId" parameter

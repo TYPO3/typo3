@@ -1,16 +1,14 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
-.. _rte_ckeditor:
-.. _start:
-
-============
-rte_ckeditor
-============
-
-.. only:: html
+=====================
+TYPO3 RTE by CKEditor
+=====================
 
 :Extension key:
    rte_ckeditor
+
+:Package name:
+   typo3/cms-rte-ckeditor
 
 :Version:
    |release|
@@ -18,31 +16,41 @@ rte_ckeditor
 :Language:
    en
 
-:Description:
-   Integration of CKEditor 4 into TYPO3 for RTE editing
-
-:Keywords:
-   sysext, rte, ckeditor, cke4
-
-:Copyright:
-   2019-2021
-
 :Author:
-   Initial version by Benni Mack, updated and maintained by the TYPO3 community
+   TYPO3 contributors
 
 :License:
-   This document is published under the Open Publication License
-   available from http://www.opencontent.org/openpub/
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
-The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
+:Rendered:
+   |today|
+
+----
+
+This extension integrates the `CKEditor`_ as a rich text editor into the TYPO3
+backend.
+
+.. _CKEditor: https://ckeditor.com/
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-   :hidden:
+   :maxdepth: 2
+   :titlesonly:
 
    Introduction/Index
    GeneralConcepts/Index
    Installation/Index
    Configuration/Index
    Usage/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
    Sitemap
+   genindex

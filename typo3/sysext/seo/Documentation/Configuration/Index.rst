@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _configuration:
@@ -94,12 +94,12 @@ Redirects
 ---------
 
 Having correct redirects and choosing the appropriate
-:ref:`status code <redirects:http-status-codes>` is a very important part of SEO.
+:ref:`status code <ext_redirects:http-status-codes>` is a very important part of SEO.
 
 It is possible to manage redirects via the TYPO3
-:ref:`redirects <redirects:start>` extension, but it is not the only option and
+:doc:`redirects <ext_redirects:Index>` extension, but it is not the only option and
 from a performance perspective it may not be the best solution. Please also see
-:ref:`redirects:best-practices-performance` in the EXT:redirects documentation.
+:ref:`ext_redirects:best-practices-performance` in the EXT:redirects documentation.
 
 .. _config-tags:
 
@@ -143,7 +143,7 @@ Working links
 Links in your website are quite important. You can use third party applications to check all your links, but you can
 also use the core extension linkvalidator to ensure, all the links in your site are working as expected.
 
-Please check the documentation of :ref:`linkvalidator:start` .
+Please check the documentation of :doc:`ext_linkvalidator:Index` .
 
 TypoScript examples
 ===================
@@ -190,7 +190,7 @@ More information about the Meta Tag Api can be found on:
 Setting defaults for the author on meta tags
 --------------------------------------------
 
-This example shows how to set a default author based on the TypoScript constant :ts:`{$my.default.author}`:
+This example shows how to set a default author based on the TypoScript constant :typoscript:`{$my.default.author}`:
 
 .. code-block:: typoscript
 

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Important: #91117 - Use GlobalEventHandler and ActionDispatcher instead of inline JS

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Feature: #58122 - Configure class as non-selectable in Rich Text Editor

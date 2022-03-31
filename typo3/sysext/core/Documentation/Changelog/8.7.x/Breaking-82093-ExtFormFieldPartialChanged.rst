@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Breaking: #82093 - EXT:form Partials/Field/Field.html has changed

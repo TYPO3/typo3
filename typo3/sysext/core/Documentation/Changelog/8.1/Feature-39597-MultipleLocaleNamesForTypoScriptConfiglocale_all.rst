@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Feature: #39597 - Multiple locale names for TypoScript config.locale_all

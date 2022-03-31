@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Feature: #19494 - Add SELECTmmQuery method to DatabaseConnection

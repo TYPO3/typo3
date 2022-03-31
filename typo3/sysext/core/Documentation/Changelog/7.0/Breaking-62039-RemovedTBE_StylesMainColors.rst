@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Breaking: #62039 - Removed TBE_STYLES[mainColors]

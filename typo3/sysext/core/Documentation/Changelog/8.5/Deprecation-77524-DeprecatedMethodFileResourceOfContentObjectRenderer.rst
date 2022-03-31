@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Deprecation: #77524 - Deprecated method fileResource of ContentObjectRenderer

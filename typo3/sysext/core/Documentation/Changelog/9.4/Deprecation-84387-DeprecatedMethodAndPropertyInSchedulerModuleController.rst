@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Deprecation: #84387 - Deprecated method and property in SchedulerModuleController

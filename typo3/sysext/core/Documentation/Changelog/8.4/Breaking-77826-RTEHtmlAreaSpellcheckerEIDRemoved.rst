@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================
 Breaking: #77826 - RTEHtmlArea Spellchecker eID removed

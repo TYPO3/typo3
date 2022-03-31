@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Deprecation: #80524 - PageRepository::getHash and PageRepository::storeHash

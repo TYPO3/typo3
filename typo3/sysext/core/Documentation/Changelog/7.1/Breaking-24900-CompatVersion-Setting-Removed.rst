@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Breaking: #24900 - Remove $TYPO3_CONF_VARS[SYS][compat_version] option

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Feature: #61489 - Allow own TypoScript Conditions in Backend as well

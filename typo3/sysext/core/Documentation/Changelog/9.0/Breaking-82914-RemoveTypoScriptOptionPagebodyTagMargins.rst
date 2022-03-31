@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Breaking: #82914 - Remove TypoScript option page.bodyTagMargins
@@ -9,7 +9,7 @@ See :issue:`82914`
 Description
 ===========
 
-The TypoScript option :ts:`page.bodyTagMargins` has been removed.
+The TypoScript option :typoscript:`page.bodyTagMargins` has been removed.
 
 
 Impact

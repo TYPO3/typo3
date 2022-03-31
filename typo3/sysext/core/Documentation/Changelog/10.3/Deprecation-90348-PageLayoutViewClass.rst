@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================
 Deprecation: #90348 - PageLayoutView class
@@ -35,6 +35,6 @@ Migration
 =========
 
 Fluid templates can be extended or replaced to render custom header, footer or preview of
-a given :ts:`CType`, see feature description for feature :issue:`90348`.
+a given :typoscript:`CType`, see feature description for feature :issue:`90348`.
 
 .. index:: Backend, Fluid, NotScanned, ext:backend

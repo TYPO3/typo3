@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================================
 Breaking: #87081 - Language update (scheduler) task doesn't work after upgrading to TYPO3 >= v9.2

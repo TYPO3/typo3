@@ -1,19 +1,14 @@
-.. every .rst file should include Includes.txt
-.. use correct path!
+.. include:: /Includes.rst.txt
 
-.. include:: Includes.txt
-
-.. Every manual should have a start label for cross-referencing to
-.. start page. Do not remove this!
-
-.. _start:
-
-===========
-Admin Panel
-===========
+=================
+TYPO3 Admin Panel
+=================
 
 :Extension key:
    adminpanel
+
+:Package name:
+   typo3/cms-adminpanel
 
 :Version:
    |release|
@@ -21,37 +16,29 @@ Admin Panel
 :Language:
    en
 
-:Description:
-   Manual for the TYPO3 Admin Panel.
-
-:Keywords:
-   admin panel, frontend, debug
-
-:Copyright:
-   2021
-
-:Authors:
-   Felicity Brand
+:Author:
+   Felicity Brand & TYPO3 contributors
 
 :License:
-   This extension documentation is published under the `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons) license.
+   This document is published under the
+   `Creative Commons BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__
+   license.
 
 :Rendered:
    |today|
 
-**TYPO3**
+----
 
-The content of this document is related to TYPO3 CMS,
-a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
+The Admin Panel displays information about your site in the frontend and
+contains a range of metrics including debug and caching information.
 
-**For Contributors**
+----
 
-You are welcome to help improve this guide.
-Just click on "Edit me on GitHub" on the top right to submit your change
-request.
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
+   :titlesonly:
 
    Introduction/Index
    Installation/Index
@@ -59,5 +46,11 @@ request.
    Inspecting/Index
    Settings/Index
    Extending/Index
-   Changelog/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
    Sitemap
+   genindex

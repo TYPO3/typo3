@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Deprecation: #67670 - Deprecate custom singleton logic in GeneralUtility::getUserObj

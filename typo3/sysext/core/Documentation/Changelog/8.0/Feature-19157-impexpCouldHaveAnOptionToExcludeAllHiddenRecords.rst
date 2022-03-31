@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Feature: #19157 - Add option to exclude all hidden records in EXT:impexp

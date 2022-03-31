@@ -1,57 +1,42 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
-.. _start:
-
-========================
-Dashboard Core extension
-========================
+===============
+TYPO3 Dashboard
+===============
 
 :Extension key:
-      dashboard
+   dashboard
+
+:Package name:
+   typo3/cms-dashboard
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      Manual for our dashboard extension, which adds a dashboard with widgets to TYPO3.
-
-:Keywords:
-      dashboard, widgets
-
-:Copyright:
-      2020-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
+----
 
-**TYPO3**
+This TYPO3 backend module is used to configure and create backend widgets.
 
-The content of this document is related to TYPO3 CMS,
-a GNU/GPL CMS/Framework available from `typo3.org
-<https://typo3.org/>`_ .
+----
 
-**For Contributors**
-
-You are welcome to help improve this guide. Just click on "Edit on GitHub"
-on the top right to submit your change request.
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
+   :maxdepth: 2
+   :titlesonly:
 
    Introduction/Index
    Installation/Index
@@ -59,3 +44,11 @@ on the top right to submit your change request.
    Configuration/Index
    Developer/Index
    Widgets/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================================================
 Deprecation: #79258 - Methods getRecordLocalization() and getPreviousLocalizedRecordUid() in LocalizationRepository

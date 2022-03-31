@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Feature: #90461 - Quick-Create Content Elements via NewContentElementWizard

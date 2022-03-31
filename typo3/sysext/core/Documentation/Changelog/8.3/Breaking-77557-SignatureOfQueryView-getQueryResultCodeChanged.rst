@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Breaking: #77557 - Signature of QueryView->getQueryResultCode() changed

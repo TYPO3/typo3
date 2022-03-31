@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Deprecation: #90956 - Alternative fetch methods and reports for GeneralUtility::getUrl()

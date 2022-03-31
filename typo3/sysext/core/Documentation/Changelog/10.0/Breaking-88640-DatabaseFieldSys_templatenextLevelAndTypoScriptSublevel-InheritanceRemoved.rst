@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================================
 Breaking: #88640 - Database field "sys_template.nextLevel" and TypoScript sublevel - inheritance removed
@@ -44,6 +44,6 @@ this SQL command:
 
 before updating TYPO3 Core.
 
-Replace the sys_template record (the uid of the record is stored in the "nextLevel" field) with a condition e.g. :ts:`[tree.level > 1]` to add TypoScript for subpages.
+Replace the sys_template record (the uid of the record is stored in the "nextLevel" field) with a condition e.g. :typoscript:`[tree.level > 1]` to add TypoScript for subpages.
 
 .. index:: Database, NotScanned

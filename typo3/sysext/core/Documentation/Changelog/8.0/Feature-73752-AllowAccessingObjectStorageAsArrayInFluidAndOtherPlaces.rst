@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Feature: #73752 - Allow accessing ObjectStorage as array in Fluid and other places

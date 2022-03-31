@@ -37,7 +37,7 @@ Editors
 Well curated content and editors which have a good understanding of SEO and
 possible problems with redirects are a good idea in any case. TYPO3 comes
 with extensive :ref:`permission <t3coreapi:access-users-groups>` and
-:ref:`workspaces <t3workspaces:start>` management - which gives you the
+:ref:`workspaces <ext_workspaces:start>` management - which gives you the
 possibility to only grant advanced editor groups access to parts of the content
 (e.g. pages, redirect module) which they are well equipped to handle.
 

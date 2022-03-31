@@ -1,4 +1,4 @@
-.. include:: ../../../../../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.validatorsdefinition.datetime:
@@ -46,7 +46,7 @@ implementationClassName
 
          DateTime:
            implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator
- 
+
 :aspect:`Good to know`
       - :ref:`"Custom validator implementations"<concepts-validators-customvalidatorimplementations>`
 

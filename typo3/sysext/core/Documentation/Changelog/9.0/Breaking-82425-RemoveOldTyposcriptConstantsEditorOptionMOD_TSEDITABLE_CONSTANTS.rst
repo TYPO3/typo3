@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================================
 Breaking: #82425 - Remove old typoscript constants editor option "###MOD_TS:EDITABLE_CONSTANTS###"

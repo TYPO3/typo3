@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Breaking: #67402 - Extbase AbstractDomainObject initializeObject

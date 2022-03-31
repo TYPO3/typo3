@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Deprecation: #89554 - Deprecate \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController

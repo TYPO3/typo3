@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================
 Breaking: #68150 - $GLOBALS['CLIENT']

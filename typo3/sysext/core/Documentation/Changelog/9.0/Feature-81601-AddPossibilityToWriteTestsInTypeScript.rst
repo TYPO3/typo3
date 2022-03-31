@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Feature: #81601 - Add possibility to write tests in typeScript
@@ -9,7 +9,7 @@ See :issue:`81601`
 Description
 ===========
 
-The core is using TypeScript as language already - now writing unit tests in TypeScript is also possible. 
+The core is using TypeScript as language already - now writing unit tests in TypeScript is also possible.
 The `tsconfig.json` now contains both JavaScript and TypeScript module path mappings, the Grunt file will
 take care of adjusting the paths for TypeScript as well.
 

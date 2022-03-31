@@ -1,18 +1,14 @@
-.. every .rst file should include Includes.rst.txt
-
 .. include:: /Includes.rst.txt
 
-.. Every manual should have a start label for cross-referencing to
-.. start page. Do not remove this!
-
-.. _start:
-
-=========
-Redirects
-=========
+===============
+TYPO3 Redirects
+===============
 
 :Extension key:
    redirects
+
+:Package name:
+   typo3/cms-redirects
 
 :Version:
    |release|
@@ -20,19 +16,29 @@ Redirects
 :Language:
    en
 
-:Description:
-   The TYPO3 system extension EXT:redirects handles redirects within a TYPO3 site.
+:Author:
+   TYPO3 contributors
 
 :License:
-   This extension documentation is published under the `CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__ (Creative Commons) license.
+   This document is published under the
+   `Creative Commons BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__
+   license.
 
-**TYPO3**
+:Rendered:
+   |today|
 
-The content of this document is related to TYPO3 CMS,
-a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
+----
+
+This extension makes it possible to create manual redirects, list existing
+redirects and automatically create redirects on slug changes.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
+   :titlesonly:
 
    Introduction/Index
    Installation/Index
@@ -41,4 +47,11 @@ a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
    BestPractices/Index
    KnownProblems/Index
    Basics/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
    Sitemap
+   genindex

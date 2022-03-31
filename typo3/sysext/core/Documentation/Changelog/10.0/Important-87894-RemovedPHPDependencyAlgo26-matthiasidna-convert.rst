@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Important: #87894 - Removed PHP dependency algo26-matthias/idna-convert

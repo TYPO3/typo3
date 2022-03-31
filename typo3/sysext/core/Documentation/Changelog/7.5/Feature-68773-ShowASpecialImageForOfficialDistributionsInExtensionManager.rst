@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Feature: #68773 - Show a special image for official distributions in Extension Manager

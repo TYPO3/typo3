@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Deprecation: #88807 - AdminPanel InitializableInterface has been deprecated

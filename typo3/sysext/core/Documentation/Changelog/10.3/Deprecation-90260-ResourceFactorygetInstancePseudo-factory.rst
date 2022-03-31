@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Deprecation: #90260 - ResourceFactory::getInstance pseudo-factory

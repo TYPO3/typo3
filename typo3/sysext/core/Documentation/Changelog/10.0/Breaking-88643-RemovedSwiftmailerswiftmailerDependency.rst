@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Breaking: #88643 - Removed swiftmailer/swiftmailer dependency

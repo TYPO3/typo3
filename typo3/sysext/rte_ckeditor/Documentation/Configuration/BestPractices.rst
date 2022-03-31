@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _config-best-practices:
@@ -21,7 +21,7 @@ For more information about sitepackages in TYPO3 see:
 
 * Benjamin Kott: `"The Anatomy of Sitepackages"
   <https://www.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`__ (Slideshare)
-* :ref:`t3sitepackage:start`
+* :doc:`t3sitepackage:Index`
 
 .. TODO Explain Create an extension, add ext_localconf.php, start over and copy over the Default.yaml file
 

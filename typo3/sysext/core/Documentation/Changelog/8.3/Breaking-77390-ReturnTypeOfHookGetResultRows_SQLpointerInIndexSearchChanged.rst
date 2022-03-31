@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================================
 Breaking: #77390 - Expected return type of hook getResultRows_SQLpointer in Indexed Search changed

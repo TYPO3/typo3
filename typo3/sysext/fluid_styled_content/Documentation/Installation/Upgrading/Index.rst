@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _upgrading:
 
@@ -24,9 +24,9 @@ The upgrade wizards can be found in the Install tool.
 
 .. attention::
 
-   The predefined CONTENT objects :ts:`styles.content.getLeft`,
-   :ts:`styles.content.getRight` and :ts:`styles.content.getBorder` are not
-   provided anymore. :ts:`styles.content.get` still exists for your convenience. Most of
+   The predefined CONTENT objects :typoscript:`styles.content.getLeft`,
+   :typoscript:`styles.content.getRight` and :typoscript:`styles.content.getBorder` are not
+   provided anymore. :typoscript:`styles.content.get` still exists for your convenience. Most of
    the current websites are using "backend layouts", where the predefined numbering of the
    columns does not make sense.
 

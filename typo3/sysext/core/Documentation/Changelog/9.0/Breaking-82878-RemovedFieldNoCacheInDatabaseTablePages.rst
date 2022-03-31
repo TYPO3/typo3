@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Breaking: #82878 - Removed field "no_cache" in database table "pages"

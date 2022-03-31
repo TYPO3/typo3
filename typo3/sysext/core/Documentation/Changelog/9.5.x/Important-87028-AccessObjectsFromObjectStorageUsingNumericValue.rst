@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Important: #87028 - Access objects from `ObjectStorage` using numeric value

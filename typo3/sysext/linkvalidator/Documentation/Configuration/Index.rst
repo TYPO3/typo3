@@ -1,9 +1,4 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. highlight:: typoscript
 
@@ -47,7 +42,7 @@ Reference
 You can set the following options in the TSconfig for a page (e.g. the
 root page) and override them in user or groups TSconfig. You must
 prefix them with mod.linkvalidator, e.g.
-:ts:`mod.linkvalidator.searchFields.pages = canonical_link`.
+:typoscript:`mod.linkvalidator.searchFields.pages = canonical_link`.
 
 
 .. _searchfields-key:
@@ -66,7 +61,7 @@ searchFields.[key]
    Description
          Comma separated list of table fields in which to check for
          broken links. Linkvalidator only checks fields that have
-         been defined in :ts:`searchFields`.
+         been defined in :typoscript:`searchFields`.
 
          Linkvalidator ships with sensible defaults that work well
          for the TYPO3 core, but additional third party extensions
@@ -75,7 +70,7 @@ searchFields.[key]
          .. warning::
 
             Currently, Linkvalidator can only detect links for fields having at
-            least one :ref:`softref <columns-input-properties-softref>` set in their TCA configuration.
+            least one :ref:`softref <t3tca:columns-input-properties-softref>` set in their TCA configuration.
 
             For this reason, it is currently not possible to check for
             `pages.media`. This will be fixed in the future.

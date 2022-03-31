@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Breaking: #79622 - Default layouts for Fluid Styled Content changed

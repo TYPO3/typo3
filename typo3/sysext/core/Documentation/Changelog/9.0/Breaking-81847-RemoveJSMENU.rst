@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================
 Breaking: #81847 - Remove JSMENU
@@ -9,7 +9,7 @@ See :issue:`81847`
 Description
 ===========
 
-The content objects :ts:`JSMENU` and :ts:`JSMENUITEM` to create a jump menu have been removed.
+The content objects :typoscript:`JSMENU` and :typoscript:`JSMENUITEM` to create a jump menu have been removed.
 The used JavaScript is totally outdated and has not really been touched since its creation more than 10 years ago.
 
 If this kind of menu is needed it can be easily achieved with a TMENU as well:

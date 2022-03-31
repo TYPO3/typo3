@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Feature: #86160 - PageTypeEnhancer for mapping &type parameter
@@ -50,7 +50,7 @@ Now configure the Route Enhancer in your site's :file:`config.yaml` file like th
             '.json': 26
 
 
-The :yaml:`map` allows to add a filename or a file ending and map this to a :ts:`page.typeNum` value.
+The :yaml:`map` allows to add a filename or a file ending and map this to a :typoscript:`page.typeNum` value.
 
 It is also possible to set :yaml:`default` to e.g. ".html" to add a ".html" suffix to all default pages.
 

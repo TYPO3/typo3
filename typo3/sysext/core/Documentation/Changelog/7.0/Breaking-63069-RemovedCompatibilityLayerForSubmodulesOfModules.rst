@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Breaking: #63069 - Removed compatibility layer for submodules of func and info modules

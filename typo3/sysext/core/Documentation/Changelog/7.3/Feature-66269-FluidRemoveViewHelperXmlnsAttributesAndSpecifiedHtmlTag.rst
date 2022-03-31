@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Feature: #66269 - Fluid: Remove ViewHelper xmlns-attributes and specified html tag

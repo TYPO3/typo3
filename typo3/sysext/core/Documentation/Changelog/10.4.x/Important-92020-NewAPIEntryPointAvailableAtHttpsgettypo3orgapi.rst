@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Important: #92020 - New API entry point available at https://get.typo3.org/api/

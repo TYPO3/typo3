@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Feature: #76108 - Replace ExtJS category tree with D3 and SVG
@@ -36,7 +36,7 @@ Data binding
 ------------
 
 Thanks to D3, each SVG node representing tree item is bound to the data object. The general idea is that all operations (like showing/hiding/selecting...) are first performed on the dataset, and then the view (SVG) is refreshed.
-In the :javascript:`initialize` function SvgTree loads the whole tree as json
+In the :js:`initialize` function SvgTree loads the whole tree as json
 
 
 Impact

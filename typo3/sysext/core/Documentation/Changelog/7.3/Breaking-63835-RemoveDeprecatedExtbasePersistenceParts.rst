@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Breaking: #63835 - Remove Deprecated Parts in Extbase Persistence Layer

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Deprecation: #51360 - Deprecate mod.tx_linkvalidator namespace in scheduler settings

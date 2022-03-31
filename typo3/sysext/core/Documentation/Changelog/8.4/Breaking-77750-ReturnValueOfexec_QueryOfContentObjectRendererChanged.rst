@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Breaking: #77750 - Return value of ContentObjectRenderer::exec_Query changed

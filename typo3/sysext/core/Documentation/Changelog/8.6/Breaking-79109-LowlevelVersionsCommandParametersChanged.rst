@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Breaking: #79109 - Lowlevel VersionsCommand parameters changed
@@ -17,7 +17,7 @@ via `./typo3/sysext/core/bin/typo3 cleanup:versions` and allows the following CL
 
 The following options can be set:
 
-- :shell:`--action={nameofaction}` to clean up versioned records, one of the following actions are possible:
+- :bash:`--action={nameofaction}` to clean up versioned records, one of the following actions are possible:
 
   - "versions_in_live": Delete versioned records in the live workspace
 
@@ -27,13 +27,13 @@ The following options can be set:
 
   - "unused_placeholders": Remove placeholders which are not used anymore from the database
 
-- :shell:`-v` and :shell:`-vv` to show more detailed information on the records affected
+- :bash:`-v` and :bash:`-vv` to show more detailed information on the records affected
 
-- :shell:`--pid=23` or :shell:`-p=23` to only find versions with page ID 23 (otherwise "0" is taken)
+- :bash:`--pid=23` or :bash:`-p=23` to only find versions with page ID 23 (otherwise "0" is taken)
 
-- :shell:`--depth=4` or :shell:`-d=4` to only clean recursively until a certain page tree level.
+- :bash:`--depth=4` or :bash:`-d=4` to only clean recursively until a certain page tree level.
 
-- :shell:`--dry-run` to only show the records to be changed / deleted
+- :bash:`--dry-run` to only show the records to be changed / deleted
 
 The PHP class of the old CLI command :php:`TYPO3\CMS\Lowlevel\VersionsCommand` has been removed.
 
@@ -41,7 +41,7 @@ The PHP class of the old CLI command :php:`TYPO3\CMS\Lowlevel\VersionsCommand` h
 Impact
 ======
 
-Calling the old CLI command :shell:`./typo3/cli_dispatch.phpsh lowlevel_cleaner versions` will result in an error message.
+Calling the old CLI command :bash:`./typo3/cli_dispatch.phpsh lowlevel_cleaner versions` will result in an error message.
 
 
 Affected Installations

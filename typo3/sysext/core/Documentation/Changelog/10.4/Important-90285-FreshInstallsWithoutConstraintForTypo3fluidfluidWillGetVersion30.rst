@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================================
 Important: #90285 - Fresh installs without constraint for typo3fluid/fluid will get version 3.0+

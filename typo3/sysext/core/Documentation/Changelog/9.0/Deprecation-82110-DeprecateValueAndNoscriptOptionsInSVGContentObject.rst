@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Deprecation: #82110 - Deprecate option "value" and "noscript" in SVG content object

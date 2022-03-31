@@ -1,57 +1,52 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
-
-.. _start:
-
-=========================
-Workspaces and Versioning
-=========================
+================
+TYPO3 Workspaces
+================
 
 :Extension key:
-      workspaces
+   workspaces
+
+:Package name:
+   typo3/cms-workspaces
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      Workspace functionality for TYPO3 CMS.
-
-:Keywords:
-      workspaces
-
-:Copyright:
-      2000-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
+----
 
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
+This extension introduces workflows with custom stages and versioning for a more
+granular editing and publishing process.
 
+----
 
-
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
    :titlesonly:
-   :glob:
 
    Introduction/Index
    Administration/Index
    UsersGuide/Index
-   Targets
 
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

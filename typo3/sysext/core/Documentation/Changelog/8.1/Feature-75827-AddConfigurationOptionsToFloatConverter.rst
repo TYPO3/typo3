@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================================
 Feature: #75827 - Add configuration options to \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter

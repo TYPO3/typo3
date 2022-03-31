@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _changelog-Feature-90899-IntroduceAssetPreRenderingEvents:
 
@@ -42,7 +42,7 @@ boolean only returns assets of the given priority.
 .. note::
 
    post-processing functionality for assets registered via
-   TypoScript :ts:`page.include...` or the :php:`PageRenderer::add*()`
+   TypoScript :typoscript:`page.include...` or the :php:`PageRenderer::add*()`
    functions are still provided by these hooks:
 
    * :php:`$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']`

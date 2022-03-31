@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Breaking: #78477 - FlashMessagesViewHelper no longer inherits from TagBasedViewHelper

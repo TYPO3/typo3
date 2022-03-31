@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Breaking: #76108 - Replace ExtJS category tree with D3 and SVG
@@ -20,14 +20,14 @@ It also polluted backend user settings with tons of data without giving much usa
 Impact
 ======
 
-Any JS code referencing ExtJS component :javascript:`TYPO3.Components.Tree` or its sub-components
-(like :javascript:`TYPO3.Components.Tree.StandardTree`) will no longer work.
+Any JS code referencing ExtJS component :js:`TYPO3.Components.Tree` or its sub-components
+(like :js:`TYPO3.Components.Tree.StandardTree`) will no longer work.
 
 
 Affected Installations
 ======================
 
-All installations having extensions which modify the :javascript:`TYPO3.Components.Tree`
+All installations having extensions which modify the :js:`TYPO3.Components.Tree`
 (implemented in :file:`typo3/sysext/backend/Resources/Public/JavaScript/tree.js`) component,
 or rely on the file being present.
 

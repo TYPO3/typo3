@@ -1,9 +1,4 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 
@@ -95,14 +90,10 @@ Linkvalidator features full support of the TYPO3 scheduler. This is
 the linkvalidator task:
 
 .. figure:: ../Images/SchedulerTask.png
-   :alt: The linkvalidator scheduler task (1)
+   :alt: The linkvalidator scheduler task
 
-   Defining the linkvalidator task in the Scheduler (2)
+   Defining the linkvalidator task in the Scheduler
 
-.. figure:: ../Images/SchedulerTask2.png
-   :alt: The linkvalidator scheduler task (2)
-
-   Defining the linkvalidator task in the Scheduler (2)
 
 
 - With this task you can run linkvalidator regularly via cron without

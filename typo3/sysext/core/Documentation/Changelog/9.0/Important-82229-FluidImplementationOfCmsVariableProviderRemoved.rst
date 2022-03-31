@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Important: #82229 - Fluid implementation of CmsVariableProvider removed

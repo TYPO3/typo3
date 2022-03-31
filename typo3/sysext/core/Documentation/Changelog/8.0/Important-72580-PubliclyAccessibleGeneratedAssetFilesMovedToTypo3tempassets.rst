@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Important: #72580 - Publicly accessible generated asset files moved to typo3temp/assets/

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Feature: #70056 - Added PHP library "Guzzle" for HTTP Requests within TYPO3

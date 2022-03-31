@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #67228 - Emit Signal when an IndexRecord is marked as missing

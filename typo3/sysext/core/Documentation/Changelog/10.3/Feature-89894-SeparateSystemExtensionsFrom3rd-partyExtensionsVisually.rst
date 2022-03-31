@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Feature: #89894 - Separate system extensions from 3rd-party extensions visually

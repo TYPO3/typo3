@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================
 Breaking: #82629 - Removed tce_db options "prErr" and "uPT"

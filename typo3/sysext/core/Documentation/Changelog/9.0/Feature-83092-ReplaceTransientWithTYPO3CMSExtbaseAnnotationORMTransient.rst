@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================
 Feature: #83092 - Replace @transient with @TYPO3\\CMS\\Extbase\\Annotation\\ORM\\Transient

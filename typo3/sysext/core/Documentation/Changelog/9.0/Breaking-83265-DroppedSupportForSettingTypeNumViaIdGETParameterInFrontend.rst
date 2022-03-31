@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Breaking: #83265 - Dropped support for setting "typeNum" via id GET Parameter in Frontend

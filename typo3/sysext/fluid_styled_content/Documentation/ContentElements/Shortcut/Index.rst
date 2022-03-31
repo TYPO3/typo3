@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _content-element-shortcut:
 
@@ -26,5 +26,5 @@ In the frontend the referenced content elements will show up the same as the ori
 
    This is the only content element still using a bit of TypoScript in the rendering
    process. This is done because you can add different rendering for records from
-   different tables. Take a look at :ts:`tt_content.shortcut.20`.
+   different tables. Take a look at :typoscript:`tt_content.shortcut.20`.
 

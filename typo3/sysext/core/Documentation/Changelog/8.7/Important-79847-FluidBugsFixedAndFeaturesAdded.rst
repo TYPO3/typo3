@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Important: #79847 - Fluid bugs fixed and features added (Fluid 2.3.1)

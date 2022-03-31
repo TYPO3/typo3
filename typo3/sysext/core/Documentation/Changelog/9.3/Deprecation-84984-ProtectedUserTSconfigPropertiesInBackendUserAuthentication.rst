@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Deprecation: #84984 - Protected user TSconfig properties in BackendUserAuthentication
