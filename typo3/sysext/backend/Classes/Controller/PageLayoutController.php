@@ -90,7 +90,7 @@ class PageLayoutController
      *
      * @var string
      */
-    protected $colPosList;
+    protected $colPosList = '';
 
     /**
      * Currently selected language for editing content elements
