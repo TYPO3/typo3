@@ -88,7 +88,6 @@ Options:
             - checkAnnotations: check php code for allowed annotations
             - checkBom: check UTF-8 files do not contain BOM
             - checkComposer: check composer.json files for version integrity
-            - checkCsvFixtures: test integrity of functional test csv fixtures
             - checkExceptionCodes: test core for duplicate exception codes
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
             - checkFilePathLength: test core file paths do not exceed maximum length
@@ -102,7 +101,6 @@ Options:
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
             - composerTestDistribution: "composer update" in Build/composer to verify core dependencies
             - composerValidate: "composer validate"
-            - fixCsvFixtures: fix broken functional test csv fixtures
             - functional: PHP functional tests
             - functionalDeprecated: deprecated PHP functional tests
             - lintPhp: PHP linting
@@ -517,12 +515,6 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
-    checkCsvFixtures)
-        setUpDockerComposeDotEnv
-        docker-compose run check_csv_fixtures
-        SUITE_EXIT_CODE=$?
-        docker-compose down
-        ;;
     checkExceptionCodes)
         setUpDockerComposeDotEnv
         docker-compose run check_exception_codes
@@ -592,12 +584,6 @@ case ${TEST_SUITE} in
     composerValidate)
         setUpDockerComposeDotEnv
         docker-compose run composer_validate
-        SUITE_EXIT_CODE=$?
-        docker-compose down
-        ;;
-    fixCsvFixtures)
-        setUpDockerComposeDotEnv
-        docker-compose run fix_csv_fixtures
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

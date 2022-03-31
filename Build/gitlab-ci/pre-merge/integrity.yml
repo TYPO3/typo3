@@ -51,7 +51,6 @@ integration various pre-merge:
     - Build/Scripts/runTests.sh -s checkRst -p 8.1
     - Build/Scripts/runTests.sh -s checkFilePathLength -p 8.1
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 8.1
-    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 8.1
     - Build/Scripts/runTests.sh -s checkBom -p 8.1
     - Build/Scripts/runTests.sh -s checkComposer -p 8.1
     - Build/Scripts/runTests.sh -s checkTestMethodsPrefix -p 8.1
