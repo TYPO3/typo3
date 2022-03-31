@@ -19,18 +19,19 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=datetime fields
  */
-class TypeInputEvalRequiredTrimDate extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeDatetime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * General match if type=datetime
+     *
+     * @var array
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'eval' => 'trim,required,date',
+                'type' => 'datetime',
             ],
         ],
     ];
@@ -43,6 +44,6 @@ class TypeInputEvalRequiredTrimDate extends AbstractFieldGenerator implements Fi
      */
     public function generate(array $data): string
     {
-        return (string)$this->kauderwelschService->getDateTimestamp();
+        return (string)$this->kauderwelschService->getDatetimeTimestamp();
     }
 }

@@ -19,18 +19,20 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=datetime fields with format=date
  */
-class TypeInputEvalDate extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeDatetimeFormatDate extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * General match if type=datetime and format=date
+     *
+     * @var array
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'eval' => 'date',
+                'type' => 'datetime',
+                'format' => 'date',
             ],
         ],
     ];

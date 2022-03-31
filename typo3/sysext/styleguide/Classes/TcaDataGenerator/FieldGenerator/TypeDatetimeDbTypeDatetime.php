@@ -19,18 +19,20 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=datetime fields with dbType=datetime
  */
-class TypeInputEvalTime extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeDatetimeDbTypeDatetime extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * General match if type=datetime and dbType=datetime
+     *
+     * @var array
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'eval' => 'time',
+                'type' => 'datetime',
+                'dbType' => 'datetime',
             ],
         ],
     ];
@@ -43,7 +45,6 @@ class TypeInputEvalTime extends AbstractFieldGenerator implements FieldGenerator
      */
     public function generate(array $data): string
     {
-        // 05:23
-        return '19380';
+        return $this->kauderwelschService->getDatetimeString();
     }
 }

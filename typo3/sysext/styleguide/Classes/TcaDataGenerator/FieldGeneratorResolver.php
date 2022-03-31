@@ -32,8 +32,8 @@ class FieldGeneratorResolver
      */
     protected $fieldValueGenerators = [
         // dbType = date / datetime have ['config']['default'] set, so match them before general ConfigDefault
-        FieldGenerator\TypeInputEvalDateDbTypeDate::class,
-        FieldGenerator\TypeInputEvalDatetimeDbTypeDatetime::class,
+        FieldGenerator\TypeDatetimeFormatDateDbTypeDate::class,
+        FieldGenerator\TypeDatetimeDbTypeDatetime::class,
 
         // p/w generators are *before* 'default', so hashing kicks in, even if default is set.
         FieldGenerator\TypePasswordHashedFalse::class,
@@ -45,17 +45,12 @@ class FieldGeneratorResolver
         // Specific type=input generator
         FieldGenerator\TypeInputMax4::class,
         FieldGenerator\TypeInputEvalAlphanum::class,
-        FieldGenerator\TypeInputEvalDate::class,
-        FieldGenerator\TypeInputEvalDatetime::class,
         FieldGenerator\TypeInputEvalDouble2::class,
         FieldGenerator\TypeEmail::class,
         FieldGenerator\TypeInputEvalInt::class,
         FieldGenerator\TypeInputEvalIsIn::class,
         FieldGenerator\TypeInputEvalMd5::class,
         FieldGenerator\TypeInputEvalNum::class,
-        FieldGenerator\TypeInputEvalRequiredTrimDate::class,
-        FieldGenerator\TypeInputEvalTime::class,
-        FieldGenerator\TypeInputEvalTimesec::class,
         FieldGenerator\TypeInputEvalUpper::class,
         FieldGenerator\TypeInputEvalYear::class,
         FieldGenerator\TypeInputWizardColorPicker::class,
@@ -64,6 +59,14 @@ class FieldGeneratorResolver
         FieldGenerator\TypeInputForceL10nParent::class,
         // General type=input generator
         FieldGenerator\TypeInput::class,
+
+        // Specific type=datetime generator
+        FieldGenerator\TypeDatetimeFormatDate::class,
+        FieldGenerator\TypeDatetimeRequiredFormatDate::class,
+        FieldGenerator\TypeDatetimeFormatTime::class,
+        FieldGenerator\TypeDatetimeFormatTimesec::class,
+        // General type=datetime generator
+        FieldGenerator\TypeDatetime::class,
 
         // General type=link generator
         FieldGenerator\TypeLink::class,
