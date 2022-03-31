@@ -144,7 +144,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
                 'all' => [],
             ];
 
-            if (is_array($this->thisConfig['classesAnchor'])) {
+            if (is_array($this->thisConfig['classesAnchor'] ?? null)) {
                 $readOnlyTitle = $this->isReadonlyTitle();
                 foreach ($this->thisConfig['classesAnchor'] as $label => $conf) {
                     if (in_array($conf['class'] ?? null, $classesAnchorArray, true)) {
