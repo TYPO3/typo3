@@ -231,9 +231,7 @@ class InputTextElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldWizardResult, false);
         $inputType = 'text';
 
-        if (in_array('email', $evalList, true)) {
-            $inputType = 'email';
-        } elseif (!empty(array_intersect($evalList, ['int', 'num']))) {
+        if (!empty(array_intersect($evalList, ['int', 'num']))) {
             $inputType = 'number';
 
             if (isset($config['range']['lower'])) {

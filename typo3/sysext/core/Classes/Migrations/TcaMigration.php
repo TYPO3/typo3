@@ -655,8 +655,8 @@ class TcaMigration
 
                 $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
                 $evalList = array_filter($evalList, static function (string $eval) {
-                    // Remove "email" and "trim" from $evalList
-                    return $eval !== 'email' && $eval !== 'trim';
+                    // Remove anything except "unique", "uniqueInPid" and "null" from eval
+                    return in_array($eval, ['unique', 'uniqueInPid', 'null'], true);
                 });
 
                 if ($evalList !== []) {

@@ -1659,7 +1659,14 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'input',
-                                'eval' => 'email,trim,unique',
+                                'eval' => 'email,trim,unique,uniqueInPid,null',
+                                'required' => true,
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'email,trim',
                                 'required' => true,
                             ],
                         ],
@@ -1689,7 +1696,13 @@ class TcaMigrationTest extends UnitTestCase
                         'aColumn' => [
                             'config' => [
                                 'type' => 'email',
-                                'eval' => 'unique',
+                                'eval' => 'unique,uniqueInPid,null',
+                                'required' => true,
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'email',
                                 'required' => true,
                             ],
                         ],
