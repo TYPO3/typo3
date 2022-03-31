@@ -1,15 +1,12 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+============================
+TYPO3 extension ``lowlevel``
+============================
 
-=============================
-Lowlevel (typo3/cms-lowlevel)
-=============================
-
-The lowlevel extension provides command line scripts for technical analysis of
+The Low Level extension provides command line scripts for technical analysis of
 the system. This includes raw database search, checking relations, counting
-pages and records etc.
+pages and records.
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-lowlevel/master/en-us
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-lowlevel/main/en-us/
+:TER:         https://extensions.typo3.org/extension/lowlevel/

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Deprecation: #96996 - Deprecate TypoScriptFrontendController->checkEnableFields

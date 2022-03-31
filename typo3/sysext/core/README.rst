@@ -1,11 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+========================
+TYPO3 extension ``core``
+========================
 
-===============================
-TYPO3 CMS Core (typo3/cms-core)
-===============================
+This extension provides the TYPO3 API, i.e. the core functionalities, which can
+be used and extended in any other TYPO3 extension.
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/core/

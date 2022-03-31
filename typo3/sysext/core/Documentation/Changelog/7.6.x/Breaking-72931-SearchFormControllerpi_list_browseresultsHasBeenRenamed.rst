@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Breaking: #72931 - SearchFormController::pi_list_browseresults() has been renamed

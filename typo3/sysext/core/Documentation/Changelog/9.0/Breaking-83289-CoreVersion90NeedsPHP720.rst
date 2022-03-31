@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Breaking: #83289 - Core version 9.0 needs PHP 7.2.0

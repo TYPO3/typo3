@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Breaking: #77342 - Removed templateFile override via FlexForm in EXT:felogin

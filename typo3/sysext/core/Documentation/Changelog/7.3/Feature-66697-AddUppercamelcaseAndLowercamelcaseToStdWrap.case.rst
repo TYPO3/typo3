@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Feature: #66697 - Add uppercamelcase and lowercamelcase to stdWrap.case

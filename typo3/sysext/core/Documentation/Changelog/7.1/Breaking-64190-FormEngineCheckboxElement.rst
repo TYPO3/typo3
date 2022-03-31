@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Breaking: #64190 - FormEngine Checkbox Element limitation of cols setting

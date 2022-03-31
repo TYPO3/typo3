@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================
 Deprecation: #57385 - Deprecate parameter $caseSensitive of Extbase Query->like comparison

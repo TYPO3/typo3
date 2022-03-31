@@ -1,16 +1,13 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+============================
+TYPO3 extension ``filelist``
+============================
 
-=======================================
-TYPO3 CMS Filelist (typo3/cms-filelist)
-=======================================
+This TYPO3 backend module (File>Filelist) is used for managing files.
 
-TYPO3 backend module (File>Filelist) used for managing files.
+It makes files in the defined storages available in the backend (upload, delete,
+copy etc.). The default storage is fileadmin/.
 
-Makes files in the defined storages available in the backend (upload, delete,
-copy etc.). The default storage is fileadmin.
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/filelist/

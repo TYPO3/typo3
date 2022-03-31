@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Breaking: #66868 - Move usage of BackendUserSettingsDataProvider

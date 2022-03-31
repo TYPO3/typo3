@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Feature: #70126 - Introduce TCA option to add autocomplete attribute to input fields

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Feature: #97230 - PSR-14 Event for modifying image manipulation preview url

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _changelog-Feature-90522-IntroduceAssetCollector:
 
@@ -18,7 +18,7 @@ in the output.
 The :php:`priority` flag (default: :php:`false`) controls where the asset is included:
 
 * JavaScript will be output inside :html:`<head>` (:php:`priority=true`) or at the bottom of the :html:`<body>` tag (:php:`priority=false`)
-* CSS will always be output inside :html:`<head>`, yet grouped by :javascript:`priority`.
+* CSS will always be output inside :html:`<head>`, yet grouped by :js:`priority`.
 
 By including assets per-component, it can leverage the adoption of HTTP/2 multiplexing which removes the necessity of having all CSS/JavaScript
 concatenated into one file.
@@ -85,25 +85,25 @@ Currently, CSS and JavaScript registered with the AssetCollector will be rendere
 PageRenderer counterparts. The order is:
 
 - :html:`<head>`
-- :ts:`page.includeJSLibs.forceOnTop`
-- :ts:`page.includeJSLibs`
-- :ts:`page.includeJS.forceOnTop`
-- :ts:`page.includeJS`
+- :typoscript:`page.includeJSLibs.forceOnTop`
+- :typoscript:`page.includeJSLibs`
+- :typoscript:`page.includeJS.forceOnTop`
+- :typoscript:`page.includeJS`
 - :php:`AssetCollector::addJavaScript()` with 'priority'
-- :ts:`page.jsInline`
+- :typoscript:`page.jsInline`
 - :php:`AssetCollector::addInlineJavaScript()` with 'priority'
 - :html:`</head>`
 
-- :ts:`page.includeJSFooterlibs.forceOnTop`
-- :ts:`page.includeJSFooterlibs`
-- :ts:`page.includeJSFooter.forceOnTop`
-- :ts:`page.includeJSFooter`
+- :typoscript:`page.includeJSFooterlibs.forceOnTop`
+- :typoscript:`page.includeJSFooterlibs`
+- :typoscript:`page.includeJSFooter.forceOnTop`
+- :typoscript:`page.includeJSFooter`
 - :php:`AssetCollector::addJavaScript()`
-- :ts:`page.jsFooterInline`
+- :typoscript:`page.jsFooterInline`
 - :php:`AssetCollector::addInlineJavaScript()`
 
 Currently, JavaScript registered with AssetCollector is not affected by
-:ts:`config.moveJsFromHeaderToFooter`.
+:typoscript:`config.moveJsFromHeaderToFooter`.
 
 Examples
 --------

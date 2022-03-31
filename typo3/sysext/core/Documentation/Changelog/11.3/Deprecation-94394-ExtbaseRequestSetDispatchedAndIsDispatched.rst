@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Deprecation: #94394 - Extbase Request setDispatched() and isDispatched()

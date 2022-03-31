@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Deprecation: #83506 - Deprecated usage of TSFE:fe_user|sesData in TS conditions

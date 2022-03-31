@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Breaking: #96812 - No Frontend TypoScript based template overrides in the backend

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Feature: #87616 - PSR-14 Event for modifying Page Link Generation

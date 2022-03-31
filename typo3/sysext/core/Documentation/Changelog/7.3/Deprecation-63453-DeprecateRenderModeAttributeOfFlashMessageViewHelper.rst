@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Deprecation: #63453 - Deprecate renderMode attribute of FlashMessagesViewHelper

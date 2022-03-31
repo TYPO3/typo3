@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Deprecation: #93149 - T3Editor JavaScript module replaced by CodeMirrorElement

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Breaking: #75747 - EXT:form - Removed useDefaultContentObject setting
@@ -10,7 +10,7 @@ See :issue:`75747`
 Description
 ===========
 
-The TypoScript option :ts:`useDefaultContentObject` of the FORM cObject has been removed.
+The TypoScript option :typoscript:`useDefaultContentObject` of the FORM cObject has been removed.
 Setting this value to 0 allowed the usage of the prehistoric content type `mailform`.
 
 
@@ -23,7 +23,7 @@ It is not possible to configure the rendering of the FORM cOject. The setting is
 Affected Installations
 ======================
 
-Any installation that uses the TypoScript option :ts:`useDefaultContentObject = 0`.
+Any installation that uses the TypoScript option :typoscript:`useDefaultContentObject = 0`.
 
 
 Migration

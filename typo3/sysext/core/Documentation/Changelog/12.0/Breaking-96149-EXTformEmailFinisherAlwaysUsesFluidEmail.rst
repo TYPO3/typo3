@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Breaking: #96149 - EXT:form EmailFinisher always uses FluidEmail

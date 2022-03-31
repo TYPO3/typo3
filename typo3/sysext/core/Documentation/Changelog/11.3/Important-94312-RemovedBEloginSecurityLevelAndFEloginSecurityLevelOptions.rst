@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Important: #94312 - Removed BE/loginSecurityLevel and FE/loginSecurityLevel options

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Important: #95647 - Composer installations and extension usage
@@ -41,7 +41,7 @@ The :file:`typo3conf/PackageStates.php` file is not evaluated anymore in
 Composer-based installations. When updating TYPO3 installations that still
 contain this file e.g. under version control, the file can safely be removed.
 
-Use the TYPO3 CLI command :shell:`extension:setup` to set up all extensions
+Use the TYPO3 CLI command :bash:`extension:setup` to set up all extensions
 available in Composer.
 
 Package information (like paths or extension meta data) is still stored in and evaluated from
@@ -62,7 +62,7 @@ All extensions and their dependant extensions required via Composer in a
 Composer-based TYPO3 installation are **always** activated. It is not possible
 to disable an extension by using the Extension Manager anymore.
 
-The TYPO3 CLI command :shell:`extension:setup` can be used after each
+The TYPO3 CLI command :bash:`extension:setup` can be used after each
 `composer require` or `composer update` command to update the database schema
 and other important actions usually done when previously activating an extension
 in the Extension Manager.

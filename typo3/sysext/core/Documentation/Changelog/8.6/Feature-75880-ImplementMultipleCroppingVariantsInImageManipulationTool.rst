@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Feature: #75880 - Implement multiple cropping variants in image manipulation tool

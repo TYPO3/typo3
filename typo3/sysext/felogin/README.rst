@@ -1,13 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+===========================
+TYPO3 extension ``felogin``
+===========================
 
-============================================
-TYPO3 CMS Frontend Login (typo3/cms-felogin)
-============================================
+This extension provides a template-based plugin that allows website users to log
+in to the TYPO3 frontend.
 
-A template-based plugin used to log in website users in the TYPO3 frontend.
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-felogin/main/en-us/
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-felogin/main/en-us/
+:TER:         https://extensions.typo3.org/extension/felogin/

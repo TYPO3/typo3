@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Feature: #70033 - Introduced TCA option showIconTable for selectSingle fields

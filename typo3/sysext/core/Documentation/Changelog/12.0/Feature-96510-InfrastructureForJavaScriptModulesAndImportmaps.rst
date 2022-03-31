@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #96510 - Infrastructure for JavaScript modules and importmaps

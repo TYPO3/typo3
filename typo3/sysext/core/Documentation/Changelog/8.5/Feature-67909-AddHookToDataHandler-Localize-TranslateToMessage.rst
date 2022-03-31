@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Feature: #67909 - Add hook to DataHandler - localize - translateToMessage

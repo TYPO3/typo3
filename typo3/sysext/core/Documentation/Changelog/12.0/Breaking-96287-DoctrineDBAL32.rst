@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================
 Breaking: #96287 - Doctrine DBAL 3.2

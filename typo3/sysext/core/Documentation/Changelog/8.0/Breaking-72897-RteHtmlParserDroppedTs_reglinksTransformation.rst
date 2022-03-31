@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Breaking: #72897 - RteHtmlParser: Dropped ts_reglinks transformation

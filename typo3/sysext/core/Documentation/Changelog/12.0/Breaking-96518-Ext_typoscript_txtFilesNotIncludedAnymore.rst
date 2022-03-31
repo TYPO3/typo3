@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================
 Breaking: #96518 - ext_typoscript_*.txt files not included anymore

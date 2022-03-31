@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Breaking: #69057 - Deprecate IconUtility and move methods into IconFactory

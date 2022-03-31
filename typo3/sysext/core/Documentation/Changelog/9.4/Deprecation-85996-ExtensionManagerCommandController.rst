@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Deprecation: #85996 - ExtensionManager CommandController
@@ -12,9 +12,9 @@ Description
 The following Extension Manager CLI commands have been reimplemented internally with Symfony console
 commands:
 
-* :shell:`extensionmanager:extension:install`, now :shell:`extension:activate`
-* :shell:`extensionmanager:extension:uninstall`, now :shell:`extension:deactivate`
-* :shell:`extensionmanager:extension:dumpclassloadinginformation`, now :shell:`dumpautoload`
+* :bash:`extensionmanager:extension:install`, now :bash:`extension:activate`
+* :bash:`extensionmanager:extension:uninstall`, now :bash:`extension:deactivate`
+* :bash:`extensionmanager:extension:dumpclassloadinginformation`, now :bash:`dumpautoload`
 
 The left-over command controller PHP class :php:`TYPO3\CMS\Extensionmanager\Command\ExtensionCommandController`
 is not in use anymore, and therefore has been marked as deprecated.
@@ -36,9 +36,9 @@ Installations simply using the CLI entrypoint are not affected.
 Migration
 =========
 
-* use :shell:`extension:activate` instead of :shell:`extensionmanager:extension:install`
-* use :shell:`extension:deactivate` instead of :shell:`extensionmanager:extension:uninstall`
-* use :shell:`dumpautoload` instead of :shell:`extensionmanager:extension:dumpclassloadinginformation`
+* use :bash:`extension:activate` instead of :bash:`extensionmanager:extension:install`
+* use :bash:`extension:deactivate` instead of :bash:`extensionmanager:extension:uninstall`
+* use :bash:`dumpautoload` instead of :bash:`extensionmanager:extension:dumpclassloadinginformation`
 
 In order to achieve the same functionality within custom PHP code, it is recommended to use the
 underlying logic within the commands instead of calling or extending the command controller class.

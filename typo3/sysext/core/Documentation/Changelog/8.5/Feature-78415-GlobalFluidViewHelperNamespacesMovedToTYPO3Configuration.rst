@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Feature: #78415 - Global Fluid ViewHelper namespaces moved to TYPO3 configuration

@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 .. _config-best-practices:
@@ -16,7 +16,7 @@ It is generally recommended to use a a sitepackage extension to
 customize a TYPO3 website. The sitepackage contains configuration files
 for that site.
 
-See the :ref:`TYPO3 Sitepackage Tutorial <t3sitepackage:start>` on how
+See the :doc:`TYPO3 Sitepackage Tutorial <t3sitepackage:Index>` on how
 to create a sitepackage. We assume here your sitepackage extension has the
 key `my_sitepackage`.
 

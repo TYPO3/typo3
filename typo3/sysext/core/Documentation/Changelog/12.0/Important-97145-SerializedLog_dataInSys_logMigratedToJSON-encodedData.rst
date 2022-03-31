@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Important: #97145 - Serialized log_data in sys_log migrated to JSON-encoded data

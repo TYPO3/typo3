@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Feature: #96968 - PSR-14 Event for avoid loading Frontend pages from cache

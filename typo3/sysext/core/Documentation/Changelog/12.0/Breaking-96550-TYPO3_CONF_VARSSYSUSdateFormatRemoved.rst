@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Breaking: #96550 - TYPO3_CONF_VARS['SYS']['USdateFormat'] removed

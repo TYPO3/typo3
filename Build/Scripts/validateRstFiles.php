@@ -140,9 +140,9 @@ class validateRstFiles
         $checkFor = [
             [
                 'type' => 'include',
-                'regex' => '#^\\.\\. include:: \\.\\./\\.\\./Includes.txt#m',
+                'regex' => '#^\\.\\. include:: /Includes.rst.txt#m',
                 'title' => 'no include',
-                'message' => 'insert \'.. include:: ../../Includes.txt\' in first line of the file',
+                'message' => 'insert \'.. include:: /Includes.rst.txt\' in first line of the file',
             ],
             [
                 'type' => 'reference',

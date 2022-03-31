@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Breaking: #96351 - Unused TemplateService->updateRootlineData method removed

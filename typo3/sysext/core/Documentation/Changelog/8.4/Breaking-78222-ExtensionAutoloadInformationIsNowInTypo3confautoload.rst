@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Breaking: #78222 - Extension autoload information is now in typo3conf/autoload

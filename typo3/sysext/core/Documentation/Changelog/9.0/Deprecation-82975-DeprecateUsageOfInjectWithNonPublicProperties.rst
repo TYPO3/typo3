@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Deprecation: #82975 - Deprecate usage of @inject with non-public properties

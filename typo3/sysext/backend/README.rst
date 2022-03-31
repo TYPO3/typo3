@@ -1,11 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+===========================
+TYPO3 extension ``backend``
+===========================
 
-=====================================
-TYPO3 CMS Backend (typo3/cms-backend)
-=====================================
+This extension includes the TYPO3 backend frame and its basic backend modules,
+for example the Login, the Site Configuration, the Pages and the Content module.
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/backend/

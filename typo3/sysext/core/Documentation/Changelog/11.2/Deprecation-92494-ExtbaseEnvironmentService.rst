@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================
 Deprecation: #92494 - Extbase EnvironmentService

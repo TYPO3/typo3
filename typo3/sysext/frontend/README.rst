@@ -1,11 +1,12 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+============================
+TYPO3 extension ``frontend``
+============================
 
-=======================================
-TYPO3 CMS Frontend (typo3/cms-frontend)
-=======================================
+This extension covers frontend rendering features, such as TypoScript
+configuration or caching, and basic frontend plugins, such as page and content
+element rendering.
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/frontend/

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Breaking: #77049 - Remove unused properties from SuggestWizardDefaultReceiver

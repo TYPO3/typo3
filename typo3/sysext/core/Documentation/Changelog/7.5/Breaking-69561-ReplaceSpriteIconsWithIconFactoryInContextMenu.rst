@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Breaking: #69561 - Replace sprite icons with IconFactory in ContextMenu

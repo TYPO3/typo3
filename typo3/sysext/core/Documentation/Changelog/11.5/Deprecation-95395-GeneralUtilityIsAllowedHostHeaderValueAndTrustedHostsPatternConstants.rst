@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================================
 Deprecation: #95395 - GeneralUtility::isAllowedHostHeaderValue() and TRUSTED_HOSTS_PATTERN constants

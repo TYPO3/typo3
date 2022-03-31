@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. highlight:: php
 
@@ -93,4 +93,4 @@ If nothing is configured, ``default`` will be used as identifier.
    explains how to set or register TSconfig for user.
 
    :ref:`t3coreapi:typoscript-syntax-syntax-value-modification` explains the usage of
-   :ts:`:=` TypoScript operator.
+   :typoscript:`:=` TypoScript operator.

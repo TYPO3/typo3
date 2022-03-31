@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Breaking: #63780 - Remove public properties words and word_strings from ReferenceIndex

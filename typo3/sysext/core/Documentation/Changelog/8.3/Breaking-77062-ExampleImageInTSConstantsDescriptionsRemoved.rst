@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Breaking: #77062 - Example image in TS constants descriptions removed
@@ -32,7 +32,7 @@ Within :php:`ConfigurationForm::ext_initTSstyleConfig()` the second and third pa
 Impact
 ======
 
-Setting an option :ts:`TSConstantEditor.basic.image = EXT:sys_note/ext_icon.png` for a category or configuration option in TypoScript constants has no effect anymore.
+Setting an option :typoscript:`TSConstantEditor.basic.image = EXT:sys_note/ext_icon.png` for a category or configuration option in TypoScript constants has no effect anymore.
 
 Calling any of the removed methods will result in a fatal PHP error.
 

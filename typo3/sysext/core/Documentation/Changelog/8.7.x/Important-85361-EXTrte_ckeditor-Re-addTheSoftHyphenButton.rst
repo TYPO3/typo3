@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Important: #85361 - EXT:rte_ckeditor - re-add the soft hyphen button

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Breaking: #78525 - Removed unused configuration options for JavaScript
@@ -9,16 +9,16 @@ See :issue:`78525`
 Description
 ===========
 
-Removed all options that are not used anymore from :javascript:`TYPO3.configuration` in JavaScript context.
+Removed all options that are not used anymore from :js:`TYPO3.configuration` in JavaScript context.
 
-* :javascript:`TYPO3.configuration.moduleMenuWidth`
-* :javascript:`TYPO3.configuration.topBarHeight`
+* :js:`TYPO3.configuration.moduleMenuWidth`
+* :js:`TYPO3.configuration.topBarHeight`
 
 
 Impact
 ======
 
-Both settings are not available anymore in JavaScript under :javascript:`TYPO3.configuration`.
+Both settings are not available anymore in JavaScript under :js:`TYPO3.configuration`.
 
 
 Affected Installations

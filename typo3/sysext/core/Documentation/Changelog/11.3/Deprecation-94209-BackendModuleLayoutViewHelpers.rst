@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================
 Deprecation: #94209 - Backend ModuleLayout ViewHelpers

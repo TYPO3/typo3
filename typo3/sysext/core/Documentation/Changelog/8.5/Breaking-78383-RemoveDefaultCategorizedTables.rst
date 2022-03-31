@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================================
 Breaking: #78383 - pages, tt_content, sys_file_metadata have been removed from defaultCategorizedTables
@@ -9,7 +9,7 @@ See :issue:`78383`
 Description
 ===========
 
-The tables `pages`, `tt_content` and `sys_file_metadata` have been removed from `defaultCategorizedTables`. 
+The tables `pages`, `tt_content` and `sys_file_metadata` have been removed from `defaultCategorizedTables`.
 For these tables the core API :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable` would be
 executed to define a common position of the categories field.
 

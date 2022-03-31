@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Breaking: #69401 - Adopt ext:form to support the Extbase/ Fluid MVC stack

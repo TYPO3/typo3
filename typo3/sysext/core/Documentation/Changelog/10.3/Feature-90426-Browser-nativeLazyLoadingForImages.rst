@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Feature: #90426 - Browser-native lazy loading for images
@@ -28,7 +28,7 @@ Impact
 TYPO3 Frontend now renders images in content elements with the :html:`"loading=lazy"`
 attribute by default when using TYPO3's templates from Fluid Styled Content.
 
-Using the TypoScript constant :ts:`styles.content.image.lazyLoading`,
+Using the TypoScript constant :typoscript:`styles.content.image.lazyLoading`,
 the behavior can be modified generally to be either set to :html:`eager`,
 :html:`auto` or to an empty value, removing the property directly.
 

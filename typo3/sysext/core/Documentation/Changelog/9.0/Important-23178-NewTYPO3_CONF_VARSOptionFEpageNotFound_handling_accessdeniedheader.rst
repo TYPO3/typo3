@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================
 Important: #23178 - New TYPO3_CONF_VARS option FE|pageNotFound_handling_accessdeniedheader

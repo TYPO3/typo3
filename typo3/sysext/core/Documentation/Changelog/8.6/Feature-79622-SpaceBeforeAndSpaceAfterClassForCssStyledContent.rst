@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Feature: #79622 - SpaceBefore- and SpaceAfterClass for CSS Styled Content

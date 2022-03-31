@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Breaking: #77728 - Remove obsolete page tree and click menu settings
@@ -17,9 +17,9 @@ The following obsolete properties have been removed:
 
 The following user TS settings have been removed:
 
-- :ts:`options.pageTree.disableTitleHighlight`
+- :typoscript:`options.pageTree.disableTitleHighlight`
 
-- :ts:`options.contextMenu.options.leftIcons`
+- :typoscript:`options.contextMenu.options.leftIcons`
 
 
 Impact

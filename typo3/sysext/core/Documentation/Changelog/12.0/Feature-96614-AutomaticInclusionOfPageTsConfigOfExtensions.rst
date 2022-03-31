@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Feature: #96614 - Automatic inclusion of PageTsConfig of extensions

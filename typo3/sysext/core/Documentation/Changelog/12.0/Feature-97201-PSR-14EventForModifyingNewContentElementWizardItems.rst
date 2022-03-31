@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Feature: #97201 - PSR-14 Event for modifying new content element wizard items

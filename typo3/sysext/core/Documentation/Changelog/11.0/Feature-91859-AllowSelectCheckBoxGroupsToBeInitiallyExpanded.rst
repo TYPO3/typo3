@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #91859 - Allow SelectCheckBox groups to be initially expanded

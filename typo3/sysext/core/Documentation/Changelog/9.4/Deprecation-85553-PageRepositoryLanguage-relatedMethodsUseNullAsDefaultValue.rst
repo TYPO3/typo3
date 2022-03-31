@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Deprecation: #85553 - PageRepository language-related methods use null as default value

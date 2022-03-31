@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================================
 Feature: #81741 - Render additional and data-* attributes in media renderer for MediaViewHelper

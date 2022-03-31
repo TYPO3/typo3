@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================
 Breaking: #96553 - TYPO3 v12 system requirements

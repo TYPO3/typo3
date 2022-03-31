@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================
 Breaking: #75357 - $TYPO3_CONF_VARS[BE][lockSSL] option is boolean

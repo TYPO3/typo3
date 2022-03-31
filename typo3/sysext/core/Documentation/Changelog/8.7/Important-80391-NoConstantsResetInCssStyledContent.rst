@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Important: #80391 - Css Styled Content will not reset TypoScript Constants

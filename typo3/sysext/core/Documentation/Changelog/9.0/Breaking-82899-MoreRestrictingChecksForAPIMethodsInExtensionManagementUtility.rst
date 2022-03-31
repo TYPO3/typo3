@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Breaking: #82899 - More restricting checks for API methods in ExtensionManagementUtility

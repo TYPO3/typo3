@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Feature: #80374 - Frontend Login configuration now available through TypoScript constants

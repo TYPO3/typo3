@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Deprecation: #89722 - GMENU_LAYERS related property TSFE->divSection

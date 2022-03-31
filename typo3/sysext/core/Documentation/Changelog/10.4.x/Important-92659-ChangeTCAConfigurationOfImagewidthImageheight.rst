@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Important: #92659 - Change TCA configuration of imagewidth & imageheight

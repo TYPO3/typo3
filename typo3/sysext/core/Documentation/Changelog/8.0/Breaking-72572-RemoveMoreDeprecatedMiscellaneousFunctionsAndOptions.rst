@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Breaking: #72572 - Remove more deprecated miscellaneous functions and options

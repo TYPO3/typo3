@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Feature: #88110 - Felogin extbase password recovery
@@ -16,7 +16,7 @@ If that hash is found valid a reset password form is shown. If all validators ar
 
 There is a way to define and override default validators. Configured as default are two validators: NotEmptyValidator and StringLengthValidator.
 
-They can be overridden by overwriting :ts:`plugin.tx_felogin_login.settings.passwordValidators`.
+They can be overridden by overwriting :typoscript:`plugin.tx_felogin_login.settings.passwordValidators`.
 Default is as follows:
 
 .. code-block:: typoscript

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================
 Breaking: #96205 - Removal of last relativeToCurrentScript remains

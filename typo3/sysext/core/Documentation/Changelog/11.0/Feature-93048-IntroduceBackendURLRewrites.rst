@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _changelog-Feature-93048-IntroduceBackendURLRewrites:
 

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Feature: #85829 - Implement symfony expression language for TypoScript conditions

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Breaking: #75711 - Removed DB-related methods and TCA-related options from cObj

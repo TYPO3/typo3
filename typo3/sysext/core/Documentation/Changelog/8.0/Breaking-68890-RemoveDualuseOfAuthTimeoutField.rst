@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Breaking: #68890 - Remove dual-use of auth_timeout_field in AbstractUserAuthentication

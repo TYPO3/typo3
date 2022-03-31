@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Deprecation: #87616 - Unused Interface for TypolinkModifyLinkConfigForPageLinksHook

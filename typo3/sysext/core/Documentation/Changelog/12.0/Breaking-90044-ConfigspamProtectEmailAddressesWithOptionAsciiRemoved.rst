@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Breaking: #90044 - config.spamProtectEmailAddresses with option "ascii" removed

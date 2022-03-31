@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Breaking: #76879 - Remove unused property pidSelect from AbstractDatabaseRecordList

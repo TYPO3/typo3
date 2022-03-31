@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Breaking: #96733 - Removed support for module handling based on TBE_MODULES

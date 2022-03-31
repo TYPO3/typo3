@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Feature: #88902 - Feature Switch: Redirect and Base Redirect Middlewares can be reordered

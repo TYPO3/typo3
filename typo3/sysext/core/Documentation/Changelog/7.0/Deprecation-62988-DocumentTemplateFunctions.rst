@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Deprecation: #62988 - Deprecate unused/non-unified DocumentTemplate code

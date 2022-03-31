@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Deprecation: #97231 - Unused Interface for inline element hook
@@ -11,7 +11,7 @@ Description
 
 The hook :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook']`
 required hook implementations to implement :php:`\TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface`.
-Since the mentioned hook has been :doc:`removed <../12.0/Breaking-97231-RemovedInlineElementHook>`,
+Since the mentioned hook has been :doc:`removed <../12.0/Breaking-97231-RemovedHookForManipulatingInlineElementControls>`,
 the interface is not in use anymore and has been marked as deprecated.
 
 Impact

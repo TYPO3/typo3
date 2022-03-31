@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================
 Deprecation: #92947 - TYPO3_MODE and TYPO3_REQUESTTYPE constants

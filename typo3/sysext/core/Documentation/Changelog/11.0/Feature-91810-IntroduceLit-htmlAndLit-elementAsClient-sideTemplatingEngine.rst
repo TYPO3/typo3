@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Feature: #91810 - Introduce lit-html and lit-element as client-side templating engine

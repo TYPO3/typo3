@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================
 Deprecation: #85678 - config.titleTagFunction
@@ -9,7 +9,7 @@ See :issue:`85678`
 Description
 ===========
 
-The TypoScript option :ts:`config.titleTagFunction` has been marked as deprecated and will be removed with TYPO3 v10.
+The TypoScript option :typoscript:`config.titleTagFunction` has been marked as deprecated and will be removed with TYPO3 v10.
 
 
 Impact

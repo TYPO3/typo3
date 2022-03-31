@@ -1,10 +1,6 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
-
-==========================================
-TYPO3 CMS Install Tool (typo3/cms-install)
-==========================================
+===========================
+TYPO3 extension ``install``
+===========================
 
 The Install Tool is used for installation, upgrade, system administration and
 setup tasks.
@@ -16,6 +12,7 @@ available for system maintainers.
 Functionality via CLI is also provided, e.g. the upgrade wizards or the
 installer can be executed on the command line.
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/install/

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Feature: #79337 - Add useCacheHash parameter to f:link.typolink and f:uri.typolink

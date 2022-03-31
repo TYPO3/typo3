@@ -1,13 +1,10 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+================================
+TYPO3 extension ``filemetadata``
+================================
 
-=================================================
-TYPO3  CMS File Metadata (typo3/cms-filemetadata)
-=================================================
+This extension adds additional metadata to the file management.
 
-Adds additional metadata to file management.
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/filemetadata/

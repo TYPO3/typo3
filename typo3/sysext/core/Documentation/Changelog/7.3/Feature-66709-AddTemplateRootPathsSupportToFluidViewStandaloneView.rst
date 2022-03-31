@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Feature: #66709 - Add TemplateRootPaths support to Fluid/View/StandaloneView

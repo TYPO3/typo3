@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Breaking: #88758 - Selective Concatenation of CSS files in ResourceCompressor removed

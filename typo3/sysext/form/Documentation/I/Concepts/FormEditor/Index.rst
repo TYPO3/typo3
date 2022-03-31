@@ -309,6 +309,7 @@ The following YAML configuration registers an additional JavaScript module.
                    10: '@my-vendor/my-site-package/backend/form-editor/view-model.js'
 
 .. code-block:: php
+
    # Configuration/JavaScriptModules.php
    <?php
 

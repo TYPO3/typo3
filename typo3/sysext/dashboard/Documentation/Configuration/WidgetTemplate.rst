@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _adjust-template-of-widget:
 
@@ -10,8 +10,8 @@ When adding own widgets, it might be necessary to provide custom templates.
 In such a case the file path containing the template files needs to be added.
 
 This is done using a :file:`Configuration/page.tsconfig` file, see
-:doc:`changelog <t3core:Changelog/12.0/Feature-96812-OverrideBackendTemplatesWithTSconfig>` and
-:doc:`changelog <t3core:Changelog/12.0/Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions.rst>`
+:doc:`changelog <ext_core:Changelog/12.0/Feature-96812-OverrideBackendTemplatesWithTSconfig>` and
+:doc:`changelog <ext_core:Changelog/12.0/Feature-96614-AutomaticInclusionOfPageTsConfigOfExtensions>`
 for details on this:
 
 .. code-block:: typoscript

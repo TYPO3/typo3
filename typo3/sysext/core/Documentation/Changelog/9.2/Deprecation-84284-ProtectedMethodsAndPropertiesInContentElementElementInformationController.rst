@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================================
 Deprecation: #84284 - Protected methods and properties in ContentElement/ElementInformationController

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Deprecation: #80601 - Change duplicate icon identifiers to actions-close

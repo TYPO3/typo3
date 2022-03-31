@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Breaking: #72424 - Removed deprecated TypoScriptFrontendController options and methods

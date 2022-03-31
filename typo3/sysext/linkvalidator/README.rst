@@ -1,18 +1,15 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+=================================
+TYPO3 extension ``linkvalidator``
+=================================
 
-=================================================
-TYPO3 CMS LinkValidator (typo3/cms-linkvalidator)
-=================================================
+The Link Validator checks for broken links and displays results in the
+(Info>LinkValidator) backend module.
 
-Checks for broken links and displays results in the (Info>LinkValidator) backend
-module.
+It can validate all types of links: internal, external and file links. The
+Scheduler can run the validator periodically, including the option to
+send status mails when broken links are detected.
 
-It can validate all kinds of links: internal, external and file links. The
-Scheduler is supported to run LinkValidator via cron job, including the option
-to send status mails, if broken links were detected.
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-linkvalidator/main/en-us
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-linkvalidator/main/en-us/
+:TER:         https://extensions.typo3.org/extension/linkvalidator/

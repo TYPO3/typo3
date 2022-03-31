@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Deprecation: #67790 - Deprecate QueryGenerator::JSbottom()

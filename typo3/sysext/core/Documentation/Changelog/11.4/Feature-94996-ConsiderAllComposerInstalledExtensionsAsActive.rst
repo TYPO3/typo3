@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #94996 - Consider all Composer installed extensions as active
@@ -25,21 +25,21 @@ some issues for example on platform.sh, which were solved by storing it in the v
 
 Any extension present in the :file:`typo3conf/ext` folder, but not installed by Composer,
 will still be considered and marked as part of TYPO3 packages when executing
-:shell:`composer install`. The only requirement here is, that such extensions need a
+:bash:`composer install`. The only requirement here is, that such extensions need a
 :file:`composer.json` file nonetheless.
 Note this behaviour is deprecated and will be removed with TYPO3 v12.
 
 Because all extensions present in the system are considered to be active,
 the Extension Manager UI is adapted to not allow changing the active state of
 extensions anymore for composer based instances. Respectively the commands
-:shell:`extension:activate` and :shell:`extension:deactivate` are disabled in Composer managed
+:bash:`extension:activate` and :bash:`extension:deactivate` are disabled in Composer managed
 systems as well.
 
-A new command :shell:`extension:setup` is introduced, which supersedes both the extension
+A new command :bash:`extension:setup` is introduced, which supersedes both the extension
 manager UI as well as the activate/deactivate commands. It performs all steps that
 were performed during activation and deactivation (the active-state is of course not changed).
 
-With the command :shell:`extension:setup` *all* extensions are set up in terms of
+With the command :bash:`extension:setup` *all* extensions are set up in terms of
 database schema changes, static data import, distribution files imports, etc.
 As example, requiring an additional extension and then using this command will
 create database tables or additional database fields the extension provides.
@@ -69,7 +69,7 @@ can be created by using the according UI in the Extension Manager.
 When working on a Composer based project and adding new extensions via the Composer
 cli tool during development, all added extensions are considered active automatically,
 but are not yet set up in terms of database schema changes for example. The TYPO3 cli
-command :shell:`extension:setup` needs to be executed additionally. :shell:`extension:setup` can and
+command :bash:`extension:setup` needs to be executed additionally. :bash:`extension:setup` can and
 should also be used, when deploying a TYPO3 project to make sure database schema is up to date.
 
 The Composer root project package will be recognized as a TYPO3 extension as well, if it provides a

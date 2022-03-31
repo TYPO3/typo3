@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================
 Feature: #85256 - Install TYPO3 on SQLite

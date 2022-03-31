@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Deprecation: #97016 - Deprecate usage of RegularExpressionValidator in form editor
@@ -48,6 +48,7 @@ contains the definition for validators. We are adding the validator with the key
 `200` to not interfere with keys already taken by the core.
 
 .. code-block:: yaml
+
     TYPO3:
       CMS:
         Form:

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Deprecation: #86270 - config.tx_extbase.objects and plugin.tx_%plugin%.objects

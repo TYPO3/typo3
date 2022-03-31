@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Important: #95298 - Fluid ViewHelpers will be declared final in v12

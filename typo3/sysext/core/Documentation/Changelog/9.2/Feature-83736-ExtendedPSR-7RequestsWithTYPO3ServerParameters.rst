@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Feature: #83736 - Extended PSR-7 requests with TYPO3 normalized server parameters

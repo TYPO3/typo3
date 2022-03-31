@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================================
 Breaking: #80412 - New shared content element TypoScript library object for Fluid Styled Content

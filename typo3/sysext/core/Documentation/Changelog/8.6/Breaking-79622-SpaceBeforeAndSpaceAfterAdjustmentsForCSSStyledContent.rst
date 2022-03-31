@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Breaking: #79622 - SpaceBefore and SpaceAfter adjustments for CSS Styled Content

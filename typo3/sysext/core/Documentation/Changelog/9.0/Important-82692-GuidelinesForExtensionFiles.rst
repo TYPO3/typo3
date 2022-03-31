@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Important: #82692 - Guidelines for ext_localconf.php and ext_tables.php

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================
 Deprecation: #96733 - Deprecated TBE_MODULES related functionality

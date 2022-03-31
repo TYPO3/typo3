@@ -1,59 +1,44 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+.. include:: /Includes.rst.txt
 
-.. include:: Includes.txt
-
-
-.. _start:
-
-==============
-Indexed Search
-==============
+====================
+TYPO3 Indexed Search
+====================
 
 :Extension key:
-      indexed_search
+   indexed_search
+
+:Package name:
+   typo3/cms-indexed-search
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      Documentation for the system extension "indexed_search".
-
-:Keywords:
-      indexed search, reference, forDevelopers, forAdvanced
-
-:Copyright:
-      2000-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
+----
 
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
+This extension provides indexing functionality for TYPO3 pages and records as
+well as files including PDF, Word, HTML and plain text. It also features a
+backend module for statistics of the indexer and a frontend plugin.
 
+----
 
-
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
    :titlesonly:
-   :glob:
 
    Introduction/Index
    UserManual/Index
@@ -64,5 +49,11 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
    AnalysingIndexedData/Index
    DatabaseTables/Index
    KnownProblems/Index
-   Targets
 
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

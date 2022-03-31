@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Breaking: #62804 - RTE JavaScript method HTMLArea.Editor::getNodeByPosition was moved

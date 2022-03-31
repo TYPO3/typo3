@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Feature: #90994 - Mark current page in fluid_styled_content menu content elements

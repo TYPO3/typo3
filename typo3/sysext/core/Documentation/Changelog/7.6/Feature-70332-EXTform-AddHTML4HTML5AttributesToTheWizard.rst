@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Feature: #70332 - EXT:form - Add HTML4 / HTML5 attributes to the wizard

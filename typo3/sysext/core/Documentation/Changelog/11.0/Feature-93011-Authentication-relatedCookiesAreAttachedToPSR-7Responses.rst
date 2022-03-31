@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Feature: #93011 - Authentication-related cookies are attached to PSR-7 Responses

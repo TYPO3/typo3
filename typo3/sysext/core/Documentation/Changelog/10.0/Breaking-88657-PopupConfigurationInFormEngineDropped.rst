@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Breaking: #88657 - Popup configuration in FormEngine dropped
@@ -9,7 +9,7 @@ See :issue:`88657`
 Description
 ===========
 
-The options :ts:`options.popupWindowSize` and :ts:`options.rte.popupWindowSize` used to configure popup sizes have been
+The options :typoscript:`options.popupWindowSize` and :typoscript:`options.rte.popupWindowSize` used to configure popup sizes have been
 removed.
 
 

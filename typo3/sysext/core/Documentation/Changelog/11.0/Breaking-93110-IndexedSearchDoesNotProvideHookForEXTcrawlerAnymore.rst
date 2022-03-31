@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Breaking: #93110 - Indexed search does not provide hook for EXT:crawler anymore

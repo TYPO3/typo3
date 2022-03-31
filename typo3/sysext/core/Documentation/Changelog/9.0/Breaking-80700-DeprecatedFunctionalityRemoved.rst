@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Breaking: #80700 - Deprecated functionality removed
@@ -347,21 +347,21 @@ The following functionality has been removed:
 
 The following TypoScript options have been removed:
 
-* :ts:`stdWrap.fontTag`
-* :ts:`stdWrap.removeBadHTML`
-* :ts:`config.mainScript`
-* :ts:`config.frameReloadIfNotInFrameset`
-* :ts:`config.noScaleUp`
-* :ts:`config.setJS_mouseOver`
-* :ts:`config.setJS_openPic`
-* :ts:`config.doctype = xhtml_frames`
-* :ts:`config.xhtmlDoctype = xhtml_frames`
-* :ts:`config.pageGenScript`
-* :ts:`config.beLoginLinkIPList`
-* :ts:`config.beLoginLinkIPList_login`
-* :ts:`config.beLoginLinkIPList_logout`
-* :ts:`page.frameSet`
-* :ts:`page.insertClassesFromRTE`
+* :typoscript:`stdWrap.fontTag`
+* :typoscript:`stdWrap.removeBadHTML`
+* :typoscript:`config.mainScript`
+* :typoscript:`config.frameReloadIfNotInFrameset`
+* :typoscript:`config.noScaleUp`
+* :typoscript:`config.setJS_mouseOver`
+* :typoscript:`config.setJS_openPic`
+* :typoscript:`config.doctype = xhtml_frames`
+* :typoscript:`config.xhtmlDoctype = xhtml_frames`
+* :typoscript:`config.pageGenScript`
+* :typoscript:`config.beLoginLinkIPList`
+* :typoscript:`config.beLoginLinkIPList_login`
+* :typoscript:`config.beLoginLinkIPList_logout`
+* :typoscript:`page.frameSet`
+* :typoscript:`page.insertClassesFromRTE`
 * single slashes are no longer interpreted as comment
 
 The following TCA properties have been removed:
@@ -372,10 +372,10 @@ The following TCA properties have been removed:
 
 The following PageTsConfig properties have been removed:
 
-* :ts:`TCEFORM.[table].[field].addItems.icon` - with icons not registered in IconRegistry
-* :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_ID`
-* :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_IDLIST`
-* :ts:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_STR`
+* :typoscript:`TCEFORM.[table].[field].addItems.icon` - with icons not registered in IconRegistry
+* :typoscript:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_ID`
+* :typoscript:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_IDLIST`
+* :typoscript:`TCEFORM.[table].[flexFormField].PAGE_TSCONFIG_STR`
 
 The following icon identifiers have been removed:
 
@@ -409,9 +409,9 @@ Further removal notes:
 
 The following JavaScript methods and options have been removed:
 
-* :javascript:`backend/Resources/Public/JavaScript/jsfunc.inline.js escapeSelectorObjectId`
-* :javascript:`TYPO3/CMS/Backend/Modal.getSeverityClass()`
-* :javascript:`TYPO3/CMS/Backend/Severity.information`
+* :js:`backend/Resources/Public/JavaScript/jsfunc.inline.js escapeSelectorObjectId`
+* :js:`TYPO3/CMS/Backend/Modal.getSeverityClass()`
+* :js:`TYPO3/CMS/Backend/Severity.information`
 
 
 Impact

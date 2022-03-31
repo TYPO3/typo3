@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Feature: #20875 - Make hardcoded indexed_search parameters configurable via TS

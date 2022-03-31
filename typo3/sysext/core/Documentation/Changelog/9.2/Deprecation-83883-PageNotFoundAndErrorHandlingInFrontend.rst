@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Deprecation: #83883 - Page Not Found And Error handling in Frontend

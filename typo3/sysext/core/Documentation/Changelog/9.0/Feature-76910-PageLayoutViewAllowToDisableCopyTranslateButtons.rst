@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Feature: #76910 - PageLayoutView - Allow to disable copy- / translate- buttons

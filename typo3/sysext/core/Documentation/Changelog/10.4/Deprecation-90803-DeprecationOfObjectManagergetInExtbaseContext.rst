@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _changelog-Deprecation-90803-ObjectManagerGet:
 

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Feature: #59231 - Hook for AbstractUserAuthentication::checkAuthentication()

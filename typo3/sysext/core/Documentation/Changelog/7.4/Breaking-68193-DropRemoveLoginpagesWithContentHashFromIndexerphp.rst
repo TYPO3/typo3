@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================================
 Breaking: #68193 - ext:indexed_search Drop removeLoginpagesWithContentHash from Indexer.php

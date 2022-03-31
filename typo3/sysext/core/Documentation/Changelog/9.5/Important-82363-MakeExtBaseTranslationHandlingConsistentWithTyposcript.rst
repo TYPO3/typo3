@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Important: #82363 - Make Extbase translation handling consistent with TypoScript
@@ -27,13 +27,13 @@ Impact
 Users relying on the old behaviour can disable the feature switch.
 
 The change modifies how Extbase interprets the TypoScript settings
-:ts:`config.sys_language_mode` and :ts:`config.sys_language_overlay` and the
+:typoscript:`config.sys_language_mode` and :typoscript:`config.sys_language_overlay` and the
 :php:`Typo3QuerySettings` properties :php:`languageOverlayMode` and :php:`languageMode`.
 
 Changes in the rendering:
 
 1) Setting :php:`Typo3QuerySettings->languageMode` does **not** influence how Extbase queries records anymore.
-   The corresponding TypoScript setting :ts:`config.sys_language_mode` is used by the core
+   The corresponding TypoScript setting :typoscript:`config.sys_language_mode` is used by the core
    to decide what to do when a page is not translated to the given language (display 404, or try page with different language).
    Users who used to set :php:`Typo3QuerySettings->languageMode` to `strict` should use
    :php:`Typo3QuerySettings->setLanguageOverlayMode('hideNonTranslated')` to get translated records only.
@@ -69,8 +69,8 @@ Changes in the rendering:
    record in the TYPO3 Backend.
 
 Note that by default :php:`Typo3QuerySettings` uses the global TypoScript configuration like
-:ts:`config.sys_language_overlay` and :php:`$GLOBALS['TSFE']->sys_language_content`
-(calculated based on :ts:`config.sys_language_uid` and :ts:`config.sys_language_mode`).
+:typoscript:`config.sys_language_overlay` and :php:`$GLOBALS['TSFE']->sys_language_content`
+(calculated based on :typoscript:`config.sys_language_uid` and :typoscript:`config.sys_language_mode`).
 So you need to change :php:`Typo3QuerySettings` manually only if your Extbase code should
 behave different than other `tt_content` rendering.
 
@@ -84,12 +84,12 @@ See :php:`QueryLocalizedDataTest->queryFirst5Posts()`.
 Following examples show how to query data in Extbase in different scenarios, independent of the global TS settings:
 
 1) Fetch records from the language uid=1 only, with no overlays.
-   Previously (:ts:`consistentTranslationOverlayHandling = 0`):
+   Previously (:typoscript:`consistentTranslationOverlayHandling = 0`):
 
    It was not possible.
 
 
-   Now (:ts:`consistentTranslationOverlayHandling = 1`):
+   Now (:typoscript:`consistentTranslationOverlayHandling = 1`):
 
 .. code-block:: php
 
@@ -98,7 +98,7 @@ Following examples show how to query data in Extbase in different scenarios, ind
     $querySettings->setLanguageOverlayMode(false);
 
 2) Fetch records from the language uid=1, with overlay, but hide non-translated records
-   Previously (:ts:`consistentTranslationOverlayHandling = 0`):
+   Previously (:typoscript:`consistentTranslationOverlayHandling = 0`):
 
 .. code-block:: php
 
@@ -106,7 +106,7 @@ Following examples show how to query data in Extbase in different scenarios, ind
     $querySettings->setLanguageUid(1);
     $querySettings->setLanguageMode('strict');
 
-   Now (:ts:`consistentTranslationOverlayHandling = 1`):
+   Now (:typoscript:`consistentTranslationOverlayHandling = 1`):
 
 .. code-block:: php
 

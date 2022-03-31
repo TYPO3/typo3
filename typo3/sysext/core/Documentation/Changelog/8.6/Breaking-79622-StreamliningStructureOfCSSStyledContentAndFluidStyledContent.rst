@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Breaking: #79622 - Streamlining structure of CSS Styled Content and Fluid Styled Content

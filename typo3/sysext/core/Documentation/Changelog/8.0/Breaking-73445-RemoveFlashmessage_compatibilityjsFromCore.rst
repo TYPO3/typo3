@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================
 Breaking: #73445 - Remove flashmessage_compatibility.js from core
@@ -16,12 +16,12 @@ The `flashmessage_compatibility.js` has been removed from the core.
 Impact
 ======
 
-Extensions which make use of :javascript:`TYPO3.Flashmessage` JavaScript function will not work anymore.
+Extensions which make use of :js:`TYPO3.Flashmessage` JavaScript function will not work anymore.
 
 
 Migration
 =========
 
-Use :javascript:`top.TYPO3.Notification.*` to create flash messages within JavaScript for the TYPO3 backend.
+Use :js:`top.TYPO3.Notification.*` to create flash messages within JavaScript for the TYPO3 backend.
 
 .. index:: JavaScript, Backend

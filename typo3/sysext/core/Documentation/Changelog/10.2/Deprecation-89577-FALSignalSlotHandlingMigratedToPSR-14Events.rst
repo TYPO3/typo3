@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Deprecation: #89577 - FAL SignalSlot handling migrated to PSR-14 events

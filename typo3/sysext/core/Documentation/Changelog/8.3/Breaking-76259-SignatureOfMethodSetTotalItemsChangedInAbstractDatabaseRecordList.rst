@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Breaking: #76259 - Signature of setTotalItems() in AbstractDatabaseRecordList changed

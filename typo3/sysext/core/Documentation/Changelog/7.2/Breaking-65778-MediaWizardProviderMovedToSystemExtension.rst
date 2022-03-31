@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Breaking: #65778 - MediaWizard functionality is moved to system extension "mediace"

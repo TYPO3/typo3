@@ -1,35 +1,39 @@
 .. include:: /Includes.rst.txt
 
-=============================
-Lowlevel (typo3/cms-lowlevel)
-=============================
+===============
+TYPO3 Low Level
+===============
 
 :Extension key:
-    lowlevel
+   lowlevel
 
 :Package name:
-    typo3/cms-lowlevel
+   typo3/cms-lowlevel
 
 :Version:
-    |release|
+   |release|
 
 :Language:
-    en
+   en
 
 :Author:
-    TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-    This document is published under the
-    `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
-    license.
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
 
 :Rendered:
-    |today|
+   |today|
 
-The lowlevel extension provides command line scripts for technical analysis of
+----
+
+The Low Level extension provides command line scripts for technical analysis of
 the system. This includes raw database search, checking relations, counting
-pages and records etc.
+pages and records.
+
+----
 
 .. container:: row m-0 p-0
 
@@ -76,19 +80,19 @@ pages and records etc.
 **Table of Contents:**
 
 .. toctree::
-    :maxdepth: 2
-    :titlesonly:
+   :maxdepth: 2
+   :titlesonly:
 
-    Introduction/Index
-    Installation/Index
-    BackendModules/Index
-    CommandLine/Index
-    Configuration/Index
+   Introduction/Index
+   Installation/Index
+   BackendModules/Index
+   CommandLine/Index
+   Configuration/Index
 
 .. Meta Menu
 
 .. toctree::
-    :hidden:
+   :hidden:
 
-    Sitemap
-    genindex
+   Sitemap
+   genindex

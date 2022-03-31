@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================================
 Breaking: #80374 - Default content element configuration for frontend login adapts fluid styled content

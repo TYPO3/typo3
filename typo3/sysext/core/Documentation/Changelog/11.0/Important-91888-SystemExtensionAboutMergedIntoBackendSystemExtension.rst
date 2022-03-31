@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Important: #91888 - System extension "about" merged into "backend" system extension
@@ -17,7 +17,7 @@ The functionality is kept the same, however TYPO3 users upgrading to TYPO3 v11 s
 that checks for the extension (via :php:`ExtensionManagementUtility::isLoaded('about')`) will return false, even though all functionality is kept.
 
 When upgrading TYPO3 installation to TYPO3 v11 in composer mode,
-it is recommended to first call :shell:`composer remove typo3/cms-about`
-on the Command Line before running any :shell:`composer update` or :shell:`composer require` command.
+it is recommended to first call :bash:`composer remove typo3/cms-about`
+on the Command Line before running any :bash:`composer update` or :bash:`composer require` command.
 
 .. index:: CLI, PHP-API, ext:about

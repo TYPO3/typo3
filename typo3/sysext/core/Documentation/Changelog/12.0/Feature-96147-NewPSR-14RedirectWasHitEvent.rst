@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================
 Feature: #96147 - New PSR-14 RedirectWasHitEvent

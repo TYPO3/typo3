@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Deprecation: #94115 - Parameter type evaluation via DocBlock comments

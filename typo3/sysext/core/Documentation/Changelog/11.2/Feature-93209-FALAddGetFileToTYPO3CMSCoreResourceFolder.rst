@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #93209 - FAL: Add getFile() to TYPO3\CMS\Core\Resource\Folder

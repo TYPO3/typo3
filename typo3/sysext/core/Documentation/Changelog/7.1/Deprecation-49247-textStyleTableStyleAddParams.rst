@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Deprecation: #49247 - Deprecate TypoScript functions "textStyle" and "tableStyle"

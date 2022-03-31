@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Breaking: #82398 - Remove special constant "TSConstantEditor"
@@ -9,7 +9,7 @@ See :issue:`82398`
 Description
 ===========
 
-The special functionality on the top level constant name :ts:`TSConstantEditor`
+The special functionality on the top level constant name :typoscript:`TSConstantEditor`
 has been dropped. This rarely used feature makes this constant name a casual
 constant without further added features.
 
@@ -28,13 +28,13 @@ Impact
 ======
 
 The constants editor does not show any extending information (like bulletpoints) for a constant
-anymore configured via the :ts:`TSConstantEditor` object.
+anymore configured via the :typoscript:`TSConstantEditor` object.
 
 
 Affected Installations
 ======================
 
-All installations which have configured the special constant :ts:`TSConstantEditor`. Since this has
+All installations which have configured the special constant :typoscript:`TSConstantEditor`. Since this has
 been a widely unknown feature, most instances should not be affected. On PHP side, the extension
 scanner will find consuming extensions of the dropped API, but that is highly unlikely, too.
 

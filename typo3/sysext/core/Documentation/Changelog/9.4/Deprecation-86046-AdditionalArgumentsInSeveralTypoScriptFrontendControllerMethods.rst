@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================
 Deprecation: #86046 - Additional arguments in several TypoScriptFrontendController methods

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Important: #92836 - Introduce sudo mode for Install Tool accessed via backend

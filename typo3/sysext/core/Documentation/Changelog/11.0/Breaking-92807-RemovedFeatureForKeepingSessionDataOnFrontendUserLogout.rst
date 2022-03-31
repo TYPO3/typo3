@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Breaking: #92807 - Removed feature for keeping session data on frontend user logout

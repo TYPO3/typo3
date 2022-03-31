@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================
 Feature: #78192 - Refactor click menu (context menu)
@@ -80,17 +80,17 @@ Example of the JSON response:
        }
     }
 
-Based on the JSON data ContextMenu.js is rendering a context-menu. If one of the items is clicked, the according JS `callbackAction` is executed on the :javascript:`TYPO3/CMS/Backend/ContextMenuActions` JS module or other modules defined in the `additionalAttributes['data-callback-module']`.
+Based on the JSON data ContextMenu.js is rendering a context-menu. If one of the items is clicked, the according JS `callbackAction` is executed on the :js:`TYPO3/CMS/Backend/ContextMenuActions` JS module or other modules defined in the `additionalAttributes['data-callback-module']`.
 
 For example usage of this API see:
 
-- Beuser item provider :php:`\TYPO3\CMS\Beuser\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Beuser/ContextMenuActions`
-- Impexp item provider :php:`\TYPO3\CMS\Impexp\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Impexp/ContextMenuActions`
-- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
-- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :javascript:`TYPO3/CMS/Version/ContextMenuActions`
+- Beuser item provider :php:`\TYPO3\CMS\Beuser\ContextMenu\ItemProvider` and requireJS module :js:`TYPO3/CMS/Beuser/ContextMenuActions`
+- Impexp item provider :php:`\TYPO3\CMS\Impexp\ContextMenu\ItemProvider` and requireJS module :js:`TYPO3/CMS/Impexp/ContextMenuActions`
+- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :js:`TYPO3/CMS/Version/ContextMenuActions`
+- Version item provider :php:`\TYPO3\CMS\Version\ContextMenu\ItemProvider` and requireJS module :js:`TYPO3/CMS/Version/ContextMenuActions`
 - Filelist item providers :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileDragProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileProvider`,
   :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FileStorageProvider`, :php:`\TYPO3\CMS\Filelist\ContextMenu\ItemProviders\FilemountsProvider`
-  and requireJS module :javascript:`TYPO3/CMS/Filelist/ContextMenuActions`
+  and requireJS module :js:`TYPO3/CMS/Filelist/ContextMenuActions`
 
 
 .. index:: Backend, JavaScript, PHP-API, TSConfig

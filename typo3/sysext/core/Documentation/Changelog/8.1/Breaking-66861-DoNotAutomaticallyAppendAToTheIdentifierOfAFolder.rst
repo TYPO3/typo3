@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Breaking: #66861 - Do not automatically append a "/" to the identifier of a folder

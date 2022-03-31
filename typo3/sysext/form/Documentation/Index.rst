@@ -1,54 +1,55 @@
 .. include:: /Includes.rst.txt
 
-
-.. _Start:
-
-====
-Form
-====
-
+==========
+TYPO3 Form
+==========
 
 :Extension key:
    form
 
+:Package name:
+   typo3/cms-form
+
 :Version:
-   latest (10-dev)
+   |release|
 
 :Language:
    en
 
-:Description:
-   Form framework, form editor and plugin
-
-
-:Keywords:
-   form
-
-:Copyright:
-   2000-2021
-
 :Author:
-   TRITUM GmbH
+   TRITUM GmbH & TYPO3 contributors
 
 :License:
-   Open Content License available from `www.opencontent.org/openpub/
-   <http://www.opencontent.org/openpub/>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
    |today|
 
-The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from https://typo3.org/
+----
 
+This is a flexible TYPO3 frontend form framework that allows editors,
+integrators and developers alike to create all kinds of forms.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-   :hidden:
+   :maxdepth: 2
+   :titlesonly:
 
-   Sitemap/Index
    Introduction/Index
    QuickStartForEditors/Index
    QuickStartForIntegrators/Index
    D/Index
    I/Index
    E/Index
-   Targets
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

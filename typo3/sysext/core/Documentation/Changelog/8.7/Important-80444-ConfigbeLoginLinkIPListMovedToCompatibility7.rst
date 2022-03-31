@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Important: #80444 - config.beLoginLinkIPList moved to compatibility7

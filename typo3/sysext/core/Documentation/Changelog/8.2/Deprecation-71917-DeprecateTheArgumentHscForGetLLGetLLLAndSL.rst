@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Deprecation: #71917 - Deprecate the argument 'hsc' for getLL, getLLL, sL and pi_getLL

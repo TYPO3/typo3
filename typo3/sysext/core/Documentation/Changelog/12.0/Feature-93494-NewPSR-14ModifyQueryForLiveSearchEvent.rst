@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Feature: #93494 - New PSR-14 ModifyQueryForLiveSearchEvent

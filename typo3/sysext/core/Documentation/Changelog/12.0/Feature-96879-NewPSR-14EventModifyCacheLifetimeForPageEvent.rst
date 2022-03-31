@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================
 Feature: #96879 - New PSR-14 Event ModifyCacheLifetimeForPageEvent

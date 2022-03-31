@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================
 Deprecation: #80047 - Deprecate jQuery and extJS for BE viewhelpers

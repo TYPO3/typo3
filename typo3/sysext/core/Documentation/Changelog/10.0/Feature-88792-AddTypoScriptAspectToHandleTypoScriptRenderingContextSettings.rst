@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Feature: #88792 - Add TypoScriptAspect to handle TypoScript Rendering Context settings

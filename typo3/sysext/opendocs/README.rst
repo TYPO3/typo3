@@ -1,13 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+============================
+TYPO3 extension ``opendocs``
+============================
 
-========================================
-TYPO3 CMS Open Docs (typo3/cms-opendocs)
-========================================
+This extension supports the backend user in finding and resuming work in
+progress.
 
-Shows opened documents for the TYPO3 backend user.
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/
+:TER:         https://extensions.typo3.org/extension/opendocs/

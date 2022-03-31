@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Important: #81868 - "Optimize autoloader" is no longer forced in composer.json
@@ -16,7 +16,7 @@ This improves speed but had three disadvantages:
 
 - creating optimized autoloader may take much longer
 
-- new namespaces (folders) during development require an additional :shell:`composer dump`
+- new namespaces (folders) during development require an additional :bash:`composer dump`
 
 - no possibility existing to deactivate optimized autoloader
   from CLI, once it's set in composer.json config section

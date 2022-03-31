@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================================
 Feature: #65791 - Use PHP configured sendmail path, if [MAIL][transport] = sendmail is active

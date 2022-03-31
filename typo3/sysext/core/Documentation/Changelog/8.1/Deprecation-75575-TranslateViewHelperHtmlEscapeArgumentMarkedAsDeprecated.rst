@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Deprecation: #75575 - TranslateViewHelper htmlEscape argument marked as deprecated

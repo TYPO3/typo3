@@ -1,17 +1,34 @@
-.. This is 'Includes.txt'. It is included at the very top of each and
-   every ReST source file in THIS documentation project (= manual).
+.. More information about this file:
+   https://docs.typo3.org/m/typo3/docs-how-to-document/main/en-us/GeneralConventions/FileStructure.html#includes-rst-txt
 
-.. role:: aspect (emphasis)
+.. ----------
+.. text roles
+.. ----------
+
+.. role:: aspect(emphasis)
+.. role:: bash(code)
 .. role:: html(code)
 .. role:: js(code)
 .. role:: php(code)
-.. role:: sep (strong)
+.. role:: rst(code)
+.. role:: sep(strong)
 .. role:: sql(code)
-.. role:: typoscript(code)
-.. role:: yaml(code)
 
-.. role:: ts(typoscript)
+.. role:: tsconfig(code)
    :class: typoscript
 
+.. role:: typoscript(code)
+.. role:: xml(code)
+   :class: html
+
+.. role:: yaml(code)
+
 .. default-role:: code
+
+.. ---------
+.. highlight
+.. ---------
+
+.. By default, code blocks use PHP syntax highlighting
+
 .. highlight:: php

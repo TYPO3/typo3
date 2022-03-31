@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================
 Deprecation: #85801 - GeneralUtility::explodeUrl2Array - 2nd method argument

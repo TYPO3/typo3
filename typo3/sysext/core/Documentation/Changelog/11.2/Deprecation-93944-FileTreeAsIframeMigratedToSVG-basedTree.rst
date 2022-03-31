@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================
 Deprecation: #93944 - File Tree as iframe migrated to SVG-based tree

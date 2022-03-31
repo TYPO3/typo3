@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Important: #73565 - AbstractConditionViewHelper no longer automatically compilable

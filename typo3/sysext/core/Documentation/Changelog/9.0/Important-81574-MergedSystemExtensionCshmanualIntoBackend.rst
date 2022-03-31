@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Important: #81574 - Merged EXT:cshmanual into EXT:backend

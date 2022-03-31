@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Breaking: #72866 - Removed RTE processing option to use div tags instead of p tags

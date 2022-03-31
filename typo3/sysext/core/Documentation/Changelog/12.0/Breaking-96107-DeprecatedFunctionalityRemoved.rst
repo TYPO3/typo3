@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Breaking: #96107 - Deprecated functionality removed
@@ -414,16 +414,16 @@ The following module configuration have been removed:
 
 The following command line options have been removed:
 
-- :shell:`impexp:export --includeRelated`
-- :shell:`impexp:export --includeStatic`
-- :shell:`impexp:export --excludeDisabledRecords`
-- :shell:`impexp:export --excludeHtmlCss`
-- :shell:`impexp:export --saveFilesOutsideExportFile`
-- :shell:`impexp:import --updateRecords`
-- :shell:`impexp:import --ignorePid`
-- :shell:`impexp:import --forceUid`
-- :shell:`impexp:import --importMode`
-- :shell:`impexp:import --enableLog`
+- :bash:`impexp:export --includeRelated`
+- :bash:`impexp:export --includeStatic`
+- :bash:`impexp:export --excludeDisabledRecords`
+- :bash:`impexp:export --excludeHtmlCss`
+- :bash:`impexp:export --saveFilesOutsideExportFile`
+- :bash:`impexp:import --updateRecords`
+- :bash:`impexp:import --ignorePid`
+- :bash:`impexp:import --forceUid`
+- :bash:`impexp:import --importMode`
+- :bash:`impexp:import --enableLog`
 
 The following dependency injection container entries have been removed:
 

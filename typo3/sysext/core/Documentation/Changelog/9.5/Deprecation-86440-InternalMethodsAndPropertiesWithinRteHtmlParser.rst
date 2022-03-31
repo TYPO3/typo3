@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================
 Deprecation: #86440 - Internal Methods and properties within RteHtmlParser
@@ -41,8 +41,8 @@ The following methods have changed visibility from public to protected and shoul
 
 The following processing options (`RTE.proc.`) have been marked as deprecated:
 
-* :ts:`keepPDIVattribs`
-* :ts:`dontRemoveUnknownTags_db`
+* :typoscript:`keepPDIVattribs`
+* :typoscript:`dontRemoveUnknownTags_db`
 
 
 Impact
@@ -61,7 +61,7 @@ TYPO3 installations with extensions or custom usages for RTE handling (e.g. `l10
 Migration
 =========
 
-Migrate to use the public API only and use other options (such as :ts:`allowAttributes` instead of
-:ts:`dontRemoveUnknownTags_db`) in order to only run certain instructions on the RteHtmlParser object.
+Migrate to use the public API only and use other options (such as :typoscript:`allowAttributes` instead of
+:typoscript:`dontRemoveUnknownTags_db`) in order to only run certain instructions on the RteHtmlParser object.
 
 .. index:: RTE, FullyScanned, PHP-API

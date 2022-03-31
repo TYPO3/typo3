@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Deprecation: #83806 - Deprecate page.javascriptLibs and page.javascriptLibs.jQuery

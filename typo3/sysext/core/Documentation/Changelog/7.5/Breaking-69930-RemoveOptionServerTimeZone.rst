@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Breaking: #69930 - Remove option "serverTimeZone"

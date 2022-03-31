@@ -29,4 +29,6 @@
 .. highlight
 .. ---------
 
+.. By default, code blocks use PHP syntax highlighting
+
 .. highlight:: shell

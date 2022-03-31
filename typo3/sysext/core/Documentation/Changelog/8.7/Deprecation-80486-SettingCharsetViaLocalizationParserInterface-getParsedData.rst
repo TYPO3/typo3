@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Deprecation: #80486 - Setting charset via LocalizationParserInterface->getParsedData()

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Breaking: #87957 - Validators are not registered automatically in Extbase anymore

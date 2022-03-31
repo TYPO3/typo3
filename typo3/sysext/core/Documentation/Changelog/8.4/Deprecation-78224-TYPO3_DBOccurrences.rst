@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================
 Deprecation: #78224 - TYPO3_DB occurrences

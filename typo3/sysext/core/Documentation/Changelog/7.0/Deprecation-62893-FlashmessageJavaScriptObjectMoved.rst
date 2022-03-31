@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Deprecation: #62893 - Flashmessage JavaScript object TYPO3.Flashmessages was moved

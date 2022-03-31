@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Feature: #90026 - Expose internal typoLinkParts in TypolinkViewHelper
@@ -22,7 +22,7 @@ variable name to be used containing the following internal parts:
 * title
 * additionalParams
 
-Details for these internal parts are documented for :ts:`typolink.parameter`
+Details for these internal parts are documented for :typoscript:`typolink.parameter`
 in `TypoScript reference`_
 
 .. _TypoScript reference: https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Typolink.html?highlight=typolink#parameter

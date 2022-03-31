@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Deprecation: #94979 - Using CacheManager or Database Connections during TYPO3 bootstrap
