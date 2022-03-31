@@ -228,7 +228,7 @@ class GridColumnItem extends AbstractGridObject
                 $this->getBackendUser()->isAdmin()
                 || ((int)$this->record['editlock'] === 0 && (int)$pageRecord['editlock'] === 0)
                 && $this->getBackendUser()->doesUserHaveAccess($pageRecord, Permission::CONTENT_EDIT)
-                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $this->record['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
+                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $this->record['CType'])
             )
         ;
     }

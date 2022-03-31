@@ -242,8 +242,7 @@ return [
                     'special' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.special',
                 ],
                 'default' => 'text',
-                'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
-                'authMode_enforce' => 'strict',
+                'authMode' => 'explicitAllow',
             ],
         ],
         'editlock' => [
@@ -959,8 +958,7 @@ return [
                     'label' => 'asc',
                 ],
                 'default' => '',
-                'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
-                'authMode_enforce' => 'strict',
+                'authMode' => 'explicitAllow',
             ],
         ],
         'file_collections' => [

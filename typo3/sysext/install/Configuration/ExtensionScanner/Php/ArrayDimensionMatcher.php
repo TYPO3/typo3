@@ -672,4 +672,9 @@ return [
             'Feature-97230-PSR-14EventForModifyingImageManipulationPreviewUrl.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'explicitADmode\']' => [
+        'restFiles' => [
+            'Breaking-97265-SimplifiedAccessModeSystem.rst',
+        ],
+    ],
 ];

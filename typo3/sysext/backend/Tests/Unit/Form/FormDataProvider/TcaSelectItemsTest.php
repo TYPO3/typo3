@@ -1911,55 +1911,6 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * @test
      */
-    public function addDataRemovesItemsByUserAuthModeRestriction(): void
-    {
-        $input = [
-            'databaseRow' => [
-                'aField' => 'keep,remove',
-            ],
-            'tableName' => 'aTable',
-            'processedTca' => [
-                'columns' => [
-                    'aField' => [
-                        'config' => [
-                            'type' => 'select',
-                            'renderType' => 'selectSingle',
-                            'authMode' => 'explicitAllow',
-                            'items' => [
-                                0 => [
-                                    0 => 'keepMe',
-                                    1 => 'keep',
-                                    null,
-                                    null,
-                                    null,
-                                ],
-                                1 => [
-                                    0 => 'removeMe',
-                                    1 => 'remove',
-                                ],
-                            ],
-                            'maxitems' => 99999,
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-        $backendUserProphecy->checkAuthMode('aTable', 'aField', 'keep', 'explicitAllow')->shouldBeCalled()->willReturn(true);
-        $backendUserProphecy->checkAuthMode('aTable', 'aField', 'remove', 'explicitAllow')->shouldBeCalled()->willReturn(false);
-
-        $expected = $input;
-        $expected['databaseRow']['aField'] = ['keep'];
-        unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
-
-        self::assertEquals($expected, (new TcaSelectItems())->addData($input));
-    }
-
-    /**
-     * @test
-     */
     public function addDataKeepsAllPagesDoktypesForAdminUser(): void
     {
         $input = [

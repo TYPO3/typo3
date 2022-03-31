@@ -1,6 +1,6 @@
 be_groups,,,,,,,
 ,uid,pid,tstamp,tables_modify,explicit_allowdeny,non_exclude_fields,allowed_languages
-,1,0,1366642540,"pages,tt_content","tt_content:CType:text:ALLOW,tt_content:CType:textmedia:ALLOW",,
-,2,0,1366642540,"pages,tt_content","tt_content:CType:text:ALLOW,tt_content:CType:textmedia:ALLOW",tt_content:header_link,
-,3,0,1366642540,"pages,tt_content","tt_content:CType:text:ALLOW,tt_content:CType:textmedia:ALLOW",,0
-,6,0,1366642540,"pages,tt_content","tt_content:CType:text:ALLOW,tt_content:CType:textmedia:ALLOW",,
+,1,0,1366642540,"pages,tt_content","tt_content:CType:text,tt_content:CType:textmedia",,
+,2,0,1366642540,"pages,tt_content","tt_content:CType:text,tt_content:CType:textmedia",tt_content:header_link,
+,3,0,1366642540,"pages,tt_content","tt_content:CType:text,tt_content:CType:textmedia",,0
+,6,0,1366642540,"pages,tt_content","tt_content:CType:text,tt_content:CType:textmedia",,

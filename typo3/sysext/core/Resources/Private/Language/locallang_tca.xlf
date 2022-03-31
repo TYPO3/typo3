@@ -175,7 +175,7 @@
 				<source>Allowed excludefields</source>
 			</trans-unit>
 			<trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny">
-				<source>Explicitly allow/deny field values</source>
+				<source>Explicitly allow field values</source>
 			</trans-unit>
 			<trans-unit id="be_groups.custom_options" resname="be_groups.custom_options">
 				<source>Custom module options</source>

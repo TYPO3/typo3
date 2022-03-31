@@ -1120,7 +1120,7 @@ class PageLayoutView implements LoggerAwareInterface
                 $this->getBackendUser()->isAdmin()
                 || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)
                 && $this->hasContentModificationAndAccessPermissions()
-                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'], $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'])
+                && $this->getBackendUser()->checkAuthMode('tt_content', 'CType', $row['CType'])
             )
         ) {
             return true;

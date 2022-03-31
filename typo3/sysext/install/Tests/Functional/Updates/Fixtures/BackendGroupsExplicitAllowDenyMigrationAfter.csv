@@ -1,0 +1,6 @@
+"be_groups",,
+,"uid","explicit_allowdeny"
+,1,"aTable:aField:aValue"
+,2,"aTable:aField:toMigrate1,aTable:aField:okTuple,aTable:aField:toMigrate2"
+,3,"aTable:aField:toMigrate1,aTable:aField:okTuple"
+,4,"aTable:aField:okTuple"

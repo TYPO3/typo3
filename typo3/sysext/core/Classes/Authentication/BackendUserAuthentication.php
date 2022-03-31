@@ -612,10 +612,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param string $table Table name
      * @param string $field Field name (must be configured in TCA and of type "select" with authMode set!)
      * @param string $value Value to evaluation (single value, must not contain any of the chars ":,|")
-     * @param string $authMode Auth mode keyword (explicitAllow, explicitDeny, individual)
      * @return bool Whether access is granted or not
      */
-    public function checkAuthMode($table, $field, $value, $authMode)
+    public function checkAuthMode($table, $field, $value)
     {
         // Admin users can do anything:
         if ($this->isAdmin()) {
@@ -636,45 +635,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Initialize:
         $testValue = $table . ':' . $field . ':' . $value;
         $out = true;
-        // Checking value:
-        switch ((string)$authMode) {
-            case 'explicitAllow':
-                if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
-                    $out = false;
-                }
-                break;
-            case 'explicitDeny':
-                if (GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-                    $out = false;
-                }
-                break;
-            case 'individual':
-                if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-                    $items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
-                    if (is_array($items)) {
-                        foreach ($items as $iCfg) {
-                            if ((string)$iCfg[1] === (string)$value && ($iCfg[5] ?? '')) {
-                                switch ((string)($iCfg[5] ?? '')) {
-                                    case 'EXPL_ALLOW':
-                                        if (!GeneralUtility::inList(
-                                            $this->groupData['explicit_allowdeny'],
-                                            $testValue . ':ALLOW'
-                                        )) {
-                                            $out = false;
-                                        }
-                                        break;
-                                    case 'EXPL_DENY':
-                                        if (GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-                                            $out = false;
-                                        }
-                                        break;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                break;
+        if (!GeneralUtility::inList($this->groupData['explicit_allowdeny'], $testValue)) {
+            $out = false;
         }
         return $out;
     }
@@ -806,8 +768,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 if (isset($idOrRow[$fieldName])
                     && ($fieldValue['config']['type'] ?? '') === 'select'
                     && ($fieldValue['config']['authMode'] ?? false)
-                    && ($fieldValue['config']['authMode_enforce'] ?? '') === 'strict'
-                    && !$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
+                    && !$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName])) {
                     $this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode']
                             . '" failed for field "' . $fieldName . '" with value "'
                             . $idOrRow[$fieldName] . '" evaluated';

@@ -773,10 +773,9 @@ class BackendUserAuthenticationTest extends UnitTestCase
      * @test
      * @dataProvider checkAuthModeReturnsExpectedValueDataProvider
      * @param string $theValue
-     * @param string $authMode
      * @param bool $expectedResult
      */
-    public function checkAuthModeReturnsExpectedValue(string $theValue, string $authMode, bool $expectedResult): void
+    public function checkAuthModeReturnsExpectedValue(string $theValue, bool $expectedResult): void
     {
         /** @var BackendUserAuthentication|MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
@@ -789,10 +788,10 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->willReturn(false);
 
         $subject->groupData['explicit_allowdeny'] =
-            'dummytable:dummyfield:explicitly_allowed_value:ALLOW,'
-            . 'dummytable:dummyfield:explicitly_denied_value:DENY';
+            'dummytable:dummyfield:explicitly_allowed_value,'
+            . 'dummytable:dummyfield:explicitly_denied_value';
 
-        $result = $subject->checkAuthMode('dummytable', 'dummyfield', $theValue, $authMode);
+        $result = $subject->checkAuthMode('dummytable', 'dummyfield', $theValue);
         self::assertEquals($expectedResult, $result);
     }
 
@@ -801,42 +800,26 @@ class BackendUserAuthenticationTest extends UnitTestCase
         return [
             'explicit allow, not allowed value' => [
                 'non_allowed_field',
-                'explicitAllow',
                 false,
             ],
             'explicit allow, allowed value' => [
                 'explicitly_allowed_value',
-                'explicitAllow',
                 true,
-            ],
-            'explicit deny, not denied value' => [
-                'non_denied_field',
-                'explicitDeny',
-                true,
-            ],
-            'explicit deny, denied value' => [
-                'explicitly_denied_value',
-                'explicitDeny',
-                false,
             ],
             'invalid value colon' => [
                 'containing:invalid:chars',
-                'does not matter',
                 false,
             ],
             'invalid value comma' => [
                 'containing,invalid,chars',
-                'does not matter',
                 false,
             ],
             'blank value' => [
                 '',
-                'does not matter',
                 true,
             ],
             'divider' => [
                 '--div--',
-                'explicitAllow',
                 true,
             ],
         ];

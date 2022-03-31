@@ -70,7 +70,6 @@ class EditableRestriction implements QueryRestrictionInterface
                 if ($fieldConfig['type'] === 'select'
                     && is_array($fieldConfig['items'] ?? false)
                     && isset($fieldConfig['authMode'])
-                    && isset($fieldConfig['authMode_enforce']) && $fieldConfig['authMode_enforce'] === 'strict'
                 ) {
                     $this->explicitAllowFields[$table][$type] = $this->getExplicitAllowTypesForCurrentUser(
                         $table,
@@ -100,8 +99,7 @@ class EditableRestriction implements QueryRestrictionInterface
 
     /**
      * Returns the allowed types for the current user. Should only be called if the
-     * table has a type field (defined by TCA ctrl => type) which contains 'authMode'
-     * and has authMode_enforce === 'strict'
+     * table has a type field (defined by TCA ctrl => type) which contains 'authMode'.
      *
      * @param string $table
      * @param string $typeField
@@ -116,13 +114,7 @@ class EditableRestriction implements QueryRestrictionInterface
             if ($itemIdentifier === '--div--') {
                 continue;
             }
-            if ($GLOBALS['BE_USER']->checkAuthMode(
-                $table,
-                $typeField,
-                $itemIdentifier,
-                $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode']
-            )
-            ) {
+            if ($GLOBALS['BE_USER']->checkAuthMode($table, $typeField, $itemIdentifier)) {
                 $allowDenyFieldTypes[] = $itemIdentifier;
             }
         }

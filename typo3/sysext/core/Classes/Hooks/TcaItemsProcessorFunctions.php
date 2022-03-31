@@ -147,10 +147,6 @@ class TcaItemsProcessorFunctions
 
     public function populateExplicitAuthValues(array &$fieldDefinition): void
     {
-        $icons = [
-            'ALLOW' => 'status-status-permission-granted',
-            'DENY' => 'status-status-permission-denied',
-        ];
         // Traverse grouped field values:
         foreach ($this->getGroupedExplicitAuthFieldValues() as $groupKey => $tableFields) {
             if (empty($tableFields['items']) || !is_array($tableFields['items'])) {
@@ -163,12 +159,10 @@ class TcaItemsProcessorFunctions
             ];
             // Traverse options for this field:
             foreach ($tableFields['items'] as $itemValue => $itemContent) {
-                [$allowDenyMode, $itemLabel, $allowDenyModeLabel] = $itemContent;
-                // Add item to be selected:
                 $fieldDefinition['items'][] = [
-                    '[' . $allowDenyModeLabel . '] ' . $itemLabel,
-                    $groupKey . ':' . preg_replace('/[:|,]/', '', (string)$itemValue) . ':' . $allowDenyMode,
-                    $icons[$allowDenyMode],
+                    $itemContent,
+                    $groupKey . ':' . preg_replace('/[:|,]/', '', (string)$itemValue),
+                    'status-status-permission-granted',
                 ];
             }
         }
@@ -413,7 +407,7 @@ class TcaItemsProcessorFunctions
     }
 
     /**
-     * Returns an array with explicit Allow/Deny fields.
+     * Returns an array with explicit allow fields.
      * Used for listing these field/value pairs in be_groups forms
      *
      * @return array Array with information from all of $GLOBALS['TCA']
@@ -421,11 +415,7 @@ class TcaItemsProcessorFunctions
     protected function getGroupedExplicitAuthFieldValues(): array
     {
         $languageService = $this->getLanguageService();
-        $allowDenyLabels = [
-            'ALLOW' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.allow'),
-            'DENY' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.deny'),
-        ];
-        $allowDenyOptions = [];
+        $allowOptions = [];
         foreach ($GLOBALS['TCA'] as $table => $tableConfiguration) {
             if (empty($tableConfiguration['columns']) || !is_array($tableConfiguration['columns'])) {
                 continue;
@@ -433,15 +423,15 @@ class TcaItemsProcessorFunctions
             // All field names configured:
             foreach ($tableConfiguration['columns'] as $field => $fieldDefinition) {
                 $fieldConfig = $fieldDefinition['config'] ?? [];
-                if (($fieldConfig['type'] ?? '') !== 'select' || !(bool)($fieldConfig['authMode'] ?? false)) {
-                    continue;
-                }
-                // Check for items
-                if (empty($fieldConfig['items']) || !is_array($fieldConfig['items'])) {
+                if (($fieldConfig['type'] ?? '') !== 'select'
+                    || ($fieldConfig['authMode'] ?? false) !== 'explicitAllow'
+                    || empty($fieldConfig['items'])
+                    || !is_array($fieldConfig['items'])
+                ) {
                     continue;
                 }
                 // Get Human Readable names of fields and table:
-                $allowDenyOptions[$table . ':' . $field]['tableFieldLabel'] =
+                $allowOptions[$table . ':' . $field]['tableFieldLabel'] =
                     $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') . ': '
                     . $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label'] ?? '');
 
@@ -451,37 +441,11 @@ class TcaItemsProcessorFunctions
                     if ($itemIdentifier === '' || $itemIdentifier === '--div--') {
                         continue;
                     }
-                    // Find allowDenyMode
-                    $allowDenyMode = '';
-                    switch ((string)$fieldConfig['authMode']) {
-                        case 'explicitAllow':
-                            $allowDenyMode = 'ALLOW';
-                            break;
-                        case 'explicitDeny':
-                            $allowDenyMode = 'DENY';
-                            break;
-                        case 'individual':
-                            if ($item[5] ?? false) {
-                                if ($item[5] === 'EXPL_ALLOW') {
-                                    $allowDenyMode = 'ALLOW';
-                                } elseif ($item[5] === 'EXPL_DENY') {
-                                    $allowDenyMode = 'DENY';
-                                }
-                            }
-                            break;
-                    }
-                    // Set allowDenyMode
-                    if ($allowDenyMode) {
-                        $allowDenyOptions[$table . ':' . $field]['items'][$itemIdentifier] = [
-                            $allowDenyMode,
-                            $languageService->sL($item[0] ?? ''),
-                            $allowDenyLabels[$allowDenyMode],
-                        ];
-                    }
+                    $allowOptions[$table . ':' . $field]['items'][$itemIdentifier] = $languageService->sL($item[0] ?? '');
                 }
             }
         }
-        return $allowDenyOptions;
+        return $allowOptions;
     }
 
     protected function getLanguageService(): LanguageService

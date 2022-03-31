@@ -357,12 +357,6 @@ BE:
         interfaces:
             type: text
             description: 'This determines which interface options are available in the login prompt (All options: "backend,frontend")'
-        explicitADmode:
-            type: dropdown
-            allowedValues:
-              'explicitAllow': 'Administrators have to explicitly grant access for all editors and groups'
-              'explicitDeny': 'Editors have access to all content types by default, access has to explicitly restricted'
-            description: 'Sets the general allow/deny mode for Content Element Types (CTypes) when granting or restricting access for backend users'
         flexformForceCDATA:
             type: bool
             description: 'If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.'

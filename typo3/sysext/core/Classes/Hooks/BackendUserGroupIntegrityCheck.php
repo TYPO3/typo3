@@ -29,23 +29,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class BackendUserGroupIntegrityCheck
 {
     /**
-     * @param string $status
+     * @param string $_ unused
      * @param string $table
      * @param int $id
-     * @param array $fieldArray
-     * @param DataHandler $parentObject
      */
-    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $parentObject)
+    public function processDatamap_afterDatabaseOperations($_, $table, $id)
     {
-        if ($table !== 'be_groups' || $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] !== 'explicitAllow') {
+        if ($table !== 'be_groups') {
             return;
         }
-
         $backendUserGroup = BackendUtility::getRecord($table, $id, 'explicit_allowdeny');
         $explicitAllowDenyFields = GeneralUtility::trimExplode(',', $backendUserGroup['explicit_allowdeny'] ?? '');
         foreach ($explicitAllowDenyFields as $value) {
             if ($value !== '' && strpos($value, 'tt_content:list_type:') === 0) {
-                if (!in_array('tt_content:CType:list:ALLOW', $explicitAllowDenyFields, true)) {
+                if (!in_array('tt_content:CType:list', $explicitAllowDenyFields, true)) {
                     /** @var FlashMessage $flashMessage */
                     $flashMessage = GeneralUtility::makeInstance(
                         FlashMessage::class,

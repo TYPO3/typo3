@@ -1266,216 +1266,6 @@ class TcaMigrationTest extends UnitTestCase
         self::assertEquals($expected, $subject->migrate($input));
     }
 
-    public function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
-    {
-        yield 'authMode=individual with keyword EXPL_ALLOW in items array migrated to new position' => [
-            'tca' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'EXPL_ALLOW',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
-                                        'EXPL_ALLOW',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        yield 'authMode=individual with keyword EXPL_DENY in items array migrated to new position' => [
-            'tca' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'EXPL_DENY',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
-                                        'EXPL_DENY',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        yield 'authMode=individual without keyword in items array NOT migrated to new position' => [
-            'tca' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'EXPL_DENY',
-                                    ],
-                                    [
-                                        'Label 2',
-                                        'Value 2',
-                                        null,
-                                        null,
-                                        'Description 2',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'individual',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        '',
-                                        'EXPL_DENY',
-                                    ],
-                                    [
-                                        'Label 2',
-                                        'Value 2',
-                                        null,
-                                        null,
-                                        'Description 2',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        yield 'items array NOT migrated to new position without authMode=individual set' => [
-            'tca' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'explicitAllow',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'expected' => [
-                'aTable' => [
-                    'columns' => [
-                        'aColumn' => [
-                            'config' => [
-                                'type' => 'select',
-                                'authMode' => 'explicitAllow',
-                                'items' => [
-                                    [
-                                        'Label 1',
-                                        'Value 1',
-                                        null,
-                                        null,
-                                        'Desription',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider selectIndividualAllowDenyMigratedToNewPositionDataProvider
-     * @test
-     */
-    public function selectIndividualAllowDenyMigratedToNewPosition(array $input, array $expected): void
-    {
-        $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
-    }
-
     private function internalTypeFolderMigratedToTypeDataProvider(): iterable
     {
         yield 'internal_type=folder migrated to type=folder' => [
@@ -2371,5 +2161,415 @@ class TcaMigrationTest extends UnitTestCase
     {
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function authModeEnforceIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                            'authMode_enforce' => 'strict',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                            // This is an invalid value, but still removed
+                            'authMode_enforce' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function authModeValuesAreEnforced(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            // good
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            // forced to 'explicitAllow'
+                            'authMode' => 'explicitDeny',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            // forced to 'explicitAllow'
+                            'authMode' => 'individual',
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            // forced to 'explicitAllow'
+                            'authMode' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'authMode' => 'explicitAllow',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
+
+    public function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
+    {
+        yield 'keyword EXPL_ALLOW at position 5 in times array' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'individual',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'EXPL_ALLOW',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        '',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'keyword EXPL_DENY at position 5 in times array' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'individual',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'EXPL_DENY',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        '',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'keyword in items array NOT migrated to new position' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'individual',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'EXPL_DENY',
+                                    ],
+                                    [
+                                        'Label 2',
+                                        'Value 2',
+                                        null,
+                                        null,
+                                        'Description 2',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        '',
+                                    ],
+                                    [
+                                        'Label 2',
+                                        'Value 2',
+                                        null,
+                                        null,
+                                        'Description 2',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'items array NOT migrated to new position without authMode=individual set' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'position 6 is unset' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'individual',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                        'EXPL_ALLOW',
+                                    ],
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                        'EXPL_DENY',
+                                    ],
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                        'somethingElse',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'select',
+                                'authMode' => 'explicitAllow',
+                                'items' => [
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                    ],
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                    ],
+                                    [
+                                        'Label 1',
+                                        'Value 1',
+                                        null,
+                                        null,
+                                        'Desription',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider selectIndividualAllowDenyMigratedToNewPositionDataProvider
+     * @test
+     */
+    public function selectIndividualAllowDenyMigratedToNewPosition(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
     }
 }

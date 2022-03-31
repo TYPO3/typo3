@@ -417,4 +417,10 @@ return [
             'Breaking-96205-RemovalOfLastRelativeToCurrentScriptRemains.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\BackendUserAuthentication->checkAuthMode' => [
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-97265-SimplifiedAccessModeSystem.rst',
+        ],
+    ],
 ];

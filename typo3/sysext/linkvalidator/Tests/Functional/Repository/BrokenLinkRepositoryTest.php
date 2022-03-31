@@ -76,8 +76,6 @@ class BrokenLinkRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'] = 'explicitAllow';
         $this->brokenLinksRepository = new BrokenLinkRepository();
     }
 

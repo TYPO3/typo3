@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Report\EnvironmentStatusReport;
 use TYPO3\CMS\Install\Report\InstallStatusReport;
 use TYPO3\CMS\Install\Report\SecurityStatusReport;
+use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\CMS\Install\Updates\BackendUserLanguageMigration;
 use TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate;
 use TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard;
@@ -30,6 +31,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChanne
 // v11->v12 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feLoginModeExtension'] = FeLoginModeExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerialization'] = SysLogSerializationUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroupsExplicitAllowDenyMigration'] = BackendGroupsExplicitAllowDenyMigration::class;
 
 // Register report module additions
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = InstallStatusReport::class;

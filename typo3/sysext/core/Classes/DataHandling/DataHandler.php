@@ -2269,7 +2269,7 @@ class DataHandler implements LoggerAwareInterface
         if ($tcaFieldConf['type'] === 'select' && ($tcaFieldConf['authMode'] ?? false)) {
             $preCount = count($valueArray);
             foreach ($valueArray as $index => $key) {
-                if (!$this->BE_USER->checkAuthMode($table, $field, $key, $tcaFieldConf['authMode'])) {
+                if (!$this->BE_USER->checkAuthMode($table, $field, $key)) {
                     unset($valueArray[$index]);
                 }
             }

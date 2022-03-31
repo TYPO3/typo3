@@ -298,8 +298,8 @@ class NewContentElementController
                 }
                 // Get information about if the field value is OK:
                 $config = $GLOBALS['TCA']['tt_content']['columns'][$fieldName]['config'] ?? [];
-                $authModeDeny = ($config['type'] ?? '') === 'select' && ($config['authMode'] ?? false)
-                    && !$backendUser->checkAuthMode('tt_content', $fieldName, $value, $config['authMode']);
+                $userNotAllowedToAccess = ($config['type'] ?? '') === 'select' && ($config['authMode'] ?? false)
+                    && !$backendUser->checkAuthMode('tt_content', $fieldName, $value);
                 // Check removeItems
                 if (!isset($removeItems[$fieldName]) && ($TCEFORM_TSconfig[$fieldName]['removeItems'] ?? false)) {
                     $removeItems[$fieldName] = array_flip(GeneralUtility::trimExplode(
@@ -317,7 +317,7 @@ class NewContentElementController
                     ));
                 }
                 $isNotInKeepItems = !empty($keepItems[$fieldName]) && !isset($keepItems[$fieldName][$value]);
-                if ($authModeDeny || ($fieldName === 'CType' && (isset($removeItems[$fieldName][$value]) || $isNotInKeepItems))) {
+                if ($userNotAllowedToAccess || ($fieldName === 'CType' && (isset($removeItems[$fieldName][$value]) || $isNotInKeepItems))) {
                     // Remove element all together:
                     unset($wizardItems[$key]);
                     break;

@@ -66,7 +66,6 @@ class TcaMigration
         $tca = $this->migrateFileFolderConfiguration($tca);
         $tca = $this->migrateLevelLinksPosition($tca);
         $tca = $this->migrateRootUidToStartingPoints($tca);
-        $tca = $this->migrateSelectAuthModeIndividualItemsKeywordToNewPosition($tca);
         $tca = $this->migrateInternalTypeFolderToTypeFolder($tca);
         $tca = $this->migrateRequiredFlag($tca);
         $tca = $this->migrateEmailFlagToEmailType($tca);
@@ -74,6 +73,9 @@ class TcaMigration
         $tca = $this->migrateRenderTypeInputLinkToTypeLink($tca);
         $tca = $this->migratePasswordAndSaltedPasswordToPasswordType($tca);
         $tca = $this->migrateRenderTypeInputDateTimeToTypeDatetime($tca);
+        $tca = $this->removeAuthModeEnforce($tca);
+        $tca = $this->removeSelectAuthModeIndividualItemsKeyword($tca);
+        $tca = $this->migrateAuthMode($tca);
 
         return $tca;
     }
@@ -527,40 +529,6 @@ class TcaMigration
     }
 
     /**
-     * If a column has authMode=individual and items with the corresponding key on position 5
-     * defined, migrate the key to position 6, since position 5 is used for the description.
-     *
-     * @param array $tca
-     * @return array
-     */
-    protected function migrateSelectAuthModeIndividualItemsKeywordToNewPosition(array $tca): array
-    {
-        foreach ($tca as $table => $tableDefinition) {
-            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
-                continue;
-            }
-
-            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
-                if (($fieldConfig['config']['type'] ?? '') !== 'select' || ($fieldConfig['config']['authMode'] ?? '') !== 'individual') {
-                    continue;
-                }
-
-                foreach ($fieldConfig['config']['items'] ?? [] as $index => $item) {
-                    if (in_array($item[4] ?? '', ['EXPL_ALLOW', 'EXPL_DENY'], true)) {
-                        $tca[$table]['columns'][$fieldName]['config']['items'][$index][5] = $item[4];
-                        $tca[$table]['columns'][$fieldName]['config']['items'][$index][4] = '';
-
-                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets ' . $item[4]
-                            . ' at position 5 of the items array. This option has been shifted to position 6 and should be adjusted accordingly.';
-                    }
-                }
-            }
-        }
-
-        return $tca;
-    }
-
-    /**
      * Migrates [config][internal_type] = 'folder' to [config][type] = 'folder'.
      * Also removes [config][internal_type] completely, if present.
      */
@@ -934,6 +902,86 @@ class TcaMigration
             }
         }
 
+        return $tca;
+    }
+
+    /**
+     * Remove ['columns'][aField]['config']['authMode_enforce']
+     */
+    protected function removeAuthModeEnforce(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (array_key_exists('authMode_enforce', $fieldConfig['config'] ?? [])) {
+                    unset($tca[$table]['columns'][$fieldName]['config']['authMode_enforce']);
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                    . '\'authMode_enforce\'. This config key is obsolete and has been removed.'
+                    . ' Please adjust your TCA accordingly.';
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * If a column has authMode=individual and items with the corresponding key on position 5
+     * defined, or if EXPL_ALLOW or EXPL_DENY is set for position 6, migrate or remove them.
+     */
+    protected function removeSelectAuthModeIndividualItemsKeyword(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'select' || ($fieldConfig['config']['authMode'] ?? '') !== 'individual') {
+                    continue;
+                }
+                foreach ($fieldConfig['config']['items'] ?? [] as $index => $item) {
+                    if (in_array($item[4] ?? '', ['EXPL_ALLOW', 'EXPL_DENY'], true)) {
+                        $tca[$table]['columns'][$fieldName]['config']['items'][$index][4] = '';
+                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets ' . $item[4]
+                            . ' at position 5 of the items array. This was used in combination with \'authMode=individual\' and'
+                            . ' is obsolete since \'individual\' is no longer supported.';
+                    }
+                    if (isset($item[5])) {
+                        unset($tca[$table]['columns'][$fieldName]['config']['items'][$index][5]);
+                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets ' . $item[5]
+                            . ' at position 6 of the items array. This was used in combination with \'authMode=individual\' and'
+                            . ' is obsolete since \'individual\' is no longer supported.';
+                    }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * See if ['columns'][aField]['config']['authMode'] is not set to 'explicitAllow' and
+     * set it to this value if needed.
+     */
+    protected function migrateAuthMode(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (array_key_exists('authMode', $fieldConfig['config'] ?? [])
+                    && $fieldConfig['config']['authMode'] !== 'explicitAllow'
+                ) {
+                    $tca[$table]['columns'][$fieldName]['config']['authMode'] = 'explicitAllow';
+                    $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' sets '
+                        . '\'authMode\' to \'' . $fieldConfig['config']['authMode'] . '\'. The only allowed value is \'explicitAllow\','
+                        . ' and that value has been set now. Please adjust your TCA accordingly. Note this has impact on'
+                        . ' backend group access rights, these should be reviewed and new access right for this field should'
+                        . ' be set. An upgrade wizard partially migrates this and reports be_groups rows that need manual attention.';
+                }
+            }
+        }
         return $tca;
     }
 }

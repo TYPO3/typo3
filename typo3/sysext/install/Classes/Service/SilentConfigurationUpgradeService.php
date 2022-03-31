@@ -173,6 +173,8 @@ class SilentConfigurationUpgradeService
         'EXT/allowGlobalInstall',
         // #96988
         'EXT/allowLocalInstall',
+        // #97265
+        'BE/explicitADmode',
     ];
 
     public function __construct(ConfigurationManager $configurationManager)
@@ -206,7 +208,6 @@ class SilentConfigurationUpgradeService
         $this->migrateCachingFrameworkCaches();
         $this->migrateMailSettingsToSendmail();
         $this->migrateMailSmtpEncryptSetting();
-        $this->migrateExplicitADmode();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1108,36 +1109,6 @@ class SilentConfigurationUpgradeService
             }
         } catch (MissingArrayPathException $e) {
             // no change inside the LocalConfiguration.php found, so nothing needs to be modified
-        }
-    }
-
-    /**
-     * The default in DefaultConfiguration for BE/explicitADmode changed from explicitDeny to
-     * explicitAllow. This upgrade checks if there is any value in LocalConfiguration yet, and
-     * sets it to explicitDeny if not, to stay b/w compatible for affected instances that used
-     * the old default from DefaultConfiguration before.
-     * @see #94721
-     */
-    protected function migrateExplicitADmode(): void
-    {
-        $confManager = $this->configurationManager;
-        try {
-            // If set in LocalConfiguration, just keep it:
-            // If set to 'explicitAllow', which is what we want and prefer, it is in line with DefaultConfiguration,
-            // but we still do not remove it, since a second call to the silent upgrade would then write 'explicitDeny'.
-            // If set to 'explicitDeny', we also simply leave it as it, since this may have been written explicitly
-            // already by a previous silent upgrade run.
-            // If set to something else, we don't care about this here.
-            $confManager->getLocalConfigurationValueByPath('BE/explicitADmode');
-        } catch (MissingArrayPathException $e) {
-            // No explicit setting in LocalConfiguration, yet. This means the system is currently being upgraded - a
-            // "new" instance would have been set to 'explicitAllow' via FactoryConfiguration already. So we're catching
-            // instances here that are being upgraded from a previous core version where explicitADmode has never been set
-            // in LocalConfiguration, which then fell back to 'explicitDeny' with old cores due to the default in
-            // DefaultConfiguration. This default has been changed to 'explicitAllow' with core v11.4, so we now need to
-            // set this to 'explicitDeny' for those upgrading instances to keep their behavior.
-            $confManager->setLocalConfigurationValueByPath('BE/explicitADmode', 'explicitDeny');
-            $this->throwConfigurationChangedException();
         }
     }
 }

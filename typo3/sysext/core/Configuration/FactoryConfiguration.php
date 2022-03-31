@@ -6,9 +6,6 @@
  * from eg. the government or introduction package.
  */
 return [
-    'BE' => [
-        'explicitADmode' => 'explicitAllow',
-    ],
     'DB' => [
         'Connections' => [
             'Default' => [
