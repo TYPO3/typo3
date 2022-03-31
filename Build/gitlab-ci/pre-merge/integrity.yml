@@ -45,7 +45,6 @@ integration various php 7.2 pre-merge:
     - Build/Scripts/runTests.sh -s checkRst -p 7.2
     - Build/Scripts/runTests.sh -s checkFilePathLength -p 7.2
     - Build/Scripts/runTests.sh -s checkExtensionScannerRst -p 7.2
-    - Build/Scripts/runTests.sh -s checkCsvFixtures -p 7.2
     - Build/Scripts/runTests.sh -s checkBom -p 7.2
     - Build/Scripts/runTests.sh -s checkComposer -p 7.2
 
