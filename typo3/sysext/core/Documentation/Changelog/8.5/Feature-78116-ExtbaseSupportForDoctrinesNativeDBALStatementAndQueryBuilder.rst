@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Feature: #78116 - Extbase support for Doctrine's native DBAL Statement and QueryBuilder

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Breaking: #88496 - Method getSwitchableControllerActions has been removed

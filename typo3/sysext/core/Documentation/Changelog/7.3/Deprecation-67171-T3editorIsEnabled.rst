@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Deprecation: #37171 - Deprecate t3editor->isEnabled()

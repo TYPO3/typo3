@@ -1,14 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+==============================
+TYPO3 extension ``adminpanel``
+==============================
 
-========================================
-TYPO3 Admin Panel (typo3/cms-adminpanel)
-========================================
+The Admin Panel displays information about your site in the frontend and
+contains a range of metrics including debug and caching information.
 
-The TYPO3 admin panel provides a panel with additional functionality in
-the frontend (Debugging, Caching, Preview...)
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-adminpanel/11.5/en-us/
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-adminpanel/11.5/en-us/
+:TER:         https://extensions.typo3.org/extension/adminpanel/

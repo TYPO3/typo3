@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================
 Breaking: #77460 - Extbase query cache removed
@@ -19,7 +19,7 @@ The following public methods within the Extbase persistence layer have been remo
 * :php:`Typo3DbBackend->injectCacheManager()`
 * Interface definition in :php:`QuerySettingsInterface->getUseQueryCache()`
 
-The TypoScript configuration :ts:`config.tx_extbase.persistence.useQueryCache` has no effect anymore.
+The TypoScript configuration :typoscript:`config.tx_extbase.persistence.useQueryCache` has no effect anymore.
 
 Impact
 ======

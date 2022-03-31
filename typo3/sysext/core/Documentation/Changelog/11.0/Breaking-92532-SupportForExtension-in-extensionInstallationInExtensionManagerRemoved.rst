@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================================
 Breaking: #92532 - Support for extension-in-extension installation in Extension Manager removed

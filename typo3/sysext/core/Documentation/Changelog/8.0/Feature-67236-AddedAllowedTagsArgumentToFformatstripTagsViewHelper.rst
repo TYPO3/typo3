@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Feature: #67236 - Added "allowedTags" argument to f:format.stripTags ViewHelper

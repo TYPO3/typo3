@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Feature: #87525 - Add api=1 option in VimeoRenderer
@@ -16,7 +16,7 @@ The configuration now allows setting this parameter when rendering Vimeo videos 
 Impact
 ======
 
-Setting the parameter :ts:`api = 1` either in TypoScript or Fluid will append :html:`api=1` to the Vimeo video URL.
+Setting the parameter :typoscript:`api = 1` either in TypoScript or Fluid will append :html:`api=1` to the Vimeo video URL.
 
 Usage
 =====

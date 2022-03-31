@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Feature: #68741 - Introduce new IconFactory as base to replace the icon skinning API

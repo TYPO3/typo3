@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Breaking: #64637 - Compatibility CSS Styled Content TypoScript templates removed

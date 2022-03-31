@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================
 Feature: #78488 - Add rel="noreferrer" to external links
@@ -9,7 +9,7 @@ See :issue:`78488`
 Description
 ===========
 
-All links processed by :ts:`typolink` with external links opening in a new window have been extended to contain
+All links processed by :typoscript:`typolink` with external links opening in a new window have been extended to contain
 :html:`rel="noreferrer"`.
 
 Links opening in a new window are defined as those having an attribute :html:`target` which is either not empty,

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================================================
 Deprecation: #69754 - Deprecate relative path to extension directory and using filename only in TCA ctrl iconfile

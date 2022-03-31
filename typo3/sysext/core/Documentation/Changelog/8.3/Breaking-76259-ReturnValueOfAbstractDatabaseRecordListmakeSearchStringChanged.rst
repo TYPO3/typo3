@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Breaking: #76259 - Return value of AbstractDatabaseRecordList::makeSearchString changed

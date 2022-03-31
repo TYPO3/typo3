@@ -1,59 +1,58 @@
-.. include:: Includes.txt
+.. include:: /Includes.rst.txt
 
-
-.. _start:
-
-=============
-LinkValidator
-=============
+====================
+TYPO3 Link Validator
+====================
 
 :Extension key:
-      linkvalidator
+   linkvalidator
+
+:Package name:
+   typo3/cms-linkvalidator
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      LinkValidator checks the links in your website for validity. It
-      can validate all kinds of links: internal, external and file
-      links. Scheduler is supported to run LinkValidator via Cron
-      including the option to send status mails, if broken links were
-      detected.
-
-:Keywords:
-      link validation, LinkValidator
-
-:Copyright:
-      2000-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3, a GNU/GPL CMS/Framework
-available from `typo3.org <https://typo3.org/>`_
+----
 
+The Link Validator checks for broken links and displays results in the
+(Info>LinkValidator) backend module.
 
-**Table of Contents**
+It can validate all types of links: internal, external and file links. The
+Scheduler can run the validator periodically, including the option to
+send status mails when broken links are detected.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
    :titlesonly:
-   :glob:
 
    Introduction/Index
    Editors/Index
    Administration/Index
    Configuration/Index
    LargeSites/Index
-   Targets
 
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

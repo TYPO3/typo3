@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================================
 Breaking: #83241 - Extbase: Removed custom functionality for DataMapper->getPlainValue

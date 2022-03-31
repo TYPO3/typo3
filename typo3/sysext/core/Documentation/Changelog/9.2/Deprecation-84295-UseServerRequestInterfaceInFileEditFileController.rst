@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Deprecation: #84295 - Use ServerRequestInterface in File/EditFileController

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Breaking: #68562 - Bool values need to be cast to integer for MySQL strict mode

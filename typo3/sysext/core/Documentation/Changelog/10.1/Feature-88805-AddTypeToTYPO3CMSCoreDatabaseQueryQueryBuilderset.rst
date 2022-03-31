@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Feature: #88805 - Add type to \\TYPO3\\CMS\\Core\\Database\\Query\\QueryBuilder::set

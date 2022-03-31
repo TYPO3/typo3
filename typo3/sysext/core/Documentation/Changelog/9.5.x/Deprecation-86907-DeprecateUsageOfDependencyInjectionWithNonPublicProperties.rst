@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Deprecation: #86907 - Deprecate usage of dependency injection with non public properties

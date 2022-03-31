@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================
 Breaking: #86492 - Removed stdWrap support for config.additionalHeaders
@@ -9,14 +9,14 @@ See :issue:`86492`
 Description
 ===========
 
-The feature to use :ts:`stdWrap` for :ts:`config.additionalHeaders` has been removed due to
+The feature to use :typoscript:`stdWrap` for :typoscript:`config.additionalHeaders` has been removed due to
 an incompatibility with page caching.
 
 
 Impact
 ======
 
-:ts:`stdWrap` cannot be used anymore to manipulate additional headers set via TypoScript.
+:typoscript:`stdWrap` cannot be used anymore to manipulate additional headers set via TypoScript.
 
 
 Affected Installations

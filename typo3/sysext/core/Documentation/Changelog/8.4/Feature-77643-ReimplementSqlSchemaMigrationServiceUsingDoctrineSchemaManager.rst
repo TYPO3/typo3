@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Feature: #77643 - Reimplement SqlSchemaMigrationService using Doctrine SchemaManager

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Feature: #82419 - Send Frontend Debug Information as HTTP Response Header
@@ -9,7 +9,7 @@ See :issue:`82419`
 Description
 ===========
 
-When setting :ts:`config.debug=1` or :php:`$TYPO3_CONF_VARS[FE][debug]` the parse time is now sent as HTTP
+When setting :typoscript:`config.debug=1` or :php:`$TYPO3_CONF_VARS[FE][debug]` the parse time is now sent as HTTP
 response header "X-TYPO3-Parsetime" instead of HTML comments.
 
 

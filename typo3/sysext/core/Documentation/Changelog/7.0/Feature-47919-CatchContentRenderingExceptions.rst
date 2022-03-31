@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================================
 Feature: #47919 - Possibility to configure an exception handler when rendering TypoScript content objects

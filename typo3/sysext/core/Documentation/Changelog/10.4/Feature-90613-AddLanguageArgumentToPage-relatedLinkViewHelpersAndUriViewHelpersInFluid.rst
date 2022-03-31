@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================================
 Feature: #90613 - Add language argument to page-related LinkViewHelpers and UriViewHelpers in Fluid

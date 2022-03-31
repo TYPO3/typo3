@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Deprecation: #83740 - Cleanup of AbstractRecordList breaks hook

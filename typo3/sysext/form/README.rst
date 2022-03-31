@@ -1,13 +1,11 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+========================
+TYPO3 extension ``form``
+========================
 
-=====================
-Form (typo3/cms-form)
-=====================
+This is a flexible TYPO3 frontend form framework that allows editors,
+integrators and developers alike to create all kinds of forms.
 
-Form library, plugin and editor
-
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-form/11.5/en-us
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-form/11.5/en-us/
+:TER:         https://extensions.typo3.org/extension/form/

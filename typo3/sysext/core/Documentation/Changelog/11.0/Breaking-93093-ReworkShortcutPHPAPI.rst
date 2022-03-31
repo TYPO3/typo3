@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. _changelog-Breaking-93093-ReworkShortcutPHPAPI:
 
@@ -114,7 +114,7 @@ Migration
 Update the database schema (only "Add fields to tables") and run the
 `shortcutRecordsMigration` upgrade wizard either in the install tool or on
 CLI with
-:shell:`./typo3/sysext/core/bin/typo3 upgrade:run shortcutRecordsMigration`.
+:bash:`./typo3/sysext/core/bin/typo3 upgrade:run shortcutRecordsMigration`.
 Remove the unused :sql:`module_name` and :sql:`url` columns only after running
 the wizard.
 

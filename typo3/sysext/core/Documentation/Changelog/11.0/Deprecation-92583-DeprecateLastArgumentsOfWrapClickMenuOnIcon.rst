@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================
 Deprecation: #92583 - 3 last arguments of wrapClickMenuOnIcon()

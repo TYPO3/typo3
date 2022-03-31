@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Renders a string by passing it to a TYPO3 `parseFunc`_.
  * You can either specify a path to the TypoScript setting or set the `parseFunc`_ options directly.
- * By default :ts:`lib.parseFunc_RTE` is used to parse the string.
+ * By default :typoscript:`lib.parseFunc_RTE` is used to parse the string.
  *
  * Examples
  * ========

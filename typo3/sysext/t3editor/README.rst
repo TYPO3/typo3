@@ -1,13 +1,13 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+============================
+TYPO3 extension ``t3editor``
+============================
 
-=============================
-T3editor (typo3/cms-t3editor)
-=============================
+This extension provides a JavaScript-driven editor with syntax highlighting and
+code completion, based on the `CodeMirror`_ editor.
 
-JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.
+.. _CodeMirror: https://codemirror.net/
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-t3editor/11.5/en-us
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-t3editor/11.5/en-us/
+:TER:         https://extensions.typo3.org/extension/t3editor/

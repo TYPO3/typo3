@@ -1,57 +1,54 @@
 .. include:: /Includes.rst.txt
 
-.. _start:
-
-========
-T3editor
-========
+==============
+TYPO3 T3Editor
+==============
 
 :Extension key:
-    t3editor
+   t3editor
+
+:Package name:
+   typo3/cms-t3editor
 
 :Version:
-    |release|
+   |release|
 
 :Language:
-    en
+   en
 
-:Description:
-    Manual for the TYPO3 system extension t3editor, an editor with syntax
-    highlighting.
-
-:Keywords:
-    editor, syntax, highlighting
-
-:Authors:
-    TYPO3 CMS Core Development Team
+:Author:
+   TYPO3 contributors
 
 :License:
-    Open Content License available from http://www.opencontent.org/opl.shtml
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
    |today|
 
-JavaScript-driven editor with syntax highlighting and code completion.
-Based on CodeMirror.
+----
 
+This extension provides a JavaScript-driven editor with syntax highlighting and
+code completion, based on the `CodeMirror`_ editor.
 
-**TYPO3**
+.. _CodeMirror: https://codemirror.net/
 
-The content of this document is related to TYPO3 CMS,
-a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
+----
 
-**For Contributors**
-
-You are welcome to help improve this guide. Just click on "Edit on GitHub"
-on the top right to submit your change request.
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
+   :maxdepth: 2
    :titlesonly:
 
    Introduction/Index
    Installation/Index
    Developer/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
    Sitemap
-   Targets
+   genindex

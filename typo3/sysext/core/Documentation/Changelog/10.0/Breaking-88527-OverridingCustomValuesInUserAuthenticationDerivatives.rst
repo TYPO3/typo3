@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Breaking: #88527 - Overriding custom values in User Authentication derivatives

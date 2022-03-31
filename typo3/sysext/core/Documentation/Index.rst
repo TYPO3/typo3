@@ -1,21 +1,59 @@
+.. include:: /Includes.rst.txt
 
-.. include:: Includes.txt
+==========
+TYPO3 Core
+==========
 
-========================
-TYPO3 CMS Core ChangeLog
-========================
+:Extension key:
+   core
 
-:Rendered: |today|
+:Package name:
+   typo3/cms-core
 
-Every change to the TYPO3 Core which might affect your site is documented here.
+:Version:
+   |release|
+
+:Language:
+   en
+
+:Author:
+   TYPO3 contributors
+
+:License:
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
+
+:Rendered:
+   |today|
+
+----
+
+This extension provides the TYPO3 API, i.e. the core functionalities, which can
+be used and extended in any other TYPO3 extension.
+
+*Note:* Every change to the TYPO3 Core which might affect your site is
+documented here.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
+   :maxdepth: 1
    :titlesonly:
 
-   Sitemap/Index
    Changelog-11
    Changelog-10
    Changelog-9
    Changelog-8
    Changelog-7
    Changelog/Howto
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

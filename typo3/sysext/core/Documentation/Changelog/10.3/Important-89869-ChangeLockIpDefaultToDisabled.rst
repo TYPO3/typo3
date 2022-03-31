@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Important: #89869 - Change lockIP default to disabled for both frontend and backend

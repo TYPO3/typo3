@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================================================
 Breaking: #85080 - Method "isEnabled()" added to RenderableInterface and FinisherInterface

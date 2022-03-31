@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Important: #85833 - saltedpasswords extension merged into core extension
@@ -20,7 +20,7 @@ Backwards compatibility is given by automatic upgrades of settings when visiting
 the Install Tool.
 
 For composer-based installations this means the dependency to `typo3/cms-saltedpasswords`
-can safely be removed via :shell:`composer remove typo3/cms-saltedpasswords`, although this is
+can safely be removed via :bash:`composer remove typo3/cms-saltedpasswords`, although this is
 not mandatory due to the fact that `typo3/cms-core` is noted as a replacement for
 saltedpasswords in its :file:`composer.json` file.
 

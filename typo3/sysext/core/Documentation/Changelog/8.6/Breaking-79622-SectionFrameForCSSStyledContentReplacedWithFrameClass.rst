@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Breaking: #79622 - Section Frame for CSS Styled Content replaced with Frame Class

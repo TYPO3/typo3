@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================
 Breaking: #79196 - Toolbar item event handling changed
@@ -28,7 +28,7 @@ All installations with old-fashioned toolbar item registrations.
 Migration
 =========
 
-In most cases it's sufficient to replace the register function with :javascript:`Viewport.Topbar.Toolbar.registerEvent()`.
+In most cases it's sufficient to replace the register function with :js:`Viewport.Topbar.Toolbar.registerEvent()`.
 
 Example:
 

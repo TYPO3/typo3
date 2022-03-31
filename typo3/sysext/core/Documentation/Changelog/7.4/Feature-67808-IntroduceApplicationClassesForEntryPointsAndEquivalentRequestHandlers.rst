@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================================
 Feature: #67808 - Introduce Application classes for entry points and equivalent RequestHandlers

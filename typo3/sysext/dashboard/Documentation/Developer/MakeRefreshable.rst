@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 .. highlight:: php
 
@@ -68,7 +68,7 @@ even when the :yaml:`refreshAvailable` option is not defined, or set to `false`.
 This will give developers the option to refresh the widgets whenever they think
 it is appropriate.
 
-To refresh a widget, dispatch the :javascript:`widgetRefresh` event on the
+To refresh a widget, dispatch the :js:`widgetRefresh` event on the
 widget container (the :html:`div` element with the :html:`dashboard-item` class).
 You can identify the container by the data attribute :html:`widget-hash`, which
 is a unique hash for every widget, even if you have more widgets of the same

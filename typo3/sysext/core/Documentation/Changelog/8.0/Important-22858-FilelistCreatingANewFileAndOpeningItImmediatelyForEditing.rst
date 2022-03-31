@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Important: #22858 - Filelist: Creating a new file and opening it immediately for editing

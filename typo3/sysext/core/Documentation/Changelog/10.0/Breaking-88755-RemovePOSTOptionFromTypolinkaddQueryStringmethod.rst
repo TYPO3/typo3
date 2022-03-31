@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================
 Breaking: #88755 - Remove POST option from typolink.addQueryString.method

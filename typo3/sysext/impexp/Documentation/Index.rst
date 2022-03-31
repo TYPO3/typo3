@@ -1,13 +1,14 @@
 .. include:: /Includes.rst.txt
 
-.. _start:
-
-===============
-Import / Export
-===============
+=====================
+TYPO3 Import / Export
+=====================
 
 :Extension key:
    impexp
+
+:Package name:
+   typo3/cms-impexp
 
 :Version:
    |release|
@@ -15,36 +16,27 @@ Import / Export
 :Language:
    en
 
-:Description:
-   Manual for the TYPO3 import/export tool.
-
-:Keywords:
-   import, export, content
-
-:Authors:
-   TYPO3 CMS Core Development Team
+:Author:
+   TYPO3 contributors
 
 :License:
-   Open Content License available from http://www.opencontent.org/opl.shtml
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
    |today|
 
-Import and export pages, content and files from TYPO3 to XML and T3D format.
+----
 
-**TYPO3**
+This is a tool for importing and exporting records using XML or the custom T3D
+format.
 
-The content of this document is related to TYPO3 CMS,
-a GNU/GPL CMS/Framework available from `typo3.org <https://typo3.org/>`_ .
+----
 
-**For Contributors**
-
-You are welcome to help improve this guide. Just click on "Edit on GitHub"
-on the top right to submit your change request.
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
+   :maxdepth: 2
    :titlesonly:
 
    Introduction/Index
@@ -52,4 +44,11 @@ on the top right to submit your change request.
    Usage/Index
    Security/Index
    KnownProblems/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
    Sitemap
+   genindex

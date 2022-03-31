@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================================================
 Feature: #84250 - Separately enable / disable "Add media by URL" and "Select & upload files"

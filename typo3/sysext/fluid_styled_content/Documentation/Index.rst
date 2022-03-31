@@ -1,53 +1,54 @@
 .. include:: /Includes.rst.txt
 
-
-.. _start:
-
-===============================
-Content Elements based on Fluid
-===============================
+=====================================
+TYPO3 Content Elements based on Fluid
+=====================================
 
 :Extension key:
-      fluid_styled_content
+   fluid_styled_content
+
+:Package name:
+   typo3/cms-fluid-styled-content
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      The TYPO3 system extension *fluid_styled_content* provides content
-      elements and uses Fluid to render the frontend output.
-
-:Keywords:
-      frontend, content, fluid
-
-:Copyright:
-      since 2015
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from http://www.opencontent.org/opl.shtml
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
-a GNU/GPL CMS/Framework available from https://typo3.org.
+----
 
-**Table of Contents**
+This extension provides Fluid templating for TYPO3 content elements.
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-    :maxdepth: 5
-    :glob:
+   :maxdepth: 2
+   :titlesonly:
 
-    Introduction/Index
-    Installation/Index
-    FirstSteps/Index
-    Configuration/Index
-    ContentElements/Index
-    AddingYourOwnContentElements/Index
-    Targets
+   Introduction/Index
+   Installation/Index
+   FirstSteps/Index
+   Configuration/Index
+   ContentElements/Index
+   AddingYourOwnContentElements/Index
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

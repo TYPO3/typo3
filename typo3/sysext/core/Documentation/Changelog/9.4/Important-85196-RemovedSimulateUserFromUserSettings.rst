@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Important: #85196 - Removed simulate user from user settings
@@ -20,7 +20,7 @@ switch to the target user using the "Switch to user" of the "Backend users"
 module and then navigate to its user settings.
 
 Backend administrators who often need to change other backend user settings
-should consider using adapted User TSconfig :ts:`setup.` details to
+should consider using adapted User TSconfig :typoscript:`setup.` details to
 streamline this workflow.
 
 

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==================================================================================
 Breaking: #73719 - Unused JavaScript configuration options for the Backend removed

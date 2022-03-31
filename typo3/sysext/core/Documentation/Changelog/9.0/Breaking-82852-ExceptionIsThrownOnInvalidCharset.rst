@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================
 Breaking: #82852 - Exception is thrown on invalid charset
@@ -15,7 +15,7 @@ an :php:`\TYPO3\CMS\Core\Charset\UnknownCharsetException` if an unknown
 charset was provided.
 
 The :php:`TypoScriptFrontendController` aka TSFE uses this to throw
-a :php:`\RuntimeException` in case of an invalid :ts:`config.metaCharset`.
+a :php:`\RuntimeException` in case of an invalid :typoscript:`config.metaCharset`.
 Before this resulted in a blank page instead.
 
 
@@ -24,7 +24,7 @@ Impact
 
 Third party code directly using the :php:`CharsetConverter` class need to be aware of the new exception in case of an invalid charset.
 
-Sites with an invalid :ts:`config.metaCharset` will now see a clear error message.
+Sites with an invalid :typoscript:`config.metaCharset` will now see a clear error message.
 
 
 Migration
@@ -32,6 +32,6 @@ Migration
 
 Catch the :php:`UnknownCharsetException` of the :php:`CharsetConverter` if necessary.
 
-Ensure that :ts:`config.metaCharset` is set to a known charset.
+Ensure that :typoscript:`config.metaCharset` is set to a known charset.
 
 .. index:: Frontend, PHP-API, NotScanned

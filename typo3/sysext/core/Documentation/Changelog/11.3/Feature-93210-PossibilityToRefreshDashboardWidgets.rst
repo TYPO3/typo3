@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==========================================================
 Feature: #93210 - Possibility to refresh dashboard widgets
@@ -58,7 +58,7 @@ even when the :yaml:`refreshAvailable` option is not defined, or set to `false`.
 This will give developers the option to refresh the widgets whenever they think
 it is appropriate.
 
-You therefore need to dispatch the :javascript:`widgetRefresh` event on the
+You therefore need to dispatch the :js:`widgetRefresh` event on the
 widget container (the :html:`div` element with the :html:`dashboard-item` class).
 You can identify the container by the data attribute :html:`widget-hash`, which
 is a unique hash for every widget, even if you have more widgets of the same

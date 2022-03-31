@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================
 Feature: #87433 - Add changefreq and priority for XML sitemap
@@ -18,12 +18,12 @@ Priority allows you to define how important the page is compared to other pages 
 in a value from 0 to 1. Your most important pages can get an higher priority as other pages. This value does not
 affect how important your pages are compared to pages of other websites.
 
-This feature allows to define the properties :ts:`changefreq` and :ts:`priority` for sitemap entries in TYPO3.
+This feature allows to define the properties :typoscript:`changefreq` and :typoscript:`priority` for sitemap entries in TYPO3.
 
-The properties :ts:`changefreq` and :ts:`priority` of pages can be controlled via page properties.
+The properties :typoscript:`changefreq` and :typoscript:`priority` of pages can be controlled via page properties.
 For records, the settings can be defined in TypoScript by mapping the properties to fields of the record by
-using the options :ts:`changeFreqField` and :ts:`priorityField`. :ts:`changeFreqField` needs to point to a field containing
-string values (see :ts:`pages` definition of field :ts:`sitemap_changefreq`), :ts:`priorityField` needs to point to a field with
+using the options :typoscript:`changeFreqField` and :typoscript:`priorityField`. :typoscript:`changeFreqField` needs to point to a field containing
+string values (see :typoscript:`pages` definition of field :typoscript:`sitemap_changefreq`), :typoscript:`priorityField` needs to point to a field with
 a decimal value between 0 and 1.
 
 
@@ -66,8 +66,8 @@ Impact
 
 Two new fields are available in the page properties: `sitemap_priority` (decimal) and `sitemap_changefreq` (list of values, for example "weekly", "daily", "never").
 
-Two new TypoScript options for the :ts:`RecordsXmlSitemapDataProvider` have been introduced:
-:ts:`changeFreqField` and :ts:`priorityField`.
+Two new TypoScript options for the :typoscript:`RecordsXmlSitemapDataProvider` have been introduced:
+:typoscript:`changeFreqField` and :typoscript:`priorityField`.
 
 All pages and records get a priority of 0.5 by default.
 

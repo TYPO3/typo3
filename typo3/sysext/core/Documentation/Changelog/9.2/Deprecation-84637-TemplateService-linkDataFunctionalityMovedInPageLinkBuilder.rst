@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Deprecation: #84637 - TemplateService->linkData() functionality moved in PageLinkBuilder

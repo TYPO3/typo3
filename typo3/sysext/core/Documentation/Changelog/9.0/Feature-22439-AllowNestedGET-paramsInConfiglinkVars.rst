@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ============================================================
 Feature: #22439 - Allow nested GET-params in config.linkVars
@@ -9,7 +9,7 @@ See :issue:`22439`
 Description
 ===========
 
-TypoScript setting :ts:`config.linkVars` configures which parameters should be passed on with links in TYPO3.
+TypoScript setting :typoscript:`config.linkVars` configures which parameters should be passed on with links in TYPO3.
 It is now possible to specify nested GET parameters there.
 
 Example:

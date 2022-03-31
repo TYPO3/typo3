@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================
 Breaking: #78192 - Refactor click menu (context menu)
@@ -27,8 +27,8 @@ Classes removed
 ExtJS component removed
 -----------------------
 
-- The :javascript:`TYPO3.Components.PageTree.ContextMenu` component defined in contextmenu.js has been removed.
-- The `contextMenuProvider` property as well as `enableContextMenu` and `openContextMenu` methods of the :javascript:`TYPO3.Components.PageTree.Tree` component have been removed.
+- The :js:`TYPO3.Components.PageTree.ContextMenu` component defined in contextmenu.js has been removed.
+- The `contextMenuProvider` property as well as `enableContextMenu` and `openContextMenu` methods of the :js:`TYPO3.Components.PageTree.Tree` component have been removed.
 
 Migration
 ^^^^^^^^^
@@ -98,7 +98,7 @@ Changed markup (data attributes) for click menu
 - for files, `data-table` now contains the real table name "sys_file" while before it contained the combined identifier e.g. `1:/fileadmin/file.jpg`.
    the `data-uid` attribute now contains the combined identifier of the file (before it was empty).
    Thus the `data-uid` attribute value is not always an int.
-- the class which triggers the context-menu has changed from :javascript:`t3-js-clickmenutrigger` to :javascript:`t3js-contextmenutrigger`
+- the class which triggers the context-menu has changed from :js:`t3-js-clickmenutrigger` to :js:`t3js-contextmenutrigger`
 
 
 Migration

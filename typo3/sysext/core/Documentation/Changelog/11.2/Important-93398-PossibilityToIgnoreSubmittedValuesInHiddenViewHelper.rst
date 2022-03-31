@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Important: #93398 - Possibility to ignore submitted values in HiddenViewHelper

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================================================
 Important: #71126 - Allow to define multiple inlineLocalizeSynchronize commands

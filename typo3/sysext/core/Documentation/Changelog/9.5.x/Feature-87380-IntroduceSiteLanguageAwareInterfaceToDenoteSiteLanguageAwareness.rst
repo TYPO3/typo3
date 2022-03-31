@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================================
 Feature: #87380 - Introduce SiteLanguageAwareInterface to denote site language awareness

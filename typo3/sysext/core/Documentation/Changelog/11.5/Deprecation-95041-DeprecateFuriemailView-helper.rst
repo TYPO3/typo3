@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===============================================
 Deprecation: #95041 - <f:uri.email> view-helper
@@ -15,7 +15,7 @@ and returned corresponding :js:`javascript:linkTo_UnCryptMailto(...)` inline
 JavaScript URI. In case spam-protections is not configured, this view-helper
 just passed through the given email address.
 
-In favor of allowing more content security policy scenarios, :javascript:`URI`
+In favor of allowing more content security policy scenarios, :js:`URI`
 is not used anymore per default. As a result, :html:`<f:uri.email>`
 view-helper became obsolete. The view-helper will be removed with TYPO3 v12.0.
 

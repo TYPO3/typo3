@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================================================
 Breaking: #92513 - Method signature change of TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface::processRequest

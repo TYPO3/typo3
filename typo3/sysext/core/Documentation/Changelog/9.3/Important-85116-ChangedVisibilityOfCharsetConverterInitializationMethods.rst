@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Important: #85116 - Changed visibility of CharsetConverter initialization methods

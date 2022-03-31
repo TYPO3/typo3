@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================
 Breaking: #83122 - Removed stdWrap option TCAselectItem
@@ -16,7 +16,7 @@ entries with TSconfig and the mentioned support of database relations.
 Impact
 ======
 
-The stdWrap option :ts:`TCAselectItem` will not work anymore.
+The stdWrap option :typoscript:`TCAselectItem` will not work anymore.
 
 Calling :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap_TCAselectItem` and
 :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::TCAlookup` will trigger an error.
@@ -25,7 +25,7 @@ Calling :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap_T
 Affected Installations
 ======================
 
-Any instance using the stdWrap option :ts:`TCAselectItem` or calls to
+Any instance using the stdWrap option :typoscript:`TCAselectItem` or calls to
 :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap_TCAselectItem` and
 :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::TCAlookup`.
 

@@ -11,7 +11,7 @@ you can use predefined :ref:`CONTENT <t3tsref:cobj-content>` objects or
 the :ref:`DatabaseQueryProcessor <t3tsref:DatabaseQueryProcessor>`.
 
 It is advised to make all your changes in a custom extension, visit the
-:ref:`site package documentation <t3sitepackage:start>` to find out more.
+:doc:`site package documentation <t3sitepackage:Index>` to find out more.
 
 .. _inserting-content-page-template-fluidtemplate:
 

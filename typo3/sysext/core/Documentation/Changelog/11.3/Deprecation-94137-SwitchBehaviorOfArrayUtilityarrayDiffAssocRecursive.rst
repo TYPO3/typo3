@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Deprecation: #94137 - Switch behavior of ArrayUtility::arrayDiffAssocRecursive()

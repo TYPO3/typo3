@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================
 Important: #83971 - Browser Notification API only works on SSL encrypted connections

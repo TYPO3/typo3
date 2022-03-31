@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Feature: #75454 - Added PHP library "Doctrine DBAL" for Database Connections within TYPO3

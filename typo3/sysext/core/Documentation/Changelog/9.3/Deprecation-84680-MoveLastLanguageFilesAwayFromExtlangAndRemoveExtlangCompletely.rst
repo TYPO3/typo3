@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================================
 Deprecation: #84680 - Move last language files away from ext:lang and remove ext:lang completely

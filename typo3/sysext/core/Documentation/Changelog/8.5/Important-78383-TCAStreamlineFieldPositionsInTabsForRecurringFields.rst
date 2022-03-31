@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Important: #78383 - TCA: Streamline field positions in tabs for recurring fields

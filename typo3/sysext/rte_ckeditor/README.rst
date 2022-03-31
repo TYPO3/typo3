@@ -1,13 +1,13 @@
-\|
-`Contributing <https://docs.typo3.org/m/typo3/guide-contributionworkflow/master/en-us/Index.html>`__  \|
-`Help & Support <https://typo3.org/help>`__ \|
+================================
+TYPO3 extension ``rte_ckeditor``
+================================
 
-==================================================
-CKEditor Rich Text Editor (typo3/cms-rte-ckeditor)
-==================================================
+This extension integrates the `CKEditor`_ as a rich text editor into the TYPO3
+backend.
 
-Integration of CKEditor as Rich Text Editor.
+.. _CKEditor: https://ckeditor.com/
 
-:Repository: https://github.com/typo3/typo3
-:Issues: https://forge.typo3.org/
-:Documentation: https://docs.typo3.org/c/typo3/cms-rte-ckeditor/11.5/en-us
+:Repository:  https://github.com/typo3/typo3
+:Issues:      https://forge.typo3.org/
+:Read online: https://docs.typo3.org/c/typo3/cms-rte-ckeditor/11.5/en-us/
+:TER:         https://extensions.typo3.org/extension/rte_ckeditor/

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================
 Deprecation: #88559 - $TSFE->sys_language_isocode
@@ -29,13 +29,13 @@ Affected Installations
 ======================
 
 Any TYPO3 installation with a third party extension accessing this property,
-or via TypoScript :ts:`TSFE:sys_language_isocode`.
+or via TypoScript :typoscript:`TSFE:sys_language_isocode`.
 
 
 Migration
 =========
 
 Access the property via :php:`SiteLanguage->getTwoLetterIsoCode()`
-and :ts:`sitelanguage:twoLetterIsoCode` instead.
+and :typoscript:`sitelanguage:twoLetterIsoCode` instead.
 
 .. index:: Frontend, PHP-API, FullyScanned

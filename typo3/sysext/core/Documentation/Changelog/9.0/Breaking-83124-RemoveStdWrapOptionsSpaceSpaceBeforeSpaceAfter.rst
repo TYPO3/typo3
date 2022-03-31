@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ========================================================================
 Breaking: #83124 - Remove stdWrap options space, spaceBefore, spaceAfter

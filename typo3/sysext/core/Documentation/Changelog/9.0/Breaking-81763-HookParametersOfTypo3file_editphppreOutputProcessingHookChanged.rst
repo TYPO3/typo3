@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================================
 Breaking: #81763 - Hook parameters of ['typo3/file_edit.php']['preOutputProcessingHook'] changed

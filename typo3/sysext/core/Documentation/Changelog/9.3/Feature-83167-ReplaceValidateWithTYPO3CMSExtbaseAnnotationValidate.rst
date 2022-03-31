@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================================================
 Feature: #83167 - Replace @validate with @TYPO3\\CMS\\Extbase\\Annotation\\Validate

@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =========================================================================================
 Feature: #68315 - Include a pageTSconfig file in page properties like TS static templates

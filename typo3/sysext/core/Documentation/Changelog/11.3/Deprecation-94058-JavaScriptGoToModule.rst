@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================
 Deprecation: #94058 - JavaScript goToModule()
@@ -10,7 +10,7 @@ Description
 ===========
 
 One of the most prominent inline JavaScript functions
-:javascript:`goToModule()` has been deprecated in favor of a streamlined
+:js:`goToModule()` has been deprecated in favor of a streamlined
 ActionHandler API for JavaScript.
 
 
@@ -30,7 +30,7 @@ TYPO3 installations with custom extensions referencing these methods.
 Migration
 =========
 
-Use the following HTML code to replace the inline :javascript:`goToModule()`
+Use the following HTML code to replace the inline :js:`goToModule()`
 call to for example link to the page module:
 
 .. code-block:: html

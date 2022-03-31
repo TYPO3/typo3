@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Breaking: #92598 - Workspace-overlays auto-fix the PID value for moved records

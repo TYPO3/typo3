@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ====================================================================================================
 Breaking: #64719 - Multimedia and Media cObjects and Content Types are moved to new system extension

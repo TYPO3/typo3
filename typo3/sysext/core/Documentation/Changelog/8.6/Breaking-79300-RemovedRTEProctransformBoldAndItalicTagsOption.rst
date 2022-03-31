@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Breaking: #79300 - Removed RTE proc.transformBoldAndItalicTags option
@@ -38,7 +38,7 @@ Migration
 
 Any default configuration of RTEHtmlArea that was in place before 8.6.0 has a simple replacement to ensure the same functionality now:
 
-This code does the same as having :ts:`proc.transformBoldAndItalicTags=1`:
+This code does the same as having :typoscript:`proc.transformBoldAndItalicTags=1`:
 
 .. code-block:: typoscript
 

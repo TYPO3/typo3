@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================
 Feature: #93174 - Lazy console command list
@@ -9,9 +9,9 @@ See :issue:`93174`
 Description
 ===========
 
-The TYPO3 command line utility :shell:`typo3/sysext/core/bin/typo3` has been adapted to
+The TYPO3 command line utility :bash:`typo3/sysext/core/bin/typo3` has been adapted to
 avoid instantiating all available console commands during the execution of the
-default :shell:`typo3 list` command.
+default :bash:`typo3 list` command.
 
 This enables commands to inject dependencies that require a fully booted system,
 or a database connection, without causing the console command list to break or

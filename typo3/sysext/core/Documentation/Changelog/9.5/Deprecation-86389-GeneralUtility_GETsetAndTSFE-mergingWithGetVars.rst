@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================
 Deprecation: #86389 - GeneralUtility::_GETset() and TSFE->mergingWithGetVars()

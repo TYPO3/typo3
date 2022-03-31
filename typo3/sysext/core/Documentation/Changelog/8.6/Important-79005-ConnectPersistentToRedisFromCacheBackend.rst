@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================================
 Important: #79005 - Included missing support for persistent connection in Redis cache backend

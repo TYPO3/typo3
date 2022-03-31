@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================================================
 Breaking: #73516 - GeneralUtility::getFileAbsFileName allows for typo3/ maindir specific paths

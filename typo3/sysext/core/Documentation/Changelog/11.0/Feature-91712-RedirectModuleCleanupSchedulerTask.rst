@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================================
 Feature: #91712 - Cleanup scheduler task and CLI command for redirects
@@ -31,8 +31,8 @@ Depending on the settings, the query will look like:
 
 For the CLI command, the same options exist:
 
-- :shell:`bin/typo3 redirects:cleanup --domain foo.com --domain bar.com --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303`
-- :shell:`bin/typo3 redirects:cleanup -d foo.com -d bar.com -a 90 -c 100 -p "/foo/bar%" -s 302 -s 303`
+- :bash:`bin/typo3 redirects:cleanup --domain foo.com --domain bar.com --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303`
+- :bash:`bin/typo3 redirects:cleanup -d foo.com -d bar.com -a 90 -c 100 -p "/foo/bar%" -s 302 -s 303`
 
 The options of this command in detail:
 

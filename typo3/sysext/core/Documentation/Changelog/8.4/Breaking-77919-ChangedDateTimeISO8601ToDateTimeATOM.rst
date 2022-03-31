@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Breaking: #77919 - Changed DateTime::ISO8601 to DateTime::ATOM

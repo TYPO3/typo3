@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ======================================================
 Feature: #94825 - New f:sanitize.html Fluid ViewHelper
@@ -43,7 +43,7 @@ When to use the different ViewHelpers:
 
 Use this for wrapping fields produced by RTE fields, which parses
 HTML and adds attributes, replaces TYPO3-internal links to pages or files,
-based on :ts:`lib.parseFunc_RTE`. For this reason, it is recommended to use
+based on :typoscript:`lib.parseFunc_RTE`. For this reason, it is recommended to use
 this ViewHelper mainly in Frontend rendering.
 
 This ViewHelper calls TYPO3's "parseFunc", which means that `htmlSanitize` is

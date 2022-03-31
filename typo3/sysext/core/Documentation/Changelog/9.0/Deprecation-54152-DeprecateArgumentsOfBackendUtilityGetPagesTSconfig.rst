@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =============================================================================
 Deprecation: #54152 - Deprecate arguments of BackendUtility::getPagesTSconfig

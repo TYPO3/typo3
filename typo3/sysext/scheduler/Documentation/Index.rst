@@ -1,59 +1,43 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+.. include:: /Includes.rst.txt
 
-.. include:: Includes.txt
-
-
-.. _start:
-
-=========
-Scheduler
-=========
+===============
+TYPO3 Scheduler
+===============
 
 :Extension key:
-      scheduler
+   scheduler
+
+:Package name:
+   typo3/cms-scheduler
 
 :Version:
-      |release|
+   |release|
 
 :Language:
-      en
-
-:Description:
-      Management of scheduled tasks inside the TYPO3 Backend.
-
-:Keywords:
-      TYPO3 scheduler
-
-:Copyright:
-      2000-2021
+   en
 
 :Author:
-      TYPO3 CMS Core Development Team
+   TYPO3 contributors
 
 :License:
-      Open Content License available from `www.opencontent.org/opl.shtml
-      <http://www.opencontent.org/opl.shtml>`_
+   This document is published under the
+   `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-      |today|
+   |today|
 
-The content of this document is related to TYPO3,
+----
 
-a GNU/GPL CMS/Framework available from `www.typo3.org
-<http://www.typo3.org/>`_
+The Scheduler supports one-time or periodic execution of tasks that can be
+delivered by any extension.
 
+----
 
-
-
-**Table of Contents**
+**Table of Contents:**
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
    :titlesonly:
-   :glob:
 
    Introduction/Index
    Overview/Index
@@ -63,5 +47,11 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
    DevelopersGuide/Index
    KnownProblems/Index
    AppendixA/Index
-   Targets
 
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex

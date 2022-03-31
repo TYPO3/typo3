@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Breaking: #80149 - Remove $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===================================================
 Deprecation: #81217 - TSFE-related language methods
@@ -37,8 +37,8 @@ Migration
 Use :php:`TypoScriptFrontendController->sL()` for resolving language labels in the language
 of the Frontend rendering engine as a replacement for :php:`getLLL()`.
 
-If you are not doing anything special on language initialization, the call to :php:`initLLvars()` 
-can likely be dropped. If you need to influence language initialization yourself, you can use the 
+If you are not doing anything special on language initialization, the call to :php:`initLLvars()`
+can likely be dropped. If you need to influence language initialization yourself, you can use the
 hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess']`
 or :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']`.
 

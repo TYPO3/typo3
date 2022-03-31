@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ================================================================================
 Breaking: #77156 - TSconfig and TStemplate soft references functionality removed

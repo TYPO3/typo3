@@ -1,4 +1,4 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 Widgets need to be provided by an extension, e.g. by ext:dashboard.
 They are provided as a PHP class with specific feature sets.

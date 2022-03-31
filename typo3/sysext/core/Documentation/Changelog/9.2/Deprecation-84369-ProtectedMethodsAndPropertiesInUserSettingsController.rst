@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =================================================================================
 Deprecation: #84369 - Protected methods and properties in UserSettingsController

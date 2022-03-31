@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ===========================================================================
 Important: #86577 - Query parameters are now included in canonicalized URLs
@@ -11,7 +11,7 @@ Description
 
 Canonicalized URLs include all query parameters which are needed to define what content to show
 on a page. These URLs are used for the canonical URL and the hreflang URLs.
-This is especially important with for example detail pages of records. The query parameters are 
+This is especially important with for example detail pages of records. The query parameters are
 crucial to show the right content.
 
 Possibility to define query parameters to be included in canonicalized URLs

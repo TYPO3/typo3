@@ -1,5 +1,5 @@
 
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================================
 Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA settings

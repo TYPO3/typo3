@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 ==============================================================
 Feature: #83734 - Add support for current page in config.cache
@@ -9,7 +9,7 @@ See :issue:`83734`
 Description
 ===========
 
-When using the TypoScript property :ts:`config.cache`, it is possible to define a configuration that
+When using the TypoScript property :typoscript:`config.cache`, it is possible to define a configuration that
 affects all pages via:
 
 .. code-block:: typoscript
@@ -24,13 +24,13 @@ Thus, the syntax with the keyword "current" is now possible:
 
    config.cache.all = fe_users:current
 
-where :ts:`current` is dynamically replaced by the current Page ID.
+where :typoscript:`current` is dynamically replaced by the current Page ID.
 
 
 Impact
 ======
 
-When using :ts:`current` inside the :ts:`config.cache` TypoScript property, it is now replaced with
+When using :typoscript:`current` inside the :typoscript:`config.cache` TypoScript property, it is now replaced with
 the current Page ID.
 
 .. index:: TypoScript

@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =====================================================================
 Feature: #90068 - Implement better FileDumpController
@@ -26,7 +26,7 @@ to use them multiple times in one request.
 
 The Parameter :php:`s` has following syntax: width:height:minW:minH:maxW:maxH. You
 can leave this Parameter empty to load the file in original size. Parameter :php:`width`
-and :php:`height` can feature the trailing :ts:`c` or :ts:`m` indicator like known from TS.
+and :php:`height` can feature the trailing :typoscript:`c` or :typoscript:`m` indicator like known from TS.
 
 See the following example on how to create a URI using the :php:`FileDumpController` for
 a sys_file record with a fixed image size:
