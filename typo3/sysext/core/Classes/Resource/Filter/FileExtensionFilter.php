@@ -50,10 +50,10 @@ class FileExtensionFilter
     public function filterInlineChildren(array $parameters, DataHandler $dataHandler)
     {
         $values = $parameters['values'];
-        if ($parameters['allowedFileExtensions']) {
+        if ($parameters['allowedFileExtensions'] ?? false) {
             $this->setAllowedFileExtensions($parameters['allowedFileExtensions']);
         }
-        if ($parameters['disallowedFileExtensions']) {
+        if ($parameters['disallowedFileExtensions'] ?? false) {
             $this->setDisallowedFileExtensions($parameters['disallowedFileExtensions']);
         }
         $cleanValues = [];
