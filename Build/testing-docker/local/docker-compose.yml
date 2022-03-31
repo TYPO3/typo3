@@ -530,34 +530,6 @@ services:
         php -dxdebug.mode=off Build/Scripts/checkIntegrityComposer.php;
       "
 
-  check_csv_fixtures:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: "${HOST_UID}"
-    volumes:
-    - ${CORE_ROOT}:${CORE_ROOT}
-    working_dir: ${CORE_ROOT}
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        php -dxdebug.mode=off Build/Scripts/checkIntegrityCsvFixtures.php;
-      "
-
-  fix_csv_fixtures:
-    image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
-    user: "${HOST_UID}"
-    volumes:
-    - ${CORE_ROOT}:${CORE_ROOT}
-    working_dir: ${CORE_ROOT}
-    command: >
-      /bin/sh -c "
-        if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
-          set -x
-        fi
-        php -dxdebug.mode=off Build/Scripts/checkIntegrityCsvFixtures.php --fix;
-      "
-
   check_exception_codes:
     image: typo3/core-testing-${DOCKER_PHP_IMAGE}:latest
     user: "${HOST_UID}"
