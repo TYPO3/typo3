@@ -590,7 +590,7 @@ case ${TEST_SUITE} in
     functional)
         handleDbmsAndDriverOptions
         setUpDockerComposeDotEnv
-        if [ "${CHUNKS}" -gt 1 ]; then
+        if [ "${CHUNKS}" -gt 0 ]; then
             docker-compose run functional_split
         fi
         case ${DBMS} in
