@@ -92,11 +92,10 @@ return [
                 'size' => '30',
             ],
         ],
-        'input_2' => [
-            'label' => 'input_2 renderType=colorpicker, valuePicker',
+        'color_1' => [
+            'label' => 'color_1, valuePicker',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
+                'type' => 'color',
                 'size' => 10,
                 'valuePicker' => [
                     'items' => [
@@ -141,7 +140,7 @@ return [
     'types' => [
         '0' => [
             'showitem' => '
-                --div--;General, input_1, input_2, input_3, group_db_1, select_tree_1,
+                --div--;General, input_1, color_1, input_3, group_db_1, select_tree_1,
                 --div--;meta, disable, sys_language_uid, l10n_parent, l10n_source,
             ',
         ],

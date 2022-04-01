@@ -293,16 +293,15 @@ return [
                                                                     </config>
                                                                 </TCEforms>
                                                             </input_1>
-                                                            <input_2>
+                                                            <color_1>
                                                                 <TCEforms>
-                                                                    <label>input_2 renderType=colorpicker</label>
+                                                                    <label>color_1</label>
                                                                     <config>
-                                                                        <type>input</type>
-                                                                        <renderType>colorpicker</renderType>
+                                                                        <type>color</type>
                                                                         <size>10</size>
                                                                     </config>
                                                                 </TCEforms>
-                                                            </input_2>
+                                                            </color_1>
                                                         </el>
                                                     </container_1>
                                                     <container_2>
