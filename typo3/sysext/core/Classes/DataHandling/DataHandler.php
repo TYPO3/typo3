@@ -5000,7 +5000,7 @@ class DataHandler implements LoggerAwareInterface
             return;
         }
         $liveRecord = BackendUtility::getRecord($table, $uid);
-        if ((int)$liveRecord['sys_language_uid'] !== 0 || (int)$liveRecord['t3ver_wsid'] !== 0) {
+        if ((int)($liveRecord['sys_language_uid'] ?? 0) !== 0 || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
             // Don't do anything if we're not deleting a live record in default language
             return;
         }
