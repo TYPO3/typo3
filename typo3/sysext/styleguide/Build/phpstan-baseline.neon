@@ -416,14 +416,14 @@ parameters:
 			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputMax4.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardColorPicker\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeColor\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardColorPicker.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeColor.php
 
 		-
-			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardColorPicker\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
+			message: "#^Property TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeColor\\:\\:\\$matchArray type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeInputWizardColorPicker.php
+			path: ../Classes/TcaDataGenerator/FieldGenerator/TypeColor.php
 
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Styleguide\\\\TcaDataGenerator\\\\FieldGenerator\\\\TypeInputWizardSelect\\:\\:generate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"

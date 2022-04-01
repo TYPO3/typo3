@@ -97,13 +97,10 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_31 text,
     input_32 text,
     input_33 text,
-    input_34 text,
     input_35 text,
     input_36 text,
-    input_37 text,
     input_39 text,
     input_40 text,
-    input_42 text,
 
     link_1 text,
     link_2 text,
@@ -114,6 +111,10 @@ CREATE TABLE tx_styleguide_elements_basic (
     password_1 text,
     password_2 text,
     password_3 text,
+
+    color_1 text,
+    color_2 text,
+    color_3 text,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
@@ -411,8 +412,8 @@ CREATE TABLE tx_styleguide_inline_1n_inline_1_child (
     parenttable text,
 
     input_1 text,
-    input_2 text,
     input_3 text,
+    color_1 text,
     group_db_1 text,
     select_tree_1 text
 );
@@ -744,7 +745,7 @@ CREATE TABLE tx_styleguide_staticdata (
 CREATE TABLE tx_styleguide_type (
     record_type text,
     input_1 text,
-    input_2 text,
+    color_1 text,
     text_1 text
 );
 
@@ -752,7 +753,7 @@ CREATE TABLE tx_styleguide_type (
 CREATE TABLE tx_styleguide_typeforeign (
     foreign_table int(11) DEFAULT '0' NOT NULL,
     input_1 text,
-    input_2 text,
+    color_1 text,
     text_1 text
 );
 
@@ -779,8 +780,8 @@ CREATE TABLE tx_styleguide_valuesdefault (
 
 CREATE TABLE tx_styleguide_l10nreadonly (
     input text,
-    input_colorpicker text,
-    input_datetime text,
+    color text,
+    datetime text,
     link text,
     slug text,
     checkbox int(11) DEFAULT '0' NOT NULL,

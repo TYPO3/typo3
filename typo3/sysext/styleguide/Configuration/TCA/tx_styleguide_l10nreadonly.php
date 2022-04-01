@@ -86,17 +86,20 @@ return [
                 'type' => 'input',
             ],
         ],
-        'input_colorpicker' => [
-            'label' => 'input_colorpicker',
+
+        // type=color
+        'color' => [
+            'label' => 'color',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
+                'type' => 'color',
             ],
         ],
-        'input_datetime' => [
-            'label' => 'input_datetime',
+
+        // type=datetime
+        'datetime' => [
+            'label' => 'atetime',
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
@@ -610,7 +613,7 @@ return [
 
     'palettes' => [
         'input' => [
-            'showitem' => 'input,input_colorpicker,--linebreak--,input_datetime',
+            'showitem' => 'input,color,--linebreak--,datetime',
             'label' => 'type=input',
         ],
         'link' => [

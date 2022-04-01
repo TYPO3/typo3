@@ -93,11 +93,10 @@ return [
                 'type' => 'input',
             ],
         ],
-        'input_2' => [
-            'label' => 'input_2, renderType=colorpicker',
+        'color_1' => [
+            'label' => 'color_1',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
+                'type' => 'color',
             ],
         ],
 
@@ -115,15 +114,14 @@ return [
             'showitem' => 'record_type, input_1, text_1',
         ],
         'withChangedFields' => [
-            'showitem' => 'record_type, input_1, input_2, text_1',
+            'showitem' => 'record_type, input_1, color_1, text_1',
         ],
         'withColumnsOverrides' => [
-            'showitem' => 'record_type, input_1, input_2, text_1',
+            'showitem' => 'record_type, input_1, color_1, text_1',
             'columnsOverrides' => [
-                'input_2' => [
-                    'label' => 'input_2, readOnly, size=10, empty renderType',
+                'color_1' => [
+                    'label' => 'color_1, readOnly, size=10',
                     'config' => [
-                        'renderType' => '',
                         'readOnly' => true,
                         'size' => 10,
                     ],

@@ -345,15 +345,6 @@ return [
                 ],
             ],
         ],
-        'input_34' => [
-            'label' => 'input_34',
-            'description' => 'renderType=colorpicker',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
-                'size' => 10,
-            ],
-        ],
         'input_35' => [
             'label' => 'input_35',
             'description' => 'valuePicker append',
@@ -390,22 +381,6 @@ return [
                 ],
             ],
         ],
-        'input_37' => [
-            'label' => 'input_37',
-            'description' => 'renderType=colorpicker valuePicker',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
-                'size' => 10,
-                'valuePicker' => [
-                    'items' => [
-                        [ 'blue', '#0000FF'],
-                        [ 'red', '#FF0000'],
-                        [ 'typo3 orange', '#FF8700'],
-                    ],
-                ],
-            ],
-        ],
         'input_39' => [
             'label' => 'input_39',
             'description' => 'type=email',
@@ -418,15 +393,6 @@ return [
             'description' => 'readOnly',
             'config' => [
                 'type' => 'input',
-                'readOnly' => true,
-            ],
-        ],
-        'input_42' => [
-            'label' => 'input_42',
-            'description' => 'renderType=colorpicker readOnly',
-            'config' => [
-                'type' => 'input',
-                'renderType' => 'colorpicker',
                 'readOnly' => true,
             ],
         ],
@@ -596,6 +562,39 @@ return [
                 'type' => 'password',
                 'readOnly' => true,
                 'default' => 'somePassword1!',
+            ],
+        ],
+
+        'color_1' => [
+            'label' => 'color_1',
+            'description' => 'type=color',
+            'config' => [
+                'type' => 'color',
+                'size' => 10,
+            ],
+        ],
+        'color_2' => [
+            'label' => 'color_2',
+            'description' => 'type=color valuePicker',
+            'config' => [
+                'type' => 'color',
+                'size' => 10,
+                'valuePicker' => [
+                    'items' => [
+                        [ 'blue', '#0000FF'],
+                        [ 'red', '#FF0000'],
+                        [ 'typo3 orange', '#FF8700'],
+                    ],
+                ],
+            ],
+        ],
+        'color_3' => [
+            'label' => 'color_3',
+            'description' => 'type=color readOnly',
+            'config' => [
+                'type' => 'color',
+                'size' => 10,
+                'readOnly' => true,
             ],
         ],
 
@@ -1622,8 +1621,7 @@ backend_layout {
                     input_1, input_40, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
                     input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28,
-                    input_30, input_31, input_32, input_33, input_35, input_36, input_34, input_42,
-                    input_37,
+                    input_30, input_31, input_32, input_33, input_35, input_36,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
@@ -1632,6 +1630,8 @@ backend_layout {
                     link_1,link_2,link_3,link_4,link_5,
                 --div--;password,
                     password_1,password_2,password_3,
+                --div--;color,
+                    color_1,color_2,color_3,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
