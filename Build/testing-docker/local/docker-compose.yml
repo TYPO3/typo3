@@ -712,7 +712,11 @@ services:
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
     working_dir: ${CORE_ROOT}
-    command: php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
+    command: >
+      /bin/sh -c "
+        rm -rf Build/FunctionalTests-Job-*.xml
+        php -dxdebug.mode=off Build/Scripts/splitFunctionalTests.php -v ${CHUNKS}
+      "
 
   prepare_functional_mariadb:
     image: alpine:3.8
