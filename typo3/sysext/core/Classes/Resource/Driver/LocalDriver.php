@@ -625,6 +625,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
                     // Add a character for a natural order sorting
                     $sortingKey .= 't';
                     break;
+                case 'crdate':
+                    $sortingKey = $this->getSpecificFileInformation($fullPath, $dir, 'ctime');
+                    // Add a character for a natural order sorting
+                    $sortingKey .= 'c';
+                    break;
                 case 'name':
                 case 'file':
                 default:
