@@ -78,13 +78,58 @@ editor.config
 
 .. todo: change url to Base.yaml after branching main to 10.4
 
+.. option:: editor.config.allowedContent
+
+   defines the tags, their attributes, styles and classes that are allowed.
+   Plugins (like table and tabletools) use these definitions to change their behaviour.
+   
+   For details, have a look for "requiredContent" in the unminified source code of the responsible plugin:
+   <https://github.com/ckeditor/ckeditor4/blob/master/plugins/table/dialogs/table.js>
+   
+   For more information on the syntax see the docs:
+   <https://ckeditor.com/docs/ckeditor4/latest/guide/dev_allowed_content_rules.html>
+
+.. option:: editor.config.extraAllowedContent
+
+   Example::
+   
+      # allow <q> tags
+      editor.config.extraAllowedContent: "*(*)[data-*];q"
+      
+   This enhances TYPO3's default `*(*)[data-*]` by the `q` tag.
+
+.. option:: editor.config.disallowedContent
+
+   defines the tags, their attributes, styles and classes that are **not** allowed.
+   Plugins (like table and tabletools) use these definitions to change their behaviour.
+
+   Example 1::
+   
+      editor.config.disallowedContent: "td{width,height,background-color,border-color}"
+
+   The example above removes 4 input fields from the table cell dialog.
+
+   Example 2::
+   
+      editor.config.disallowedContent: {
+        table: {
+          styles: 'width,height',
+          attributes: 'border,align,cellspacing,cellpadding'
+        },
+        td: {
+          styles: 'width,height,white-space,text-align,vertical-align,background-color,border-color'
+        }
+      }
+      
+   The example above removes a lot of fields from both table and table cell dialogs.
+
 .. option:: editor.config.style
 
    Sets the style
 
 .. option:: editor.config.toolbarGroup
 
-   This defines, which toolbarGroups (and corresponding buttons) will be
+   defines which toolbarGroups (and corresponding buttons) will be
    visible in the toolbar.
 
    Example::
