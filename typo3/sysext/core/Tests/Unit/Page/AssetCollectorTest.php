@@ -43,6 +43,11 @@ class AssetCollectorTest extends UnitTestCase
         foreach ($files as $file) {
             [$identifier, $source, $attributes, $options] = $file;
             $this->assetCollector->addStyleSheet($identifier, $source, $attributes, $options);
+            self::assertTrue($this->assetCollector->hasStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasInlineStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasInlineJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $this->assetCollector->getStyleSheets());
         self::assertSame([], $this->assetCollector->getInlineStyleSheets());
@@ -71,6 +76,11 @@ class AssetCollectorTest extends UnitTestCase
         foreach ($files as $file) {
             [$identifier, $source, $attributes, $options] = $file;
             $this->assetCollector->addJavaScript($identifier, $source, $attributes, $options);
+            self::assertTrue($this->assetCollector->hasJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasInlineStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasInlineJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $this->assetCollector->getJavaScripts());
         self::assertSame([], $this->assetCollector->getInlineStyleSheets());
@@ -99,6 +109,11 @@ class AssetCollectorTest extends UnitTestCase
         foreach ($sources as $source) {
             [$identifier, $source, $attributes, $options] = $source;
             $this->assetCollector->addInlineJavaScript($identifier, $source, $attributes, $options);
+            self::assertTrue($this->assetCollector->hasInlineJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasInlineStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $this->assetCollector->getInlineJavaScripts());
         self::assertSame([], $this->assetCollector->getInlineStyleSheets());
@@ -127,6 +142,11 @@ class AssetCollectorTest extends UnitTestCase
         foreach ($sources as $source) {
             [$identifier, $source, $attributes, $options] = $source;
             $this->assetCollector->addInlineStyleSheet($identifier, $source, $attributes, $options);
+            self::assertTrue($this->assetCollector->hasInlineStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasInlineJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasJavaScript($identifier));
+            self::assertFalse($this->assetCollector->hasStyleSheet($identifier));
+            self::assertFalse($this->assetCollector->hasMedia($identifier));
         }
         self::assertSame($expectedResult, $this->assetCollector->getInlineStyleSheets());
         self::assertSame([], $this->assetCollector->getInlineJavaScripts());
@@ -155,6 +175,11 @@ class AssetCollectorTest extends UnitTestCase
         foreach ($images as $image) {
             [$fileName, $additionalInformation] = $image;
             $this->assetCollector->addMedia($fileName, $additionalInformation);
+            self::assertTrue($this->assetCollector->hasMedia($fileName));
+            self::assertFalse($this->assetCollector->hasInlineStyleSheet($fileName));
+            self::assertFalse($this->assetCollector->hasInlineJavaScript($fileName));
+            self::assertFalse($this->assetCollector->hasJavaScript($fileName));
+            self::assertFalse($this->assetCollector->hasStyleSheet($fileName));
         }
         self::assertSame($expectedResult, $this->assetCollector->getMedia());
         self::assertSame([], $this->assetCollector->getInlineStyleSheets());

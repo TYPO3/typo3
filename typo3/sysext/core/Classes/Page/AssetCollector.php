@@ -225,6 +225,31 @@ class AssetCollector implements SingletonInterface
         return $this->filterAssetsPriority($this->inlineStyleSheets, $priority);
     }
 
+    public function hasJavaScript(string $identifier): bool
+    {
+        return isset($this->javaScripts[$identifier]);
+    }
+
+    public function hasInlineJavaScript(string $identifier): bool
+    {
+        return isset($this->inlineJavaScripts[$identifier]);
+    }
+
+    public function hasStyleSheet(string $identifier): bool
+    {
+        return isset($this->styleSheets[$identifier]);
+    }
+
+    public function hasInlineStyleSheet(string $identifier): bool
+    {
+        return isset($this->inlineStyleSheets[$identifier]);
+    }
+
+    public function hasMedia(string $fileName): bool
+    {
+        return isset($this->media[$fileName]);
+    }
+
     /**
      * @param array $assets Takes a reference to prevent a deep copy. The variable is not changed (const).
      * @param bool|null $priority null: no filter; else filters for the given priority
