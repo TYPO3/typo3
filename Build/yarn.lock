@@ -866,10 +866,10 @@
     "@typescript-eslint/types" "5.8.1"
     eslint-visitor-keys "^3.0.0"
 
-"@typo3/icons@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-2.4.1.tgz#2cfbd4206cf481acc23c393857af0343c8393004"
-  integrity sha512-zCN2pq9B9TdRUpqchuhTQrI1mCBd8SodYdKEN/43AiwD17CaWdQ4M03vHYLA+7WehMorVdRtnmreToehR6hR+Q==
+"@typo3/icons@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-2.6.0.tgz#a15f8f06e78590e89837fad7803ac276f9bed703"
+  integrity sha512-IxNlcjuNOwaHUT+ewkRaFoOUmhM8I0rna3HgeGo4/vK3z/o1tdhKq8G0hJf/RVf6nbG9DKX1D6jftEoAV13R6A==
   dependencies:
     npm "^7.12.1"
 
