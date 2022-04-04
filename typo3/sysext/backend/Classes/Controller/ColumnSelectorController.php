@@ -207,6 +207,9 @@ class ColumnSelectorController
             static fn (string $field): bool => !in_array($field, self::EXCLUDE_FILE_FIELDS, true)
         );
 
+        // Always add crdate and tstamp fields for files
+        $fileFields = array_unique(array_merge($fileFields, ['crdate', 'tstamp']));
+
         // Update the exclude fields with the fields, already added through sys_file, since those take precedence
         $excludeFields = array_merge($fileFields, self::EXCLUDE_FILE_FIELDS);
 
