@@ -135,24 +135,24 @@
                                         </td>
                                         <td>
                                             <f:if condition="{task.isRunning}">
-                                                <span class="label label-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
+                                                <span class="badge badge-success"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.running" /></span>
                                             </f:if>
                                             <f:if condition="{task.nextExecution} && {task.nextExecution} < {now}">
                                                 <span
-                                                    class="label label-warning"
+                                                    class="badge badge-warning"
                                                     title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.legend.scheduled')}"
                                                 >
                                                     <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.late" />
                                                 </span>
                                             </f:if>
                                             <f:if condition="{task.disabled} && !{task.isRunning}">
-                                                <span class="label label-default"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
+                                                <span class="badge badge-default"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabled" /></span>
                                             </f:if>
                                             <f:if condition="{task.lastExecutionFailure}">
                                                 <f:if condition="{task.lastExecutionFailureMessage}">
                                                     <f:then>
                                                         <span
-                                                            class="label label-danger"
+                                                            class="badge badge-danger"
                                                             title="{f:translate(
                                                                 key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailureReport',
                                                                 arguments:{0: task.lastExecutionFailureCode, 1: task.lastExecutionFailureMessage}
@@ -163,7 +163,7 @@
                                                     </f:then>
                                                     <f:else>
                                                         <span
-                                                            class="label label-danger"
+                                                            class="badge badge-danger"
                                                             title="{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.executionFailureDefault')}"
                                                         >
                                                             <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.failure" />
@@ -172,7 +172,7 @@
                                                 </f:if>
                                             </f:if>
                                             <f:for each="{task.labels}" as="label">
-                                                <span class="label label-{label.class}" title="{label.description}">{label.text}</span>
+                                                <span class="badge badge-{label.class}" title="{label.description}">{label.text}</span>
                                             </f:for>
                                         </td>
                                         <td>

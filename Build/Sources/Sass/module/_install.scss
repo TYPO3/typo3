@@ -74,8 +74,8 @@
                 background-color: $danger;
             }
 
-            .label {
-                @include label-variant($label-danger-bg);
+            .badge {
+                @include badge-use-variant('danger');
             }
         }
 
@@ -88,8 +88,8 @@
                 background-color: $warning;
             }
 
-            .label {
-                @include label-variant($label-warning-bg);
+            .badge {
+                @include badge-use-variant('warning');
             }
         }
 
@@ -102,8 +102,8 @@
                 background-color: $success;
             }
 
-            .label {
-                @include label-variant($label-success-bg);
+            .badge {
+                @include badge-use-variant('success');
             }
         }
 
@@ -116,8 +116,8 @@
                 background-color: $info;
             }
 
-            .label {
-                @include label-variant($label-info-bg);
+            .badge {
+                @include badge-use-variant('info');
             }
         }
 
@@ -138,7 +138,7 @@
             top: 0.75em;
             right: 1em;
 
-            .label {
+            .badge {
                 margin: 0 0.25em;
 
                 &:first-child {

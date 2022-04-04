@@ -117,8 +117,8 @@ class Backend extends Workspaces {
 
       $panel.append(
         $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'label label-success me-2'}).text(comment.previous_stage_title + ' > ' + comment.stage_title),
-          $('<span />', {class: 'label label-info'}).text(comment.tstamp),
+          $('<span />', {class: 'badge badge-success me-2'}).text(comment.previous_stage_title + ' > ' + comment.stage_title),
+          $('<span />', {class: 'badge badge-info'}).text(comment.tstamp),
         ),
       );
 
@@ -174,7 +174,7 @@ class Backend extends Workspaces {
       }
       $panel.append(
         $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'label label-info'}).text(currentData.datetime),
+          $('<span />', {class: 'badge badge-info'}).text(currentData.datetime),
         ),
       );
 

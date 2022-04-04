@@ -584,7 +584,7 @@ class SetupModuleController
         $content = '<select aria-labelledby="label_lang" id="field_lang" name="data[be_users][lang]" class="form-select">' . $content . '</select>';
         if ($currentSelectedLanguage !== 'default' && !@is_dir(Environment::getLabelsPath() . '/' . $currentSelectedLanguage)) {
             $languageUnavailableWarning = htmlspecialchars(sprintf($languageService->getLL('languageUnavailable'), $languageService->getLL('lang_' . $currentSelectedLanguage))) . '&nbsp;&nbsp;<br />&nbsp;&nbsp;' . htmlspecialchars($languageService->getLL('languageUnavailable.' . ($backendUser->isAdmin() ? 'admin' : 'user')));
-            $content = '<br /><span class="label label-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
+            $content = '<br /><span class="badge badge-danger">' . $languageUnavailableWarning . '</span><br /><br />' . $content;
         }
         return $content;
     }

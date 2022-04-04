@@ -685,7 +685,7 @@ class FileList
                         $theData[$field] = $this->linkWrapFile(htmlspecialchars($fileName), $fileObject);
 
                         if ($fileObject->isMissing()) {
-                            $theData[$field] .= '<span class="label label-danger label-space-left">'
+                            $theData[$field] .= '<span class="badge badge-danger badge-space-left">'
                                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>';
                         // Thumbnails?

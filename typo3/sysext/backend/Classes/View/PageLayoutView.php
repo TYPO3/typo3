@@ -691,7 +691,7 @@ class PageLayoutView implements LoggerAwareInterface
             $cCont[$languageId] = '
 					<td ' . GeneralUtility::implodeAttributes($columnAttributes, true) . '>
 						<h2>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$languageId]) . '</h2>
-						' . ($languageMode !== '' ? '<span class="label label-' . $labelClass . '">' . $languageMode . '</span>' : '') . '
+						' . ($languageMode !== '' ? '<span class="badge badge-' . $labelClass . '">' . $languageMode . '</span>' : '') . '
 					</td>';
 
             $editLink = '';
@@ -1303,7 +1303,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $previewHtml = $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
                     } else {
                         $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
-                        $previewHtml = '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
+                        $previewHtml = '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
                     }
                 } else {
                     $previewHtml = '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
@@ -1331,7 +1331,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                         $row['CType']
                     );
-                    $previewHtml = '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
+                    $previewHtml = '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
                 }
         }
         return $previewHtml;

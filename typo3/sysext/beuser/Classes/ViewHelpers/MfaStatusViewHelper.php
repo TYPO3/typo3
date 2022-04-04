@@ -59,13 +59,13 @@ final class MfaStatusViewHelper extends AbstractTagBasedViewHelper
 
         // Check locked providers
         if ($mfaProviderRegistry->hasLockedProviders($backendUser)) {
-            $this->tag->addAttribute('class', 'label label-warning');
+            $this->tag->addAttribute('class', 'badge badge-warning');
             $this->tag->setContent(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders')));
             return $this->tag->render();
         }
 
         // Add mfa enabled label since we have active providers and non of them are locked
-        $this->tag->addAttribute('class', 'label label-info');
+        $this->tag->addAttribute('class', 'badge badge-info');
         $this->tag->setContent(htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:mfaEnabled')));
         return $this->tag->render();
     }

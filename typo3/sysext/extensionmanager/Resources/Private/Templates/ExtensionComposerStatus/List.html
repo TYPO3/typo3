@@ -51,7 +51,7 @@
                                     {extensionKey}
                                 </td>
                                 <td>
-                                    <span class="label {f:if(condition: '{extension.deficit} == 2', then: 'label-warning', else: 'label-danger')}">{f:translate(key: 'extensionComposerStatus.deficit.{extension.deficit}.short')}</span>
+                                    <span class="badge {f:if(condition: '{extension.deficit} == 2', then: 'badge-warning', else: 'badge-danger')}">{f:translate(key: 'extensionComposerStatus.deficit.{extension.deficit}.short')}</span>
                                 </td>
                                 <td>
                                     <f:if condition="{extension.deficit} == 2">

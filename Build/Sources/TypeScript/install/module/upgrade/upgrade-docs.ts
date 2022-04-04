@@ -270,7 +270,7 @@ class UpgradeDocs extends AbstractInteractableModule {
     if ($tagContainer.children().length === 0) {
       const tags = $upgradeDocumentContainer.data('item-tags').split(',');
       tags.forEach((value: string): void => {
-        $tagContainer.append($('<span />', {'class': 'label'}).text(value));
+        $tagContainer.append($('<span />', {'class': 'badge'}).text(value));
       });
     }
   }

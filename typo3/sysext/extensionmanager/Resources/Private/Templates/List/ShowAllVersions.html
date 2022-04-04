@@ -26,7 +26,7 @@
             </tr>
             <tr>
                 <th><f:translate key="extensionList.showAllVersions.version" /></th>
-                <td>{currentVersion.version} <span class="label label-{currentVersion.stateString}">{currentVersion.stateString}</span></td>
+                <td>{currentVersion.version} <span class="badge badge-{currentVersion.stateString}">{currentVersion.stateString}</span></td>
             </tr>
             <tr>
                 <th><f:translate key="extensionList.showAllVersions.lastUploaded" /></th>
@@ -59,7 +59,7 @@
                         <f:for each="{constraintGroup}" key="identifier" as="constraint">
                             <span>{identifier} {constraint.version}</span>
                             <f:if condition="!{constraint.versionCompatible}">
-                                <span class="label label-warning"><f:translate key="extensionList.showAllVersions.notCompatibleVersion" /></span>
+                                <span class="badge badge-warning"><f:translate key="extensionList.showAllVersions.notCompatibleVersion" /></span>
                             </f:if>
                             <br/>
                         </f:for>

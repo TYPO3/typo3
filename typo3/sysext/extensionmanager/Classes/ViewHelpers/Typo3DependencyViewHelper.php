@@ -51,7 +51,7 @@ final class Typo3DependencyViewHelper extends AbstractViewHelper
             return '';
         }
         return sprintf(
-            '<span class="label label-%s">%s - %s</span>',
+            '<span class="badge badge-%s">%s - %s</span>',
             $dependency->isVersionCompatible(VersionNumberUtility::getNumericTypo3Version()) ? 'success' : 'default',
             htmlspecialchars($dependency->getLowestVersion()),
             htmlspecialchars($dependency->getHighestVersion())

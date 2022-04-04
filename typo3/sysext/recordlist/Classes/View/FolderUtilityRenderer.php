@@ -123,7 +123,7 @@ class FolderUtilityRenderer
         $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
         foreach ($allowedExtensions as $fileExt) {
             if ($fileNameVerifier->isValid('.' . $fileExt)) {
-                $fileExtList[] = '<span class="label label-success">'
+                $fileExtList[] = '<span class="badge badge-success">'
                     . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
         }
@@ -182,7 +182,7 @@ class FolderUtilityRenderer
             if ($fileNameVerifier->isValid('.' . $fileExt)
                 && (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, true))
             ) {
-                $fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+                $fileExtList[] = '<span class="badge badge-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
         }
         if (!empty($fileExtList)) {

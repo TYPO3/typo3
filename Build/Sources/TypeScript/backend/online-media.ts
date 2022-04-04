@@ -96,7 +96,7 @@ class OnlineMedia {
     const btnSubmit = $currentTarget.data('btn-submit') || 'Add';
     const placeholder = $currentTarget.data('placeholder') || 'Paste media url here...';
     const allowedExtMarkup = $.map($currentTarget.data('online-media-allowed').split(','), (ext: string): string => {
-      return '<span class="label label-success">' + this.securityUtility.encodeHtml(ext.toUpperCase(), false) + '</span>';
+      return '<span class="badge badge-success">' + this.securityUtility.encodeHtml(ext.toUpperCase(), false) + '</span>';
     });
     const allowedHelpText = $currentTarget.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
 

@@ -74,7 +74,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
     public function renderReturnsMfaEnabledLabel(): void
     {
         self::assertEquals(
-            '<span class="label label-info">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:mfaEnabled</span>',
+            '<span class="badge badge-info">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:mfaEnabled</span>',
             $this->view->assign('userUid', 1)->render()
         );
     }
@@ -85,7 +85,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
     public function renderReturnsMfaLockedLabel(): void
     {
         self::assertEquals(
-            '<span class="label label-warning">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders</span>',
+            '<span class="badge badge-warning">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders</span>',
             $this->view->assign('userUid', 2)->render()
         );
     }
@@ -96,7 +96,7 @@ class MfaStatusViewHelperTest extends FunctionalTestCase
     public function renderReturnsMfaLockedLabelOnMixedProviders(): void
     {
         self::assertEquals(
-            '<span class="label label-warning">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders</span>',
+            '<span class="badge badge-warning">LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lockedMfaProviders</span>',
             $this->view->assign('userUid', 3)->render()
         );
     }

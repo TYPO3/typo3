@@ -3249,7 +3249,7 @@ class DatabaseRecordList
             // actions or a hook removed all remaining actions, inform the user about this.
             return '
                 <div class="col pt-1 pb-1">
-                    <span class="label label-info">
+                    <span class="badge badge-info">
                     ' . htmlspecialchars($lang->sL($event->getNoActionLabel() ?: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noActionAvailable')) . '
                     </span>
                 </div>';

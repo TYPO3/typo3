@@ -84,7 +84,7 @@ class MfaInfoElement extends AbstractFormElement
         $lang = $this->getLanguageService();
         $enabledLabel = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.mfa.enabled'));
         $disabledLabel = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.mfa.disabled'));
-        $status = '<span class="label label-danger label-space-right t3js-mfa-status-label" data-alternative-label="' . $enabledLabel . '">' . $disabledLabel . '</span>';
+        $status = '<span class="badge badge-danger badge-space-right t3js-mfa-status-label" data-alternative-label="' . $enabledLabel . '">' . $disabledLabel . '</span>';
 
         // Unset invalid providers
         foreach ($mfaProviders as $identifier => $providerSettings) {
@@ -109,7 +109,7 @@ class MfaInfoElement extends AbstractFormElement
 
             if ($activeProviders !== []) {
                 // Change status label to MFA being enabled
-                $status = '<span class="label label-success label-space-right t3js-mfa-status-label"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
+                $status = '<span class="badge badge-success badge-space-right t3js-mfa-status-label"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
 
                 // Add providers list
                 $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';
@@ -118,9 +118,9 @@ class MfaInfoElement extends AbstractFormElement
                     $childHtml[] =  $this->iconFactory->getIcon($activeProvider->getIconIdentifier(), Icon::SIZE_SMALL);
                     $childHtml[] =  htmlspecialchars($lang->sL($activeProvider->getTitle()));
                     if (in_array($identifier, $lockedProviders, true)) {
-                        $childHtml[] = '<span class="label label-danger">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.locked')) . '</span>';
+                        $childHtml[] = '<span class="badge badge-danger">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.locked')) . '</span>';
                     } else {
-                        $childHtml[] = '<span class="label label-success">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.active')) . '</span>';
+                        $childHtml[] = '<span class="badge badge-success">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.active')) . '</span>';
                     }
                     if ($isDeactivationAllowed) {
                         $childHtml[] = '<button type="button"';

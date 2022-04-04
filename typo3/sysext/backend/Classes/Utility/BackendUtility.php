@@ -1009,7 +1009,7 @@ class BackendUtility
                 $fileObject = $fileReferenceObject->getOriginalFile();
 
                 if ($fileObject->isMissing()) {
-                    $thumbData .= '<span class="label label-danger">'
+                    $thumbData .= '<span class="badge badge-danger">'
                         . htmlspecialchars(
                             static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')
                         )

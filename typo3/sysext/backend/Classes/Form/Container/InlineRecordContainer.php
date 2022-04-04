@@ -373,7 +373,7 @@ class InlineRecordContainer extends AbstractContainer
                     $fileObject = null;
                 }
                 if ($fileObject && $fileObject->isMissing()) {
-                    $thumbnail .= '<span class="label label-danger">'
+                    $thumbnail .= '<span class="badge badge-danger">'
                         . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                         . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                 } elseif ($fileObject) {

@@ -173,7 +173,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record) . '<br />';
                     } else {
                         $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
-                        $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
+                        $out .= '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
                     }
                 } elseif (!empty($record['select_key'])) {
                     $out .= htmlspecialchars($languageService->sL(BackendUtility::getItemLabel('tt_content', 'select_key')))
@@ -190,7 +190,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                         $record['CType']
                     );
-                    $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
+                    $out .= '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
                     break;
                 }
                 // Handle menu content types

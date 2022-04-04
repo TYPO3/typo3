@@ -158,8 +158,8 @@ class MfaInfoElement {
     }
     if (this.mfaStatusLabel !== null) {
       this.mfaStatusLabel.innerText = this.mfaStatusLabel.dataset.alternativeLabel;
-      this.mfaStatusLabel.classList.remove('label-success');
-      this.mfaStatusLabel.classList.add('label-danger');
+      this.mfaStatusLabel.classList.remove('badge-success');
+      this.mfaStatusLabel.classList.add('badge-danger');
     }
   }
 }

@@ -15,7 +15,7 @@
             <b>{backendUser.userName}</b>
         </be:link.editRecord>
         <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
-            <span class="label label-success"><f:translate key="online" /></span>
+            <span class="badge badge-success"><f:translate key="online" /></span>
         </f:if>
         <bu:mfaStatus userUid="{backendUser.uid}"/>
         <br />

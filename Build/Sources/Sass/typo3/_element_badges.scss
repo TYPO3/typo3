@@ -1,18 +1,103 @@
 //
 // Badges
 //
-.badge-info {
-    @include label-variant($label-info-bg);
+
+// Mixins
+@mixin badge-create-variant($name, $color) {
+    --badge-#{$name}-color: #{color-contrast($color)};
+
+    --badge-#{$name}-bg: #{$color};
+
+    --badge-#{$name}-link-bg-hover: #{darken($color, 10%)};
 }
 
-.badge-success {
-    @include label-variant($label-success-bg);
+@mixin badge-use-variant($name) {
+    --badge-color: var(--badge-#{$name}-color);
+
+    --badge-bg: var(--badge-#{$name}-bg);
+
+    --badge-link-bg-hover: var(--badge-#{$name}-link-bg-hover);
 }
 
-.badge-warning {
-    @include label-variant($label-warning-bg);
+// Base
+:root {
+    @include badge-create-variant('default', $gray-300);
+    @include badge-create-variant('primary', $primary);
+    @include badge-create-variant('secondary', $secondary);
+    @include badge-create-variant('success', $success);
+    @include badge-create-variant('info', $info);
+    @include badge-create-variant('warning', $warning);
+    @include badge-create-variant('danger', $danger);
+    @include badge-create-variant('light', $light);
+    @include badge-create-variant('dark', $dark);
 }
 
-.badge-danger {
-    @include label-variant($label-danger-bg);
+.badge {
+    color: var(--badge-color);
+    background-color: var(--badge-bg);
+
+    &[href] {
+        &:hover,
+        &:focus {
+            background-color: var(--badge-link-bg-hover);
+        }
+    }
+
+    // Default also used for:
+    // .badge-default,
+    // .badge-obsolete,
+    // .badge-test,
+    // .badge-excludeFromUpdates
+    @include badge-use-variant('default');
+}
+
+// Colors
+.badge-primary {
+    @include badge-use-variant('primary');
+}
+
+.badge-secondary {
+    @include badge-use-variant('secondary');
+}
+
+.badge-success,
+.badge-stable {
+    @include badge-use-variant('success');
+}
+
+.badge-info,
+.badge-experimental {
+    @include badge-use-variant('info');
+}
+
+.badge-warning,
+.badge-beta {
+    @include badge-use-variant('warning');
+}
+
+.badge-danger,
+.badge-alpha,
+.badge-deprecated {
+    @include badge-use-variant('danger');
+}
+
+.badge-light {
+    @include badge-use-variant('light');
+}
+
+.badge-dark {
+    @include badge-use-variant('dark');
+}
+
+// Display Variants
+.badge-block {
+    display: block;
+}
+
+.badge-space-left {
+    margin-left: 1em;
+}
+
+.badge-space-right {
+    margin-right: 1em;
 }

@@ -597,7 +597,7 @@ class InlineControlContainer extends AbstractContainer
         $allowedLabelKey = ($mode === 'file') ? 'allowedFileExtensions' : 'allowedRelations';
         $allowedLabel = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.' . $allowedLabelKey));
         foreach ($allowedArray as $allowedItem) {
-            $allowedList .= '<span class="label label-success">' . strtoupper($allowedItem) . '</span> ';
+            $allowedList .= '<span class="badge badge-success">' . strtoupper($allowedItem) . '</span> ';
         }
         if (!empty($allowedList)) {
             $item .= '<div class="help-block">' . $allowedLabel . '<br>' . $allowedList . '</div>';

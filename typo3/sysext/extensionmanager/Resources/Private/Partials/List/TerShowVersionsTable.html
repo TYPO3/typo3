@@ -18,7 +18,7 @@
                 <td>{extension.version}</td>
                 <td><f:format.nl2br>{extension.updateComment}</f:format.nl2br></td>
                 <td data-sort="{f:format.date(date: extension.lastUpdated, format: 'U')}"><f:format.date>{extension.lastUpdated}</f:format.date></td>
-                <td><span class="label label-{extension.stateString}">{extension.stateString}</span></td>
+                <td><span class="badge badge-{extension.stateString}">{extension.stateString}</span></td>
             </tr>
         </f:for>
     </tbody>

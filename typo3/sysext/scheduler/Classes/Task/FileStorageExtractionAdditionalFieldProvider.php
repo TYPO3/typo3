@@ -117,7 +117,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
 
         if (empty($extractors)) {
             $labelKey = 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.fileStorageExtraction.registeredExtractors.without_extractors';
-            $content = '<span class="label label-warning">'
+            $content = '<span class="badge badge-warning">'
                 . htmlspecialchars($this->getLanguageService()->sL($labelKey))
                 . '</span>';
         } else {

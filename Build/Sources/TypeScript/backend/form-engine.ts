@@ -550,16 +550,16 @@ export default (function() {
     let labelClass = '';
 
     if (remainingCharacters < threshold) {
-      labelClass = 'label-danger';
+      labelClass = 'badge-danger';
     } else if (remainingCharacters < threshold * 2) {
-      labelClass = 'label-warning';
+      labelClass = 'badge-warning';
     } else {
-      labelClass = 'label-info';
+      labelClass = 'badge-info';
     }
 
     return {
       remainingCharacters: remainingCharacters,
-      labelClass: 'label ' + labelClass
+      labelClass: 'badge ' + labelClass
     };
   };
 

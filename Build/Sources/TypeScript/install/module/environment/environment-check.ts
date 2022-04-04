@@ -77,9 +77,9 @@ class EnvironmentCheck extends AbstractInteractableModule {
               }
             });
             if (errorCount > 0) {
-              $errorBadge.removeClass('label-warning').addClass('label-danger').text(errorCount).show();
+              $errorBadge.removeClass('badge-warning').addClass('badge-danger').text(errorCount).show();
             } else if (warningCount > 0) {
-              $errorBadge.removeClass('label-error').addClass('label-warning').text(warningCount).show();
+              $errorBadge.removeClass('badge-error').addClass('badge-warning').text(warningCount).show();
             }
           } else {
             Notification.error('Something went wrong', 'The request was not processed successfully. Please check the browser\'s console and TYPO3\'s log.');

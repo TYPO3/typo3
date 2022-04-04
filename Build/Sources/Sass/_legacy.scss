@@ -50,17 +50,6 @@
     }
 }
 
-@mixin label-variant($color) {
-    background-color: $color;
-
-    &[href] {
-        &:hover,
-        &:focus {
-            background-color: darken($color, 10%);
-        }
-    }
-}
-
 // Form control sizing
 //
 // Relative text size, padding, and border-radii changes for form controls. For
@@ -148,50 +137,6 @@ $font-size-h4: $h4-font-size;
 $border-radius-base: $border-radius;
 $border-radius-large: $border-radius-lg;
 $border-radius-small: $border-radius-sm;
-
-//== Labels
-//
-//##
-
-////** Default label background color
-$label-default-bg: $gray-300 !default;
-////** Primary label background color
-$label-primary-bg: $primary !default;
-////** Success label background color
-$label-success-bg: $success !default;
-////** Info label background color
-$label-info-bg: $info !default;
-////** Warning label background color
-$label-warning-bg: $warning !default;
-////** Danger label background color
-$label-danger-bg: $danger !default;
-
-// Colors
-// Contextual variations (linked labels get darker on :hover)
-
-.label-default {
-    @include label-variant($label-default-bg);
-}
-
-.label-primary {
-    @include label-variant($label-primary-bg);
-}
-
-.label-success {
-    @include label-variant($label-success-bg);
-}
-
-.label-info {
-    @include label-variant($label-info-bg);
-}
-
-.label-warning {
-    @include label-variant($label-warning-bg);
-}
-
-.label-danger {
-    @include label-variant($label-danger-bg);
-}
 
 .hidden,
 .hide {
@@ -330,16 +275,6 @@ label {
 
     > .table-fit {
         border: none;
-    }
-}
-
-// .label (badges) fallback
-// todo replace ".label" classes with ".badge"
-.label {
-    @extend .badge !optional;
-
-    &-success {
-        background-color: $success;
     }
 }
 

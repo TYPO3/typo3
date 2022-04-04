@@ -47,8 +47,6 @@ img.t3-tceforms-sysfile-imagepreview {
 }
 
 .t3-form-original-language-diffheader {
-    @include label-variant($label-danger-bg);
-
     font-weight: bold;
     padding: 2px;
 }

@@ -15,31 +15,6 @@
 @import "minimal";
 
 //
-// Components
-//
-@import "component/colorpicker";
-@import "component/datetimepicker";
-@import "component/svgtree";
-@import "component/elementbrowser";
-@import "component/modal";
-@import "component/note";
-@import "component/card";
-
-//
-// Modules
-//
-@import "module/access";
-@import "module/backenduser";
-@import "module/extensionmanager";
-@import "module/help";
-@import "module/install";
-@import "module/page";
-@import "module/recycler";
-@import "module/tstemplate";
-@import "module/viewpage";
-@import "module/workspaces";
-
-//
 // Include chosen CSS file
 //
 @import "libs/chosen";
@@ -70,10 +45,20 @@
 @import "nprogress/nprogress";
 
 //
+// Components
+//
+@import "component/colorpicker";
+@import "component/datetimepicker";
+@import "component/svgtree";
+@import "component/elementbrowser";
+@import "component/modal";
+@import "component/note";
+@import "component/card";
+
+//
 // TYPO3 Backend Components
 //
-@import "typo3/install";
-@import "typo3/main_type";
+@import "typo3/element_badges";
 @import "typo3/element_animation";
 @import "typo3/element_cropper";
 @import "typo3/element_contextmenu";
@@ -89,10 +74,10 @@
 @import "typo3/element_tree";
 @import "typo3/element_uiblock";
 @import "typo3/element_pagination";
-@import "typo3/element_label";
-@import "typo3/element_badges";
 @import "typo3/element_buttons";
 @import "typo3/element_draguploader";
+@import "typo3/install";
+@import "typo3/main_type";
 @import "typo3/icons";
 @import "typo3/history";
 @import "typo3/login_screen";
@@ -105,3 +90,17 @@
 @import "typo3/structure/module_web_list";
 @import "typo3/structure/module_file_filelist";
 @import "typo3/visual/element_typoscript";
+
+//
+// Modules
+//
+@import "module/access";
+@import "module/backenduser";
+@import "module/extensionmanager";
+@import "module/help";
+@import "module/install";
+@import "module/page";
+@import "module/recycler";
+@import "module/tstemplate";
+@import "module/viewpage";
+@import "module/workspaces";

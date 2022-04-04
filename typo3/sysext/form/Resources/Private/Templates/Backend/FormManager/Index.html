@@ -65,13 +65,13 @@
                                     <f:if condition="{form.referenceCount}">
                                         <f:then>
                                             <a href="#" data-identifier="showReferences" data-form-persistence-identifier="{form.persistenceIdentifier}" data-form-name="{form.name}">
-                                                <span class="label label-info">
+                                                <span class="badge badge-info">
                                                     {form.referenceCount} <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.references"/>
                                                 </span>
                                             </a>
                                         </f:then>
                                         <f:else>
-                                            <span class="label label-default">
+                                            <span class="badge badge-default">
                                                 {form.referenceCount} <f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formManager.references"/>
                                             </span>
                                         </f:else>
