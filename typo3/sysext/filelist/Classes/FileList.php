@@ -640,6 +640,7 @@ class FileList
             $this->totalbytes += $fileObject->getSize();
             $ext = $fileObject->getExtension();
             $fileUid = $fileObject->getUid();
+            $fileInfo = $fileObject->getStorage()->getFileInfo($fileObject);
             $fileName = trim($fileObject->getName());
             // Preparing and getting the data-array
             $theData = [];
@@ -702,6 +703,14 @@ class FileList
                                 'title="' . htmlspecialchars($fileName) . '" alt="" />';
                         }
                         break;
+                    case 'crdate':
+                        $crdate = (int)($fileInfo['ctime'] ?? 0);
+                        $theData[$field] = $crdate ? BackendUtility::datetime($crdate) : '-';
+                        break;
+                    case 'tstamp':
+                        $tstamp = (int)($fileInfo['mtime'] ?? 0);
+                        $theData[$field] = $tstamp ? BackendUtility::datetime($tstamp) : '-';
+                        break;
                     default:
                         $theData[$field] = '';
                         if ($fileObject->hasProperty($field)) {
@@ -709,11 +718,6 @@ class FileList
                             if ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['cruser_id'] ?? '')) {
                                 // Handle cruser_id by adding the avatar along with the username
                                 $theData[$field] = $this->getBackendUserInformation((int)$fileObject->getProperty($field));
-                            } elseif ($field === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['crdate'] ?? '')) {
-                                // This special case is needed since crdate is defined as "passthrough"
-                                // in sys_file_metadata due to the file search API and will therefore not
-                                // be processed by getProcessedValue.
-                                $theData[$field] = htmlspecialchars(BackendUtility::datetime((int)$fileObject->getProperty($field)));
                             } elseif ($field === 'storage') {
                                 // Fetch storage name of the current file
                                 $storage = GeneralUtility::makeInstance(StorageRepository::class)->findByUid((int)$fileObject->getProperty($field));
