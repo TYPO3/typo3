@@ -32,24 +32,30 @@ class RateLimiterFactoryTest extends FunctionalTestCase
     public function loginRateLimiterLimitsRequestsDataProvider(): array
     {
         return [
+            /*
+             * @todo: activate when symfony/rate-limiter 5.4.8 has been released.
             'backend accepted' => [
                 'BE',
                 5,
                 1,
                 true,
             ],
+             */
             'backend denied' => [
                 'BE',
                 5,
                 6,
                 false,
             ],
+            /*
+             * @todo: activate when symfony/rate-limiter 5.4.8 has been released.
             'frontend accepted' => [
                 'FE',
                 5,
                 1,
                 true,
             ],
+             */
             'frontend denied' => [
                 'FE',
                 5,
