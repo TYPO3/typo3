@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ============================================================================
-Breaking: #97230 - Removed hook for modifying image manioulation preview url
+Breaking: #97230 - Removed hook for modifying image manipulation preview url
 ============================================================================
 
 See :issue:`97230`
