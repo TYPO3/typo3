@@ -75,11 +75,6 @@ you don't have to run the tests all over again.
     probably want to. Since orphan records may keep some missing relations from
     being detected it's a good idea to get them out immediately.
 
-- `[base command] cleanup:multiplereferencedfiles`
-
-  - Fix any files referenced twice or more before you delete records (which
-    could potentially delete a file that is referenced by another file).
-
 - `[base command] cleanup:deletedrecords`
 
   - Flush deleted records. As a rule of thumb, tools that create deleted records
@@ -100,19 +95,6 @@ you don't have to run the tests all over again.
     make sure nothing unimportant is cleaned up.
 
 
-Executed anytime
-----------------
-
-These can be executed anytime, however you should wait till all deleted records
-and versions are flushed so you don't waste system resources on fixing deleted
-records.
-
-::
-
-	[base command] cleanup:missingfiles
-	[base command] cleanup:lostfiles
-
-
 Nightly reports of problems in the system
 -----------------------------------------
 
@@ -121,12 +103,9 @@ report could look like this::
 
 	#!/bin/sh
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:orphanrecords -vv --dry-run
-	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:multiplereferencedfiles --update-refindex -vv --dry-run
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v --dry-run
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:missingrelations --update-refindex -vv --dry-run
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:flexforms -vv --dry-run
-	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:missingfiles --update-refindex -vv --dry-run
-	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:lostfiles --update-refindex -vv --dry-run
 
 
 You may wish to change the verbosity level from `-vv` to `-v` as in the case
@@ -145,12 +124,9 @@ Example script for checking your installation
 
     #!/bin/sh
     ./typo3/sysext/core/bin/typo3 cleanup:orphanrecords -vv --dry-run
-    ./typo3/sysext/core/bin/typo3 cleanup:multiplereferencedfiles -vv --dry-run
     ./typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v --dry-run
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv --dry-run
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv --dry-run
-    ./typo3/sysext/core/bin/typo3 cleanup:missingfiles -vv --dry-run
-    ./typo3/sysext/core/bin/typo3 cleanup:lostfiles -vv --dry-run
 
 
 Example script for cleaning your installation
@@ -160,9 +136,6 @@ Example script for cleaning your installation
 
     #!/bin/sh
     ./typo3/sysext/core/bin/typo3 cleanup:orphanrecords -vv
-    ./typo3/sysext/core/bin/typo3 cleanup:multiplereferencedfiles -vv --update-refindex
     ./typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv --update-refindex
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv
-    ./typo3/sysext/core/bin/typo3 cleanup:missingfiles --update-refindex
-    ./typo3/sysext/core/bin/typo3 cleanup:lostfiles -vv --update-refindex
