@@ -454,9 +454,7 @@ abstract class AbstractItemProvider
         }
 
         $backendUser = $this->getBackendUser();
-        $authMode = $result['processedTca']['columns'][$fieldName]['config']['authMode'];
         foreach ($items as $key => $itemValues) {
-            // @todo: checkAuthMode() uses $GLOBAL access for "individual" authMode - get rid of this
             if (!$backendUser->checkAuthMode($result['tableName'], $fieldName, $itemValues[1])) {
                 unset($items[$key]);
             }
