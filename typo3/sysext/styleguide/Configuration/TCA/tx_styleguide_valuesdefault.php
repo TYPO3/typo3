@@ -89,11 +89,11 @@ return [
                 'default' => 0,
             ],
         ],
-        'input_3' => [
-            'label' => 'input_27 default=3, eval=int, range lower=2, range upper=7',
+
+        'number_1' => [
+            'label' => 'number_1 default=3, range lower=2, range upper=7',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'range' => [
                     'lower' => 2,
                     'upper' => 7,
@@ -231,7 +231,8 @@ return [
         '0' => [
             'showitem' => '
                 --div--;basic,
-                    input_1, input_2, input_3,
+                    input_1, input_2,
+                    number_1,
                     text_1,
                     checkbox_1, checkbox_2, checkbox_3, checkbox_4,
                     radio_1, radio_2, radio_3,

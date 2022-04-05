@@ -117,60 +117,58 @@ return [
         // Tab FIELD REQ end
 
         // Tab FIELD compare start
-        'input_3' => [
-            'label' => 'input_3',
+        'number_1' => [
+            'label' => 'number_1',
             'description' => 'Try values between 0 and 6',
-            // @todo onChange does not work for input fields. See: https://forge.typo3.org/issues/93613
             'onChange' => 'reload',
             'config' => [
-                'type' => 'input',
-                'eval' => 'trim,int',
+                'type' => 'number',
             ],
         ],
         'input_4' => [
             'label' => 'input_4',
-            'description' => 'displayCond=FIELD:input_3:=:0',
-            'displayCond' => 'FIELD:input_3:=:0',
+            'description' => 'displayCond=FIELD:number_1:=:0',
+            'displayCond' => 'FIELD:number_1:=:0',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'input_5' => [
             'label' => 'input_5',
-            'description' => 'displayCond=FIELD:input_3:<:5',
-            'displayCond' => 'FIELD:input_3:<:5',
+            'description' => 'displayCond=FIELD:number_1:<:5',
+            'displayCond' => 'FIELD:number_1:<:5',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'input_6' => [
             'label' => 'input_6',
-            'description' => 'displayCond=FIELD:input_3:>=:5',
-            'displayCond' => 'FIELD:input_3:>=:5',
+            'description' => 'displayCond=FIELD:number_1:>=:5',
+            'displayCond' => 'FIELD:number_1:>=:5',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'input_7' => [
             'label' => 'input_7',
-            'description' => 'displayCond=FIELD:input_3:-:2-4',
-            'displayCond' => 'FIELD:input_3:-:2-4',
+            'description' => 'displayCond=FIELD:number_1:-:2-4',
+            'displayCond' => 'FIELD:number_1:-:2-4',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'input_8' => [
             'label' => 'input_8',
-            'description' => 'displayCond=FIELD:input_3:IN:1,3,5',
-            'displayCond' => 'FIELD:input_3:IN:1,3,5',
+            'description' => 'displayCond=FIELD:number_1:IN:1,3,5',
+            'displayCond' => 'FIELD:number_1:IN:1,3,5',
             'config' => [
                 'type' => 'input',
             ],
         ],
         'input_9' => [
             'label' => 'input_9',
-            'description' => 'displayCond=FIELD:input_3:!IN:1,3,5',
-            'displayCond' => 'FIELD:input_3:!IN:1,3,5',
+            'description' => 'displayCond=FIELD:number_1:!IN:1,3,5',
+            'displayCond' => 'FIELD:number_1:!IN:1,3,5',
             'config' => [
                 'type' => 'input',
             ],
@@ -269,26 +267,24 @@ return [
         // Tab HIDE_FOR_NON_ADMINS end
 
         // Tab USER start
-        'input_14' => [
-            'label' => 'input_14',
+        'number_2' => [
+            'label' => 'number_2',
             'description' => 'Smaller value',
             'config' => [
-                'type' => 'input',
-                'eval' => 'trim,int',
+                'type' => 'number',
             ],
         ],
-        'input_15' => [
-            'label' => 'input_15',
+        'number_3' => [
+            'label' => 'number_3',
             'description' => 'Larger value',
             'config' => [
-                'type' => 'input',
-                'eval' => 'trim,int',
+                'type' => 'number',
             ],
         ],
         'input_16' => [
             'label' => 'input_16',
-            'description' => 'displayCond=USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:input_14:input_15',
-            'displayCond' => 'USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:input_14:input_15',
+            'description' => 'displayCond=USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:number_2:number_3',
+            'displayCond' => 'USER:TYPO3\CMS\Styleguide\UserFunctions\FormEngine\DisplayConditionUserFunc->lessThen:number_2:number_3',
             'config' => [
                 'type' => 'input',
             ],
@@ -727,7 +723,7 @@ return [
                     input_1,
                     input_2,
                 --div--;FIELD compare,
-                    input_3,
+                    number_1,
                     input_4,
                     input_5,
                     input_6,
@@ -745,8 +741,8 @@ return [
                 --div--;HIDE_FOR_NON_ADMINS,
                     input_13,
                 --div--;USER,
-                    input_14,
-                    input_15,
+                    number_2,
+                    number_3,
                     input_16,
                 --div--;VERSION:IS,
                     input_17,

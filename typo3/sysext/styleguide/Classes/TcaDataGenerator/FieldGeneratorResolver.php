@@ -45,9 +45,7 @@ class FieldGeneratorResolver
         // Specific type=input generator
         FieldGenerator\TypeInputMax4::class,
         FieldGenerator\TypeInputEvalAlphanum::class,
-        FieldGenerator\TypeInputEvalDouble2::class,
         FieldGenerator\TypeEmail::class,
-        FieldGenerator\TypeInputEvalInt::class,
         FieldGenerator\TypeInputEvalIsIn::class,
         FieldGenerator\TypeInputEvalMd5::class,
         FieldGenerator\TypeInputEvalNum::class,
@@ -72,6 +70,11 @@ class FieldGeneratorResolver
 
         // General type=color generator
         FieldGenerator\TypeColor::class,
+
+        // Specific type=number generator
+        FieldGenerator\TypeNumberFormatDecimal::class,
+        // General type=number generator
+        FieldGenerator\TypeNumber::class,
 
         FieldGenerator\TypeTextDefaultExtrasRichtext::class,
         FieldGenerator\TypeTextFormatDatetime::class,

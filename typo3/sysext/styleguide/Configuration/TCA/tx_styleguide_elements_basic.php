@@ -121,22 +121,6 @@ return [
                 'eval' => 'alphanum',
             ],
         ],
-        'input_8' => [
-            'label' => 'input_8',
-            'description' => 'eval=double2',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'double2',
-            ],
-        ],
-        'input_9' => [
-            'label' => 'input_9',
-            'description' => 'eval=int',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'int',
-            ],
-        ],
         'input_10' => [
             'label' => 'input_10',
             'description' => 'eval=is_in is_in=abc123',
@@ -234,19 +218,6 @@ return [
                 'eval' => 'year',
             ],
         ],
-        'input_25' => [
-            'label' => 'input_25',
-            'description' => 'eval=int default=0 range lower=-2 range upper=2',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'int',
-                'range' => [
-                    'lower' => -2,
-                    'upper' => 2,
-                ],
-                'default' => 0,
-            ],
-        ],
         'input_26' => [
             'label' => 'input_26',
             'description' => 'default="input_26", value for input_27 and input_28',
@@ -272,60 +243,6 @@ return [
                 'eval' => 'null',
                 'default' => null,
                 'mode' => 'useOrOverridePlaceholder',
-            ],
-        ],
-        'input_30' => [
-            'label' => 'input_30',
-            'description' => 'slider step=10 width=200 eval=trim,int',
-            'config' => [
-                'type' => 'input',
-                'size' => 5,
-                'eval' => 'trim,int',
-                'range' => [
-                    'lower' => -90,
-                    'upper' => 90,
-                ],
-                'default' => 0,
-                'slider' => [
-                    'step' => 10,
-                    'width' => 200,
-                ],
-            ],
-        ],
-        'input_31' => [
-            'label' => 'input_31',
-            'description' => 'slider default=14.5 step=0.5 width=150 eval=trim,double2',
-            'config' => [
-                'type' => 'input',
-                'size' => 5,
-                'eval' => 'trim,double2',
-                'range' => [
-                    'lower' => -90,
-                    'upper' => 90,
-                ],
-                'default' => 14.5,
-                'slider' => [
-                    'step' => 0.5,
-                    'width' => 150,
-                ],
-            ],
-        ],
-        'input_32' => [
-            'label' => 'input_32',
-            'description' => 'wizard userFunc',
-            'config' => [
-                'type' => 'input',
-                'size' => 10,
-                'eval' => 'int',
-                'wizards' => [
-                    'userFuncInputWizard' => [
-                        'type' => 'userFunc',
-                        'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\WizardInput33->render',
-                        'params' => [
-                            'color' => 'green',
-                        ],
-                    ],
-                ],
             ],
         ],
         'input_33' => [
@@ -595,6 +512,87 @@ return [
                 'type' => 'color',
                 'size' => 10,
                 'readOnly' => true,
+            ],
+        ],
+
+        'number_1' => [
+            'label' => 'number_1',
+            'description' => 'format=decimal',
+            'config' => [
+                'type' => 'number',
+                'format' => 'decimal',
+            ],
+        ],
+        'number_2' => [
+            'label' => 'number_2',
+            'description' => 'format=integer (default)',
+            'config' => [
+                'type' => 'number',
+            ],
+        ],
+        'number_3' => [
+            'label' => 'number_3',
+            'description' => 'default=0 range lower=-2 range upper=2',
+            'config' => [
+                'type' => 'number',
+                'range' => [
+                    'lower' => -2,
+                    'upper' => 2,
+                ],
+                'default' => 0,
+            ],
+        ],
+        'number_4' => [
+            'label' => 'number_4',
+            'description' => 'slider step=10 width=200',
+            'config' => [
+                'type' => 'number',
+                'size' => 5,
+                'range' => [
+                    'lower' => -90,
+                    'upper' => 90,
+                ],
+                'default' => 0,
+                'slider' => [
+                    'step' => 10,
+                    'width' => 200,
+                ],
+            ],
+        ],
+        'number_5' => [
+            'label' => 'number_5',
+            'description' => 'slider default=14.5 step=0.5 width=150 format=decimal',
+            'config' => [
+                'type' => 'number',
+                'format' => 'decimal',
+                'size' => 5,
+                'range' => [
+                    'lower' => -90,
+                    'upper' => 90,
+                ],
+                'default' => 14.5,
+                'slider' => [
+                    'step' => 0.5,
+                    'width' => 150,
+                ],
+            ],
+        ],
+        'number_6' => [
+            'label' => 'number_6',
+            'description' => 'wizard userFunc',
+            'config' => [
+                'type' => 'number',
+                'size' => 10,
+                // @todo This does no longer work - Migrate to  FieldWizard
+                'wizards' => [
+                    'userFuncInputWizard' => [
+                        'type' => 'userFunc',
+                        'userFunc' => 'TYPO3\\CMS\\Styleguide\\UserFunctions\\FormEngine\\WizardInput33->render',
+                        'params' => [
+                            'color' => 'green',
+                        ],
+                    ],
+                ],
             ],
         ],
 
@@ -1618,10 +1616,10 @@ backend_layout {
         '0' => [
             'showitem' => '
                 --div--;input,
-                    input_1, input_40, input_2, input_3, input_4, input_5, input_8, input_39, input_9, input_10,
+                    input_1, input_40, input_2, input_3, input_4, input_5, input_39, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19, input_20,
-                    input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_14, input_28,
-                    input_30, input_31, input_32, input_33, input_35, input_36,
+                    input_21, input_22, input_23, input_24, input_26, input_27, input_14, input_28,
+                    input_33, input_35, input_36,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
                     inputdatetime_6, inputdatetime_7, inputdatetime_8, inputdatetime_9, inputdatetime_10,
@@ -1632,6 +1630,8 @@ backend_layout {
                     password_1,password_2,password_3,
                 --div--;color,
                     color_1,color_2,color_3,
+                --div--;number,
+                    number_1,number_2,number_3,number_4,number_5,number_6,
                 --div--;text,
                     text_1, text_2, text_3, text_4, text_5, text_6, text_7, text_9, text_10,
                     text_11, text_12, text_13, text_18, text_14, text_15, text_16, text_17, text_19,
