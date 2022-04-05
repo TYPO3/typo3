@@ -1501,7 +1501,7 @@ class BackendUtility
      *
      * @param string $table Table name, present in TCA
      * @param string $col Field name, present in TCA
-     * @param string $value The value of that field from a selected record
+     * @param mixed $value The value of that field from a selected record
      * @param int $fixed_lgd_chars The max amount of characters the value may occupy
      * @param bool $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
      * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
@@ -1628,9 +1628,8 @@ class BackendUtility
                 break;
             case 'input':
             case 'number':
-                // todo: phpstan states that $value always exists and is not nullable. At the moment, this is a false
-                //       positive as null can be passed into this method via $value. As soon as more strict types are
-                //       used, this isset check must be replaced with a more appropriate check.
+                // todo: As soon as more strict types are used, this isset check must be replaced with a more
+                //       appropriate check.
                 if (isset($value)) {
                     $l = $value;
                 }
@@ -1689,9 +1688,8 @@ class BackendUtility
                         $l = self::datetime($value);
                     }
                 } elseif (isset($value)) {
-                    // todo: phpstan states that $value always exists and is not nullable. At the moment, this is a false
-                    //       positive as null can be passed into this method via $value. As soon as more strict types are
-                    //       used, this isset check must be replaced with a more appropriate check.
+                    // todo: As soon as more strict types are used, this isset check must be replaced with a more
+                    //       appropriate check.
                     $l = $value;
                 }
                 break;
@@ -1702,7 +1700,9 @@ class BackendUtility
                 }
                 break;
             case 'flex':
-                $l = strip_tags($value);
+                if (is_string($value)) {
+                    $l = strip_tags($value);
+                }
                 break;
             case 'language':
                 $l = $value;

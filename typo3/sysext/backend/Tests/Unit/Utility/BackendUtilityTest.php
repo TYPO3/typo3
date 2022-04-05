@@ -187,6 +187,73 @@ class BackendUtilityTest extends UnitTestCase
     /**
      * @test
      */
+    public function getProcessedValueForFlexNull(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'pi_flexform' => [
+                        'config' => [
+                            'type' => 'flex',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        self::assertSame('', BackendUtility::getProcessedValue('tt_content', 'pi_flexform', null));
+    }
+
+    /**
+     * @test
+     */
+    public function getProcessedValueForFlex(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tt_content' => [
+                'columns' => [
+                    'pi_flexform' => [
+                        'config' => [
+                            'type' => 'flex',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $languageServiceProphecy = $this->prophesize(LanguageService::class);
+        $languageServiceProphecy->sL(Argument::cetera())->willReturn('testLabel');
+        $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+        $expectation = "\n"
+            . "\n    "
+            . "\n        "
+            . "\n            "
+            . "\n                "
+            . "\n                    bar"
+            . "\n                "
+            . "\n            "
+            . "\n        "
+            . "\n    "
+            . "\n";
+
+        self::assertSame($expectation, BackendUtility::getProcessedValue('tt_content', 'pi_flexform', '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="foo">
+                    <value index="vDEF">bar</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>'));
+    }
+
+    /**
+     * @test
+     */
     public function getProcessedValueForGroupWithOneAllowedTable(): void
     {
         $GLOBALS['TCA'] = [
