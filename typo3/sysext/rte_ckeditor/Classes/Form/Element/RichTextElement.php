@@ -346,6 +346,10 @@ class RichTextElement extends AbstractFormElement
             'customConfig' => '',
         ];
 
+        if ($this->data['parameterArray']['fieldConf']['config']['readOnly'] ?? false) {
+            $configuration['readOnly'] = true;
+        }
+
         if (is_array($this->rteConfiguration['config'] ?? null)) {
             $configuration = array_replace_recursive($configuration, $this->rteConfiguration['config']);
         }
