@@ -712,15 +712,15 @@ class TcaMigration
                 if (is_array($fieldConfig['config']['fieldControl']['linkPopup'] ?? false)) {
                     $linkPopupConfig = $fieldConfig['config']['fieldControl']['linkPopup'];
                     if ($linkPopupConfig['options']['blindLinkOptions'] ?? false) {
-                        $availaleTypes = $GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] ?? [];
-                        if ($availaleTypes !== []) {
-                            $availaleTypes = array_keys($availaleTypes);
+                        $availableTypes = $GLOBALS['TYPO3_CONF_VARS']['SYS']['linkHandler'] ?? [];
+                        if ($availableTypes !== []) {
+                            $availableTypes = array_keys($availableTypes);
                         } else {
                             // Fallback to a static list, in case linkHandler configuration is not available at this point
-                            $availaleTypes = ['page', 'file', 'folder', 'url', 'email', 'record', 'telephone'];
+                            $availableTypes = ['page', 'file', 'folder', 'url', 'email', 'record', 'telephone'];
                         }
                         $tca[$table]['columns'][$fieldName]['config']['allowedTypes'] = array_values(array_diff(
-                            $availaleTypes,
+                            $availableTypes,
                             GeneralUtility::trimExplode(',', str_replace('mail', 'email', (string)$linkPopupConfig['options']['blindLinkOptions']), true)
                         ));
                     }
