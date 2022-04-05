@@ -45,6 +45,13 @@
     }
   });
 
+  /*
+   * @param {Object} obj
+   */
+  function isEmptyObject(obj) {
+    return obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype;
+  }
+
   /**
    * Open link browser
    *
@@ -54,7 +61,7 @@
   function openLinkBrowser(editor, element) {
     var additionalParameters = '';
 
-    if ($.isEmptyObject(element)) {
+    if (!element || isEmptyObject(element)) {
       element = CKEDITOR.plugins.link.getSelectedLink(editor);
     }
     if (element) {
