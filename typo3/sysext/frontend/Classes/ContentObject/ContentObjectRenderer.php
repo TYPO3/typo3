@@ -3946,7 +3946,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                     }
                     $typolinkConfiguration = $conf;
-                    $typolinkConfiguration['parameter'] = $parts[0];
+                    $typolinkConfiguration['parameter'] = $scheme . $parts[0];
                     $textstr .= $this->typoLink($linktxt, $typolinkConfiguration) . $parts[1];
                 } else {
                     $textstr .= $scheme . $textpieces[$i];

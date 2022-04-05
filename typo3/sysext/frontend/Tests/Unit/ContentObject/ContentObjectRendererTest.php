@@ -2018,6 +2018,163 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
     }
 
+    public function httpMakelinksDataProvider(): array
+    {
+        return [
+            'http link' => [
+                'Some text with a link http://example.com',
+                [
+                ],
+                'Some text with a link <a href="http://example.com">example.com</a>',
+            ],
+            'http link with path' => [
+                'Some text with a link http://example.com/path/to/page',
+                [
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page">example.com</a>',
+            ],
+            'http link with query parameter' => [
+                'Some text with a link http://example.com?foo=bar',
+                [
+                ],
+                'Some text with a link <a href="http://example.com?foo=bar">example.com</a>',
+            ],
+            'http link with question mark' => [
+                'Some text with a link http://example.com?',
+                [
+                ],
+                'Some text with a link <a href="http://example.com">example.com</a>?',
+            ],
+            'http link with period' => [
+                'Some text with a link http://example.com.',
+                [
+                ],
+                'Some text with a link <a href="http://example.com">example.com</a>.',
+            ],
+            'http link with fragment' => [
+                'Some text with a link http://example.com#',
+                [
+                ],
+                'Some text with a link <a href="http://example.com#">example.com</a>',
+            ],
+            'http link with query parameter and fragment' => [
+                'Some text with a link http://example.com?foo=bar#top',
+                [
+                ],
+                'Some text with a link <a href="http://example.com?foo=bar#top">example.com</a>',
+            ],
+            'http link with query parameter and keep scheme' => [
+                'Some text with a link http://example.com/path/to/page?foo=bar',
+                [
+                    'keep' => 'scheme',
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com</a>',
+            ],
+            'http link with query parameter and keep path' => [
+                'Some text with a link http://example.com/path/to/page?foo=bar',
+                [
+                    'keep' => 'path',
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page?foo=bar">example.com/path/to/page</a>',
+            ],
+            'http link with query parameter and keep path with trailing slash' => [
+                'Some text with a link http://example.com/path/to/page/?foo=bar',
+                [
+                    'keep' => 'path',
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page/?foo=bar">example.com/path/to/page/</a>',
+            ],
+            'http link with trailing slash and keep path with trailing slash' => [
+                'Some text with a link http://example.com/',
+                [
+                    'keep' => 'path',
+                ],
+                'Some text with a link <a href="http://example.com/">example.com</a>',
+            ],
+            'http link with query parameter and keep scheme,path' => [
+                'Some text with a link http://example.com/path/to/page?foo=bar',
+                [
+                    'keep' => 'scheme,path',
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page</a>',
+            ],
+            'http link with multiple query parameters' => [
+                'Some text with a link http://example.com?foo=bar&fuz=baz',
+                [
+                    'keep' => 'scheme,path,query',
+                ],
+                'Some text with a link <a href="http://example.com?foo=bar&amp;fuz=baz">http://example.com?foo=bar&fuz=baz</a>',
+            ],
+            'http link with query parameter and keep scheme,path,query' => [
+                'Some text with a link http://example.com/path/to/page?foo=bar',
+                [
+                    'keep' => 'scheme,path,query',
+                ],
+                'Some text with a link <a href="http://example.com/path/to/page?foo=bar">http://example.com/path/to/page?foo=bar</a>',
+            ],
+            'https link' => [
+                'Some text with a link https://example.com',
+                [
+                ],
+                'Some text with a link <a href="https://example.com">example.com</a>',
+            ],
+            'http link with www' => [
+                'Some text with a link http://www.example.com',
+                [
+                ],
+                'Some text with a link <a href="http://www.example.com">www.example.com</a>',
+            ],
+            'https link with www' => [
+                'Some text with a link https://www.example.com',
+                [
+                ],
+                'Some text with a link <a href="https://www.example.com">www.example.com</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider httpMakelinksDataProvider
+     */
+    public function httpMakelinksReturnsLink(string $data, array $configuration, string $expectedResult): void
+    {
+        self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
+    }
+
+    public function invalidHttpMakelinksDataProvider(): array
+    {
+        return [
+            'only http protocol' => [
+                'http://',
+                [
+                ],
+                'http://',
+            ],
+            'only https protocol' => [
+                'https://',
+                [
+                ],
+                'https://',
+            ],
+            'ftp link' => [
+                'ftp://user@password:example.com',
+                [
+                ],
+                'ftp://user@password:example.com',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidHttpMakelinksDataProvider
+     */
+    public function httpMakelinksReturnsNoLink(string $data, array $configuration, string $expectedResult): void
+    {
+        self::assertSame($expectedResult, $this->subject->http_makelinks($data, $configuration));
+    }
+
     /**
      * @return array
      */
