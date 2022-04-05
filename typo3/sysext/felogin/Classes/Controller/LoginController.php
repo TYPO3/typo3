@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
@@ -108,6 +109,7 @@ class LoginController extends AbstractLoginFormController
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer'): '',
                 'referer' => $this->requestHandler->getPropertyFromGetAndPost('referer'),
                 'noRedirect' => $this->isRedirectDisabled(),
+                'requestToken' => RequestToken::create('core/user-auth/fe'),
             ]
         );
 

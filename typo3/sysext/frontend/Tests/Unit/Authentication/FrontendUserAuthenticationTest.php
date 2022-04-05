@@ -24,11 +24,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Authentication\IpLocker;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Http\Request;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
@@ -272,6 +274,12 @@ class FrontendUserAuthenticationTest extends UnitTestCase
     {
         $GLOBALS['BE_USER'] = [];
 
+        // provide request-token
+        $context = GeneralUtility::makeInstance(Context::class);
+        $securityAspect = SecurityAspect::provideIn($context);
+        $requestToken = RequestToken::create('core/user-auth/fe');
+        $securityAspect->setReceivedRequestToken($requestToken);
+
         // Main session backend setup
         $userSession = UserSession::createNonFixated('newSessionId');
         $elevatedUserSession = UserSession::createFromRecord('newSessionId', ['ses_userid' => 1], true);
@@ -311,6 +319,6 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // We need to wrap the array to something thats is \Traversable, in PHP 7.1 we can use traversable pseudo type instead
         $subject->method('getAuthServices')->willReturn(new \ArrayIterator([$authServiceMock]));
         $subject->start($this->prophesize(ServerRequestInterface::class)->reveal());
-        self::assertEquals('existingUserName', $subject->user['username']);
+        self::assertEquals('existingUserName', $subject->user['username'] ?? null);
     }
 }

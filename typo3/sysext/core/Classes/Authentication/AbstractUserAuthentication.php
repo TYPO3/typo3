@@ -22,6 +22,8 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -34,6 +36,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\CookieHeaderTrait;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\Session\UserSessionManager;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -492,6 +495,22 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             ]);
         } else {
             $this->logger->debug('No user session found');
+        }
+
+        if ($activeLogin) {
+            $context = GeneralUtility::makeInstance(Context::class);
+            $securityAspect = SecurityAspect::provideIn($context);
+            $requestToken = $securityAspect->getReceivedRequestToken();
+            $requestTokenScopeMatches = ($requestToken->scope ?? null) === 'core/user-auth/' . strtolower($this->loginType);
+            if (!$requestTokenScopeMatches) {
+                $this->logger->debug('Missing or invalid request token during login', ['requestToken' => $requestToken]);
+                // important: disable `$activeLogin` state
+                $activeLogin = false;
+            } elseif ($requestToken instanceof RequestToken && $requestToken->getSigningSecretIdentifier() !== null) {
+                $securityAspect->getSigningSecretResolver()->revokeIdentifier(
+                    $requestToken->getSigningSecretIdentifier()
+                );
+            }
         }
 
         // Fetch users from the database (or somewhere else)

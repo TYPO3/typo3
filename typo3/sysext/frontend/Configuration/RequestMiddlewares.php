@@ -90,6 +90,16 @@ return [
                 'typo3/cms-frontend/page-resolver',
             ],
         ],
+        'typo3/cms-core/request-token-middleware' => [
+            'target' => \TYPO3\CMS\Core\Middleware\RequestTokenMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/site',
+            ],
+            'before' => [
+                'typo3/cms-frontend/backend-user-authentication',
+                'typo3/cms-frontend/authentication',
+            ],
+        ],
         'typo3/cms-frontend/backend-user-authentication' => [
             'target' => \TYPO3\CMS\Frontend\Middleware\BackendUserAuthenticator::class,
             'before' => [

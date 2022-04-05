@@ -41,6 +41,15 @@ return [
                 'typo3/cms-backend/https-redirector',
             ],
         ],
+        'typo3/cms-core/request-token-middleware' => [
+            'target' => \TYPO3\CMS\Core\Middleware\RequestTokenMiddleware::class,
+            'after' => [
+                'typo3/cms-backend/backend-routing',
+            ],
+            'before' => [
+                'typo3/cms-backend/authentication',
+            ],
+        ],
         'typo3/cms-backend/authentication' => [
             'target' => \TYPO3\CMS\Backend\Middleware\BackendUserAuthenticator::class,
             'after' => [

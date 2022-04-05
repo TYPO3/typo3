@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -44,6 +45,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -295,6 +297,8 @@ class LoginController
             'hasLoginError' => $this->isLoginInProgress($request),
             'action' => $action,
             'formActionUrl' => $formActionUrl,
+            'requestTokenName' => RequestToken::PARAM_NAME,
+            'requestTokenValue' => $this->provideRequestTokenJwt(),
             'forgetPasswordUrl' => $this->uriBuilder->buildUriWithRedirect(
                 'password_forget',
                 ['loginProvider' => $this->loginProviderIdentifier],
@@ -423,6 +427,12 @@ class LoginController
     protected function redirectToUrl(): void
     {
         throw new PropagateResponseException(new RedirectResponse($this->redirectToURL, 303), 1607271511);
+    }
+
+    protected function provideRequestTokenJwt(): string
+    {
+        $nonce = SecurityAspect::provideIn($this->context)->provideNonce();
+        return RequestToken::create('core/user-auth/be')->toHashSignedJwt($nonce);
     }
 
     protected function getLanguageService(): LanguageService

@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Security\RequestToken;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
@@ -124,6 +127,8 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->registerArgument('actionUri', 'string', 'can be used to overwrite the "action" attribute of the form tag');
         $this->registerArgument('objectName', 'string', 'name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName');
         $this->registerArgument('hiddenFieldClassName', 'string', 'hiddenFieldClassName');
+        $this->registerArgument('requestToken', 'mixed', 'whether to add that request token to the form');
+        $this->registerArgument('signingType', 'string', 'which signing type to be used on the request token (falls back to "nonce")');
         $this->registerTagAttribute('enctype', 'string', 'MIME type with which the form is submitted');
         $this->registerTagAttribute('method', 'string', 'Transfer type (GET or POST)');
         $this->registerTagAttribute('name', 'string', 'Name of form');
@@ -161,6 +166,7 @@ class FormViewHelper extends AbstractFormViewHelper
         $this->addFormObjectToViewHelperVariableContainer();
         $this->addFieldNamePrefixToViewHelperVariableContainer();
         $this->addFormFieldNamesToViewHelperVariableContainer();
+
         $formContent = $this->renderChildren();
 
         if (isset($this->arguments['hiddenFieldClassName']) && $this->arguments['hiddenFieldClassName'] !== null) {
@@ -172,6 +178,7 @@ class FormViewHelper extends AbstractFormViewHelper
         $content .= $this->renderHiddenIdentityField($this->arguments['object'] ?? null, $this->getFormObjectName());
         $content .= $this->renderAdditionalIdentityFields();
         $content .= $this->renderHiddenReferrerFields();
+        $content .= $this->renderRequestTokenHiddenField();
 
         // Render the trusted list of all properties after everything else has been rendered
         $content .= $this->renderTrustedPropertiesField();
@@ -443,5 +450,48 @@ class FormViewHelper extends AbstractFormViewHelper
         $formFieldNames = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formFieldNames');
         $requestHash = $this->mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, $this->getFieldNamePrefix());
         return '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__trustedProperties')) . '" value="' . htmlspecialchars($requestHash) . '" />';
+    }
+
+    protected function renderRequestTokenHiddenField(): string
+    {
+        $requestToken = $this->arguments['requestToken'] ?? null;
+        $signingType = $this->arguments['signingType'] ?? null;
+
+        $isTrulyRequestToken = is_int($requestToken) && $requestToken === 1
+            || is_string($requestToken) && strtolower($requestToken) === 'true';
+        $formAction = $this->tag->getAttribute('action');
+
+        // basically "request token, yes" - uses form-action URI as scope
+        if ($isTrulyRequestToken || $requestToken === '@nonce') {
+            $requestToken = RequestToken::create($formAction);
+        // basically "request token with 'my-scope'" - uses 'my-scope'
+        } elseif (is_string($requestToken) && $requestToken !== '') {
+            $requestToken = RequestToken::create($requestToken);
+        }
+        if (!$requestToken instanceof RequestToken) {
+            return '';
+        }
+        if (strtolower((string)($this->arguments['method'] ?? '')) === 'get') {
+            throw new \LogicException('Cannot apply request token for forms sent via HTTP GET', 1651775963);
+        }
+
+        $context = GeneralUtility::makeInstance(Context::class);
+        $securityAspect = SecurityAspect::provideIn($context);
+        // @todo currently defaults to 'nonce', there might be a better strategy in the future
+        $signingType = $signingType ?: 'nonce';
+        $signingProvider = $securityAspect->getSigningSecretResolver()->findByType($signingType);
+        if ($signingProvider === null) {
+            throw new \LogicException(sprintf('Cannot find request token signing type "%s"', $signingType), 1664260307);
+        }
+
+        $signingSecret = $signingProvider->provideSigningSecret();
+        $requestToken = $requestToken->withMergedParams(['request' => ['uri' => $formAction]]);
+
+        $attrs = [
+            'type' => 'hidden',
+            'name' => RequestToken::PARAM_NAME,
+            'value' => $requestToken->toHashSignedJwt($signingSecret),
+        ];
+        return '<input ' . GeneralUtility::implodeAttributes($attrs, true) . '/>';
     }
 }
