@@ -250,7 +250,6 @@ class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check')
         );
         $this->addDocHeaderModuleDropDown($view, 'check');
-        $this->addDocHeaderHelpButton($view);
         $this->addDocHeaderShortcutButton($view, 'check', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.check'));
         return $view->renderResponse('CheckScreen');
     }
@@ -267,7 +266,6 @@ class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info')
         );
         $this->addDocHeaderModuleDropDown($view, 'info');
-        $this->addDocHeaderHelpButton($view);
         $this->addDocHeaderShortcutButton($view, 'info', $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.info'));
         return $view->renderResponse('InfoScreen');
     }
@@ -445,7 +443,6 @@ class SchedulerModuleController
         ]);
         $this->addDocHeaderModuleDropDown($view, 'scheduler');
         $this->addDocHeaderCloseAndSaveButtons($view);
-        $this->addDocHeaderHelpButton($view);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add')
@@ -545,7 +542,6 @@ class SchedulerModuleController
         ]);
         $this->addDocHeaderModuleDropDown($view, 'scheduler');
         $this->addDocHeaderCloseAndSaveButtons($view);
-        $this->addDocHeaderHelpButton($view);
         $view->setTitle(
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName)
@@ -738,7 +734,6 @@ class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.scheduler')
         );
         $this->addDocHeaderModuleDropDown($view, 'scheduler');
-        $this->addDocHeaderHelpButton($view);
         $this->addDocHeaderReloadButton($view);
         if (!empty($registeredClasses)) {
             $this->addDocHeaderAddButton($view);
@@ -995,15 +990,6 @@ class SchedulerModuleController
             $menu->addMenuItem($item);
         }
         $moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    protected function addDocHeaderHelpButton(ModuleTemplate $moduleTemplate): void
-    {
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $helpButton = $buttonBar->makeHelpButton()
-            ->setModuleName('_MOD_system_txschedulerM1')
-            ->setFieldName('');
-        $buttonBar->addButton($helpButton);
     }
 
     protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void

@@ -160,11 +160,6 @@ class CategoryElement extends AbstractFormElement
                 </div>
             </typo3-formengine-element-category>';
 
-        // add necessary labels for tree header
-        if ($showHeader) {
-            $resultArray['additionalInlineLanguageLabelFiles'][] = 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf';
-        }
-
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine/element/category-element.js');
 
         return $resultArray;

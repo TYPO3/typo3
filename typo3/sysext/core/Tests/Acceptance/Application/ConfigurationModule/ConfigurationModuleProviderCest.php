@@ -96,7 +96,6 @@ class ConfigurationModuleProviderCest
         return [
             '$GLOBALS[\'TYPO3_CONF_VARS\'] (Global Configuration)',
             '$GLOBALS[\'TCA\'] (Table configuration array)',
-            '$GLOBALS[\'TCA_DESCR\'] (Table Help Description)',
             '$GLOBALS[\'T3_SERVICES\'] (Registered Services)',
             '$GLOBALS[\'TBE_STYLES\'] (Skinning Styles)',
             '$GLOBALS[\'TYPO3_USER_SETTINGS\'] (User Settings Configuration)',

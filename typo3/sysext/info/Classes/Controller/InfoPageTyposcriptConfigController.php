@@ -126,7 +126,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
             }
 
             $this->view->assign('tsconfParts99', true);
-            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_edit', '', '|'));
             $this->view->assign('lines', $lines);
             $this->view->assign('editIcon', $editIcon);
             $this->view->assign('editTitle', $editTitle);
@@ -175,8 +174,6 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
                 default:
                     // Entire array
             }
-
-            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'tsconfig_hierarchy', '', '|'));
             $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)$moduleData->get('tsconf_alphaSort'), $this->currentModule->getIdentifier()));
         }
         $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));

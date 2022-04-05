@@ -315,12 +315,6 @@ return [
         'target' => Controller\Page\LocalizationController::class . '::localizeRecords',
     ],
 
-    // context help
-    'context_help' => [
-        'path' => '/context-help',
-        'target' => \TYPO3\CMS\Backend\Controller\ContextHelpAjaxController::class . '::getHelpAction',
-    ],
-
     // column selector
     'show_columns' => [
         'path' => '/show/columns',

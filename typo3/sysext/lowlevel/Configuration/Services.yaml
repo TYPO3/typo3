@@ -61,18 +61,8 @@ services:
         identifier: 'tca'
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tca'
         globalVariableKey: 'TCA'
-        before: 'tcaDescr'
-        after: 'confVars'
-
-  lowlevel.configuration.module.provider.tcadescr:
-    class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
-    tags:
-      - name: 'lowlevel.configuration.module.provider'
-        identifier: 'tcaDescr'
-        label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:tcaDescr'
-        globalVariableKey: 'TCA_DESCR'
         before: 'services'
-        after: 'tca'
+        after: 'confVars'
 
   lowlevel.configuration.module.provider.services:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'
@@ -82,7 +72,7 @@ services:
         label: 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:t3services'
         globalVariableKey: 'T3_SERVICES'
         before: 'tbeStyles'
-        after: 'tcaDescr'
+        after: 'tca'
 
   lowlevel.configuration.module.provider.tbestyles:
     class: 'TYPO3\CMS\Lowlevel\ConfigurationModuleProvider\GlobalVariableProvider'

@@ -191,10 +191,6 @@ class ElementHistoryController
     protected function getButtons(): void
     {
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-        $helpButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('history_log');
-        $buttonBar->addButton($helpButton);
 
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

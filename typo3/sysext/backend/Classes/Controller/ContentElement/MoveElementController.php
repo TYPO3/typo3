@@ -170,18 +170,6 @@ class MoveElementController
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if ($this->page_id) {
-            if ($this->table === 'pages') {
-                $cshButton = $buttonBar->makeHelpButton()
-                    ->setModuleName('xMOD_csh_corebe')
-                    ->setFieldName('move_el_pages');
-                $buttonBar->addButton($cshButton);
-            } elseif ($this->table === 'tt_content') {
-                $cshButton = $buttonBar->makeHelpButton()
-                    ->setModuleName('xMOD_csh_corebe')
-                    ->setFieldName('move_el_cs');
-                $buttonBar->addButton($cshButton);
-            }
-
             if ($this->R_URI) {
                 $backButton = $buttonBar->makeLinkButton()
                     ->setHref($this->R_URI)

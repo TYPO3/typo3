@@ -18,9 +18,7 @@
             {f:if(condition:'{inData.excludeHTMLfileResources} == 1', then:'checked="checked"')}
         />
     </label>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="htmlCssResources">
-        <strong><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_excludeHtmlCssFile"/></strong>
-    </f:be.buttons.csh>
+    <strong><f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_excludeHtmlCssFile"/></strong>
 </div>
 
 <h4>
@@ -45,12 +43,11 @@
     <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_extensionDependencies"/>
 </h4>
 <div class="form-group">
-    <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="extensionDependencies">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_selectExtensionsThatThe"/>
-        </f:be.buttons.csh>
+    <label for="extension_dep">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeadvanc_selectExtensionsThatThe"/>
     </label>
     <select
+        id="extension_dep"
         class="form-select"
         name="tx_impexp[extension_dep][]"
         multiple="multiple"

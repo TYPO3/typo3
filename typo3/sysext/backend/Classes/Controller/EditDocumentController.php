@@ -1233,7 +1233,6 @@ class EditDocumentController
 
         $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2, $request);
         $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
-        $this->registerCshButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 4);
     }
 
     /**
@@ -1627,15 +1626,6 @@ class EditDocumentController
             }
         }
         return $arguments;
-    }
-
-    /**
-     * Register the CSH button to the button bar
-     */
-    protected function registerCshButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
-    {
-        $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('TCEforms');
-        $buttonBar->addButton($cshButton, $position, $group);
     }
 
     /**

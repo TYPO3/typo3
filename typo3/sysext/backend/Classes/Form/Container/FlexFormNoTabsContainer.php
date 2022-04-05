@@ -15,8 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Handle a flex form that has no tabs.
  *
@@ -44,9 +42,6 @@ class FlexFormNoTabsContainer extends AbstractContainer
      */
     public function render()
     {
-        $table = $this->data['tableName'];
-        $row = $this->data['databaseRow'];
-        $fieldName = $this->data['fieldName']; // field name of the flex form field in DB
         $parameterArray = $this->data['parameterArray'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormRowData = $this->data['flexFormRowData'];
@@ -62,18 +57,6 @@ class FlexFormNoTabsContainer extends AbstractContainer
         if (!is_array($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'])) {
             $resultArray['html'] = 'Data Structure ERROR: No [\'ROOT\'][\'el\'] element found in flex form definition.';
             return $resultArray;
-        }
-
-        // Assemble key for loading the correct CSH file
-        // @todo: what is that good for? That is for the title of single elements ... see FlexFormElementContainer!
-        $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'] ?? '', true);
-        $parameterArray['_cshKey'] = $table . '.' . $fieldName;
-        foreach ($dsPointerFields as $key) {
-            if (is_string($row[$key]) && $row[$key] !== '') {
-                $parameterArray['_cshKey'] .= '.' . $row[$key];
-            } elseif (is_array($row[$key]) && isset($row[$key][0]) && is_string($row[$key][0]) && $row[$key][0] !== '') {
-                $parameterArray['_cshKey'] .= '.' . $row[$key][0];
-            }
         }
 
         $options = $this->data;

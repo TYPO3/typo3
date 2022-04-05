@@ -5,9 +5,7 @@
 >
 
 <h3>
-    <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeCfg">
-        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportPagetreeConfiguration"/>
-    </f:be.buttons.csh>
+    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportPagetreeConfiguration"/>
 </h3>
 
 <div class="row">
@@ -25,9 +23,7 @@
 <div class="row">
     <div class="col-sm-2">
         <label class="control-label">
-            <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeDisplay">
-                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tree"/>
-            </f:be.buttons.csh>
+            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tree"/>
         </label>
     </div>
     <div class="col-sm-10">
@@ -43,12 +39,11 @@
 </div>
 
 <div class="form-group">
-    <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeMode">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_levels"/>
-        </f:be.buttons.csh>
+    <label for="pagetreeLevels">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_levels"/>
     </label>
     <select
+        id="pagetreeLevels"
         class="form-select"
         name="tx_impexp[pagetree][levels]"
     >
@@ -59,12 +54,11 @@
 </div>
 
 <div class="form-group">
-    <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="pageTreeRecordLimit">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeTables"/>
-        </f:be.buttons.csh>
+    <label for="pagetreeTables">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeTables"/>
     </label>
     <select
+        id="pagetreeTables"
         class="form-select"
         name="tx_impexp[pagetree][tables][]"
         multiple="multiple"
@@ -78,9 +72,7 @@
 
 <f:if condition="{records -> f:count()} > 0">
     <h4>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="singleRecord">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportSingleRecord"/>
-        </f:be.buttons.csh>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_exportSingleRecord"/>
     </h4>
     <div class="row">
         <div class="col-sm-2">
@@ -106,9 +98,7 @@
     <div class="row">
         <div class="col-sm-2">
             <label>
-                <f:be.buttons.csh table="xMOD_tx_impexp" field="tableList">
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tablePids"/>
-                </f:be.buttons.csh>
+                <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_tablePids"/>
             </label>
         </div>
         <div class="col-sm-10">
@@ -126,12 +116,11 @@
 </h4>
 
 <div class="form-group">
-    <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="inclRelations">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeRelationsToTables"/>
-        </f:be.buttons.csh>
+    <label for="externalRefTables">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_includeRelationsToTables"/>
     </label>
     <select
+        id="externalRefTables"
         class="form-select"
         name="tx_impexp[external_ref][tables][]"
         multiple="multiple"
@@ -144,12 +133,11 @@
 </div>
 
 <div class="form-group">
-    <label>
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="staticRelations">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_useStaticRelationsFor"/>
-        </f:be.buttons.csh>
+    <label for="externalStaticTables">
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_useStaticRelationsFor"/>
     </label>
     <select
+        id="externalStaticTables"
         class="form-select"
         name="tx_impexp[external_static][tables][]"
         multiple="multiple"
@@ -177,9 +165,7 @@
 
 <div class="form-group">
     <label class="control-label">
-        <f:be.buttons.csh table="xMOD_tx_impexp" field="excludedElements">
-            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeElements"/>
-        </f:be.buttons.csh>
+        <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:makeconfig_excludeElements"/>
     </label>
     <p class="form-control-static">
         <f:if condition="{inData.exclude -> f:count()} > 0">

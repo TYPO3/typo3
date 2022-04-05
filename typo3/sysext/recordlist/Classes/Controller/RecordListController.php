@@ -302,10 +302,6 @@ class RecordListController
         } else {
             $fieldName = 'list_module';
         }
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName($fieldName);
-        $buttonBar->addButton($cshButton);
         // New record on pages that are not locked by editlock
         if (!($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
             $newRecordButton = $buttonBar->makeLinkButton()
@@ -591,7 +587,7 @@ class RecordListController
         $html[] =   '<div class="form-check form-switch">';
         $html[] =       BackendUtility::getFuncCheck($pageId, 'clipBoard', $checked, '', $singleTable ? '&table=' . $singleTable : '', 'id="checkShowClipBoard"');
         $html[] =       '<label class="form-check-label" for="checkShowClipBoard">';
-        $html[] =           BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard')));
+        $html[] =           htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showClipBoard'));
         $html[] =       '</label>';
         $html[] =   '</div>';
         $html[] = '</div>';

@@ -1371,4 +1371,18 @@ return [
             'Breaking-96829-RemovedBackendUtility-getFuncInput.rst',
         ],
     ],
+    '\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+        ],
+    ],
+    '\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+        ],
+    ],
 ];

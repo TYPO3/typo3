@@ -2825,4 +2825,55 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expected, $subject->migrate($input));
     }
+
+    private function propertyAlwaysDescriptionIsRemovedDataProvider(): iterable
+    {
+        yield 'always_description is removed' => [
+            'input' => [
+              'aTable' => [
+                  'interface' => [
+                      'always_description' => 0,
+                      'anything_else' => true,
+                  ],
+                  'columns' => [],
+              ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'interface' => [
+                        'anything_else' => true,
+                    ],
+                    'columns' => [],
+                ],
+            ],
+        ];
+
+        yield 'interface is removed if empty' => [
+            'input' => [
+                'aTable' => [
+                    'interface' => [
+                        'always_description' => 0,
+                    ],
+                    'columns' => [],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider propertyAlwaysDescriptionIsRemovedDataProvider
+     * @test
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $expected
+     */
+    public function propertyAlwaysDescriptionIsRemoved(array $input, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertSame($expected, $subject->migrate($input));
+    }
 }

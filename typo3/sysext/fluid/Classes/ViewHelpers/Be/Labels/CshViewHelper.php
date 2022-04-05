@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Labels;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -48,6 +46,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *    <f:be.labels.csh table="xMOD_csh_corebe" field="someCshKey" label="lang/Resources/Private/Language/locallang/header.languages" />
  *
  * CSH label as known from the TYPO3 backend with some custom settings.
+ *
+ * @deprecated
  */
 final class CshViewHelper extends AbstractBackendViewHelper
 {
@@ -71,29 +71,25 @@ final class CshViewHelper extends AbstractBackendViewHelper
         return self::renderStatic($this->arguments, $this->buildRenderChildrenClosure(), $this->renderingContext);
     }
 
+    /**
+     * @param array $arguments
+     * @param \Closure $renderChildrenClosure
+     * @param RenderingContextInterface $renderingContext
+     * @return string
+     *
+     * @deprecated The functionality has been removed in v12. The class will be removed in TYPO3 v13.
+     */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $table = $arguments['table'];
-        $field = $arguments['field'];
+        trigger_error(
+            __CLASS__ . ' is returning the translated label wrapped in a <label> tag only in TYPO3 v12 and will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
+
         $label = $arguments['label'];
 
-        if ($table === null) {
-            $request = $renderingContext->getRequest();
-            if (!$request instanceof RequestInterface) {
-                // Throw if not an extbase request
-                // @todo: Consider deprecation of calling this VH without table argument
-                throw new \RuntimeException(
-                    'ViewHelper f:be.labels.csh needs an extbase Request object to resolve module name magically.'
-                    . ' When not in extbase context, attribute "table" is required to be set to something like "_MOD_my_module_name"',
-                    1639759760
-                );
-            }
-            $moduleName = $request->getPluginName();
-            $table = '_MOD_' . $moduleName;
-        }
         $label = self::getLanguageService()->sL($label);
-        $label = '<label>' . htmlspecialchars($label, ENT_QUOTES, '', true) . '</label>';
-        return BackendUtility::wrapInHelp($table, $field, $label);
+        return '<label>' . htmlspecialchars($label, ENT_QUOTES, '', true) . '</label>';
     }
 
     protected static function getLanguageService(): LanguageService

@@ -1963,4 +1963,9 @@ return [
             'Feature-97271-NewTCATypeColor.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton' => [
+        'restFiles' => [
+            'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+        ],
+    ],
 ];

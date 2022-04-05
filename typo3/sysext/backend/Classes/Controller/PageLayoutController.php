@@ -527,12 +527,6 @@ class PageLayoutController
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
-        // Add CSH
-        $contextSensitiveHelpButton = $buttonBar->makeHelpButton()
-            ->setModuleName('_MOD_web_layout')
-            ->setFieldName('columns_' . $this->moduleData->get('function'));
-        $buttonBar->addButton($contextSensitiveHelpButton);
-
         // View page
         // Exclude sysfolders, spacers and recycler by default
         $excludeDokTypes = [

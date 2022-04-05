@@ -38,12 +38,6 @@ class FullRecordContainer extends AbstractContainer
         $table = $this->data['tableName'];
         $recordTypeValue = $this->data['recordTypeValue'];
 
-        // Load the description content for the table if requested
-        if (!empty($this->data['processedTca']['interface']['always_description'])) {
-            $languageService = $this->getLanguageService();
-            $languageService->loadSingleTableDescription($table);
-        }
-
         // List of items to be rendered
         $itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
 

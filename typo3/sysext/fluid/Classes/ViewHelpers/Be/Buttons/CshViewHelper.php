@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
@@ -55,6 +53,8 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *    </f:be.buttons.csh>
  *
  * A link with text "some text to link" to link the help.
+ *
+ * @deprecated
  */
 final class CshViewHelper extends AbstractBackendViewHelper
 {
@@ -80,32 +80,15 @@ final class CshViewHelper extends AbstractBackendViewHelper
 
     /**
      * @throws \RuntimeException
+     *
+     * @deprecated The functionality has been removed in v12. The class will be removed in TYPO3 v13.
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $table = $arguments['table'];
-        $field = $arguments['field'];
-        $wrap = $arguments['wrap'];
-
-        if ($table === null) {
-            $request = $renderingContext->getRequest();
-            if (!$request instanceof RequestInterface) {
-                // Throw if not an extbase request
-                // @todo: Consider deprecation of calling this VH without table argument.
-                throw new \RuntimeException(
-                    'ViewHelper f:be.buttons.csh needs an extbase Request object to resolve module name magically.'
-                    . ' When not in extbase context, attribute "table" is required to be set to something like "_MOD_my_module_name"',
-                    1639740545
-                );
-            }
-            $moduleName = $request->getPluginName();
-            $table = '_MOD_' . $moduleName;
-        }
-        $content = (string)$renderChildrenClosure();
-        if ($content !== '') {
-            return BackendUtility::wrapInHelp($table, $field, $content);
-        }
-
-        return '<div class="docheader-csh">' . BackendUtility::cshItem($table, $field, '', $wrap) . '</div>';
+        trigger_error(
+            __CLASS__ . ' only returns the $renderChildrenClosure() in TYPO3 v12 as compatibility layer and will be completely removed in TYPO3 v13.',
+            E_USER_DEPRECATED
+        );
+        return (string)$renderChildrenClosure();
     }
 }

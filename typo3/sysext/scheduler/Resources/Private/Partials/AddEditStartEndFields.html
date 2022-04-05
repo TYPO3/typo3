@@ -1,7 +1,7 @@
 <div class="form-section">
     <div class="row">
         <div class="form-group col-sm-6" id="task_start_col">
-            <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_start" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/>
+            <label for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
             <div class="form-control-wrap">
                 <div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">
                     <input
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="form-group col-sm-6" id="task_end_col">
-            <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_end" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/>
+            <label for="tceforms-datetimefield-task_end_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/></label>
             <div class="form-control-wrap">
                 <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
                     <f:variable name="formattedEnd"><f:if condition="{currentData.end} != 0"><f:then>{f:format.date(format:'H:i d-m-Y', date:currentData.end)}</f:then><f:else></f:else></f:if></f:variable>

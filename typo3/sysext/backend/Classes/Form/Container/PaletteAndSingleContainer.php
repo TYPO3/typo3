@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -393,7 +392,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             $paletteFieldClasses[] = $class;
         }
 
-        $label = BackendUtility::wrapInHelp($this->data['tableName'], $fieldName, htmlspecialchars($element['fieldLabel']));
+        $label = htmlspecialchars($element['fieldLabel']);
 
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
             $label .= '<code>[' . htmlspecialchars($fieldName) . ']</code>';

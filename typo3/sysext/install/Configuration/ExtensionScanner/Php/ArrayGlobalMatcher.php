@@ -58,4 +58,9 @@ return [
             'Breaking-97135-RemovedSupportForModuleHandlingBasedOnTBE_MODULES_EXT.rst',
         ],
     ],
+    '$GLOBALS[\'TCA_DESCR\']' => [
+        'restFiles' => [
+            'Breaking-97312-RemoveContextSensitiveHelp.rst',
+        ],
+    ],
 ];

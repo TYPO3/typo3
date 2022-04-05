@@ -186,11 +186,6 @@ class EditFileController
     {
         $languageService = $this->getLanguageService();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        // CSH button
-        $helpButton = $buttonBar->makeHelpButton()
-            ->setFieldName('file_edit')
-            ->setModuleName('xMOD_csh_corebe');
-        $buttonBar->addButton($helpButton);
 
         // Save button
         $saveButton = $buttonBar->makeInputButton()

@@ -1881,124 +1881,6 @@ class BackendUtility
      *******************************************/
 
     /**
-     * Returns CSH help text (description), if configured for, as an array (title, description)
-     *
-     * @param string $table Table name
-     * @param string $field Field name
-     * @return array With keys 'description' (raw, as available in locallang), 'title' (optional), 'moreInfo'
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function helpTextArray($table, $field)
-    {
-        if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
-            static::getLanguageService()->loadSingleTableDescription($table);
-        }
-        $output = [
-            'description' => null,
-            'title' => null,
-            'moreInfo' => false,
-        ];
-        if (isset($GLOBALS['TCA_DESCR'][$table]['columns'][$field]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
-            $data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
-            // Add alternative title, if defined
-            if ($data['alttitle'] ?? false) {
-                $output['title'] = $data['alttitle'];
-            }
-            // If we have more information to show and access to the cshmanual
-            // This is effectively a long list of ORs, but also allows for any to be unset. The first one set and truthy
-            // will evaluate the whole chain to true.
-            if (($data['image_descr'] ?? $data['seeAlso'] ?? $data['details'] ?? $data['syntax'] ?? false)
-                && static::getBackendUserAuthentication()->check('modules', 'help_cshmanual')
-            ) {
-                $output['moreInfo'] = true;
-            }
-            // Add description
-            if ($data['description'] ?? null) {
-                $output['description'] = $data['description'];
-            }
-        }
-        return $output;
-    }
-
-    /**
-     * Returns CSH help text
-     *
-     * @param string $table Table name
-     * @param string $field Field name
-     * @return string HTML content for help text
-     * @see cshItem()
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function helpText($table, $field)
-    {
-        $helpTextArray = self::helpTextArray($table, $field);
-        $output = '';
-        $arrow = '';
-        // Put header before the rest of the text
-        if ($helpTextArray['title'] !== null) {
-            $output .= '<h2>' . $helpTextArray['title'] . '</h2>';
-        }
-        // Add see also arrow if we have more info
-        if ($helpTextArray['moreInfo']) {
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $arrow = $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render();
-        }
-        // Wrap description and arrow in p tag
-        if ($helpTextArray['description'] !== null || $arrow) {
-            $output .= '<p class="help-short">' . nl2br(htmlspecialchars((string)$helpTextArray['description'])) . $arrow . '</p>';
-        }
-        return $output;
-    }
-
-    /**
-     * API function that wraps the text / html in help text, so if a user hovers over it
-     * the help text will show up
-     *
-     * @param string $table The table name for which the help should be shown
-     * @param string $field The field name for which the help should be shown
-     * @param string $text The text which should be wrapped with the help text
-     * @param array $overloadHelpText Array with text to overload help text
-     * @return string the HTML code ready to render
-     * @internal should only be used from within TYPO3 Core
-     */
-    public static function wrapInHelp($table, $field, $text = '', array $overloadHelpText = [])
-    {
-        // Initialize some variables
-        $helpText = '';
-        $abbrClassAdd = '';
-        $hasHelpTextOverload = !empty($overloadHelpText);
-        // Get the help text that should be shown on hover
-        if (!$hasHelpTextOverload) {
-            $helpText = self::helpText($table, $field);
-        }
-        // If there's a help text or some overload information, proceed with preparing an output
-        if (!empty($helpText) || $hasHelpTextOverload) {
-            // If no text was given, just use the regular help icon
-            if ($text == '') {
-                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-                $text = $iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
-                $abbrClassAdd = ' help-teaser-icon';
-            }
-            $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
-            $wrappedText = '<span class="help-link" data-table="' . $table . '" data-field="' . $field . '" data-bs-content="<p></p>"';
-            // The overload array may provide a title and a description
-            // If either one is defined, add them to the "data" attributes
-            if ($hasHelpTextOverload) {
-                if (isset($overloadHelpText['title'])) {
-                    $wrappedText .= ' data-title="' . htmlspecialchars($overloadHelpText['title']) . '"';
-                }
-                if (isset($overloadHelpText['description'])) {
-                    $wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
-                }
-            }
-            $wrappedText .= '>' . $text . '</span>';
-            return $wrappedText;
-        }
-        return $text;
-    }
-
-    /**
      * API for getting CSH icons/text for use in backend modules.
      * TCA_DESCR will be loaded if it isn't already
      *
@@ -2007,21 +1889,15 @@ class BackendUtility
      * @param string $_ (unused)
      * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
      * @return string HTML content for help text
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public static function cshItem($table, $field, $_ = '', $wrap = '')
     {
-        static::getLanguageService()->loadSingleTableDescription($table);
-        if (is_array($GLOBALS['TCA_DESCR'][$table] ?? null)
-            && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field] ?? null)
-        ) {
-            // Creating short description
-            $output = self::wrapInHelp($table, $field);
-            if ($output && $wrap) {
-                $wrParts = explode('|', $wrap);
-                $output = $wrParts[0] . $output . $wrParts[1];
-            }
-            return $output;
-        }
+        trigger_error(
+            'Method ' . __METHOD__ . ' is returning an empty string in TYPO3 v12 and will be removed in TYPO3 v13.0.',
+            E_USER_DEPRECATED
+        );
         return '';
     }
 

@@ -62,8 +62,6 @@ class TranslationStatusController extends InfoModuleController
             if (!empty($allowedModuleOptions['lang'])) {
                 $this->view->assign('languageSelector', BackendUtility::getDropdownMenu($this->id, 'lang', $this->currentLanguageId, $allowedModuleOptions['lang'], '', '', ['id' => 'lang']));
             }
-            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>'));
-
             $tree = $this->getTree();
             $content = $this->renderL10nTable($tree, $request);
             $this->view->assign('content', $content);

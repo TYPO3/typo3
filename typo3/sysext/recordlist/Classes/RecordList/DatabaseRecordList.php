@@ -655,7 +655,7 @@ class DatabaseRecordList
         // Header line is drawn
         $theData = [];
         if ($this->disableSingleTableView) {
-            $theData[$titleCol] = BackendUtility::wrapInHelp($table, '', $tableTitle) . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
+            $theData[$titleCol] = $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
         } else {
             $icon = $this->table // @todo separate table header from contract/expand link
                 ? '<span title="' . htmlspecialchars($lang->getLL('contractView')) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL)->render() . '</span>'
@@ -663,10 +663,8 @@ class DatabaseRecordList
             $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
         }
         $tableActions = '';
-        if ($onlyShowRecordsInSingleTableMode) {
-            $tableHeader = BackendUtility::wrapInHelp($table, '', $theData[$titleCol]);
-        } else {
-            $tableHeader = $theData[$titleCol];
+        $tableHeader = $theData[$titleCol];
+        if (!$onlyShowRecordsInSingleTableMode) {
             // Add the "new record" button
             $tableActions .= $this->createNewRecordButton($table);
             // Render collapse button if in multi table mode

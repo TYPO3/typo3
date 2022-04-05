@@ -253,9 +253,4 @@ return [
         'target' => Controller\ClipboardController::class . '::processRequest',
     ],
 
-    // CSH Help popup
-    'help_cshmanual_popup' => [
-        'path' => '/help/cshmanual',
-        'target' => Controller\HelpController::class . '::handleDetailPopup',
-    ],
 ];

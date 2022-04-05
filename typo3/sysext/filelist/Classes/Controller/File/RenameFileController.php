@@ -169,12 +169,6 @@ class RenameFileController
         // Create buttons
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
-        // csh button
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('file_rename');
-        $buttonBar->addButton($cshButton);
-
         // back button
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

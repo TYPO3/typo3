@@ -61,9 +61,6 @@ return [
         ],
         'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
     ],
-    'interface' => [
-        'always_description' => 0,
-    ],
     'columns' => [
         'CType' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',

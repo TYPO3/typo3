@@ -66,7 +66,6 @@ class PageInformationController extends InfoModuleController
         if ($this->id) {
             $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $depth, $allowedModuleOptions['depth'], '', '', ['id' => 'depth']));
             $this->view->assign('pagesSelector', BackendUtility::getDropdownMenu($this->id, 'pages', $pages, $allowedModuleOptions['pages'], '', '', ['id' => 'pages']));
-            $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'func_' . $pages, '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>'));
             $this->view->assign('content', $this->getTable_pages($this->id, $depth, $request));
         }
 
@@ -562,17 +561,5 @@ class PageInformationController extends InfoModuleController
         }
 
         return $layoutValue;
-    }
-
-    protected function getButtons(): void
-    {
-        parent::getButtons();
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-
-        // CSH
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('pagetree_overview');
-        $buttonBar->addButton($cshButton);
     }
 }

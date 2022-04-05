@@ -41,7 +41,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
 
         // Default LANG prophecy just returns incoming value as label if calling ->sL()
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->loadSingleTableDescription(Argument::cetera())->willReturn(null);
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
 
@@ -81,7 +80,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['TCA_DESCR']['aTable']['columns']['']['description'] = 'aDescription';
 
         $expected = [
             'items' => [
@@ -93,8 +91,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     0 => 'aTitle',
                     1 => 'aTable',
                     2 => null,
-                    3 => null,
-                    4 => 'aDescription',
                 ],
             ],
         ];
@@ -210,7 +206,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
     public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
     {
         $GLOBALS['TCA'] = $tca;
-        $GLOBALS['TCA_DESCR']['fooTable']['columns']['bar']['description'] = 'aDescription';
         $fieldDefinition = ['items' => []];
         $expected = [
             'items' => $expectedItems,
@@ -252,8 +247,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                         0 => 'barColumnTitle (bar)',
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
-                        3 => null,
-                        4 => 'aDescription',
                     ],
                 ],
             ],
@@ -287,8 +280,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                         0 => 'barColumnTitle (bar)',
                         1 => 'fooTable:bar',
                         2 => 'empty-empty',
-                        3 => null,
-                        4 => 'aDescription',
                     ],
                 ],
             ],
@@ -377,7 +368,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                 ],
             ],
         ];
-        $GLOBALS['TCA_DESCR']['fooTable']['columns']['aFlexField;dummy;sDEF;input1']['description'] = 'aDescription';
 
         $fieldDefinition = ['items' => []];
         $expected = [
@@ -391,8 +381,6 @@ class TcaItemsProcessorFunctionsTest extends UnitTestCase
                     0 => 'flexInputLabel (input1)',
                     1 => 'fooTable:aFlexField;dummy;sDEF;input1',
                     2 => 'empty-empty',
-                    3 => null,
-                    4 => 'aDescription',
                 ],
             ],
         ];

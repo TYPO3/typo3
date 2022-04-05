@@ -164,12 +164,12 @@ class LinkValidatorController
                 'selectedLevel' => $this->searchLevel['report'],
                 'options' => $this->getCheckOptions('report'),
                 'brokenLinks' => $this->getBrokenLinks(),
-                'tableheadPath' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_path', $languageService->getLL('list.tableHead.path')),
-                'tableheadElement' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_element', $languageService->getLL('list.tableHead.element')),
-                'tableheadHeadlink' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_headlink', $languageService->getLL('list.tableHead.headlink')),
-                'tableheadLinktarget' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linktarget', $languageService->getLL('list.tableHead.linktarget')),
-                'tableheadLinkmessage' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_linkmessage', $languageService->getLL('list.tableHead.linkmessage')),
-                'tableheadLastcheck' => BackendUtility::wrapInHelp('linkvalidator', 'tablehead_lastcheck', $languageService->getLL('list.tableHead.lastCheck')),
+                'tableheadPath' => $languageService->getLL('list.tableHead.path'),
+                'tableheadElement' => $languageService->getLL('list.tableHead.element'),
+                'tableheadHeadlink' => $languageService->getLL('list.tableHead.headlink'),
+                'tableheadLinktarget' => $languageService->getLL('list.tableHead.linktarget'),
+                'tableheadLinkmessage' => $languageService->getLL('list.tableHead.linkmessage'),
+                'tableheadLastcheck' => $languageService->getLL('list.tableHead.lastCheck'),
             ]);
             return $view->renderResponse('Backend/Report');
         }
@@ -428,7 +428,7 @@ class LinkValidatorController
     {
         $brokenLinksInformation = $this->linkAnalyzer->getLinkCounts();
         $options = [
-            'totalCountLabel' => BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $this->getLanguageService()->getLL('overviews.nbtotal')),
+            'totalCountLabel' => $this->getLanguageService()->getLL('overviews.nbtotal'),
             'totalCount' => $brokenLinksInformation['total'] ?: '0',
             'optionsByType' => [],
         ];

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle flex forms that have tabs (multiple "sheets").
@@ -47,9 +46,6 @@ class FlexFormTabsContainer extends AbstractContainer
     {
         $languageService = $this->getLanguageService();
 
-        $table = $this->data['tableName'];
-        $row = $this->data['databaseRow'];
-        $fieldName = $this->data['fieldName']; // field name of the flex form field in DB
         $parameterArray = $this->data['parameterArray'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormRowData = $this->data['flexFormRowData'];
@@ -69,18 +65,6 @@ class FlexFormTabsContainer extends AbstractContainer
             }
 
             $tabCounter++;
-
-            // Assemble key for loading the correct CSH file
-            // @todo: what is that good for? That is for the title of single elements ... see FlexFormElementContainer!
-            $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'] ?? '', true);
-            $parameterArray['_cshKey'] = $table . '.' . $fieldName;
-            foreach ($dsPointerFields as $key) {
-                if (is_string($row[$key]) && $row[$key] !== '') {
-                    $parameterArray['_cshKey'] .= '.' . $row[$key];
-                } elseif (is_array($row[$key]) && isset($row[$key][0]) && is_string($row[$key][0]) && $row[$key][0] !== '') {
-                    $parameterArray['_cshKey'] .= '.' . $row[$key][0];
-                }
-            }
 
             $options = $this->data;
             $options['flexFormDataStructureArray'] = $sheetDataStructure['ROOT']['el'];

@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange;
 use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -138,7 +137,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $html[] = '<div class="form-section">';
                     $html[] =   '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
                     $html[] =       '<label class="t3js-formengine-label">';
-                    $html[] =           BackendUtility::wrapInHelp($parameterArray['_cshKey'] ?? '', $flexFormFieldName, $processedTitle);
+                    $html[] =           $processedTitle;
                     $html[] =           $showFieldName ? ('<code>[' . htmlspecialchars($flexFormFieldName) . ']</code>') : '';
                     $html[] =       '</label>';
                     $html[] =       '<div class="formengine-field-item t3js-formengine-field-item">';

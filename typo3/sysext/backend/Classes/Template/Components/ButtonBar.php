@@ -149,9 +149,16 @@ class ButtonBar
      * Creates a new HelpButton
      *
      * @return HelpButton
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public function makeHelpButton()
     {
+        trigger_error(
+            'Method ' . __METHOD__ . ' has been deprecated in v12 and will be removed with v13.'
+            . ' Context Sensitive Help has been removed in v12.',
+            E_USER_DEPRECATED
+        );
         return GeneralUtility::makeInstance(HelpButton::class);
     }
 

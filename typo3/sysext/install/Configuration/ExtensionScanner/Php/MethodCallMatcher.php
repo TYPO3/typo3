@@ -5232,4 +5232,11 @@ return [
             'Breaking-97091-TSFE-clear_previewHasBeenRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Template\Components\ButtonBar->makeHelpButton' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-97312-DeprecateCSH-relatedMethods.rst',
+        ],
+    ],
 ];

@@ -288,10 +288,6 @@ class SetupModuleController
     protected function getButtons(ModuleTemplate $view): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('_MOD_user_setup')
-            ->setFieldName('');
-        $buttonBar->addButton($cshButton);
 
         $saveButton = $buttonBar->makeInputButton()
             ->setName('data[save]')
@@ -345,11 +341,7 @@ class SetupModuleController
                 continue;
             }
 
-            // Add field label, wrapped into CSH if available
-            $label = '
-                <label>
-                    ' . $this->getCSH(($config['csh'] ?? false) ?: $fieldName, $this->getLabel($config['label'] ?? '', $fieldName, false), $fieldName) . '
-                </label>';
+            $label = $this->getLabel($config['label'] ?? '', $fieldName);
 
             $type = $config['type'] ?? '';
             $class = $config['class'] ?? '';
@@ -662,29 +654,6 @@ class SetupModuleController
             $out = '<label>' . $out . '</label>';
         }
         return $out;
-    }
-
-    /**
-     * Returns the CSH Icon for given string
-     *
-     * @param string $str Locallang key
-     * @param string $label The label to be used, that should be wrapped in help
-     * @param string $fieldName field name
-     * @return string HTML output.
-     */
-    protected function getCSH($str, $label, $fieldName)
-    {
-        $context = '_MOD_user_setup';
-        $field = $str;
-        $strParts = explode(':', $str);
-        if (count($strParts) > 1) {
-            // Setting comes from another extension
-            $context = $strParts[0];
-            $field = $strParts[1];
-        } elseif ($str !== 'language' && $str !== 'reset') {
-            $field = 'option_' . $str;
-        }
-        return '<span id="label_' . htmlspecialchars($fieldName) . '">' . BackendUtility::wrapInHelp($context, $field, $label) . '</span>';
     }
 
     /**

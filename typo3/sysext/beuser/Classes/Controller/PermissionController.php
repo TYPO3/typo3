@@ -415,12 +415,6 @@ class PermissionController
             ->setDisplayName($this->getShortcutTitle())
             ->setArguments(['id' => $this->id, 'action' => $action]);
         $buttonBar->addButton($shortcutButton);
-
-        $helpButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('perm_module');
-
-        $buttonBar->addButton($helpButton);
     }
 
     protected function getTree(): array

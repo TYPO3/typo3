@@ -285,13 +285,6 @@ class NewRecordController
                     ->setIcon($this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newPageButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
-            // CSH
-            $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_regular');
-            $buttonBar->addButton($cshButton);
-        } elseif ($this->isRecordCreationAllowedForTable('pages')) {
-            // Pages only wizard
-            $cshButton = $buttonBar->makeHelpButton()->setModuleName('xMOD_csh_corebe')->setFieldName('new_pages');
-            $buttonBar->addButton($cshButton);
         }
         // Back
         if ($this->returnUrl) {

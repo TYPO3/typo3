@@ -78,6 +78,7 @@ class TcaMigration
         $tca = $this->migrateAuthMode($tca);
         $tca = $this->migrateRenderTypeColorpickerToTypeColor($tca);
         $tca = $this->migrateEvalIntAndDouble2ToTypeNumber($tca);
+        $tca = $this->removeAlwaysDescription($tca);
 
         return $tca;
     }
@@ -1090,6 +1091,26 @@ class TcaMigration
                     . 'This includes corresponding migration of the "eval" list, as well as obsolete field '
                     . 'configurations, such as "max". Please adjust your TCA accordingly.';
             }
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes ['interface']['always_description'] and also ['interface']
+     * if `always_description` was the only key in the array.
+     */
+    protected function removeAlwaysDescription(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['interface']['always_description'])) {
+                continue;
+            }
+            unset($tableDefinition['interface']['always_description']);
+            if ($tableDefinition['interface'] === []) {
+                unset($tableDefinition['interface']);
+            }
+            $this->messages[] = 'The TCA property [\'interface\'][\'always_description\'] of table \'' . $table
+                . '\'  is not evaluated anymore and has therefore been removed. Please adjust your TCA accordingly.';
         }
         return $tca;
     }

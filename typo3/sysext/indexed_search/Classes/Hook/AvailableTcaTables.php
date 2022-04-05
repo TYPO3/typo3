@@ -34,7 +34,6 @@ class AvailableTcaTables
     public function populateTables(array &$fieldDefinition): void
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $languageService = $this->getLanguageService();
 
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
             if ($tableConfiguration['ctrl']['adminOnly'] ?? false) {
@@ -43,9 +42,7 @@ class AvailableTcaTables
             }
             $label = ($tableConfiguration['ctrl']['title'] ?? '') ?: '';
             $icon = $iconFactory->mapRecordTypeToIconIdentifier($tableName, []);
-            $languageService->loadSingleTableDescription($tableName);
-            $helpText = (string)($GLOBALS['TCA_DESCR'][$tableName]['columns']['']['description'] ?? '');
-            $fieldDefinition['items'][] = [$label, $tableName, $icon, null, $helpText];
+            $fieldDefinition['items'][] = [$label, $tableName, $icon];
         }
     }
 

@@ -65,9 +65,6 @@ class NewMultiplePagesController
         // Doc header handling
         $view->getDocHeaderComponent()->setMetaInformation($pageRecord);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('pages_new')
-            ->setFieldName('pages_new');
         $previewDataAttributes = PreviewUriBuilder::create($pageUid)
             ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
             ->buildDispatcherDataAttributes();
@@ -76,7 +73,7 @@ class NewMultiplePagesController
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
-        $buttonBar->addButton($cshButton)->addButton($viewButton);
+        $buttonBar->addButton($viewButton);
 
         $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));
         $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions->createPagePermissionIsGranted();

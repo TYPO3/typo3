@@ -36,7 +36,6 @@ class TcaLanguageTest extends UnitTestCase
         parent::setUp();
         // Default LANG prophecy just returns incoming value as label if calling ->sL()
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
-        $languageServiceProphecy->loadSingleTableDescription(Argument::cetera())->willReturn(null);
         $languageServiceProphecy->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
     }

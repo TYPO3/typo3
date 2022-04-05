@@ -22,7 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -152,7 +151,6 @@ class CreateFolderController
         ];
         if ($this->folderObject->checkActionPermission('add')) {
             $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
-            $assigns['cshFileNewFolder'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfolder');
             // Making the selector box for the number of concurrent folder-creations
             $this->number = MathUtility::forceIntegerInRange($this->number, 1, 10);
             for ($a = 1; $a <= $this->folderNumber; $a++) {
@@ -174,7 +172,6 @@ class CreateFolderController
 
         if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')) {
             $assigns['moduleUrlOnlineMedia'] = (string)$this->uriBuilder->buildUriFromRoute('online_media');
-            $assigns['cshFileNewMedia'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newMedia');
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
             $onlineMediaFileExt = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getSupportedFileExtensions();
@@ -187,7 +184,6 @@ class CreateFolderController
             $assigns['fileExtList'] = $fileExtList;
 
             $assigns['moduleUrlTceFile'] = (string)$this->uriBuilder->buildUriFromRoute('tce_file');
-            $assigns['cshFileNewFile'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_newfile');
             // Create a list of allowed file extensions with a text format "*.txt, *.css" etc.
             $fileExtList = [];
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
@@ -200,12 +196,6 @@ class CreateFolderController
         }
 
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-        // CSH button
-        $helpButton = $buttonBar->makeHelpButton()
-            ->setFieldName('file_new')
-            ->setModuleName('xMOD_csh_corebe');
-        $buttonBar->addButton($helpButton);
-
         // Back
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()

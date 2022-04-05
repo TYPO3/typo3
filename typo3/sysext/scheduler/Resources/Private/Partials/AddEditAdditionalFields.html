@@ -5,7 +5,7 @@
         id="{field.fieldID}_row"
     >
         <div class="form-group">
-            <f:be.labels.csh table="{field.cshKey}" field="{field.cshLabel}" label="{field.langLabel}"/>
+            <label for="{field.fieldID}"><f:translate key="{field.langLabel}"/></label>
             <div class="form-control-wrap">
                 {field.code -> f:format.raw()}
             </div>

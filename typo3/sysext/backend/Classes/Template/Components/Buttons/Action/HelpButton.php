@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Backend\Template\Components\Buttons\Action;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * HelpButton
@@ -33,9 +32,11 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *       ->setModuleName('xMOD_csh_corebe')
  *       ->setFieldName('list_module');
  * $buttonBar->addButton($myButton);
+ * @deprecated The functionality has been removed in TYPO3 v12. The class will be removed in TYPO3 v13.
  */
 class HelpButton implements ButtonInterface, PositionInterface
 {
+    /**
     /**
      * @var string
      */
@@ -46,6 +47,17 @@ class HelpButton implements ButtonInterface, PositionInterface
      */
     protected $fieldName = '';
 
+    /**
+     * Constructor for the HelpButton
+     */
+    public function __construct()
+    {
+        trigger_error(
+            'Class ' . __CLASS__ . ' has been deprecated in v12 and will be removed with v13.'
+            . ' Context Sensitive Help has been removed in v12.',
+            E_USER_DEPRECATED
+        );
+    }
     /**
      * Gets the name of the module.
      *
@@ -145,13 +157,11 @@ class HelpButton implements ButtonInterface, PositionInterface
      * Renders the button
      *
      * @return string
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public function render()
     {
-        $helpMarkup = BackendUtility::cshItem($this->moduleName, $this->fieldName);
-        if ($helpMarkup === '') {
-            return '';
-        }
-        return '<span class="btn btn-sm btn-default">' . $helpMarkup . '</span>';
+        return '';
     }
 }

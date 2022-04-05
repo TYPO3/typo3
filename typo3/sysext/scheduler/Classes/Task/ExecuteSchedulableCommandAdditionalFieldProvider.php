@@ -248,7 +248,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         }
         return [
             'code' => $this->renderSelectField($options, $currentlySelectedCommand),
-            'label' => $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName'),
+            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName',
         ];
     }
 

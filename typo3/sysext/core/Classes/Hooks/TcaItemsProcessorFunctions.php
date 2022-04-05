@@ -50,9 +50,7 @@ class TcaItemsProcessorFunctions
             }
             $label = ($tableConfiguration['ctrl']['title'] ?? '') ?: '';
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($tableName, []);
-            $this->getLanguageService()->loadSingleTableDescription($tableName);
-            $helpText = (string)($GLOBALS['TCA_DESCR'][$tableName]['columns']['']['description'] ?? '');
-            $fieldDefinition['items'][] = [$label, $tableName, $icon, null, $helpText];
+            $fieldDefinition['items'][] = [$label, $tableName, $icon];
         }
     }
 
@@ -131,16 +129,11 @@ class TcaItemsProcessorFunctions
             $label = $origin === 'flexForm'
                 ? ($excludeFieldGroup['fieldLabel'] ?? '')
                 : $languageService->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'] ?? '');
-            // Add help text
-            $languageService->loadSingleTableDescription($table);
-            $helpText = (string)($GLOBALS['TCA_DESCR'][$table]['columns'][$fullField]['description'] ?? '');
             // Item configuration:
             $fieldDefinition['items'][] = [
                 rtrim($label, ':') . ' (' . $fieldName . ')',
                 $table . ':' . $fullField,
                 'empty-empty',
-                null,
-                $helpText,
             ];
         }
     }

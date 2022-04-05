@@ -38,12 +38,6 @@ class ListOfFieldsContainer extends AbstractContainer
         $fieldListToRender = $this->data['fieldListToRender'];
         $recordTypeValue = $this->data['recordTypeValue'];
 
-        // Load the description content for the table if requested
-        if (!empty($GLOBALS['TCA'][$table]['interface']['always_description'])) {
-            $languageService = $this->getLanguageService();
-            $languageService->loadSingleTableDescription($table);
-        }
-
         $fieldListToRender = array_unique(GeneralUtility::trimExplode(',', $fieldListToRender, true));
 
         $fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];

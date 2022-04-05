@@ -826,19 +826,11 @@ class ExtensionManagementUtility
      *
      * @param string $key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
      * @param string $file File reference to locallang file, eg. "EXT:core/Resources/Private/Language/locallang_csh_pages.xlf"
+     *
+     * @deprecated The functionality has been removed in v12. The method will be removed in TYPO3 v13.
      */
     public static function addLLrefForTCAdescr($key, $file)
     {
-        if (empty($key)) {
-            throw new \RuntimeException('No description key set in addLLrefForTCAdescr(). Provide it as first parameter', 1507321596);
-        }
-        if (!is_array($GLOBALS['TCA_DESCR'][$key] ?? false)) {
-            $GLOBALS['TCA_DESCR'][$key] = [];
-        }
-        if (!is_array($GLOBALS['TCA_DESCR'][$key]['refs'] ?? false)) {
-            $GLOBALS['TCA_DESCR'][$key]['refs'] = [];
-        }
-        $GLOBALS['TCA_DESCR'][$key]['refs'][] = $file;
     }
 
     /**

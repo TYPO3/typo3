@@ -1,6 +1,6 @@
 <div class="form-section" id="task_type_row">
     <div class="form-group">
-        <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_type" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/>
+        <label for="task_type"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></label>
         <div class="form-control-wrap">
             <select name="tx_scheduler[type]" id="task_type" class="form-select">
                 <option value="1" {f:if(condition:'{currentData.type} == 1',then:'selected="selected"')}>

@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
+			<trans-unit id="onlineDocumentation" resname="onlineDocumentation">
+				<source>TYPO3 Online Documentation</source>
+			</trans-unit>
 			<trans-unit id="no_modules_registered" resname="no_modules_registered">
 				<source>No modules have been registered. Please contact your system administrator.</source>
 			</trans-unit>

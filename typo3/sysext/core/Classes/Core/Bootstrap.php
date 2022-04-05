@@ -473,8 +473,6 @@ class Bootstrap
         unset($GLOBALS['TCA']);
         unset($GLOBALS['TBE_STYLES']);
         unset($GLOBALS['BE_USER']);
-        // Those set otherwise:
-        unset($GLOBALS['TCA_DESCR']);
     }
 
     /**

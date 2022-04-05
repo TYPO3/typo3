@@ -63,9 +63,6 @@ class SortSubPagesController
         // Doc header handling
         $view->getDocHeaderComponent()->setMetaInformation($pageInformation);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('pages_sort')
-            ->setFieldName('pages_sort');
         $previewDataAttributes = PreviewUriBuilder::create($parentPageUid)
             ->withRootLine(BackendUtility::BEgetRootLine($parentPageUid))
             ->buildDispatcherDataAttributes();
@@ -74,7 +71,7 @@ class SortSubPagesController
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
             ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
             ->setHref('#');
-        $buttonBar->addButton($cshButton)->addButton($viewButton);
+        $buttonBar->addButton($viewButton);
 
         $isInWorkspace = $backendUser->workspace !== 0;
         $view->assignMultiple([

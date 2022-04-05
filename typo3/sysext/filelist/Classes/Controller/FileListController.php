@@ -260,13 +260,6 @@ class FileListController implements LoggerAwareInterface
         } elseif (($userTsConfig['options.']['file_list.']['enableClipBoard'] ?? '') === 'deactivated') {
             $this->moduleData->set('clipBoard', false);
         }
-
-        // Finally add the help button doc header button to the module
-        $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('filelist_module');
-        $buttonBar->addButton($cshButton);
     }
 
     protected function initializeFileList(ServerRequestInterface $request): void

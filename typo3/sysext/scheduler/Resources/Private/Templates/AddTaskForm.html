@@ -22,7 +22,7 @@
 
             <div class="form-section" id="task_class_row">
                 <div class="form-group">
-                    <f:be.labels.csh table="_MOD_system_txschedulerM1" field="task_class" label="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/>
+                    <label for="task_class"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/></label>
                     <div class="form-control-wrap">
                         <select name="tx_scheduler[class]" id="task_class" class="form-select">
                             <f:for each="{groupedClasses}" as="classGroup" key="extension">

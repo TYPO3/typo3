@@ -16,8 +16,8 @@
 namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -116,7 +116,7 @@ class SelectCheckBoxElement extends AbstractFormElement
                     } else {
                         $helpArray['description'] = $item[4];
                     }
-                    $help = BackendUtility::wrapInHelp('', '', '', $helpArray);
+                    $help = $this->wrapInHelp($helpArray);
                 }
 
                 // Check if current item is selected. If found, unset the key in the $itemArray.
@@ -269,5 +269,35 @@ class SelectCheckBoxElement extends AbstractFormElement
         $resultArray['html'] = implode(LF, $html);
         $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::create('@typo3/backend/tooltip.js');
         return $resultArray;
+    }
+
+    /**
+     * A function that creates an icon with a help text. If a user clicks on
+     * the icon, the help text will show up as tooltip
+     *
+     * @param array $overloadHelpText Array with text to overload help text
+     * @return string the HTML code ready to render
+     */
+    protected function wrapInHelp(array $overloadHelpText = []): string
+    {
+        // If there's a help text or some overload information, proceed with preparing an output
+        if (empty($overloadHelpText)) {
+            return '';
+        }
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $text = $iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
+        $abbrClassAdd = ' help-teaser-icon';
+        $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
+        $wrappedText = '<span class="help-link" data-bs-content="<p></p>"';
+        // The overload array may provide a title and a description
+        // If either one is defined, add them to the "data" attributes
+        if (isset($overloadHelpText['title'])) {
+            $wrappedText .= ' data-title="' . htmlspecialchars($overloadHelpText['title']) . '"';
+        }
+        if (isset($overloadHelpText['description'])) {
+            $wrappedText .= ' data-description="' . htmlspecialchars($overloadHelpText['description']) . '"';
+        }
+        $wrappedText .= '>' . $text . '</span>';
+        return $wrappedText;
     }
 }

@@ -63,14 +63,10 @@ class HelpCest
         $I->see('Web Content Management System', 'h1');
     }
 
-    public function seeManualInHelpModule(ApplicationTester $I): void
+    public function seeOnlineDocumentationInHelpModule(ApplicationTester $I): void
     {
         $I->click(Topbar::$dropdownToggleSelector, self::$topBarModuleSelector);
-        $I->canSee('TYPO3 Manual', self::$topBarModuleSelector);
-        $I->click('TYPO3 Manual', self::$topBarModuleSelector);
-        $I->switchToContentFrame();
-        $I->see('TYPO3 Inline User Manual', 'h1');
-        $I->click('TYPO3 Core', '.help-view');
-        $I->see('TYPO3 Core', 'h2');
+        $I->canSee('TYPO3 Online Documentation', self::$topBarModuleSelector);
+        $I->seeElement(self::$topBarModuleSelector . ' a[href="https://docs.typo3.org/"]');
     }
 }

@@ -144,11 +144,6 @@ class ReplaceFileController
         $assigns['returnUrl'] = $this->returnUrl;
 
         $buttonBar = $this->view->getDocHeaderComponent()->getButtonBar();
-        // csh button
-        $cshButton = $buttonBar->makeHelpButton()
-            ->setModuleName('xMOD_csh_corebe')
-            ->setFieldName('file_rename');
-        $buttonBar->addButton($cshButton);
 
         // Back button
         if ($this->returnUrl) {

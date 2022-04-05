@@ -1,7 +1,6 @@
 <?php
 
 use TYPO3\CMS\Backend\Controller\AboutController;
-use TYPO3\CMS\Backend\Controller\HelpController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Controller\SiteConfigurationController;
 
@@ -50,19 +49,6 @@ return [
         'routes' => [
             '_default' => [
                 'target' => AboutController::class . '::handleRequest',
-            ],
-        ],
-    ],
-    'help_cshmanual' => [
-        'parent' => 'help',
-        'position' => ['after' => 'help_AboutAbout'],
-        'access' => 'user',
-        'path' => '/module/help/cshmanual',
-        'iconIdentifier' => 'module-cshmanual',
-        'labels' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod_help_cshmanual.xlf',
-        'routes' => [
-            '_default' => [
-                'target' => HelpController::class . '::handleRequest',
             ],
         ],
     ],
