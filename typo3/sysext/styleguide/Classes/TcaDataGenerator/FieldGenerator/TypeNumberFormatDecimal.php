@@ -19,18 +19,20 @@ namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
 /**
- * Generate data for type=input fields
+ * Generate data for type=number fields with format=decimal
  */
-class TypeInputEvalDouble2 extends AbstractFieldGenerator implements FieldGeneratorInterface
+class TypeNumberFormatDecimal extends AbstractFieldGenerator implements FieldGeneratorInterface
 {
     /**
-     * @var array General match if type=input
+     * General match if type=number and format=decimal
+     *
+     * @var array
      */
     protected $matchArray = [
         'fieldConfig' => [
             'config' => [
-                'type' => 'input',
-                'eval' => 'double2',
+                'type' => 'number',
+                'format' => 'decimal',
             ],
         ],
     ];

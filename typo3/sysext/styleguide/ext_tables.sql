@@ -37,7 +37,6 @@ CREATE TABLE tx_styleguide_ctrl_minimal (
 CREATE TABLE tx_styleguide_displaycond (
     input_1 text,
     input_2 text,
-    input_3 text,
     input_4 text,
     input_5 text,
     input_6 text,
@@ -48,13 +47,15 @@ CREATE TABLE tx_styleguide_displaycond (
     input_11 text,
     input_12 text,
     input_13 text,
-    input_14 text,
-    input_15 text,
     input_16 text,
     input_17 text,
     input_18 text,
     input_19 text,
     input_20 text,
+
+    number_1 int(11) DEFAULT '0' NOT NULL,
+    number_2 int(11) DEFAULT '0' NOT NULL,
+    number_3 int(11) DEFAULT '0' NOT NULL,
 
     checkbox_1 int(11) DEFAULT '0' NOT NULL,
 
@@ -75,8 +76,6 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_3 text,
     input_4 text,
     input_5 text,
-    input_8 text,
-    input_9 text,
     input_10 text,
     input_11 text,
     input_12 text,
@@ -89,13 +88,9 @@ CREATE TABLE tx_styleguide_elements_basic (
     input_22 text,
     input_23 text,
     input_24 text,
-    input_25 text,
     input_26 text,
     input_27 text,
     input_28 text,
-    input_30 text,
-    input_31 text,
-    input_32 text,
     input_33 text,
     input_35 text,
     input_36 text,
@@ -115,6 +110,13 @@ CREATE TABLE tx_styleguide_elements_basic (
     color_1 text,
     color_2 text,
     color_3 text,
+
+    number_1 text,
+    number_2 int(11) DEFAULT '0' NOT NULL,
+    number_3 int(11) DEFAULT '0' NOT NULL,
+    number_4 int(11) DEFAULT '0' NOT NULL,
+    number_5 text,
+    number_6 int(11) DEFAULT '0' NOT NULL,
 
     inputdatetime_1 text,
     inputdatetime_2 date,
@@ -761,7 +763,8 @@ CREATE TABLE tx_styleguide_typeforeign (
 CREATE TABLE tx_styleguide_valuesdefault (
     input_1 text,
     input_2 text,
-    input_3 text,
+
+    number_1 int(11) DEFAULT '0' NOT NULL,
 
     text_1 text,
 
