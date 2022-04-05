@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -63,10 +64,11 @@ class FileRepository extends AbstractRepository
      * @param string $tableName Table name of the related record
      * @param string $fieldName Field name of the related record
      * @param int $uid The UID of the related record (needs to be the localized uid, as translated IRRE elements relate to them)
+     * @param ?int $workspaceId
      * @return array An array of objects, empty if no objects found
      * @throws \InvalidArgumentException
      */
-    public function findByRelation($tableName, $fieldName, $uid)
+    public function findByRelation($tableName, $fieldName, $uid, int $workspaceId = null)
     {
         $itemList = [];
         if (!MathUtility::canBeInterpretedAsInteger($uid)) {
@@ -105,8 +107,10 @@ class FileRepository extends AbstractRepository
                 $referenceUids[] = $row['uid'];
             }
         } else {
+            $workspaceId ??= GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'id', 0);
             /** @var RelationHandler $relationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+            $relationHandler->setWorkspaceId($workspaceId);
             $relationHandler->start(
                 '',
                 'sys_file_reference',
@@ -116,6 +120,7 @@ class FileRepository extends AbstractRepository
                 BackendUtility::getTcaFieldConfiguration($tableName, $fieldName)
             );
             if (!empty($relationHandler->tableArray['sys_file_reference'])) {
+                $relationHandler->processDeletePlaceholder();
                 $referenceUids = $relationHandler->tableArray['sys_file_reference'];
             }
         }
