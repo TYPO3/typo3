@@ -203,6 +203,7 @@ class SlugService implements LoggerAwareInterface
             'hitcount' => 0,
             'lasthiton' => 0,
             'disable_hitcount' => 0,
+            'creation_type' => 0,
         ];
         //todo use dataHandler to create records
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)

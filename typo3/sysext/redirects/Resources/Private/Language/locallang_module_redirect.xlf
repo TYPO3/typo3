@@ -48,6 +48,12 @@
 			<trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode">
 				<source>Status Code</source>
 			</trans-unit>
+			<trans-unit id="filter.creationType" resname="filter.creationType">
+				<source>Creation type</source>
+			</trans-unit>
+			<trans-unit id="filter.creationType.showAll" resname="filter.creationType.showAll">
+				<source>Show All</source>
+			</trans-unit>
 			<trans-unit id="filter.neverHit" resname="filter.neverHit">
 				<source>Never hit</source>
 			</trans-unit>

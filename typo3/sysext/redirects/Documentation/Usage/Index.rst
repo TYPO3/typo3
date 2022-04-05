@@ -49,8 +49,8 @@ icon |edit_action_image|, you can **edit** the record. Clicking on a link in the
 The :guilabel:`+` sign on the top will open an edit form to create a **new
 redirect**.
 
-It is also possible to **filter**, e.g. by the *Source Path*,
-*Status Code* or only show redirect records which were "*Never hit*"
+It is also possible to **filter**, e.g. by the *Source Path*, *Status Code*,
+*Creation type* or only show redirect records which were "*Never hit*"
 (see Information on :ref:`Hit counter <hit-counter>` which must be explicitly
 enabled via Feature Toggle).
 
@@ -174,6 +174,17 @@ General tab
 
     This does not affect the redirect itself. It protects the record from
     automatic deletion (e.g. with redirects:cleanup).
+
+----
+
+.. confval:: Creation Type
+
+    :Field: creation_type
+
+    This field allows to differentiate between redirects that are created
+    automatically when the slug of a page is changed and those that are created
+    in the backend module by editors.
+
 
 Statistics tab
 ~~~~~~~~~~~~~~

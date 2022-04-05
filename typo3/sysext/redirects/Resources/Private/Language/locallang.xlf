@@ -30,8 +30,8 @@
 			<trans-unit id="cleanupRedirectsCommand.label.path" resname="cleanupRedirectsCommand.label.path">
 				<source>Cleanup redirects matching given path (as database like expression)></source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.statusCode" resname="cleanupRedirectsCommand.label.statusCode">
-				<source>Cleanup redirects matching provided status code(s)</source>
+			<trans-unit id="cleanupRedirectsCommand.label.creationType" resname="cleanupRedirectsCommand.label.creationType">
+				<source>Cleanup redirects matching provided creation type</source>
 			</trans-unit>
 		</body>
 	</file>

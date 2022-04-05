@@ -255,6 +255,15 @@
                     </f:for>
                 </select>
             </div>
+            <div class="col">
+                <label for="demand-target-automatically-created" class="form-label"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.creationType"/></label>
+                <select id="demand-target-automatically-created" class="form-select" name="demand[creation_type]" data-on-change="submit">
+                    <option value="-1"><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:filter.creationType.showAll"/></option>
+                    <f:for each="{creationTypes}" key="creationType" as="label">
+                        <option value="{creationType}" {f:if(condition: '{demand.creationType} == {creationType}', then: 'selected')}>{f:translate(key: label, default: label)}</option>
+                    </f:for>
+                </select>
+            </div>
             <f:if condition="{showHitCounter}">
                 <div class="form-check form-switch">
                     <label class="form-check-label" for="demand-never-hit">

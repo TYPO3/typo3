@@ -93,6 +93,15 @@
 			<trans-unit id="sys_redirect.disabled.0" resname="sys_redirect.disabled.0">
 				<source>Deactivate redirect</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.creation_type" resname="sys_redirect.creation_type">
+				<source>Creation Type</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.creation_type.1" resname="sys_redirect.creation_type.1">
+				<source>manually created</source>
+			</trans-unit>
+			<trans-unit id="sys_redirect.creation_type.0" resname="sys_redirect.creation_type.0">
+				<source>automatically created</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

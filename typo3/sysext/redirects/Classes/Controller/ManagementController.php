@@ -75,6 +75,7 @@ class ManagementController
             'redirects' => $this->redirectRepository->findRedirectsByDemand($demand),
             'hosts' => $this->redirectRepository->findHostsOfRedirects(),
             'statusCodes' => $this->redirectRepository->findStatusCodesOfRedirects(),
+            'creationTypes' => $this->redirectRepository->findCreationTypes(),
             'demand' => $demand,
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $this->preparePagination($demand),

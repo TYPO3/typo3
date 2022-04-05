@@ -32,60 +32,26 @@ class Demand
     protected const DEFAULT_SECONDARY_ORDER_FIELD = 'source_host';
     protected const ORDER_FIELDS = ['source_host', 'source_path', 'lasthiton', 'hitcount', 'protected'];
 
-    /**
-     * @var string
-     */
-    protected $orderField;
-
-    /**
-     * @var string
-     */
-    protected $orderDirection;
+    protected string $orderField;
+    protected string $orderDirection;
 
     /**
      * @var string[]
      */
-    protected $sourceHosts;
-
-    /**
-     * @var string
-     */
-    protected $sourcePath;
-
-    /**
-     * @var string
-     */
-    protected $target;
+    protected array $sourceHosts;
+    protected string $sourcePath;
+    protected string $target;
 
     /**
      * @var int[]
      */
-    protected $statusCodes = [];
-
-    /**
-     * @var int
-     */
-    protected $limit = 50;
-
-    /**
-     * @var int
-     */
-    protected $page;
-
-    /**
-     * @var string
-     */
-    protected $secondaryOrderField;
-
-    /**
-     * @var int
-     */
-    private $maxHits;
-
-    /**
-     * @var \DateTimeInterface|null
-     */
-    private $olderThan;
+    protected array $statusCodes = [];
+    protected int $limit = 50;
+    protected int $page;
+    protected string $secondaryOrderField;
+    private int $maxHits;
+    private ?\DateTimeInterface $olderThan;
+    protected ?int $creationType = -1;
 
     public function __construct(
         int $page = 1,
@@ -96,7 +62,8 @@ class Demand
         string $target = '',
         array $statusCodes = [],
         int $maxHits = 0,
-        \DateTimeInterface $olderThan = null
+        \DateTimeInterface $olderThan = null,
+        ?int $creationType = -1
     ) {
         $this->page = $page;
         if (!in_array($orderField, self::ORDER_FIELDS, true)) {
@@ -114,6 +81,7 @@ class Demand
         $this->secondaryOrderField = $this->orderField === self::DEFAULT_ORDER_FIELD ? self::DEFAULT_SECONDARY_ORDER_FIELD : '';
         $this->maxHits = $maxHits;
         $this->olderThan = $olderThan;
+        $this->creationType = $creationType;
     }
 
     public static function fromRequest(ServerRequestInterface $request): self
@@ -132,7 +100,8 @@ class Demand
         $statusCodes = $statusCode > 0 ? [$statusCode] : [];
         $target = $demand['target'] ?? '';
         $maxHits = (int)($demand['max_hits'] ?? 0);
-        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits);
+        $creationType = isset($demand['creation_type']) ? ((int)$demand['creation_type']) : -1;
+        return new self($page, $orderField, $orderDirection, $sourceHosts, $sourcePath, $target, $statusCodes, $maxHits, null, $creationType);
     }
 
     public static function fromCommandInput(InputInterface $input): self
@@ -148,7 +117,10 @@ class Demand
             $input->hasOption('hitCount') ? (int)$input->getOption('hitCount') : 0,
             $input->getOption('days')
                 ? new \DateTimeImmutable($input->getOption('days') . ' days ago')
-                : new \DateTimeImmutable('90 days ago')
+                : new \DateTimeImmutable(
+                    '90 days ago'
+                ),
+            $input->getOption('creationType') !== null ? (int)($input->getOption('creationType')) : null
         );
     }
 
@@ -227,6 +199,11 @@ class Demand
         return $this->limit;
     }
 
+    public function getCreationType(): ?int
+    {
+        return $this->creationType;
+    }
+
     public function getFirstStatusCode(): int
     {
         return $this->statusCodes[0] ?? 0;
@@ -257,13 +234,19 @@ class Demand
         return $this->target !== '';
     }
 
+    public function hasCreationType(): bool
+    {
+        return $this->creationType !== null && $this->creationType !== -1;
+    }
+
     public function hasConstraints(): bool
     {
         return $this->hasSourcePath()
             || $this->hasSourceHosts()
             || $this->hasTarget()
             || $this->hasStatusCodes()
-            || $this->hasMaxHits();
+            || $this->hasMaxHits()
+            || $this->hasCreationType();
     }
 
     /**
@@ -299,6 +282,9 @@ class Demand
         }
         if ($this->hasMaxHits()) {
             $parameters['max_hits'] = $this->getMaxHits();
+        }
+        if ($this->hasCreationType()) {
+            $parameters['creation_type'] = $this->getCreationType();
         }
         return $parameters;
     }
