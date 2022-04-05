@@ -317,6 +317,21 @@ class ExtensionUtilityTest extends UnitTestCase
     }
 
     /**
+     * Tests if method registerPlugin() returns pluginSignature
+     * @test
+     */
+    public function registerPluginMethodReturnsPluginSignature(): void
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $result = ExtensionUtility::registerPlugin(
+            'indexed_search',
+            'Pi2',
+            'Testing'
+        );
+        self::assertSame('indexedsearch_pi2', $result);
+    }
+
+    /**
      * Tests method combination of registerPlugin() and its dependency addPlugin() to
      * verify plugin icon path resolving works.
      *

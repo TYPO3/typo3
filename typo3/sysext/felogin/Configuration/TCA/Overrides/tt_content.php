@@ -3,8 +3,7 @@
 defined('TYPO3') or die();
 
 call_user_func(static function () {
-    $contentTypeName = 'felogin_login';
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    $contentTypeName = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
         'Felogin',
         'Login',
         'Login Form',
