@@ -48,6 +48,12 @@ label.btn-checkbox {
     margin-bottom: 0;
 }
 
+.btn-invisible {
+    color: inherit;
+    background-color: transparent;
+    border-color: transparent;
+}
+
 .btn-clear {
     &:focus {
         outline: 1px dotted #000;

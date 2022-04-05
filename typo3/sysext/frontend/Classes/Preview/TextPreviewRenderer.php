@@ -29,6 +29,6 @@ class TextPreviewRenderer extends StandardContentPreviewRenderer
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
         $row = $item->getRecord();
-        return $this->linkEditContent($this->renderText($row['bodytext'] ?? ''), $row) . '<br />';
+        return $this->linkEditContent($this->renderText($row['bodytext'] ?? ''), $row);
     }
 }

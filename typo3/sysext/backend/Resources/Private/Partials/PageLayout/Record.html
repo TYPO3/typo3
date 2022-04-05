@@ -1,22 +1,20 @@
 {f:if(condition: '{item.disabled} && {item.context.drawingConfiguration.showHidden} == 0', then: 'display: none;') -> f:variable(name: 'style')}
 <div class="t3-page-ce {item.wrapperClassName} t3js-page-ce t3js-page-ce-sortable" id="element-tt_content-{item.record.uid}" data-table="tt_content" data-uid="{item.record.uid}" data-language-uid="{item.record.sys_language_uid}" style="{style}">
-    <div class="t3-page-ce-dragitem" id="{item.uniqueId}">
+    <div class="t3-page-ce-element t3-page-ce-dragitem t3js-page-ce-dragitem" id="{item.uniqueId}">
         <f:render partial="PageLayout/Record/{item.record.CType}/Header" arguments="{_all}" optional="1">
             <f:render partial="PageLayout/RecordDefault/Header" arguments="{_all}" />
         </f:render>
-        <div class="t3-page-ce-body">
-            <div class="t3-page-ce-body-inner">
-                <div class="{f:if(condition: item.versioned, then: 'ver-element')}">
-                    <f:render partial="PageLayout/RecordDefault/Preview" arguments="{_all}" />
-                </div>
+        <f:spaceless>
+            <div class="t3-page-ce-body">
+                <f:render partial="PageLayout/RecordDefault/Preview" arguments="{_all}" />
             </div>
-            <f:render partial="PageLayout/Record/{item.record.CType}/Footer" arguments="{_all}" optional="1">
-                <f:render partial="PageLayout/RecordDefault/Footer" arguments="{_all}" />
-            </f:render>
-        </div>
+        </f:spaceless>
+        <f:render partial="PageLayout/Record/{item.record.CType}/Footer" arguments="{_all}" optional="1">
+            <f:render partial="PageLayout/RecordDefault/Footer" arguments="{_all}" />
+        </f:render>
     </div>
     <f:if condition="{allowEditContent} && {item.column.contentEditable} && {column.context.allowNewContent} && {column.active}">
-        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
+        <div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
             <f:if condition="{item.column.context.drawingConfiguration.showNewContentWizard}">
                 <f:then>
                     <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
@@ -35,5 +33,5 @@
             </f:if>
         </div>
     </f:if>
-    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+    <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
 </div>

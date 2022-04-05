@@ -38,7 +38,7 @@ interface DroppableEventUIParam {
 class DragDrop {
 
   private static readonly contentIdentifier: string = '.t3js-page-ce';
-  private static readonly dragIdentifier: string = '.t3-page-ce-dragitem';
+  private static readonly dragIdentifier: string = '.t3js-page-ce-dragitem ';
   private static readonly dragHeaderIdentifier: string = '.t3js-page-ce-draghandle';
   private static readonly dropZoneIdentifier: string = '.t3js-page-ce-dropzone-available';
   private static readonly columnIdentifier: string = '.t3js-page-column';

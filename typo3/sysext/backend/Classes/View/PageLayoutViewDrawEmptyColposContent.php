@@ -41,15 +41,11 @@ class PageLayoutViewDrawEmptyColposContent
         $content .= '
                 <div data-colpos="1" data-language-uid="0" class="t3-page-ce-wrapper">
                     <div class="t3-page-ce">
-                        <div class="t3-page-ce-header">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos')) . '</div>
-                        <div class="t3-page-ce-body">
-                            <div class="t3-page-ce-body-inner">
-                                <div class="row">
-                                    <div class="col-12">
-                                        ' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos.message')) . '
-                                    </div>
-                                </div>
+                        <div class="t3-page-ce-element">
+                            <div class="t3-page-ce-header">
+                                <div class="t3-page-ce-header-title">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos')) . '</div>
                             </div>
+                            <div class="t3-page-ce-body">' . htmlspecialchars($lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:emptyColPos.message')) . '</div>
                         </div>
                     </div>
                 </div>';
