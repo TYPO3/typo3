@@ -63,9 +63,9 @@ class ContextMenu {
       attributesString += ' ' + k + '="' + v + '"';
     }
 
-    return '<li role="menuitem" class="list-group-item" tabindex="-1"'
+    return '<li role="menuitem" class="context-menu-item" tabindex="-1"'
       + ' data-callback-action="' + item.callbackAction + '"'
-      + attributesString + '><span class="list-group-item-icon">' + item.icon + '</span> ' + item.label + '</li>';
+      + attributesString + '><span class="context-menu-item-icon">' + item.icon + '</span> <span class="context-menu-item-label">' + item.label + '</span></li>';
   }
 
   private static within(element: HTMLElement, x: number, y: number): boolean {
@@ -208,13 +208,13 @@ class ContextMenu {
 
     if ($obj.length && (level === 0 || $('#contentMenu' + (level - 1)).is(':visible'))) {
       const elements = this.drawMenu(items, level);
-      $obj.html('<ul class="list-group" role="menu">' + elements + '</ul>');
+      $obj.html('<ul class="context-menu-group" role="menu">' + elements + '</ul>');
 
-      $('li.list-group-item', $obj).on('click', (event: JQueryEventObject): void => {
+      $('li.context-menu-item', $obj).on('click', (event: JQueryEventObject): void => {
         event.preventDefault();
         const $me = $(event.currentTarget);
 
-        if ($me.hasClass('list-group-item-submenu')) {
+        if ($me.hasClass('context-menu-item-submenu')) {
           this.openSubmenu(level, $me, false);
           return;
         }
@@ -232,7 +232,7 @@ class ContextMenu {
         }
         this.hideAll();
       });
-      $('li.list-group-item', $obj).on('keydown', (event: JQueryEventObject): void => {
+      $('li.context-menu-item', $obj).on('keydown', (event: JQueryEventObject): void => {
         const $currentItem = $(event.currentTarget);
         switch (event.key) {
           case 'Down': // IE/Edge specific value
@@ -245,7 +245,7 @@ class ContextMenu {
             break;
           case 'Right': // IE/Edge specific value
           case 'ArrowRight':
-            if ($currentItem.hasClass('list-group-item-submenu')) {
+            if ($currentItem.hasClass('context-menu-item-submenu')) {
               this.openSubmenu(level, $currentItem, true);
             } else {
               return; // allow default behaviour of right key
@@ -278,7 +278,7 @@ class ContextMenu {
       });
       $obj.css(this.getPosition($obj, false)).show();
       // focus the first element on creation to enable keyboard shortcuts
-      $('li.list-group-item[tabindex=-1]', $obj).first().focus();
+      $('li.context-menu-item[tabindex=-1]', $obj).first().focus();
     }
   }
 
@@ -317,7 +317,7 @@ class ContextMenu {
    */
   private getItemBackward(element: Element): HTMLElement | null {
     while (element &&
-      (!element.classList.contains('list-group-item') || (element.getAttribute('tabindex') !== '-1'))) {
+      (!element.classList.contains('context-menu-item') || (element.getAttribute('tabindex') !== '-1'))) {
       element = element.previousElementSibling;
     }
     return <HTMLElement>element;
@@ -328,7 +328,7 @@ class ContextMenu {
    */
   private getItemForward(item: Element): HTMLElement | null {
     while (item &&
-      (!item.classList.contains('list-group-item') || (item.getAttribute('tabindex') !== '-1'))) {
+      (!item.classList.contains('context-menu-item') || (item.getAttribute('tabindex') !== '-1'))) {
       item = item.nextElementSibling;
     }
     return <HTMLElement>item;
@@ -350,9 +350,9 @@ class ContextMenu {
   private openSubmenu(level: number, $item: JQuery, keyboard: boolean): void {
     this.eventSources.push($item[0]);
     const $obj = $('#contentMenu' + (level + 1)).html('');
-    $item.next().find('.list-group').clone(true).appendTo($obj);
+    $item.next().find('.context-menu-group').clone(true).appendTo($obj);
     $obj.css(this.getPosition($obj, keyboard)).show();
-    $('.list-group-item[tabindex=-1]',$obj).first().focus();
+    $('.context-menu-item[tabindex=-1]',$obj).first().focus();
   }
 
   private getPosition($obj: JQuery, keyboard: boolean): {[key: string]: string} {
@@ -419,16 +419,17 @@ class ContextMenu {
       if (item.type === 'item') {
         elements += ContextMenu.drawActionItem(item);
       } else if (item.type === 'divider') {
-        elements += '<li role="separator" class="list-group-item list-group-item-divider"></li>';
+        elements += '<li role="separator" class="context-menu-item context-menu-item-divider"></li>';
       } else if (item.type === 'submenu' || item.childItems) {
-        elements += '<li role="menuitem" aria-haspopup="true" class="list-group-item list-group-item-submenu" tabindex="-1">'
-          + '<span class="list-group-item-icon">' + item.icon + '</span> '
-          + item.label + '&nbsp;&nbsp;<span class="fa fa-caret-right"></span>'
+        elements += '<li role="menuitem" aria-haspopup="true" class="context-menu-item context-menu-item-submenu" tabindex="-1">'
+          + '<span class="context-menu-item-icon">' + item.icon + '</span>'
+          + '<span class="context-menu-item-label">' + item.label + '</span>'
+          + '<span class="context-menu-item-indicator"><typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon></span>'
           + '</li>';
 
         const childElements = this.drawMenu(item.childItems, 1);
         elements += '<div class="context-menu contentMenu' + (level + 1) + '" style="display:none;">'
-          + '<ul role="menu" class="list-group">' + childElements + '</ul>'
+          + '<ul role="menu" class="context-menu-group">' + childElements + '</ul>'
           + '</div>';
       }
     }

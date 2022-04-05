@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
  */
 abstract class AbstractCest
 {
-    protected string $contextMenuMore = 'li.list-group-item-submenu';
+    protected string $contextMenuMore = 'li.context-menu-item-submenu';
     protected string $contextMenuExport = '[data-callback-action=exportT3d]';
     protected string $contextMenuImport = '[data-callback-action=importT3d]';
 

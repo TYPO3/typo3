@@ -48,9 +48,9 @@ class AddPageInPageModuleCest
         $I->waitForElement($typo3NavigationContainer);
         $rootNode = 'a.x-tree-node-anchor > span';
         $rootNodeIcon = '#identifier-0_0 .node-icon';
-        $rootNodeContextMenuMore = '#contentMenu0 a.list-group-item-submenu';
+        $rootNodeContextMenuMore = '#contentMenu0 a.context-menu-item-submenu';
         //create new wizard
-        $contextMenuNew = '#contentMenu1 .list-group-item[data-callback-action=newPageWizard]';
+        $contextMenuNew = '#contentMenu1 .context-menu-item[data-callback-action=newPageWizard]';
 
         $I->waitForElement($rootNode);
         $I->click($rootNodeIcon);
@@ -101,7 +101,7 @@ class AddPageInPageModuleCest
 
         // And delete page from tree
         $pageInTreeIcon = '#typo3-pagetree-tree .icon-apps-pagetree-page-default';
-        $delete = '#contentMenu0 .list-group-item[data-callback-action=deleteRecord]';
+        $delete = '#contentMenu0 .context-menu-item[data-callback-action=deleteRecord]';
         $I->click($pageInTreeIcon);
         $I->waitForElement($delete);
         $I->click($delete);

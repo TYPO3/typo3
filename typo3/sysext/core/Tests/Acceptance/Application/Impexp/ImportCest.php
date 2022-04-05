@@ -37,8 +37,8 @@ class ImportCest extends AbstractCest
     protected string $inTabImport = '#import-import';
     protected string $inFlashMessages = '.typo3-messages';
 
-    protected string $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-    protected string $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
+    protected string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
+    protected string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
     protected string $tabUpload = 'a[href="#import-upload"]';
     protected string $tabMessages = 'a[href="#import-errors"]';
     protected string $inputUploadFile = 'input[type=file]';

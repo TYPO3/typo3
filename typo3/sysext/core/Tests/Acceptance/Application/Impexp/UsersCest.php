@@ -32,9 +32,9 @@ class UsersCest extends AbstractCest
 
     protected string $buttonUser = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem';
     protected string $buttonLogout = '#typo3-cms-backend-backend-toolbaritems-usertoolbaritem button.btn.btn-danger';
-    protected string $contextMenuMore = '#contentMenu0 li.list-group-item-submenu';
-    protected string $contextMenuExport = '#contentMenu1 li.list-group-item[data-callback-action=exportT3d]';
-    protected string $contextMenuImport = '#contentMenu1 li.list-group-item[data-callback-action=importT3d]';
+    protected string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
+    protected string $contextMenuExport = '#contentMenu1 li.context-menu-item[data-callback-action=exportT3d]';
+    protected string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
     protected string $buttonViewPage = 'span[data-identifier="actions-view-page"]';
     protected string $tabUpload = 'a[href="#import-upload"]';
     protected string $checkboxForceAllUids = 'input#checkForce_all_UIDS';
