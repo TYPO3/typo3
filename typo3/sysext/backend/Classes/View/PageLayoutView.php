@@ -376,10 +376,10 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($this->getBackendUser()->checkLanguageAccess($lP) && $columnId !== 'unused') {
                     $content[$columnId] .= '
                     <div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
-                        <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-page-' . $id . '-' . StringUtility::getUniqueId() . '">'
+                        <div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-' . $columnId . '-page-' . $id . '-' . StringUtility::getUniqueId() . '">'
                             . $link
                             . '</div>
-                        <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+                        <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
                     </div>
                     ';
                 }
@@ -404,7 +404,7 @@ class PageLayoutView implements LoggerAwareInterface
                             $languageColumn[$columnId][$lP] = $head[$columnId] . $content[$columnId];
                         }
                         if (is_array($row) && !VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-                            $singleElementHTML = '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
+                            $singleElementHTML = '<div class="t3-page-ce-element t3-page-ce-dragitem t3js-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
                             if (!$lP && ($this->defLangBinding || $row['sys_language_uid'] != -1)) {
                                 $defaultLanguageElementsByColumn[$columnId][] = ($row['_ORIG_uid'] ?? $row['uid']);
                             }
@@ -417,10 +417,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 true,
                                 $this->hasContentModificationAndAccessPermissions()
                             );
-                            $innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
-                                . $this->tt_content_drawItem($row) . '</div>';
-                            $singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div></div>'
-                                . $this->tt_content_drawFooter($row);
+                            $singleElementHTML .= '<div class="t3-page-ce-body">' . $this->tt_content_drawItem($row) . '</div>' . $this->tt_content_drawFooter($row);
                             $isDisabled = $this->isDisabled('tt_content', $row);
                             $statusHidden = $isDisabled ? ' t3-page-ce-hidden t3js-hidden-record' : '';
                             $displayNone = !$this->tt_contentConfig['showHidden'] && $isDisabled ? ' style="display: none;"' : '';
@@ -435,7 +432,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 . $row['sys_language_uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
 
                             $singleElementHTML .= '<div class="t3-page-ce" data-colpos="' . $columnId . '">';
-                            $singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $columnId . '-page-' . $id .
+                            $singleElementHTML .= '<div class="t3-page-ce-actions t3js-page-new-ce" id="colpos-' . $columnId . '-page-' . $id .
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
@@ -475,7 +472,7 @@ class PageLayoutView implements LoggerAwareInterface
                                     . ' '
                                     . htmlspecialchars($this->getLanguageService()->getLL('content')) . '</a>';
                             }
-                            $singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div></div>';
+                            $singleElementHTML .= '</div></div><div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div></div>';
                             if ($this->defLangBinding && $this->tt_contentConfig['languageMode']) {
                                 $defLangBinding[$columnId][$lP][$row[$lP ? 'l18n_parent' : 'uid'] ?: $row['uid']] = $singleElementHTML;
                             } else {
@@ -937,9 +934,7 @@ class PageLayoutView implements LoggerAwareInterface
 
         // Display info from records fields:
         if (!empty($info)) {
-            $content = '<div class="t3-page-ce-info">
-				' . implode('<br>', $info) . '
-				</div>';
+            $content = '<div class="t3-page-ce-info">' . implode('<br>', $info) . '</div>';
         }
         if (!empty($content)) {
             $content = '<div class="t3-page-ce-footer">' . $content . '</div>';
@@ -1080,13 +1075,19 @@ class PageLayoutView implements LoggerAwareInterface
             $additionalIcons[] = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
 
+        $contentType = $this->CType_labels[$row['CType']];
+        if (!isset($contentType)) {
+            $contentType = BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'CType', $row['CType']);
+        }
+
         // Wrap the whole header
         // NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
         return '<div class="t3-page-ce-header ' . ($allowDragAndDrop ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
-					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
-					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' . $out . '</div>' : '') . '</div>
-				</div>
-				<div class="t3-page-ce-body">';
+                    <div class="t3-page-ce-header-left">' . implode('', $additionalIcons) . '</div>
+                    <div class="t3-page-ce-header-title">' . $contentType . '</div>
+                    <div class="t3-page-ce-header-right">' . ($out ? '<div class="btn-toolbar">' . $out . '</div>' : '') . '</div>
+                </div>
+                <div class="t3-page-ce-body">';
     }
 
     /**
@@ -1165,10 +1166,8 @@ class PageLayoutView implements LoggerAwareInterface
         if ($drawItem) {
             $out .= $this->renderContentElementPreview($row);
         }
-        $out = $outHeader . '<span class="exampleContent">' . $out . '</span>';
-        if ($this->isDisabled('tt_content', $row)) {
-            return '<span class="text-muted">' . $out . '</span>';
-        }
+        $out = $outHeader . $out;
+
         return $out;
     }
 
@@ -1249,18 +1248,18 @@ class PageLayoutView implements LoggerAwareInterface
         switch ($row['CType']) {
             case 'header':
                 if ($row['subheader']) {
-                    $previewHtml = $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
+                    $previewHtml = $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br>';
                 }
                 break;
             case 'bullets':
             case 'table':
                 if ($row['bodytext']) {
-                    $previewHtml = $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+                    $previewHtml = $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br>';
                 }
                 break;
             case 'uploads':
                 if ($row['media']) {
-                    $previewHtml = $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br />';
+                    $previewHtml = $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br>';
                 }
                 break;
             case 'shortcut':
@@ -1282,7 +1281,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
                         }
                     }
-                    $previewHtml = implode('<br />', $shortcutContent) . '<br />';
+                    $previewHtml = implode('<br>', $shortcutContent) . '<br>';
                 }
                 break;
             case 'list':
@@ -1319,7 +1318,7 @@ class PageLayoutView implements LoggerAwareInterface
                 }
 
                 if ($contentType) {
-                    $previewHtml = $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
+                    $previewHtml = '';
                     if ($row['bodytext']) {
                         $previewHtml .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
                     }

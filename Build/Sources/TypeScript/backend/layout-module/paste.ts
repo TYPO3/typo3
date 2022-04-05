@@ -97,7 +97,7 @@ class Paste {
    * activates the paste into / paste after icons outside of the context menus
    */
   private activatePasteIcons(): void {
-    $('.t3-page-ce-wrapper-new-ce').each((index: number, el: HTMLElement): void => {
+    $('.t3js-page-new-ce').each((index: number, el: HTMLElement): void => {
       if (this.pasteAfterLinkTemplate && this.pasteIntoLinkTemplate) {
         const parent = $(el).parent();
         // append the buttons

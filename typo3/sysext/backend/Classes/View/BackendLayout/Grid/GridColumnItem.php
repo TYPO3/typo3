@@ -142,6 +142,14 @@ class GridColumnItem extends AbstractGridObject
         return $previewRenderer->renderPageModulePreviewFooter($this);
     }
 
+    public function getContentTypeLabel(): string
+    {
+        $contentTypeLabels = $this->context->getContentTypeLabels();
+        $ctype = $this->record['CType'] ?? '';
+        return $contentTypeLabels[$ctype] ??
+            BackendUtility::getLabelFromItemListMerged($this->record['pid'], 'tt_content', 'CType', $ctype);
+    }
+
     public function getIcons(): string
     {
         $table = 'tt_content';

@@ -1,30 +1,41 @@
-<div class="t3-page-ce-header row m-0 g-0 {f:if(condition: '{allowEditContent} && {item.dragAndDropAllowed}', then: 't3-page-ce-header-draggable t3js-page-ce-draghandle')}">
-    <div class="col t3-page-ce-header-icons-left">
+<div class="t3-page-ce-header {f:if(condition: '{allowEditContent} && {item.dragAndDropAllowed}', then: 't3-page-ce-header-draggable t3js-page-ce-draghandle')}">
+    <div class="t3-page-ce-header-left">
         {item.icons -> f:format.raw()}
-        <span class="t3js-flag" title="{item.siteLanguage.title}"><core:icon identifier="{item.siteLanguage.flagIdentifier}" /></span>
+        <span class="t3-page-ce-header-icon-flag t3js-flag" title="{item.siteLanguage.title}"><core:icon identifier="{item.siteLanguage.flagIdentifier}" /></span>
     </div>
-    <div class="col-auto align-self-end t3-page-ce-header-icons-right">
+    <div class="t3-page-ce-header-title">
+        {item.contentTypeLabel}
+    </div>
+    <div class="t3-page-ce-header-right">
         <f:if condition="{item.editable} && {allowEditContent}">
             <div class="btn-toolbar">
                 <div class="btn-group btn-group-sm">
-                    <a href="{item.editUrl}" class="btn btn-default" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
+                    <a href="{item.editUrl}" class="btn btn-default btn-borderless" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}">
                         <core:icon identifier="actions-open" />
                     </a>
                     <f:if condition="{item.visibilityToggling}">
-                        <a class="btn btn-default" href="{item.visibilityToggleUrl}" title="{item.visibilityToggleTitle}">
+                        <a class="btn btn-default btn-borderless" href="{item.visibilityToggleUrl}" title="{item.visibilityToggleTitle}">
                             <core:icon identifier="actions-edit-{item.visibilityToggleIconName}" />
                         </a>
                     </f:if>
                     <f:if condition="{item.delible}">
-                        <a class="btn btn-default t3js-modal-trigger" href="{item.deleteUrl}"
-                        data-severity="warning"
-                        data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
-                        data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
-                        data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
-                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem')}">
+                        <a class="btn btn-default btn-borderless t3js-modal-trigger"
+                            href="{item.deleteUrl}"
+                            data-severity="warning"
+                            data-title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                            data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
+                            data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
+                            title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:deleteItem')}">
                             <core:icon identifier="actions-edit-delete" size="small" />
                         </a>
                     </f:if>
+                    <button aria-haspopup="true"
+                            aria-controls="contentMenu0" aria-label="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:advancedFunctions')}"
+                            class="btn btn-default btn-borderless btn-sm t3js-contextmenutrigger"
+                            data-table="tt_content"
+                            data-uid="{item.record.uid}">
+                        <core:icon identifier="actions-menu-alternative" />
+                    </button>
                 </div>
             </div>
         </f:if>
