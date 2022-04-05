@@ -1526,7 +1526,7 @@ class BackendUtility
      *
      * @param string $table Table name, present in TCA
      * @param string $col Field name, present in TCA
-     * @param string $value The value of that field from a selected record
+     * @param mixed $value The value of that field from a selected record
      * @param int $fixed_lgd_chars The max amount of characters the value may occupy
      * @param bool $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
      * @param bool $noRecordLookup If set, no records will be looked up, UIDs are just shown.
@@ -1723,7 +1723,9 @@ class BackendUtility
                 }
                 break;
             case 'flex':
-                $l = strip_tags($value);
+                if (is_string($value)) {
+                    $l = strip_tags($value);
+                }
                 break;
             case 'language':
                 $l = $value;

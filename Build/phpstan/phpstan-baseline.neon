@@ -301,11 +301,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: "#^Variable \\$value in isset\\(\\) always exists and is not nullable\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\View\\\\BackendLayout\\\\ContentFetcher\\:\\:getRuntimeCache\\(\\) should return TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\VariableFrontend but returns TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\FrontendInterface\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
@@ -443,16 +438,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$pageId of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getLabelFromItemListMerged\\(\\) expects int, string given\\.$#"
 			count: 1
-			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$value of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getProcessedValue\\(\\) expects string, int given\\.$#"
-			count: 2
-			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$value of static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getProcessedValue\\(\\) expects string, int\\|false given\\.$#"
-			count: 2
 			path: ../../typo3/sysext/backend/Tests/Unit/Utility/BackendUtilityTest.php
 
 		-
