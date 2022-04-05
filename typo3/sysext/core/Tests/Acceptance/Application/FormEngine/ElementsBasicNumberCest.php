@@ -48,7 +48,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
         $I->waitForText('Edit Form', 3, 'h1');
 
         // Make sure the test operates on the "input" tab
-        $I->click('input');
+        $I->click('number');
     }
 
     /**
@@ -58,7 +58,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
     {
         return [
             [
-                'label' => 'input_8',
+                'label' => 'number_1',
                 'inputValue' => '12.335',
                 'expectedValue' => '12.34',
                 'expectedInternalValue' => '12.34',
@@ -70,7 +70,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 // @todo This is also true for words like "TYPO3". Only the "3" is typed in.
 //
 //            [
-//                'label' => 'input_8',
+//                'label' => 'number_1',
 //                'inputValue' => '12,335', // comma as delimiter
 //                'expectedValue' => '12.34',
 //                'expectedInternalValue' => '12.34',
@@ -78,7 +78,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 //                'comment' => '',
 //            ],
             [
-                'label' => 'input_8',
+                'label' => 'number_1',
                 'inputValue' => '1.1', // dot as delimiter
                 'expectedValue' => '1.10',
                 'expectedInternalValue' => '1.10',
@@ -87,7 +87,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
             ],
 // @todo see the todo above.
 //            [
-//                'label' => 'input_8',
+//                'label' => 'number_1',
 //                'inputValue' => 'TYPO3', // word having a number at end
 //                'expectedValue' => '3.00',
 //                'expectedInternalValue' => '3.00',
@@ -96,7 +96,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 //            ],
 // @todo see the todo above.
 //            [
-//                'label' => 'input_8',
+//                'label' => 'number_1',
 //                'inputValue' => '3TYPO', // word having a number in front
 //                'expectedValue' => '3.00',
 //                'expectedInternalValue' => '3.00',
@@ -104,7 +104,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 //                'comment' => '',
 //            ],
             [
-                'label' => 'input_9',
+                'label' => 'number_2',
                 'inputValue' => '12.335',
                 'expectedValue' => '12',
                 'expectedInternalValue' => '12',
@@ -114,7 +114,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 // @todo this is nonsense. The comma should be replaced by a dot.
 // @todo see the todo above.
 //            [
-//                'label' => 'input_9',
+//                'label' => 'number_2',
 //                'inputValue' => '12,9',
 //                'expectedValue' => '129',
 //                'expectedInternalValue' => '129',
@@ -123,7 +123,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 //            ],
 // @todo see the todo above.
 //            [
-//                'label' => 'input_9',
+//                'label' => 'number_2',
 //                'inputValue' => 'TYPO3',
 //                'expectedValue' => '0',
 //                'expectedInternalValue' => '0',
@@ -132,7 +132,7 @@ class ElementsBasicNumberCest extends AbstractElementsBasicCest
 //            ],
 // @todo see the todo above.
 //            [
-//                'label' => 'input_9',
+//                'label' => 'number_2',
 //                'inputValue' => '3TYPO',
 //                'expectedValue' => '3',
 //                'expectedInternalValue' => '3',

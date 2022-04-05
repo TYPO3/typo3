@@ -46,9 +46,6 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
         $I->click($editRecordLinkCssPath);
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');
-
-        // Make sure the test operates on the "input" tab
-        $I->click('input');
     }
 
     /**
@@ -59,30 +56,33 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
         return [
             /**
             [
-                // @todo this one probably broke with the type="number" patch
-                'label' => 'input_25',
-                'inputValue' => 'Kasper TYPO3',
-                'expectedValue' => '0',
-                'expectedInternalValue' => '0',
-                'expectedValueAfterSave' => '0',
-                'comment' => '',
+            // @todo this one probably broke with the type="number" patch
+            'label' => 'number_3',
+            'inputValue' => 'Kasper TYPO3',
+            'expectedValue' => '0',
+            'expectedInternalValue' => '0',
+            'expectedValueAfterSave' => '0',
+            'comment' => '',
+            'tab' => 'number',
             ],
              */
             [
-                'label' => 'input_25',
+                'label' => 'number_3',
                 'inputValue' => '2',
                 'expectedValue' => '2',
                 'expectedInternalValue' => '2',
                 'expectedValueAfterSave' => '2',
                 'comment' => '',
+                'tab' => 'number',
             ],
             [
-                'label' => 'input_25',
+                'label' => 'number_3',
                 'inputValue' => '-1',
                 'expectedValue' => '-1',
                 'expectedInternalValue' => '-1',
                 'expectedValueAfterSave' => '-1',
                 'comment' => '',
+                'tab' => 'number',
             ],
             [
                 'label' => 'input_12',
@@ -91,6 +91,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'expectedInternalValue' => '748469dd64911af8df8f9a3dcb2c9378',
                 'expectedValueAfterSave' => '748469dd64911af8df8f9a3dcb2c9378',
                 'comment' => '',
+                'tab' => 'input',
             ],
             [
                 'label' => 'input_12',
@@ -99,6 +100,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
                 'expectedInternalValue' => '792a085606250c47d6ebb8c98804d5b0',
                 'expectedValueAfterSave' => '792a085606250c47d6ebb8c98804d5b0',
                 'comment' => 'Check whitespaces are not trimmed.',
+                'tab' => 'input',
             ],
         ];
     }
@@ -110,6 +112,7 @@ class ElementsBasicInputRangeCest extends AbstractElementsBasicCest
      */
     public function simpleRangeAndMd5Fields(ApplicationTester $I, Example $testData): void
     {
+        $I->click($testData['tab']);
         $this->runInputFieldTest($I, $testData);
     }
 }
