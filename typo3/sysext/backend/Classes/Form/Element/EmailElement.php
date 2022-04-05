@@ -67,47 +67,29 @@ class EmailElement extends AbstractFormElement
      */
     public function render(): array
     {
-        $languageService = $this->getLanguageService();
-
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
-        $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
         $resultArray = $this->initializeResultArray();
-
-        $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
 
-        // Get filtered eval list, while always adding "trim"
-        $evalList = array_merge(array_filter(
-            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => in_array($value, ['unique', 'uniqueInPid', 'null'], true)
-        ), ['trim']);
-
-        $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
-        $width = $this->formMaxWidth($size);
-        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $row['uid'] . '][' . $fieldName . ']');
+        $itemValue = $parameterArray['itemFormElValue'];
+        $width = $this->formMaxWidth(
+            MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
+        );
 
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         if ($config['readOnly'] ?? false) {
-            $disabledFieldAttributes = [
-                'class' => 'form-control',
-                'data-formengine-input-name' => $parameterArray['itemFormElName'],
-                'type' => 'email',
-                'value' => $itemValue,
-                'placeholder' => trim($config['placeholder'] ?? ''),
-            ];
-
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input ' . GeneralUtility::implodeAttributes($disabledFieldAttributes, true) . ' disabled>';
+            $html[] =               '<input class="form-control" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -116,7 +98,15 @@ class EmailElement extends AbstractFormElement
             return $resultArray;
         }
 
+        $languageService = $this->getLanguageService();
         $fieldId = StringUtility::getUniqueId('formengine-input-');
+        $itemName = (string)$parameterArray['itemFormElName'];
+
+        // Get filtered eval list, while always adding "trim"
+        $evalList = array_merge(array_filter(
+            GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
+            static fn ($value) => in_array($value, ['unique', 'uniqueInPid', 'null'], true)
+        ), ['trim']);
 
         $attributes = [
             'value' => '',
@@ -129,10 +119,10 @@ class EmailElement extends AbstractFormElement
             ]),
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'data-formengine-input-params' => (string)json_encode([
-                'field' => $parameterArray['itemFormElName'],
+                'field' => $itemName,
                 'evalList' => implode(',', $evalList),
             ], JSON_THROW_ON_ERROR),
-            'data-formengine-input-name' => (string)$parameterArray['itemFormElName'],
+            'data-formengine-input-name' => $itemName,
         ];
 
         if (!empty($config['placeholder'])) {
@@ -155,7 +145,7 @@ class EmailElement extends AbstractFormElement
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-element">';
         $mainFieldHtml[] =          '<input type="email" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
         $mainFieldHtml[] =      '</div>';
         if (!empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-items-aside form-wizards-items-aside--field-control">';
@@ -172,6 +162,8 @@ class EmailElement extends AbstractFormElement
         $mainFieldHtml[] =  '</div>';
         $mainFieldHtml[] = '</div>';
         $mainFieldHtml = implode(LF, $mainFieldHtml);
+
+        $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $mainFieldHtml;
         if ($this->hasNullCheckboxButNoPlaceholder()) {
@@ -227,7 +219,11 @@ class EmailElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '
+            <div class="formengine-field-item t3js-formengine-field-item">
+                ' . $fieldInformationHtml . $fullElement . '
+            </div>';
+
         return $resultArray;
     }
 }

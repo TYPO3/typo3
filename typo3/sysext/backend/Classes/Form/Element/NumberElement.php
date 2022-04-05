@@ -303,7 +303,11 @@ class NumberElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
+        $resultArray['html'] = '
+            <div class="formengine-field-item t3js-formengine-field-item">
+                ' . $fieldInformationHtml . $fullElement . '
+            </div>';
+
         return $resultArray;
     }
 }

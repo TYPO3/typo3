@@ -60,7 +60,6 @@ class PasswordElement extends AbstractFormElement
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
         if ($config['readOnly'] ?? false) {
-            // Early return for read only fields
             $html = [];
             $html[] = '<div class="formengine-field-item t3js-formengine-field-item">';
             $html[] =   $fieldInformationHtml;
@@ -98,7 +97,7 @@ class PasswordElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $itemName,
                 'evalList' => implode(',', $evalList),
-            ]),
+            ], JSON_THROW_ON_ERROR),
             'data-formengine-input-name' => $itemName,
         ];
 

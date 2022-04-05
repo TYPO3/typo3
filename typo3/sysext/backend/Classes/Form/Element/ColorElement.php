@@ -76,7 +76,7 @@ class ColorElement extends AbstractFormElement
 
         $itemValue = $parameterArray['itemFormElValue'];
         $width = $this->formMaxWidth(
-            MathUtility::forceIntegerInRange(($config['size'] ?? false) ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
+            MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth)
         );
 
         $fieldInformationResult = $this->renderFieldInformation();
@@ -90,7 +90,7 @@ class ColorElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" value="' . htmlspecialchars($itemValue) . '" type="text" disabled>';
+            $html[] =               '<input class="form-control" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -101,7 +101,7 @@ class ColorElement extends AbstractFormElement
 
         $languageService = $this->getLanguageService();
         $fieldId = StringUtility::getUniqueId('formengine-input-');
-        $itemName = $parameterArray['itemFormElName'];
+        $itemName = (string)$parameterArray['itemFormElName'];
 
         // Get filtered eval list, while always adding "trim"
         $evalList = array_merge(array_filter(
@@ -122,7 +122,7 @@ class ColorElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $itemName,
                 'evalList' => implode(',', $evalList),
-            ]),
+            ], JSON_THROW_ON_ERROR),
             'data-formengine-input-name' => $itemName,
         ];
 

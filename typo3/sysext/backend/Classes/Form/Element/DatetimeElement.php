@@ -95,7 +95,6 @@ class DatetimeElement extends AbstractFormElement
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldInformationResult, false);
 
-        // Early return for read only fields
         if ($config['readOnly'] ?? false) {
             // Ensure dbType values (see DatabaseRowDateTimeFields) are converted to a UNIX timestamp before rendering read-only
             if (!empty($itemValue) && !MathUtility::canBeInterpretedAsInteger($itemValue)) {
@@ -142,7 +141,7 @@ class DatetimeElement extends AbstractFormElement
             'data-formengine-input-params' => (string)json_encode([
                 'field' => $itemName,
                 'evalList' => implode(',', $evalList),
-            ]),
+            ], JSON_THROW_ON_ERROR),
             'data-formengine-input-name' => $itemName,
         ];
 
