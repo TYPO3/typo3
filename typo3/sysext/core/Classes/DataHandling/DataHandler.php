@@ -9181,10 +9181,13 @@ class DataHandler implements LoggerAwareInterface
     }
 
     /**
-     * Print log error messages from the operations of this script instance
+     * Print log error messages from the operations of this script instance and return a list of the erroneous records
+     *
      * @internal should only be used from within TYPO3 Core
+     *
+     * @return non-empty-string[]
      */
-    public function printLogErrorMessages()
+    public function printLogErrorMessages(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
         $queryBuilder->getRestrictions()->removeAll();
@@ -9205,7 +9208,10 @@ class DataHandler implements LoggerAwareInterface
             )
             ->executeQuery();
 
+        $affectedRecords = [];
         while ($row = $result->fetchAssociative()) {
+            $affectedRecords[] = $row['tablename'] . '.' . $row['recuid'];
+
             $msg = $this->formatLogDetails($row['details'], $row['log_data'] ?? '');
             $msg = $row['error'] . ': ' . $msg;
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, '', $row['error'] === SystemLogErrorClassification::WARNING ? FlashMessage::WARNING : FlashMessage::ERROR, true);
@@ -9213,6 +9219,8 @@ class DataHandler implements LoggerAwareInterface
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
+
+        return $affectedRecords;
     }
 
     /*****************************

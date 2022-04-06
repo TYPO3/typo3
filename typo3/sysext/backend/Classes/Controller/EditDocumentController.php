@@ -50,6 +50,9 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
@@ -636,6 +639,42 @@ class EditDocumentController
             // Recompile the store* values since editconf changed...
             $this->compileStoreData($request);
         }
+
+        // Explicitly require a save operation
+        if ($this->doSave) {
+            $erroneousRecords = $tce->printLogErrorMessages();
+            $messages = [];
+            $table = (string)key($this->editconf);
+            $uidList = GeneralUtility::intExplode(',', (string)key($this->editconf[$table]));
+
+            foreach ($uidList as $uid) {
+                $uid = (int)abs($uid);
+                if (!in_array($table . '.' . $uid, $erroneousRecords, true)) {
+                    $realUidInPayload = ($tceSubstId = array_search($uid, $tce->substNEWwithIDs, true)) !== false ? $tceSubstId : $uid;
+                    $row = $this->data[$table][$uid] ?? $this->data[$table][$realUidInPayload] ?? null;
+                    if ($row !== null) {
+                        $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $row), $this->getBackendUser()->uc['titleLen']);
+                        $messages[] = sprintf($this->getLanguageService()->getLL('notification.record_saved.message'), $recordTitle);
+                    }
+                }
+            }
+
+            // Add messages to the flash message container only if the request is a save action (excludes "duplicate")
+            if ($messages !== []) {
+                $title = count($messages) === 1 ? 'notification.record_saved.title.singular' : 'notification.record_saved.title.plural';
+                $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+                $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier(FlashMessageQueue::NOTIFICATION_QUEUE);
+                $flashMessage = GeneralUtility::makeInstance(
+                    FlashMessage::class,
+                    implode(LF, $messages),
+                    $this->getLanguageService()->getLL($title),
+                    AbstractMessage::OK,
+                    true
+                );
+                $defaultFlashMessageQueue->enqueue($flashMessage);
+            }
+        }
+
         // If a document should be duplicated.
         if (isset($parsedBody['_duplicatedoc']) && is_array($this->editconf)) {
             $this->closeDocument(self::DOCUMENT_CLOSE_MODE_NO_REDIRECT, $request);
@@ -693,7 +732,6 @@ class EditDocumentController
             // Inform the user of the duplication
             $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'));
         }
-        $tce->printLogErrorMessages();
 
         if ($this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
             || isset($parsedBody['_saveandclosedok'])

@@ -144,6 +144,15 @@
 			<trans-unit id="buttons.pageTsConfig" resname="buttons.pageTsConfig">
 				<source>PageTS Config</source>
 			</trans-unit>
+			<trans-unit id="notification.record_saved.title.singular" resname="notification.record_saved.title.singular">
+				<source>Record saved</source>
+			</trans-unit>
+			<trans-unit id="notification.record_saved.title.plural" resname="notification.record_saved.title.plural">
+				<source>Records saved</source>
+			</trans-unit>
+			<trans-unit id="notification.record_saved.message" resname="notification.record_saved.message">
+				<source>Record "%s" has been successfully saved.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
