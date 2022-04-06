@@ -727,13 +727,12 @@ class FileList
                                 }
                             } else {
                                 $theData[$field] = htmlspecialchars(
-                                    BackendUtility::getProcessedValueExtra(
+                                    (string)BackendUtility::getProcessedValueExtra(
                                         $this->getConcreteTableName($field),
                                         $field,
                                         $fileObject->getProperty($field),
                                         $this->fixedL,
-                                        $fileObject->getMetaData()->offsetGet('uid'),
-                                        true
+                                        $fileObject->getMetaData()->offsetGet('uid')
                                     )
                                 );
                             }
