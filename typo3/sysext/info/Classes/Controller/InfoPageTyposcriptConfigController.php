@@ -180,7 +180,7 @@ class InfoPageTyposcriptConfigController extends InfoModuleController
             $this->view->assign('tree', $tmpl->ext_getObjTree($pageTsConfig, '', '', (bool)$moduleData->get('tsconf_alphaSort'), $this->currentModule->getIdentifier()));
         }
         $this->view->assign('alphaSort', BackendUtility::getFuncCheck($this->id, 'tsconf_alphaSort', (bool)$moduleData->get('tsconf_alphaSort'), '', '', 'id="checkTsconf_alphaSort"'));
-        $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'tsconf_parts', $moduleData->get('tsconf_parts'), $allowedModuleOptions['tsconf_parts']));
+        $this->view->assign('dropdownMenu', BackendUtility::getDropdownMenu($this->id, 'tsconf_parts', $moduleData->get('tsconf_parts'), $allowedModuleOptions['tsconf_parts'], '', '', ['id' => 'tsconf_parts']));
         return $this->view->renderResponse('PageTsConfig');
     }
 

@@ -58,9 +58,9 @@ class TranslationStatusController extends InfoModuleController
         $this->currentDepth = (int)$moduleData->get('depth');
         $this->currentLanguageId = (int)$moduleData->get('lang');
         if ($this->id) {
-            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $this->currentDepth, $allowedModuleOptions['depth']));
+            $this->view->assign('depthSelector', BackendUtility::getDropdownMenu($this->id, 'depth', $this->currentDepth, $allowedModuleOptions['depth'], '', '', ['id' => 'depth']));
             if (!empty($allowedModuleOptions['lang'])) {
-                $this->view->assign('languageSelector', BackendUtility::getDropdownMenu($this->id, 'lang', $this->currentLanguageId, $allowedModuleOptions['lang']));
+                $this->view->assign('languageSelector', BackendUtility::getDropdownMenu($this->id, 'lang', $this->currentLanguageId, $allowedModuleOptions['lang'], '', '', ['id' => 'lang']));
             }
             $this->view->assign('csh', BackendUtility::cshItem('_MOD_web_info', 'lang', '', '<div class="col"><span class="btn btn-default btn-sm">|</span></div>'));
 

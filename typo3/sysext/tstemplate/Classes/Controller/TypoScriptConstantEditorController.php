@@ -97,7 +97,7 @@ class TypoScriptConstantEditorController extends TypoScriptTemplateModuleControl
             $availableCategories = $this->getCategoryLabels();
             $currentCategory = (string)$this->moduleData->get('constant_editor_cat');
             if (!empty($availableCategories)) {
-                $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'constant_editor_cat', $currentCategory, $availableCategories);
+                $assigns['constantsMenu'] = BackendUtility::getDropdownMenu($this->id, 'constant_editor_cat', $currentCategory, $availableCategories, '', '', ['id' => 'constant_editor_cat']);
             }
             $assigns['editorFields'] = $this->printFields($this->constants, $currentCategory);
 

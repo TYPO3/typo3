@@ -2243,6 +2243,7 @@ class BackendUtility
      * @param array $menuItems An array with the menu items for the selector box
      * @param string $script The script to send the &id to, if empty it's automatically found
      * @param string $addParams Additional parameters to pass to the script.
+     * @param array $additionalAttributes Additional attributes for the select element
      * @return string HTML code for selector box
      */
     public static function getDropdownMenu(
@@ -2251,7 +2252,8 @@ class BackendUtility
         $currentValue,
         $menuItems,
         $script = '',
-        $addParams = ''
+        $addParams = '',
+        array $additionalAttributes = []
     ) {
         if (!is_array($menuItems) || count($menuItems) <= 1) {
             return '';
@@ -2268,13 +2270,13 @@ class BackendUtility
         $dataMenuIdentifier = GeneralUtility::camelCaseToLowerCaseUnderscored($dataMenuIdentifier);
         $dataMenuIdentifier = str_replace('_', '-', $dataMenuIdentifier);
         // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-        $attributes = GeneralUtility::implodeAttributes([
+        $attributes = GeneralUtility::implodeAttributes(array_merge([
             'name' => $elementName,
             'data-menu-identifier' => $dataMenuIdentifier,
             'data-global-event' => 'change',
             'data-action-navigate' => '$data=~s/$value/',
             'data-navigate-value' => $scriptUrl . '&' . $elementName . '=${value}',
-        ], true);
+        ], $additionalAttributes), true);
         return '
         <div class="input-group">
             <!-- Function Menu of module -->

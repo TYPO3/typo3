@@ -28,11 +28,15 @@
                 <f:if condition="{content}">
                     <div class="row row-cols-auto mb-3 g-3 align-items-center">
                         <div class="col">
-                            <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" /></label>
+                            <label class="form-label" for="depth">
+                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.depth" />
+                            </label>
                             {depthSelector -> f:format.raw()}
                         </div>
                         <div class="col">
-                            <label class="form-label"><f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type" /></label>
+                            <label class="form-label" for="pages">
+                                <f:translate key="LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:moduleFunctions.type" />
+                            </label>
                             {pagesSelector -> f:format.raw()}
                         </div>
                         {csh -> f:format.raw()}

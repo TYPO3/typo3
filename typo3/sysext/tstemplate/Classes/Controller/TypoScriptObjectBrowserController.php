@@ -234,11 +234,11 @@ class TypoScriptObjectBrowserController extends TypoScriptTemplateModuleControll
             }
             $tsBrowserTypes = $this->getAllowedModuleOptions()['ts_browser_type'] ?? [];
             if (is_array($tsBrowserTypes) && count($tsBrowserTypes) > 1) {
-                $assigns['browserTypeDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_type', $tsBrowserType, $tsBrowserTypes);
+                $assigns['browserTypeDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_type', $tsBrowserType, $tsBrowserTypes, '', '', ['id' => 'ts_browser_type']);
             }
             $topLevelBrowserType = $this->getTopLevelObjectList()['ts_browser_toplevel_' . $tsBrowserType] ?? null;
             if (is_array($topLevelBrowserType) && count($topLevelBrowserType) > 1) {
-                $assigns['objectListDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_toplevel_' . $tsBrowserType, (string)$this->moduleData->get('ts_browser_toplevel_' . $tsBrowserType, ''), $topLevelBrowserType);
+                $assigns['objectListDropdownMenu'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_toplevel_' . $tsBrowserType, (string)$this->moduleData->get('ts_browser_toplevel_' . $tsBrowserType, ''), $topLevelBrowserType, '', '', ['id' => 'ts_browser_toplevel_' . $tsBrowserType]);
             }
 
             $assigns['regexSearchCheckbox'] = BackendUtility::getFuncCheck($this->id, 'ts_browser_regexsearch', (bool)$this->moduleData->get('ts_browser_regexsearch'), '', '', 'id="checkTs_browser_regexsearch"');
@@ -292,7 +292,7 @@ class TypoScriptObjectBrowserController extends TypoScriptTemplateModuleControll
             $assigns['checkBoxShowComments'] = BackendUtility::getFuncCheck($this->id, 'ts_browser_showComments', (bool)$this->moduleData->get('ts_browser_showComments'), '', '', 'id="checkTs_browser_showComments"');
             $assigns['checkBoxAlphaSort'] = BackendUtility::getFuncCheck($this->id, 'ts_browser_alphaSort', (bool)$this->moduleData->get('ts_browser_alphaSort'), '', '', 'id="checkTs_browser_alphaSort"');
             if ($tsBrowserType === 'setup') {
-                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_const', (string)$this->moduleData->get('ts_browser_const'), $this->getAllowedModuleOptions()['ts_browser_const']);
+                $assigns['dropdownDisplayConstants'] = BackendUtility::getDropdownMenu($this->id, 'ts_browser_const', (string)$this->moduleData->get('ts_browser_const'), $this->getAllowedModuleOptions()['ts_browser_const'], '', '', ['id' => 'ts_browser_const']);
             }
 
             // Conditions:

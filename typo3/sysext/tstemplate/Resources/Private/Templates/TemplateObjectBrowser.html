@@ -168,7 +168,7 @@
                 <div class="row row-cols-auto align-items-end">
                     <f:if condition="{browserTypeDropdownMenu}">
                         <div class="col">
-                            <label class="form-label">
+                            <label class="form-label" for="ts_browser_type">
                                 <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:browse"/>
                             </label>
                             <f:format.raw>{browserTypeDropdownMenu}</f:format.raw>
@@ -217,7 +217,9 @@
                     </div>
                     <f:if condition="{isSetupAndCropLinesDisabled}">
                         <div class="col">
-                            <label class="form-label"><f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstants" /></label>
+                            <label class="form-label" for="ts_browser_const">
+                                <f:translate key="LLL:EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf:displayConstants" />
+                            </label>
                             <f:format.raw>{dropdownDisplayConstants}</f:format.raw>
                         </div>
                     </f:if>
