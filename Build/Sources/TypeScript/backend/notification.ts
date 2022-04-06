@@ -103,11 +103,12 @@ class Notification {
     title: string,
     message?: string,
     severity: SeverityEnum = SeverityEnum.info,
-    duration: number | string = this.duration,
+    duration?: number | string,
     actions: Array<Action> = [],
   ): void {
-
-    duration = (typeof duration === 'undefined') ? this.duration : duration;
+    if (typeof duration === 'undefined') {
+      duration = (severity === SeverityEnum.error) ? 0 : this.duration;
+    }
 
     if (this.messageContainer === null || document.getElementById('alert-container') === null) {
       this.messageContainer = document.createElement('div');
