@@ -993,11 +993,7 @@ class QueryGenerator
                         break;
                     case 'datetime':
                         if (!in_array($fields['dbType']  ?? '', QueryHelper::getDateTimeTypes(), true)) {
-                            if (GeneralUtility::inList($fields['eval'] ?? '', 'int')) {
-                                $fields['type'] = 'number';
-                            } else {
-                                $fields['type'] = 'text';
-                            }
+                            $fields['type'] = 'number';
                         } elseif ($fields['dbType'] === 'time') {
                             $fields['type'] = 'time';
                         } else {
@@ -1460,11 +1456,7 @@ class QueryGenerator
                             break;
                         case 'datetime':
                             if (!in_array($this->fields[$fieldName]['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
-                                if (GeneralUtility::inList($this->fields[$fieldName]['eval'] ?? '', 'int')) {
-                                    $this->fields[$fieldName]['type'] = 'number';
-                                } else {
-                                    $this->fields[$fieldName]['type'] = 'text';
-                                }
+                                $this->fields[$fieldName]['type'] = 'number';
                             } elseif ($this->fields[$fieldName]['dbType'] === 'time') {
                                 $this->fields[$fieldName]['type'] = 'time';
                             } else {

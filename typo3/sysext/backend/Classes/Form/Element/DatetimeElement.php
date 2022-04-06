@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Form\Element;
 
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -124,8 +125,13 @@ class DatetimeElement extends AbstractFormElement
         // Get filtered eval list, while always adding the format
         $evalList = array_merge([$format], array_filter(
             GeneralUtility::trimExplode(',', $config['eval'] ?? '', true),
-            static fn ($value) => $value === 'null' || $value === 'int'
+            static fn ($value) => $value === 'null'
         ));
+
+        // Always add "integer" eval in case non or an invalid dbType is specified (Used for JS processing)
+        if (!in_array($config['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+            $evalList = array_merge($evalList, ['integer']);
+        }
 
         $attributes = [
             'value' => '',

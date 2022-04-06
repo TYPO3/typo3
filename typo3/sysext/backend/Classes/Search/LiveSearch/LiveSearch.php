@@ -307,7 +307,7 @@ class LiveSearch
                 if ($fieldName === 'uid'
                     || $fieldName === 'pid'
                     || ($fieldType === 'number' && ($fieldConfig['format'] ?? 'integer') === 'integer')
-                    || ($fieldType === 'datetime' && GeneralUtility::inList($fieldConfig['eval'] ?? '', 'int'))
+                    || ($fieldType === 'datetime' && !in_array($fieldConfig['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true))
                 ) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,

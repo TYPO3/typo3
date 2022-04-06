@@ -239,7 +239,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
@@ -251,7 +250,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
@@ -438,7 +436,6 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.lastUpdated',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
@@ -451,7 +448,6 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
-                'eval' => 'int',
                 'default' => 0,
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,

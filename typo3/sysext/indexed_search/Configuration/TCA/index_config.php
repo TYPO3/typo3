@@ -39,7 +39,6 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -175,7 +174,6 @@ return [
             'label' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.timer_next_indexing',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -184,7 +182,6 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'format' => 'time',
-                'eval' => 'int',
                 'default' => 3600,
             ],
         ],

@@ -81,7 +81,6 @@ return [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_time',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],

@@ -1990,7 +1990,7 @@ class TcaMigrationTest extends UnitTestCase
                                 'required' => true,
                                 'readOnly' => true,
                                 'size' => 20,
-                                'eval' => 'null,int',
+                                'eval' => 'null',
                                 'format' => 'time',
                             ],
                         ],
@@ -2007,7 +2007,7 @@ class TcaMigrationTest extends UnitTestCase
                                 'type' => 'input',
                                 'format' => 'date',
                                 'renderType' => 'inputDateTime',
-                                'eval' => 'trim,datetime',
+                                'eval' => 'trim,datetime,int',
                             ],
                         ],
                     ],
@@ -2145,6 +2145,88 @@ class TcaMigrationTest extends UnitTestCase
                                 'dbType' => 'time',
                                 'default' => '20:20:20',
                                 'format' => 'time',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        yield 'Update default value for datetime if it\'s no int value and no native type is used' => [
+            'input' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                                'default' => '0',
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                                'default' => '',
+                            ],
+                        ],
+                        'cColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                                'default' => '16362836',
+                            ],
+                        ],
+                        'dColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'eval' => 'datetime',
+                                'default' => 'invalid',
+                            ],
+                        ],
+                        'eColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'renderType' => 'inputDateTime',
+                                'default' => time(),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'default' => 0,
+                            ],
+                        ],
+                        'bColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'default' => 0,
+                            ],
+                        ],
+                        'cColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'default' => 16362836,
+                            ],
+                        ],
+                        'dColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                            ],
+                        ],
+                        'eColumn' => [
+                            'config' => [
+                                'type' => 'datetime',
+                                'default' => time(),
                             ],
                         ],
                     ],

@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Migrations;
 
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Migrate TCA from old to new syntax. Used in bootstrap and Flex Form Data Structures.
@@ -831,7 +832,7 @@ class TcaMigration
     /**
      * Migrates [config][renderType] = 'inputDateTime' to [config][type] = 'datetime'.
      * Migrates "date", "time" and "timesec" from [config][eval] to [config][format].
-     * Removes anything except for "null" and "int" from [config][eval].
+     * Removes anything except for "null" from [config][eval].
      * Removes option [config][max], if set.
      * Removes option [config][format], if set.
      * Removes option [config][default], if the default is the native "empty" value
@@ -864,7 +865,7 @@ class TcaMigration
                     $tca[$table]['columns'][$fieldName]['config']['format']
                 );
 
-                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'] ?? '', true);
 
                 // Set the "format" based on "eval". If set to "datetime",
                 // no migration is done since this is the default format.
@@ -876,26 +877,31 @@ class TcaMigration
                     $tca[$table]['columns'][$fieldName]['config']['format'] = 'timesec';
                 }
 
-                // Filter eval list, only "null" and "int" is allowed
-                $evalList = array_filter(
-                    $evalList,
-                    static fn ($value) => $value === 'null' || $value === 'int'
-                );
-
-                if ($evalList !== []) {
-                    // Write back filtered eval list
-                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                if (in_array('null', $evalList, true)) {
+                    // Set "eval" to "null", since it's currently defined and the only allowed "eval" for type=datetime
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = 'null';
                 } else {
-                    // Unset eval list if no allowed item is left
                     unset($tca[$table]['columns'][$fieldName]['config']['eval']);
                 }
 
-                if (isset($fieldConfig['config']['default'])
-                    && in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)
-                    && $fieldConfig['config']['default'] === QueryHelper::getDateTimeFormats()[$fieldConfig['config']['dbType']]['empty']
-                ) {
-                    // Unset default for native datetime fields if the default is the native "empty" value
-                    unset($tca[$table]['columns'][$fieldName]['config']['default']);
+                if (isset($fieldConfig['config']['default'])) {
+                    if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                        if ($fieldConfig['config']['default'] === QueryHelper::getDateTimeFormats()[$fieldConfig['config']['dbType']]['empty']) {
+                            // Unset default for native datetime fields if the default is the native "empty" value
+                            unset($tca[$table]['columns'][$fieldName]['config']['default']);
+                        }
+                    } elseif (!is_int($fieldConfig['config']['default'])) {
+                        if ($fieldConfig['config']['default'] === '') {
+                            // Always use int as default (string values are no longer supported for "datetime")
+                            $tca[$table]['columns'][$fieldName]['config']['default'] = 0;
+                        } elseif (MathUtility::canBeInterpretedAsInteger($fieldConfig['config']['default'])) {
+                            // Cast default to int, in case it can be interpreted as integer
+                            $tca[$table]['columns'][$fieldName]['config']['default'] = (int)$fieldConfig['config']['default'];
+                        } else {
+                            // Unset default in case it's a no longer supported string
+                            unset($tca[$table]['columns'][$fieldName]['config']['default']);
+                        }
+                    }
                 }
 
                 $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '

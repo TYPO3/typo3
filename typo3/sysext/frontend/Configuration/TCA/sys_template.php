@@ -58,7 +58,6 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -67,7 +66,6 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),

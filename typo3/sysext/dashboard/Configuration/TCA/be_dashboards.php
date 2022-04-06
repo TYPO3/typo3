@@ -42,7 +42,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -51,7 +50,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],

@@ -472,7 +472,6 @@ export default (function() {
       case 'lower':
         returnValue = value.toLowerCase();
         break;
-      case 'int':
       case 'integer':
         if (value !== '') {
           returnValue = FormEngineValidation.parseInt(value);

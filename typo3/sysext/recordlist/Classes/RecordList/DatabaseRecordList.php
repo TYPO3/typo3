@@ -2534,7 +2534,7 @@ class DatabaseRecordList
                 $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
                 $fieldType = $fieldConfig['type'];
                 if (($fieldType === 'number' && ($fieldConfig['format'] ?? 'integer') === 'integer')
-                    || ($fieldType === 'datetime' && GeneralUtility::inList($fieldConfig['eval'] ?? '', 'int'))
+                    || ($fieldType === 'datetime' && !in_array($fieldConfig['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true))
                 ) {
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)

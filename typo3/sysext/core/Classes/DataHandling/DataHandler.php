@@ -2131,14 +2131,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        // @todo int should in the future always be used if no native type ("dbType") is specified
-        if (GeneralUtility::inList($tcaFieldConf['eval'] ?? '', 'int')) {
-            $value = (int)$value;
-        } else {
-            // @todo This should be deprecated!
-            $value = (string)$value;
-        }
-
         // Set the value to null if we have an empty value for a native field
         $res['value'] = $isNativeDateTimeField && !$value ? null : $value;
 
@@ -2163,6 +2155,9 @@ class DataHandler implements LoggerAwareInterface
         if ($isNativeDateTimeField) {
             // Convert the timestamp back to a date/time
             $res['value'] = $res['value'] ? gmdate($nativeDateTimeFieldFormat, $res['value']) : $nativeDateTimeFieldEmptyValue;
+        } else {
+            // Ensure value is always an int if no native field is used
+            $res['value'] = (int)($res['value'] ?? 0);
         }
 
         return $res;
@@ -2843,7 +2838,6 @@ class DataHandler implements LoggerAwareInterface
         $set = true;
         foreach ($evalArray as $func) {
             switch ($func) {
-                case 'int':
                 case 'year':
                     $value = (int)$value;
                     break;

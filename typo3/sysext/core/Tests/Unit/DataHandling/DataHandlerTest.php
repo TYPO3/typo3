@@ -449,7 +449,6 @@ class DataHandlerTest extends UnitTestCase
     {
         $tcaFieldConf = [
             'type' => 'datetime',
-            'eval' => 'int',
             'range' => [
                 // unix timestamp: 1519862400
                 'lower' => gmmktime(0, 0, 0, 3, 1, 2018),
@@ -472,18 +471,15 @@ class DataHandlerTest extends UnitTestCase
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
     {
         return [
-            'Empty string returns empty string or the number zero' => [
-                '',
+            'Empty string returns the number zero' => [
                 '',
                 0,
             ],
-            'Zero returns zero as a string or the number zero' => [
+            'Zero returns zero' => [
                 0,
-                '0',
                 0,
             ],
-            'Zero as a string returns zero as a string or the number zero' => [
-                '0',
+            'Zero as a string returns zero' => [
                 '0',
                 0,
             ],
@@ -496,8 +492,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(
         string|int $inputValue,
-        string $expected,
-        int $expectedEvalInt
+        int $expected,
     ): void {
         $tcaFieldConf = [
             'type' => 'datetime',
@@ -507,20 +502,8 @@ class DataHandlerTest extends UnitTestCase
             ],
         ];
 
-        $tcaFieldConfEvalInt = [
-            'type' => 'datetime',
-            'eval' => 'int',
-            'default' => 0,
-            'range' => [
-                'lower' => 1627077600,
-            ],
-        ];
-
         $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
         self::assertSame($expected, $returnValue['value']);
-
-        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConfEvalInt);
-        self::assertSame($expectedEvalInt, $returnValue['value']);
     }
 
     /**

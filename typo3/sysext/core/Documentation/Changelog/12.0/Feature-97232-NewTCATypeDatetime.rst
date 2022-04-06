@@ -24,7 +24,7 @@ The TCA type :php:`datetime` features the following column configuration:
 - :php:`dbType`: :php:`date`, :php:`time`, :php:`datetime`
 - :php:`default`
 - :php:`disableAgeDisplay`
-- :php:`eval`: :php:`null`, :php:`int`
+- :php:`eval`: :php:`null`
 - :php:`fieldControl`
 - :php:`fieldInformation`
 - :php:`fieldWizard`
@@ -39,9 +39,10 @@ The TCA type :php:`datetime` features the following column configuration:
 
 .. note::
 
-   The :php:`eval=int` option should always be set in case no specific
-   :php:`dbType` is used since the value will then be stored as timestamp.
-   Using an `integer` database column will be enforced in future versions.
+   The :php:`eval=int` option is now automatically set for the element in
+   case no specific :php:`dbType` has been defined. It should therefore be
+   removed from the TCA configuration. The only valid option for :php:`eval`
+   is :php:`null`.
 
 .. note::
 
@@ -83,7 +84,6 @@ looks like the following:
             'format' => 'date',
             'required' => true,
             'size' => 20,
-            'eval' => 'int',
             'default' => 0,
         ]
     ]

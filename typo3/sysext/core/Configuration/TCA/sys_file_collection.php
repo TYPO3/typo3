@@ -72,7 +72,6 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
-                'eval' => 'int',
                 'default' => 0,
             ],
         ],
@@ -82,7 +81,6 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'format' => 'date',
-                'eval' => 'int',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038),
