@@ -287,34 +287,21 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             return '\'' . $value . '\'';
         }, $tags);
 
-        if ($this->isConnectionMysql($connection)) {
-            // Use an optimized query on mysql ... don't use on your own
-            // * ansi sql does not know about multi table delete
-            // * doctrine query builder does not support join on delete()
-            $connection->executeQuery(
-                'DELETE tags2, cache1'
-                . ' FROM ' . $this->tagsTable . ' AS tags1'
-                . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
-                . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
-                . ' WHERE tags1.tag IN (' . implode(',', $quotedTagList) . ')'
-            );
-        } else {
-            $queryBuilder = $connection->createQueryBuilder();
-            $result = $queryBuilder->select('identifier')
-                ->from($this->tagsTable)
-                ->where('tag IN (' . implode(',', $quotedTagList) . ')')
-                // group by is like DISTINCT and used here to suppress possible duplicate identifiers
-                ->groupBy('identifier')
-                ->executeQuery();
-            $cacheEntryIdentifiers = $result->fetchFirstColumn();
-            $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-            $queryBuilder->delete($this->cacheTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->executeStatement();
-            $queryBuilder->delete($this->tagsTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->executeStatement();
-        }
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('identifier')
+            ->from($this->tagsTable)
+            ->where('tag IN (' . implode(',', $quotedTagList) . ')')
+            // group by is like DISTINCT and used here to suppress possible duplicate identifiers
+            ->groupBy('identifier')
+            ->executeQuery();
+        $cacheEntryIdentifiers = $result->fetchFirstColumn();
+        $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
+        $queryBuilder->delete($this->cacheTable)
+            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+            ->executeStatement();
+        $queryBuilder->delete($this->tagsTable)
+            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+            ->executeStatement();
     }
 
     /**
@@ -334,34 +321,21 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
 
         $quotedTag = '\'' . $tag . '\'';
 
-        if ($this->isConnectionMysql($connection)) {
-            // Use an optimized query on mysql ... don't use on your own
-            // * ansi sql does not know about multi table delete
-            // * doctrine query builder does not support join on delete()
-            $connection->executeQuery(
-                'DELETE tags2, cache1'
-                . ' FROM ' . $this->tagsTable . ' AS tags1'
-                . ' JOIN ' . $this->tagsTable . ' AS tags2 ON tags1.identifier = tags2.identifier'
-                . ' JOIN ' . $this->cacheTable . ' AS cache1 ON tags1.identifier = cache1.identifier'
-                . ' WHERE tags1.tag = ' . $quotedTag
-            );
-        } else {
-            $queryBuilder = $connection->createQueryBuilder();
-            $result = $queryBuilder->select('identifier')
-                ->from($this->tagsTable)
-                ->where('tag = ' . $quotedTag)
-                // group by is like DISTINCT and used here to suppress possible duplicate identifiers
-                ->groupBy('identifier')
-                ->executeQuery();
-            $cacheEntryIdentifiers = $result->fetchFirstColumn();
-            $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-            $queryBuilder->delete($this->cacheTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->executeStatement();
-            $queryBuilder->delete($this->tagsTable)
-                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                ->executeStatement();
-        }
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('identifier')
+            ->from($this->tagsTable)
+            ->where('tag = ' . $quotedTag)
+            // group by is like DISTINCT and used here to suppress possible duplicate identifiers
+            ->groupBy('identifier')
+            ->executeQuery();
+        $cacheEntryIdentifiers = $result->fetchFirstColumn();
+        $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
+        $queryBuilder->delete($this->cacheTable)
+            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+            ->executeStatement();
+        $queryBuilder->delete($this->tagsTable)
+            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+            ->executeStatement();
     }
 
     /**
@@ -372,74 +346,53 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $this->throwExceptionIfFrontendDoesNotExist();
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
-        if ($this->isConnectionMysql($connection)) {
-            // Use an optimized query on mysql ... don't use on your own
-            // * ansi sql does not know about multi table delete
-            // * doctrine query builder does not support join on delete()
-            // First delete all expired rows from cache table and their connected tag rows
-            $connection->executeQuery(
-                'DELETE cache, tags'
-                . ' FROM ' . $this->cacheTable . ' AS cache'
-                . ' LEFT OUTER JOIN ' . $this->tagsTable . ' AS tags ON cache.identifier = tags.identifier'
-                . ' WHERE cache.expires < ?',
-                [(int)$GLOBALS['EXEC_TIME']]
-            );
-            // Then delete possible "orphaned" rows from tags table - tags that have no cache row for whatever reason
-            $connection->executeQuery(
-                'DELETE tags'
-                . ' FROM ' . $this->tagsTable . ' AS tags'
-                . ' LEFT OUTER JOIN ' . $this->cacheTable . ' as cache ON tags.identifier = cache.identifier'
-                . ' WHERE cache.identifier IS NULL'
-            );
-        } else {
-            $queryBuilder = $connection->createQueryBuilder();
-            $result = $queryBuilder->select('identifier')
-                ->from($this->cacheTable)
-                ->where($queryBuilder->expr()->lt(
-                    'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
-                ))
-                // group by is like DISTINCT and used here to suppress possible duplicate identifiers
-                ->groupBy('identifier')
-                ->executeQuery();
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('identifier')
+            ->from($this->cacheTable)
+            ->where($queryBuilder->expr()->lt(
+                'expires',
+                $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
+            ))
+            // group by is like DISTINCT and used here to suppress possible duplicate identifiers
+            ->groupBy('identifier')
+            ->executeQuery();
 
-            // Get identifiers of expired cache entries
-            $cacheEntryIdentifiers = $result->fetchFirstColumn();
-            if (!empty($cacheEntryIdentifiers)) {
-                // Delete tag rows connected to expired cache entries
-                $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-                $queryBuilder->delete($this->tagsTable)
-                    ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                    ->executeStatement();
-            }
-            $queryBuilder->delete($this->cacheTable)
-                ->where($queryBuilder->expr()->lt(
-                    'expires',
-                    $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
-                ))
+        // Get identifiers of expired cache entries
+        $cacheEntryIdentifiers = $result->fetchFirstColumn();
+        if (!empty($cacheEntryIdentifiers)) {
+            // Delete tag rows connected to expired cache entries
+            $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
+            $queryBuilder->delete($this->tagsTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
                 ->executeStatement();
+        }
+        $queryBuilder->delete($this->cacheTable)
+            ->where($queryBuilder->expr()->lt(
+                'expires',
+                $queryBuilder->createNamedParameter($GLOBALS['EXEC_TIME'], Connection::PARAM_INT)
+            ))
+            ->executeStatement();
 
-            // Find out which "orphaned" tags rows exists that have no cache row and delete those, too.
-            $queryBuilder = $connection->createQueryBuilder();
-            $result = $queryBuilder->select('tags.identifier')
-                ->from($this->tagsTable, 'tags')
-                ->leftJoin(
-                    'tags',
-                    $this->cacheTable,
-                    'cache',
-                    $queryBuilder->expr()->eq('tags.identifier', $queryBuilder->quoteIdentifier('cache.identifier'))
-                )
-                ->where($queryBuilder->expr()->isNull('cache.identifier'))
-                ->groupBy('tags.identifier')
-                ->executeQuery();
-            $tagsEntryIdentifiers = $result->fetchFirstColumn();
+        // Find out which "orphaned" tags rows exists that have no cache row and delete those, too.
+        $queryBuilder = $connection->createQueryBuilder();
+        $result = $queryBuilder->select('tags.identifier')
+            ->from($this->tagsTable, 'tags')
+            ->leftJoin(
+                'tags',
+                $this->cacheTable,
+                'cache',
+                $queryBuilder->expr()->eq('tags.identifier', $queryBuilder->quoteIdentifier('cache.identifier'))
+            )
+            ->where($queryBuilder->expr()->isNull('cache.identifier'))
+            ->groupBy('tags.identifier')
+            ->executeQuery();
+        $tagsEntryIdentifiers = $result->fetchFirstColumn();
 
-            if (!empty($tagsEntryIdentifiers)) {
-                $quotedIdentifiers = $queryBuilder->createNamedParameter($tagsEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-                $queryBuilder->delete($this->tagsTable)
-                    ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-                    ->executeStatement();
-            }
+        if (!empty($tagsEntryIdentifiers)) {
+            $quotedIdentifiers = $queryBuilder->createNamedParameter($tagsEntryIdentifiers, Connection::PARAM_STR_ARRAY);
+            $queryBuilder->delete($this->tagsTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+                ->executeStatement();
         }
     }
 
