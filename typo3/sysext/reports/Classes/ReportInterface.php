@@ -22,8 +22,26 @@ interface ReportInterface
 {
     /**
      * Returns the content for a report
-     *
-     * @return string A reports rendered HTML
      */
-    public function getReport();
+    public function getReport(): string;
+
+    /**
+     * Returns unique identifier of the report
+     */
+    public function getIdentifier(): string;
+
+    /**
+     * Returns title of the report
+     */
+    public function getTitle(): string;
+
+    /**
+     * Returns description of the report
+     */
+    public function getDescription(): string;
+
+    /**
+     * Returns the identifier of the icon used for the report
+     */
+    public function getIconIdentifier(): string;
 }

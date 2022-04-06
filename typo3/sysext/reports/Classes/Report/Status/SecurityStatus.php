@@ -47,7 +47,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
      * @param ServerRequestInterface|null $request
      * @return ReportStatus[] List of statuses
      */
-    public function getStatus(ServerRequestInterface $request = null)
+    public function getStatus(ServerRequestInterface $request = null): array
     {
         $statuses = [
             'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
@@ -66,6 +66,11 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         }
 
         return $statuses;
+    }
+
+    public function getLabel(): string
+    {
+        return 'security';
     }
 
     /**

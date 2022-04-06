@@ -77,7 +77,7 @@ class ExtensionStatus implements StatusProviderInterface
      *
      * @return Status[] List of statuses
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $status = [];
         $status['mainRepositoryStatus'] = $this->getMainRepositoryStatus();
@@ -89,6 +89,11 @@ class ExtensionStatus implements StatusProviderInterface
         $status['extensionsOutdatedStatusNotInstalled'] = $extensionStatus->existingoutdated ?? [];
 
         return $status;
+    }
+
+    public function getLabel(): string
+    {
+        return 'Extension Manager';
     }
 
     /**

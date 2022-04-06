@@ -713,4 +713,10 @@ return [
             'Feature-97450-PSR-14EventForModifyingVersionDifferences.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'reports\']' => [
+        'restFiles' => [
+            'Breaking-97320-RegisterReportAndStatusViaServiceConfiguration.rst',
+            'Feature-97320-NewRegistrationForReportsAndStatus.rst',
+        ],
+    ],
 ];

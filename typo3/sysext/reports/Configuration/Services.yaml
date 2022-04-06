@@ -19,3 +19,11 @@ services:
     tags:
       - name: event.listener
         identifier: 'typo3-reports/warnings'
+
+  TYPO3\CMS\Reports\Registry\StatusRegistry:
+    arguments:
+      - !tagged_iterator reports.status
+
+  TYPO3\CMS\Reports\Registry\ReportRegistry:
+    arguments:
+      - !tagged_iterator reports.report

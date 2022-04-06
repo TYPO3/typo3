@@ -28,7 +28,6 @@ interface RequestAwareReportInterface extends ReportInterface
      * Returns the content for a report
      *
      * @param ServerRequestInterface|null $request the currently handled request
-     * @return string A reports rendered HTML
      */
-    public function getReport(ServerRequestInterface $request = null);
+    public function getReport(ServerRequestInterface $request = null): string;
 }

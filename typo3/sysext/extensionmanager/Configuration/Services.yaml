@@ -54,6 +54,12 @@ services:
 
   TYPO3\CMS\Extensionmanager\Report\ExtensionComposerStatus:
     public: true
+    tags:
+      - name: reports.status
+
+  TYPO3\CMS\Extensionmanager\Report\ExtensionStatus:
+    tags:
+      - name: reports.status
 
   TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter:
     public: true

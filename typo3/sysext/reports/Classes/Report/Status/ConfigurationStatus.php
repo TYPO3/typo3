@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -36,9 +37,9 @@ class ConfigurationStatus implements StatusProviderInterface
     /**
      * Determines the Install Tool's status, mainly concerning its protection.
      *
-     * @return array List of statuses
+     * @return Status[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $statuses = [
             'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
@@ -54,6 +55,11 @@ class ConfigurationStatus implements StatusProviderInterface
             $statuses['mysqlDatabaseUsesUtf8'] = $this->getMysqlDatabaseUtf8Status();
         }
         return $statuses;
+    }
+
+    public function getLabel(): string
+    {
+        return 'configuration';
     }
 
     /**

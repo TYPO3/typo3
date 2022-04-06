@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Install\Report\EnvironmentStatusReport;
-use TYPO3\CMS\Install\Report\InstallStatusReport;
-use TYPO3\CMS\Install\Report\SecurityStatusReport;
 use TYPO3\CMS\Install\Updates\BackendGroupsExplicitAllowDenyMigration;
 use TYPO3\CMS\Install\Updates\BackendUserLanguageMigration;
 use TYPO3\CMS\Install\Updates\CollectionsExtractionUpdate;
@@ -32,12 +28,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogChanne
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['feLoginModeExtension'] = FeLoginModeExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysLogSerialization'] = SysLogSerializationUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendGroupsExplicitAllowDenyMigration'] = BackendGroupsExplicitAllowDenyMigration::class;
-
-// Register report module additions
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = InstallStatusReport::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = SecurityStatusReport::class;
-
-// Only add the environment status report if not in CLI mode
-if (!Environment::isCli()) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = EnvironmentStatusReport::class;
-}

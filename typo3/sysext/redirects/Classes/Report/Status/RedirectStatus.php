@@ -38,13 +38,18 @@ class RedirectStatus implements StatusProviderInterface, RequestAwareStatusProvi
     /**
      * Determines the status of the FAL index.
      *
-     * @return array List of statuses
+     * @return Status[]
      */
     public function getStatus(ServerRequestInterface $request = null): array
     {
         return [
             'Conflicts' => $this->getConflictingRedirects($request),
         ];
+    }
+
+    public function getLabel(): string
+    {
+        return 'LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:statusProvider';
     }
 
     protected function getConflictingRedirects(ServerRequestInterface $request): Status

@@ -108,6 +108,11 @@ class ExtensionComposerStatus implements RequestAwareStatusProviderInterface
         return $status;
     }
 
+    public function getLabel(): string
+    {
+        return 'Composer Manifest';
+    }
+
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

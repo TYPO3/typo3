@@ -34,13 +34,18 @@ class SecurityStatusReport implements StatusProviderInterface
      *
      * @return Status[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $this->executeAdminCommand();
         return [
             'installToolProtection' => $this->getInstallToolProtectionStatus(),
             'serverResponseStatus' => GeneralUtility::makeInstance(ServerResponseCheck::class)->asStatus(),
         ];
+    }
+
+    public function getLabel(): string
+    {
+        return 'security';
     }
 
     /**

@@ -23,7 +23,12 @@ interface StatusProviderInterface
     /**
      * Returns the status of an extension or (sub)system
      *
-     * @return \TYPO3\CMS\Reports\Status[] An array of \TYPO3\CMS\Reports\Status objects
+     * @return Status[]
      */
-    public function getStatus();
+    public function getStatus(): array;
+
+    /**
+     * Return label of this status
+     */
+    public function getLabel(): string;
 }

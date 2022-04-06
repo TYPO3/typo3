@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
 
@@ -28,14 +29,19 @@ class SystemStatus implements StatusProviderInterface
     /**
      * Determines the Install Tool's status, mainly concerning its protection.
      *
-     * @return array List of statuses
+     * @return Status[] List of statuses
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         $statuses = [
             'PhpModules' => $this->getMissingPhpModulesOfExtensions(),
         ];
         return $statuses;
+    }
+
+    public function getLabel(): string
+    {
+        return 'system';
     }
 
     /**

@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Install\Report;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -37,9 +38,17 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
      *
      * @return Status[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
+        if (Environment::isCli()) {
+            return [];
+        }
         return $this->getStatusInternal(false);
+    }
+
+    public function getLabel(): string
+    {
+        return 'system';
     }
 
     /**
@@ -49,6 +58,9 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
      */
     public function getDetailedStatus()
     {
+        if (Environment::isCli()) {
+            return [];
+        }
         return $this->getStatusInternal(true);
     }
 

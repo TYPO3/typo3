@@ -25,9 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Reports\ReportInterface;
+use TYPO3\CMS\Reports\Registry\ReportRegistry;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 
 /**
@@ -37,18 +35,12 @@ use TYPO3\CMS\Reports\RequestAwareReportInterface;
  */
 class ReportController
 {
-    protected UriBuilder $uriBuilder;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected IconRegistry $iconRegistry;
-
     public function __construct(
-        UriBuilder $uriBuilder,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        IconRegistry $iconRegistry
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly IconRegistry $iconRegistry,
+        protected readonly ReportRegistry $reportRegistry
     ) {
-        $this->uriBuilder = $uriBuilder;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->iconRegistry = $iconRegistry;
     }
 
     /**
@@ -56,12 +48,12 @@ class ReportController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $validRegisteredReports = $this->getValidReportCombinations();
+        $allReports = $this->reportRegistry->getReports();
         $queryParams = $request->getQueryParams();
         $backendUserUc = $this->getBackendUser()->uc['reports']['selection'] ?? [];
-        // This can be 'index' for "overview", or 'detail' to render one specific report specified by 'extension' and 'report'
+        // This can be 'index' for "overview", or 'detail' to render one specific report specified by 'report'
         $mainView = $queryParams['action'] ?? $backendUserUc['action'] ?? 'detail';
-        if (count($validRegisteredReports) === 0 || $mainView === 'index') {
+        if ($mainView === 'index' || count($allReports) === 0) {
             // Render overview directly if there are no reports at all to have some info box about that,
             // or if that view has been requested explicitly.
             $this->updateBackendUserUc('index');
@@ -69,22 +61,19 @@ class ReportController
         }
 
         // For fallbacks if backendUser->uc() pointer is invalid or called first time.
-        $firstReport = $validRegisteredReports[0];
-        $extension = $request->getQueryParams()['extension'] ?? $backendUserUc['extension'] ?? $firstReport['extension'];
-        $report = $request->getQueryParams()['report'] ?? $backendUserUc['report'] ?? $firstReport['report'];
-        if (!in_array(['extension' => $extension, 'report' => $report], $validRegisteredReports)) {
+        $firstReportIdentifier = array_keys($allReports)[0];
+        $reportIdentifier = $request->getQueryParams()['report'] ?? $backendUserUc['report'] ?? $firstReportIdentifier;
+        if (!$this->reportRegistry->hasReport($reportIdentifier)) {
             // If a selected report has been removed meanwhile (e.g. extension deleted), fall back to first one.
-            $extension = $firstReport['extension'];
-            $report = $firstReport['report'];
+            $reportIdentifier = $firstReportIdentifier;
         }
         if (($backendUserUc['action'] ?? '') !== 'detail'
-            || ($backendUserUc['extension'] ?? '') !== $extension
-            || ($backendUserUc['report'] ?? '') !== $report
+            || ($backendUserUc['report'] ?? '') !== $reportIdentifier
         ) {
             // Update uc if view changed to render same view on next call.
-            $this->updateBackendUserUc('detail', $extension, $report);
+            $this->updateBackendUserUc('detail', $reportIdentifier);
         }
-        return $this->detailAction($request, $extension, $report);
+        return $this->detailAction($request, $reportIdentifier);
     }
 
     /**
@@ -93,20 +82,10 @@ class ReportController
     protected function indexAction(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredReports = $this->getRegisteredReportsArray();
-        foreach ($registeredReports as $extension => $reportModules) {
-            foreach ($reportModules as $module => $configuration) {
-                $icon = $configuration['icon'] ?? 'EXT:reports/Resources/Public/Icons/Extension.png';
-                $isRegisteredIcon = $registeredReports[$extension][$module]['isIconIdentifier'] = $this->iconRegistry->isRegistered($icon);
-                if (!$isRegisteredIcon) {
-                    // @todo: Deprecate icons from non extension resources
-                    $registeredReports[$extension][$module]['icon'] = PathUtility::isExtensionPath($icon) ? PathUtility::getPublicResourceWebPath($icon) : PathUtility::getAbsoluteWebPath($icon);
-                }
-            }
-        }
+
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
-            'reports' => $registeredReports,
+            'reports' => $this->reportRegistry->getReports(),
         ]);
         $view->setTitle(
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
@@ -124,42 +103,36 @@ class ReportController
     /**
      * Render a single report.
      */
-    protected function detailAction(ServerRequestInterface $request, string $extension, string $report): ResponseInterface
+    protected function detailAction(ServerRequestInterface $request, string $report): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredReports = $this->getRegisteredReportsArray();
-        $reportClass = $registeredReports[$extension][$report]['report'];
-        $reportInstance = GeneralUtility::makeInstance($reportClass);
-        if ($reportInstance instanceof RequestAwareReportInterface) {
-            $content = $reportInstance->getReport($request);
-        } else {
-            $content = $reportInstance->getReport();
-        }
+        $reportInstance = $this->reportRegistry->getReport($report);
+        $content = $reportInstance instanceof RequestAwareReportInterface ? $reportInstance->getReport($request) : $reportInstance->getReport();
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'content' => $content,
-            'report' => $registeredReports[$extension][$report],
+            'report' => $reportInstance,
         ]);
         $view->setTitle(
             $languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:mlang_tabs_tab'),
-            $languageService->sL($registeredReports[$extension][$report]['title'] ?? '')
+            $languageService->sL($reportInstance->getTitle())
         );
-        $validRegisteredReports = $this->getValidReportCombinations();
-        if (count($validRegisteredReports) > 1) {
+        $allReports = $this->reportRegistry->getReports();
+        if (count($allReports) > 1) {
             // Add the main module drop-down only if there are more than one reports registered.
             // This also means the "overview" view is not selectable with default core.
-            $this->addMainMenu($view, $extension, $report);
+            $this->addMainMenu($view, $report);
         }
         $this->addShortcutButton(
             $view,
-            $languageService->sL($registeredReports[$extension][$report]['title'] ?? ''),
-            ['action' => 'detail', 'extension' => $extension, 'report' => $report]
+            $languageService->sL($reportInstance->getTitle()),
+            ['action' => 'detail', 'report' => $reportInstance->getIdentifier()]
         );
         return $view->renderResponse('Report/Detail');
     }
 
-    protected function addMainMenu(ModuleTemplate $view, string $extension = '', string $report = ''): void
+    protected function addMainMenu(ModuleTemplate $view, string $activeReportIdentifier = ''): void
     {
         $languageService = $this->getLanguageService();
         $menu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
@@ -170,19 +143,17 @@ class ReportController
             )
             ->setTitle($languageService->sL('LLL:EXT:reports/Resources/Private/Language/locallang.xlf:reports_overview'));
         $menu->addMenuItem($menuItem);
-        foreach ($this->getRegisteredReportsArray() as $extKey => $reports) {
-            foreach ($reports as $reportName => $reportConfiguration) {
-                $menuItem = $menu->makeMenuItem()
-                    ->setHref($this->uriBuilder->buildUriFromRoute(
-                        'system_reports',
-                        ['action' => 'detail', 'extension' => $extKey, 'report' => $reportName]
-                    ))
-                    ->setTitle($this->getLanguageService()->sL($reportConfiguration['title'] ?? 'default'));
-                if ($extension === $extKey && $report === $reportName) {
-                    $menuItem->setActive(true);
-                }
-                $menu->addMenuItem($menuItem);
+        foreach ($this->reportRegistry->getReports() as $report) {
+            $menuItem = $menu->makeMenuItem()
+                ->setHref($this->uriBuilder->buildUriFromRoute(
+                    'system_reports',
+                    ['action' => 'detail', 'report' => $report->getIdentifier()]
+                ))
+                ->setTitle($this->getLanguageService()->sL($report->getTitle()));
+            if ($activeReportIdentifier === $report->getIdentifier()) {
+                $menuItem->setActive(true);
             }
+            $menu->addMenuItem($menuItem);
         }
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
@@ -200,43 +171,14 @@ class ReportController
     /**
      * Save selected action / extension / report combination to user uc to render this again on next module call.
      */
-    protected function updateBackendUserUc(string $action, string $extension = '', string $report = ''): void
+    protected function updateBackendUserUc(string $action, string $report = ''): void
     {
         $backendUser = $this->getBackendUser();
         $backendUser->uc['reports']['selection'] = [
             'action' => $action,
-            'extension' => $extension,
             'report' => $report,
         ];
         $backendUser->writeUC();
-    }
-
-    protected function getValidReportCombinations(): array
-    {
-        $validReports = [];
-        foreach ($this->getRegisteredReportsArray() as $extension => $reports) {
-            if (!is_array($reports)) {
-                continue;
-            }
-            foreach ($reports as $reportName => $reportConfiguration) {
-                $reportClass = $reportConfiguration['report'] ?? '';
-                if (!empty($reportClass)
-                    && class_exists($reportClass)
-                    && is_subclass_of($reportClass, ReportInterface::class)
-                ) {
-                    $validReports[] = [
-                        'extension' => $extension,
-                        'report' => $reportName,
-                    ];
-                }
-            }
-        }
-        return $validReports;
-    }
-
-    protected function getRegisteredReportsArray(): array
-    {
-        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] ?? [];
     }
 
     protected function getBackendUser(): BackendUserAuthentication

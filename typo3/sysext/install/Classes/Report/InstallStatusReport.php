@@ -47,13 +47,18 @@ class InstallStatusReport implements StatusProviderInterface
      *
      * @return Status[]
      */
-    public function getStatus()
+    public function getStatus(): array
     {
         return [
             'FileSystem' => $this->getFileSystemStatus(),
             'RemainingUpdates' => $this->getRemainingUpdatesStatus(),
             'NewVersion' => $this->getNewVersionStatus(),
         ];
+    }
+
+    public function getLabel(): string
+    {
+        return 'typo3';
     }
 
     /**

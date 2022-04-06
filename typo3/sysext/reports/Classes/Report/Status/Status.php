@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\ExtendedStatusProviderInterface;
+use TYPO3\CMS\Reports\Registry\StatusRegistry;
 use TYPO3\CMS\Reports\RequestAwareReportInterface;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -39,10 +40,11 @@ class Status implements RequestAwareReportInterface
     /**
      * Constructor for class tx_reports_report_Status
      */
-    public function __construct(protected readonly BackendViewFactory $backendViewFactory)
-    {
+    public function __construct(
+        protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly StatusRegistry $statusRegistry
+    ) {
         $this->getLanguageService()->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
-        $this->getStatusProviders();
     }
 
     /**
@@ -59,20 +61,24 @@ class Status implements RequestAwareReportInterface
         return $this->renderStatus($request, $status);
     }
 
-    /**
-     * Gets all registered status providers and creates instances of them.
-     */
-    protected function getStatusProviders(): void
+    public function getIdentifier(): string
     {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
-            $this->statusProviders[$key] = [];
-            foreach ($statusProvidersList as $statusProvider) {
-                $statusProviderInstance = GeneralUtility::makeInstance($statusProvider);
-                if ($statusProviderInstance instanceof StatusProviderInterface) {
-                    $this->statusProviders[$key][] = $statusProviderInstance;
-                }
-            }
-        }
+        return 'status';
+    }
+
+    public function getTitle(): string
+    {
+        return 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title';
+    }
+
+    public function getDescription(): string
+    {
+        return 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_description';
+    }
+
+    public function getIconIdentifier(): string
+    {
+        return 'module-reports';
     }
 
     /**
@@ -84,16 +90,17 @@ class Status implements RequestAwareReportInterface
     public function getSystemStatus(ServerRequestInterface $request = null): array
     {
         $status = [];
-        foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-            $status[$statusProviderId] = [];
-            foreach ($statusProviderList as $statusProvider) {
-                if ($statusProvider instanceof RequestAwareStatusProviderInterface) {
-                    $statuses = $statusProvider->getStatus($request);
-                } else {
-                    $statuses = $statusProvider->getStatus();
-                }
-                $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
+        foreach ($this->statusRegistry->getProviders() as $statusProviderList) {
+            $statusProviderId = $statusProviderList->getLabel();
+            if (!isset($status[$statusProviderId])) {
+                $status[$statusProviderId] = [];
             }
+            if ($statusProviderList instanceof RequestAwareStatusProviderInterface) {
+                $statuses = $statusProviderList->getStatus($request);
+            } else {
+                $statuses = $statusProviderList->getStatus();
+            }
+            $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
         }
         return $status;
     }
@@ -153,6 +160,7 @@ class Status implements RequestAwareReportInterface
     {
         // Apply sorting to collection and the providers
         $statusCollection = $this->sortStatusProviders($statusCollection);
+
         foreach ($statusCollection as &$statuses) {
             $statuses = $this->sortStatuses($statuses);
         }

@@ -17,3 +17,15 @@ services:
 
   TYPO3\CMS\Install\Service\Typo3tempFileService:
     public: true
+
+  TYPO3\CMS\Install\Report\EnvironmentStatusReport:
+    tags:
+      - name: reports.status
+
+  TYPO3\CMS\Install\Report\InstallStatusReport:
+    tags:
+      - name: reports.status
+
+  TYPO3\CMS\Install\Report\SecurityStatusReport:
+    tags:
+      - name: reports.status

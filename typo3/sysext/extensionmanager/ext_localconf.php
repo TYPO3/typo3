@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extensionmanager\Report\ExtensionComposerStatus;
-use TYPO3\CMS\Extensionmanager\Report\ExtensionStatus;
 use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
 
 defined('TYPO3') or die();
@@ -21,11 +19,3 @@ if (!(bool)GeneralUtility::makeInstance(
         'additionalFields' => '',
     ];
 }
-
-// Register extension status report system
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
-    ExtensionStatus::class;
-
-// Register extension composer status report
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Composer Manifest'][] =
-    ExtensionComposerStatus::class;

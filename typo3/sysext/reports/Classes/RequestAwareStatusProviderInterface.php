@@ -28,7 +28,7 @@ interface RequestAwareStatusProviderInterface extends StatusProviderInterface
      * Returns the status of an extension or (sub)system
      *
      * @param ServerRequestInterface|null $request the currently handled request
-     * @return array An array of \TYPO3\CMS\Reports\Status objects
+     * @return Status[]
      */
-    public function getStatus(ServerRequestInterface $request = null);
+    public function getStatus(ServerRequestInterface $request = null): array;
 }
