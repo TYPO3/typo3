@@ -66,7 +66,7 @@ The migration from :php:`eval='password'` and :php:`eval='saltedPassword'` to
 
     // Before
 
-    'password_field => [
+    'password_field' => [
         'label' => 'Password',
         'config' => [
             'type' => 'input',
@@ -76,7 +76,7 @@ The migration from :php:`eval='password'` and :php:`eval='saltedPassword'` to
 
     // After
 
-    'password_field => [
+    'password_field' => [
         'label' => 'Password',
         'config' => [
             'type' => 'password',
@@ -85,7 +85,7 @@ The migration from :php:`eval='password'` and :php:`eval='saltedPassword'` to
 
     // Before
 
-    'another_password_field => [
+    'another_password_field' => [
         'label' => 'Password',
         'config' => [
             'type' => 'input',
@@ -95,7 +95,7 @@ The migration from :php:`eval='password'` and :php:`eval='saltedPassword'` to
 
     // After
 
-    'another_password_field => [
+    'another_password_field' => [
         'label' => 'Password',
         'config' => [
             'type' => 'password',
