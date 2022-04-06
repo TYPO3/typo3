@@ -32,13 +32,27 @@ class TextpicPreviewRenderer extends StandardContentPreviewRenderer
         $content = '';
         $row = $item->getRecord();
         if ($row['bodytext']) {
-            $content = $this->linkEditContent($this->renderText($row['bodytext']), $row);
+            $content = $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
         }
 
         if ($row['image']) {
             $content .= $this->linkEditContent(BackendUtility::thumbCode($row, 'tt_content', 'image', '', '', null, 0, '', '', false), $row);
-        }
 
+            $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'image', $row);
+
+            if (!empty($fileReferences)) {
+                $linkedContent = '';
+
+                foreach ($fileReferences as $fileReference) {
+                    $description = $fileReference->getDescription();
+                    if ($description !== null && $description !== '') {
+                        $linkedContent .= htmlspecialchars($description) . '<br />';
+                    }
+                }
+
+                $content .= $this->linkEditContent($linkedContent, $row);
+            }
+        }
         return $content;
     }
 }

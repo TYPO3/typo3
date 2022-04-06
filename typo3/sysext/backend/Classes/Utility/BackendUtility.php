@@ -1009,18 +1009,11 @@ class BackendUtility
                 $fileObject = $fileReferenceObject->getOriginalFile();
 
                 if ($fileObject->isMissing()) {
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<div class="preview-thumbnails-element-image">'
-                                . '<span title="'
-                                    . htmlspecialchars(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
-                                    . ' '
-                                    . htmlspecialchars($fileObject->getName())
-                                . '">'
-                                    . $iconFactory->getIcon('mimetypes-other-other', Icon::SIZE_DEFAULT, 'overlay-missing')->render()
-                                . '</span>'
-                            . '</div>'
-                        . '</div>';
+                    $thumbData .= '<span class="badge badge-danger">'
+                        . htmlspecialchars(
+                            static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing')
+                        )
+                        . '</span>&nbsp;' . htmlspecialchars($fileObject->getName()) . '<br />';
                     continue;
                 }
 
@@ -1054,7 +1047,7 @@ class BackendUtility
                 } else {
                     // Icon
                     $imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">'
-                        . $iconFactory->getIconForResource($fileObject, Icon::SIZE_DEFAULT)->render()
+                        . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
                         . '</span>';
                 }
                 if ($linkInfoPopup) {
@@ -1063,25 +1056,13 @@ class BackendUtility
                         'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
                         'data-dispatch-args-list' => '_FILE,' . (int)$fileObject->getUid(),
                     ], true);
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<a href="#" ' . $attributes . '>'
-                                . '<div class="preview-thumbnails-element-image">'
-                                    . $imgTag
-                                . '</div>'
-                            . '</a>'
-                        . '</div>';
+                    $thumbData .= '<a href="#" ' . $attributes . '>' . $imgTag . '</a> ';
                 } else {
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<div class="preview-thumbnails-element-image">'
-                                . $imgTag
-                            . '</div>'
-                        . '</div>';
+                    $thumbData .= $imgTag;
                 }
             }
         }
-        return $thumbData ? '<div class="preview-thumbnails" style="--preview-thumbnails-size: ' . $size . 'px">' . $thumbData . '</div>' : '';
+        return $thumbData;
     }
 
     /**

@@ -31,13 +31,27 @@ class TextmediaPreviewRenderer extends StandardContentPreviewRenderer
         $content = '';
         $row = $item->getRecord();
         if ($row['bodytext']) {
-            $content = $this->linkEditContent($this->renderText($row['bodytext']), $row);
+            $content = $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
         }
 
         if ($row['assets']) {
             $content .= $this->linkEditContent(BackendUtility::thumbCode($row, 'tt_content', 'assets', '', '', null, 0, '', '', false), $row);
-        }
 
+            $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'assets', $row);
+
+            if (!empty($fileReferences)) {
+                $linkedContent = '';
+
+                foreach ($fileReferences as $fileReference) {
+                    $description = $fileReference->getDescription();
+                    if ($description !== null && $description !== '') {
+                        $linkedContent .= htmlspecialchars($description) . '<br />';
+                    }
+                }
+
+                $content .= $this->linkEditContent($linkedContent, $row);
+            }
+        }
         return $content;
     }
 }

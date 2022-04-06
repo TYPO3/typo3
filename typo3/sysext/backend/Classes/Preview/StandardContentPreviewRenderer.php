@@ -75,18 +75,21 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $itemLabels = $item->getContext()->getItemLabels();
 
         $outHeader = '';
-        $outHeader .= $record['header_layout'] == 100
-            ? '<div class="element-preview-header-status">' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6')) . '</div>'
-            : '';
-        $outHeader .= $record['date']
-            ? '<div class="element-preview-header-date">' . htmlspecialchars($itemLabels['date'] . ' ' . BackendUtility::date($record['date'])) . ' </div>'
-            : '';
-        $outHeader .= $record['header']
-            ? '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($record['header']), $record) . '</div>'
-            : '';
-        $outHeader .= $record['subheader']
-            ? '<div class="element-preview-header-subheader">' . $this->linkEditContent($this->renderText($record['subheader']), $record) . '</div>'
-            : '';
+
+        if ($record['header']) {
+            $infoArr = [];
+            $this->getProcessedValue($item, 'header_position,header_layout,header_link', $infoArr);
+            $hiddenHeaderNote = '';
+            // If header layout is set to 'hidden', display an accordant note:
+            if ($record['header_layout'] == 100) {
+                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6')) . ']</em>';
+            }
+            $outHeader = $record['date']
+                ? htmlspecialchars($itemLabels['date'] . ' ' . BackendUtility::date($record['date'])) . '<br />'
+                : '';
+            $outHeader .= '<strong>' . $this->linkEditContent($this->renderText($record['header']), $record)
+                . $hiddenHeaderNote . '</strong><br />';
+        }
 
         return $outHeader;
     }
@@ -115,15 +118,18 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         // Draw preview of the item depending on its CType
         switch ($record['CType']) {
             case 'header':
+                if ($record['subheader']) {
+                    $out .= $this->linkEditContent($this->renderText($record['subheader']), $record) . '<br />';
+                }
                 break;
             case 'uploads':
                 if ($record['media']) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'media'), $record);
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'media'), $record) . '<br />';
                 }
                 break;
             case 'shortcut':
                 if (!empty($record['records'])) {
-                    $shortcutContent = '';
+                    $shortcutContent = [];
                     $recordList = explode(',', $record['records']);
                     foreach ($recordList as $recordIdentifier) {
                         $split = BackendUtility::splitTable_Uid($recordIdentifier);
@@ -138,10 +144,11 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                                 $shortcutRecord['uid'],
                                 '1'
                             );
-                            $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord)) . '</li>';
+                            $shortcutContent[] = $icon
+                                . htmlspecialchars(BackendUtility::getRecordTitle($tableName, $shortcutRecord));
                         }
                     }
-                    $out .= $shortcutContent ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
+                    $out .= implode('<br />', $shortcutContent) . '<br />';
                 }
                 break;
             case 'list':
@@ -163,16 +170,18 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 } elseif (!empty($record['list_type'])) {
                     $label = BackendUtility::getLabelFromItemListMerged($record['pid'], 'tt_content', 'list_type', $record['list_type']);
                     if (!empty($label)) {
-                        $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record);
+                        $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record) . '<br />';
                     } else {
                         $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $record['list_type']);
-                        $out .= '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
+                        $out .= '<span class="badge badge-warning">' . htmlspecialchars($message) . '</span>';
                     }
                 } elseif (!empty($record['select_key'])) {
-                    $out .= htmlspecialchars($languageService->sL(BackendUtility::getItemLabel('tt_content', 'select_key'))) . ' ' . htmlspecialchars($record['select_key']);
+                    $out .= htmlspecialchars($languageService->sL(BackendUtility::getItemLabel('tt_content', 'select_key')))
+                        . ' ' . htmlspecialchars($record['select_key']) . '<br />';
                 } else {
-                    $out .= '<div class="alert alert-warning">' . $languageService->getLL('noPluginSelected') . '</div>';
+                    $out .= '<strong>' . $languageService->getLL('noPluginSelected') . '</strong>';
                 }
+                $out .= htmlspecialchars($languageService->sL(BackendUtility::getLabelFromItemlist('tt_content', 'pages', $record['pages']))) . '<br />';
                 break;
             default:
                 $contentTypeLabel = (string)($contentTypeLabels[$record['CType']] ?? '');
@@ -186,19 +195,20 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 }
                 // Handle menu content types
                 if (in_array($record['CType'], self::MENU_CONTENT_TYPES, true)) {
+                    $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentTypeLabel) . '</strong>', $record);
                     if ($record['CType'] !== 'menu_sitemap' && (($record['pages'] ?? false) || ($record['selected_categories'] ?? false))) {
                         // Show pages/categories if menu type is not "Sitemap"
-                        $out .= $this->linkEditContent($this->generateListForMenuContentTypes($record), $record);
+                        $out .= ':' . $this->linkEditContent($this->generateListForMenuContentTypes($record), $record) . '<br />';
                     }
                     break;
                 }
-
-                $out .= $record['bodytext']
-                    ? $this->linkEditContent($this->renderText($record['bodytext']), $record)
-                    : '';
-                $out .= $record['image']
-                    ? $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'image'), $record)
-                    : '';
+                $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentTypeLabel) . '</strong>', $record) . '<br />';
+                if ($record['bodytext']) {
+                    $out .= $this->linkEditContent($this->renderText($record['bodytext']), $record) . '<br />';
+                }
+                if ($record['image']) {
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($record, 'tt_content', 'image'), $record) . '<br />';
+                }
         }
 
         return $out;
@@ -238,16 +248,20 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $content = implode('<br>', $info);
         }
 
+        if (!empty($content)) {
+            $content = '<div class="t3-page-ce-footer">' . $content . '</div>';
+        }
+
         return $content;
     }
 
     public function wrapPageModulePreview(string $previewHeader, string $previewContent, GridColumnItem $item): string
     {
-        $previewHeader = $previewHeader ? '<div class="element-preview-header">' . $previewHeader . '</div>' : '';
-        $previewContent = $previewContent ? '<div class="element-preview-content">' . $previewContent . '</div>' : '';
-        $preview = $previewHeader || $previewContent ? '<div class="element-preview">' . $previewHeader . $previewContent . '</div>' : '';
-
-        return $preview;
+        $content = '<span class="exampleContent">' . $previewHeader . $previewContent . '</span>';
+        if ($item->isDisabled()) {
+            return '<span class="text-muted">' . $content . '</span>';
+        }
+        return $content;
     }
 
     protected function translateShortcutRecord(array $targetRecord, array $shortcutRecord, string $tableName, int $uid): array
@@ -382,10 +396,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $uid = (int)$uid;
             $pageRecord = BackendUtility::getRecord($table, $uid, 'title');
             if ($pageRecord) {
-                $content .= '<li class="list-group-item">' . htmlspecialchars($pageRecord['title']) . ' <span class="text-muted">[' . $uid . ']</span></li>';
+                $content .= '<br>' . htmlspecialchars($pageRecord['title']) . ' (' . $uid . ')';
             }
         }
-        return $content ? '<ul class="list-group">' . $content . '</ul>' : '';
+        return $content;
     }
 
     /**
@@ -394,14 +408,10 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      *
      * @param string $linkText String to link. Must be prepared for HTML output.
      * @param array $row The row.
-     * @return string If the whole thing was editable and $linkText is not empty $linkText is return with link around. Otherwise just $linkText.
+     * @return string If the whole thing was editable $str is return with link around. Otherwise just $str.
      */
     protected function linkEditContent(string $linkText, $row): string
     {
-        if (empty($linkText)) {
-            return $linkText;
-        }
-
         $backendUser = $this->getBackendUser();
         if ($backendUser->check('tables_modify', 'tt_content') && $backendUser->recordEditAccessInternals('tt_content', $row)) {
             $urlParameters = [
