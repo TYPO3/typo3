@@ -533,7 +533,7 @@ class ServiceProvider extends AbstractServiceProvider
 
         $commandRegistry->addLazyCommand('help', HelpCommand::class, 'Displays help for a command');
 
-        $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or frontend caches.');
+        $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or, if implemented, frontend caches.');
 
         $commandRegistry->addLazyCommand('cache:flush', Command\CacheFlushCommand::class, 'Cache clearing for all, system or frontend caches.');
 
