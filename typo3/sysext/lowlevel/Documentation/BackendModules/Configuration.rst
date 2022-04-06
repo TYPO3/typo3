@@ -35,22 +35,21 @@ The Configuration module displays various configuration settings:
 
 - :ref:`Global configuration <t3coreapi:typo3ConfVars>` (:php:`$GLOBALS['TYPO3_CONF_VARS']`)
 - :doc:`Table configuration array <t3tca:Index>` (:php:`$GLOBALS['TCA']`)
-- :ref:`Table help description <t3coreapi:csh-tca-descr>` (:php:`$GLOBALS['TCA_DESCR']`)
 - :ref:`Registered services <t3coreapi:services>` (:php:`$GLOBALS['T3_SERVICES']`)
-- :ref:`Backend modules <t3coreapi:backend-modules>` (:php:`$GLOBALS['TBE_MODULES']`)
-- :ref:`BE modules extensions <t3coreapi:hooks-modules>` (:php:`$GLOBALS['TBE_MODULES_EXT']`)
 - :doc:`Skinning styles <t3skinning:Index>` (:php:`$GLOBALS['TBE_STYLES']`)
 - :ref:`User settings configuration <t3coreapi:user-settings>` (:php:`$GLOBALS['TYPO3_USER_SETTINGS']`)
 - :ref:`Table permissions by page type <t3coreapi:page-types-intro>` (:php:`$GLOBALS['PAGES_TYPES']`)
 - :ref:`User settings <t3coreapi:be-user-configuration>` (:php:`$GLOBALS['BE_USER']->uc`)
 - :ref:`User TSconfig <t3tsconfig:usertsconfig>` (:php:`$GLOBALS['BE_USER']->getTSConfig()`)
-- :ref:`Backend routes <t3coreapi:backend-routing>`
+- :ref:`Backend Routes <t3coreapi:backend-routing>`
+- :ref:`Backend Modules <t3coreapi:backend-modules>`
 - :ref:`HTTP Middlewares (PSR-15) <t3coreapi:request-handling>`
 - :ref:`Site configuration <t3coreapi:sitehandling>`
 - :ref:`Event listeners (PSR-14) <t3coreapi:EventDispatcher>`
 - :ref:`MFA providers <t3coreapi:multi-factor-authentication>`
 - :ref:`Soft Reference Parsers <t3coreapi:soft-references>`
 - :ref:`Form: YAML Configuration <ext_form:concepts-configuration>` (with installed :doc:`Form system extension <ext_form:Index>`)
+- `Backend Toolbar Items`
 
 
 Extending the Configuration module
