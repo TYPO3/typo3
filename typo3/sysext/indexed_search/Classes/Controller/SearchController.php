@@ -487,9 +487,8 @@ class SearchController extends ActionController
         // If external media, link to the media-file instead.
         if ($row['item_type']) {
             if ($row['show_resume']) {
-                // Can link directly.
                 $targetAttribute = '';
-                if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
+                if ($GLOBALS['TSFE']->config['config']['fileTarget'] ?? false) {
                     $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
                 }
                 $title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($title) . '</a>';
@@ -524,7 +523,7 @@ class SearchController extends ActionController
         $pI = parse_url($row['data_filename']);
         if ($pI['scheme'] ?? false) {
             $targetAttribute = '';
-            if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
+            if ($GLOBALS['TSFE']->config['config']['fileTarget'] ?? false) {
                 $targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
             }
             $resultData['pathTitle'] = $row['data_filename'];
