@@ -157,7 +157,7 @@ export class DragDrop {
       let y = coordinates[1];
 
       if (y < 3) {
-        const attr = nodeBgBorder.attr('transform', 'translate(-8, ' + (this.tree.hoveredNode.y - 10) + ')') as NodeBgBorderSelection;
+        const attr = nodeBgBorder.attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (this.tree.hoveredNode.y - (this.tree.settings.nodeHeight / 2)) + ')') as NodeBgBorderSelection;
         attr.style('display', 'block');
 
         if (this.tree.hoveredNode.depth === 0) {
@@ -176,7 +176,7 @@ export class DragDrop {
           this.addNodeDdClass(nodeDd, 'ok-append');
           this.tree.settings.nodeDragPosition = DraggablePositionEnum.INSIDE;
         } else {
-          const attr = nodeBgBorder.attr('transform', 'translate(-8, ' + (this.tree.hoveredNode.y + 10) + ')') as NodeBgBorderSelection;
+          const attr = nodeBgBorder.attr('transform', 'translate(' + (this.tree.settings.indentWidth / 2 * -1) + ', ' + (this.tree.hoveredNode.y + (this.tree.settings.nodeHeight / 2)) + ')') as NodeBgBorderSelection;
           attr.style('display', 'block');
 
           if (this.tree.hoveredNode.lastChild) {
@@ -242,7 +242,7 @@ export class DragDrop {
   }
 
   private applyNodeClassNames(target: HTMLElement|SVGElement, prefix: string, className: string): void {
-    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above', 'dragging'];
+    const classNames = ['nodrop', 'ok-append', 'ok-below', 'ok-between', 'ok-above'];
     // remove any existing classes
     classNames.forEach((className: string) => target.classList.remove(prefix + className));
     // apply new class

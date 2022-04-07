@@ -1,23 +1,48 @@
-$svgColors: (
-    border: #d7d7d7,
-    lines: #ddd,
-    nodeSelectedBg: #fff,
-    nodeHighlightText: #0078e6,
-    nodeOverBg: #f2f2f2,
-    dragOverBg: #d7e4f1,
-    dragOverBorder: transparent,
-    dragAlertBg: #f6d3cf,
-    dragAlertBorder: #d66c68,
-    dragAboveBg: transparent,
-    dragAboveBorder: transparent,
-    dragBetweenBg: transparent,
-    dragBetweenBorder: transparent,
-    dragBelowBg: transparent,
-    dragBelowBorder: transparent,
-    dragTooltipBg: #d7e4f1,
-    dragTooltipAlertBg: #f6d3cf,
-    dragTooltipAlertBorder: #d66c68
-);
+:root {
+    --svgtree-drag-info-bg: #fff;
+
+    --svgtree-drag-info-color: #{color-contrast(#fff)};
+
+    --svgtree-drag-info-icon-size: 16px;
+
+    --svgtree-drag-info-border-radius: 2px;
+
+    --svgtree-drag-info-padding-y: 0.5rem;
+
+    --svgtree-drag-info-padding-x: 0.75rem;
+
+    --svgtree-drag-dropindicator-color: #{tint-color($primary, 20%)};
+
+    --svgtree-structure-line-color: #ddd;
+
+    --svgtree-node-color: #000;
+
+    --svgtree-node-bg: transparent;
+
+    --svgtree-node-border-color: transparent;
+
+    --svgtree-node-version-bg: #{rgba(#f7c898, 0.5)};
+
+    --svgtree-node-version-border-color: #{shade-color(#f7c898, 20%)};
+
+    --svgtree-node-focus-bg: #{rgba(tint-color($primary, 90%), 0.5)};
+
+    --svgtree-node-focus-border-color: #{tint-color($primary, 20%)};
+
+    --svgtree-node-hover-bg: #{rgba(#fafafa, 0.5)};
+
+    --svgtree-node-hover-border-color: #d7d7d7;
+
+    --svgtree-node-selected-bg: #{rgba(#fff, 0.5)};
+
+    --svgtree-node-selected-border-color: #d7d7d7;
+
+    --svgtree-highlight-color: #{$primary};
+
+    --svgtree-info-bg: #{tint-color($info, 60%)};
+
+    --svgtree-info-color: #{color-contrast(tint-color($info, 60%))};
+}
 
 .svg-tree {
     position: relative;
@@ -70,9 +95,23 @@ $svgColors: (
     }
 }
 
+// toggle to collapse and expand node entries
+.node-toggle {
+    &-icon {
+        transform-origin: 50% 50%;
+    }
+
+    &--expanded {
+        .node-toggle-icon {
+            transform: rotate(90deg);
+        }
+    }
+}
+
 .svg-tree-element {
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.25);
 
     & > .svg-tree-wrapper {
         flex: 1 0 0;
@@ -83,6 +122,8 @@ $svgColors: (
         background-color: #fafafa;
         position: sticky;
         top: 0;
+        padding: 0.5em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     }
 }
 
@@ -98,98 +139,67 @@ $svgColors: (
     path.link {
         fill: none;
         shape-rendering: crispEdges;
-        stroke: map_get($svgColors, lines);
+        stroke: var(--svgtree-structure-line-color);
         stroke-width: 1;
         pointer-events: none;
     }
 
     .node {
         &-bg {
-            fill: transparent;
+            fill: var(--svgtree-node-bg);
+            stroke: var(--svgtree-node-border-color);
+            stroke-width: 1px;
 
             &__border {
                 display: none;
                 pointer-events: none;
-                fill: #9eb2c5;
+                fill: var(--svgtree-drag-dropindicator-color);
+                stroke: var(--svgtree-drag-dropindicator-color);
+                stroke-width: 1;
+                shape-rendering: crispedges;
             }
 
             &.ver-element,
             &.ver-versions,
             &.ver-page {
-                fill: #f7c898 !important;
+                --svgtree-node-bg: var(--svgtree-node-version-bg);
+
+                --svgtree-node-border-color: var(--svgtree-node-version-border-color);
             }
         }
 
-        &-over:not(.node-selected) {
-            fill: map_get($svgColors, nodeOverBg);
-            stroke-width: 1px;
-            stroke: map_get($svgColors, border);
+        &:focus {
+            outline: none;
+        }
+
+        &-over {
+            --svgtree-node-bg: var(--svgtree-node-hover-bg);
+
+            --svgtree-node-border-color: var(--svgtree-node-hover-border-color);
         }
 
         &-selected {
-            fill: map_get($svgColors, nodeSelectedBg);
-            stroke-width: 1px;
-            stroke: map_get($svgColors, border);
+            --svgtree-node-bg: var(--svgtree-node-selected-bg);
+
+            --svgtree-node-border-color: var(--svgtree-node-selected-border-color);
+        }
+
+        &-focused {
+            --svgtree-node-bg: var(--svgtree-node-focus-bg) !important;
+
+            --svgtree-node-border-color: var(--svgtree-node-focus-border-color) !important;
         }
     }
 
-    .nodes {
-        &-wrapper {
-            $b: '.nodes-wrapper';
+    .nodes-wrapper {
+        cursor: pointer;
 
-            cursor: pointer;
+        &--dragging {
+            cursor: grabbing;
+        }
 
-            &--dragging {
-                cursor: grabbing;
-
-                .node-over {
-                    //it must be important because there is inline style in code that we must overwrite
-                    fill: map_get($svgColors, dragOverBg) !important;
-                    stroke-width: 1px;
-                    stroke: map_get($svgColors, dragOverBorder);
-                }
-
-                .node-alert {
-                    //it must be important because there is inline style in code that we must overwrite
-                    fill: map_get($svgColors, dragAlertBg) !important;
-                    stroke: map_get($svgColors, dragAlertBorder);
-                }
-
-                &#{$b}--nodrop {
-                    .node-over {
-                        //it must be important because there is inline style in code that we must overwrite
-                        fill: map_get($svgColors, dragAlertBg) !important;
-                    }
-                }
-
-                &#{$b}--ok-above {
-                    .node-over {
-                        //it must be important because there is inline style in code that we must overwrite
-                        fill: map_get($svgColors, dragAboveBg) !important;
-                        stroke: map_get($svgColors, dragAboveBorder);
-                    }
-                }
-
-                &#{$b}--ok-between {
-                    .node-over {
-                        //it must be important because there is inline style in code that we must overwrite
-                        fill: map_get($svgColors, dragBetweenBg) !important;
-                        stroke: map_get($svgColors, dragBetweenBorder);
-                    }
-                }
-
-                &#{$b}--ok-below {
-                    .node-over {
-                        //it must be important because there is inline style in code that we must overwrite
-                        fill: map_get($svgColors, dragBelowBg) !important;
-                        stroke: map_get($svgColors, dragBelowBorder);
-                    }
-                }
-            }
-
-            &--nodrop {
-                cursor: no-drop;
-            }
+        &--nodrop {
+            cursor: no-drop;
         }
     }
 }
@@ -200,25 +210,36 @@ $svgColors: (
     display: none;
     padding: 0;
     margin: 0;
-    border: none;
-    background-color: map_get($svgColors, dragTooltipBg);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 0;
+    color: var(--svgtree-drag-info-color);
+    background-color: var(--svgtree-drag-info-bg);
+    border-radius: var(--svgtree-drag-info-border-radius);
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
     z-index: 9999;
 
-    &--nodrop {
-        background-color: map_get($svgColors, dragTooltipAlertBg);
-        border: 1px solid map_get($svgColors, dragTooltipAlertBorder);
-
-        & .node-dd__ctrl-icon {
-            background-image: url(../Images/pagetree-drag-place-denied.png);
-        }
+    &__ctrl-icon {
+        position: absolute;
+        top: var(--svgtree-drag-info-padding-y);
+        left: var(--svgtree-drag-info-padding-x);
+        display: block;
+        width: var(--svgtree-drag-info-icon-size);
+        height: var(--svgtree-drag-info-icon-size);
+        background-color: transparent;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
     }
 
     &__text {
-        display: table;
-        vertical-align: middle;
-        opacity: 0.85;
-        padding: 5px 5px 5px 20px;
+        display: flex;
+        padding: var(--svgtree-drag-info-padding-y) var(--svgtree-drag-info-padding-x);
+        gap: 0.25rem;
+    }
+
+    &--nodrop {
+        & .node-dd__ctrl-icon {
+            background-image: url(../Images/pagetree-drag-place-denied.png);
+        }
     }
 
     &--ok-below {
@@ -260,31 +281,6 @@ $svgColors: (
             background-image: url(../Images/pagetree-drag-move-above.png);
         }
     }
-
-    &__icon {
-        display: table-cell;
-        vertical-align: top;
-        padding-left: 3px;
-        padding-right: 3px;
-    }
-
-    &__name {
-        display: table-cell;
-        vertical-align: top;
-    }
-
-    &__ctrl-icon {
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        display: block;
-        width: 16px;
-        height: 16px;
-        background-color: transparent;
-        background-position: center;
-        background-repeat: no-repeat;
-        z-index: 1;
-    }
 }
 
 .nodes-drop-zone {
@@ -293,18 +289,21 @@ $svgColors: (
     }
 
     rect {
-        fill: map_get($svgColors, dragAlertBorder);
+        fill: $danger;
         cursor: grabbing;
     }
 
     text {
+        fill: color-contrast($danger);
         pointer-events: none;
     }
 }
 
 .node-name {
+    fill: var(--svgtree-node-color);
+
     .node-highlight-text {
-        fill: map_get($svgColors, nodeHighlightText);
+        fill: var(--svgtree-highlight-color);
         font-weight: 700;
     }
 }
@@ -313,6 +312,9 @@ $svgColors: (
     position: absolute;
     top: 0;
     left: 0;
+    padding: 0.25rem;
+    border: 1px solid tint-color($primary, 20%);
+    outline: none;
 }
 
 .scaffold-content .svg-toolbar {
@@ -356,16 +358,18 @@ $svgColors: (
     }
 }
 
-.node-stop {
-    fill: map_get($svgColors, dragAlertBorder);
-}
-
+//
+// Info bar displayed above the tree if a page is mounted
+//
 .node-mount-point {
     display: flex;
     border: 0;
-    background-color: $info;
-    color: #fff;
-    padding: 1em;
+    background-color: var(--svgtree-info-bg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    color: var(--svgtree-info-color);
+    padding: 0.75em 1.167em;
+    gap: 0.5em;
+    align-items: center;
 
     &__icon {
         flex: 0 auto;

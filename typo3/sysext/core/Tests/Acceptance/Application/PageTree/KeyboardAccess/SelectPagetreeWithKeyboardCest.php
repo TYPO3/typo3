@@ -154,14 +154,18 @@ class SelectPagetreeWithKeyboardCest
     public function focusLastPageTreeItemWithEndKey(ApplicationTester $I): void
     {
         $I->seeElement('#typo3-pagetree-tree [tabindex="0"]');
-        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
         $I->assertEquals(
             'Root',
             $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
+        $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::END);
+        $I->assertEquals(
+            'Dummy 1-41',
+            $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
+        );
         $I->pressKey('#typo3-pagetree-tree [tabindex="0"]', WebDriverKeys::UP);
         $I->assertEquals(
-            'New TYPO3 site',
+            'Dummy 1-40',
             $I->grabTextFrom('#typo3-pagetree-tree [tabindex="0"]')
         );
     }

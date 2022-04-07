@@ -36,6 +36,7 @@ export interface TreeNode extends d3selection.EnterElement {
   tip: string;
   selectable: boolean;
   checked: boolean;
+  focused: boolean;
   locked: boolean;
   readableRootline: string;
   command: string;

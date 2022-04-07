@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\FileTree;
 
 class FileStorageTreeFilterCest
 {
-    protected string $openPath = '#typo3-filestoragetree .nodes > .node:first-child .toggle';
+    protected string $openPath = '#typo3-filestoragetree .nodes > .node:first-child .node-toggle';
     protected string $filterInputFieldClearButton = '#typo3-filestoragetree .tree-toolbar span[data-identifier=actions-close]';
     protected string $filterInputField = '#typo3-filestoragetree .tree-toolbar .search-input';
     protected string $withinTree = '#typo3-filestoragetree .nodes';

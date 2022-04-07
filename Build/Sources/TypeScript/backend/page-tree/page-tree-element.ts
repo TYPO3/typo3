@@ -54,6 +54,7 @@ export class EditablePageTree extends PageTree {
 
   public selectFirstNode(): void {
     this.selectNode(this.nodes[0], true);
+    this.focusNode(this.nodes[0]);
   }
 
   public sendChangeCommand(data: any): void {
@@ -99,10 +100,10 @@ export class EditablePageTree extends PageTree {
   /**
    * Make the DOM element of the node given as parameter focusable and focus it
    */
-  public switchFocusNode(node: TreeNode) {
+  public focusNode(node: TreeNode) {
     // Focus node only if it's not currently in edit mode
     if (!this.nodeIsEdit) {
-      this.switchFocus(this.getNodeElement(node));
+      super.focusNode(node);
     }
   }
 
@@ -142,12 +143,14 @@ export class EditablePageTree extends PageTree {
       .on('click', (event, node: TreeNode) => {
         if (node.identifier === '0') {
           this.selectNode(node, true);
+          this.focusNode(node);
           return;
         }
         if (++clicks === 1) {
           setTimeout(() => {
             if (clicks === 1) {
               this.selectNode(node, true);
+              this.focusNode(node);
             } else {
               this.editNodeLabel(node);
             }
@@ -189,18 +192,20 @@ export class EditablePageTree extends PageTree {
     if (!node.allowEdit) {
       return;
     }
+
+    this.disableFocusedNodes();
+    node.focused = true
+    this.updateVisibleNodes();
+
     this.removeEditedText();
     this.nodeIsEdit = true;
 
     d3selection.select(this.svg.node().parentNode as HTMLElement)
       .append('input')
       .attr('class', 'node-edit')
-      .style('top', () => {
-        const top = node.y + this.settings.marginTop;
-        return top + 'px';
-      })
+      .style('top', (node.y + this.settings.marginTop) + 'px')
       .style('left', (node.x + this.textPosition + 5) + 'px')
-      .style('width', this.settings.width - (node.x + this.textPosition + 20) + 'px')
+      .style('width', 'calc(100% - ' + (node.x + this.textPosition + 5) + 'px)')
       .style('height', this.settings.nodeHeight + 'px')
       .attr('type', 'text')
       .attr('value', node.name)
@@ -222,6 +227,7 @@ export class EditablePageTree extends PageTree {
           this.nodeIsEdit = false;
           this.removeEditedText();
         }
+        this.focusNode(node);
       })
       .on('blur', (evt: FocusEvent) => {
         if (!this.nodeIsEdit) {
@@ -235,6 +241,7 @@ export class EditablePageTree extends PageTree {
           this.sendEditNodeLabelCommand(node);
         }
         this.removeEditedText();
+        this.focusNode(node);
       })
       .node()
       .select();
@@ -355,7 +362,7 @@ export class PageTreeNavigationComponent extends LitElement {
     }
     return html`
       <div class="node-mount-point">
-        <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon></div>
+        <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon></div>
         <div class="node-mount-point__text">${this.mountPointPath}</div>
         <div class="node-mount-point__icon mountpoint-close" @click="${() => this.unsetTemporaryMountPoint()}" title="${lll('labels.temporaryDBmount')}">
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
@@ -421,7 +428,7 @@ export class PageTreeNavigationComponent extends LitElement {
       'tree',
       '',
       '',
-      this.tree.getNodeElement(node)
+      this.tree.getElementFromNode(node)
     );
   }
 
@@ -694,6 +701,11 @@ class ToolbarDragHandler implements DragDropHandler {
     const target = options.target;
     let index = this.tree.nodes.indexOf(target);
     const newNode = {} as TreeNode;
+
+    this.tree.disableFocusedNodes();
+    newNode.focused = true
+    this.tree.updateVisibleNodes();
+
     newNode.command = 'new';
     newNode.type = options.type;
     newNode.identifier = '-1';
@@ -742,9 +754,9 @@ class ToolbarDragHandler implements DragDropHandler {
     d3selection.select(this.tree.svg.node().parentNode as HTMLElement)
       .append('input')
       .attr('class', 'node-edit')
-      .style('top', newNode.y + this.tree.settings.marginTop + 'px')
-      .style('left', newNode.x + this.tree.textPosition + 5 + 'px')
-      .style('width', this.tree.settings.width - (newNode.x + this.tree.textPosition + 20) + 'px')
+      .style('top', (newNode.y + this.tree.settings.marginTop) + 'px')
+      .style('left', (newNode.x + this.tree.textPosition + 5) + 'px')
+      .style('width', 'calc(100% - ' + (newNode.x + this.tree.textPosition + 5) + 'px)')
       .style('height', this.tree.settings.nodeHeight + 'px')
       .attr('text', 'text')
       .attr('value', newNode.name)
@@ -850,8 +862,8 @@ class PageTreeNodeDragHandler implements DragDropHandler {
 
       this.dropZoneDelete.append('text')
         .text(TYPO3.lang.deleteItem)
-        .attr('dx', 5)
-        .attr('dy', 15);
+        .attr('x', 5)
+        .attr('y', ((this.tree.settings.nodeHeight) / 2 ) + 4);
 
       this.dropZoneDelete.node().dataset.open = 'false';
       this.dropZoneDelete.node().style.transform = this.getDropZoneCloseTransform(node);
@@ -1024,7 +1036,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
    */
   private getDropZoneOpenTransform(node: TreeNode): string {
     const svgWidth = parseFloat(this.tree.svg.style('width')) || 300;
-    return 'translate(' + (svgWidth - 58 - node.x) + 'px, -10px)';
+    return 'translate(' + (svgWidth - 58 - node.x) + 'px, ' + (this.tree.settings.nodeHeight / 2 * -1) + 'px)';
   }
 
   /**
@@ -1032,7 +1044,7 @@ class PageTreeNodeDragHandler implements DragDropHandler {
    */
   private getDropZoneCloseTransform(node: TreeNode): string {
     const svgWidth = parseFloat(this.tree.svg.style('width')) || 300;
-    return 'translate(' + (svgWidth - node.x) + 'px, -10px)';
+    return 'translate(' + (svgWidth - node.x) + 'px, ' + (this.tree.settings.nodeHeight / 2 * -1) + 'px)';
   }
 
   /**

@@ -58,7 +58,6 @@ class PageBrowserTree extends PageTree {
     const nodes = super.updateNodeActions(nodesActions);
     if (this.settings.actions.includes('link')) {
       // Check if a node can be linked
-      this.fetchIcon('actions-link');
       const linkAction = this.nodesActionsContainer.selectAll('.node-action')
         .append('g')
         .attr('visibility', (node: TreeNode) => {
@@ -70,7 +69,6 @@ class PageBrowserTree extends PageTree {
       this.createIconAreaForAction(linkAction, 'actions-link');
     } else if (this.settings.actions.includes('select')) {
       // Check if a node can be selected
-      this.fetchIcon('actions-link');
       const linkAction = nodes
         .append('g')
         .on('click', (evt: MouseEvent, node: TreeNode) => {
@@ -267,7 +265,7 @@ export class PageBrowser extends LitElement {
     }
     return html`
       <div class="node-mount-point">
-        <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-document-info" size="small"></typo3-backend-icon></div>
+        <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon></div>
         <div class="node-mount-point__text">${this.mountPointPath}</div>
         <div class="node-mount-point__icon mountpoint-close" @click="${() => this.unsetTemporaryMountPoint()}" title="${lll('labels.temporaryDBmount')}">
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>

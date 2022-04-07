@@ -59,8 +59,12 @@ export class SvgTree extends LitElement {
   @state() settings: SvgTreeSettings = {
     showIcons: false,
     marginTop: 15,
-    nodeHeight: 20,
-    indentWidth: 16,
+    nodeHeight: 26,
+    icon: {
+      size: 16,
+      containerSize: 20,
+    },
+    indentWidth: 20,
     width: 300,
     duration: 400,
     dataUrl: '',
@@ -141,7 +145,7 @@ export class SvgTree extends LitElement {
   public doSetup(settings: any): void {
     Object.assign(this.settings, settings);
     if (this.settings.showIcons) {
-      this.textPosition += 20;
+      this.textPosition += this.settings.icon.containerSize;
     }
 
     this.svg = d3selection.select(this).select('svg');
@@ -160,8 +164,21 @@ export class SvgTree extends LitElement {
     }
 
     this.updateScrollPosition();
+    this.loadCommonIcons();
     this.loadData();
     this.dispatchEvent(new Event('svg-tree:initialized'));
+  }
+
+  /**
+   * Preloads common icons to have them available as early
+   * as possible and avoid unnessesary early node updates.
+   */
+  public loadCommonIcons(): void
+  {
+    this.fetchIcon('actions-chevron-right', false); // used as toggle icon
+    this.fetchIcon('overlay-backenduser', false);   // used as locked indicator (a different user is editing)
+    this.fetchIcon('actions-caret-right', false);   // used as enter icon for stopped trees
+    this.fetchIcon('actions-link', false);          // used as link indicator
   }
 
   /**
@@ -169,7 +186,7 @@ export class SvgTree extends LitElement {
    *
    * @param {SVGElement} element
    */
-  public switchFocus(element: SVGElement|HTMLElement): void {
+  public focusElement(element: SVGElement|HTMLElement): void {
     if (element === null) {
       return;
     }
@@ -184,14 +201,25 @@ export class SvgTree extends LitElement {
   /**
    * Make the DOM element of the node given as parameter focusable and focus it
    */
-  public switchFocusNode(node: TreeNode): void {
-    this.switchFocus(this.getNodeElement(node));
+  public focusNode(node: TreeNode): void {
+    this.disableFocusedNodes();
+    node.focused = true;
+    this.focusElement(this.getElementFromNode(node));
+  }
+
+  public getNodeFromElement(element: SVGElement|HTMLElement): TreeNode|null
+  {
+    if (element === null || !('stateId' in element.dataset)) {
+      return null;
+    }
+
+    return this.getNodeByIdentifier(element.dataset.stateId);
   }
 
   /**
    * Return the DOM element of a tree node
    */
-  public getNodeElement(node: TreeNode): HTMLElement|null {
+  public getElementFromNode(node: TreeNode): HTMLElement|null {
     return this.querySelector('#identifier-' + this.getNodeStateIdentifier(node));
   }
 
@@ -260,6 +288,9 @@ export class SvgTree extends LitElement {
 
       if (typeof node.checked === 'undefined') {
         node.checked = false;
+      }
+      if (typeof node.focused === 'undefined') {
+        node.focused = false;
       }
       return node;
     });
@@ -332,7 +363,7 @@ export class SvgTree extends LitElement {
    * @param {Node} node
    */
   public setExpandedState(node: TreeNode): void {
-    const nodeElement = this.getNodeElement(node);
+    const nodeElement = this.getElementFromNode(node);
     if (nodeElement) {
       if (node.hasChildren) {
         nodeElement.setAttribute('aria-expanded', node.expanded ? 'true' : 'false');
@@ -395,9 +426,6 @@ export class SvgTree extends LitElement {
       if (this.settings.showIcons) {
         this.fetchIcon(node.icon);
         this.fetchIcon(node.overlayIcon);
-        if (node.locked) {
-          this.fetchIcon('warning-in-use');
-        }
       }
     });
 
@@ -439,6 +467,7 @@ export class SvgTree extends LitElement {
 
     const visibleNodes = this.data.nodes.slice(position, position + visibleRows);
     const focusableElement = this.querySelector('[tabindex="0"]');
+    const focusedNodeInViewport = visibleNodes.find((node: TreeNode) => node.focused);
     const checkedNodeInViewport = visibleNodes.find((node: TreeNode) => node.checked);
 
     let nodes = this.nodesContainer.selectAll('.node')
@@ -472,21 +501,28 @@ export class SvgTree extends LitElement {
     // update nodes
     nodes
       .attr('tabindex', (node: TreeNode, index: number) => {
-        if (typeof checkedNodeInViewport !== 'undefined') {
-          if (checkedNodeInViewport === node) {
+        if (typeof focusedNodeInViewport !== 'undefined') {
+          if (focusedNodeInViewport === node) {
             return '0';
           }
         } else {
-          if (focusableElement === null) {
-            if (index === 0) {
+          if (typeof checkedNodeInViewport !== 'undefined') {
+            if (checkedNodeInViewport === node) {
               return '0';
             }
           } else {
-            if (d3selection.select(focusableElement).datum() === node) {
-              return '0';
+            if (focusableElement === null) {
+              if (index === 0) {
+                return '0';
+              }
+            } else {
+              if (d3selection.select(focusableElement).datum() === node) {
+                return '0';
+              }
             }
           }
         }
+
         return '-1';
       })
       .attr('transform', this.getNodeTransform)
@@ -494,13 +530,8 @@ export class SvgTree extends LitElement {
       .html((node: TreeNode) => this.getNodeLabel(node));
 
     nodes
-      .select('.chevron')
-      .attr('transform', this.getChevronTransform)
-      .style('fill', this.getChevronColor)
-      .attr('class', this.getChevronClass);
-
-    nodes
-      .select('.toggle')
+      .select('.node-toggle')
+      .attr('class', this.getToggleClass)
       .attr('visibility', this.getToggleVisibility);
 
     if (this.settings.showIcons) {
@@ -513,24 +544,39 @@ export class SvgTree extends LitElement {
       nodes
         .select('use.node-icon-locked')
         .attr('xlink:href', (node: TreeNode) => {
-          return '#icon-' + (node.locked ? 'warning-in-use' : '');
+          return '#icon-' + (node.locked ? 'overlay-backenduser' : '');
         });
     }
   }
 
   public updateNodeBgClass(nodesBg: TreeNodeSelection): TreeNodeSelection {
-    return nodesBg.enter()
+    let nodeHeight = this.settings.nodeHeight;
+
+    // IMPORTANT
+    //
+    // The SVG spec does not support stroke alignment, and the stroke is always centered on the edge
+    // this results in blurry edges with 1px borders. Setting shape rendering to crispEdges has
+    // different results depending on the used browser.
+    //
+    // To resolve this issue need to:
+    // 1. reduce the height -1px - done in SvgTree::updateNodeBgClass
+    // 2. offset the element by 0.5px - done in SvgTree::getNodeBackgroundTransform
+    nodeHeight = nodeHeight - 1;
+
+    let node = nodesBg.enter()
       .append('rect')
-      .merge(nodesBg as d3selection.Selection<SVGRectElement, TreeNode, any, any>)
+      .merge(nodesBg as d3selection.Selection<SVGRectElement, TreeNode, any, any>);
+    return node
       .attr('width', '100%')
-      .attr('height', this.settings.nodeHeight)
+      .attr('height', nodeHeight)
       .attr('data-state-id', this.getNodeStateIdentifier)
-      .attr('transform', this.getNodeBgTransform)
+      .attr('transform', (node: TreeNode) => this.getNodeBackgroundTransform(node, this.settings.indentWidth, this.settings.nodeHeight))
       .on('mouseover', (evt: MouseEvent, node: TreeNode) => this.onMouseOverNode(node))
       .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
       .on('click', (evt: MouseEvent, node: TreeNode) => {
         this.selectNode(node, true);
-        this.switchFocusNode(node);
+        this.focusNode(node);
+        this.updateVisibleNodes();
       })
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
         evt.preventDefault();
@@ -564,7 +610,9 @@ export class SvgTree extends LitElement {
     }
     // Disable already selected nodes
     this.disableSelectedNodes();
+    this.disableFocusedNodes();
     node.checked = true;
+    node.focused = true;
     this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-selected', {detail: {node: node, propagate: propagate}}));
     this.updateVisibleNodes();
   }
@@ -614,6 +662,7 @@ export class SvgTree extends LitElement {
       const currentlySelectedNode = this.getNodeByIdentifier(currentlySelected.stateIdentifier);
       if (currentlySelectedNode) {
         this.selectNode(currentlySelectedNode, false);
+        this.focusNode(currentlySelectedNode);
         // Remove placeholder, in case this method was called from this.filter()
         // and there was currently a node selected.
         this.nodesRemovePlaceholder();
@@ -667,6 +716,24 @@ export class SvgTree extends LitElement {
     return this.nodes.filter((node: TreeNode) => node.checked);
   }
 
+  /**
+   * Returns an array of focused nodes
+   */
+  public getFocusedNodes(): TreeNode[] {
+    return this.nodes.filter((node: TreeNode) => node.focused);
+  }
+
+  /**
+   * Disable currently focused nodes
+   */
+  public disableFocusedNodes(): void {
+    this.getFocusedNodes().forEach((node: TreeNode) => {
+      if (node.focused === true) {
+        node.focused = false;
+      }
+    });
+  }
+
   // disable shadow dom for now
   protected createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
@@ -683,8 +750,8 @@ export class SvgTree extends LitElement {
            @mouseout=${() => this.isOverSvg = false}
            @keydown=${(evt: KeyboardEvent) => this.handleKeyboardInteraction(evt)}>
         <g class="nodes-wrapper" transform="translate(${this.settings.indentWidth / 2},${this.settings.nodeHeight / 2})">
-          <g class="nodes-bg"></g>
           <g class="links"></g>
+          <g class="nodes-bg"></g>
           <g class="nodes" role="tree"></g>
           <g class="nodes-actions"></g>
         </g>
@@ -737,7 +804,7 @@ export class SvgTree extends LitElement {
         .on('mouseover', (evt: MouseEvent, node: TreeNode) => this.onMouseOverNode(node))
         .on('mouseout', (evt: MouseEvent, node: TreeNode) => this.onMouseOutOfNode(node))
         .attr('data-state-id', this.getNodeStateIdentifier)
-        .attr('transform', this.getNodeActionTransform)
+        .attr('transform', (node: TreeNode) => this.getNodeActionTransform(node, this.settings.indentWidth, this.settings.nodeHeight))
     }
     return nodesActions.enter();
   }
@@ -750,24 +817,24 @@ export class SvgTree extends LitElement {
     const icon = actionItem
       .append('svg')
       .attr('class', 'node-icon-container')
-      .attr('height', '20')
-      .attr('width', '20')
+      .attr('height', this.settings.icon.containerSize)
+      .attr('width', this.settings.icon.containerSize)
       .attr('x', '0')
       .attr('y', '0');
     // improve usability by making the click area a 20px square
     icon
       .append('rect')
-      .attr('width', '20')
-      .attr('height', '20')
+      .attr('height', this.settings.icon.containerSize)
+      .attr('width', this.settings.icon.containerSize)
       .attr('y', '0')
       .attr('x', '0')
       .attr('class', 'node-icon-click');
     const nodeInner = icon
       .append('svg')
-      .attr('height', '16')
-      .attr('width', '16')
-      .attr('y', '2')
-      .attr('x', '2')
+      .attr('height', this.settings.icon.size)
+      .attr('width', this.settings.icon.size)
+      .attr('y', (this.settings.icon.containerSize - this.settings.icon.size) / 2)
+      .attr('x', (this.settings.icon.containerSize - this.settings.icon.size) / 2)
       .attr('class', 'node-icon-inner');
     nodeInner
       .append('use')
@@ -787,12 +854,14 @@ export class SvgTree extends LitElement {
   protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
     return nodes
       .append('text')
-      .attr('dx', (node: TreeNode) => {
-        return this.textPosition + (node.locked ? 15 : 0);
-      })
+      .attr('dx', this.textPosition)
       .attr('dy', 5)
       .attr('class', 'node-name')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node, true));
+      .on('click', (evt: MouseEvent, node: TreeNode) => {
+        this.selectNode(node, true);
+        this.focusNode(node);
+        this.updateVisibleNodes();
+      });
   }
 
   protected nodesUpdate(nodes: TreeNodeSelection): TreeNodeSelection {
@@ -800,19 +869,13 @@ export class SvgTree extends LitElement {
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('id', (node: TreeNode) => {
-        return 'identifier-' + node.stateIdentifier;
-      })
+      .attr('id', (node: TreeNode) => { return 'identifier-' + node.stateIdentifier; })
       .attr('role', 'treeitem')
-      .attr('aria-owns', (node: TreeNode) => {
-        return (node.hasChildren ? 'group-identifier-' + node.stateIdentifier : null);
-      })
+      .attr('aria-owns', (node: TreeNode) => { return (node.hasChildren ? 'group-identifier-' + node.stateIdentifier : null); })
       .attr('aria-level', this.getNodeDepth)
       .attr('aria-setsize', this.getNodeSetsize)
       .attr('aria-posinset', this.getNodePositionInSet)
-      .attr('aria-expanded', (node: TreeNode) => {
-        return (node.hasChildren ? node.expanded : null);
-      })
+      .attr('aria-expanded', (node: TreeNode) => { return (node.hasChildren ? node.expanded : null); })
       .attr('transform', this.getNodeTransform)
       .attr('data-state-id', this.getNodeStateIdentifier)
       .attr('title', this.getNodeTitle)
@@ -822,15 +885,15 @@ export class SvgTree extends LitElement {
         evt.preventDefault();
         this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', {detail: {node: node}}));
       });
+
     nodes
       .append('text')
-      .text((node: TreeNode) => {
-        return node.readableRootline;
-      })
+      .text((node: TreeNode) => { return node.readableRootline; })
       .attr('class', 'node-rootline')
       .attr('dx', 0)
-      .attr('dy', -15)
-      .attr('visibility', (node: TreeNode) => node.readableRootline ? 'visible' : 'hidden');
+      .attr('dy', (this.settings.nodeHeight / 2 * -1))
+      .attr('visibility', (node: TreeNode) => node.readableRootline ? 'visible' : 'hidden')
+    ;
     return nodes;
   }
 
@@ -894,6 +957,10 @@ export class SvgTree extends LitElement {
       bgClass += ' node-selected';
     }
 
+    if (node.focused) {
+      bgClass += ' node-focused';
+    }
+
     if ((prevNode && (node.depth > prevNode.depth)) || !prevNode) {
       node.firstChild = true;
       bgClass += ' node-first-child';
@@ -915,20 +982,14 @@ export class SvgTree extends LitElement {
     return node.tip ? node.tip : 'uid=' + node.identifier;
   }
 
-  protected getChevronTransform(node: TreeNode): string {
-    return node.expanded ? 'translate(16,0) rotate(90)' : ' rotate(0)';
-  }
-
-  protected getChevronColor(node: TreeNode): string {
-    return node.expanded ? '#000' : '#8e8e8e';
-  }
-
   protected getToggleVisibility(node: TreeNode): string {
     return node.hasChildren ? 'visible' : 'hidden';
   }
 
-  protected getChevronClass(node: TreeNode): string {
-    return 'chevron ' + (node.expanded ? 'expanded' : 'collapsed');
+  protected getToggleClass(node: TreeNode): string {
+    return 'node-toggle node-toggle--' + (node.expanded ? 'expanded' : 'collapsed')
+      // Nessesary for testing framework can be removed after testing framework is adapted at some point
+      + ' chevron ' + (node.expanded ? 'expanded' : 'collapsed');
   }
 
   /**
@@ -966,19 +1027,39 @@ export class SvgTree extends LitElement {
    * Returns a 'transform' attribute value for the node background element (absolute positioning)
    *
    * @param {Node} node
+   * @param {number} indentWidth
+   * @param {number} nodeHeight
    */
-  protected getNodeBgTransform(node: TreeNode): string {
-    return 'translate(-8, ' + ((node.y || 0) - 10) + ')';
+  protected getNodeBackgroundTransform(node: TreeNode, indentWidth: number, nodeHeight: number): string {
+
+    let positionX = (indentWidth / 2 * -1);
+    let positionY = (node.y || 0) - (nodeHeight / 2);
+
+    // IMPORTANT
+    //
+    // The SVG spec does not support stroke alignment, and the stroke is always centered on the edge
+    // this results in blurry edges with 1px borders. Setting shape rendering to crispEdges has
+    // different results depending on the used browser.
+    //
+    // To resolve this issue need to:
+    // 1. reduce the height -1px - done in SvgTree::updateNodeBgClass
+    // 2. offset the element by 0.5px - done in SvgTree::getNodeBackgroundTransform
+    positionY = positionY + 0.5;
+
+    return 'translate(' + positionX + ', ' + positionY + ')';
   }
 
   /**
-   * Returns a 'transform' attribute value for the node background element (absolute positioning)
+   * Returns a 'transform' attribute value for the node action element (absolute positioning)
    *
    * @param {Node} node
+   * @param {number} indentWidth
+   * @param {number} nodeHeight
    */
-  protected getNodeActionTransform(node: TreeNode): string {
-    return 'translate(-10, ' + ((node.y || 0) - 10) + ')';
+  protected getNodeActionTransform(node: TreeNode, indentWidth: number, nodeHeight: number): string {
+    return 'translate(' + (indentWidth / 2 * -1) + ', ' + ((node.y || 0) - (nodeHeight / 2)) + ')';
   }
+
 
   /**
    * Event handler for clicking on a node's icon
@@ -988,9 +1069,9 @@ export class SvgTree extends LitElement {
   }
 
   /**
-   * Event handler for click on a chevron
+   * Event handler for collapsing or expanding nodes
    */
-  protected chevronClick(node: TreeNode): void {
+  protected handleNodeToggle(node: TreeNode): void {
     if (node.expanded) {
       this.hideChildren(node);
     } else {
@@ -1035,23 +1116,24 @@ export class SvgTree extends LitElement {
     // create the node elements
     const nodeEnter = this.nodesUpdate(nodes);
 
-    // append the chevron element
-    let chevron = nodeEnter
-      .append('g')
-      .attr('class', 'toggle')
+    // append the toggle element
+    let nodeToggle = nodeEnter
+      .append('svg')
+      .attr('class', 'node-toggle')
+      .attr('y', (this.settings.icon.size / 2 * -1))
+      .attr('x', (this.settings.icon.size / 2 * -1))
       .attr('visibility', this.getToggleVisibility)
-      .attr('transform', 'translate(-8, -8)')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.chevronClick(node));
-
-    // improve usability by making the click area a 16px square
-    chevron
-      .append('path')
-      .style('opacity', 0)
-      .attr('d', 'M 0 0 L 16 0 L 16 16 L 0 16 Z');
-    chevron
-      .append('path')
-      .attr('class', 'chevron')
-      .attr('d', 'M 4 3 L 13 8 L 4 13 Z');
+      .attr('height', this.settings.icon.size)
+      .attr('width', this.settings.icon.size)
+      .on('click', (evt: MouseEvent, node: TreeNode) => this.handleNodeToggle(node));
+    nodeToggle.append('use')
+      .attr('class', 'node-toggle-icon')
+      .attr('href', '#icon-actions-chevron-right');
+    nodeToggle.append('rect')
+      .attr('class', 'node-toggle-spacer')
+      .attr('height', this.settings.icon.size)
+      .attr('width', this.settings.icon.size)
+      .attr('fill', 'transparent');
 
     // append the icon element
     if (this.settings.showIcons) {
@@ -1133,7 +1215,7 @@ export class SvgTree extends LitElement {
   }
 
   /**
-   * node background events
+   * node background events if mouse enters a node
    */
   private onMouseOverNode(node: TreeNode): void {
     node.isOver = true;
@@ -1141,10 +1223,7 @@ export class SvgTree extends LitElement {
 
     let elementNodeBg = this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
     if (elementNodeBg.size()) {
-      elementNodeBg
-        .classed('node-over', true)
-        .attr('rx', '3')
-        .attr('ry', '3');
+      elementNodeBg.classed('node-over', true);
     }
 
     let elementNodeAction = this.nodesActionsContainer.select('.node-action[data-state-id="' + node.stateIdentifier + '"]');
@@ -1156,7 +1235,7 @@ export class SvgTree extends LitElement {
   }
 
   /**
-   * node background events
+   * node background event if mouse leaves a node
    */
   private onMouseOutOfNode(node: TreeNode): void {
     node.isOver = false;
@@ -1164,17 +1243,13 @@ export class SvgTree extends LitElement {
 
     let elementNodeBg = this.svg.select('.nodes-bg .node-bg[data-state-id="' + node.stateIdentifier + '"]');
     if (elementNodeBg.size()) {
-      elementNodeBg
-        .classed('node-over node-alert', false)
-        .attr('rx', '0')
-        .attr('ry', '0');
+      elementNodeBg.classed('node-over node-alert', false);
     }
 
     let elementNodeAction = this.nodesActionsContainer.select('.node-action[data-state-id="' + node.stateIdentifier + '"]');
     if (elementNodeAction.size()) {
       elementNodeAction.classed('node-action-over', false);
     }
-
   }
 
   /**
@@ -1204,15 +1279,15 @@ export class SvgTree extends LitElement {
         // scroll to end, select last node
         this.scrollTop = this.lastElementChild.getBoundingClientRect().height + this.settings.nodeHeight - this.viewportHeight;
         parentDomNode.scrollIntoView({behavior: 'smooth', block: 'end'});
+        this.focusNode(this.getNodeFromElement(parentDomNode.lastElementChild as SVGElement));
         this.updateVisibleNodes();
-        this.switchFocus(parentDomNode.lastElementChild as SVGElement);
         break;
       case KeyTypes.HOME:
         // scroll to top, select first node
         this.scrollTo({'top': this.nodes[0].y, 'behavior': 'smooth'});
         this.prepareDataForVisibleNodes();
+        this.focusNode(this.getNodeFromElement(parentDomNode.firstElementChild as SVGElement));
         this.updateVisibleNodes();
-        this.switchFocus(parentDomNode.firstElementChild as SVGElement);
         break;
       case KeyTypes.LEFT:
         if (currentNode.expanded) {
@@ -1226,26 +1301,31 @@ export class SvgTree extends LitElement {
           // go to parent node
           let parentNode = this.nodes[currentNode.parents[0]];
           this.scrollNodeIntoVisibleArea(parentNode, 'up');
-          this.switchFocusNode(parentNode);
+          this.focusNode(parentNode);
+          this.updateVisibleNodes();
         }
         break;
       case KeyTypes.UP:
         // select previous visible node on any level
         this.scrollNodeIntoVisibleArea(currentNode, 'up');
-        this.switchFocus(evtTarget.previousSibling as SVGElement);
+        if (evtTarget.previousSibling) {
+          this.focusNode(this.getNodeFromElement(evtTarget.previousSibling as SVGElement));
+          this.updateVisibleNodes();
+        }
         break;
       case KeyTypes.RIGHT:
         if (currentNode.expanded) {
           // the current node is expanded, goto first child (next element on the list)
           this.scrollNodeIntoVisibleArea(currentNode, 'down');
-          this.switchFocus(evtTarget.nextSibling as SVGElement);
+          this.focusNode(this.getNodeFromElement(evtTarget.nextSibling as SVGElement));
+          this.updateVisibleNodes();
         } else {
           if (currentNode.hasChildren) {
             // expand currentNode
             this.showChildren(currentNode);
             this.prepareDataForVisibleNodes();
+            this.focusNode(this.getNodeFromElement(evtTarget as SVGElement));
             this.updateVisibleNodes();
-            this.switchFocus(evtTarget as SVGElement);
           }
           //do nothing if node has no children
         }
@@ -1254,11 +1334,15 @@ export class SvgTree extends LitElement {
         // select next visible node on any level
         // check if node is at end of viewport and scroll down if so
         this.scrollNodeIntoVisibleArea(currentNode, 'down');
-        this.switchFocus(evtTarget.nextSibling as SVGElement);
+        if (evtTarget.nextSibling) {
+          this.focusNode(this.getNodeFromElement(evtTarget.nextSibling as SVGElement));
+          this.updateVisibleNodes();
+        }
         break;
       case KeyTypes.ENTER:
       case KeyTypes.SPACE:
         this.selectNode(currentNode, true);
+        this.focusNode(currentNode)
         break;
       default:
     }

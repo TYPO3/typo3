@@ -54,17 +54,36 @@ export class PageTree extends SvgTree
 
   public nodesUpdate(nodes: TreeNodeSelection): TreeNodeSelection {
     nodes = super.nodesUpdate(nodes);
-    nodes
-      .append('text')
-      .text('+')
+
+    // append the stop element
+    let nodeStop = nodes
+      .append('svg')
       .attr('class', 'node-stop')
-      .attr('dx', 30)
-      .attr('dy', 5)
+      .attr('y', (super.settings.icon.size / 2 * -1))
+      .attr('x', (super.settings.icon.size / 2 * -1))
+      .attr('height', super.settings.icon.size)
+      .attr('width', super.settings.icon.size)
       .attr('visibility', (node: TreeNode) => node.stopPageTree && node.depth !== 0 ? 'visible' : 'hidden')
       .on('click', (evt: MouseEvent, node: TreeNode) => {
         document.dispatchEvent(new CustomEvent('typo3:pagetree:mountPoint', {detail: {pageId: parseInt(node.identifier, 10)}}));
       });
+    nodeStop.append('rect')
+      .attr('height', super.settings.icon.size)
+      .attr('width', super.settings.icon.size)
+      .attr('fill', 'rgba(0,0,0,0)');
+    nodeStop.append('use')
+      .attr('transform-origin', '50% 50%')
+      .attr('href', '#icon-actions-caret-right');
+
     return nodes;
+  }
+
+  protected getToggleVisibility(node: TreeNode): string {
+    if (node.stopPageTree && node.depth !== 0) {
+      return 'hidden';
+    }
+
+    return node.hasChildren ? 'visible' : 'hidden';
   }
 
   /**
@@ -95,7 +114,7 @@ export class PageTree extends SvgTree
         this.updateVisibleNodes();
         this.nodesRemovePlaceholder();
 
-        this.switchFocusNode(parentNode);
+        this.focusNode(parentNode);
       })
       .catch((error: any) => {
         this.errorNotification(error, false)
@@ -103,21 +122,4 @@ export class PageTree extends SvgTree
         throw error;
       });
   }
-
-  /**
-   * Changed text position if there is 'stop page tree' option
-   */
-  protected appendTextElement(nodes: TreeNodeSelection): TreeNodeSelection {
-    return super.appendTextElement(nodes)
-      .attr('dx', (node) => {
-        let position = this.textPosition;
-        if (node.stopPageTree && node.depth !== 0) {
-          position += 15;
-        }
-        if (node.locked) {
-          position += 15;
-        }
-        return position;
-      });
-  };
 }

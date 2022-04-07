@@ -138,7 +138,7 @@ class TemplateCest
         $I->wantTo('click on the button to go to the closest page with a template');
         $I->switchToMainFrame();
         // Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
+        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForText('No template');
@@ -163,7 +163,7 @@ class TemplateCest
         $I->wantTo('see the button to create a extension template');
         $I->switchToMainFrame();
         //Open the pagetree
-        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " toggle ")])[4]');
+        $I->clickWithLeftButton('(//*[contains(concat(" ", normalize-space(@class), " "), " node-toggle ")])[4]');
         $I->clickWithLeftButton('//*[text()=\'menu_sitemap_pages\']');
         $I->switchToContentFrame();
         $I->waitForText('No template');

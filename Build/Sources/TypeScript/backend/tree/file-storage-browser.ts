@@ -36,7 +36,6 @@ class FileStorageBrowserTree extends FileStorageTree {
     const nodes = super.updateNodeActions(nodesActions);
     if (this.settings.actions.includes('link')) {
       // Check if a node can be linked
-      this.fetchIcon('actions-link');
       const linkAction = nodes
         .append('g')
         .on('click', (evt: MouseEvent, node: TreeNode) => {
@@ -45,7 +44,6 @@ class FileStorageBrowserTree extends FileStorageTree {
       this.createIconAreaForAction(linkAction, 'actions-link');
     } else if (this.settings.actions.includes('select')) {
       // Check if a node can be selected
-      this.fetchIcon('actions-link');
       const linkAction = nodes
         .append('g')
         .on('click', (evt: MouseEvent, node: TreeNode) => {

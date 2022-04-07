@@ -75,7 +75,7 @@ export class FileStorageTree extends SvgTree {
         this.prepareDataForVisibleNodes();
         this.updateVisibleNodes();
         this.nodesRemovePlaceholder();
-        this.switchFocusNode(parentNode);
+        this.focusNode(parentNode);
       })
       .catch((error: any) => {
         this.errorNotification(error, false);

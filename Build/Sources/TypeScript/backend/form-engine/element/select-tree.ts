@@ -34,8 +34,12 @@ export class SelectTree extends SvgTree
     readOnlyMode: false,
     showIcons: true,
     marginTop: 15,
-    nodeHeight: 20,
-    indentWidth: 16,
+    nodeHeight: 26,
+    icon: {
+      size: 16,
+      containerSize: 20,
+    },
+    indentWidth: 20,
     width: 300,
     duration: 400,
     dataUrl: '',
@@ -183,7 +187,11 @@ export class SelectTree extends SvgTree
     })
       .append('g')
       .attr('class', 'tree-check')
-      .on('click', (evt: MouseEvent, node: TreeNode) => this.selectNode(node));
+      .on('click', (evt: MouseEvent, node: TreeNode) => {
+        this.selectNode(node);
+        this.focusNode(node);
+        this.updateVisibleNodes();
+      });
 
     g.append('use')
       .attr('x', 28)
