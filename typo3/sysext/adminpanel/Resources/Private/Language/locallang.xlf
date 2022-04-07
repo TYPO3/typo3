@@ -13,6 +13,9 @@
 			<trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel">
 				<source>Update Settings</source>
 			</trans-unit>
+			<trans-unit id="settings.openBackendUrlLabel" resname="settings.openBackendUrlLabel">
+				<source>Open page in backend</source>
+			</trans-unit>
 			<trans-unit id="button.close" resname="button.close">
 				<source>Close</source>
 			</trans-unit>

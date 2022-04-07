@@ -144,6 +144,21 @@ class MainController implements SingletonInterface
                     return $module instanceof SubmoduleProviderInterface && $module instanceof ShortInfoProviderInterface;
                 }
             );
+            $frontendController = $request->getAttribute('frontend.controller');
+            $routeIdentifier = 'web_layout';
+            $arguments = [
+                'id' => $frontendController->id ?? 0,
+            ];
+            $backendUrl = (string)$this->uriBuilder->buildUriFromRoute(
+                $routeIdentifier,
+                $arguments,
+                UriBuilder::SHAREABLE_URL
+            );
+            // this is a workaround as the UriBuilder uses the frontend request to build the URL
+            // and the requestDir does not contain /typo3
+            $requestDir = $request->getAttribute('normalizedParams')->getRequestDir();
+            $backendUrl = str_replace($requestDir, $requestDir . 'typo3/', $backendUrl);
+
             $view->assignMultiple(
                 [
                     'modules' => $this->modules,
@@ -153,6 +168,7 @@ class MainController implements SingletonInterface
                     'moduleResources' => $moduleResources,
                     'requestId' => $requestId,
                     'data' => $data ?? [],
+                    'backendUrl' => $backendUrl,
                 ]
             );
         }

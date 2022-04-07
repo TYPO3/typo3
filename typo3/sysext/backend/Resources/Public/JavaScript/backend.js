@@ -12,7 +12,9 @@
  */
 
 // Reset the current window name in case it was a preview before
-window.name = '';
+if (window.name === 'newTYPO3frontendWindow') {
+  window.name = '';
+}
 
 // Remove window.opener from backend
 window.opener = undefined;
