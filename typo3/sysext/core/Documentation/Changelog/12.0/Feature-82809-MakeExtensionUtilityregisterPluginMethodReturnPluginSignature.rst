@@ -1,4 +1,4 @@
-.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 =======================================================================================
 Feature: #82809 - Make ExtensionUtility::registerPlugin method return plugin signature.
