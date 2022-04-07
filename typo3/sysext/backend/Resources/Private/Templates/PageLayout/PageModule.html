@@ -23,7 +23,7 @@
     <typo3-immediate-action action="TYPO3.Backend.Storage.ModuleStateStorage.updateWithCurrentMount" args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"></typo3-immediate-action>
 
     <f:for each="{infoBoxes}" as="infoBox">
-        <f:be.infobox title="{infoBox.title}" state="{infoBox.state}">
+        <f:be.infobox state="{infoBox.state}">
             <f:format.raw>{infoBox.message}</f:format.raw>
         </f:be.infobox>
     </f:for>

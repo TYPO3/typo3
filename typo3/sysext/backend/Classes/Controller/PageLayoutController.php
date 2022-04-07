@@ -299,8 +299,7 @@ class PageLayoutController
         if ($currentDocumentType === PageRepository::DOKTYPE_SYSFOLDER && $this->moduleProvider->accessGranted('web_list', $backendUser)) {
             $infoBoxes[] = [
                 'title' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModule'),
-                'message' => ''
-                    . '<p>' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModuleMessage') . '</p>'
+                'message' => '<p>' . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModuleMessage') . '</p>'
                     . '<a class="btn btn-info" data-dispatch-action="TYPO3.ModuleMenu.showModule" data-dispatch-args-list="web_list">'
                         . $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:goToListModule')
                     . '</a>',
@@ -358,7 +357,6 @@ class PageLayoutController
                 $state = InfoboxViewHelper::STATE_ERROR;
             }
             $infoBoxes[] = [
-                'title' => $this->pageinfo['title'],
                 'message' => $message,
                 'state' => $state,
             ];
@@ -366,7 +364,6 @@ class PageLayoutController
         if ($currentDocumentType === PageRepository::DOKTYPE_LINK) {
             if (empty($this->pageinfo['url'])) {
                 $infoBoxes[] = [
-                    'title' => $this->pageinfo['title'],
                     'message' => $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsMisconfiguredExternalLinkMessage'),
                     'state' => InfoboxViewHelper::STATE_ERROR,
                 ];
@@ -376,7 +373,6 @@ class PageLayoutController
                     $externalUrl = htmlspecialchars($externalUrl);
                     $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noreferrer">' . $externalUrl . '</a>';
                     $infoBoxes[] = [
-                        'title' => $this->pageinfo['title'],
                         'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:pageIsExternalLinkMessage'), $externalUrlHtml),
                         'state' => InfoboxViewHelper::STATE_INFO,
                     ];
@@ -390,7 +386,6 @@ class PageLayoutController
             $title = BackendUtility::getRecordTitle('pages', $contentPage);
             $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
             $infoBoxes[] = [
-                'title' => $title,
                 'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
                 'state' => InfoboxViewHelper::STATE_INFO,
             ];
@@ -398,7 +393,6 @@ class PageLayoutController
             $links = $this->getPageLinksWhereContentIsAlsoShownOn((int)$this->pageinfo['uid']);
             if (!empty($links)) {
                 $infoBoxes[] = [
-                    'title' => '',
                     'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_on_pid_title'), $links),
                     'state' => InfoboxViewHelper::STATE_INFO,
                 ];
