@@ -70,7 +70,6 @@ return [
             'config' => [
                 'type' => 'group',
                 'size' => 1,
-                'eval' => 'int',
                 'maxitems' => 1,
                 'allowed' => 'sys_file',
                 'hideSuggest' => true,
