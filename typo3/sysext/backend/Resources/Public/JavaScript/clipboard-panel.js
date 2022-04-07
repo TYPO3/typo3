@@ -19,19 +19,15 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,i,a){var o,n=arguments.len
         ${until(this.renderPanel(),ClipboardPanel_1.renderLoader())}
       </div>
     `}renderPanel(){return new AjaxRequest(top.TYPO3.settings.Clipboard.moduleUrl).withQueryArguments({action:"getClipboardData"}).post({table:this.table}).then(async t=>{const e=await t.resolve();if(!0===e.success&&e.data){const t=e.data;return html`
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    ${t.labels.clipboard}
-                  </div>
-                  <table class="table">
-                    <tbody>
-                      ${t.tabs.map(e=>this.renderTab(e,t))}
-                    </tbody>
-                  </tabel>
-                </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                ${t.labels.clipboard}
               </div>
+              <table class="table">
+                <tbody>
+                  ${t.tabs.map(e=>this.renderTab(e,t))}
+                </tbody>
+              </tabel>
             </div>
           `}return Notification.error("Clipboard data could not be fetched"),html``}).catch(()=>(Notification.error("An error occured while fetching clipboard data"),html``))}renderTab(t,e){return html`
       <tr>
