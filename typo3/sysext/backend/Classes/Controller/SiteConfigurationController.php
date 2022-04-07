@@ -506,6 +506,25 @@ class SiteConfigurationController
         $languageService = $this->getLanguageService();
         $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
         $handledEvals = [];
+
+        if (!$this->validateValueForRequired($fieldConfig, $fieldValue)) {
+            // Validation throws - these should be handled client side already,
+            // eg. 'required' being set and receiving empty, shouldn't happen server side
+            $message = sprintf(
+                $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.message'),
+                $fieldName
+            );
+            $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.title');
+            $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
+            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue->enqueue($flashMessage);
+            throw new SiteValidationErrorException(
+                'Field ' . $fieldName . ' is set to required, but received empty.',
+                1521726421
+            );
+        }
+
         if (!empty($fieldConfig['eval'])) {
             $evalArray = GeneralUtility::trimExplode(',', $fieldConfig['eval'], true);
             // Processing
@@ -524,26 +543,6 @@ class SiteConfigurationController
             if (in_array('int', $evalArray, true)) {
                 $handledEvals[] = 'int';
                 $fieldValue = (int)$fieldValue;
-            }
-            // Validation throws - these should be handled client side already,
-            // eg. 'required' being set and receiving empty, shouldn't happen server side
-            if (in_array('required', $evalArray, true)) {
-                $handledEvals[] = 'required';
-                if (empty($fieldValue)) {
-                    $message = sprintf(
-                        $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.message'),
-                        $fieldName
-                    );
-                    $messageTitle = $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.required.title');
-                    $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $message, $messageTitle, FlashMessage::WARNING, true);
-                    $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-                    $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-                    $defaultFlashMessageQueue->enqueue($flashMessage);
-                    throw new SiteValidationErrorException(
-                        'Field ' . $fieldName . ' is set to required, but received empty.',
-                        1521726421
-                    );
-                }
             }
             if (!empty(array_diff($evalArray, $handledEvals))) {
                 throw new \RuntimeException('At least one not implemented \'eval\' in list ' . $fieldConfig['eval'], 1522491734);
@@ -786,6 +785,20 @@ class SiteConfigurationController
             }
         }
         return $lastLanguageId;
+    }
+
+    /**
+     * Checks if required=TRUE is set.
+     * If set: checks if the value is not empty (or not "0").
+     * If not set or set to FALSE: Returns TRUE.
+     */
+    protected function validateValueForRequired(array $tcaFieldConfig, mixed $value): bool
+    {
+        if (!($tcaFieldConfig['required'] ?? false)) {
+            return true;
+        }
+
+        return !empty($value) || $value === '0';
     }
 
     protected function getLanguageService(): LanguageService
