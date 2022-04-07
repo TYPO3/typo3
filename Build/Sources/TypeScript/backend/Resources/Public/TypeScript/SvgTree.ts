@@ -533,6 +533,7 @@ export class SvgTree extends LitElement {
         this.switchFocusNode(node);
       })
       .on('contextmenu', (evt: MouseEvent, node: TreeNode) => {
+        evt.preventDefault();
         this.dispatchEvent(new CustomEvent('typo3:svg-tree:node-context', {detail: {node: node}}));
       });
   }
