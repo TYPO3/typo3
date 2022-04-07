@@ -19,9 +19,8 @@ return [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_errorhandling.errorCode',
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_errorhandling.errorCode',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'required' => true,
-                'eval' => 'trim, int',
                 'range' => [
                     'lower' => 0,
                     'upper' => 599,
