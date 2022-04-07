@@ -98,19 +98,15 @@ export class ClipboardPanel extends LitElement {
         if (resolvedBody.success === true && resolvedBody.data) {
           const clipboardData: ClipboardData = resolvedBody.data;
           return html`
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    ${clipboardData.labels.clipboard}
-                  </div>
-                  <table class="table">
-                    <tbody>
-                      ${clipboardData.tabs.map((tab: any): TemplateResult => this.renderTab(tab, clipboardData))}
-                    </tbody>
-                  </tabel>
-                </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                ${clipboardData.labels.clipboard}
               </div>
+              <table class="table">
+                <tbody>
+                  ${clipboardData.tabs.map((tab: any): TemplateResult => this.renderTab(tab, clipboardData))}
+                </tbody>
+              </tabel>
             </div>
           `;
         } else {
