@@ -110,7 +110,7 @@ class ColorElement extends AbstractFormElement
         ), ['trim']);
 
         $attributes = [
-            'value' => $itemValue,
+            'value' => '',
             'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
