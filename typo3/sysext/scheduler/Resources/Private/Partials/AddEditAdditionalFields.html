@@ -5,7 +5,7 @@
         id="{field.fieldID}_row"
     >
         <div class="form-group">
-            <label for="{field.fieldID}"><f:translate key="{field.langLabel}"/></label>
+            <label for="{field.fieldID}">{field.langLabel}</label>
             <div class="form-control-wrap">
                 {field.code -> f:format.raw()}
             </div>

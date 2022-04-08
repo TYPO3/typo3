@@ -967,7 +967,7 @@ class SchedulerModuleController
                 'code' => $fieldInfo['code'] ?? '',
                 'cshKey' => $fieldInfo['cshKey'] ?? '',
                 'cshLabel' => $fieldInfo['cshLabel'] ?? '',
-                'langLabel' => $fieldInfo['label'] ?? '',
+                'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
                 'browser' => $fieldInfo['browser'] ?? '',
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
             ];
