@@ -381,14 +381,21 @@ class PageLayoutController
         }
         if ($this->pageinfo['content_from_pid']) {
             // If content from different pid is displayed
-            $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
-            $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->pageinfo['content_from_pid']]);
-            $title = BackendUtility::getRecordTitle('pages', $contentPage);
-            $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
-            $infoBoxes[] = [
-                'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
-                'state' => InfoboxViewHelper::STATE_INFO,
-            ];
+            $contentPage = BackendUtility::getRecord('pages', (int)$this->pageinfo['content_from_pid']);
+            if ($contentPage === null) {
+                $infoBoxes[] = [
+                    'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_invalid_title'), $this->pageinfo['content_from_pid']),
+                    'state' => InfoboxViewHelper::STATE_ERROR,
+                ];
+            } else {
+                $linkToPid = $this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $this->pageinfo['content_from_pid']]);
+                $title = BackendUtility::getRecordTitle('pages', $contentPage);
+                $link = '<a href="' . htmlspecialchars((string)$linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageinfo['content_from_pid'] . ')</a>';
+                $infoBoxes[] = [
+                    'message' => sprintf($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link),
+                    'state' => InfoboxViewHelper::STATE_INFO,
+                ];
+            }
         } else {
             $links = $this->getPageLinksWhereContentIsAlsoShownOn((int)$this->pageinfo['uid']);
             if (!empty($links)) {

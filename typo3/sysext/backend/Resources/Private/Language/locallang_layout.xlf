@@ -279,6 +279,9 @@
 			<trans-unit id="content_from_pid_title" resname="content_from_pid_title">
 				<source>Page uses content from this page: %s</source>
 			</trans-unit>
+			<trans-unit id="content_from_pid_invalid_title" resname="content_from_pid_invalid_title">
+				<source>Page is defined to use content from PID %s, but this page does not exist or is inaccessible</source>
+			</trans-unit>
 			<trans-unit id="content_on_pid_title" resname="content_on_pid_title">
 				<source>This content is also shown on: %s</source>
 			</trans-unit>
