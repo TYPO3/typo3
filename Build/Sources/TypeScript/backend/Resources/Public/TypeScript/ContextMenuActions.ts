@@ -174,9 +174,7 @@ class ContextMenuActions {
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
-    ).done((): void => {
-      ContextMenuActions.refreshPageTree();
-    });
+    );
   }
 
   /**
@@ -189,9 +187,7 @@ class ContextMenuActions {
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
-    ).done((): void => {
-      ContextMenuActions.refreshPageTree();
-    });
+    );
   }
 
   /**
@@ -203,9 +199,7 @@ class ContextMenuActions {
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
-    ).done((): void => {
-      ContextMenuActions.refreshPageTree();
-    });
+    );
   }
 
   /**
@@ -217,9 +211,7 @@ class ContextMenuActions {
       top.TYPO3.settings.RecordCommit.moduleUrl
       + '&data[' + table + '][' + uid + '][nav_hide]=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
-    ).done((): void => {
-      ContextMenuActions.refreshPageTree();
-    });
+    );
   }
 
   /**
@@ -363,11 +355,7 @@ class ContextMenuActions {
 
       Viewport.ContentContainer.setUrl(
         top.TYPO3.settings.RecordCommit.moduleUrl + url,
-      ).done((): void => {
-        if (table === 'pages') {
-          ContextMenuActions.refreshPageTree();
-        }
-      });
+      );
     };
     if (!$anchorElement.data('title')) {
       performPaste();
