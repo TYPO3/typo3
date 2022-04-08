@@ -720,6 +720,11 @@ class PageTreeRepository
         foreach ($pages as $key => $pageRecord) {
             $parentPageId = (int)$pageRecord['pid'];
             $sorting = (int)$pageRecord['sorting'];
+            // If the page record was already added in another depth level, don't add it another time.
+            // This may happen, if entry points are intersecting each other (Entry point B is inside entry point A).
+            if (($groupedAndSortedPagesByPid[$parentPageId][$sorting]['uid'] ?? 0) === $pageRecord['uid']) {
+                continue;
+            }
             while (isset($groupedAndSortedPagesByPid[$parentPageId][$sorting])) {
                 $sorting++;
             }

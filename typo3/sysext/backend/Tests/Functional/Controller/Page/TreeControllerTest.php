@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
 
 use TYPO3\CMS\Backend\Controller\Page\TreeController;
+use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTreeTrait;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -35,6 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class TreeControllerTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
+    use NormalizeTreeTrait;
 
     protected const LANGUAGE_PRESETS = [];
 
@@ -728,55 +730,5 @@ class TreeControllerTest extends FunctionalTestCase
     {
         $this->backendUser->workspace = $workspaceId;
         $this->context->setAspect('workspace', new WorkspaceAspect($workspaceId));
-    }
-
-    /**
-     * Sorts tree array by index of each section item recursively.
-     *
-     * @param array $tree
-     * @return array
-     */
-    private function sortTreeArray(array $tree): array
-    {
-        ksort($tree);
-        return array_map(
-            function (array $item) {
-                foreach ($item as $propertyName => $propertyValue) {
-                    if (!is_array($propertyValue)) {
-                        continue;
-                    }
-                    $item[$propertyName] = $this->sortTreeArray($propertyValue);
-                }
-                return $item;
-            },
-            $tree
-        );
-    }
-
-    /**
-     * Normalizes a tree array, re-indexes numeric indexes, only keep given properties.
-     *
-     * @param array $tree Whole tree array
-     * @param array $keepProperties (property names to be used as indexes for array_intersect_key())
-     * @return array Normalized tree array
-     */
-    private function normalizeTreeArray(array $tree, array $keepProperties): array
-    {
-        return array_map(
-            function (array $item) use ($keepProperties) {
-                // only keep these property names
-                $item = array_intersect_key($item, $keepProperties);
-                foreach ($item as $propertyName => $propertyValue) {
-                    if (!is_array($propertyValue)) {
-                        continue;
-                    }
-                    // process recursively for nested array items (e.g. `_children`)
-                    $item[$propertyName] = $this->normalizeTreeArray($propertyValue, $keepProperties);
-                }
-                return $item;
-            },
-            // normalize numeric indexes (remove sorting markers)
-            array_values($tree)
-        );
     }
 }
