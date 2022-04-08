@@ -202,7 +202,7 @@ class RecoveryServiceTest extends UnitTestCase
                 'last_name'   => 'Mustermann',
                 'username'    => 'm.mustermann',
             ],
-            'receiver'              => new Address('max@mustermann.de', 'Max Maximus Mustermann'),
+            'receiver'              => new Address('max@mustermann.de', 'Max Maximus Mustermann (m.mustermann)'),
             'settings'              => ['dateFormat' => 'Y-m-d H:i'],
         ];
         yield 'custom dateFormat and no middle name' => [
@@ -220,7 +220,7 @@ class RecoveryServiceTest extends UnitTestCase
                 'last_name'   => 'Mustermann',
                 'username'    => 'm.mustermann',
             ],
-            'receiver'              => new Address('max@mustermann.de', 'Max Mustermann'),
+            'receiver'              => new Address('max@mustermann.de', 'Max Mustermann (m.mustermann)'),
             'settings'              => ['dateFormat' => 'Y-m-d'],
         ];
     }
