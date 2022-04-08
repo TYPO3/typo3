@@ -45,14 +45,35 @@ $autocomplete-suggestion-link-hover-bg: #fafafa;
     padding: 5px 13px 5px 28px;
     display: block;
     text-decoration: none;
-
-    .autocomplete-selected &,
-    &:hover {
-        background-color: $autocomplete-suggestion-link-hover-bg;
-        text-decoration: none;
-    }
 }
 
 .autocomplete-info {
     padding: 5px 15px;
+}
+
+.autocomplete-suggestion {
+    &:hover {
+        background-color: $autocomplete-suggestion-link-hover-bg;
+        text-decoration: none;
+    }
+
+    &:not(:disabled):focus,
+    &:not(:disabled):hover,
+    &.autocomplete-selected {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.toolbar-item-search-field-dropdown > .autocomplete-suggestion:last-child {
+    padding-top: $padding-base-vertical;
+}
+
+.toolbar-item-search-field-dropdown > .autocomplete-suggestion:last-child.autocomplete-selected {
+    background-color: transparent;
+
+    .btn-primary {
+        color: #f5f5f5;
+        background-color: #005db3;
+        border-color: #004380;
+    }
 }

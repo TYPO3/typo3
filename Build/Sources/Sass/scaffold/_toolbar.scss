@@ -275,3 +275,21 @@ $toolbar-navigation-search-focus-bg: $toolbar-dropdown-link-active-bg;
         background-color: $toolbar-navigation-search-focus-bg;
     }
 }
+
+.dropdown-menu.toolbar-item-search-field-dropdown {
+    width: calc(100% - #{$toolbar-dropdown-padding} * 2);
+
+    @media (min-width: $screen-md-min) {
+        max-width: 350px;
+        width: 350px;
+        margin-left: -50px;
+    }
+
+    .dropdown-list-link {
+        padding: $toolbar-dropdown-padding / 2;
+    }
+
+    .dropdown-headline {
+        padding-top: $toolbar-dropdown-padding / 2;
+    }
+}

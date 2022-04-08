@@ -31,6 +31,7 @@ class SearchCest
      * @var string
      */
     public static string $topBarModuleSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
+    public static $dropdownListSelector = '.t3js-toolbar-item-search.toolbar-item-search-field-dropdown';
 
     public function _before(ApplicationTester $I): void
     {
@@ -39,12 +40,13 @@ class SearchCest
 
     public function searchAndTestIfAutocompletionWorks(ApplicationTester $I): void
     {
-        $I->cantSeeElement(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
+        // .t3js-toolbar-item-search.toolbar-item-search-field-dropdown
+        $I->cantSeeElement(self::$dropdownListSelector);
         $I->fillField('#live-search-box', 'adm');
-        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
+        $I->waitForElementVisible(self::$dropdownListSelector);
 
-        $I->canSee('Backend user', self::$topBarModuleSelector);
-        $I->click('admin', self::$topBarModuleSelector);
+        $I->canSee('Backend user', self::$dropdownListSelector);
+        $I->click('admin', self::$dropdownListSelector);
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('#EditDocumentController');
@@ -54,23 +56,23 @@ class SearchCest
     public function searchForFancyTextAndCheckEmptyResultInfo(ApplicationTester $I): void
     {
         $I->fillField('#live-search-box', 'Kasper = Jesus # joh316');
-        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
+        $I->waitForElementVisible(self::$dropdownListSelector, 100);
 
         // tod0: check why TYPO3 does not return a result for "Kasper" by itself
-        $I->canSee('No results found.', self::$topBarModuleSelector);
+        $I->canSee('No results found.', self::$dropdownListSelector);
 
         $I->click(self::$topBarModuleSelector . ' .close');
-        $I->waitForElementNotVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector, 100);
+        $I->waitForElementNotVisible(self::$dropdownListSelector, 100);
         $I->cantSeeInField('#live-search-box', 'Kasper = Jesus # joh316');
     }
 
     public function checkIfTheShowAllLinkPointsToTheListViewWithSearchResults(ApplicationTester $I): void
     {
         $I->fillField('#live-search-box', 'fileadmin');
-        $I->waitForElementVisible(self::$topBarModuleSelector . ' ' . Topbar::$dropdownListSelector);
+        $I->waitForElementVisible(self::$dropdownListSelector);
 
-        $I->canSee('fileadmin', self::$topBarModuleSelector);
-        $I->click('.t3js-live-search-show-all', self::$topBarModuleSelector);
+        $I->canSee('fileadmin', self::$dropdownListSelector);
+        $I->click('.t3js-live-search-show-all', self::$dropdownListSelector);
 
         $I->switchToContentFrame();
 

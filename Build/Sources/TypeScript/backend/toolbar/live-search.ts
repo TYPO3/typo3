@@ -19,7 +19,6 @@ import '../input/clearable';
 import {html, render, TemplateResult} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html';
 import {renderHTML} from '@typo3/core/lit-helper';
-import {ModuleStateStorage} from '@typo3/backend/storage/module-state-storage';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem',
@@ -27,6 +26,7 @@ enum Identifiers {
   dropdownToggle = '.t3js-toolbar-search-dropdowntoggle',
   searchFieldSelector = '.t3js-topbar-navigation-search-field',
   formSelector = '.t3js-topbar-navigation-search',
+  dropdownClass = 'toolbar-item-search-field-dropdown',
 }
 
 interface ResultItem {
@@ -60,18 +60,13 @@ class LiveSearch {
       $(Identifiers.toolbarItem).removeAttr('style');
       let searchField: HTMLInputElement;
       if ((searchField = document.querySelector(Identifiers.searchFieldSelector)) !== null) {
-        searchField.clearable({
-          onClear: (): void => {
-            if ($(Identifiers.dropdownToggle).hasClass('show')) {
-              $(Identifiers.dropdownToggle).dropdown('toggle');
-            }
-          },
-        });
+        searchField.clearable();
       }
     });
   }
 
   private registerAutocomplete(): void {
+    const $searchField = $(Identifiers.searchFieldSelector);
     $(Identifiers.searchFieldSelector).autocomplete({
       // ajax options
       serviceUrl: this.url,
@@ -80,9 +75,9 @@ class LiveSearch {
       minChars: 2,
       width: '100%',
       groupBy: 'typeLabel',
+      tabDisabled: true,
       noCache: true,
-      containerClass: Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length),
-      appendTo: Identifiers.containerSelector + ' .dropdown-menu',
+      containerClass: Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length) + ' dropdown-menu ' + Identifiers.dropdownClass,
       forceFixPosition: false,
       preserveInput: true,
       showNoSuggestionNotice: true,
@@ -94,13 +89,37 @@ class LiveSearch {
       + '<p>' + TYPO3.lang.liveSearch_helpDescription + '<br>' + TYPO3.lang.liveSearch_helpDescriptionPages + '</p>',
       // put the AJAX results in the right format
       transformResult: (response: Array<ResultItem>): { [key: string]: Array<Suggestion> } => {
+        let allSuggestions = $.map(response, (dataItem: ResultItem): Suggestion => {
+          return {value: dataItem.title, data: dataItem};
+        });
+
+        // If there are search results, append a "Show all"-link to suggestions
+        // to allow the user to reach "Show all" using up/down key
+        if(allSuggestions.length > 0) {
+          let showAll: Suggestion = {
+            value: 'search_all',
+            data: {
+              typeLabel: '',
+              title: TYPO3.lang.liveSearch_showAllResults,
+              editLink: '#',
+              iconHTML: '',
+              id: '',
+              pageId: 0
+            }
+          }
+          allSuggestions.push(showAll);
+        }
+
         return {
-          suggestions: $.map(response, (dataItem: ResultItem): Suggestion => {
-            return {value: dataItem.title, data: dataItem};
-          }),
+          suggestions: allSuggestions,
         };
       },
       formatGroup: (suggestion: Suggestion, category: string, i: number): string => {
+        // Do not return headline div if category empty
+        if(category.length < 1) {
+          return '';
+        }
+
         return renderHTML(html`
           ${i > 0 ? html`<hr>` : ''}
           <h3 class="dropdown-headline">${category}</h3>
@@ -111,12 +130,7 @@ class LiveSearch {
         return renderHTML(html`
           <div class="dropdown-table">
             <div class="dropdown-table-row">
-              <div class="dropdown-table-column dropdown-table-icon">
-                ${unsafeHTML(suggestion.data.iconHTML)}
-              </div>
-              <div class="dropdown-table-column dropdown-table-title">
-                ${this.linkItem(suggestion)}
-              </div>
+              ${this.linkItem(suggestion)}
             </div>
           </div>
         `);
@@ -138,11 +152,6 @@ class LiveSearch {
       },
       onSearchComplete: (): void => {
         const $toolbarItem = $(Identifiers.toolbarItem);
-        const $searchField = $(Identifiers.searchFieldSelector);
-        if (!$(Identifiers.dropdownToggle).hasClass('show') && $searchField.val().length > 1) {
-          $(Identifiers.dropdownToggle).dropdown('toggle');
-          $searchField.focus();
-        }
         if ($toolbarItem.hasClass('loading')) {
           $toolbarItem.removeClass('loading');
           Icons.getIcon(
@@ -156,48 +165,30 @@ class LiveSearch {
           });
         }
       },
-      beforeRender: (container: JQuery): void => {
-        container.append('<hr><div>' +
-          '<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
-          TYPO3.lang.liveSearch_showAllResults +
-          '</a>' +
-          '</div>');
-        if (!$(Identifiers.dropdownToggle).hasClass('show')) {
-          $(Identifiers.dropdownToggle).dropdown('show');
-          $(Identifiers.searchFieldSelector).focus();
+      onSelect: (item: Suggestion): void => {
+        $searchField.focus();
+        $(Identifiers.searchFieldSelector).autocomplete('hide');
+
+        if(item.value === 'search_all') {
+          TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($searchField.val()));
+        } else {
+          TYPO3.Backend.ContentContainer.setUrl(item.data.editLink);
         }
-      },
-      onHide: (): void => {
-        if ($(Identifiers.dropdownToggle).hasClass('show')) {
-          $(Identifiers.dropdownToggle).dropdown('hide');
+
+        // Hide mobile menu scaffold coz it does not make sense to keep the layer
+        if (document.body.classList.contains('scaffold-search-expanded')) {
+          document.body.classList.remove('scaffold-search-expanded')
         }
-      },
+
+        // Make sure the dropdown is hidden after selection when using the keyboard
+        document.getElementById('typo3-contentIframe').onload = function() {
+          $(Identifiers.searchFieldSelector).autocomplete('hide');
+        };
+      }
     });
   }
 
   private registerEvents(): void {
-    const $searchField = $(Identifiers.searchFieldSelector);
-
-    $(Identifiers.containerSelector).on('click', '.t3js-live-search-show-all', (evt: JQueryEventObject): void => {
-      evt.preventDefault();
-
-      TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=-1&search_field=' + encodeURIComponent($searchField.val()));
-      $searchField.val('').trigger('change');
-    });
-    if ($searchField.length) {
-      const $autocompleteContainer = $('.' + Identifiers.toolbarItem.substr(1, Identifiers.toolbarItem.length));
-      $autocompleteContainer.on('click.autocomplete', '.dropdown-list-link', (evt: JQueryEventObject): void => {
-        evt.preventDefault();
-        const $me = $(evt.currentTarget);
-        // Load the list module of the page
-        ModuleStateStorage.updateWithCurrentMount('web', $me.data('pageid'), true);
-        const router = document.querySelector('typo3-backend-module-router');
-        router.setAttribute('endpoint', $me.attr('href'))
-        router.setAttribute('module', 'web_list')
-        $searchField.val('').trigger('change');
-      });
-    }
-
     // Prevent submitting the search form
     $(Identifiers.formSelector).on('submit', (evt: JQueryEventObject): void => {
       evt.preventDefault();
@@ -205,13 +196,24 @@ class LiveSearch {
   }
 
   private linkItem(suggestion: Suggestion): TemplateResult {
+    if(suggestion.value === 'search_all') {
+      return html`
+        <a class="dropdown-list-link btn btn-primary pull-right t3js-live-search-show-all" data-pageid="0">${suggestion.data.title}</a>
+      `
+    }
+
     return suggestion.data.editLink
       ? html`
-        <a class="dropdown-table-title-ellipsis dropdown-list-link"
-           data-pageid="${suggestion.data.pageId}" href="${suggestion.data.editLink}">
-          ${suggestion.data.title}
+        <a class="dropdown-list-link"
+           data-pageid="${suggestion.data.pageId}" href="#">
+          <div class="dropdown-table-column dropdown-table-icon">
+            ${unsafeHTML(suggestion.data.iconHTML)}
+          </div>
+          <div class="dropdown-table-column">
+            ${suggestion.data.title}
+          </div>
         </a>`
-      : html`<span class="dropdown-table-title-ellipsis">${suggestion.data.title}</span>`;
+      : html`<span class="dropdown-list-title">${suggestion.data.title}</span>`;
   }
 }
 
