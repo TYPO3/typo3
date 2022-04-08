@@ -165,8 +165,8 @@ define(['jquery',
       // If multiple values are not allowed, clear anything that is in the control already
       if (!isMultiple) {
         $fieldEl.find('option').each(function() {
-          const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
-          if ($option) {
+          const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(this).attr('value')) + '"]');
+          if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
             FormEngine.enableOptGroup($option.get(0));
           }
