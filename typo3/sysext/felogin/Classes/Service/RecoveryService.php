@@ -138,7 +138,7 @@ class RecoveryService implements RecoveryServiceInterface
             )
         );
 
-        return $displayName ?: $userInformation['username'];
+        return $displayName ? $displayName . ' (' . $userInformation['username'] . ')' : $userInformation['username'];
     }
 
     /**
