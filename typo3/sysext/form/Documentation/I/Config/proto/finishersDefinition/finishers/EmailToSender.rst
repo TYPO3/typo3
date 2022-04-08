@@ -729,7 +729,7 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.EmailToSender.recipientAddress.label
                  config:
                    type: input
-                   eval: required
+                   required: true
                recipientName:
                  label: tt_content.finishersDefinition.EmailToSender.recipientName.label
                  config:
@@ -738,7 +738,7 @@ FormEngine.elements
                  label: tt_content.finishersDefinition.EmailToSender.senderAddress.label
                  config:
                    type: input
-                   eval: required
+                   required: true
                senderName:
                  label: tt_content.finishersDefinition.EmailToSender.senderName.label
                  config:

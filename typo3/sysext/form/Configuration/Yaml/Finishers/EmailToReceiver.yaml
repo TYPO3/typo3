@@ -34,7 +34,7 @@ TYPO3:
                     label: tt_content.finishersDefinition.EmailToReceiver.subject.label
                     config:
                       type: input
-                      eval: required
+                      required: true
                   recipients:
                     title: tt_content.finishersDefinition.EmailToReceiver.recipients.label
                     type: array
@@ -50,8 +50,8 @@ TYPO3:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                               config:
-                                type: input
-                                eval: 'required,email'
+                                type: email
+                                required: true
                           name:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -61,7 +61,7 @@ TYPO3:
                     label: tt_content.finishersDefinition.EmailToReceiver.senderAddress.label
                     config:
                       type: input
-                      eval: required
+                      required: true
                   senderName:
                     label: tt_content.finishersDefinition.EmailToReceiver.senderName.label
                     config:
@@ -81,8 +81,8 @@ TYPO3:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                               config:
-                                type: input
-                                eval: 'required,email'
+                                type: email
+                                required: true
                           name:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -103,8 +103,8 @@ TYPO3:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                               config:
-                                type: input
-                                eval: 'required,email'
+                                type: email
+                                required: true
                           name:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
@@ -125,8 +125,8 @@ TYPO3:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
                               config:
-                                type: input
-                                eval: 'required,email'
+                                type: email
+                                required: true
                           name:
                             TCEforms:
                               label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
