@@ -574,13 +574,16 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
 }
 
 /**
- * A fixed form actions menu for the modal-body
+ * A sticky form actions menu for the modal-body
  */
 .sticky-form-actions {
-    position: fixed;
+    position: sticky;
+    top: 0;
     z-index: 1;
     margin-left: -1rem; // revert modal-body padding
-    margin-top: -1rem; // revert modal-body padding
+    margin-right: -1rem; // revert modal-body padding
+    margin-bottom: -0.625rem; // revert for modal-header / modal-footer like padding
+    transform: translateY(-1rem); // revert modal-body padding
     padding: 0.625rem 1rem; // modal-header / modal-footer like padding
     background: $white;
 
@@ -589,12 +592,6 @@ $form-toggle-checked-bg-image: url("data:image/svg+xml, <svg xmlns='http://www.w
     input,
     .input-group-addon {
         margin: 0.25rem 0;
-    }
-}
-
-.modal-size-medium {
-    .sticky-form-actions {
-        width: 800px;
     }
 }
 
