@@ -170,7 +170,7 @@ export default (function() {
       if (!isMultiple) {
         $fieldEl.find('option').each((index: number, el: HTMLElement) => {
           const $option = $availableFieldEl.find('option[value="' + $.escapeSelector($(el).attr('value')) + '"]');
-          if ($option) {
+          if ($option.length) {
             $option.removeClass('hidden').prop('disabled', false);
             FormEngine.enableOptGroup($option.get(0));
           }
