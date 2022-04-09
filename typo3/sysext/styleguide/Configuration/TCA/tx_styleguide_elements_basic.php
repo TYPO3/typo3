@@ -1379,66 +1379,57 @@ backend_layout {
                                         <el>
                                             <inputDateTime_1>
                                                 <TCEforms>
-                                                    <label>inputDateTime_1 eval=date description</label>
+                                                    <label>inputDateTime_1 format=date description</label>
                                                     <description>field description</description>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>date</eval>
+                                                        <type>datetime</type>
+                                                        <format>date</format>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_1>
                                             <inputDateTime_2>
                                                 <TCEforms>
-                                                    <label>inputDateTime_2 dbType=date eval=date</label>
+                                                    <label>inputDateTime_2 dbType=date format=date</label>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>date</eval>
+                                                        <type>datetime</type>
+                                                        <format>date</format>
                                                         <dbType>date</dbType>
-                                                        <default>0000-00-00</default>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_2>
                                             <inputDateTime_3>
                                                 <TCEforms>
-                                                    <label>inputDateTime_3 eval=datetime</label>
+                                                    <label>inputDateTime_3 type=datetime</label>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>datetime</eval>
+                                                        <type>datetime</type>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_3>
                                             <inputDateTime_4>
                                                 <TCEforms>
-                                                    <label>inputDateTime_4 dbType=datetime eval=datetime</label>
+                                                    <label>inputDateTime_4 dbType=datetime format=date</label>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>date</eval>
+                                                        <type>datetime</type>
+                                                        <format>date</format>
                                                         <dbType>datetime</dbType>
-                                                        <default>0000-00-00 00:00:00</default>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_4>
                                             <inputDateTime_5>
                                                 <TCEforms>
-                                                    <label>inputDateTime_5 eval=time</label>
+                                                    <label>inputDateTime_5 format=time</label>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>time</eval>
+                                                        <type>datetime</type>
+                                                        <format>time</format>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_5>
                                             <inputDateTime_6>
                                                 <TCEforms>
-                                                    <label>inputDateTime_6 eval=timesec</label>
+                                                    <label>inputDateTime_6 format=timesec</label>
                                                     <config>
-                                                        <type>input</type>
-                                                        <renderType>inputDateTime</renderType>
-                                                        <eval>timesec</eval>
+                                                        <type>datetime</type>
+                                                        <format>timesec</format>
                                                     </config>
                                                 </TCEforms>
                                             </inputDateTime_6>
