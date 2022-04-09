@@ -1519,17 +1519,21 @@ class DataHandler implements LoggerAwareInterface
             return $res;
         }
 
+        // This is either a normal field or a FlexForm field.
+        // Used to enrich the (potential) error log with contextual information.
+        $checkField = $recFID !== '' ? explode(':', $recFID)[2] : $field;
+
         $res = (array)match ((string)$tcaFieldConf['type']) {
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
             'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'color' => $this->checkValueForColor((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
-            'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $field),
+            'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
             'inline' => $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData) ?: [],
             'input' => $this->checkValueForInput($value, $tcaFieldConf, $table, $id, $realPid, $field),
             'language' => $this->checkValueForLanguage((int)$value, $table, $field),
-            'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id),
+            'link' => $this->checkValueForLink((string)$value, $tcaFieldConf, $table, $id, $checkField),
             'number' => $this->checkValueForNumber($value, $tcaFieldConf),
             'password' => $this->checkValueForPassword((string)$value, $tcaFieldConf, $table),
             'radio' => $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
@@ -1796,7 +1800,7 @@ class DataHandler implements LoggerAwareInterface
 
         if ($value !== '' && !GeneralUtility::validEmail($value)) {
             // A non-empty value is given, which however is no valid email. Log this and unset the value afterwards.
-            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{email}" is not a valid e-mail address.', -1, ['email' => $value]);
+            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{email}" is not a valid e-mail address for the field "{field}" of the table "{table}".', -1, ['email' => $value, 'field' => $field, 'table' => $table]);
             $value = '';
         }
 
@@ -1957,9 +1961,10 @@ class DataHandler implements LoggerAwareInterface
      * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int|string $id UID of record - might be a NEW.. string for new records
-     * @return array $res The result array. The processed value (if any!) is set in the "value" key.
+     * @param string $field The name of the current field
+     * @return array The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForLink(string $value, array $tcaFieldConf, string $table, int|string $id): array
+    protected function checkValueForLink(string $value, array $tcaFieldConf, string $table, int|string $id, string $field): array
     {
         // Always trim the value
         $value = trim($value);
@@ -1980,7 +1985,7 @@ class DataHandler implements LoggerAwareInterface
             // Extract the actual link from the link definition for further evaluation
             $linkParameter = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($value)['url'] ?? '';
             if ($linkParameter === '') {
-                $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition.', -1, ['link' => $value]);
+                $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition for the field "{field}" of the table "{table}".', -1, ['link' => $value, 'field' => $field, 'table' => $table]);
                 $value = '';
             } else {
                 // Try to resolve the actual link type and compare with the allow list
@@ -1994,13 +1999,13 @@ class DataHandler implements LoggerAwareInterface
                         && ($linkType !== 'record' || !in_array($linkIdentifier, $tcaFieldConf['allowedTypes'], true))
                     ) {
                         $message = $linkIdentifier !== ''
-                            ? 'Link type "record" with identifier "{type}" is not allowed.'
-                            : 'Link type "{type}" is not allowed.';
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, $message, -1, ['type' => $linkIdentifier ?: $linkType]);
+                            ? 'Link type "record" with identifier "{type}" is not allowed for the field "{field}" of the table "{table}".'
+                            : 'Link type "{type}" is not allowed for the field "{field}" of the table "{table}".';
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, $message, -1, ['type' => $linkIdentifier ?: $linkType, 'field' => $field, 'table' => $table]);
                         $value = '';
                     }
                 } catch (UnknownLinkHandlerException $e) {
-                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link.', -1, ['link' => $value]);
+                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link for the field "{field}" of the table "{table}".', -1, ['link' => $value, 'field' => $field, 'table' => $table]);
                     $value = '';
                 }
             }
