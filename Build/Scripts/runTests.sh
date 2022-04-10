@@ -72,6 +72,33 @@ handleDbmsAndDriverOptions() {
     esac
 }
 
+cleanBuildFiles() {
+    # > builds
+    echo -n "Clean builds ... " ; rm -rf \
+        ../../../Build/JavaScript \
+        ../../../Build/node_modules ; \
+        echo "done"
+}
+
+cleanCacheFiles() {
+    # > caches
+    echo -n "Clean caches ... " ; rm -rf \
+        ../../../.cache \
+        ../../../Build/.cache \
+        ../../../Build/.phpunit.result.cache ; \
+        echo "done"
+}
+
+cleanTestFiles() {
+    # > test related
+    echo -n "Clean test related files ... " ; rm -rf \
+        ../../../Build/FunctionalTests-Job-*.xml \
+        ../../../typo3/sysext/core/Tests/Acceptance/AcceptanceTests-Job-* \
+        ../../../typo3/sysext/core/Tests/Acceptance/Support/_generated \
+        ../../../typo3temp/var/tests/ ; \
+        echo "done"
+}
+
 # Load help text into $HELP
 read -r -d '' HELP <<EOF
 TYPO3 core test runner. Execute acceptance, unit, functional and other test suites in
@@ -103,6 +130,10 @@ Options:
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
+            - clean: clean up build, cache and testing related files and folders
+            - cleanBuild: clean up build related files and folders
+            - cleanCache: clean up cache related files and folders
+            - cleanTests: clean up test related files and folders
             - composerInstall: "composer install"
             - composerInstallMax: "composer update", with no platform.php config.
             - composerInstallMin: "composer update --prefer-lowest", with platform.php set to PHP version x.x.0.
@@ -532,6 +563,20 @@ case ${TEST_SUITE} in
         docker-compose run check_rst
         SUITE_EXIT_CODE=$?
         docker-compose down
+        ;;
+    clean)
+        cleanBuildFiles
+        cleanCacheFiles
+        cleanTestFiles
+        ;;
+    cleanBuild)
+        cleanBuildFiles
+        ;;
+    cleanCache)
+        cleanCacheFiles
+        ;;
+    cleanTests)
+        cleanTestFiles
         ;;
     composerInstall)
         setUpDockerComposeDotEnv
