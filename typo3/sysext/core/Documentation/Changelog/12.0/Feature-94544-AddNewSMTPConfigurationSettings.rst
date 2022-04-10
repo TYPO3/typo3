@@ -36,7 +36,6 @@ Configuration Example:
         //....
         'MAIL' => [
             'transport' => 'smtp',
-            'transport_sendmail_command' => ' -t -i ',
             'transport_smtp_server' => 'localhost:1025',
             'transport_smtp_stream_options' => [
                 'ssl' => [
