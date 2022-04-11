@@ -1827,7 +1827,8 @@ class DatabaseRecordList
 
                 if ($cellOutput !== '') {
                     $icon = $this->iconFactory->getIcon('actions-menu-alternative', Icon::SIZE_SMALL);
-                    $output .= ' <div class="btn-group dropdown position-static">' . // @todo add label / tooltip
+                    $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.more');
+                    $output .= ' <div class="btn-group dropdown position-static" data-bs-toggle="tooltip" title="' . htmlspecialchars($title) . '">' .
                         '<a href="#actions_' . $table . '_' . $row['uid'] . '" class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" data-bs-toggle="dropdown" data-bs-boundary="window" aria-expanded="false">' . $icon->render() . '</a>' .
                         '<ul id="actions_' . $table . '_' . $row['uid'] . '" class="dropdown-menu dropdown-list">' . $cellOutput . '</ul>' .
                         '</div>';
