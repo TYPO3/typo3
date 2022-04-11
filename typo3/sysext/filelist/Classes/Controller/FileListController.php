@@ -403,7 +403,7 @@ class FileListController implements LoggerAwareInterface
             $this->view->assign('drapUploader', [
                 'fileDenyPattern' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] ?? null,
                 'maxFileSize' => GeneralUtility::getMaxUploadFileSize() * 1024,
-                'defaultDuplicationBehaviourAction', $this->getDefaultDuplicationBehaviourAction(),
+                'defaultDuplicationBehaviourAction' => $this->getDefaultDuplicationBehaviourAction(),
             ]);
         }
     }
