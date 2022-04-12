@@ -14,7 +14,6 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   state int(4) NOT NULL default '0',
   review_state int(4) NOT NULL default '0',
   category int(4) NOT NULL default '0',
-  last_updated int(11) unsigned NOT NULL default '0',
   serialized_dependencies mediumtext,
   author_name varchar(255) NOT NULL default '',
   author_email varchar(255) NOT NULL default '',

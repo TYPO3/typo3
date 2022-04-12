@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema;
 
 use Doctrine\DBAL\Schema\Table;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Schema\Exception\DefaultTcaSchemaTablePositionException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -465,6 +466,38 @@ class DefaultTcaSchema
                                 'default' => 0,
                                 'notnull' => true,
                                 'unsigned' => true,
+                            ]
+                        );
+                    }
+                }
+            }
+
+            // Add datetime fields for all tables, defining datetime columns (TCA type=datetime), except
+            // those columns, which had already been added due to definition in "ctrl", e.g. "starttime".
+            if (isset($tableDefinition['columns']) && is_array($tableDefinition['columns'])) {
+                foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                    if ((string)($fieldConfig['config']['type'] ?? '') !== 'datetime'
+                        || $this->isColumnDefinedForTable($tables, $tableName, $fieldName)
+                    ) {
+                        continue;
+                    }
+
+                    if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            $fieldConfig['config']['dbType'],
+                            [
+                                'notnull' => false,
+                            ]
+                        );
+                    } else {
+                        $tables[$tablePosition]->addColumn(
+                            $this->quote($fieldName),
+                            'integer',
+                            [
+                                'default' => 0,
+                                'notnull' => !($fieldConfig['config']['nullable'] ?? false),
+                                'unsigned' => false,
                             ]
                         );
                     }

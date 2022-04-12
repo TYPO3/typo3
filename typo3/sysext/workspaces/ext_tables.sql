@@ -25,7 +25,6 @@ CREATE TABLE sys_workspace (
 	members varchar(4000) DEFAULT '' NOT NULL,
 	db_mountpoints text,
 	file_mountpoints text,
-	publish_time int(11) DEFAULT '0' NOT NULL,
 	freeze tinyint(3) DEFAULT '0' NOT NULL,
 	live_edit tinyint(3) DEFAULT '0' NOT NULL,
 	publish_access tinyint(3) DEFAULT '0' NOT NULL,

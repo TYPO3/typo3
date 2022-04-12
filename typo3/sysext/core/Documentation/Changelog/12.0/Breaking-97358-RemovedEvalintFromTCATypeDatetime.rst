@@ -20,6 +20,12 @@ field. To allow negative timestamps - used for dates before 1970 - the
 :sql:`integer` database fields are required to be defined as :sql:`signed`.
 This means, the :sql:`unsigned` definiton must be omitted.
 
+.. note::
+
+    TYPO3 automatically creates database fields for all TCA type
+    :php:`datetime` columns, if those are not already manually
+    defined in the corresponding extensions' :file:`ext_tables.sql` file.
+
 Impact
 ======
 
@@ -72,5 +78,11 @@ Migrate corresponding database fields to :sql:`integer` where applicable.
 
     In case the corresponding TCA field defines :php:`eval=null`, the
     :sql:`NOT NULL` definition must be omitted.
+
+.. note::
+
+    In case you don't need any manual configuration (e.g. a special default
+    value), you can omit the definition of the database field, since TYPO3
+    automatically creates those fields for TCA type :php:`datetime` columns.
 
 .. index:: Backend, Database, PHP-API, TCA, NotScanned, ext:backend

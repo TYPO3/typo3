@@ -18,8 +18,6 @@ CREATE TABLE sys_file_metadata (
 	latitude decimal(24,14) DEFAULT '0.00000000000000',
 	longitude decimal(24,14) DEFAULT '0.00000000000000',
 	ranking int(11) unsigned DEFAULT '0',
-	content_creation_date int(11) unsigned DEFAULT '0',
-	content_modification_date int(11) unsigned DEFAULT '0',
 	note text,
 
 	# px,mm,cm,m,p, ...

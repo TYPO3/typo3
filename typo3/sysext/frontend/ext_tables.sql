@@ -60,7 +60,6 @@ CREATE TABLE fe_users (
 	company varchar(80) DEFAULT '' NOT NULL,
 	image tinytext,
 	TSconfig text,
-	lastlogin int(10) unsigned DEFAULT '0' NOT NULL,
 	is_online int(10) unsigned DEFAULT '0' NOT NULL,
 	mfa mediumblob,
 
@@ -125,7 +124,6 @@ CREATE TABLE tt_content (
 	filelink_sorting varchar(64) DEFAULT '' NOT NULL,
 	filelink_sorting_direction varchar(4) DEFAULT '' NOT NULL,
 	target varchar(30) DEFAULT '' NOT NULL,
-	date int(10) unsigned DEFAULT '0' NOT NULL,
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	imageheight mediumint(8) unsigned DEFAULT '0' NOT NULL,
 	pi_flexform mediumtext,

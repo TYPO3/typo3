@@ -14,7 +14,6 @@ CREATE TABLE sys_redirect (
 	target_statuscode int(11) DEFAULT '307' NOT NULL,
 
 	hitcount int(11) DEFAULT '0' NOT NULL,
-	lasthiton int(11) DEFAULT '0' NOT NULL,
 	disable_hitcount tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	KEY index_source (source_host(80),source_path(80))

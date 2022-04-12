@@ -128,9 +128,7 @@ CREATE TABLE index_config (
   filepath varchar(255) DEFAULT '' NOT NULL,
   extensions varchar(255) DEFAULT '' NOT NULL,
 
-  timer_next_indexing int(11) DEFAULT '0' NOT NULL,
   timer_frequency int(11) DEFAULT '0' NOT NULL,
-  timer_offset int(11) DEFAULT '0' NOT NULL,
   url_deny text,
   recordsbatch int(11) DEFAULT '0' NOT NULL,
   records_indexonchange tinyint(4) DEFAULT '0' NOT NULL

@@ -18,7 +18,6 @@ CREATE TABLE tx_blogexample_domain_model_post (
 	blog int(11) DEFAULT '0' NOT NULL,
 
 	title varchar(255) DEFAULT '' NOT NULL,
-	date int(11) DEFAULT '0' NOT NULL,
 	author int(11) DEFAULT '0' NOT NULL,
 	second_author int(11) DEFAULT '0' NOT NULL,
 	reviewer int(11) DEFAULT '0' NOT NULL,
@@ -37,7 +36,6 @@ CREATE TABLE tx_blogexample_domain_model_post (
 CREATE TABLE tx_blogexample_domain_model_comment (
 	post int(11) DEFAULT '0' NOT NULL,
 
-	date datetime,
 	author varchar(255) DEFAULT '' NOT NULL,
 	email varchar(255) DEFAULT '' NOT NULL,
 	content text NOT NULL
@@ -109,11 +107,10 @@ CREATE TABLE tx_blogexample_post_post_mm (
 
 #
 # Table structure for table 'tx_blogexample_domain_model_dateexample'
+# @deprectaed Can be removed as soon as int / native type is enforced
 #
 CREATE TABLE tx_blogexample_domain_model_dateexample (
-	datetime_int int(11) DEFAULT '0' NOT NULL,
 	datetime_text varchar(255) DEFAULT '' NOT NULL,
-	datetime_datetime datetime
 );
 
 #
@@ -124,10 +121,10 @@ CREATE TABLE tx_blogexample_domain_model_info (
 	post int(11) DEFAULT '0' NOT NULL
 );
 
+#
 # Table structure for table 'tx_blogexample_domain_model_datetimeimmutableexample'
+# @deprectaed Can be removed as soon as int / native type is enforced
 #
 CREATE TABLE tx_blogexample_domain_model_datetimeimmutableexample (
-	datetime_immutable_int int(11) DEFAULT '0' NOT NULL,
 	datetime_immutable_text varchar(255) DEFAULT '' NOT NULL,
-	datetime_immutable_datetime datetime
 );

@@ -98,10 +98,22 @@ where code adoption has to take place.
     for extensions calling this class directly, which is rather unlikely. The
     extension scanner will report any usage, which should then be migrated.
 
+Automatic database fields
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TYPO3 automatically creates database fields for TCA type :php:`datetime`
+columns, if they have not already been defined in an extensions'
+:file:`ext_tables.sql` file. This also supports columns, having a
+native database type (:php:`dbType`) defined. Fields without a native
+type do always define :sql:`default 0` and are always signed (to allow
+negative timestamps). As long as a column does not use :php:`nullable=true`,
+the fields are also always defined as :sql:`NOT NULL`.
+
 Impact
 ======
 
 It's now possible to simplify the TCA configuration by using the new
-dedicated TCA type :php:`datetime`.
+dedicated TCA type :php:`datetime`. Next to reduced TCA configuration
+does the new type allow to omit the corresponding database field definition.
 
 .. index:: Backend, TCA, ext:backend
