@@ -23,7 +23,7 @@ All content elements with CType "media" will then be rendered by the Fluid Templ
 .. code-block:: html
 
 	<h4>{header}</h4>
-	<f:format.crop length="200">{bodytext}</f:format.crop>
+	<f:format.crop maxCharacters="200">{bodytext}</f:format.crop>
 
 All properties of the tt_content record are available in the template directly.
 Any data of the flexform field `pi_flexform` is available with the property `pi_flexform_transformed` as an array.
